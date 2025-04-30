@@ -5,6 +5,7 @@ dist
 /build
 /.wrangler
 .env
+.DS_Store
 
 *storybook.log
 
