@@ -118,6 +118,7 @@
     "plop": "^4.0.1",
     "postcss": "^8.4.39",
     "prettier": "^3.5.3",
+    "prettier-plugin-css-order": "^2.1.2",
     "prettier-plugin-tailwindcss": "^0.6.11",
     "react": "18.2.0",
     "react-dom": "18.2.0",
