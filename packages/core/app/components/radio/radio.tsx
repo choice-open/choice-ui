@@ -1,31 +1,40 @@
 import { Dot } from "@choiceform/icons-react"
-import { forwardRef, HTMLProps, useId } from "react"
+import {
+  Children,
+  cloneElement,
+  forwardRef,
+  HTMLProps,
+  isValidElement,
+  memo,
+  ReactElement,
+  ReactNode,
+  useId,
+  useMemo,
+} from "react"
+import { useEventCallback } from "usehooks-ts"
 import { tcx } from "~/utils"
+import { CheckboxLabel, CheckboxLabelProps } from "../checkbox/checkbox-label"
 import { checkboxTv } from "../checkbox/tv"
 
-interface RadioProps extends Omit<HTMLProps<HTMLInputElement>, "value" | "onChange"> {
+export interface RadioProps extends Omit<HTMLProps<HTMLInputElement>, "value" | "onChange"> {
   className?: string
-  classNames?: {
-    container?: string
-    label?: string
-  }
   variant?: "default" | "accent" | "outline"
   value: boolean
   focused?: boolean
   onChange: (value: boolean) => void
+  children?: ReactNode
 }
 
-export const Radio = forwardRef<HTMLInputElement, RadioProps>(function Radio(props, ref) {
+const RadioBase = forwardRef<HTMLInputElement, RadioProps>(function Radio(props, ref) {
   const {
     value,
     onChange,
-    label,
     disabled,
     name,
     variant = "default",
-    classNames,
     className,
     focused,
+    children,
     "aria-label": ariaLabel,
     "aria-describedby": ariaDescribedby,
     ...rest
@@ -41,8 +50,25 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(function Radio(pro
     focused,
   })
 
+  const handleChange = useEventCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    onChange(e.target.checked)
+  })
+
+  const enhancedChildren = useMemo(() => {
+    return Children.map(children, (child) => {
+      if (isValidElement(child) && child.type === CheckboxLabel) {
+        return cloneElement(child as ReactElement<CheckboxLabelProps>, {
+          htmlFor: id,
+          id: descriptionId,
+          disabled,
+        })
+      }
+      return child
+    })
+  }, [children, id, descriptionId, disabled])
+
   return (
-    <div className={tcx(styles.root(), classNames?.container, className)}>
+    <div className={tcx(styles.root(), className)}>
       <div className="pointer-events-none relative">
         <input
           ref={ref}
@@ -52,27 +78,36 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(function Radio(pro
           name={name}
           checked={value}
           disabled={disabled}
-          onChange={(e) => {
-            onChange(e.target.checked)
+          onChange={handleChange}
+          aria-label={ariaLabel}
+          aria-describedby={ariaDescribedby || (enhancedChildren ? descriptionId : undefined)}
+          aria-checked={value}
+          role="radio"
+          onKeyDown={(e) => {
+            if (e.key === " " || e.key === "Enter") {
+              e.preventDefault()
+              onChange(!value)
+            }
           }}
-          aria-label={ariaLabel || label?.toString()}
-          aria-describedby={ariaDescribedby || (label ? descriptionId : undefined)}
           {...rest}
         />
         <div className={styles.box()}>{value && <Dot />}</div>
       </div>
 
-      {label && (
-        <label
-          id={descriptionId}
-          htmlFor={id}
-          className={tcx(styles.label(), classNames?.label)}
-        >
-          {label}
-        </label>
-      )}
+      {enhancedChildren}
     </div>
   )
 })
 
+const MemoizedRadio = memo(RadioBase) as unknown as RadioType
+
+interface RadioType {
+  (props: RadioProps & { ref?: React.Ref<HTMLInputElement> }): JSX.Element
+  Label: typeof CheckboxLabel
+  displayName?: string
+}
+
+export const Radio = MemoizedRadio as RadioType
+
+Radio.Label = CheckboxLabel
 Radio.displayName = "Radio"

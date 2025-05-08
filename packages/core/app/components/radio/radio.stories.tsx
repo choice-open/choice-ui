@@ -14,7 +14,7 @@ type Story = StoryObj<typeof Radio>
 
 /**
  * - This is a controlled component that requires `value` and `onChange` props to control its state.
- * - `label`: The label of the radio
+ * - Use `<Radio.Label>` to add a label to the radio
  */
 export const Basic: Story = {
   render: function BasicStory() {
@@ -49,14 +49,15 @@ export const Basic: Story = {
                     <Fragment key={interaction}>
                       <Radio
                         value={interaction === Interaction.On}
-                        label={interaction}
                         disabled={state === State.Disabled}
                         focused={state === State.Focused}
                         variant={variant}
                         onChange={(value) => {
                           console.log(value)
                         }}
-                      />
+                      >
+                        <Radio.Label>{interaction}</Radio.Label>
+                      </Radio>
                     </Fragment>
                   ))}
                 </Fragment>
@@ -79,9 +80,10 @@ export const Disabled: Story = {
       <Radio
         value={value}
         onChange={setValue}
-        label="Disabled"
         disabled
-      />
+      >
+        <Radio.Label>Disabled</Radio.Label>
+      </Radio>
     )
   },
 }
@@ -106,29 +108,34 @@ export const Variant: Story = {
           name="variant"
           value={variant.default}
           onChange={(value) => setVariant({ ...variant, default: value })}
-          label="Default"
-        />
+        >
+          <Radio.Label>Default</Radio.Label>
+        </Radio>
         <Radio
           name="variant"
           value={variant.accent}
           onChange={(value) => setVariant({ ...variant, accent: value })}
-          label="Accent"
           variant="accent"
-        />
+        >
+          <Radio.Label>Accent</Radio.Label>
+        </Radio>
         <Radio
           name="variant"
           value={variant.outline}
           onChange={(value) => setVariant({ ...variant, outline: value })}
-          label="Outline"
           variant="outline"
-        />
+        >
+          <Radio.Label>Outline</Radio.Label>
+        </Radio>
       </>
     )
   },
 }
 
 /**
- * The `IfRadioGroup` component is used to group the radio.
+ * The `RadioGroup` component is used to group the radio. It supports two usage patterns:
+ * 1. Providing options as a prop
+ * 2. Using RadioGroup.Item as children
  */
 export const Group: Story = {
   render: function GroupStory() {
@@ -141,19 +148,39 @@ export const Group: Story = {
     const [selectedIds, setSelectedIds] = useState<string>(groupOptions[0].value)
 
     return (
-      <div className="flex flex-col gap-1">
-        <RadioGroup
-          options={groupOptions}
-          value={selectedIds}
-          onChange={(value) => setSelectedIds(value)}
-        />
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-1">
+          <span>Using options prop:</span>
+          <RadioGroup
+            options={groupOptions}
+            value={selectedIds}
+            onChange={(value) => setSelectedIds(value)}
+          />
+        </div>
+
+        <div className="flex flex-col gap-1">
+          <span>Using RadioGroup.Item:</span>
+          <RadioGroup
+            value={selectedIds}
+            onChange={(value) => setSelectedIds(value)}
+          >
+            {groupOptions.map((option) => (
+              <RadioGroup.Item
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </RadioGroup.Item>
+            ))}
+          </RadioGroup>
+        </div>
       </div>
     )
   },
 }
 
 /**
- * The `IfRadioGroup` component has `variant` prop.
+ * The `RadioGroup` component has `variant` prop.
  * - `default`: The default variant of the radio.
  * - `accent`: The accent variant of the radio.
  * - `outline`: The outline variant of the radio.
@@ -172,10 +199,18 @@ export const GroupVariant: Story = {
       <>
         <RadioGroup
           variant={variant as "default" | "accent" | "outline"}
-          options={groupOptions}
           value={variant}
           onChange={(value) => setVariant(value)}
-        />
+        >
+          {groupOptions.map((option) => (
+            <RadioGroup.Item
+              key={option.value}
+              value={option.value}
+            >
+              {option.label}
+            </RadioGroup.Item>
+          ))}
+        </RadioGroup>
       </>
     )
   },

@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react"
-import { useState } from "react"
-import { Range } from "./range"
-import { Popover } from "../popover"
+import React, { useState } from "react"
 import { Button } from "../button"
+import { Popover } from "../popover"
+import { Range } from "./range"
 
 const meta: Meta<typeof Range> = {
   title: "Range",
@@ -170,34 +170,27 @@ export const DraggableRangePopover: Story = {
     const [value, setValue] = useState(0)
 
     return (
-      <>
-        <Popover
-          classNames={{
-            content: "w-64 p-3",
-          }}
-          draggable
-          title="Range"
-          content={
-            <div className="grid grid-cols-[180px_auto] gap-2">
-              <Range
-                className="flex-1"
-                value={value}
-                onChange={setValue}
-                min={0}
-                max={100}
-                defaultValue={50}
-                trackSize={{
-                  width: 180,
-                  height: 16,
-                }}
-              />
-              <div className="w-10 flex-1 text-right">{value}%</div>
-            </div>
-          }
-        >
+      <Popover draggable>
+        <Popover.Trigger>
           <Button>Open</Button>
-        </Popover>
-      </>
+        </Popover.Trigger>
+        <Popover.Header title="Range" />
+        <Popover.Content className="grid w-64 grid-cols-[180px_auto] gap-2 p-3">
+          <Range
+            className="flex-1"
+            value={value}
+            onChange={setValue}
+            min={0}
+            max={100}
+            defaultValue={50}
+            trackSize={{
+              width: 180,
+              height: 16,
+            }}
+          />
+          <div className="w-10 flex-1 text-right">{value}%</div>
+        </Popover.Content>
+      </Popover>
     )
   },
 }

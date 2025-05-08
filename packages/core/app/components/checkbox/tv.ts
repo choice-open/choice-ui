@@ -110,31 +110,12 @@ export const checkboxTv = tv({
       },
     },
     {
-      variant: ["default", "accent", "outline"],
+      variant: ["accent", "outline", "default"],
       disabled: true,
-      checked: false,
-      class: {
-        root: "text-secondary-foreground",
-        box: "border-default-boundary bg-secondary-background",
-      },
-    },
-    {
-      variant: "default",
-      disabled: true,
-      checked: true,
-      class: {
-        root: "text-secondary-foreground",
-        box: "border-default-boundary bg-secondary-background",
-      },
-    },
-
-    {
-      variant: ["accent", "outline"],
-      disabled: true,
-      checked: true,
       class: {
         root: "text-default-background",
         box: "border-disabled-background bg-disabled-background",
+        label: "text-disabled-foreground",
       },
     },
   ],

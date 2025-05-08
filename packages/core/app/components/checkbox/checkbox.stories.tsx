@@ -14,7 +14,7 @@ type Story = StoryObj<typeof Checkbox>
 
 /**
  * - This is a controlled component that requires `value` and `onChange` props to control its state.
- * - `label`: The label of the checkbox
+ * - Use `<Checkbox.Label>` to add a label to the checkbox
  */
 export const Basic: Story = {
   render: function BasicStory() {
@@ -51,11 +51,12 @@ export const Basic: Story = {
                       <Checkbox
                         value={interaction === Interaction.On || interaction === Interaction.Mixed}
                         mixed={interaction === Interaction.Mixed}
-                        label={interaction}
                         disabled={state === State.Disabled}
                         focused={state === State.Focused}
                         variant={variant}
-                      />
+                      >
+                        <Checkbox.Label>{interaction}</Checkbox.Label>
+                      </Checkbox>
                     </Fragment>
                   ))}
                 </Fragment>
@@ -80,9 +81,10 @@ export const Disabled: Story = {
       <Checkbox
         value={value}
         onChange={(value) => setValue(value)}
-        label="Disabled"
         disabled
-      />
+      >
+        <Checkbox.Label>Disabled</Checkbox.Label>
+      </Checkbox>
     )
   },
 }
@@ -105,20 +107,23 @@ export const Variant: Story = {
         <Checkbox
           value={variant.default}
           onChange={(value) => setVariant({ ...variant, default: value })}
-          label="Default"
-        />
+        >
+          <Checkbox.Label>Default</Checkbox.Label>
+        </Checkbox>
         <Checkbox
           value={variant.accent}
           onChange={(value) => setVariant({ ...variant, accent: value })}
-          label="Accent"
           variant="accent"
-        />
+        >
+          <Checkbox.Label>Accent</Checkbox.Label>
+        </Checkbox>
         <Checkbox
           value={variant.outline}
           onChange={(value) => setVariant({ ...variant, outline: value })}
-          label="Outline"
           variant="outline"
-        />
+        >
+          <Checkbox.Label>Outline</Checkbox.Label>
+        </Checkbox>
       </div>
     )
   },
@@ -148,8 +153,9 @@ export const Group: Story = {
                 checked ? [...prev, option.id] : prev.filter((id) => id !== option.id),
               )
             }}
-            label={option.label}
-          />
+          >
+            <Checkbox.Label>{option.label}</Checkbox.Label>
+          </Checkbox>
         ))}
       </div>
     )

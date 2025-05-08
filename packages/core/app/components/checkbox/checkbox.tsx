@@ -1,32 +1,41 @@
 import { Check, Indeterminate } from "@choiceform/icons-react"
-import { forwardRef, HTMLProps, useEffect, useId } from "react"
+import {
+  Children,
+  cloneElement,
+  forwardRef,
+  HTMLProps,
+  isValidElement,
+  memo,
+  ReactElement,
+  ReactNode,
+  useId,
+  useMemo,
+} from "react"
+import { useEventCallback } from "usehooks-ts"
 import { tcx } from "~/utils"
+import { CheckboxLabel, type CheckboxLabelProps } from "./checkbox-label"
 import { checkboxTv } from "./tv"
 
-interface CheckboxProps extends Omit<HTMLProps<HTMLInputElement>, "value" | "onChange"> {
+export interface CheckboxProps extends Omit<HTMLProps<HTMLInputElement>, "value" | "onChange"> {
   className?: string
-  classNames?: {
-    container?: string
-    label?: string
-  }
   variant?: "default" | "accent" | "outline"
   value?: boolean
   focused?: boolean
   mixed?: boolean
   onChange?: (value: boolean) => void
+  children?: ReactNode
 }
 
-export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Checkbox(props, ref) {
+const CheckboxBase = forwardRef<HTMLInputElement, CheckboxProps>(function Checkbox(props, ref) {
   const {
     value,
     onChange,
-    label,
     disabled,
     variant = "default",
-    classNames,
     className,
     focused,
     mixed,
+    children,
     "aria-label": ariaLabel,
     "aria-describedby": ariaDescribedby,
     ...rest
@@ -42,8 +51,26 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Che
     focused: focused,
   })
 
+  const handleChange = useEventCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    onChange?.(e.target.checked)
+  })
+
+  // 使用 useMemo 缓存子元素处理结果
+  const enhancedChildren = useMemo(() => {
+    return Children.map(children, (child) => {
+      if (isValidElement(child) && child.type === CheckboxLabel) {
+        return cloneElement(child as ReactElement<CheckboxLabelProps>, {
+          htmlFor: id,
+          id: descriptionId,
+          disabled,
+        })
+      }
+      return child
+    })
+  }, [children, id, descriptionId, disabled])
+
   return (
-    <div className={tcx(styles.root(), classNames?.container, className)}>
+    <div className={tcx(styles.root(), className)}>
       <div className="pointer-events-none relative">
         <input
           ref={ref}
@@ -52,28 +79,36 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Che
           id={id}
           checked={value}
           disabled={disabled}
-          onChange={(e) => {
-            onChange?.(e.target.checked)
+          onChange={handleChange}
+          aria-label={ariaLabel}
+          aria-describedby={ariaDescribedby || (enhancedChildren ? descriptionId : undefined)}
+          aria-checked={mixed ? "mixed" : value}
+          role="checkbox"
+          onKeyDown={(e) => {
+            if (e.key === " " || e.key === "Enter") {
+              e.preventDefault()
+              onChange?.(!value)
+            }
           }}
-          aria-label={ariaLabel || label?.toString()}
-          aria-describedby={ariaDescribedby || (label ? descriptionId : undefined)}
           {...rest}
         />
 
         <div className={styles.box()}>{value && (mixed ? <Indeterminate /> : <Check />)}</div>
       </div>
 
-      {label && (
-        <label
-          id={descriptionId}
-          htmlFor={id}
-          className={tcx(styles.label(), classNames?.label)}
-        >
-          {label}
-        </label>
-      )}
+      {enhancedChildren}
     </div>
   )
 })
 
+const MemoizedCheckbox = memo(CheckboxBase) as unknown as CheckboxType
+
+interface CheckboxType {
+  (props: CheckboxProps & { ref?: React.Ref<HTMLInputElement> }): JSX.Element
+  Label: typeof CheckboxLabel
+  displayName?: string
+}
+
+export const Checkbox = MemoizedCheckbox as CheckboxType
+Checkbox.Label = CheckboxLabel
 Checkbox.displayName = "Checkbox"
