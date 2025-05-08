@@ -5,6 +5,7 @@ const us = {
     save: "Save",
     cancel: "Cancel",
     loading: "Loading...",
+    search: "Search...",
   },
   menus: {
     searchEmpty: "No results found, please try another keyword",

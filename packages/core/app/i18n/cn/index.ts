@@ -5,6 +5,7 @@ const cn = {
     save: "保存",
     cancel: "取消",
     loading: "加载中...",
+    search: "搜索...",
   },
   menus: {
     searchEmpty: "搜索结果为空，请尝试其他关键词",

@@ -27,6 +27,10 @@ type RootTranslation = {
 		 * 加​载​中​.​.​.
 		 */
 		loading: string
+		/**
+		 * 搜​索​.​.​.
+		 */
+		search: string
 	}
 	menus: {
 		/**
@@ -155,6 +159,10 @@ export type TranslationFunctions = {
 		 * 加载中...
 		 */
 		loading: () => LocalizedString
+		/**
+		 * 搜索...
+		 */
+		search: () => LocalizedString
 	}
 	menus: {
 		/**
