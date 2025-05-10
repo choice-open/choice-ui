@@ -169,7 +169,9 @@ export const Constraints: StoryObj = {
         </div>
         <div>
           Value: {value}
-          <div className="text-sm text-gray-500">Min: 0, Max: 100, Step: 5 (Shift: 20)</div>
+          <div className="text-secondary-foreground text-sm">
+            Min: 0, Max: 100, Step: 5 (Shift: 20)
+          </div>
         </div>
       </div>
     )
@@ -308,7 +310,7 @@ export const MathExpressions: StoryObj = {
         <div>
           <div>Expression: {value}</div>
           {result !== null && <div className="font-bold">Result: {result}</div>}
-          <div className="text-sm text-gray-500">Try: "5+10", "(20-5)*2", "100/4"</div>
+          <div className="text-secondary-foreground text-sm">Try: "5+10", "(20-5)*2", "100/4"</div>
         </div>
       </div>
     )
@@ -410,8 +412,8 @@ export const KeyboardNavigation: StoryObj = {
         </div>
         <div>
           <div>Current value: {value}</div>
-          {lastKey && <div className="text-sm text-gray-500">Last key: {lastKey}</div>}
-          <div className="mt-2 text-xs text-gray-500">
+          {lastKey && <div className="text-secondary-foreground text-sm">Last key: {lastKey}</div>}
+          <div className="text-secondary-foreground mt-2">
             <p>↑/↓: ±5, Shift+↑/↓: ±20, Meta/Alt+↑/↓: ±1</p>
           </div>
         </div>
@@ -561,7 +563,7 @@ export const ErrorHandling: StoryObj = {
         <div>
           <div>Current value: {value}</div>
           {errorState.hasError && <div className="text-sm text-red-500">{errorState.message}</div>}
-          <div className="text-sm text-gray-500">
+          <div className="text-secondary-foreground text-sm">
             Try valid (50, 1+2) or invalid (abc, 50px) inputs
           </div>
         </div>
@@ -679,7 +681,7 @@ export const LinkedInputs: StoryObj = {
           />
           <div className="flex flex-col">
             <div className="font-mono text-lg">{hexColor}</div>
-            <div className="text-sm text-gray-500">
+            <div className="text-secondary-foreground text-sm">
               rgb({color.r}, {color.g}, {color.b})
             </div>
           </div>
@@ -751,7 +753,7 @@ export const ControlledVsUncontrolled: StoryObj = {
               className={`rounded px-3 py-1 text-sm ${
                 isControlled
                   ? "bg-blue-500 text-white"
-                  : "cursor-not-allowed bg-gray-200 text-gray-500"
+                  : "text-secondary-foreground cursor-not-allowed bg-gray-200"
               }`}
             >
               Random Value

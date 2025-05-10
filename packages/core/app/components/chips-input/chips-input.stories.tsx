@@ -84,9 +84,7 @@ export const Controlled: Story = {
             }}
             placeholder="Controlled tags input..."
           />
-          <div className="text-secondary-foreground text-xs">
-            Current Tags: {JSON.stringify(tags)}
-          </div>
+          <div className="text-secondary-foreground">Current Tags: {JSON.stringify(tags)}</div>
         </div>
       )
     }

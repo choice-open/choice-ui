@@ -130,7 +130,7 @@ export const SearchStory: Story = {
         {filteredOptions.length === 0 && (
           <MenuSearchEmpty onClear={() => setSearch("")}>
             <Search
-              className="text-secondary"
+              className="text-secondary-foreground"
               width={32}
               height={32}
             />

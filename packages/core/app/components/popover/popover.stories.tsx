@@ -8,6 +8,7 @@ import { Input } from "../input"
 import { Select } from "../select"
 import { Tabs } from "../tabs"
 import { Popover } from "./popover"
+import { Scroll } from "../scroll"
 
 const meta: Meta<typeof Popover> = {
   title: "Overlays/Popover",
@@ -333,6 +334,37 @@ export const Draggable: Story = {
 }
 
 /**
+ * RememberPosition: Demonstrates a popover that remembers its position when closed.
+ *
+ * Features:
+ * - Maintains its position when closed
+ * - Reappears in the same position when opened
+ *
+ * This pattern is useful for:
+ * - Popovers that need to remember their position when closed
+ * - Dashboard interfaces where popovers need to be in a specific location
+ */
+export const RememberPosition: Story = {
+  render: function RememberPositionStory() {
+    const [open, setOpen] = useState(false)
+    return (
+      <Popover
+        draggable
+        rememberPosition
+        open={open}
+        onOpenChange={setOpen}
+      >
+        <Popover.Trigger>
+          <Button>Remember Position</Button>
+        </Popover.Trigger>
+        <Popover.Header title="Remember Position" />
+        <Popover.Content className="w-64 p-3">{faker.lorem.paragraph(3)}</Popover.Content>
+      </Popover>
+    )
+  },
+}
+
+/**
  * OutsidePressIgnore: Demonstrates excluding elements from outside click dismissal.
  *
  * Features:
@@ -401,7 +433,6 @@ export const Header: Story = {
 
     return (
       <Popover
-        draggable
         open={open}
         onOpenChange={setOpen}
       >
@@ -467,6 +498,73 @@ export const Nested: Story = {
           </Dropdown>
         </Popover.Content>
       </Popover>
+    )
+  },
+}
+
+/**
+ * AlwaysOpen: Demonstrates a popover that is always open.
+ *
+ * Features:
+ * - Pre-opened state on initial render
+ * - Maintains all other popover behaviors
+ */
+export const AlwaysOpen: Story = {
+  render: function AlwaysOpenStory() {
+    return (
+      <Popover
+        open
+        draggable
+        rememberPosition
+      >
+        <Popover.Trigger>
+          <Button>Open</Button>
+        </Popover.Trigger>
+        <Popover.Header title="Always Open" />
+        <Popover.Content className="w-64 p-3">{faker.lorem.paragraph(3)}</Popover.Content>
+      </Popover>
+    )
+  },
+}
+
+/**
+ * AutoHeight: Demonstrates a popover with auto height.
+ *
+ * Features:
+ * - Automatically adjusts the height of the popover content
+ * - Maintains typical behavior for non-ignored areas
+ */
+export const AutoHeight: Story = {
+  render: function AutoHeightStory() {
+    const [open, setOpen] = useState(false)
+    const [autoSize, setAutoSize] = useState(true)
+    return (
+      <div className="flex gap-4">
+        <Popover
+          open={open}
+          onOpenChange={setOpen}
+          autoUpdate
+          draggable
+          autoSize={autoSize}
+        >
+          <Popover.Trigger>
+            <Button>Open</Button>
+          </Popover.Trigger>
+          <Popover.Header title="Auto Height" />
+          <Popover.Content className="flex w-64 flex-col overflow-hidden">
+            <Scroll className="flex flex-col">
+              <Scroll.Viewport className="p-3">{faker.lorem.sentences(50)}</Scroll.Viewport>
+            </Scroll>
+          </Popover.Content>
+        </Popover>
+
+        <Button
+          variant="secondary"
+          onClick={() => setAutoSize(!autoSize)}
+        >
+          {autoSize ? "Disable Auto Size" : "Enable Auto Size"}
+        </Button>
+      </div>
     )
   },
 }

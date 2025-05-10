@@ -2,7 +2,7 @@ import { tv } from "tailwind-variants"
 
 export const ScrollTv = tv({
   slots: {
-    root: "min-h-0 overflow-hidden",
+    root: "h-full min-h-0 overflow-hidden",
     scrollbar: [
       "z-scroll",
       "flex touch-none select-none",
@@ -56,14 +56,14 @@ export const ScrollTv = tv({
       orientation: "vertical",
       variant: "auto",
       class: {
-        scrollbar: "hover:border-l-default",
+        scrollbar: "hover:border-l-default-boundary",
       },
     },
     {
       orientation: "horizontal",
       variant: "auto",
       class: {
-        scrollbar: "hover:border-t-default",
+        scrollbar: "hover:border-t-default-boundary",
       },
     },
     {

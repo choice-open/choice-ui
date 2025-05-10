@@ -18,6 +18,8 @@ export interface DialogProps {
     width?: boolean
     height?: boolean
   }
+  defaultWidth?: number
+  defaultHeight?: number
   minWidth?: number
   maxWidth?: number
   minHeight?: number
@@ -27,6 +29,8 @@ export interface DialogProps {
   open?: boolean
   onOpenChange?: (open: boolean) => void
   afterOpenChange?: (isOpen: boolean) => void
+  rememberPosition?: boolean
+  rememberSize?: boolean
 }
 
 const DialogComponent = memo(function DialogComponent({
@@ -34,39 +38,51 @@ const DialogComponent = memo(function DialogComponent({
   children,
   draggable = false,
   resizable = { width: false, height: false },
-  minWidth = 200,
+  defaultWidth = 512,
+  defaultHeight = 384,
+  minWidth = 320,
   maxWidth,
-  minHeight = 100,
+  minHeight = 240,
   maxHeight,
   overlay = false,
   outsidePress = false,
   open: controlledOpen,
   onOpenChange,
   afterOpenChange,
+  rememberPosition = false,
+  rememberSize = false,
 }: DialogProps) {
   const dialogRef = useRef<HTMLDivElement | null>(null)
   const contentRef = useRef<HTMLDivElement>(null)
   const titleId = useId()
   const descriptionId = useId()
 
+  const isResizable = resizable.width || resizable.height
+
   const {
     state: dragState,
     handleDragStart,
-    reset: resetDrag,
+    resetDragState,
+    resetPosition,
   } = useDrag(dialogRef, {
     enabled: draggable,
+    rememberPosition,
   })
 
   const {
     state: resizeState,
     handleResizeStart,
-    reset: resetResize,
+    resetResizeState,
+    resetSize,
   } = useResize(dialogRef, {
-    enabled: resizable.width || resizable.height,
+    enabled: isResizable,
+    defaultWidth: isResizable ? defaultWidth : undefined,
+    defaultHeight: isResizable ? defaultHeight : undefined,
     minWidth,
     maxWidth,
     minHeight,
     maxHeight,
+    rememberSize,
   })
 
   const floating = useFloatingDialog({
@@ -74,10 +90,46 @@ const DialogComponent = memo(function DialogComponent({
     onOpenChange,
     outsidePress,
     draggable,
-    resetDragState: resetDrag,
-    resetResizeState: resetResize,
+    resetDragState,
+    resetPosition,
+    resetResizeState,
+    resetSize,
+    rememberPosition,
+    rememberSize,
     afterOpenChange,
   })
+
+  const getStyleWithDefaults = useMemo(() => {
+    let sizeObj: { width: number; height: number } | undefined = undefined
+
+    if (resizeState.size) {
+      sizeObj = {
+        width: resizeState.size.width,
+        height: resizeState.size.height,
+      }
+    } else if (isResizable) {
+      const width = resizable.width ? defaultWidth : 0
+      const height = resizable.height ? defaultHeight : 0
+
+      if (width > 0 || height > 0) {
+        sizeObj = {
+          width: width > 0 ? width : 0,
+          height: height > 0 ? height : 0,
+        }
+      }
+    }
+
+    return floating.getStyles(dragState.position || null, sizeObj)
+  }, [
+    floating.getStyles,
+    dragState.position,
+    resizeState.size,
+    isResizable,
+    resizable.width,
+    resizable.height,
+    defaultWidth,
+    defaultHeight,
+  ])
 
   const triggerContent = useMemo(() => {
     return findChildByType(children, DialogTrigger)
@@ -132,7 +184,7 @@ const DialogComponent = memo(function DialogComponent({
   )
 
   const style = dragDialogTv({
-    resizable: resizable.width || resizable.height,
+    resizable: isResizable,
     overlay,
   })
 
@@ -148,8 +200,6 @@ const DialogComponent = memo(function DialogComponent({
           >
             {backdropContent}
 
-            {backdropContent}
-
             <Modal
               ref={(node) => {
                 if (node) {
@@ -157,15 +207,7 @@ const DialogComponent = memo(function DialogComponent({
                   floating.refs.setFloating(node)
                 }
               }}
-              style={floating.getStyles(
-                dragState.position || null,
-                resizeState.size
-                  ? {
-                      width: resizeState.size.width,
-                      height: resizeState.size.height,
-                    }
-                  : undefined,
-              )}
+              style={getStyleWithDefaults}
               className={tcx(style.dialog(), className)}
               {...floating.getFloatingProps()}
               aria-labelledby={titleId}
@@ -174,6 +216,9 @@ const DialogComponent = memo(function DialogComponent({
               aria-modal="true"
               data-state={floating.isReady ? "open" : "opening"}
               data-draggable={draggable ? "true" : undefined}
+              data-dragging={dragState.isDragging ? "true" : undefined}
+              data-closing={floating.isClosing ? "true" : undefined}
+              data-resizable={isResizable ? "true" : undefined}
             >
               {headerContent}
               {contentContent}

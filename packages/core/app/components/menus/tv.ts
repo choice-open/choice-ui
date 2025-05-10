@@ -24,7 +24,7 @@ export const MenuTriggerTv = tv({
   slots: {
     root: [
       "justify-start text-left",
-      "hover:border-secondary-background hover:bg-secondary-background",
+      // "hover:border-secondary-background hover:bg-secondary-background",
     ],
     icon: "flex size-6 flex-none items-center justify-center",
   },

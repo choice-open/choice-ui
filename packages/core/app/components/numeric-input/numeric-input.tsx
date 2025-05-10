@@ -43,6 +43,10 @@ export interface NumericInputProps
       | "id"
     > {
   className?: string
+  classNames?: {
+    container?: string
+    input?: string
+  }
   tooltip?: TooltipProps
   triggerRef?: React.RefObject<HTMLLabelElement> | ((el: HTMLLabelElement | null) => void)
   children?: ReactNode
@@ -64,6 +68,7 @@ interface NumericInputComponent
 export const NumericInputBase = forwardRef<HTMLInputElement, NumericInputProps>((props, ref) => {
   const {
     className,
+    classNames,
     decimal,
     defaultValue,
     disabled,
@@ -218,7 +223,7 @@ export const NumericInputBase = forwardRef<HTMLInputElement, NumericInputProps>(
     <NumericInputContext.Provider value={contextValue}>
       <label
         ref={triggerRef}
-        className={tcx(styles.container(), className)}
+        className={tcx(styles.container(), classNames?.container, className)}
       >
         {prefixNode && cloneElement(prefixNode, { position: "prefix" })}
 
@@ -232,7 +237,7 @@ export const NumericInputBase = forwardRef<HTMLInputElement, NumericInputProps>(
           autoComplete="off"
           spellCheck={false}
           required={required}
-          className={tcx("[grid-area:input]", styles.input())}
+          className={tcx("[grid-area:input]", styles.input(), classNames?.input)}
           disabled={disabled}
           aria-label={ariaLabel}
           aria-describedby={ariaDescribedby}

@@ -74,10 +74,10 @@ const OutputDisplay = ({
 
   // 历史提交记录标签页
   const submittedHistory = (
-    <div className="rounded-md bg-slate-50 p-2">
+    <div className="rounded-md text-secondary-foreground p-2">
       <h3 className="mb-2 text-xs font-medium">已提交评论记录</h3>
       {submittedData.length === 0 ? (
-        <p className="text-xs text-gray-500 italic">无提交记录</p>
+        <p className="text-xs text-secondary-foreground italic">无提交记录</p>
       ) : (
         <div className="space-y-4">
           {submittedData.map((item, i) => (

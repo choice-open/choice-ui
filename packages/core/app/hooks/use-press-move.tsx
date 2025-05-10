@@ -12,8 +12,6 @@ export type PressMoveProps = PressProps & {
   disabled?: boolean
 }
 
-const cursorStyle = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='34' height='24' fill='none'%3E%3Cg filter='url(%23a)'%3E%3Cpath fill='%23fff' d='M5.41 12 9 8.41V11h16V8.42L28.58 12 25 15.59V13H9v2.59L5.41 12ZM4 12l6 6v-4h14v4l6-6-6-6v4H10V6l-6 6Z'/%3E%3Cpath fill='%23202125' d='M12.5 13h12.52v2.59L28.58 12l-3.56-3.58v2.6H9v-2.6L5.41 12 9 15.59V13h3.5Z'/%3E%3C/g%3E%3Cdefs%3E%3Cfilter id='a' width='29.6' height='15.6' x='2.2' y='5.2' color-interpolation-filters='sRGB' filterUnits='userSpaceOnUse'%3E%3CfeFlood flood-opacity='0' result='BackgroundImageFix'/%3E%3CfeColorMatrix in='SourceAlpha' result='hardAlpha' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0'/%3E%3CfeOffset dy='1'/%3E%3CfeGaussianBlur stdDeviation='.9'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.65 0'/%3E%3CfeBlend in2='BackgroundImageFix' result='effect1_dropShadow_504_477'/%3E%3CfeBlend in='SourceGraphic' in2='effect1_dropShadow_504_477' result='shape'/%3E%3C/filter%3E%3C/defs%3E%3C/svg%3E")`
-
 export interface PressMoveResult {
   isPressed: boolean
   pressMoveProps: {
@@ -68,15 +66,7 @@ export const usePressMove = ({
   const createOverlay = () => {
     if (!overlayRef.current) {
       const virtualCursor = document.createElement("div")
-      virtualCursor.style.position = "fixed"
-      virtualCursor.style.width = "34px"
-      virtualCursor.style.height = "24px"
-      virtualCursor.style.transform = "translate(-50%, -50%)"
-      virtualCursor.style.pointerEvents = "none"
-      virtualCursor.style.zIndex = "10000001"
-      virtualCursor.style.backgroundImage = cursorStyle
-      virtualCursor.style.backgroundSize = "contain"
-      virtualCursor.style.backgroundRepeat = "no-repeat"
+      virtualCursor.className = "press-move-cursor"
       document.body.appendChild(virtualCursor)
       cursorRef.current = virtualCursor
     }
@@ -123,8 +113,8 @@ export const usePressMove = ({
       virtualPositionRef.current.y = -halfCursorHeight
     }
 
-    cursorRef.current.style.left = `${virtualPositionRef.current.x}px`
-    cursorRef.current.style.top = `${virtualPositionRef.current.y}px`
+    // 使用transform来定位元素，保持元素原点在左上角
+    cursorRef.current.style.transform = `translate3d(${virtualPositionRef.current.x - halfCursorWidth}px, ${virtualPositionRef.current.y - halfCursorHeight}px, 0)`
   }
 
   const handlePointerMove = (e: PointerEvent) => {

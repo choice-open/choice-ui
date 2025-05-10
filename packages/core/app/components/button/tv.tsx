@@ -5,7 +5,7 @@ export const buttonTv = tv({
     button: [
       "flex items-center justify-center gap-1",
       "leading-md tracking-md text-md",
-      "rounded-md px-2",
+      "min-w-0 rounded-md px-2",
       "border border-solid border-transparent",
       "cursor-default select-none",
     ],

@@ -93,10 +93,30 @@ export const Draggable: Story = {
 }
 
 /**
- * Overlay: Demonstrates a dialog with a backdrop overlay.
- * Use the `overlay` prop to create a semi-transparent backdrop that covers the page.
- * This creates a modal experience and helps focus attention on the dialog content.
+ * RememberPosition: Demonstrates a dialog that remembers its position when closed.
+ * Enable this feature with the `rememberPosition` prop to keep the dialog in the same position when closed.
  */
+export const RememberPosition: Story = {
+  render: function RememberPositionStory() {
+    const [open, setOpen] = useState(false)
+    return (
+      <>
+        <Button onClick={() => setOpen(!open)}>Open Dialog</Button>
+        <Dialog
+          draggable
+          rememberPosition
+          open={open}
+          onOpenChange={setOpen}
+          outsidePress
+        >
+          <Dialog.Header title="Remember Position Dialog Title" />
+          <Dialog.Content className="w-96 p-3">{faker.lorem.paragraphs(3)}</Dialog.Content>
+        </Dialog>
+      </>
+    )
+  },
+}
+
 export const Overlay: Story = {
   render: function OverlayStory() {
     const [open, setOpen] = useState(false)
@@ -192,7 +212,41 @@ export const Resizable: Story = {
           onOpenChange={setOpen}
         >
           <Dialog.Header title="Resizable Dialog Title" />
-          <Dialog.Content className="overflow-hidden">
+          <Dialog.Content className="max-w-xl min-w-md overflow-hidden">
+            <Scroll
+              className="h-full"
+              scrollbarMode="large-b"
+            >
+              <Scroll.Viewport className="h-full p-4">{faker.lorem.paragraphs(3)}</Scroll.Viewport>
+            </Scroll>
+          </Dialog.Content>
+        </Dialog>
+      </>
+    )
+  },
+}
+
+/**
+ * RememberSize: Demonstrates a dialog that remembers its size when closed.
+ * Enable this feature with the `rememberSize` prop to keep the dialog in the same size when closed.
+ */
+export const RememberSize: Story = {
+  render: function RememberSizeStory() {
+    const [open, setOpen] = useState(false)
+
+    return (
+      <>
+        <Button onClick={() => setOpen(!open)}>Open Dialog</Button>
+        <Dialog
+          draggable
+          rememberSize
+          rememberPosition
+          resizable={{ width: true, height: true }}
+          open={open}
+          onOpenChange={setOpen}
+        >
+          <Dialog.Header title="Remember Size Dialog Title" />
+          <Dialog.Content className="max-w-96 overflow-hidden">
             <Scroll
               className="h-full"
               scrollbarMode="large-b"

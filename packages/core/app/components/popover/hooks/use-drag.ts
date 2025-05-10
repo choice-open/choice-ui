@@ -14,6 +14,7 @@ interface DragState {
 interface UseDragOptions {
   draggable: boolean
   floatingRef: { current: HTMLElement | null }
+  rememberPosition?: boolean
 }
 
 // Constants
@@ -53,12 +54,16 @@ function adjustPosition(
  * @param options 配置选项
  * @returns 拖拽状态和控制方法
  */
-export function useDrag({ draggable, floatingRef }: UseDragOptions) {
+export function useDrag({ draggable, floatingRef, rememberPosition = false }: UseDragOptions) {
+  // 使用useState管理活跃状态
   const [state, setState] = useState<DragState>({
     isDragging: false,
     position: null,
   })
 
+  // 使用useRef存储位置，避免不必要的重渲染
+  const positionRef = useRef<Position | null>(null)
+  const initialPositionRef = useRef<Position | null>(null)
   const dragOriginRef = useRef({ x: 0, y: 0 })
   const contentRef = useRef<HTMLDivElement>(null)
 
@@ -66,7 +71,6 @@ export function useDrag({ draggable, floatingRef }: UseDragOptions) {
   const handleDragStart = useEventCallback((e: React.MouseEvent) => {
     if (!draggable) return
     if (contentRef.current?.contains(e.target as Node)) return
-
     if (!floatingRef.current) return
 
     const rect = floatingRef.current.getBoundingClientRect()
@@ -75,19 +79,29 @@ export function useDrag({ draggable, floatingRef }: UseDragOptions) {
     e.preventDefault()
     e.stopPropagation()
 
+    // 记录初始位置(只在首次记录)
+    if (!initialPositionRef.current) {
+      initialPositionRef.current = {
+        x: rect.left,
+        y: rect.top,
+      }
+    }
+
     // 记录拖拽起始点
     dragOriginRef.current = {
       x: e.clientX - rect.left,
       y: e.clientY - rect.top,
     }
 
-    // 设置初始位置
+    // 设置初始位置 - 优先使用当前位置
+    const currentPosition = positionRef.current || {
+      x: rect.left,
+      y: rect.top,
+    }
+
     setState({
       isDragging: true,
-      position: {
-        x: rect.left,
-        y: rect.top,
-      },
+      position: currentPosition,
     })
   })
 
@@ -100,9 +114,13 @@ export function useDrag({ draggable, floatingRef }: UseDragOptions) {
       const x = e.clientX - dragOriginRef.current.x
       const y = e.clientY - dragOriginRef.current.y
 
+      const newPosition = { x, y }
+      // 更新ref中存储的位置
+      positionRef.current = newPosition
+
       setState((prev) => ({
         ...prev,
-        position: { x, y },
+        position: newPosition,
       }))
     },
     [draggable, state.isDragging, floatingRef],
@@ -116,6 +134,9 @@ export function useDrag({ draggable, floatingRef }: UseDragOptions) {
       const dialogRect = floatingRef.current.getBoundingClientRect()
       const adjustedPosition = adjustPosition(state.position, dialogRect)
 
+      // 更新ref中存储的位置
+      positionRef.current = adjustedPosition
+
       setState({
         isDragging: false,
         position: adjustedPosition,
@@ -123,7 +144,7 @@ export function useDrag({ draggable, floatingRef }: UseDragOptions) {
     } else {
       setState({
         isDragging: false,
-        position: null,
+        position: positionRef.current,
       })
     }
   }, [draggable, state.position, floatingRef])
@@ -132,9 +153,20 @@ export function useDrag({ draggable, floatingRef }: UseDragOptions) {
   const resetDragState = useCallback(() => {
     setState({
       isDragging: false,
-      position: null,
+      position: positionRef.current,
     })
   }, [])
+
+  // 重置位置到初始状态 - 只在不记住位置时调用
+  const resetPosition = useCallback(() => {
+    if (!rememberPosition) {
+      positionRef.current = initialPositionRef.current
+      setState((prev) => ({
+        ...prev,
+        position: initialPositionRef.current,
+      }))
+    }
+  }, [rememberPosition])
 
   // 添加和移除事件监听
   useEffect(() => {
@@ -148,10 +180,19 @@ export function useDrag({ draggable, floatingRef }: UseDragOptions) {
     }
   }, [draggable, state.isDragging, handleDrag, handleDragEnd])
 
+  // 当rememberPosition变化时
+  useEffect(() => {
+    if (!rememberPosition) {
+      // 如果关闭了记住位置，重置位置到初始状态
+      resetPosition()
+    }
+  }, [rememberPosition, resetPosition])
+
   return {
     state,
     contentRef,
     handleDragStart,
     resetDragState,
+    resetPosition,
   }
 }

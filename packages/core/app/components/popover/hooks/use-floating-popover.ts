@@ -30,6 +30,9 @@ interface UseFloatingPopoverParams {
   draggable: boolean
   nodeId: string
   resetDragState: () => void
+  resetPosition: () => void
+  rememberPosition?: boolean
+  autoSize?: boolean
 }
 
 export function useFloatingPopover({
@@ -45,10 +48,14 @@ export function useFloatingPopover({
   draggable,
   nodeId,
   resetDragState,
+  resetPosition,
+  rememberPosition = false,
+  autoSize = true,
 }: UseFloatingPopoverParams) {
   const [positionReady, setPositionReady] = useState(false)
-
+  const [isClosing, setIsClosing] = useState(false)
   const positionRef = useRef({ x: 0, y: 0 })
+  const rafIdRef = useRef<number | null>(null)
 
   const triggerRefs = useRef({
     last: null as HTMLElement | null,
@@ -66,27 +73,60 @@ export function useFloatingPopover({
     offset(offsetDistance),
     flip({ padding: 8 }),
     shift({ mainAxis: true, crossAxis: true }),
-    size({
-      apply({ availableWidth, availableHeight, elements }) {
-        const maxWidth = Math.min(availableWidth, 400)
-        Object.assign(elements.floating.style, {
-          maxWidth: `${maxWidth}px`,
-          maxHeight: `${availableHeight}px`,
+    autoSize
+      ? size({
+          apply({ availableWidth, availableHeight, elements }) {
+            const maxWidth = Math.min(availableWidth, 320)
+            Object.assign(elements.floating.style, {
+              maxWidth: `${maxWidth}px`,
+              maxHeight: `${availableHeight}px`,
+            })
+          },
+          padding: 16,
         })
-      },
-      padding: 8,
-    }),
+      : undefined,
   ]
+
+  // 清理RAF
+  useEffect(() => {
+    return () => {
+      if (rafIdRef.current !== null) {
+        cancelAnimationFrame(rafIdRef.current)
+      }
+    }
+  }, [])
 
   const { refs, floatingStyles, context, x, y } = useFloating({
     nodeId,
     open: innerOpen,
     onOpenChange: (open) => {
+      // 只处理关闭情况
       if (!open) {
+        // 设置正在关闭状态
+        setIsClosing(true)
+        // 先重置拖拽状态，保持位置不变
         resetDragState()
         setPositionReady(false)
+        // 关闭Popover
+        setInnerOpen(false)
+
+        // 如果不需要记住位置，在下一帧重置位置
+        if (!rememberPosition) {
+          // 清理可能存在的之前的RAF
+          if (rafIdRef.current !== null) {
+            cancelAnimationFrame(rafIdRef.current)
+          }
+
+          // 在下一帧重置位置，确保UI先更新
+          rafIdRef.current = requestAnimationFrame(() => {
+            resetPosition()
+            setIsClosing(false)
+            rafIdRef.current = null
+          })
+        }
+      } else {
+        setInnerOpen(open)
       }
-      setInnerOpen(open)
     },
     placement,
     middleware,
@@ -96,6 +136,7 @@ export function useFloatingPopover({
   // 打开时重置就绪状态
   useEffect(() => {
     if (innerOpen) {
+      setIsClosing(false)
       setPositionReady(false)
     }
   }, [innerOpen])
@@ -140,7 +181,7 @@ export function useFloatingPopover({
       }
       return true
     },
-    [outsidePressIgnore],
+    [outsidePressIgnore, draggable, isClosing],
   )
 
   const dismiss = useDismiss(context, {
@@ -161,22 +202,27 @@ export function useFloatingPopover({
 
   const getStyles = useCallback(
     (dragPosition: { x: number; y: number } | null, isDragging: boolean) => {
-      const transform = dragPosition
-        ? `translate(${dragPosition.x}px, ${dragPosition.y}px)`
-        : `translate(${x}px, ${y}px)`
+      // 如果存在拖拽位置且拖拽功能开启，优先使用拖拽位置
+      const transform =
+        dragPosition && draggable
+          ? `translate(${dragPosition.x}px, ${dragPosition.y}px)`
+          : `translate(${x}px, ${y}px)`
 
       return {
         ...floatingStyles,
         transform,
+        // 仅在拖拽功能开启且正在拖拽时禁用过渡动画
+        transition: draggable && isDragging ? "none" : floatingStyles.transition,
       } as React.CSSProperties
     },
-    [floatingStyles, x, y, positionReady],
+    [floatingStyles, x, y, draggable],
   )
 
   const handleClose = useCallback(() => {
-    setInnerOpen(false)
-    resetDragState()
-  }, [setInnerOpen, resetDragState])
+    if (innerOpen) {
+      context.onOpenChange(false)
+    }
+  }, [innerOpen, context])
 
   const handleTriggerRef = useCallback(
     (triggerRef: React.RefObject<HTMLElement>) => {
@@ -202,5 +248,6 @@ export function useFloatingPopover({
     getStyles,
     handleClose,
     handleTriggerRef,
+    isClosing,
   }
 }

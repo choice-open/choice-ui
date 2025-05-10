@@ -9,7 +9,10 @@
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,md}\"",
     "core:dev": "pnpm --filter=\"@choiceform/design-system\" run dev",
     "core:build": "pnpm --filter=\"@choiceform/design-system\" run build",
-    "storybook": "pnpm --filter=\"@choiceform/design-system\" run storybook",
+    "core:storybook": "pnpm --filter=\"@choiceform/design-system\" run storybook",
+    "colors:dev": "pnpm --filter=\"@choiceform/design-system-colors\" run dev",
+    "colors:build": "pnpm --filter=\"@choiceform/design-system-colors\" run build",
+    "colors:storybook": "pnpm --filter=\"@choiceform/design-system-colors\" run storybook",
     "test": "pnpm --filter=\"./packages/**\" run test",
     "clean": "pnpm --filter=\"./packages/**\" run clean",
     "preinstall": "npx only-allow pnpm"
@@ -23,7 +26,7 @@
   },
   "engines": {
     "node": ">=18.0.0",
-    "pnpm": ">=10.0.0"
+    "pnpm": ">=8.0.0"
   },
-  "packageManager": "pnpm@10.10.0"
+  "packageManager": "pnpm@8.10.0"
 }

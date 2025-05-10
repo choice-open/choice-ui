@@ -179,7 +179,7 @@ export const Basic = {
 
     // 已加载评论的调试视图
     const loadedCommentsDebug = (
-      <div className="bg-slate-50 p-2">
+      <div className="text-secondary-foreground p-2">
         <h3 className="mb-2 text-xs font-medium">已加载评论 ({loadedComments.length})</h3>
         {loadedComments.length === 0 ? (
           <p className="text-xs text-gray-500 italic">无评论</p>

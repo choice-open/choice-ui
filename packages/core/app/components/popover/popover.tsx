@@ -35,6 +35,8 @@ export interface PopoverProps {
   delay?: { open?: number; close?: number }
   initialFocus?: number | React.MutableRefObject<HTMLElement | null>
   outsidePressIgnore?: string
+  autoSize?: boolean
+  rememberPosition?: boolean
 }
 
 // Popover 组件实现
@@ -55,6 +57,8 @@ export const DragPopover = memo(function DragPopover({
   initialFocus,
   outsidePressIgnore,
   portalId = PORTAL_ROOT_ID,
+  autoSize = true,
+  rememberPosition = false,
 }: PopoverProps) {
   const titleId = useId()
   const descriptionId = useId()
@@ -67,9 +71,11 @@ export const DragPopover = memo(function DragPopover({
     contentRef: dragContentRef,
     handleDragStart,
     resetDragState,
+    resetPosition,
   } = useDrag({
     draggable,
     floatingRef: floatingRefMutable,
+    rememberPosition,
   })
 
   const floating = useFloatingPopover({
@@ -85,6 +91,9 @@ export const DragPopover = memo(function DragPopover({
     draggable,
     nodeId,
     resetDragState,
+    resetPosition,
+    rememberPosition,
+    autoSize,
   })
 
   useEffect(() => {
@@ -189,6 +198,7 @@ export const DragPopover = memo(function DragPopover({
                 data-state={floating.positionReady ? "open" : "opening"}
                 data-dragging={dragState.isDragging ? "true" : undefined}
                 data-draggable={draggable ? "true" : undefined}
+                data-closing={floating.isClosing ? "true" : undefined}
                 {...floating.getFloatingProps()}
                 role="dialog"
                 aria-modal="true"

@@ -19,6 +19,7 @@ interface UseDragOptions {
   enabled?: boolean
   onDragStart?: (e: React.MouseEvent) => void
   onDragEnd?: (position: Position) => void
+  rememberPosition?: boolean
 }
 
 function adjustPosition(
@@ -43,15 +44,18 @@ function adjustPosition(
 }
 
 export function useDrag(elementRef: React.RefObject<HTMLElement>, options: UseDragOptions = {}) {
-  const { enabled = true, onDragStart, onDragEnd } = options
+  const { enabled = true, onDragStart, onDragEnd, rememberPosition = false } = options
 
+  // 使用useState管理活跃状态
   const [state, setState] = useState<DragState>({
     isDragging: false,
     position: null,
   })
 
+  // 使用useRef存储位置，避免不必要的重渲染
+  const positionRef = useRef<Position | null>(null)
+  const initialPositionRef = useRef<Position | null>(null)
   const dragOriginRef = useRef({ x: 0, y: 0 })
-  const lastPositionRef = useRef<Position | null>(null)
   const isInitializedRef = useRef(false)
 
   // Initialize position when element is mounted
@@ -59,8 +63,16 @@ export function useDrag(elementRef: React.RefObject<HTMLElement>, options: UseDr
     if (!isInitializedRef.current && elementRef.current) {
       const rect = elementRef.current.getBoundingClientRect()
       const position = { x: rect.left, y: rect.top }
-      lastPositionRef.current = position
-      setState((prev) => ({ ...prev, position }))
+
+      // 记录初始位置用于重置
+      initialPositionRef.current = position
+
+      // 仅在首次初始化时设置当前位置
+      if (!positionRef.current) {
+        positionRef.current = position
+        setState((prev) => ({ ...prev, position }))
+      }
+
       isInitializedRef.current = true
     }
   }, [])
@@ -74,20 +86,29 @@ export function useDrag(elementRef: React.RefObject<HTMLElement>, options: UseDr
     e.preventDefault()
     e.stopPropagation()
 
-    setState((prev) => ({ ...prev, isDragging: true }))
-    onDragStart?.(e)
+    // 记录初始位置(只在首次记录)
+    if (!initialPositionRef.current) {
+      initialPositionRef.current = {
+        x: rect.left,
+        y: rect.top,
+      }
+    }
 
-    const currentX = lastPositionRef.current?.x ?? rect.left
-    const currentY = lastPositionRef.current?.y ?? rect.top
+    const currentX = positionRef.current?.x ?? rect.left
+    const currentY = positionRef.current?.y ?? rect.top
 
     dragOriginRef.current = {
       x: e.clientX - currentX,
       y: e.clientY - currentY,
     }
 
-    if (!lastPositionRef.current) {
+    setState((prev) => ({ ...prev, isDragging: true }))
+    onDragStart?.(e)
+
+    // 设置初始位置 - 优先使用当前位置
+    if (!positionRef.current) {
       const newPosition = { x: currentX, y: currentY }
-      lastPositionRef.current = newPosition
+      positionRef.current = newPosition
       setState((prev) => ({ ...prev, position: newPosition }))
     }
   })
@@ -98,8 +119,11 @@ export function useDrag(elementRef: React.RefObject<HTMLElement>, options: UseDr
 
       const x = e.clientX - dragOriginRef.current.x
       const y = e.clientY - dragOriginRef.current.y
+
       const newPosition = { x, y }
-      lastPositionRef.current = newPosition
+      // 更新ref中存储的位置
+      positionRef.current = newPosition
+
       setState((prev) => ({ ...prev, position: newPosition }))
     },
     [enabled, state.isDragging],
@@ -108,12 +132,12 @@ export function useDrag(elementRef: React.RefObject<HTMLElement>, options: UseDr
   const handleDragEnd = useCallback(() => {
     if (!enabled) return
 
-    if (elementRef.current && lastPositionRef.current) {
+    if (elementRef.current && positionRef.current) {
       const dialogRect = elementRef.current.getBoundingClientRect()
-      const adjustedPosition = adjustPosition(lastPositionRef.current, dialogRect)
+      const adjustedPosition = adjustPosition(positionRef.current, dialogRect)
 
       // 更新位置状态
-      lastPositionRef.current = adjustedPosition
+      positionRef.current = adjustedPosition
       setState((prev) => ({ ...prev, position: adjustedPosition, isDragging: false }))
       onDragEnd?.(adjustedPosition)
     } else {
@@ -121,14 +145,48 @@ export function useDrag(elementRef: React.RefObject<HTMLElement>, options: UseDr
     }
   }, [enabled, onDragEnd])
 
-  const reset = useCallback(() => {
+  // 重置拖拽状态
+  const resetDragState = useCallback(() => {
     setState({
       isDragging: false,
-      position: null,
+      position: positionRef.current,
     })
-    lastPositionRef.current = null
-    isInitializedRef.current = false
   }, [])
+
+  // 重置位置到初始状态 - 只在不记住位置时调用
+  const resetPosition = useCallback(() => {
+    if (!rememberPosition) {
+      positionRef.current = initialPositionRef.current
+      setState((prev) => ({
+        ...prev,
+        position: initialPositionRef.current,
+      }))
+    }
+  }, [rememberPosition])
+
+  // 完全重置，包括所有状态和引用
+  const reset = useCallback(() => {
+    if (!rememberPosition) {
+      positionRef.current = null
+      isInitializedRef.current = false
+      initialPositionRef.current = null
+      setState({
+        isDragging: false,
+        position: null,
+      })
+    } else {
+      // 如果需要记住位置，只重置拖拽状态
+      resetDragState()
+    }
+  }, [rememberPosition, resetDragState])
+
+  // 当rememberPosition变化时
+  useEffect(() => {
+    if (!rememberPosition) {
+      // 如果关闭了记住位置，重置位置到初始状态
+      resetPosition()
+    }
+  }, [rememberPosition, resetPosition])
 
   useEffect(() => {
     if (enabled && state.isDragging) {
@@ -144,6 +202,8 @@ export function useDrag(elementRef: React.RefObject<HTMLElement>, options: UseDr
   return {
     state,
     handleDragStart,
+    resetDragState,
+    resetPosition,
     reset,
   }
 }

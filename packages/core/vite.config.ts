@@ -109,6 +109,7 @@ export default defineConfig(({ mode: _mode }: ConfigEnv): UserConfig => {
           "clsx",
           "tailwind-merge",
           "tailwind-variants",
+          "is-hotkey",
         ],
         output: [
           {

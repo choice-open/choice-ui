@@ -318,7 +318,7 @@ export const AlignedLabels: Story = {
         <div className="flex flex-col gap-4">
           <div className="mb-4">
             <h3 className="text-lg font-medium">With Selection</h3>
-            <p className="text-sm text-gray-500">
+            <p className="text-secondary-foreground text-sm">
               Labels are aligned with menu items, with space for icons
             </p>
           </div>
@@ -367,7 +367,7 @@ export const AlignedLabels: Story = {
         <div className="flex flex-col gap-4">
           <div className="mb-4">
             <h3 className="text-lg font-medium">Without Selection</h3>
-            <p className="text-sm text-gray-500">Labels without additional spacing</p>
+            <p className="text-secondary-foreground text-sm">Labels without additional spacing</p>
           </div>
 
           <ContextMenu selection={false}>
@@ -415,7 +415,7 @@ export const ComparisonWithAndWithoutSelection: Story = {
         <div className="flex flex-col gap-4">
           <div className="mb-4">
             <h3 className="text-lg font-medium">With Selection</h3>
-            <p className="text-sm text-gray-500">
+            <p className="text-secondary-foreground text-sm">
               selection={"{true}"} - Shows checkmarks on selected items
             </p>
             <div className="mt-2">
@@ -447,7 +447,9 @@ export const ComparisonWithAndWithoutSelection: Story = {
         <div className="flex flex-col gap-4">
           <div className="mb-4">
             <h3 className="text-lg font-medium">Without Selection</h3>
-            <p className="text-sm text-gray-500">selection={"{false}"} - No checkmarks shown</p>
+            <p className="text-secondary-foreground text-sm">
+              selection={"{false}"} - No checkmarks shown
+            </p>
             <div className="mt-2">
               Selected: {options.find((o) => o.id === selectedOption2)?.label}
             </div>

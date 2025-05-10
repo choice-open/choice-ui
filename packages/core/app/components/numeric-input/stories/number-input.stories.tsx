@@ -531,10 +531,10 @@ export const ExpressionCalculation: Story = {
       <div className="grid w-96 gap-4">
         <div className="flex flex-col gap-2">
           <h3 className="text-lg font-medium">Mathematical Expression Test</h3>
-          <p className="text-xs text-gray-600">
+          <p className="text-secondary-foreground">
             Try entering different values and expressions to observe onChange event behavior:
           </p>
-          <ul className="list-disc pl-5 text-xs text-gray-600">
+          <ul className="text-secondary-foreground list-disc pl-5">
             <li>
               Current value is {value}, entering {value} won&apos;t trigger onChange
             </li>
@@ -564,7 +564,7 @@ export const ExpressionCalculation: Story = {
                 <b>Last input text:</b> {lastInputText}
               </p>
             )}
-            <p className="text-secondary-foreground mt-2 text-xs">
+            <p className="text-secondary-foreground mt-2">
               Tip: Try entering &ldquo;1+1&rdquo;, &ldquo;2*1&rdquo;, &ldquo;4/2&rdquo; or other
               expressions that result in the current value
             </p>
@@ -603,10 +603,10 @@ export const UnitExpressionCalculation: Story = {
       <div className="grid w-96 gap-4">
         <div className="flex flex-col gap-2">
           <h3 className="text-lg font-medium">Unit Expression Test</h3>
-          <p className="text-xs text-gray-600">
+          <p className="text-secondary-foreground">
             Try entering values and expressions with a pixel unit pattern:
           </p>
-          <ul className="list-disc pl-5 text-xs text-gray-600">
+          <ul className="text-secondary-foreground list-disc pl-5">
             <li>
               Current value is {value}px, entering {value} won&apos;t trigger onChange
             </li>
@@ -637,7 +637,7 @@ export const UnitExpressionCalculation: Story = {
                 <b>Last input text:</b> {lastInputText}
               </p>
             )}
-            <p className="text-secondary-foreground mt-2 text-xs">
+            <p className="text-secondary-foreground mt-2">
               Tip: Try entering &ldquo;12+12&rdquo;, &ldquo;24*1&rdquo;, or other expressions that
               result in the current numerical value
             </p>

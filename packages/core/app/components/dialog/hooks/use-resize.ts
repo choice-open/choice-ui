@@ -18,12 +18,15 @@ interface ResizeState {
 
 interface UseResizeOptions {
   enabled?: boolean
+  defaultWidth?: number
+  defaultHeight?: number
   minWidth?: number
   maxWidth?: number
   minHeight?: number
   maxHeight?: number
   onResizeStart?: (e: React.MouseEvent, direction: ResizeDirection) => void
   onResizeEnd?: (size: Size) => void
+  rememberSize?: boolean
 }
 
 const MAX_SIZE_RATIO = 0.9
@@ -55,12 +58,15 @@ export function useResize(
 ) {
   const {
     enabled = true,
+    defaultWidth,
+    defaultHeight,
     minWidth,
     maxWidth,
     minHeight,
     maxHeight,
     onResizeStart,
     onResizeEnd,
+    rememberSize = false,
   } = options
 
   const [state, setState] = useState<ResizeState>({
@@ -68,24 +74,37 @@ export function useResize(
     size: null,
   })
 
+  // 使用Ref存储尺寸，避免不必要的重渲染
+  const sizeRef = useRef<Size | null>(null)
+  // 记录初始尺寸，用于重置
+  const initialSizeRef = useRef<Size | null>(null)
   const resizeOriginRef = useRef({ x: 0, y: 0, width: 0, height: 0 })
-  const lastSizeRef = useRef<Size | null>(null)
   const isInitializedRef = useRef(false)
   const resizeOffsetRef = useRef({ x: 0, y: 0 })
 
-  // Initialize size when element is mounted
+  // 使用默认尺寸或者DOM尺寸初始化
   useEffect(() => {
     if (!isInitializedRef.current && elementRef.current) {
       const rect = elementRef.current.getBoundingClientRect()
+
+      // 如果提供了默认尺寸，优先使用默认尺寸
       const initialSize = {
-        width: rect.width,
-        height: rect.height,
+        width: defaultWidth || rect.width,
+        height: defaultHeight || rect.height,
       }
-      lastSizeRef.current = initialSize
-      setState((prev) => ({ ...prev, size: initialSize }))
+
+      // 记录初始尺寸用于重置
+      initialSizeRef.current = initialSize
+
+      // 仅在首次初始化或不记住尺寸时设置当前尺寸
+      if (!sizeRef.current || !rememberSize) {
+        sizeRef.current = initialSize
+        setState((prev) => ({ ...prev, size: initialSize }))
+      }
+
       isInitializedRef.current = true
     }
-  }, [])
+  }, [defaultWidth, defaultHeight, rememberSize])
 
   const handleResizeStart = useEventCallback((e: React.MouseEvent, direction: ResizeDirection) => {
     if (!enabled) return
@@ -95,6 +114,15 @@ export function useResize(
 
     e.preventDefault()
     e.stopPropagation()
+
+    // 记录初始尺寸(只在首次记录)
+    if (!initialSizeRef.current) {
+      // 使用默认尺寸或当前尺寸
+      initialSizeRef.current = {
+        width: defaultWidth || rect.width,
+        height: defaultHeight || rect.height,
+      }
+    }
 
     // 设置 body 的鼠标样式
     document.body.style.cursor = getCursorStyle(direction)
@@ -142,7 +170,8 @@ export function useResize(
       }
 
       const adjustedSize = adjustSize(newSize, minWidth, maxWidth, minHeight, maxHeight)
-      lastSizeRef.current = adjustedSize
+      // 更新Ref存储的尺寸
+      sizeRef.current = adjustedSize
       setState((prev) => ({ ...prev, size: adjustedSize }))
     },
     [enabled, state.isResizing, minWidth, maxWidth, minHeight, maxHeight],
@@ -154,24 +183,61 @@ export function useResize(
     // 恢复 body 的鼠标样式
     document.body.style.cursor = "default"
 
-    if (lastSizeRef.current) {
-      onResizeEnd?.(lastSizeRef.current)
+    if (sizeRef.current) {
+      onResizeEnd?.(sizeRef.current)
     }
 
     setState((prev) => ({ ...prev, isResizing: null }))
   }, [enabled, onResizeEnd])
 
+  // 重置尺寸状态
+  const resetResizeState = useCallback(() => {
+    // 恢复 body 的鼠标样式
+    document.body.style.cursor = "default"
+
+    setState((prev) => ({
+      ...prev,
+      isResizing: null,
+    }))
+  }, [])
+
+  // 重置尺寸到初始状态 - 只在不记住尺寸时调用
+  const resetSize = useCallback(() => {
+    if (!rememberSize && initialSizeRef.current) {
+      sizeRef.current = initialSizeRef.current
+      setState((prev) => ({
+        ...prev,
+        size: initialSizeRef.current,
+      }))
+    }
+  }, [rememberSize])
+
+  // 完全重置，包括所有状态和引用
   const reset = useCallback(() => {
     // 恢复 body 的鼠标样式
     document.body.style.cursor = "default"
 
-    setState({
-      isResizing: null,
-      size: null,
-    })
-    lastSizeRef.current = null
-    isInitializedRef.current = false
-  }, [])
+    if (!rememberSize) {
+      setState({
+        isResizing: null,
+        size: null,
+      })
+      sizeRef.current = null
+      initialSizeRef.current = null
+      isInitializedRef.current = false
+    } else {
+      // 如果需要记住尺寸，只重置调整状态
+      resetResizeState()
+    }
+  }, [rememberSize, resetResizeState])
+
+  // 当rememberSize变化时
+  useEffect(() => {
+    if (!rememberSize) {
+      // 如果关闭了记住尺寸，重置尺寸到初始状态
+      resetSize()
+    }
+  }, [rememberSize, resetSize])
 
   useEffect(() => {
     if (enabled && state.isResizing) {
@@ -194,6 +260,8 @@ export function useResize(
   return {
     state,
     handleResizeStart,
+    resetResizeState,
+    resetSize,
     reset,
   }
 }

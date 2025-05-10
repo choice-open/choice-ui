@@ -1,7 +1,6 @@
 import { forwardRef } from "react"
-import * as ScrollArea from "@radix-ui/react-scroll-area"
-import { ScrollAreaProps } from "@radix-ui/react-scroll-area"
-import { Viewport } from "./viewport"
+import * as ScrollArea from "./scroll-area"
+import { ScrollAreaProps, Viewport } from "./scroll-area"
 import { tcx } from "~/utils"
 import { ScrollTv } from "./tv"
 
@@ -15,10 +14,19 @@ export interface ScrollProps extends ScrollAreaProps {
   }
   variant?: "auto" | "light" | "dark"
   scrollbarMode?: "default" | "large-y" | "large-t" | "large-b" | "large-x" | "large-l" | "large-r"
+  orientation?: "vertical" | "horizontal" | "both"
 }
 
 const ScrollComponent = forwardRef<HTMLDivElement, ScrollProps>((props, ref) => {
-  const { className, classNames, children, variant, scrollbarMode, ...rest } = props
+  const {
+    className,
+    classNames,
+    children,
+    variant,
+    scrollbarMode,
+    orientation = "both",
+    ...rest
+  } = props
 
   const style = ScrollTv({
     variant,
@@ -33,18 +41,24 @@ const ScrollComponent = forwardRef<HTMLDivElement, ScrollProps>((props, ref) => 
     >
       {children}
 
-      <ScrollArea.Scrollbar
-        className={tcx(style.scrollbar({ orientation: "vertical" }), classNames?.scrollbar)}
-        orientation="vertical"
-      >
-        <ScrollArea.Thumb className={tcx(style.thumb(), classNames?.thumb)} />
-      </ScrollArea.Scrollbar>
-      <ScrollArea.Scrollbar
-        className={tcx(style.scrollbar({ orientation: "horizontal" }), classNames?.scrollbar)}
-        orientation="horizontal"
-      >
-        <ScrollArea.Thumb className={tcx(style.thumb(), classNames?.thumb)} />
-      </ScrollArea.Scrollbar>
+      {(orientation === "vertical" || orientation === "both") && (
+        <ScrollArea.Scrollbar
+          className={tcx(style.scrollbar({ orientation: "vertical" }), classNames?.scrollbar)}
+          orientation="vertical"
+        >
+          <ScrollArea.Thumb className={tcx(style.thumb(), classNames?.thumb)} />
+        </ScrollArea.Scrollbar>
+      )}
+
+      {(orientation === "horizontal" || orientation === "both") && (
+        <ScrollArea.Scrollbar
+          className={tcx(style.scrollbar({ orientation: "horizontal" }), classNames?.scrollbar)}
+          orientation="horizontal"
+        >
+          <ScrollArea.Thumb className={tcx(style.thumb(), classNames?.thumb)} />
+        </ScrollArea.Scrollbar>
+      )}
+
       <ScrollArea.Corner className={tcx(style.corner(), classNames?.corner)} />
     </ScrollArea.Root>
   )
