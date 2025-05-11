@@ -77,6 +77,35 @@ addons.setConfig({
         toolbar: false,
       },
     },
+    {
+      tags: "experimental",
+      badge: {
+        text: "Experimental 🔬",
+        bgColor: "transparent",
+        fgColor: "rgba(255, 149, 0, 1)",
+        borderColor: "transparent",
+        tooltip:
+          "Indicates that a component or feature is experimental and may be unstable or subject to change. Use with caution and expect breaking changes. ",
+      },
+      display: {
+        sidebar: ["component"],
+        toolbar: false,
+      },
+    },
+    {
+      tags: "code-only",
+      badge: {
+        text: "Code Only 💻",
+        bgColor: "transparent",
+        fgColor: "rgba(30, 174, 219, 1)",
+        borderColor: "transparent",
+        tooltip: "Indicates that a component or feature is code only.",
+      },
+      display: {
+        sidebar: ["component"],
+        toolbar: false,
+      },
+    },
     ...defaultConfig,
   ] satisfies TagBadgeParameters,
 })
