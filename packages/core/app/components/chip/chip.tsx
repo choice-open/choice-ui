@@ -1,6 +1,5 @@
 import { RemoveSmall } from "@choiceform/icons-react"
 import { ElementType, forwardRef, HTMLProps, memo, ReactNode } from "react"
-import { useI18nContext } from "~/i18n"
 import { tcx } from "~/utils"
 import { IconButton } from "../icon-button"
 import { chipTv } from "./tv"
@@ -22,6 +21,10 @@ export interface ChipProps extends Omit<HTMLProps<HTMLDivElement>, "size" | "as"
   onClick?: (e: React.MouseEvent<HTMLDivElement>) => void
   onRemove?: (e: React.MouseEvent<HTMLButtonElement>) => void
   as?: ElementType
+  defaultText?: {
+    chip: string
+    remove: string
+  }
 }
 
 export const Chip = memo(
@@ -39,9 +42,12 @@ export const Chip = memo(
       suffixElement,
       children,
       as,
+      defaultText = {
+        chip: "Chip",
+        remove: "Remove chip:",
+      },
       ...rest
     } = props
-    const { LL } = useI18nContext()
 
     const style = chipTv({
       size,
@@ -77,9 +83,9 @@ export const Chip = memo(
         {!disabled && onRemove && (
           <IconButton
             className={tcx(style.closeButton(), classNames?.closeButton)}
-            aria-label={LL.chip.remove({
-              chip: typeof children === "string" ? children : LL.chip.chip(),
-            })}
+            aria-label={
+              defaultText.remove + (typeof children === "string" ? children : defaultText.chip)
+            }
             disabled={disabled}
             size="reset"
             variant="reset"

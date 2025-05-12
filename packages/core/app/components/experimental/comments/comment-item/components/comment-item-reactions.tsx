@@ -2,7 +2,6 @@ import { DeleteReaction } from "@choiceform/icons-react"
 import React, { memo, useMemo } from "react"
 import { IconButton } from "~/components/icon-button"
 import { Tooltip } from "~/components/tooltip"
-import { useI18nContext } from "~/i18n"
 import type { Reaction, User } from "../../types"
 import { CommentItemReactionsTv } from "../tv"
 
@@ -18,16 +17,22 @@ interface CommentItemReactionsProps {
   handleOnReactionPopoverClick?: () => void
   reactionAnchorRef?: React.RefObject<HTMLButtonElement>
   handleOnReactionClick?: (reaction: GroupedReaction) => void
+  defaultText: {
+    ADD_REACTIONS: string
+  }
 }
 
-export const CommentItemReactions = React.memo(function CommentItemReactions({
-  reactions,
-  reactionsPopoverIsOpen,
-  handleOnReactionPopoverClick,
-  reactionAnchorRef,
-  handleOnReactionClick,
-}: CommentItemReactionsProps) {
-  const { LL } = useI18nContext()
+export const CommentItemReactions = React.memo(function CommentItemReactions(
+  props: CommentItemReactionsProps,
+) {
+  const {
+    reactions,
+    reactionsPopoverIsOpen,
+    handleOnReactionPopoverClick,
+    reactionAnchorRef,
+    handleOnReactionClick,
+    defaultText,
+  } = props
 
   const styles = CommentItemReactionsTv({ reactionsPopoverIsOpen })
   // Group identical emoji reactions
@@ -98,7 +103,7 @@ export const CommentItemReactions = React.memo(function CommentItemReactions({
         active={reactionsPopoverIsOpen}
         className={styles.reactionMenu({ position: "bottom" })}
         onClick={handleOnReactionPopoverClick}
-        tooltip={{ content: LL.comments.reactions() }}
+        tooltip={{ content: defaultText.ADD_REACTIONS }}
       >
         <DeleteReaction />
       </IconButton>
@@ -109,16 +114,16 @@ export const CommentItemReactions = React.memo(function CommentItemReactions({
 CommentItemReactions.displayName = "CommentItemReactions"
 
 // Reaction button that appears when there are no reactions yet
-export const EmptyReactionButton = memo(function EmptyReactionButton({
-  reactionsPopoverIsOpen,
-  handleOnReactionPopoverClick,
-  reactionAnchorRef,
-}: Pick<
-  CommentItemReactionsProps,
-  "reactionsPopoverIsOpen" | "handleOnReactionPopoverClick" | "reactionAnchorRef"
->) {
+export const EmptyReactionButton = memo(function EmptyReactionButton(
+  props: Pick<
+    CommentItemReactionsProps,
+    "reactionsPopoverIsOpen" | "handleOnReactionPopoverClick" | "reactionAnchorRef" | "defaultText"
+  >,
+) {
+  const { reactionsPopoverIsOpen, handleOnReactionPopoverClick, reactionAnchorRef, defaultText } =
+    props
+
   const styles = CommentItemReactionsTv({ reactionsPopoverIsOpen })
-  const { LL } = useI18nContext()
 
   return (
     <IconButton
@@ -126,7 +131,7 @@ export const EmptyReactionButton = memo(function EmptyReactionButton({
       active={reactionsPopoverIsOpen}
       className={styles.reactionMenu({ position: "top" })}
       onClick={handleOnReactionPopoverClick}
-      tooltip={{ content: LL.comments.reactions() }}
+      tooltip={{ content: defaultText.ADD_REACTIONS }}
     >
       <DeleteReaction />
     </IconButton>

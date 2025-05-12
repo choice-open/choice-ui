@@ -5,7 +5,6 @@ import { ReactEditor, RenderElementProps } from "slate-react"
 import { IconButton } from "../../../../icon-button"
 import type { Attachment, CustomElement, ImageElement } from "../../comment-input/types"
 import { CommentInputElementTv } from "./tv"
-import { useI18nContext } from "~/i18n/i18n-react"
 
 interface AttachmentsEditProps extends Omit<RenderElementProps, "element"> {
   attachments: Attachment[]
@@ -17,7 +16,6 @@ interface AttachmentsEditProps extends Omit<RenderElementProps, "element"> {
 
 export const AttachmentsEdit = memo(function AttachmentsEdit(props: AttachmentsEditProps) {
   const { imageElement, handleRemoveImage, editor, element, children } = props
-  const { LL } = useI18nContext()
 
   const styles = CommentInputElementTv()
 
@@ -77,7 +75,6 @@ export const AttachmentsEdit = memo(function AttachmentsEdit(props: AttachmentsE
                       const path = ReactEditor.findPath(editor, element)
                       handleRemoveImage(path, index)
                     }}
-                    aria-label={LL.comments.removeImage()}
                     variant="reset"
                     size="reset"
                     className={styles.attachmentRemoveButton()}

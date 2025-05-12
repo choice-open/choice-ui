@@ -1,23 +1,17 @@
 import { Hide, Show } from "@choiceform/icons-react"
-import { useGlobals } from "@storybook/manager-api"
 import type { Decorator } from "@storybook/react"
 import { Preview } from "@storybook/react"
 import { themes } from "@storybook/theming"
-import { AnimatePresence, motion } from "framer-motion"
+import { motion } from "framer-motion"
 import React, { useCallback, useEffect, useRef, useState } from "react"
 import Markdown from "react-markdown"
 import { Prism } from "react-syntax-highlighter"
 import { oneLight } from "react-syntax-highlighter/dist/esm/styles/prism"
 import { Splitter, ToggleButton, TooltipProvider } from "../app/components"
-import { Locales } from "../app/i18n"
-import TypesafeI18n, { useI18nContext } from "../app/i18n/i18n-react"
-import { loadAllLocalesAsync } from "../app/i18n/i18n-util.async"
 import "../app/tailwind.css"
 import "./global.css"
 
 const SyntaxHighlighter = Prism as unknown as React.ComponentType<any>
-
-await loadAllLocalesAsync()
 
 const LOCALES = [
   { value: "us", label: "🇺🇸 English" },
@@ -400,45 +394,8 @@ const withCustomDecorator: Decorator = (StoryFn, context) => {
   )
 }
 
-const I18nInitializer = ({ locale }: { locale: string | Locales }) => {
-  const { setLocale } = useI18nContext()
-
-  useEffect(() => {
-    setLocale((locale as Locales) ?? "us")
-  }, [locale])
-
-  return <div></div>
-}
-
-const withI18n: Decorator = (Story, context) => {
-  // 添加错误处理和后备机制
-  let locale: Locales = "us" // 默认语言
-
-  try {
-    // 尝试使用 context.globals 作为首选方式获取语言
-    if (context.globals?.locale) {
-      locale = context.globals.locale as Locales
-    } else {
-      // 后备: 尝试使用 useGlobals
-      const [globals] = useGlobals()
-      if (globals?.locale) {
-        locale = globals.locale as Locales
-      }
-    }
-  } catch (error) {
-    console.warn("Failed to get locale from globals, using default:", error)
-  }
-
-  return (
-    <TypesafeI18n locale={locale}>
-      <I18nInitializer locale={locale} />
-      <Story {...context} />
-    </TypesafeI18n>
-  )
-}
-
 const preview: Preview = {
-  decorators: [withCustomDecorator, withI18n, (Story) => <Story />],
+  decorators: [withCustomDecorator, (Story) => <Story />],
   parameters: {
     layout: "fullscreen",
     controls: {
@@ -458,18 +415,6 @@ const preview: Preview = {
       light: {
         ...themes.light,
         ...lightTheme,
-      },
-    },
-  },
-  globalTypes: {
-    locale: {
-      name: "Language",
-      description: "Select language",
-      defaultValue: "us",
-      toolbar: {
-        icon: "globe",
-        items: LOCALES.map(({ value, label }) => ({ value, title: label })),
-        dynamicTitle: true,
       },
     },
   },

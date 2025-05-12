@@ -1,8 +1,7 @@
 import { forwardRef, useCallback, useEffect, useRef, useState } from "react"
 import { Descendant, Editor, Transforms } from "slate"
 import { Editable, ReactEditor, RenderElementProps, Slate } from "slate-react"
-import { useI18nContext } from "~/i18n/i18n-react"
-import type { User } from "../types"
+import type { InputDefaultText, User } from "../types"
 import {
   CommentInputEmojiPopover,
   CommentInputFooter,
@@ -27,15 +26,14 @@ export interface CommentInputProps {
   onSubmit?: (value: Descendant[]) => void
   onCancel?: () => void
   onTypingChange?: (isTyping: boolean) => void
+  defaultText?: InputDefaultText
 }
 
 export const CommentInput = forwardRef<HTMLDivElement, CommentInputProps>((props, ref) => {
-  const { LL } = useI18nContext()
-
   const {
     className,
     initialValue,
-    placeholder = LL.comments.addComment(),
+    placeholder = "Add a comment",
     variant = "default",
     users = [],
     maxUploadFiles = 5,
@@ -43,6 +41,15 @@ export const CommentInput = forwardRef<HTMLDivElement, CommentInputProps>((props
     onSubmit,
     onCancel,
     onTypingChange,
+    defaultText = {
+      SAVE: "Save",
+      CANCEL: "Cancel",
+      SUBMIT: "Submit",
+      ADD_MENTION: "Add mention",
+      ADD_EMOJI: "Add emoji",
+      UPLOAD_ATTACHMENT: "Upload up to 5 images",
+      REMOVE_IMAGE: "Remove image",
+    },
   } = props
 
   // Edit mode state
@@ -277,6 +284,7 @@ export const CommentInput = forwardRef<HTMLDivElement, CommentInputProps>((props
           imageCount={imageCount}
           maxImageCount={maxImageCount}
           hasOnlyImages={hasOnlyImages}
+          defaultText={defaultText}
         />
 
         {shouldShowPlaceholder ? (

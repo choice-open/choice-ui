@@ -2,7 +2,6 @@ import { observer } from "@legendapp/state/react"
 import { createRef, forwardRef, HTMLProps, useMemo, useRef, useState } from "react"
 import { Descendant } from "slate"
 import { useEventCallback } from "usehooks-ts"
-import { useI18nContext } from "~/i18n/i18n-react"
 import { tcx } from "~/utils"
 import { Avatar } from "../../avatar"
 import { Button } from "../../button"
@@ -14,7 +13,7 @@ import { ImagePreviewPopover } from "./components"
 import { useScrollToBottom } from "./hooks"
 import { useCommentsState } from "./state/comments-state"
 import { CommentsTv } from "./tv"
-import type { SubmittedCommentData, User } from "./types"
+import type { DefaultText, SubmittedCommentData, User } from "./types"
 
 interface CommentsProps extends HTMLProps<HTMLDivElement> {
   className?: string
@@ -32,6 +31,7 @@ interface CommentsProps extends HTMLProps<HTMLDivElement> {
   initialComments?: SubmittedCommentData[]
   // 评论总数（可选，如果不提供则使用initialComments.length）
   totalCount?: number
+  defaultText?: DefaultText
 }
 
 export const Comments = observer(
@@ -43,10 +43,12 @@ export const Comments = observer(
       fetchMoreComments,
       initialComments = [],
       totalCount,
+      defaultText = {
+        LOAD_MORE: "Load more comments",
+        LOADING: "Loading...",
+      },
       ...rest
     } = props
-
-    const { LL } = useI18nContext()
 
     // 滚动引用
     const scrollToBottomRef = useRef<HTMLDivElement>(null)
@@ -152,7 +154,7 @@ export const Comments = observer(
                   size="default"
                   disabled={pagination.isLoading}
                 >
-                  {pagination.isLoading ? LL.common.loading() : LL.comments.loadMoreComments()}
+                  {pagination.isLoading ? defaultText.LOADING : defaultText.LOAD_MORE}
                 </Button>
               </div>
             )}

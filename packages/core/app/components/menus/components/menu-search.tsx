@@ -1,12 +1,16 @@
 import { forwardRef, memo, useCallback } from "react"
-import { useI18nContext } from "~/i18n"
 import { tcx } from "~/utils"
 import { Button } from "../../button"
 import { SearchInput, type SearchInputProps } from "../../search-input"
 import { MenuSearchEmptyTv } from "../tv"
 
 export const MenuSearch = forwardRef<HTMLInputElement, SearchInputProps>((props, ref) => {
-  const { className, onKeyDown, ...rest } = props
+  const {
+    className,
+    onKeyDown,
+
+    ...rest
+  } = props
 
   // 阻止键盘事件冒泡，防止被 useTypeahead 截获
   const handleKeyDown = useCallback(
@@ -34,11 +38,24 @@ MenuSearch.displayName = "MenuSearch"
 interface MenuSearchEmptyProps extends React.HTMLAttributes<HTMLDivElement> {
   onClear?: () => void
   children?: React.ReactNode
+  defaultText?: {
+    searchEmpty: string
+    searchEmptyButton: string
+  }
 }
 
 export const MenuSearchEmpty = memo(function MenuSearchEmpty(props: MenuSearchEmptyProps) {
-  const { onClear, className, children, ...rest } = props
-  const { LL } = useI18nContext()
+  const {
+    onClear,
+    className,
+    children,
+    defaultText = {
+      searchEmpty: "No results found, please try another keyword",
+      searchEmptyButton: "Clear",
+    },
+    ...rest
+  } = props
+
   const styles = MenuSearchEmptyTv()
 
   return (
@@ -47,12 +64,12 @@ export const MenuSearchEmpty = memo(function MenuSearchEmpty(props: MenuSearchEm
       className={tcx(styles.root(), className)}
     >
       {children}
-      <span className={styles.text()}>{LL.menus.searchEmpty()}</span>
+      <span className={styles.text()}>{defaultText.searchEmpty}</span>
       <Button
         variant="link"
         onClick={onClear}
       >
-        {LL.menus.searchEmptyButton()}
+        {defaultText.searchEmptyButton}
       </Button>
     </div>
   )

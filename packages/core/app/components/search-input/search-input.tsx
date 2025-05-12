@@ -1,17 +1,29 @@
 import { RemoveSmall, Search } from "@choiceform/icons-react"
 import { forwardRef } from "react"
 import { useEventCallback } from "usehooks-ts"
-import { useI18nContext } from "~/i18n/i18n-react"
 import { IconButton } from "../icon-button"
 import { TextField, type TextFieldProps } from "../text-field"
 import { searchInputTv } from "./tv"
 
-export interface SearchInputProps extends TextFieldProps {}
+export interface SearchInputProps extends TextFieldProps {
+  defaultText?: {
+    placeholder: string
+    clear: string
+  }
+}
 
 export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>((props, ref) => {
-  const { placeholder, value, onChange, variant = "default", disabled, ...rest } = props
-
-  const { LL } = useI18nContext()
+  const {
+    placeholder = "Search...",
+    value,
+    onChange,
+    variant = "default",
+    disabled,
+    defaultText = {
+      clear: "Clear",
+    },
+    ...rest
+  } = props
 
   const handleClear = useEventCallback(() => {
     onChange?.("")
@@ -22,7 +34,7 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>((props
   return (
     <TextField
       ref={ref}
-      placeholder={placeholder || LL.common.search()}
+      placeholder={placeholder}
       value={value}
       onChange={onChange}
       variant={variant}
@@ -37,7 +49,7 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>((props
           <IconButton
             className={style.action()}
             variant="ghost"
-            tooltip={{ content: "Clear" }}
+            tooltip={{ content: defaultText.clear }}
             onClick={handleClear}
           >
             <RemoveSmall />

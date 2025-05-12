@@ -1,7 +1,7 @@
 import { BaseEditor, BaseElement, BaseText, Descendant, Path } from "slate"
-import { ReactEditor, RenderElementProps } from "slate-react"
 import { HistoryEditor } from "slate-history"
-import { Reaction, User } from "../types"
+import { ReactEditor, RenderElementProps } from "slate-react"
+import { User } from "../types"
 
 export type CustomEditor = BaseEditor & ReactEditor & HistoryEditor
 

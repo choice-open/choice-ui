@@ -1,3 +1,4 @@
+import { extend } from "dayjs"
 import { Descendant } from "slate"
 
 export interface User {
@@ -29,4 +30,26 @@ export interface SubmittedCommentData {
   reactions: Reaction[] | null
   order_id: string | null
   page_id: string | null
+}
+
+export interface InputDefaultText {
+  SAVE: string
+  CANCEL: string
+  SUBMIT: string
+  ADD_MENTION: string
+  ADD_EMOJI: string
+  UPLOAD_ATTACHMENT: string
+  REMOVE_IMAGE: string
+}
+
+export interface ItemDefaultText {
+  ACTIONS: string
+  EDIT: string
+  DELETE: string
+  ADD_REACTIONS: string
+}
+
+export interface DefaultText extends InputDefaultText, ItemDefaultText {
+  LOAD_MORE: string
+  LOADING: string
 }

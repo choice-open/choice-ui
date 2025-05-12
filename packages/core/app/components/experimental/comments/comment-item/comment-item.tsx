@@ -4,12 +4,11 @@ import { createEditor, Descendant } from "slate"
 import { withHistory } from "slate-history"
 import { Editable, RenderElementProps, Slate, withReact } from "slate-react"
 import { Avatar } from "~/components/avatar"
-import { useI18nContext } from "~/i18n"
 import { Dropdown } from "../../../dropdown"
 import { IconButton } from "../../../icon-button"
 import { Tooltip } from "../../../tooltip"
 import { renderLeaf } from "../comment-input/components"
-import type { Reaction, User } from "../types"
+import type { ItemDefaultText, Reaction, User } from "../types"
 import { CommentItemReactions, EmptyReactionButton, renderElementWrapper } from "./components"
 import { DateLocale, useFormattedDate } from "./hooks"
 import { CommentItemTv } from "./tv"
@@ -28,6 +27,7 @@ export interface CommentItemProps {
   handleOnReactionClick?: (reaction: GroupedReaction) => void
   reactionAnchorRef?: React.RefObject<HTMLButtonElement>
   reactions: Reaction[] | null
+  defaultText?: ItemDefaultText
 }
 
 // Helper type for grouped reactions
@@ -53,8 +53,13 @@ export const CommentItem = memo(
       handleOnReactionClick,
       reactionAnchorRef,
       reactions = [],
+      defaultText = {
+        ACTIONS: "Comment actions",
+        EDIT: "Edit...",
+        DELETE: "Delete comment",
+        ADD_REACTIONS: "Add reaction",
+      },
     } = props
-    const { LL } = useI18nContext()
 
     const editor = React.useMemo(() => withHistory(withReact(createEditor())), [])
     const styles = CommentItemTv({})
@@ -93,13 +98,13 @@ export const CommentItem = memo(
             asChild
             className={styles.actionMenu()}
           >
-            <IconButton tooltip={{ content: LL.comments.actions() }}>
+            <IconButton tooltip={{ content: defaultText.ACTIONS }}>
               <EllipsisSmall />
             </IconButton>
           </Dropdown.Trigger>
 
-          <Dropdown.Item onMouseUp={handleOnEdit}>{LL.comments.edit()}</Dropdown.Item>
-          <Dropdown.Item onMouseUp={handleOnDelete}>{LL.comments.delete()}</Dropdown.Item>
+          <Dropdown.Item onMouseUp={handleOnEdit}>{defaultText.DELETE}</Dropdown.Item>
+          <Dropdown.Item onMouseUp={handleOnDelete}>{defaultText.DELETE}</Dropdown.Item>
         </Dropdown>
 
         {reactions === null ? (
@@ -107,6 +112,7 @@ export const CommentItem = memo(
             reactionsPopoverIsOpen={reactionsPopoverIsOpen}
             reactionAnchorRef={reactionAnchorRef}
             handleOnReactionPopoverClick={handleOnReactionPopoverClick}
+            defaultText={{ ADD_REACTIONS: defaultText.ADD_REACTIONS }}
           />
         ) : null}
 
@@ -130,6 +136,7 @@ export const CommentItem = memo(
             reactionsPopoverIsOpen={reactionsPopoverIsOpen}
             handleOnReactionPopoverClick={handleOnReactionPopoverClick}
             handleOnReactionClick={handleOnReactionClick}
+            defaultText={{ ADD_REACTIONS: defaultText.ADD_REACTIONS }}
           />
         )}
       </div>

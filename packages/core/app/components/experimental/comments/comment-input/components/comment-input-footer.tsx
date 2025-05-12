@@ -1,8 +1,8 @@
 import { ArrowUp, AtSign, Image, Smile } from "@choiceform/icons-react"
 import { ChangeEvent, useRef } from "react"
-import { useI18nContext } from "~/i18n/i18n-react"
 import { Button } from "../../../../button"
 import { IconButton } from "../../../../icon-button"
+import { InputDefaultText } from "../../types"
 import { CommentInputTv } from "../tv"
 
 interface CommentInputFooterProps {
@@ -21,26 +21,28 @@ interface CommentInputFooterProps {
   imageCount?: number
   maxImageCount?: number
   hasOnlyImages?: boolean
+  defaultText: InputDefaultText
 }
 
-export const CommentInputFooter = ({
-  className,
-  onEmojiClick,
-  onMentionClick,
-  onImageUpload,
-  onSubmit,
-  onCancel,
-  disabled = false,
-  typing = false,
-  allowSubmission = false,
-  isEditMode = false,
-  emojiButtonRef,
-  disableImageUpload = false,
-  imageCount = 0,
-  maxImageCount = 5,
-  hasOnlyImages = false,
-}: CommentInputFooterProps) => {
-  const { LL } = useI18nContext()
+export const CommentInputFooter = (props: CommentInputFooterProps) => {
+  const {
+    className,
+    onEmojiClick,
+    onMentionClick,
+    onImageUpload,
+    onSubmit,
+    onCancel,
+    disabled = false,
+    typing = false,
+    allowSubmission = false,
+    isEditMode = false,
+    emojiButtonRef,
+    disableImageUpload = false,
+    imageCount = 0,
+    maxImageCount = 5,
+    hasOnlyImages = false,
+    defaultText,
+  } = props
 
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -54,9 +56,9 @@ export const CommentInputFooter = ({
   // 构建图片上传按钮的tooltip文本
   const getImageTooltipText = () => {
     if (disableImageUpload) {
-      return `${LL.comments.attachment()} (${imageCount}/${maxImageCount})`
+      return `${defaultText.UPLOAD_ATTACHMENT} (${imageCount}/${maxImageCount})`
     }
-    return `${LL.comments.attachment()} (${imageCount}/${maxImageCount})`
+    return `${defaultText.UPLOAD_ATTACHMENT} (${imageCount}/${maxImageCount})`
   }
 
   // 计算提交按钮是否应该禁用
@@ -71,7 +73,7 @@ export const CommentInputFooter = ({
             ref={emojiButtonRef}
             onClick={onEmojiClick}
             tooltip={{
-              content: LL.comments.emoji(),
+              content: defaultText.ADD_EMOJI,
             }}
           >
             <Smile />
@@ -81,7 +83,7 @@ export const CommentInputFooter = ({
           <IconButton
             onClick={onMentionClick}
             tooltip={{
-              content: LL.comments.mention(),
+              content: defaultText.ADD_MENTION,
             }}
           >
             <AtSign />
@@ -116,14 +118,14 @@ export const CommentInputFooter = ({
             variant="secondary"
             onClick={onCancel}
           >
-            {LL.common.cancel()}
+            {defaultText.CANCEL}
           </Button>
           <Button
             variant="primary"
             onClick={onSubmit}
             disabled={isSubmitDisabled}
           >
-            {LL.common.save()}
+            {defaultText.SAVE}
           </Button>
         </div>
       ) : (
@@ -133,7 +135,7 @@ export const CommentInputFooter = ({
           disabled={isSubmitDisabled}
           className="w-6 rounded-full border-none px-0"
           tooltip={{
-            content: LL.comments.submit(),
+            content: defaultText.SUBMIT,
           }}
         >
           <ArrowUp />

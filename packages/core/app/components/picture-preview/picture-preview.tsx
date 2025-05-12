@@ -5,7 +5,6 @@ import { Dropdown } from "../dropdown"
 import { IconButton } from "../icon-button"
 import { HOTKEYS, Position, useDraggable, useHotkeys, useWheelHandler } from "./hooks"
 import { PicturePreviewTv } from "./tv"
-import { useI18nContext } from "~/i18n/i18n-react"
 
 const MIN_ZOOM = 0.01
 const MAX_ZOOM = 10
@@ -16,11 +15,35 @@ interface PicturePreviewProps extends HTMLProps<HTMLDivElement> {
   src: string
   fileName?: string
   onClose?: () => void
+  defaultText?: {
+    zoomIn: string
+    zoomOut: string
+    zoomTo50: string
+    zoomTo100: string
+    zoomTo200: string
+    fitToScreen: string
+    error: string
+  }
 }
 
 export const PicturePreview = forwardRef<HTMLDivElement, PicturePreviewProps>((props, ref) => {
-  const { src, fileName, className, onClose, ...rest } = props
-  const { LL } = useI18nContext()
+  const {
+    src,
+    fileName,
+    className,
+    onClose,
+    defaultText = {
+      zoomIn: "Zoom in",
+      zoomOut: "Zoom out",
+      zoomReset: "Reset zoom",
+      fitToScreen: "Fit to screen",
+      zoomTo50: "Zoom to 50%",
+      zoomTo100: "Zoom to 100%",
+      zoomTo200: "Zoom to 200%",
+      error: "Image loading failed, please try again.",
+    },
+    ...rest
+  } = props
 
   const [zoom, setZoom] = useState(INITIAL_ZOOM)
   const [isLoading, setIsLoading] = useState(true)
@@ -187,7 +210,7 @@ export const PicturePreview = forwardRef<HTMLDivElement, PicturePreviewProps>((p
             width={32}
             height={32}
           />
-          <span>{LL.picturePreview.error()}</span>
+          <span>{defaultText.error}</span>
         </div>
       )}
 
@@ -218,7 +241,7 @@ export const PicturePreview = forwardRef<HTMLDivElement, PicturePreviewProps>((p
             className="rounded-none"
             size="large"
             tooltip={{
-              content: LL.picturePreview.zoomOut(),
+              content: defaultText.zoomOut,
               shortcut: {
                 keys: "-",
                 modifier: "command",
@@ -245,7 +268,7 @@ export const PicturePreview = forwardRef<HTMLDivElement, PicturePreviewProps>((p
                   modifier: "command",
                 }}
               >
-                <span className="flex-1">{LL.picturePreview.zoomIn()}</span>
+                <span className="flex-1">{defaultText.zoomIn}</span>
               </Dropdown.Item>
               <Dropdown.Item
                 onMouseUp={() => handleZoomMenuItemClick(zoomRef.current - ZOOM_STEP)}
@@ -254,25 +277,25 @@ export const PicturePreview = forwardRef<HTMLDivElement, PicturePreviewProps>((p
                   modifier: "command",
                 }}
               >
-                <span className="flex-1">{LL.picturePreview.zoomOut()}</span>
+                <span className="flex-1">{defaultText.zoomOut}</span>
               </Dropdown.Item>
               <Dropdown.Item
                 selected={zoomRef.current === 0.5}
                 onMouseUp={() => handleZoomMenuItemClick(0.5)}
               >
-                <span className="flex-1">{LL.picturePreview.zoomTo50()}</span>
+                <span className="flex-1">{defaultText.zoomTo50}</span>
               </Dropdown.Item>
               <Dropdown.Item
                 selected={zoomRef.current === 1}
                 onMouseUp={() => handleZoomMenuItemClick(1)}
               >
-                <span className="flex-1">{LL.picturePreview.zoomTo100()}</span>
+                <span className="flex-1">{defaultText.zoomTo100}</span>
               </Dropdown.Item>
               <Dropdown.Item
                 selected={zoomRef.current === 2}
                 onMouseUp={() => handleZoomMenuItemClick(2)}
               >
-                <span className="flex-1">{LL.picturePreview.zoomTo200()}</span>
+                <span className="flex-1">{defaultText.zoomTo200}</span>
               </Dropdown.Item>
               <Dropdown.Divider />
               <Dropdown.Item
@@ -284,7 +307,7 @@ export const PicturePreview = forwardRef<HTMLDivElement, PicturePreviewProps>((p
                   modifier: "command",
                 }}
               >
-                <span className="flex-1">{LL.picturePreview.fitToScreen()}</span>
+                <span className="flex-1">{defaultText.fitToScreen}</span>
               </Dropdown.Item>
             </Dropdown.Content>
           </Dropdown>
@@ -294,7 +317,7 @@ export const PicturePreview = forwardRef<HTMLDivElement, PicturePreviewProps>((p
             className="rounded-none"
             size="large"
             tooltip={{
-              content: LL.picturePreview.zoomIn(),
+              content: defaultText.zoomIn,
               shortcut: {
                 keys: "+",
                 modifier: "command",
