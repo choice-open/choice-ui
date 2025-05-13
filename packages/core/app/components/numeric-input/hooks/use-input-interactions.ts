@@ -121,17 +121,15 @@ export function useInputInteractions<T extends NumericInputValue>({
 
   const handleKeyDown = useEventCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
     if (disabled) return
+    e.stopPropagation()
 
     if (e.key === "Enter") {
-      e.stopPropagation()
       inputRef.current?.blur()
     }
     if (e.key === "ArrowUp") {
-      e.stopPropagation()
       updateValue((value) => value + getCurrentStep())
     }
     if (e.key === "ArrowDown") {
-      e.stopPropagation()
       updateValue((value) => value - getCurrentStep())
     }
   })

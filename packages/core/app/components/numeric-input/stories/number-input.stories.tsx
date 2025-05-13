@@ -432,7 +432,7 @@ export const Dark: Story = {
   render: function DarkStory() {
     const [value, setValue] = useState(10)
     return (
-      <div className="flex aspect-square flex-col items-center items-start justify-center gap-4 bg-gray-800 p-8">
+      <div className="flex aspect-square flex-col items-start justify-center gap-4 bg-gray-800 p-8">
         <NumericInput
           variant="dark"
           value={value}

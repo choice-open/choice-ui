@@ -5,6 +5,7 @@ import type { Meta, StoryObj } from "@storybook/react"
 import React, { useMemo, useState } from "react"
 import { MenuSearch, MenuSearchEmpty } from "./components"
 import { Menus } from "./menus"
+import { NumericInput } from "../numeric-input/numeric-input"
 
 const meta: Meta<typeof Menus> = {
   title: "Collections/Menus",
@@ -200,6 +201,43 @@ export const ButtonStory: Story = {
     return (
       <Menus className="w-64">
         <Menus.Label>Menu</Menus.Label>
+        {options.map((option, index) => (
+          <Menus.Item
+            key={option.value}
+            active={activeIndex === index}
+            onMouseEnter={() => setActiveIndex(index)}
+            onMouseLeave={() => setActiveIndex(null)}
+            selected={selectedIndex.includes(index)}
+            prefixElement={selectedIndex.includes(index) ? <Check /> : <></>}
+            onMouseDown={() =>
+              setSelectedIndex((prev) =>
+                prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index],
+              )
+            }
+          >
+            <span className="flex-1 truncate">{option.label}</span>
+          </Menus.Item>
+        ))}
+        <Menus.Divider />
+        <Menus.Button onClick={() => setSelectedIndex([])}>Button</Menus.Button>
+      </Menus>
+    )
+  },
+}
+
+export const NumberInputStory: Story = {
+  render: function NumberInputStory() {
+    const [activeIndex, setActiveIndex] = useState<number | null>(null)
+    const [selectedIndex, setSelectedIndex] = useState<number[]>([])
+    const [value, setValue] = useState(0)
+    return (
+      <Menus className="w-64">
+        <NumericInput
+          variant="dark"
+          value={value}
+          onChange={(newValue) => setValue(newValue as number)}
+        />
+        <Menus.Divider />
         {options.map((option, index) => (
           <Menus.Item
             key={option.value}
