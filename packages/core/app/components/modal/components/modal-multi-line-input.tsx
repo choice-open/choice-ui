@@ -1,4 +1,4 @@
-import { memo, useId } from "react"
+import { memo, useId, useRef } from "react"
 import { MultiLineTextInput, MultiLineTextInputProps } from "~/components/multi-line-text-input"
 
 interface ModalMultiLineInputProps extends MultiLineTextInputProps {
@@ -13,6 +13,7 @@ export const ModalMultiLineInput = memo(function ModalMultiLineInput(
 ) {
   const { label, placeholder, minRows = 10, description, ...rest } = props
   const id = useId()
+  const inputRef = useRef<HTMLDivElement>(null)
 
   return (
     <fieldset className="flex flex-col gap-2">
@@ -20,12 +21,13 @@ export const ModalMultiLineInput = memo(function ModalMultiLineInput(
         <label
           className="leading-md tracking-md cursor-default font-medium"
           htmlFor={id}
+          onClick={() => inputRef.current?.focus()}
         >
           {label}
         </label>
       )}
       <MultiLineTextInput
-        id={id}
+        ref={inputRef}
         placeholder={placeholder}
         minRows={minRows}
         {...rest}

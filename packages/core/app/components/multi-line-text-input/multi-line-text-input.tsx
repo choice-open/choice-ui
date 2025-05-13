@@ -96,7 +96,6 @@ export const MultiLineTextInput = forwardRef<HTMLDivElement, MultiLineTextInputP
 
     return (
       <Scroll
-        ref={ref}
         className={tcx(styles, className)}
         tabIndex={0}
         aria-disabled={disabled}
@@ -115,6 +114,7 @@ export const MultiLineTextInput = forwardRef<HTMLDivElement, MultiLineTextInputP
             onChange={handleChange}
           >
             <Editable
+              ref={ref}
               style={{
                 outline: "none",
                 background: "transparent",
