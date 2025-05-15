@@ -3,17 +3,17 @@ import { tv } from "tailwind-variants"
 export const chipsInputTv = tv({
   slots: {
     root: [
-      "flex flex-wrap min-w-0 max-w-full",
-      "rounded-md bg-secondary-background",
-      "border border-transparent border-solid",
+      "flex max-w-full min-w-0 flex-wrap",
+      "bg-secondary-background rounded-md",
+      "border border-solid border-transparent",
     ],
     input: [
       "max-w-full flex-1",
       "leading-md tracking-md",
-      "appearance-none cursor-default",
+      "cursor-default appearance-none",
       "placeholder:text-secondary-foreground",
     ],
-    nesting: ["px-1 flex items-center gap-2 flex-none"],
+    nesting: ["flex flex-none items-center gap-2 px-1"],
     chip: "",
     closeButton: "",
     text: "",
@@ -21,18 +21,18 @@ export const chipsInputTv = tv({
   variants: {
     size: {
       default: {
-        root: "min-h-4 p-1 gap-1",
-        closeButton: "w-4 h-4",
+        root: "min-h-4 gap-1 p-1",
+        closeButton: "h-4 w-4",
       },
       large: {
         root: "min-h-6",
-        closeButton: "w-6 h-6",
+        closeButton: "h-6 w-6",
       },
     },
     disabled: {
       true: {
-        root: "bg-transparent text-secondary-foreground border-default-boundary",
-        input: "text-secondary-foreground",
+        root: "text-disabled-foreground border-default-boundary bg-transparent",
+        input: "text-disabled-foreground",
       },
       false: {
         root: "focus-within:border-selected-boundary hover:not-focus-within:border-default-boundary",
@@ -54,7 +54,7 @@ export const chipsInputTv = tv({
 
 export const chipTv = tv({
   slots: {
-    root: "pr-0 max-w-full",
+    root: "max-w-full pr-0",
     closeButton: "",
     text: "max-w-full truncate",
   },

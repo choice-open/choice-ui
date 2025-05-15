@@ -605,9 +605,9 @@ export const Shortcut: Story = {
  * Usage:
  * ```tsx
  * <Dropdown trigger="Menu">
- *   <Dropdown.Trigger>Menu</Dropdown.Trigger>
+ *   <Dropdown.Trigger disabled>Menu</Dropdown.Trigger>
  *   <Dropdown.Content>
- *     <Dropdown.Item disabled>Unavailable Option</Dropdown.Item>
+ *     <Dropdown.Item>Unavailable Option</Dropdown.Item>
  *     <Dropdown.Item>Available Option</Dropdown.Item>
  *   </Dropdown.Content>
  * </Dropdown>
@@ -615,6 +615,41 @@ export const Shortcut: Story = {
  */
 export const Disabled: Story = {
   render: function DisabledStory() {
+    return (
+      <Dropdown>
+        <Dropdown.Trigger disabled>
+          <span>Disabled</span>
+        </Dropdown.Trigger>
+        <Dropdown.Content>
+          <Dropdown.Item>Disabled</Dropdown.Item>
+          <Dropdown.Item>Enabled</Dropdown.Item>
+        </Dropdown.Content>
+      </Dropdown>
+    )
+  },
+}
+
+/**
+ * Shows how to handle disabled options in the dropdown.
+ *
+ * Features:
+ * - Visual disabled state
+ * - Prevents interaction with disabled options
+ * - Maintains keyboard navigation
+ *
+ * Usage:
+ * ```tsx
+ * <Dropdown>
+ *   <Dropdown.Trigger>Menu</Dropdown.Trigger>
+ *   <Dropdown.Content>
+ *     <Dropdown.Item disabled>Disabled</Dropdown.Item>
+ *     <Dropdown.Item>Enabled</Dropdown.Item>
+ *   </Dropdown.Content>
+ * </Dropdown>
+ * ```
+ */
+export const DisabledOption: Story = {
+  render: function DisabledOptionStory() {
     return (
       <Dropdown>
         <Dropdown.Trigger>

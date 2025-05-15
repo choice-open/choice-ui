@@ -68,7 +68,7 @@ export const TextareaTv = tv({
     {
       variant: "default",
       disabled: true,
-      class: "text-secondary-foreground border-secondary-background bg-secondary-background",
+      class: "text-disabled-foreground border-secondary-background bg-secondary-background",
     },
     {
       variant: "dark",

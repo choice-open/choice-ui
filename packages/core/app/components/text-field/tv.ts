@@ -54,7 +54,8 @@ export const TextFieldTv = tv({
     disabled: {
       true: {
         root: "bg-secondary-background",
-        label: "text-secondary-foreground",
+        label: "text-disabled-foreground",
+        input: "text-disabled-foreground",
       },
       false: {},
     },
