@@ -81,7 +81,6 @@ export default defineConfig(({ mode: _mode }: ConfigEnv): UserConfig => {
           "react",
           "react-dom",
           "react/jsx-runtime",
-          "@legendapp/state",
           "@radix-ui/react-primitive",
           "@radix-ui/react-portal",
           "@radix-ui/react-slot",
@@ -110,6 +109,10 @@ export default defineConfig(({ mode: _mode }: ConfigEnv): UserConfig => {
           "tailwind-merge",
           "tailwind-variants",
           "is-hotkey",
+          "slate",
+          "slate-react",
+          "slate-history",
+          "slate-hyperscript",
         ],
         output: [
           {

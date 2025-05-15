@@ -167,6 +167,7 @@ const SelectComponent = forwardRef<HTMLButtonElement, SelectProps>(function Sele
   const [fallback, setFallback] = useState(false)
   const [touch, setTouch] = useState(false)
   const [scrollTop, setScrollTop] = useState(0)
+  const [needsFlip, setNeedsFlip] = useState(false)
 
   // 选择状态
   const [selectedIndex, setSelectedIndex] = useState(0)
@@ -180,14 +181,6 @@ const SelectComponent = forwardRef<HTMLButtonElement, SelectProps>(function Sele
   // 生成唯一 ID
   const baseId = useId()
   const menuId = `menu-${baseId}`
-
-  // 处理打开状态变化的回调 - 使用 useEventCallback 确保稳定引用
-  const handleOpenChange = useEventCallback((newOpen: boolean) => {
-    if (controlledOpen === undefined) {
-      setOpen(newOpen)
-    }
-    onOpenChange?.(newOpen)
-  })
 
   // 确定当前选中索引 - 优化记忆化，减少重复计算
   const currentSelectedIndex = useMemo(() => {
@@ -208,55 +201,103 @@ const SelectComponent = forwardRef<HTMLButtonElement, SelectProps>(function Sele
 
   // 使用 floating-ui 设置浮动菜单 - 优化中间件配置
   const floating = useFloating({
-    placement,
+    placement: needsFlip ? "bottom-start" : placement,
     open: isControlledOpen,
-    onOpenChange: handleOpenChange,
+    onOpenChange: (newOpen) => {
+      if (!newOpen) {
+        // 重置flip状态
+        setNeedsFlip(false)
+      }
+
+      if (controlledOpen === undefined) {
+        setOpen(newOpen)
+      }
+      onOpenChange?.(newOpen)
+    },
     whileElementsMounted: (reference, floating, update) => {
       // 优化更新策略，使用 RAF 节流更新
-      return autoUpdate(reference, floating, () => requestAnimationFrame(update), {
+      return autoUpdate(reference, floating, update, {
         animationFrame: true,
       })
     },
     transform: false,
-    middleware: fallback
-      ? [
-          off(8),
-          touch ? shift({ crossAxis: true, padding: 16 }) : flip({ padding: 16 }),
-          size({
-            apply(args) {
-              const { availableHeight } = args
-              requestAnimationFrame(() => {
-                if (refs.scroll.current) {
-                  refs.scroll.current.style.maxHeight = `${availableHeight}px`
+    middleware:
+      needsFlip || fallback
+        ? [
+            off(8),
+            touch ? shift({ crossAxis: true, padding: 16 }) : flip({ padding: 16 }),
+            size({
+              apply(args) {
+                const { availableHeight } = args
+                requestAnimationFrame(() => {
+                  if (refs.scroll.current) {
+                    refs.scroll.current.style.maxHeight = `${availableHeight}px`
+                  }
+                })
+              },
+              padding: 4,
+            }),
+          ]
+        : [
+            inner({
+              listRef: refs.list,
+              overflowRef: refs.overflow,
+              scrollRef: refs.scroll,
+              index: currentSelectedIndex >= 0 ? currentSelectedIndex : 0,
+              offset: innerOffset,
+              onFallbackChange: setFallback,
+              padding: 16,
+              minItemsVisible: touch ? 8 : 4,
+              referenceOverflowThreshold: 20,
+            }),
+            off(placement.includes("end") ? { crossAxis: 8 } : { crossAxis: -8 }),
+            size({
+              apply(args) {
+                const { rects, elements } = args
+                if (matchTriggerWidth) {
+                  elements.floating.style.width = `${rects.reference.width + 16}px`
                 }
-              })
-            },
-            padding: 4,
-          }),
-        ]
-      : [
-          inner({
-            listRef: refs.list,
-            overflowRef: refs.overflow,
-            scrollRef: refs.scroll,
-            index: currentSelectedIndex >= 0 ? currentSelectedIndex : 0,
-            offset: innerOffset,
-            onFallbackChange: setFallback,
-            padding: 16,
-            minItemsVisible: touch ? 8 : 4,
-            referenceOverflowThreshold: 20,
-          }),
-          off(placement.includes("end") ? { crossAxis: 8 } : { crossAxis: -8 }),
-          size({
-            apply(args) {
-              const { rects, elements } = args
-              if (matchTriggerWidth) {
-                elements.floating.style.width = `${rects.reference.width + 16}px`
-              }
-            },
-          }),
-        ],
+              },
+            }),
+          ],
   })
+
+  // 检查是否需要flip
+  const checkIfNeedsFlip = useCallback(() => {
+    if (!floating.refs.reference.current) return
+
+    const referenceRect = floating.refs.reference.current.getBoundingClientRect()
+    const estimatedHeight = Math.min(window.innerHeight * 0.8, 320) // 估计菜单高度
+
+    // 检查底部空间是否足够
+    const bottomSpace = window.innerHeight - referenceRect.bottom
+    const shouldFlip = bottomSpace < estimatedHeight
+
+    setNeedsFlip(shouldFlip)
+  }, [floating.refs])
+
+  // 处理打开状态变化的回调 - 使用 useEventCallback 确保稳定引用
+  const handleOpenChange = useEventCallback((newOpen: boolean) => {
+    if (!newOpen) {
+      // 重置flip状态
+      setNeedsFlip(false)
+    } else {
+      // 如果要打开菜单，先检查是否需要flip
+      checkIfNeedsFlip()
+    }
+
+    if (controlledOpen === undefined) {
+      setOpen(newOpen)
+    }
+    onOpenChange?.(newOpen)
+  })
+
+  // 当触发器ref变化时，检查是否需要flip
+  useEffect(() => {
+    if (floating.refs.reference.current && isControlledOpen) {
+      checkIfNeedsFlip()
+    }
+  }, [floating.refs.reference.current, isControlledOpen, checkIfNeedsFlip])
 
   // 设置交互处理程序 - 优化配置，明确分离关注点
   const interactions = useInteractions([
@@ -264,7 +305,7 @@ const SelectComponent = forwardRef<HTMLButtonElement, SelectProps>(function Sele
     useDismiss(floating.context),
     useRole(floating.context, { role: "listbox" }),
     useInnerOffset(floating.context, {
-      enabled: !fallback,
+      enabled: !fallback && !needsFlip,
       onChange: (offset) => setInnerOffset(offset as number),
       overflowRef: refs.overflow,
       scrollRef: refs.scroll,
@@ -307,7 +348,7 @@ const SelectComponent = forwardRef<HTMLButtonElement, SelectProps>(function Sele
   // 处理箭头滚动 - 优化事件回调，使用 useEventCallback 确保稳定引用
   const handleArrowScroll = useEventCallback((amount: number) => {
     requestAnimationFrame(() => {
-      if (fallback) {
+      if (fallback || needsFlip) {
         if (refs.scroll.current) {
           refs.scroll.current.scrollTop -= amount
           flushSync(() => setScrollTop(refs.scroll.current?.scrollTop ?? 0))
@@ -454,6 +495,15 @@ const SelectComponent = forwardRef<HTMLButtonElement, SelectProps>(function Sele
     })
   }, [itemElements, renderSelectItem])
 
+  // 给 Trigger 添加 active 属性
+  const enhancedTriggerElement = useMemo(() => {
+    if (!triggerElement) return null
+    return cloneElement(triggerElement, {
+      ...triggerElement.props,
+      active: isControlledOpen,
+    })
+  }, [triggerElement, isControlledOpen])
+
   return (
     <>
       <Slot
@@ -473,7 +523,7 @@ const SelectComponent = forwardRef<HTMLButtonElement, SelectProps>(function Sele
           },
         })}
       >
-        {triggerElement}
+        {enhancedTriggerElement}
       </Slot>
 
       <FloatingPortal id={portalId}>

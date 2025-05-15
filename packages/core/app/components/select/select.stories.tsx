@@ -362,3 +362,28 @@ export const CompoundComponent: Story = {
     )
   },
 }
+
+/**
+ * Select in marginal conditions
+ */
+export const MarginalConditions: Story = {
+  render: function MarginalConditionsStory() {
+    return (
+      <div className="flex h-screen flex-col justify-end p-2">
+        <Select>
+          <Select.Trigger>Select</Select.Trigger>
+          <Select.Content>
+            {Array.from({ length: 10 }, (_, i) => (
+              <Select.Item
+                key={i}
+                value={`option-${i + 1}`}
+              >
+                Option {i + 1}
+              </Select.Item>
+            ))}
+          </Select.Content>
+        </Select>
+      </div>
+    )
+  },
+}

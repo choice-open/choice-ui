@@ -49,7 +49,6 @@ export const TreeList = (props: TreeListProps) => {
     onNodeRename,
     onNodeContextMenu,
     onNodeDrop,
-
     onMouseDown,
   } = props
 

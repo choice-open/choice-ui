@@ -1,9 +1,11 @@
 import { forwardRef, memo } from "react"
-import { ModalHeader } from "../../modal"
+import { ModalHeader, ModalHeaderProps } from "../../modal"
 import { usePopoverContext } from "../popover-context"
 
+export interface PopoverHeaderProps extends ModalHeaderProps {}
+
 export const PopoverHeader = memo(
-  forwardRef<HTMLDivElement, React.ComponentProps<typeof ModalHeader>>((props, ref) => {
+  forwardRef<HTMLDivElement, PopoverHeaderProps>((props, ref) => {
     const { children, className, ...rest } = props
     const { titleId, onCloseClick } = usePopoverContext()
 

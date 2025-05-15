@@ -9,6 +9,7 @@ export interface MenuTriggerProps extends ButtonProps {
   asChild?: boolean
   prefixElement?: ReactNode
   suffixElement?: ReactNode
+  empty?: boolean
 }
 
 export const MenuTrigger = memo(
@@ -20,12 +21,14 @@ export const MenuTrigger = memo(
       size = "default",
       prefixElement,
       suffixElement = <ChevronDownSmall />,
+      empty,
       ...rest
     } = props
 
     const styles = MenuTriggerTv({
       hasPrefix: !!prefixElement,
       hasSuffix: !!suffixElement,
+      isEmpty: empty,
       size,
     })
 

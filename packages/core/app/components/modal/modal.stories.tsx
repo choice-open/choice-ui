@@ -10,6 +10,7 @@ import { Select } from "../select"
 import { Tabs } from "../tabs"
 import { TextField } from "../text-field"
 import { Modal } from "./modal"
+import { SearchInput } from "../search-input"
 
 const meta: Meta<typeof Modal> = {
   title: "Overlays/Modal",
@@ -67,7 +68,18 @@ export const Basic: Story = {
     const [select, setSelect] = useState("option-1")
     return (
       <Modal className="w-md">
-        <Modal.Header title="Modal" />
+        <Modal.Header
+          title="Modal"
+          onClose={() => {}}
+        />
+        <Modal.Header
+          title="Modal"
+          onClose={() => {}}
+        >
+          <div className="px-2 pb-2 [grid-area:input]">
+            <SearchInput />
+          </div>
+        </Modal.Header>
         <Modal.Header
           title={
             <>

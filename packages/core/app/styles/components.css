@@ -188,6 +188,13 @@
     grid-template-areas: "avatar meta action" ". content reaction" ". reactions .";
     column-gap: calc(var(--spacing) * 2);
   }
+
+  .modal__header {
+    @apply grid;
+    grid-template-rows: minmax(2.5rem, auto);
+    grid-template-columns: auto 1fr 2.5rem;
+    grid-template-areas: "title . close" "input input input";
+  }
 }
 
 @theme {
