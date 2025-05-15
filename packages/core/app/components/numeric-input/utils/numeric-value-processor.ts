@@ -53,9 +53,21 @@ export const dealWithNumericInputValue = ({
     })
   } else if (isObjectNumber) {
     // 处理对象输入
+    const objInput = input as Record<string, number>
+
+    // 首先保留对象中的所有已有属性
+    Object.keys(objInput).forEach((key) => {
+      if (typeof objInput[key] === "number") {
+        result[key] = objInput[key]
+      }
+    })
+
+    // 然后确保表达式中定义的键都存在
     keys.forEach((key) => {
-      const objInput = input as Record<string, number>
-      result[key] = objInput[key] ?? 0
+      // 只在result[key]未定义时才设置默认值0
+      if (result[key] === undefined) {
+        result[key] = 0
+      }
     })
   } else {
     throw new Error(`Invalid input: ${input}`)

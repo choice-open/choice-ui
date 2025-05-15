@@ -647,3 +647,75 @@ export const UnitExpressionCalculation: Story = {
     )
   },
 }
+
+/**
+ * 这个示例专门用于测试和展示修复后的多值表达式更新行为。
+ * 在之前的版本中，当只修改第二个值（如height）而不修改第一个值（如width）时，
+ * 组件无法正确更新。这个修复确保了即使只修改一个属性，整个对象也能正确更新。
+ */
+export const MultiValueExpressionUpdate: Story = {
+  render: function MultiValueExpressionUpdateStory() {
+    const [value, setValue] = useState({
+      width: 10,
+      height: 20,
+    })
+    const [updateCount, setUpdateCount] = useState(0)
+    const [lastUpdatedProperty, setLastUpdatedProperty] = useState("")
+
+    const handleChange = (newValue: NumericInputValue, detail: NumberResult) => {
+      setValue(newValue as { width: number; height: number })
+      setUpdateCount((prev) => prev + 1)
+
+      // 确定哪个属性被更新了
+      const newObj = newValue as { width: number; height: number }
+      if (newObj.width !== value.width && newObj.height !== value.height) {
+        setLastUpdatedProperty("width & height")
+      } else if (newObj.width !== value.width) {
+        setLastUpdatedProperty("width")
+      } else if (newObj.height !== value.height) {
+        setLastUpdatedProperty("height")
+      }
+    }
+
+    return (
+      <div className="grid w-96 gap-4">
+        <div className="flex flex-col gap-2">
+          <h3 className="text-lg font-medium">多值表达式更新测试</h3>
+          <p className="text-secondary-foreground">这个示例测试修复后的多值表达式更新行为：</p>
+          <ul className="text-secondary-foreground list-disc pl-5">
+            <li>修改首个值（width）</li>
+            <li>修改第二个值（height）</li>
+            <li>同时修改两个值</li>
+          </ul>
+          <p className="text-secondary-foreground">修复后，所有三种情况都应该正确触发更新。</p>
+        </div>
+
+        <div className="flex flex-col items-start gap-2">
+          <NumericInput
+            expression="{width}, {height}"
+            value={value}
+            onChange={handleChange}
+          />
+
+          <div className="mt-2 rounded border bg-gray-50 p-3">
+            <p className="text-sm">
+              <b>当前值:</b> {value.width}, {value.height}
+            </p>
+            <p className="text-sm">
+              <b>更新次数:</b> {updateCount}
+            </p>
+            {lastUpdatedProperty && (
+              <p className="text-sm">
+                <b>最近更新的属性:</b> {lastUpdatedProperty}
+              </p>
+            )}
+            <p className="text-secondary-foreground mt-2">
+              提示: 输入逗号分隔的两个值（例如 "15, 20"）来更新两个属性，
+              或者保留逗号前的值不变只修改后面的值（例如 ", 25"）来只更新height。
+            </p>
+          </div>
+        </div>
+      </div>
+    )
+  },
+}

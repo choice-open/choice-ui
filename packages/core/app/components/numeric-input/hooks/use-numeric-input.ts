@@ -138,7 +138,29 @@ export function useNumericInput<T extends NumericInputValue>(props: UseNumericIn
           decimal,
         })
 
-        if (JSON.stringify(valuePre.object) !== JSON.stringify(prev.object)) {
+        // 深度比较对象值是否发生变化
+        const hasChanged = (() => {
+          // 如果是基本类型值，使用字符串比较
+          if (typeof value === "string" || typeof value === "number" || Array.isArray(value)) {
+            return JSON.stringify(valuePre.object) !== JSON.stringify(prev.object)
+          }
+
+          // 对于对象类型，比较每个键值对
+          if (typeof value === "object" && value !== null) {
+            const prevKeys = Object.keys(prev.object)
+            const newKeys = Object.keys(valuePre.object)
+
+            // 键的数量不同，肯定有变化
+            if (prevKeys.length !== newKeys.length) return true
+
+            // 比较每个键值对
+            return prevKeys.some((key) => prev.object[key] !== valuePre.object[key])
+          }
+
+          return true // 默认认为有变化
+        })()
+
+        if (hasChanged) {
           onChange?.(
             (typeof value === "string"
               ? valuePre.string
