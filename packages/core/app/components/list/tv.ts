@@ -78,8 +78,8 @@ export const ListItemTv = tv({
       active: true,
       variant: "primary",
       class: {
-        root: "bg-selected-background text-accent-foreground",
-        shortcut: "text-accent-foreground",
+        root: "bg-selected-background",
+        shortcut: "text-default-foreground",
       },
     },
   ],
