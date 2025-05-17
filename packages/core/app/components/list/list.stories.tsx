@@ -13,11 +13,12 @@ import {
 } from "@choiceform/icons-react"
 
 const meta: Meta<typeof List> = {
-  title: "Components/List",
+  title: "Collections/List",
   component: List,
   parameters: {
     layout: "centered",
   },
+  tags: ["new"],
 }
 
 export default meta
