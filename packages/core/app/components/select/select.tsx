@@ -36,8 +36,9 @@ import React, {
 } from "react"
 import { flushSync } from "react-dom"
 import { useEventCallback } from "usehooks-ts"
-import { MenuDivider, MenuLabel, MenuScrollArrow, MenuTrigger } from "../menus"
+import { MenuDivider, MenuLabel, MenuScrollArrow, MenuTrigger, MenuValue } from "../menus"
 import { SelectContent, SelectItem, type SelectItemPublicProps } from "./components"
+import { motion } from "framer-motion"
 
 const PORTAL_ROOT_ID = "floating-menu-root"
 
@@ -60,6 +61,7 @@ interface SelectComponentType
   Divider: typeof MenuDivider
   Label: typeof MenuLabel
   Content: typeof SelectContent
+  Value: typeof MenuValue
 }
 
 /**
@@ -496,43 +498,50 @@ const SelectComponent = forwardRef<HTMLButtonElement, SelectProps>(function Sele
               returnFocus={false}
             >
               <div
-                id={menuId}
-                ref={floating.refs.setFloating}
-                style={floating.floatingStyles}
+                style={{
+                  opacity: fallback ? (floating.isPositioned ? 1 : 0) : undefined,
+                  transitionDelay: fallback && floating.isPositioned ? "0.1s" : undefined,
+                }}
               >
-                {cloneElement(contentElement, {
-                  ref: refs.scroll,
-                  matchTriggerWidth,
-                  ...interactions.getFloatingProps({
-                    onScroll({ currentTarget }) {
-                      flushSync(() => setScrollTop(currentTarget.scrollTop))
-                    },
-                    onContextMenu(e) {
-                      e.preventDefault()
-                    },
-                  }),
-                  children: (
-                    <FloatingList
-                      elementsRef={refs.list}
-                      labelsRef={refs.listContent}
-                    >
-                      {menuItems}
-                    </FloatingList>
-                  ),
-                })}
+                <div
+                  id={menuId}
+                  ref={floating.refs.setFloating}
+                  style={floating.floatingStyles}
+                >
+                  {cloneElement(contentElement, {
+                    ref: refs.scroll,
+                    matchTriggerWidth,
+                    ...interactions.getFloatingProps({
+                      onScroll({ currentTarget }) {
+                        flushSync(() => setScrollTop(currentTarget.scrollTop))
+                      },
+                      onContextMenu(e) {
+                        e.preventDefault()
+                      },
+                    }),
+                    children: (
+                      <FloatingList
+                        elementsRef={refs.list}
+                        labelsRef={refs.listContent}
+                      >
+                        {menuItems}
+                      </FloatingList>
+                    ),
+                  })}
 
-                {["up", "down"].map((dir) => (
-                  <MenuScrollArrow
-                    key={dir}
-                    dir={dir as "up" | "down"}
-                    scrollTop={scrollTop}
-                    scrollRef={refs.scroll}
-                    innerOffset={innerOffset}
-                    isPositioned={floating.isPositioned}
-                    onScroll={handleArrowScroll}
-                    onHide={handleArrowHide}
-                  />
-                ))}
+                  {["up", "down"].map((dir) => (
+                    <MenuScrollArrow
+                      key={dir}
+                      dir={dir as "up" | "down"}
+                      scrollTop={scrollTop}
+                      scrollRef={refs.scroll}
+                      innerOffset={innerOffset}
+                      isPositioned={floating.isPositioned}
+                      onScroll={handleArrowScroll}
+                      onHide={handleArrowHide}
+                    />
+                  ))}
+                </div>
               </div>
             </FloatingFocusManager>
           </FloatingOverlay>
@@ -549,5 +558,6 @@ export const Select = Object.assign(SelectComponent, {
   Divider: MenuDivider,
   Label: MenuLabel,
   Content: SelectContent,
+  Value: MenuValue,
 }) as SelectComponentType
 Select.displayName = "Select"

@@ -9,6 +9,7 @@ import {
   MenuLabel,
   MenuSearch,
   MenuSearchEmpty,
+  MenuValue,
 } from "./components"
 import { MenusTv } from "./tv"
 
@@ -27,6 +28,7 @@ interface MenusComponentProps
   Search: typeof MenuSearch
   SearchEmpty: typeof MenuSearchEmpty
   Input: typeof MenuInput
+  Value: typeof MenuValue
 }
 
 export const MenusBase = forwardRef<HTMLDivElement, MenusProps>((props, ref) => {
@@ -57,4 +59,5 @@ Menus.Label = MenuLabel
 Menus.Search = MenuSearch
 Menus.SearchEmpty = MenuSearchEmpty
 Menus.Input = MenuInput
+Menus.Value = MenuValue
 export { Menus }

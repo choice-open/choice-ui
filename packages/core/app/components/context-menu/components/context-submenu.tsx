@@ -60,13 +60,13 @@ const ContextSubmenuTrigger = forwardRef<HTMLDivElement, ContextSubmenuTriggerPr
         ref={ref}
         disabled={disabled}
         className={tcx(
-          styles.root(),
+          styles.root({ hasSuffix: true }),
           "data-[highlighted]:bg-accent-background data-[highlighted]:text-on-accent-foreground",
           className,
         )}
       >
         {selection && <div className={styles.icon()} />}
-        <span className="flex-1">{children}</span>
+        {children}
         <div className="flex items-center justify-center">
           <ChevronRightSmall />
         </div>

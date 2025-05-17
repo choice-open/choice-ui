@@ -49,6 +49,7 @@ import {
   MenuScrollArrow,
   MenuSearch,
   MenuTrigger,
+  MenuValue,
 } from "../menus"
 import { DropdownContent, DropdownItem, DropdownSubTrigger } from "./components"
 import { DropdownContext, DropdownSelectionContext } from "./dropdown-context"
@@ -80,6 +81,7 @@ interface DropdownComponentProps
   Button: typeof MenuButton
   Input: typeof MenuInput
   Content: typeof DropdownContent
+  Value: typeof MenuValue
 }
 
 const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) {
@@ -436,4 +438,5 @@ export const Dropdown = Object.assign(BaseDropdown, {
   Button: MenuButton,
   Input: MenuInput,
   Content: DropdownContent,
+  Value: MenuValue,
 }) as unknown as DropdownComponentProps

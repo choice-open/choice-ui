@@ -10,6 +10,7 @@ import {
 } from "./components"
 import { ContextMenuContext } from "./context-menu-context"
 import { processMenuChildren } from "./utils"
+import { MenuValue } from "../menus"
 
 export interface ContextMenuProps {
   children: ReactNode
@@ -67,4 +68,5 @@ export const ContextMenu = Object.assign(ContextMenuComponent, {
   Divider: ContextMenuDivider,
   Submenu: ContextSubmenu,
   Label: ContextMenuLabel,
+  Value: MenuValue,
 })

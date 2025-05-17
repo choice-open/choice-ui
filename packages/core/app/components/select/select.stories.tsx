@@ -28,11 +28,17 @@ type Story = StoryObj<typeof Select>
  * Component Structure:
  * ```tsx
  * <Select value={value} onChange={setValue}>
- *   <Select.Trigger>Display Text</Select.Trigger>
+ *   <Select.Trigger>
+ *     <Select.Value>Display Text</Select.Value>
+ *   </Select.Trigger>
  *   <Select.Content>
- *     <Select.Item value="option-1">Option 1</Select.Item>
+ *     <Select.Item value="option-1">
+ *       <Select.Value>Option 1</Select.Value>
+ *     </Select.Item>
  *     <Select.Divider />
- *     <Select.Item value="option-2">Option 2</Select.Item>
+ *     <Select.Item value="option-2">
+ *       <Select.Value>Option 2</Select.Value>
+ *     </Select.Item>
  *   </Select.Content>
  * </Select>
  * ```
@@ -45,14 +51,16 @@ export const Basic: Story = {
         value={value}
         onChange={setValue}
       >
-        <Select.Trigger>{value || "Select"}</Select.Trigger>
+        <Select.Trigger>
+          <Select.Value>{value || "Select"}</Select.Value>
+        </Select.Trigger>
         <Select.Content>
           {Array.from({ length: 10 }, (_, i) => (
             <Select.Item
               key={i}
               value={`option-${i + 1}`}
             >
-              Option {i + 1}
+              <Select.Value>Option {i + 1}</Select.Value>
             </Select.Item>
           ))}
         </Select.Content>
@@ -84,7 +92,7 @@ export const Disabled: Story = {
               key={i}
               value={`option-${i + 1}`}
             >
-              Option {i + 1}
+              <Select.Value>Option {i + 1}</Select.Value>
             </Select.Item>
           ))}
         </Select.Content>
@@ -108,16 +116,22 @@ export const DisabledOptions: Story = {
         value={value}
         onChange={setValue}
       >
-        <Select.Trigger>{value || "Select"}</Select.Trigger>
+        <Select.Trigger>
+          <Select.Value>{value || "Select"}</Select.Value>
+        </Select.Trigger>
         <Select.Content>
           <Select.Item
             value="option-1"
             disabled
           >
-            Option 1 (Disabled)
+            <Select.Value>Option 1 (Disabled)</Select.Value>
           </Select.Item>
-          <Select.Item value="option-2">Option 2</Select.Item>
-          <Select.Item value="option-3">Option 3</Select.Item>
+          <Select.Item value="option-2">
+            <Select.Value>Option 2</Select.Value>
+          </Select.Item>
+          <Select.Item value="option-3">
+            <Select.Value>Option 3</Select.Value>
+          </Select.Item>
         </Select.Content>
       </Select>
     )
@@ -139,13 +153,21 @@ export const WithDivider: Story = {
         value={value}
         onChange={setValue}
       >
-        <Select.Trigger>{value || "Select"}</Select.Trigger>
+        <Select.Trigger>
+          <Select.Value>{value || "Select"}</Select.Value>
+        </Select.Trigger>
         <Select.Content>
-          <Select.Item value="option-1">Option 1</Select.Item>
+          <Select.Item value="option-1">
+            <Select.Value>Option 1</Select.Value>
+          </Select.Item>
           <Select.Divider />
-          <Select.Item value="option-2">Option 2</Select.Item>
+          <Select.Item value="option-2">
+            <Select.Value>Option 2</Select.Value>
+          </Select.Item>
           <Select.Divider />
-          <Select.Item value="option-3">Option 3</Select.Item>
+          <Select.Item value="option-3">
+            <Select.Value>Option 3</Select.Value>
+          </Select.Item>
         </Select.Content>
       </Select>
     )
@@ -160,17 +182,31 @@ export const WithLabel: Story = {
         value={value}
         onChange={setValue}
       >
-        <Select.Trigger>{value || "Select"}</Select.Trigger>
+        <Select.Trigger>
+          <Select.Value>{value || "Select"}</Select.Value>
+        </Select.Trigger>
         <Select.Content>
           <Select.Label>Select an option</Select.Label>
-          <Select.Item value="option-1">Option 1</Select.Item>
-          <Select.Item value="option-2">Option 2</Select.Item>
-          <Select.Item value="option-3">Option 3</Select.Item>
+          <Select.Item value="option-1">
+            <Select.Value>Option 1</Select.Value>
+          </Select.Item>
+          <Select.Item value="option-2">
+            <Select.Value>Option 2</Select.Value>
+          </Select.Item>
+          <Select.Item value="option-3">
+            <Select.Value>Option 3</Select.Value>
+          </Select.Item>
           <Select.Divider />
           <Select.Label>Select an option</Select.Label>
-          <Select.Item value="option-4">Option 1</Select.Item>
-          <Select.Item value="option-5">Option 2</Select.Item>
-          <Select.Item value="option-6">Option 3</Select.Item>
+          <Select.Item value="option-4">
+            <Select.Value>Option 1</Select.Value>
+          </Select.Item>
+          <Select.Item value="option-5">
+            <Select.Value>Option 2</Select.Value>
+          </Select.Item>
+          <Select.Item value="option-6">
+            <Select.Value>Option 3</Select.Value>
+          </Select.Item>
         </Select.Content>
       </Select>
     )
@@ -192,20 +228,22 @@ export const WithIcon: Story = {
         value={value}
         onChange={setValue}
       >
-        <Select.Trigger>{value || "Select"}</Select.Trigger>
+        <Select.Trigger>
+          <Select.Value>{value || "Select"}</Select.Value>
+        </Select.Trigger>
         <Select.Content>
           <Select.Item value="option-1">
             <FieldTypeAttachment />
-            Option 1
+            <Select.Value>Option 1</Select.Value>
           </Select.Item>
           <Select.Item value="option-2">
             <FieldTypeCheckbox />
-            Option 2
+            <Select.Value>Option 2</Select.Value>
           </Select.Item>
           <Select.Divider />
           <Select.Item value="option-3">
             <FieldTypeCount />
-            Option 3
+            <Select.Value>Option 3</Select.Value>
           </Select.Item>
         </Select.Content>
       </Select>
@@ -228,14 +266,16 @@ export const LongItems: Story = {
         value={value}
         onChange={setValue}
       >
-        <Select.Trigger>{value || "Select"}</Select.Trigger>
+        <Select.Trigger>
+          <Select.Value>{value || "Select"}</Select.Value>
+        </Select.Trigger>
         <Select.Content>
           {Array.from({ length: 100 }, (_, i) => (
             <Select.Item
               key={i}
               value={`option-${i + 1}`}
             >
-              Option {i + 1}
+              <Select.Value>Option {i + 1}</Select.Value>
             </Select.Item>
           ))}
         </Select.Content>
@@ -264,14 +304,16 @@ export const MatchTriggerWidth: Story = {
         onChange={setValue}
         matchTriggerWidth
       >
-        <Select.Trigger className="w-64">{value || "Select an option"}</Select.Trigger>
+        <Select.Trigger className="w-64">
+          <Select.Value>{value || "Select an option"}</Select.Value>
+        </Select.Trigger>
         <Select.Content>
           {options.map((option) => (
             <Select.Item
               key={option.value}
               value={option.value}
             >
-              <span className="truncate">{option.label}</span>
+              <Select.Value>{option.label}</Select.Value>
             </Select.Item>
           ))}
         </Select.Content>
@@ -296,14 +338,16 @@ export const Placement: Story = {
         onChange={setValue}
         placement="bottom-end"
       >
-        <Select.Trigger>{value || "Select an option"}</Select.Trigger>
+        <Select.Trigger>
+          <Select.Value>{value || "Select an option"}</Select.Value>
+        </Select.Trigger>
         <Select.Content>
           {Array.from({ length: 10 }, (_, i) => (
             <Select.Item
               key={i}
               value={`option-${i + 1}`}
             >
-              Option {i + 1}
+              <Select.Value>Option {i + 1}</Select.Value>
             </Select.Item>
           ))}
         </Select.Content>
@@ -313,21 +357,22 @@ export const Placement: Story = {
 }
 
 /**
- * 演示 Select 组件的组合模式。
- * 该模式允许更直接地组合组件，提供更直观的JSX结构。
- *
- * ### 核心特性
- * - 符合 React 组件设计模式
- * - 直观的组件结构
- * - 易于扩展和定制
+ * Demonstrates the compound component pattern for the Select component.
+ * This pattern allows for more direct component composition, providing a more intuitive JSX structure.
  *
  * ```tsx
  * <Select value={value} onChange={setValue}>
- *   <Select.Trigger>选择一个选项</Select.Trigger>
+ *   <Select.Trigger>
+ *     <Select.Value>Select an option</Select.Value>
+ *   </Select.Trigger>
  *   <Select.Content>
- *     <Select.Item value="option-1">选项 1</Select.Item>
+ *     <Select.Item value="option-1">
+ *       <Select.Value>Option 1</Select.Value>
+ *     </Select.Item>
  *     <Select.Divider />
- *     <Select.Item value="option-2">选项 2</Select.Item>
+ *     <Select.Item value="option-2">
+ *       <Select.Value>Option 2</Select.Value>
+ *     </Select.Item>
  *   </Select.Content>
  * </Select>
  * ```
@@ -342,22 +387,30 @@ export const CompoundComponent: Story = {
           value={value}
           onChange={setValue}
         >
-          <Select.Trigger>{value ? `选中: ${value}` : "请选择"}</Select.Trigger>
+          <Select.Trigger>
+            <Select.Value>{value ? `Selected: ${value}` : "Select..."}</Select.Value>
+          </Select.Trigger>
           <Select.Content>
-            <Select.Item value="option-1">选项 1</Select.Item>
-            <Select.Item value="option-2">选项 2</Select.Item>
+            <Select.Item value="option-1">
+              <Select.Value>Option 1</Select.Value>
+            </Select.Item>
+            <Select.Item value="option-2">
+              <Select.Value>Option 2</Select.Value>
+            </Select.Item>
             <Select.Divider />
-            <Select.Item value="option-3">选项 3</Select.Item>
+            <Select.Item value="option-3">
+              <Select.Value>Option 3</Select.Value>
+            </Select.Item>
             <Select.Item
               value="option-4"
               disabled
             >
-              禁用选项
+              <Select.Value>Disabled Option</Select.Value>
             </Select.Item>
           </Select.Content>
         </Select>
 
-        <p className="text-sm text-stone-400">当前值: {value || "无"}</p>
+        <p className="text-sm text-stone-400">Current value: {value || "None"}</p>
       </div>
     )
   },
@@ -371,14 +424,16 @@ export const MarginalConditions: Story = {
     return (
       <div className="flex h-screen flex-col justify-end p-2">
         <Select>
-          <Select.Trigger>Select</Select.Trigger>
+          <Select.Trigger>
+            <Select.Value>Select</Select.Value>
+          </Select.Trigger>
           <Select.Content>
             {Array.from({ length: 10 }, (_, i) => (
               <Select.Item
                 key={i}
                 value={`option-${i + 1}`}
               >
-                Option {i + 1}
+                <Select.Value>Option {i + 1}</Select.Value>
               </Select.Item>
             ))}
           </Select.Content>

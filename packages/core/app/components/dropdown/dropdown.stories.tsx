@@ -45,26 +45,26 @@ export const Basic: Story = {
     return (
       <Dropdown>
         <Dropdown.Trigger>
-          <span>Interaction</span>
+          <Dropdown.Value>Interaction</Dropdown.Value>
         </Dropdown.Trigger>
         <Dropdown.Content>
           <Dropdown.Item>
-            <span>Attachment</span>
+            <Dropdown.Value>Attachment</Dropdown.Value>
           </Dropdown.Item>
           <Dropdown.Item>
-            <span>Checkbox</span>
+            <Dropdown.Value>Checkbox</Dropdown.Value>
           </Dropdown.Item>
           <Dropdown.Item>
-            <span>Count</span>
+            <Dropdown.Value>Count</Dropdown.Value>
           </Dropdown.Item>
           <Dropdown.Item>
-            <span>Date</span>
+            <Dropdown.Value>Date</Dropdown.Value>
           </Dropdown.Item>
           <Dropdown.Item>
-            <span>Filter</span>
+            <Dropdown.Value>Filter</Dropdown.Value>
           </Dropdown.Item>
           <Dropdown.Item>
-            <span>Rating</span>
+            <Dropdown.Value>Rating</Dropdown.Value>
           </Dropdown.Item>
         </Dropdown.Content>
       </Dropdown>
@@ -97,14 +97,14 @@ export const WithPrefix: Story = {
     return (
       <Dropdown>
         <Dropdown.Trigger prefixElement={<FieldTypeAttachment />}>
-          <span>With Prefix</span>
+          <Dropdown.Value>With Prefix</Dropdown.Value>
         </Dropdown.Trigger>
         <Dropdown.Content>
           <Dropdown.Item>
-            <span>Attachment</span>
+            <Dropdown.Value>Attachment</Dropdown.Value>
           </Dropdown.Item>
           <Dropdown.Item>
-            <span>Checkbox</span>
+            <Dropdown.Value>Checkbox</Dropdown.Value>
           </Dropdown.Item>
         </Dropdown.Content>
       </Dropdown>
@@ -137,14 +137,14 @@ export const WithSuffix: Story = {
     return (
       <Dropdown>
         <Dropdown.Trigger suffixElement={<FieldTypeAttachment />}>
-          <span>With Suffix</span>
+          <Dropdown.Value>With Suffix</Dropdown.Value>
         </Dropdown.Trigger>
         <Dropdown.Content>
           <Dropdown.Item>
-            <span>Attachment</span>
+            <Dropdown.Value>Attachment</Dropdown.Value>
           </Dropdown.Item>
           <Dropdown.Item>
-            <span>Checkbox</span>
+            <Dropdown.Value>Checkbox</Dropdown.Value>
           </Dropdown.Item>
         </Dropdown.Content>
       </Dropdown>
@@ -177,14 +177,14 @@ export const LongerValue: Story = {
     return (
       <Dropdown>
         <Dropdown.Trigger className="w-48">
-          <span className="flex-1 truncate">Longer Value</span>
+          <Dropdown.Value>Longer Value</Dropdown.Value>
         </Dropdown.Trigger>
         <Dropdown.Content>
           <Dropdown.Item>
-            <span>Attachment</span>
+            <Dropdown.Value>Attachment</Dropdown.Value>
           </Dropdown.Item>
           <Dropdown.Item>
-            <span>Checkbox</span>
+            <Dropdown.Value>Checkbox</Dropdown.Value>
           </Dropdown.Item>
         </Dropdown.Content>
       </Dropdown>
@@ -223,22 +223,22 @@ export const TriggerAsChild: Story = {
         </Dropdown.Trigger>
         <Dropdown.Content>
           <Dropdown.Item>
-            <span>Attachment</span>
+            <Dropdown.Value>Attachment</Dropdown.Value>
           </Dropdown.Item>
           <Dropdown.Item>
-            <span>Checkbox</span>
+            <Dropdown.Value>Checkbox</Dropdown.Value>
           </Dropdown.Item>
           <Dropdown.Item>
-            <span>Count</span>
+            <Dropdown.Value>Count</Dropdown.Value>
           </Dropdown.Item>
           <Dropdown.Item>
-            <span>Date</span>
+            <Dropdown.Value>Date</Dropdown.Value>
           </Dropdown.Item>
           <Dropdown.Item>
-            <span>Filter</span>
+            <Dropdown.Value>Filter</Dropdown.Value>
           </Dropdown.Item>
           <Dropdown.Item>
-            <span>Rating</span>
+            <Dropdown.Value>Rating</Dropdown.Value>
           </Dropdown.Item>
         </Dropdown.Content>
       </Dropdown>
@@ -271,11 +271,15 @@ export const MatchTriggerWidth: Story = {
     return (
       <Dropdown matchTriggerWidth={true}>
         <Dropdown.Trigger className="w-64">
-          <span className="flex-1 truncate">Match Trigger Width</span>
+          <Dropdown.Value>Match Trigger Width</Dropdown.Value>
         </Dropdown.Trigger>
         <Dropdown.Content>
-          <Dropdown.Item>Option 1</Dropdown.Item>
-          <Dropdown.Item>Option 2</Dropdown.Item>
+          <Dropdown.Item>
+            <Dropdown.Value>Option 1</Dropdown.Value>
+          </Dropdown.Item>
+          <Dropdown.Item>
+            <Dropdown.Value>Option 2</Dropdown.Value>
+          </Dropdown.Item>
         </Dropdown.Content>
       </Dropdown>
     )
@@ -317,25 +321,31 @@ export const Nested: Story = {
         </Dropdown.Trigger>
         <Dropdown.Content>
           {Array.from({ length: 4 }).map((_, i) => (
-            <Dropdown.Item key={i}>Option {i + 1}</Dropdown.Item>
+            <Dropdown.Item key={i}>
+              <Dropdown.Value>Option {i + 1}</Dropdown.Value>
+            </Dropdown.Item>
           ))}
           <Dropdown>
             <Dropdown.SubTrigger>
-              <span className="flex-1 truncate">Submenu</span>
+              <Dropdown.Value>Submenu</Dropdown.Value>
             </Dropdown.SubTrigger>
             <Dropdown.Content>
               {Array.from({ length: 5 }).map((_, i) => (
-                <Dropdown.Item key={i}>Submenu Item {i + 1}</Dropdown.Item>
+                <Dropdown.Item key={i}>
+                  <Dropdown.Value>Submenu Item {i + 1}</Dropdown.Value>
+                </Dropdown.Item>
               ))}
             </Dropdown.Content>
           </Dropdown>
           <Dropdown>
             <Dropdown.SubTrigger>
-              <span className="flex-1 truncate">Submenu</span>
+              <Dropdown.Value>Submenu</Dropdown.Value>
             </Dropdown.SubTrigger>
             <Dropdown.Content>
               {Array.from({ length: 5 }).map((_, i) => (
-                <Dropdown.Item key={i}>Submenu Item {i + 1}</Dropdown.Item>
+                <Dropdown.Item key={i}>
+                  <Dropdown.Value>Submenu Item {i + 1}</Dropdown.Value>
+                </Dropdown.Item>
               ))}
             </Dropdown.Content>
           </Dropdown>
@@ -370,19 +380,25 @@ export const Divider: Story = {
     return (
       <Dropdown>
         <Dropdown.Trigger>
-          <span>Divider</span>
+          <Dropdown.Value>Divider</Dropdown.Value>
         </Dropdown.Trigger>
         <Dropdown.Content>
           {Array.from({ length: 4 }).map((_, i) => (
-            <Dropdown.Item key={i}>Option {i + 1}</Dropdown.Item>
+            <Dropdown.Item key={i}>
+              <Dropdown.Value>Option {i + 1}</Dropdown.Value>
+            </Dropdown.Item>
           ))}
           <Dropdown.Divider />
           {Array.from({ length: 4 }).map((_, i) => (
-            <Dropdown.Item key={i}>Option {i + 1}</Dropdown.Item>
+            <Dropdown.Item key={i}>
+              <Dropdown.Value>Option {i + 1}</Dropdown.Value>
+            </Dropdown.Item>
           ))}
           <Dropdown.Divider />
           {Array.from({ length: 2 }).map((_, i) => (
-            <Dropdown.Item key={i}>Option {i + 1}</Dropdown.Item>
+            <Dropdown.Item key={i}>
+              <Dropdown.Value>Option {i + 1}</Dropdown.Value>
+            </Dropdown.Item>
           ))}
         </Dropdown.Content>
       </Dropdown>
@@ -417,7 +433,7 @@ export const SelectionIcon: Story = {
     return (
       <Dropdown selection={true}>
         <Dropdown.Trigger>
-          <span>Selection Icon</span>
+          <Dropdown.Value>Selection Icon</Dropdown.Value>
         </Dropdown.Trigger>
         <Dropdown.Content>
           {items.map((item) => (
@@ -426,7 +442,7 @@ export const SelectionIcon: Story = {
               onMouseUp={() => setSelected(item)}
               selected={selected === item}
             >
-              {item}
+              <Dropdown.Value>{item}</Dropdown.Value>
             </Dropdown.Item>
           ))}
         </Dropdown.Content>
@@ -470,7 +486,7 @@ export const NestedSelectionIcon: Story = {
     return (
       <Dropdown>
         <Dropdown.Trigger>
-          <span>Selection Icon</span>
+          <Dropdown.Value>Selection Icon</Dropdown.Value>
         </Dropdown.Trigger>
         <Dropdown.Content>
           {items.map((item) => (
@@ -479,7 +495,7 @@ export const NestedSelectionIcon: Story = {
           <Dropdown.Divider />
           <Dropdown selection={true}>
             <Dropdown.SubTrigger>
-              <span className="flex-1 truncate">Submenu</span>
+              <Dropdown.Value>Submenu</Dropdown.Value>
             </Dropdown.SubTrigger>
             <Dropdown.Content>
               {subItems.map((item) => (
@@ -488,7 +504,7 @@ export const NestedSelectionIcon: Story = {
                   onMouseUp={() => setSelected(item)}
                   selected={selected === item}
                 >
-                  {item}
+                  <Dropdown.Value>{item}</Dropdown.Value>
                 </Dropdown.Item>
               ))}
             </Dropdown.Content>
@@ -574,7 +590,7 @@ export const Shortcut: Story = {
     return (
       <Dropdown>
         <Dropdown.Trigger>
-          <span>Shortcut</span>
+          <Dropdown.Value>Shortcut</Dropdown.Value>
         </Dropdown.Trigger>
         <Dropdown.Content>
           {Array.from({ length: 10 }).map((_, i) => (
@@ -585,7 +601,7 @@ export const Shortcut: Story = {
                 keys: faker.helpers.arrayElement(KEYS),
               }}
             >
-              <span className="flex-1 truncate">Option {i + 1}</span>
+              <Dropdown.Value>Option {i + 1}</Dropdown.Value>
             </Dropdown.Item>
           ))}
         </Dropdown.Content>
@@ -618,11 +634,15 @@ export const Disabled: Story = {
     return (
       <Dropdown>
         <Dropdown.Trigger disabled>
-          <span>Disabled</span>
+          <Dropdown.Value>Disabled</Dropdown.Value>
         </Dropdown.Trigger>
         <Dropdown.Content>
-          <Dropdown.Item>Disabled</Dropdown.Item>
-          <Dropdown.Item>Enabled</Dropdown.Item>
+          <Dropdown.Item>
+            <Dropdown.Value>Disabled</Dropdown.Value>
+          </Dropdown.Item>
+          <Dropdown.Item>
+            <Dropdown.Value>Enabled</Dropdown.Value>
+          </Dropdown.Item>
         </Dropdown.Content>
       </Dropdown>
     )
@@ -653,11 +673,15 @@ export const DisabledOption: Story = {
     return (
       <Dropdown>
         <Dropdown.Trigger>
-          <span>Disabled</span>
+          <Dropdown.Value>Disabled</Dropdown.Value>
         </Dropdown.Trigger>
         <Dropdown.Content>
-          <Dropdown.Item disabled>Disabled</Dropdown.Item>
-          <Dropdown.Item>Enabled</Dropdown.Item>
+          <Dropdown.Item disabled>
+            <Dropdown.Value>Disabled</Dropdown.Value>
+          </Dropdown.Item>
+          <Dropdown.Item>
+            <Dropdown.Value>Enabled</Dropdown.Value>
+          </Dropdown.Item>
         </Dropdown.Content>
       </Dropdown>
     )
@@ -690,11 +714,13 @@ export const LongList: Story = {
     return (
       <Dropdown>
         <Dropdown.Trigger>
-          <span>Long List</span>
+          <Dropdown.Value>Long List</Dropdown.Value>
         </Dropdown.Trigger>
         <Dropdown.Content>
           {Array.from({ length: 100 }).map((_, i) => (
-            <Dropdown.Item key={i}>Option {i + 1}</Dropdown.Item>
+            <Dropdown.Item key={i}>
+              <Dropdown.Value>Option {i + 1}</Dropdown.Value>
+            </Dropdown.Item>
           ))}
         </Dropdown.Content>
       </Dropdown>
@@ -728,11 +754,13 @@ export const Placement: Story = {
     return (
       <Dropdown placement="bottom-end">
         <Dropdown.Trigger>
-          <span>Placement</span>
+          <Dropdown.Value>Placement</Dropdown.Value>
         </Dropdown.Trigger>
         <Dropdown.Content>
           {Array.from({ length: 10 }).map((_, i) => (
-            <Dropdown.Item key={i}>Option {i + 1}</Dropdown.Item>
+            <Dropdown.Item key={i}>
+              <Dropdown.Value>Option {i + 1}</Dropdown.Value>
+            </Dropdown.Item>
           ))}
         </Dropdown.Content>
       </Dropdown>
@@ -768,17 +796,21 @@ export const Label: Story = {
     return (
       <Dropdown>
         <Dropdown.Trigger>
-          <span>Label</span>
+          <Dropdown.Value>Label</Dropdown.Value>
         </Dropdown.Trigger>
         <Dropdown.Content>
           <Dropdown.Label>Label 1</Dropdown.Label>
           {Array.from({ length: 10 }).map((_, i) => (
-            <Dropdown.Item key={i}>Option {i + 1}</Dropdown.Item>
+            <Dropdown.Item key={i}>
+              <Dropdown.Value>Option {i + 1}</Dropdown.Value>
+            </Dropdown.Item>
           ))}
           <Dropdown.Divider />
           <Dropdown.Label>Label 2</Dropdown.Label>
           {Array.from({ length: 10 }).map((_, i) => (
-            <Dropdown.Item key={i}>Option {i + 1}</Dropdown.Item>
+            <Dropdown.Item key={i}>
+              <Dropdown.Value>Option {i + 1}</Dropdown.Value>
+            </Dropdown.Item>
           ))}
         </Dropdown.Content>
       </Dropdown>
@@ -815,7 +847,7 @@ export const LabelWithSelection: Story = {
     return (
       <Dropdown selection={true}>
         <Dropdown.Trigger>
-          <span>Label with Selection</span>
+          <Dropdown.Value>Label with Selection</Dropdown.Value>
         </Dropdown.Trigger>
         <Dropdown.Content>
           <Dropdown.Label>Category Group</Dropdown.Label>
@@ -825,13 +857,15 @@ export const LabelWithSelection: Story = {
               selected={selected === `Option ${i + 1}`}
               onMouseUp={() => setSelected(`Option ${i + 1}`)}
             >
-              Option {i + 1}
+              <Dropdown.Value>Option {i + 1}</Dropdown.Value>
             </Dropdown.Item>
           ))}
           <Dropdown.Divider />
           <Dropdown.Label>Another Group</Dropdown.Label>
           {Array.from({ length: 3 }).map((_, i) => (
-            <Dropdown.Item key={i}>Option {i + 4}</Dropdown.Item>
+            <Dropdown.Item key={i}>
+              <Dropdown.Value>Option {i + 4}</Dropdown.Value>
+            </Dropdown.Item>
           ))}
         </Dropdown.Content>
       </Dropdown>
@@ -961,14 +995,14 @@ export const SearchAndButton: Story = {
                     )
                   }
                 >
-                  {option.label}
+                  <Dropdown.Value>{option.label}</Dropdown.Value>
                 </Dropdown.Item>
               ))}
               <Dropdown.Divider />
               <Dropdown.Label>Label</Dropdown.Label>
               <Dropdown selection={true}>
                 <Dropdown.SubTrigger>
-                  <span className="flex-1 truncate">Selection</span>
+                  <Dropdown.Value>Selection</Dropdown.Value>
                 </Dropdown.SubTrigger>
                 <Dropdown.Content>
                   {filteredOptions.map((option) => (
@@ -977,7 +1011,7 @@ export const SearchAndButton: Story = {
                       selected={subMenuIndex === option.id}
                       onMouseUp={() => setSubMenuIndex(option.id)}
                     >
-                      {option.label}
+                      <Dropdown.Value>{option.label}</Dropdown.Value>
                     </Dropdown.Item>
                   ))}
                 </Dropdown.Content>

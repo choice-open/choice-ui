@@ -65,7 +65,7 @@ export const Basic: Story = {
                 keys: "X",
               }}
             >
-              Cut
+              <ContextMenu.Value>Cut</ContextMenu.Value>
             </ContextMenu.Item>
 
             <ContextMenu.Item
@@ -75,7 +75,7 @@ export const Basic: Story = {
                 keys: "C",
               }}
             >
-              Copy
+              <ContextMenu.Value>Copy</ContextMenu.Value>
             </ContextMenu.Item>
 
             <ContextMenu.Item
@@ -85,22 +85,24 @@ export const Basic: Story = {
                 keys: "V",
               }}
             >
-              Paste
+              <ContextMenu.Value>Paste</ContextMenu.Value>
             </ContextMenu.Item>
 
             <ContextMenu.Divider />
 
             <ContextMenu.Submenu>
-              <ContextMenu.Submenu.Trigger>Sort Options</ContextMenu.Submenu.Trigger>
+              <ContextMenu.Submenu.Trigger>
+                <ContextMenu.Value>Sort Options</ContextMenu.Value>
+              </ContextMenu.Submenu.Trigger>
               <ContextMenu.Submenu.Content>
                 <ContextMenu.Item onClick={() => setSelectedItem("Sort by Name")}>
-                  Sort by Name
+                  <ContextMenu.Value>Sort by Name</ContextMenu.Value>
                 </ContextMenu.Item>
                 <ContextMenu.Item onClick={() => setSelectedItem("Sort by Date")}>
-                  Sort by Date
+                  <ContextMenu.Value>Sort by Date</ContextMenu.Value>
                 </ContextMenu.Item>
                 <ContextMenu.Item onClick={() => setSelectedItem("Sort by Size")}>
-                  Sort by Size
+                  <ContextMenu.Value>Sort by Size</ContextMenu.Value>
                 </ContextMenu.Item>
               </ContextMenu.Submenu.Content>
             </ContextMenu.Submenu>
@@ -115,7 +117,7 @@ export const Basic: Story = {
                 keys: "⌫",
               }}
             >
-              Delete (Disabled)
+              <ContextMenu.Value>Delete (Disabled)</ContextMenu.Value>
             </ContextMenu.Item>
           </ContextMenu.Content>
         </ContextMenu>
@@ -163,7 +165,7 @@ export const WithSelection: Story = {
                 selected={option.id === selectedOption}
                 onClick={() => setSelectedOption(option.id)}
               >
-                {option.label}
+                <ContextMenu.Value>{option.label}</ContextMenu.Value>
               </ContextMenu.Item>
             ))}
           </ContextMenu.Content>
@@ -242,7 +244,7 @@ export const SelectionWithSubmenus: Story = {
                 selected={category.id === selectedCategory}
                 onClick={() => setSelectedCategory(category.id)}
               >
-                {category.label}
+                <ContextMenu.Value>{category.label}</ContextMenu.Value>
               </ContextMenu.Item>
             ))}
 
@@ -251,7 +253,9 @@ export const SelectionWithSubmenus: Story = {
             <ContextMenu.Label>Submenus</ContextMenu.Label>
 
             <ContextMenu.Submenu>
-              <ContextMenu.Submenu.Trigger>Files</ContextMenu.Submenu.Trigger>
+              <ContextMenu.Submenu.Trigger>
+                <ContextMenu.Value>Files</ContextMenu.Value>
+              </ContextMenu.Submenu.Trigger>
               <ContextMenu.Submenu.Content>
                 <ContextMenu.Label>File Actions</ContextMenu.Label>
                 {fileOptions.map((option) => (
@@ -260,14 +264,16 @@ export const SelectionWithSubmenus: Story = {
                     selected={option.id === selectedFileOption}
                     onClick={() => setSelectedFileOption(option.id)}
                   >
-                    {option.label}
+                    <ContextMenu.Value>{option.label}</ContextMenu.Value>
                   </ContextMenu.Item>
                 ))}
               </ContextMenu.Submenu.Content>
             </ContextMenu.Submenu>
 
             <ContextMenu.Submenu>
-              <ContextMenu.Submenu.Trigger>Edit</ContextMenu.Submenu.Trigger>
+              <ContextMenu.Submenu.Trigger>
+                <ContextMenu.Value>Edit</ContextMenu.Value>
+              </ContextMenu.Submenu.Trigger>
               <ContextMenu.Submenu.Content>
                 <ContextMenu.Label>Edit Actions</ContextMenu.Label>
                 {editOptions.map((option) => (
@@ -276,14 +282,16 @@ export const SelectionWithSubmenus: Story = {
                     selected={option.id === selectedEditOption}
                     onClick={() => setSelectedEditOption(option.id)}
                   >
-                    {option.label}
+                    <ContextMenu.Value>{option.label}</ContextMenu.Value>
                   </ContextMenu.Item>
                 ))}
               </ContextMenu.Submenu.Content>
             </ContextMenu.Submenu>
 
             <ContextMenu.Submenu>
-              <ContextMenu.Submenu.Trigger>View</ContextMenu.Submenu.Trigger>
+              <ContextMenu.Submenu.Trigger>
+                <ContextMenu.Value>View</ContextMenu.Value>
+              </ContextMenu.Submenu.Trigger>
               <ContextMenu.Submenu.Content>
                 <ContextMenu.Label>View Options</ContextMenu.Label>
                 {viewOptions.map((option) => (
@@ -292,7 +300,7 @@ export const SelectionWithSubmenus: Story = {
                     selected={option.id === selectedViewOption}
                     onClick={() => setSelectedViewOption(option.id)}
                   >
-                    {option.label}
+                    <ContextMenu.Value>{option.label}</ContextMenu.Value>
                   </ContextMenu.Item>
                 ))}
               </ContextMenu.Submenu.Content>
@@ -336,13 +344,13 @@ export const AlignedLabels: Story = {
                 selected={selectedInSection1 === "item1"}
                 onClick={() => setSelectedInSection1("item1")}
               >
-                Item 1
+                <ContextMenu.Value>Item 1</ContextMenu.Value>
               </ContextMenu.Item>
               <ContextMenu.Item
                 selected={selectedInSection1 === "item2"}
                 onClick={() => setSelectedInSection1("item2")}
               >
-                Item 2
+                <ContextMenu.Value>Item 2</ContextMenu.Value>
               </ContextMenu.Item>
 
               <ContextMenu.Divider />
@@ -352,13 +360,13 @@ export const AlignedLabels: Story = {
                 selected={selectedInSection2 === "item1"}
                 onClick={() => setSelectedInSection2("item1")}
               >
-                Item 1
+                <ContextMenu.Value>Item 1</ContextMenu.Value>
               </ContextMenu.Item>
               <ContextMenu.Item
                 selected={selectedInSection2 === "item2"}
                 onClick={() => setSelectedInSection2("item2")}
               >
-                Item 2
+                <ContextMenu.Value>Item 2</ContextMenu.Value>
               </ContextMenu.Item>
             </ContextMenu.Content>
           </ContextMenu>
@@ -379,14 +387,22 @@ export const AlignedLabels: Story = {
 
             <ContextMenu.Content>
               <ContextMenu.Label>Section 1</ContextMenu.Label>
-              <ContextMenu.Item onClick={() => {}}>Item 1</ContextMenu.Item>
-              <ContextMenu.Item onClick={() => {}}>Item 2</ContextMenu.Item>
+              <ContextMenu.Item onClick={() => {}}>
+                <ContextMenu.Value>Item 1</ContextMenu.Value>
+              </ContextMenu.Item>
+              <ContextMenu.Item onClick={() => {}}>
+                <ContextMenu.Value>Item 2</ContextMenu.Value>
+              </ContextMenu.Item>
 
               <ContextMenu.Divider />
 
               <ContextMenu.Label>Section 2</ContextMenu.Label>
-              <ContextMenu.Item onClick={() => {}}>Item 1</ContextMenu.Item>
-              <ContextMenu.Item onClick={() => {}}>Item 2</ContextMenu.Item>
+              <ContextMenu.Item onClick={() => {}}>
+                <ContextMenu.Value>Item 1</ContextMenu.Value>
+              </ContextMenu.Item>
+              <ContextMenu.Item onClick={() => {}}>
+                <ContextMenu.Value>Item 2</ContextMenu.Value>
+              </ContextMenu.Item>
             </ContextMenu.Content>
           </ContextMenu>
         </div>
@@ -437,7 +453,7 @@ export const ComparisonWithAndWithoutSelection: Story = {
                   selected={option.id === selectedOption1}
                   onClick={() => setSelectedOption1(option.id)}
                 >
-                  {option.label}
+                  <ContextMenu.Value>{option.label}</ContextMenu.Value>
                 </ContextMenu.Item>
               ))}
             </ContextMenu.Content>
@@ -469,7 +485,7 @@ export const ComparisonWithAndWithoutSelection: Story = {
                   selected={option.id === selectedOption2}
                   onClick={() => setSelectedOption2(option.id)}
                 >
-                  {option.label}
+                  <ContextMenu.Value>{option.label}</ContextMenu.Value>
                 </ContextMenu.Item>
               ))}
             </ContextMenu.Content>
