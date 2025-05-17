@@ -8,6 +8,7 @@ import { ListSubTrigger } from "./components/list-sub-trigger"
 import { ListProvider } from "./context"
 import { useListKeyboard } from "./hooks"
 import { ListTv } from "./tv"
+import { MenuValue } from "../menus"
 
 interface ListProps extends HTMLProps<HTMLDivElement> {
   children: React.ReactNode
@@ -23,6 +24,7 @@ interface ListComponentProps
   Label: typeof ListLabel
   Divider: typeof ListDivider
   SubTrigger: typeof ListSubTrigger
+  Value: typeof MenuValue
 }
 
 export const ListBase = forwardRef<HTMLDivElement, ListProps>((props, ref) => {
@@ -73,5 +75,6 @@ List.Item = ListItem
 List.Label = ListLabel
 List.Divider = ListDivider
 List.SubTrigger = ListSubTrigger
+List.Value = MenuValue
 
 export { List }

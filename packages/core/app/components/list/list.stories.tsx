@@ -34,13 +34,13 @@ export const Basic: Story = {
     <List {...args}>
       <List.Content>
         <List.Item>
-          <span className="flex-1 truncate">Home</span>
+          <List.Value>Home</List.Value>
         </List.Item>
         <List.Item>
-          <span className="flex-1 truncate">Documents</span>
+          <List.Value>Documents</List.Value>
         </List.Item>
         <List.Item>
-          <span className="flex-1 truncate">Settings</span>
+          <List.Value>Settings</List.Value>
         </List.Item>
       </List.Content>
     </List>
@@ -57,13 +57,13 @@ export const WithIcons: Story = {
     <List {...args}>
       <List.Content>
         <List.Item prefixElement={<FieldTypeCheckbox />}>
-          <span className="flex-1 truncate">Home</span>
+          <List.Value>Home</List.Value>
         </List.Item>
         <List.Item prefixElement={<FieldTypeSingleSelect />}>
-          <span className="flex-1 truncate">Documents</span>
+          <List.Value>Documents</List.Value>
         </List.Item>
         <List.Item prefixElement={<FieldTypeAttachment />}>
-          <span className="flex-1 truncate">Settings</span>
+          <List.Value>Settings</List.Value>
         </List.Item>
       </List.Content>
     </List>
@@ -83,13 +83,13 @@ export const Variant: Story = {
     >
       <List.Content>
         <List.Item prefixElement={<FieldTypeCheckbox />}>
-          <span className="flex-1 truncate">Home</span>
+          <List.Value>Home</List.Value>
         </List.Item>
         <List.Item prefixElement={<FieldTypeSingleSelect />}>
-          <span className="flex-1 truncate">Documents</span>
+          <List.Value>Documents</List.Value>
         </List.Item>
         <List.Item prefixElement={<FieldTypeAttachment />}>
-          <span className="flex-1 truncate">Settings</span>
+          <List.Value>Settings</List.Value>
         </List.Item>
       </List.Content>
     </List>
@@ -107,17 +107,17 @@ export const WithLabelsAndDividers: Story = {
       <List.Label>Navigation</List.Label>
       <List.Content>
         <List.Item prefixElement={<FieldTypeCheckbox />}>
-          <span className="flex-1 truncate">Home</span>
+          <List.Value>Home</List.Value>
         </List.Item>
         <List.Item prefixElement={<FieldTypeSingleSelect />}>
-          <span className="flex-1 truncate">Documents</span>
+          <List.Value>Documents</List.Value>
         </List.Item>
       </List.Content>
       <List.Divider />
       <List.Label>System</List.Label>
       <List.Content>
         <List.Item prefixElement={<FieldTypeAttachment />}>
-          <span className="flex-1 truncate">Settings</span>
+          <List.Value>Settings</List.Value>
         </List.Item>
       </List.Content>
     </List>
@@ -138,24 +138,24 @@ export const NestedList: Story = {
           id="docs"
           prefixElement={<Folder />}
         >
-          <span className="flex-1 truncate">Documents</span>
+          <List.Value>Documents</List.Value>
         </List.SubTrigger>
         <List.Content parentId="docs">
           <List.Item parentId="docs">
-            <span className="flex-1 truncate">Getting Started</span>
+            <List.Value>Getting Started</List.Value>
           </List.Item>
           <List.Item parentId="docs">
-            <span className="flex-1 truncate">Components</span>
+            <List.Value>Components</List.Value>
           </List.Item>
           <List.Item
             parentId="docs"
             prefixElement={<File />}
           >
-            <span className="flex-1 truncate">API Reference</span>
+            <List.Value>API Reference</List.Value>
           </List.Item>
         </List.Content>
         <List.Item prefixElement={<FieldTypeDate />}>
-          <span className="flex-1 truncate">Calendar</span>
+          <List.Value>Calendar</List.Value>
         </List.Item>
       </List.Content>
     </List>
@@ -177,30 +177,30 @@ export const DefaultOpenNestedList: Story = {
           prefixElement={<Folder />}
           defaultOpen
         >
-          <span className="flex-1 truncate">Documents</span>
+          <List.Value>Documents</List.Value>
         </List.SubTrigger>
         <List.Content parentId="docs">
           <List.Item
             parentId="docs"
             prefixElement={<File />}
           >
-            <span className="flex-1 truncate">Getting Started</span>
+            <List.Value>Getting Started</List.Value>
           </List.Item>
           <List.Item
             parentId="docs"
             prefixElement={<File />}
           >
-            <span className="flex-1 truncate">Components</span>
+            <List.Value>Components</List.Value>
           </List.Item>
           <List.Item
             parentId="docs"
             prefixElement={<File />}
           >
-            <span className="flex-1 truncate">API Reference</span>
+            <List.Value>API Reference</List.Value>
           </List.Item>
         </List.Content>
         <List.Item prefixElement={<FieldTypeDate />}>
-          <span className="flex-1 truncate">Calendar</span>
+          <List.Value>Calendar</List.Value>
         </List.Item>
       </List.Content>
     </List>
@@ -232,7 +232,7 @@ export const WithReferenceLines: Story = {
           prefixElement={<Folder />}
           defaultOpen={level <= 3} // 默认展开前三级
         >
-          <span className="flex-1 truncate">{`Level ${level} Folder`}</span>
+          <List.Value>{`Level ${level} Folder`}</List.Value>
         </List.SubTrigger>,
       )
 
@@ -249,7 +249,7 @@ export const WithReferenceLines: Story = {
               parentId={currentId}
               prefixElement={<File />}
             >
-              <span className="flex-1 truncate">{`File ${fileIndex} (Level ${level})`}</span>
+              <List.Value>{`File ${fileIndex} (Level ${level})`}</List.Value>
             </List.Item>
           ))}
 
@@ -267,12 +267,16 @@ export const WithReferenceLines: Story = {
         shouldShowReferenceLine
       >
         <List.Content>
-          <List.Item prefixElement={<FieldTypeLongText />}>Home</List.Item>
+          <List.Item prefixElement={<FieldTypeLongText />}>
+            <List.Value>Home</List.Value>
+          </List.Item>
 
           {/* 从第一级开始递归创建嵌套结构 */}
           {createNestedItems(1)}
 
-          <List.Item prefixElement={<FieldTypeDate />}>Calendar</List.Item>
+          <List.Item prefixElement={<FieldTypeDate />}>
+            <List.Value>Calendar</List.Value>
+          </List.Item>
         </List.Content>
       </List>
     )
@@ -292,19 +296,19 @@ export const WithShortcuts: Story = {
           prefixElement={<FieldTypeLongText />}
           shortcut={{ keys: "H" }}
         >
-          <span className="flex-1 truncate">Home</span>
+          <List.Value>Home</List.Value>
         </List.Item>
         <List.Item
           prefixElement={<FieldTypeLongText />}
           shortcut={{ keys: "D" }}
         >
-          <span className="flex-1 truncate">Documents</span>
+          <List.Value>Documents</List.Value>
         </List.Item>
         <List.Item
           prefixElement={<FieldTypeAttachment />}
           shortcut={{ modifier: "command", keys: "," }}
         >
-          <span className="flex-1 truncate">Settings</span>
+          <List.Value>Settings</List.Value>
         </List.Item>
       </List.Content>
     </List>
@@ -355,21 +359,21 @@ export const WithSelectionEnabled: Story = {
               prefixElement={getItemPrefixElement("doc1")}
               onClick={() => handleItemClick("doc1")}
             >
-              <span className="flex-1 truncate">document1.txt</span>
+              <List.Value>document1.txt</List.Value>
             </List.Item>
             <List.Item
               id="doc2"
               prefixElement={getItemPrefixElement("doc2")}
               onClick={() => handleItemClick("doc2")}
             >
-              <span className="flex-1 truncate">document2.txt</span>
+              <List.Value>document2.txt</List.Value>
             </List.Item>
             <List.Item
               id="doc3"
               prefixElement={getItemPrefixElement("doc3")}
               onClick={() => handleItemClick("doc3")}
             >
-              <span className="flex-1 truncate">document3.txt</span>
+              <List.Value>document3.txt</List.Value>
             </List.Item>
           </List.Content>
         </List>
@@ -388,16 +392,16 @@ export const WithDisabledItems: Story = {
     <List {...args}>
       <List.Content>
         <List.Item prefixElement={<FieldTypeLongText />}>
-          <span className="flex-1 truncate">Home</span>
+          <List.Value>Home</List.Value>
         </List.Item>
         <List.Item
           prefixElement={<FieldTypeLongText />}
           disabled
         >
-          <span className="flex-1 truncate">Mail (Maintenance)</span>
+          <List.Value>Mail (Maintenance)</List.Value>
         </List.Item>
         <List.Item prefixElement={<FieldTypeAttachment />}>
-          <span className="flex-1 truncate">Settings</span>
+          <List.Value>Settings</List.Value>
         </List.Item>
       </List.Content>
     </List>
@@ -420,30 +424,30 @@ export const NonCollapsibleNestedList: Story = {
           defaultOpen
           disableCollapse
         >
-          <span className="flex-1 truncate">Documents</span>
+          <List.Value>Documents</List.Value>
         </List.SubTrigger>
         <List.Content parentId="docs">
           <List.Item
             parentId="docs"
             prefixElement={<File />}
           >
-            <span className="flex-1 truncate">Getting Started</span>
+            <List.Value>Getting Started</List.Value>
           </List.Item>
           <List.Item
             parentId="docs"
             prefixElement={<File />}
           >
-            <span className="flex-1 truncate">Components</span>
+            <List.Value>Components</List.Value>
           </List.Item>
           <List.Item
             parentId="docs"
             prefixElement={<File />}
           >
-            <span className="flex-1 truncate">API Reference</span>
+            <List.Value>API Reference</List.Value>
           </List.Item>
         </List.Content>
         <List.Item prefixElement={<FieldTypeDate />}>
-          <span className="flex-1 truncate">Calendar</span>
+          <List.Value>Calendar</List.Value>
         </List.Item>
       </List.Content>
     </List>
@@ -474,7 +478,7 @@ export const MultiLevelNestedList: Story = {
           prefixElement={<Folder />}
           defaultOpen={level <= 2} // 默认展开前两级
         >
-          <span className="flex-1 truncate">{`Level ${level} Folder`}</span>
+          <List.Value>{`Level ${level} Folder`}</List.Value>
         </List.SubTrigger>,
       )
 
@@ -491,7 +495,7 @@ export const MultiLevelNestedList: Story = {
               parentId={currentId}
               prefixElement={<File />}
             >
-              <span className="flex-1 truncate">{`File ${fileIndex} (Level ${level})`}</span>
+              <List.Value>{`File ${fileIndex} (Level ${level})`}</List.Value>
             </List.Item>
           ))}
 
@@ -506,12 +510,16 @@ export const MultiLevelNestedList: Story = {
     return (
       <List {...args}>
         <List.Content>
-          <List.Item prefixElement={<FieldTypeLongText />}>Home</List.Item>
+          <List.Item prefixElement={<FieldTypeLongText />}>
+            <List.Value>Home</List.Value>
+          </List.Item>
 
           {/* 从第一级开始递归创建嵌套结构 */}
           {createNestedItems(1)}
 
-          <List.Item prefixElement={<FieldTypeDate />}>Calendar</List.Item>
+          <List.Item prefixElement={<FieldTypeDate />}>
+            <List.Value>Calendar</List.Value>
+          </List.Item>
         </List.Content>
       </List>
     )
@@ -567,13 +575,13 @@ export const NestedListWithSelection: Story = {
               onClick={() => handleItemClick("root1")}
               prefixElement={selectedItems.has("root1") ? <Check /> : undefined}
             >
-              <span className="flex-1 truncate">Root Item 1</span>
+              <List.Value>Root Item 1</List.Value>
             </List.Item>
             <List.SubTrigger
               id="nested"
               defaultOpen
             >
-              <span className="flex-1 truncate">Nested Section</span>
+              <List.Value>Nested Section</List.Value>
             </List.SubTrigger>
             <List.Content parentId="nested">
               <List.Item
@@ -583,7 +591,7 @@ export const NestedListWithSelection: Story = {
                 onClick={() => handleItemClick("nested1")}
                 prefixElement={selectedItems.has("nested1") ? <Check /> : <></>}
               >
-                <span className="flex-1 truncate">Nested Item 1</span>
+                <List.Value>Nested Item 1</List.Value>
               </List.Item>
               <List.Item
                 id="nested2"
@@ -592,7 +600,7 @@ export const NestedListWithSelection: Story = {
                 onClick={() => handleItemClick("nested2")}
                 prefixElement={selectedItems.has("nested2") ? <Check /> : <></>}
               >
-                <span className="flex-1 truncate">Nested Item 2</span>
+                <List.Value>Nested Item 2</List.Value>
               </List.Item>
               <List.Item
                 id="nested3"
@@ -601,7 +609,7 @@ export const NestedListWithSelection: Story = {
                 onClick={() => handleItemClick("nested3")}
                 prefixElement={selectedItems.has("nested3") ? <Check /> : <></>}
               >
-                <span className="flex-1 truncate">Nested Item 3</span>
+                <List.Value>Nested Item 3</List.Value>
               </List.Item>
             </List.Content>
             <List.Item
@@ -610,7 +618,7 @@ export const NestedListWithSelection: Story = {
               onClick={() => handleItemClick("root2")}
               prefixElement={selectedItems.has("root2") ? <Check /> : <></>}
             >
-              <span className="flex-1 truncate">Root Item 2</span>
+              <List.Value>Root Item 2</List.Value>
             </List.Item>
           </List.Content>
         </List>
