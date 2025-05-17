@@ -10,11 +10,12 @@ import { useListKeyboard } from "./hooks"
 import { ListTv } from "./tv"
 import { MenuValue } from "../menus"
 
-interface ListProps extends HTMLProps<HTMLDivElement> {
+interface ListProps extends Omit<HTMLProps<HTMLDivElement>, "size"> {
   children: React.ReactNode
   shouldShowReferenceLine?: boolean
   selection?: boolean
   variant?: "default" | "primary"
+  size?: "default" | "large"
 }
 
 interface ListComponentProps
@@ -28,13 +29,14 @@ interface ListComponentProps
 }
 
 export const ListBase = forwardRef<HTMLDivElement, ListProps>((props, ref) => {
-  const { children, className, shouldShowReferenceLine, selection, variant, ...rest } = props
+  const { children, className, shouldShowReferenceLine, selection, variant, size, ...rest } = props
 
   return (
     <ListProvider
       shouldShowReferenceLine={shouldShowReferenceLine}
       selection={selection}
       variant={variant}
+      size={size}
     >
       <ListRoot
         ref={ref}

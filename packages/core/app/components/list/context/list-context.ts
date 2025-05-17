@@ -57,7 +57,8 @@ interface StructureContextValue {
   unregisterItem: (id: string) => void
   itemsMap: Map<string, { parentId?: string }>
   shouldShowReferenceLine?: boolean
-  variant?: "default" | "primary" // 添加variant属性
+  variant?: "default" | "primary"
+  size?: "default" | "large"
 }
 
 export const StructureContext = createContext<StructureContextValue | undefined>(undefined)
@@ -68,4 +69,15 @@ export function useStructureContext() {
     throw new Error("useStructureContext must be used within a ListProvider")
   }
   return context
+}
+
+// 5. 层级Context - 传递嵌套层级信息
+interface LevelContextValue {
+  level: number
+}
+
+export const LevelContext = createContext<LevelContextValue>({ level: 0 })
+
+export function useLevelContext() {
+  return useContext(LevelContext)
 }

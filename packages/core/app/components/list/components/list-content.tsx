@@ -1,6 +1,6 @@
 import { forwardRef, useMemo } from "react"
 import { tcx } from "~/utils"
-import { useExpandContext, useStructureContext } from "../context"
+import { useExpandContext, useStructureContext, LevelContext } from "../context"
 import { ListContentTv } from "../tv"
 
 interface ListContentProps extends React.HTMLProps<HTMLDivElement> {
@@ -12,7 +12,7 @@ export const ListContent = forwardRef<HTMLDivElement, ListContentProps>((props, 
   const { children, className, parentId, ...rest } = props
 
   const { isSubListExpanded } = useExpandContext()
-  const { itemsMap, shouldShowReferenceLine } = useStructureContext()
+  const { itemsMap, shouldShowReferenceLine, size } = useStructureContext()
 
   const level = useMemo(() => {
     if (!parentId) return 0
@@ -51,19 +51,21 @@ export const ListContent = forwardRef<HTMLDivElement, ListContentProps>((props, 
   const styles = ListContentTv({
     showReferenceLine: shouldShowReferenceLine,
     level: safeLevel,
+    size,
   })
 
   return (
-    <div
-      ref={ref}
-      role="group"
-      data-level={safeLevel}
-      data-show-reference-line={shouldShowReferenceLine}
-      {...rest}
-      className={tcx(styles, className)}
-    >
-      {children}
-    </div>
+    <LevelContext.Provider value={{ level: safeLevel }}>
+      <div
+        ref={ref}
+        role="group"
+        data-level={safeLevel}
+        className={tcx(styles, className)}
+        {...rest}
+      >
+        {children}
+      </div>
+    </LevelContext.Provider>
   )
 })
 

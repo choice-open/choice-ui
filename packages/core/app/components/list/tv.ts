@@ -13,14 +13,9 @@ export const ListItemTv = tv({
   slots: {
     root: [
       "group/list-item relative",
-      "flex h-6 w-full flex-none items-center rounded-md",
+      "flex w-full flex-none items-center rounded-md",
       "leading-md tracking-md text-md text-left",
       "cursor-default",
-      "group-data-[level=1]/list:pl-6",
-      "group-data-[level=2]/list:pl-11",
-      "group-data-[level=3]/list:pl-16",
-      "group-data-[level=4]/list:pl-21",
-      "group-data-[level=5]/list:pl-26",
     ],
     shortcut: "",
     icon: "flex h-4 min-w-4 flex-none items-center justify-center",
@@ -44,16 +39,32 @@ export const ListItemTv = tv({
       false: {},
     },
     hasPrefix: {
-      true: { root: "gap-1 pl-1" },
-      false: { root: "pl-2" },
+      true: {},
+      false: {},
     },
     hasSuffix: {
-      true: { root: "gap-1 pr-1" },
-      false: { root: "pr-2" },
+      true: {},
+      false: {},
     },
     variant: {
       default: {},
       primary: {},
+    },
+    size: {
+      default: {
+        root: "h-6",
+      },
+      large: {
+        root: "h-8",
+      },
+    },
+    level: {
+      0: {},
+      1: {},
+      2: {},
+      3: {},
+      4: {},
+      5: {},
     },
   },
   compoundVariants: [
@@ -82,6 +93,96 @@ export const ListItemTv = tv({
         shortcut: "text-default-foreground",
       },
     },
+    {
+      size: "default",
+      hasPrefix: false,
+      class: { root: "pl-2" },
+    },
+    {
+      size: "large",
+      hasPrefix: false,
+      class: { root: "pl-4" },
+    },
+    {
+      size: "default",
+      hasPrefix: true,
+      class: { root: "gap-1 pl-1" },
+    },
+    {
+      size: "large",
+      hasPrefix: true,
+      class: { root: "gap-1 pl-2" },
+    },
+    {
+      size: "default",
+      hasSuffix: false,
+      class: { root: "pr-2" },
+    },
+    {
+      size: "large",
+      hasSuffix: false,
+      class: { root: "pr-4" },
+    },
+    {
+      size: "default",
+      hasSuffix: true,
+      class: { root: "gap-1 pr-1" },
+    },
+    {
+      size: "large",
+      hasSuffix: true,
+      class: { root: "gap-1 pr-2" },
+    },
+    {
+      size: "default",
+      level: 1,
+      class: { root: "pl-6" },
+    },
+    {
+      size: "default",
+      level: 2,
+      class: { root: "pl-11" },
+    },
+    {
+      size: "default",
+      level: 3,
+      class: { root: "pl-16" },
+    },
+    {
+      size: "default",
+      level: 4,
+      class: { root: "pl-21" },
+    },
+    {
+      size: "default",
+      level: 5,
+      class: { root: "pl-26" },
+    },
+    {
+      size: "large",
+      level: 1,
+      class: { root: "pl-7" },
+    },
+    {
+      size: "large",
+      level: 2,
+      class: { root: "pl-12" },
+    },
+    {
+      size: "large",
+      level: 3,
+      class: { root: "pl-17" },
+    },
+    {
+      size: "large",
+      level: 4,
+      class: { root: "pl-22" },
+    },
+    {
+      size: "large",
+      level: 5,
+      class: { root: "pl-27" },
+    },
   ],
   defaultVariants: {
     active: false,
@@ -90,6 +191,8 @@ export const ListItemTv = tv({
     hasPrefix: false,
     hasSuffix: false,
     variant: "default",
+    size: "default",
+    level: 0,
   },
 })
 
@@ -121,13 +224,17 @@ export const ListContentTv = tv({
       true: "",
       false: "",
     },
+    size: {
+      default: {},
+      large: {},
+    },
     level: {
       0: "",
-      1: "before:left-2.5",
-      2: "before:left-7.5",
-      3: "before:left-12.5",
-      4: "before:left-17.5",
-      5: "before:left-22.5",
+      1: "",
+      2: "",
+      3: "",
+      4: "",
+      5: "",
     },
   },
   compoundVariants: [
@@ -140,9 +247,60 @@ export const ListContentTv = tv({
         "group-hover/list:before:bg-default-boundary",
       ],
     },
+    {
+      size: "default",
+      level: 1,
+      class: "before:left-2",
+    },
+    {
+      size: "default",
+      level: 2,
+      class: "before:left-7",
+    },
+    {
+      size: "default",
+      level: 3,
+      class: "before:left-12",
+    },
+    {
+      size: "default",
+      level: 4,
+      class: "before:left-17",
+    },
+    {
+      size: "default",
+      level: 5,
+      class: "before:left-22",
+    },
+    {
+      size: "large",
+      level: 1,
+      class: "before:left-2.5",
+    },
+    {
+      size: "large",
+      level: 2,
+      class: "before:left-7.5",
+    },
+    {
+      size: "large",
+      level: 3,
+      class: "before:left-12.5",
+    },
+    {
+      size: "large",
+      level: 4,
+      class: "before:left-17.5",
+    },
+    {
+      size: "large",
+      level: 5,
+      class: "before:left-22.5",
+    },
   ],
   defaultVariants: {
     showReferenceLine: false,
     level: 0,
+    size: "default",
   },
 })

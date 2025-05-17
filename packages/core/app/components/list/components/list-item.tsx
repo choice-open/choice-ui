@@ -1,7 +1,12 @@
 import { forwardRef, memo, ReactNode, useEffect, useId } from "react"
 import { tcx } from "~/utils"
 import { Kbd, type KbdKey } from "../../kbd"
-import { useActiveItemContext, useSelectionContext, useStructureContext } from "../context"
+import {
+  useActiveItemContext,
+  useSelectionContext,
+  useStructureContext,
+  useLevelContext,
+} from "../context"
 import { ListItemTv } from "../tv"
 
 export interface ListItemProps extends React.HTMLAttributes<HTMLButtonElement> {
@@ -47,14 +52,17 @@ export const ListItem = memo(
     const id = providedId || internalId
 
     // 获取Context中的值
-    const { registerItem, unregisterItem, variant } = useStructureContext()
+    const { registerItem, unregisterItem, variant, size } = useStructureContext()
     const { activeItem, setActiveItem } = useActiveItemContext()
     const { isSelected, toggleSelection, selection } = useSelectionContext()
+    const { level } = useLevelContext()
 
     useEffect(() => {
       registerItem(id, parentId)
       return () => unregisterItem(id)
     }, [id, parentId])
+
+    const safeLevel = level > 5 ? 5 : ((level < 0 ? 0 : level) as 0 | 1 | 2 | 3 | 4 | 5)
 
     const styles = ListItemTv({
       active: active || activeItem === id,
@@ -63,6 +71,8 @@ export const ListItem = memo(
       hasPrefix: !!prefixElement,
       hasSuffix: !!suffixElement,
       variant,
+      size,
+      level: safeLevel,
     })
 
     const hasValidShortcut = shortcut && (shortcut.modifier || shortcut.keys)
@@ -106,6 +116,7 @@ export const ListItem = memo(
         data-selected={isSelected(id) || selected}
         data-disabled={disabled}
         data-variant={variant}
+        data-level={level}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         onClick={handleClick}

@@ -11,6 +11,7 @@ interface ListProviderProps {
   shouldShowReferenceLine?: boolean
   selection?: boolean
   variant?: "default" | "primary"
+  size?: "default" | "large"
 }
 
 // 使用reducer管理复杂状态，减少重渲染
@@ -83,11 +84,10 @@ export function ListProvider({
   shouldShowReferenceLine,
   selection,
   variant = "default",
+  size = "default",
 }: ListProviderProps) {
-  // 使用普通state管理activeItem，因为它频繁变化但逻辑简单
   const [activeItem, setActiveItem] = useState<string | null>(null)
 
-  // 使用useReducer管理更复杂的状态
   const [expandedSubLists, dispatchExpand] = useReducer(expandReducer, new Set<string>())
   const [selectedItems, dispatchSelection] = useReducer(selectionReducer, new Set<string>())
   const [itemsMap, dispatchStructure] = useReducer(structureReducer, new Map())
@@ -151,8 +151,9 @@ export function ListProvider({
       itemsMap,
       shouldShowReferenceLine,
       variant,
+      size,
     }),
-    [registerItem, unregisterItem, itemsMap, shouldShowReferenceLine, variant],
+    [registerItem, unregisterItem, itemsMap, shouldShowReferenceLine, variant, size],
   )
 
   // 使用嵌套Provider模式，允许组件选择性地订阅最小所需Context

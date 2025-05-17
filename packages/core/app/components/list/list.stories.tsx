@@ -162,6 +162,42 @@ export const NestedList: Story = {
   ),
 }
 
+export const Size: Story = {
+  render: (args) => (
+    <List
+      {...args}
+      size="large"
+    >
+      <List.Content>
+        <List.Item prefixElement={<FieldTypeLongText />}>Home</List.Item>
+        <List.SubTrigger
+          id="docs"
+          prefixElement={<Folder />}
+        >
+          <List.Value>Documents</List.Value>
+        </List.SubTrigger>
+        <List.Content parentId="docs">
+          <List.Item parentId="docs">
+            <List.Value>Getting Started</List.Value>
+          </List.Item>
+          <List.Item parentId="docs">
+            <List.Value>Components</List.Value>
+          </List.Item>
+          <List.Item
+            parentId="docs"
+            prefixElement={<File />}
+          >
+            <List.Value>API Reference</List.Value>
+          </List.Item>
+        </List.Content>
+        <List.Item prefixElement={<FieldTypeDate />}>
+          <List.Value>Calendar</List.Value>
+        </List.Item>
+      </List.Content>
+    </List>
+  ),
+}
+
 /**
  * A list with pre-expanded nested content.
  *
@@ -508,7 +544,11 @@ export const MultiLevelNestedList: Story = {
     }
 
     return (
-      <List {...args}>
+      <List
+        {...args}
+        size="large"
+        shouldShowReferenceLine
+      >
         <List.Content>
           <List.Item prefixElement={<FieldTypeLongText />}>
             <List.Value>Home</List.Value>

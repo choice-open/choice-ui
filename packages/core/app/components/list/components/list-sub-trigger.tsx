@@ -1,7 +1,12 @@
 import { ChevronDownSmall, ChevronRightSmall } from "@choiceform/icons-react"
 import { forwardRef, memo, ReactNode, useEffect, useId, useRef } from "react"
 import { tcx } from "~/utils"
-import { useActiveItemContext, useExpandContext, useStructureContext } from "../context"
+import {
+  useActiveItemContext,
+  useExpandContext,
+  useLevelContext,
+  useStructureContext,
+} from "../context"
 import { ListItemTv } from "../tv"
 import { useEventCallback } from "usehooks-ts"
 
@@ -46,9 +51,10 @@ export const ListSubTrigger = memo(
     const defaultOpenApplied = useRef(false)
 
     // 使用分离的Context，减少重渲染
-    const { registerItem, unregisterItem, variant } = useStructureContext()
+    const { registerItem, unregisterItem, variant, size } = useStructureContext()
     const { activeItem, setActiveItem } = useActiveItemContext()
     const { toggleSubList, isSubListExpanded } = useExpandContext()
+    const { level } = useLevelContext()
 
     const isOpen = isSubListExpanded(id)
 
@@ -58,8 +64,7 @@ export const ListSubTrigger = memo(
     useEffect(() => {
       registerItem(id, parentId)
       return () => unregisterItem(id)
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [id, parentId]) // 注意：我们故意省略依赖项，因为只需要在挂载和卸载时执行
+    }, [id, parentId])
 
     // 处理默认打开状态
     useEffect(() => {
@@ -69,12 +74,16 @@ export const ListSubTrigger = memo(
       }
     }, [defaultOpen, id, isOpen, toggleSubList])
 
+    const safeLevel = level > 5 ? 5 : ((level < 0 ? 0 : level) as 0 | 1 | 2 | 3 | 4 | 5)
+
     const styles = ListItemTv({
       active: (active || activeItem === id) && !disableCollapse,
       disabled,
       hasPrefix: !!prefixElement,
       hasSuffix: !!suffixElement || !!defaultSuffixElement,
       variant,
+      size,
+      level: safeLevel,
     })
 
     // 使用useEventCallback优化事件处理函数
