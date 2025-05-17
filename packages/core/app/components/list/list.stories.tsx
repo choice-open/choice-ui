@@ -1,0 +1,619 @@
+import { Meta, StoryObj } from "@storybook/react"
+import React from "react"
+import { List } from "./list"
+import {
+  FieldTypeAttachment,
+  FieldTypeCheckbox,
+  FieldTypeLongText,
+  FieldTypeSingleSelect,
+  Folder,
+  File,
+  FieldTypeDate,
+  Check,
+} from "@choiceform/icons-react"
+
+const meta: Meta<typeof List> = {
+  title: "Components/List",
+  component: List,
+  parameters: {
+    layout: "centered",
+  },
+}
+
+export default meta
+type Story = StoryObj<typeof List>
+
+/**
+ * A basic list with simple text items.
+ *
+ * Use the `List` component with `List.Content` and `List.Item` for a simple list.
+ */
+export const Basic: Story = {
+  render: (args) => (
+    <List {...args}>
+      <List.Content>
+        <List.Item>
+          <span className="flex-1 truncate">Home</span>
+        </List.Item>
+        <List.Item>
+          <span className="flex-1 truncate">Documents</span>
+        </List.Item>
+        <List.Item>
+          <span className="flex-1 truncate">Settings</span>
+        </List.Item>
+      </List.Content>
+    </List>
+  ),
+}
+
+/**
+ * A list with icon prefixes for each item.
+ *
+ * Use the `prefixElement` prop to add icons or other elements at the beginning of list items.
+ */
+export const WithIcons: Story = {
+  render: (args) => (
+    <List {...args}>
+      <List.Content>
+        <List.Item prefixElement={<FieldTypeCheckbox />}>
+          <span className="flex-1 truncate">Home</span>
+        </List.Item>
+        <List.Item prefixElement={<FieldTypeSingleSelect />}>
+          <span className="flex-1 truncate">Documents</span>
+        </List.Item>
+        <List.Item prefixElement={<FieldTypeAttachment />}>
+          <span className="flex-1 truncate">Settings</span>
+        </List.Item>
+      </List.Content>
+    </List>
+  ),
+}
+
+/**
+ * A list with primary variant.
+ *
+ * Use the `variant` prop to make the list items primary.
+ */
+export const Variant: Story = {
+  render: (args) => (
+    <List
+      {...args}
+      variant="primary"
+    >
+      <List.Content>
+        <List.Item prefixElement={<FieldTypeCheckbox />}>
+          <span className="flex-1 truncate">Home</span>
+        </List.Item>
+        <List.Item prefixElement={<FieldTypeSingleSelect />}>
+          <span className="flex-1 truncate">Documents</span>
+        </List.Item>
+        <List.Item prefixElement={<FieldTypeAttachment />}>
+          <span className="flex-1 truncate">Settings</span>
+        </List.Item>
+      </List.Content>
+    </List>
+  ),
+}
+
+/**
+ * A list with sections and dividers.
+ *
+ * Use `List.Label` to add section titles and `List.Divider` to separate sections.
+ */
+export const WithLabelsAndDividers: Story = {
+  render: (args) => (
+    <List {...args}>
+      <List.Label>Navigation</List.Label>
+      <List.Content>
+        <List.Item prefixElement={<FieldTypeCheckbox />}>
+          <span className="flex-1 truncate">Home</span>
+        </List.Item>
+        <List.Item prefixElement={<FieldTypeSingleSelect />}>
+          <span className="flex-1 truncate">Documents</span>
+        </List.Item>
+      </List.Content>
+      <List.Divider />
+      <List.Label>System</List.Label>
+      <List.Content>
+        <List.Item prefixElement={<FieldTypeAttachment />}>
+          <span className="flex-1 truncate">Settings</span>
+        </List.Item>
+      </List.Content>
+    </List>
+  ),
+}
+
+/**
+ * A list with collapsible nested items.
+ *
+ * Use `List.SubTrigger` to create a collapsible section and `parentId` on nested content to link them together.
+ */
+export const NestedList: Story = {
+  render: (args) => (
+    <List {...args}>
+      <List.Content>
+        <List.Item prefixElement={<FieldTypeLongText />}>Home</List.Item>
+        <List.SubTrigger
+          id="docs"
+          prefixElement={<Folder />}
+        >
+          <span className="flex-1 truncate">Documents</span>
+        </List.SubTrigger>
+        <List.Content parentId="docs">
+          <List.Item parentId="docs">
+            <span className="flex-1 truncate">Getting Started</span>
+          </List.Item>
+          <List.Item parentId="docs">
+            <span className="flex-1 truncate">Components</span>
+          </List.Item>
+          <List.Item
+            parentId="docs"
+            prefixElement={<File />}
+          >
+            <span className="flex-1 truncate">API Reference</span>
+          </List.Item>
+        </List.Content>
+        <List.Item prefixElement={<FieldTypeDate />}>
+          <span className="flex-1 truncate">Calendar</span>
+        </List.Item>
+      </List.Content>
+    </List>
+  ),
+}
+
+/**
+ * A list with pre-expanded nested content.
+ *
+ * Use the `defaultOpen` prop on `List.SubTrigger` to make nested content visible by default.
+ */
+export const DefaultOpenNestedList: Story = {
+  render: (args) => (
+    <List {...args}>
+      <List.Content>
+        <List.Item prefixElement={<FieldTypeLongText />}>Home</List.Item>
+        <List.SubTrigger
+          id="docs"
+          prefixElement={<Folder />}
+          defaultOpen
+        >
+          <span className="flex-1 truncate">Documents</span>
+        </List.SubTrigger>
+        <List.Content parentId="docs">
+          <List.Item
+            parentId="docs"
+            prefixElement={<File />}
+          >
+            <span className="flex-1 truncate">Getting Started</span>
+          </List.Item>
+          <List.Item
+            parentId="docs"
+            prefixElement={<File />}
+          >
+            <span className="flex-1 truncate">Components</span>
+          </List.Item>
+          <List.Item
+            parentId="docs"
+            prefixElement={<File />}
+          >
+            <span className="flex-1 truncate">API Reference</span>
+          </List.Item>
+        </List.Content>
+        <List.Item prefixElement={<FieldTypeDate />}>
+          <span className="flex-1 truncate">Calendar</span>
+        </List.Item>
+      </List.Content>
+    </List>
+  ),
+}
+
+/**
+ * A list with indentation reference lines for better visualization of the nesting structure.
+ *
+ * Use the `shouldShowReferenceLine` prop on the List component to display vertical reference lines that help
+ * visualize the hierarchical structure.
+ */
+export const WithReferenceLines: Story = {
+  render: (args) => {
+    // 递归创建嵌套项目结构的函数
+    const createNestedItems = (level: number, parentId: string = "", maxDepth: number = 5) => {
+      // 在达到最大深度时停止递归
+      if (level > maxDepth) return null
+
+      const currentId = parentId ? `${parentId}-level${level}` : `level${level}`
+      const items: React.ReactNode[] = []
+
+      // 创建当前级别的标题
+      items.push(
+        <List.SubTrigger
+          key={`trigger-${currentId}`}
+          id={currentId}
+          parentId={parentId || undefined}
+          prefixElement={<Folder />}
+          defaultOpen={level <= 3} // 默认展开前三级
+        >
+          <span className="flex-1 truncate">{`Level ${level} Folder`}</span>
+        </List.SubTrigger>,
+      )
+
+      // 创建该级别的内容容器
+      items.push(
+        <List.Content
+          key={`content-${currentId}`}
+          parentId={currentId}
+        >
+          {/* 为当前级别添加一些文件项目 */}
+          {[1, 2].map((fileIndex) => (
+            <List.Item
+              key={`file-${currentId}-${fileIndex}`}
+              parentId={currentId}
+              prefixElement={<File />}
+            >
+              <span className="flex-1 truncate">{`File ${fileIndex} (Level ${level})`}</span>
+            </List.Item>
+          ))}
+
+          {/* 递归创建下一级 */}
+          {level < maxDepth && createNestedItems(level + 1, currentId, maxDepth)}
+        </List.Content>,
+      )
+
+      return items
+    }
+
+    return (
+      <List
+        {...args}
+        shouldShowReferenceLine
+      >
+        <List.Content>
+          <List.Item prefixElement={<FieldTypeLongText />}>Home</List.Item>
+
+          {/* 从第一级开始递归创建嵌套结构 */}
+          {createNestedItems(1)}
+
+          <List.Item prefixElement={<FieldTypeDate />}>Calendar</List.Item>
+        </List.Content>
+      </List>
+    )
+  },
+}
+
+/**
+ * A list with keyboard shortcut hints.
+ *
+ * Use the `shortcut` prop to display keyboard shortcuts next to list items.
+ */
+export const WithShortcuts: Story = {
+  render: (args) => (
+    <List {...args}>
+      <List.Content>
+        <List.Item
+          prefixElement={<FieldTypeLongText />}
+          shortcut={{ keys: "H" }}
+        >
+          <span className="flex-1 truncate">Home</span>
+        </List.Item>
+        <List.Item
+          prefixElement={<FieldTypeLongText />}
+          shortcut={{ keys: "D" }}
+        >
+          <span className="flex-1 truncate">Documents</span>
+        </List.Item>
+        <List.Item
+          prefixElement={<FieldTypeAttachment />}
+          shortcut={{ modifier: "command", keys: "," }}
+        >
+          <span className="flex-1 truncate">Settings</span>
+        </List.Item>
+      </List.Content>
+    </List>
+  ),
+}
+
+/**
+ * A list with selection functionality.
+ *
+ * Use the `selection` prop on the List component to enable selection functionality. This example
+ * demonstrates radio-like behavior (single selection) with ability to deselect.
+ *
+ * NOTE: This example uses a custom implementation to override the component's internal selection state.
+ */
+export const WithSelectionEnabled: Story = {
+  render: (args) => {
+    // 使用useState管理选中项ID，null表示没有选中项
+    const [selectedId, setSelectedId] = React.useState<string | null>("doc1")
+
+    // 处理点击事件，实现单选和取消选择逻辑
+    const handleItemClick = (id: string) => {
+      // 如果点击已选中项，则取消选择
+      if (selectedId === id) {
+        setSelectedId(null)
+      } else {
+        // 否则，选择当前点击项
+        setSelectedId(id)
+      }
+    }
+
+    // 要完全控制选择状态，我们不启用List组件的内置selection功能
+    // 而是手动为选中的项目添加check图标
+    const getItemPrefixElement = (id: string) => {
+      return selectedId === id ? <Check /> : <></>
+    }
+
+    return (
+      <div className="flex flex-col gap-2">
+        <div>
+          <strong>Selected item:</strong> {selectedId || "None"}
+        </div>
+        {/* 不启用内置selection功能，完全由外部状态控制 */}
+        <List {...args}>
+          <List.Label>Radio-like selection with toggle</List.Label>
+          <List.Content>
+            <List.Item
+              id="doc1"
+              prefixElement={getItemPrefixElement("doc1")}
+              onClick={() => handleItemClick("doc1")}
+            >
+              <span className="flex-1 truncate">document1.txt</span>
+            </List.Item>
+            <List.Item
+              id="doc2"
+              prefixElement={getItemPrefixElement("doc2")}
+              onClick={() => handleItemClick("doc2")}
+            >
+              <span className="flex-1 truncate">document2.txt</span>
+            </List.Item>
+            <List.Item
+              id="doc3"
+              prefixElement={getItemPrefixElement("doc3")}
+              onClick={() => handleItemClick("doc3")}
+            >
+              <span className="flex-1 truncate">document3.txt</span>
+            </List.Item>
+          </List.Content>
+        </List>
+      </div>
+    )
+  },
+}
+
+/**
+ * A list with disabled items.
+ *
+ * Use the `disabled` prop to make items non-interactive.
+ */
+export const WithDisabledItems: Story = {
+  render: (args) => (
+    <List {...args}>
+      <List.Content>
+        <List.Item prefixElement={<FieldTypeLongText />}>
+          <span className="flex-1 truncate">Home</span>
+        </List.Item>
+        <List.Item
+          prefixElement={<FieldTypeLongText />}
+          disabled
+        >
+          <span className="flex-1 truncate">Mail (Maintenance)</span>
+        </List.Item>
+        <List.Item prefixElement={<FieldTypeAttachment />}>
+          <span className="flex-1 truncate">Settings</span>
+        </List.Item>
+      </List.Content>
+    </List>
+  ),
+}
+
+/**
+ * A nested list with non-collapsible sub-sections.
+ *
+ * Use the `disableCollapse` prop on `List.SubTrigger` to prevent toggling of the sub-list.
+ */
+export const NonCollapsibleNestedList: Story = {
+  render: (args) => (
+    <List {...args}>
+      <List.Content>
+        <List.Item prefixElement={<FieldTypeLongText />}>Home</List.Item>
+        <List.SubTrigger
+          id="docs"
+          prefixElement={<Folder />}
+          defaultOpen
+          disableCollapse
+        >
+          <span className="flex-1 truncate">Documents</span>
+        </List.SubTrigger>
+        <List.Content parentId="docs">
+          <List.Item
+            parentId="docs"
+            prefixElement={<File />}
+          >
+            <span className="flex-1 truncate">Getting Started</span>
+          </List.Item>
+          <List.Item
+            parentId="docs"
+            prefixElement={<File />}
+          >
+            <span className="flex-1 truncate">Components</span>
+          </List.Item>
+          <List.Item
+            parentId="docs"
+            prefixElement={<File />}
+          >
+            <span className="flex-1 truncate">API Reference</span>
+          </List.Item>
+        </List.Content>
+        <List.Item prefixElement={<FieldTypeDate />}>
+          <span className="flex-1 truncate">Calendar</span>
+        </List.Item>
+      </List.Content>
+    </List>
+  ),
+}
+
+/**
+ * A list with multiple levels of nesting.
+ *
+ * You can create deeply nested structures by using multiple layers of `List.SubTrigger` and `List.Content` with appropriate `parentId` props.
+ */
+export const MultiLevelNestedList: Story = {
+  render: (args) => {
+    // 递归创建嵌套项目结构的函数
+    const createNestedItems = (level: number, parentId: string = "", maxDepth: number = 5) => {
+      // 在达到最大深度时停止递归
+      if (level > maxDepth) return null
+
+      const currentId = parentId ? `${parentId}-level${level}` : `level${level}`
+      const items: React.ReactNode[] = []
+
+      // 创建当前级别的标题
+      items.push(
+        <List.SubTrigger
+          key={`trigger-${currentId}`}
+          id={currentId}
+          parentId={parentId || undefined}
+          prefixElement={<Folder />}
+          defaultOpen={level <= 2} // 默认展开前两级
+        >
+          <span className="flex-1 truncate">{`Level ${level} Folder`}</span>
+        </List.SubTrigger>,
+      )
+
+      // 创建该级别的内容容器
+      items.push(
+        <List.Content
+          key={`content-${currentId}`}
+          parentId={currentId}
+        >
+          {/* 为当前级别添加一些文件项目 */}
+          {[1, 2].map((fileIndex) => (
+            <List.Item
+              key={`file-${currentId}-${fileIndex}`}
+              parentId={currentId}
+              prefixElement={<File />}
+            >
+              <span className="flex-1 truncate">{`File ${fileIndex} (Level ${level})`}</span>
+            </List.Item>
+          ))}
+
+          {/* 递归创建下一级 */}
+          {level < maxDepth && createNestedItems(level + 1, currentId, maxDepth)}
+        </List.Content>,
+      )
+
+      return items
+    }
+
+    return (
+      <List {...args}>
+        <List.Content>
+          <List.Item prefixElement={<FieldTypeLongText />}>Home</List.Item>
+
+          {/* 从第一级开始递归创建嵌套结构 */}
+          {createNestedItems(1)}
+
+          <List.Item prefixElement={<FieldTypeDate />}>Calendar</List.Item>
+        </List.Content>
+      </List>
+    )
+  },
+}
+
+/**
+ * A nested list with selection functionality.
+ *
+ * Combine the selection mode with nested lists to create hierarchical selectable content.
+ */
+export const NestedListWithSelection: Story = {
+  render: (args) => {
+    // 使用useState来管理选中状态
+    const [selectedItems, setSelectedItems] = React.useState<Set<string>>(
+      new Set(["root1", "nested2"]),
+    )
+
+    // 处理选择变化
+    const handleItemClick = (id: string) => {
+      setSelectedItems((prev) => {
+        const newSet = new Set(prev)
+        if (newSet.has(id)) {
+          newSet.delete(id)
+        } else {
+          newSet.add(id)
+        }
+        return newSet
+      })
+    }
+
+    return (
+      <div className="flex flex-col gap-2">
+        <div>
+          <strong>Selected items:</strong>{" "}
+          {[...selectedItems].map((id) => (
+            <span
+              key={id}
+              className="mx-1"
+            >
+              {id}
+            </span>
+          ))}
+        </div>
+        <List
+          {...args}
+          shouldShowReferenceLine
+        >
+          <List.Content>
+            <List.Item
+              id="root1"
+              selected={selectedItems.has("root1")}
+              onClick={() => handleItemClick("root1")}
+              prefixElement={selectedItems.has("root1") ? <Check /> : undefined}
+            >
+              <span className="flex-1 truncate">Root Item 1</span>
+            </List.Item>
+            <List.SubTrigger
+              id="nested"
+              defaultOpen
+            >
+              <span className="flex-1 truncate">Nested Section</span>
+            </List.SubTrigger>
+            <List.Content parentId="nested">
+              <List.Item
+                id="nested1"
+                parentId="nested"
+                selected={selectedItems.has("nested1")}
+                onClick={() => handleItemClick("nested1")}
+                prefixElement={selectedItems.has("nested1") ? <Check /> : <></>}
+              >
+                <span className="flex-1 truncate">Nested Item 1</span>
+              </List.Item>
+              <List.Item
+                id="nested2"
+                parentId="nested"
+                selected={selectedItems.has("nested2")}
+                onClick={() => handleItemClick("nested2")}
+                prefixElement={selectedItems.has("nested2") ? <Check /> : <></>}
+              >
+                <span className="flex-1 truncate">Nested Item 2</span>
+              </List.Item>
+              <List.Item
+                id="nested3"
+                parentId="nested"
+                selected={selectedItems.has("nested3")}
+                onClick={() => handleItemClick("nested3")}
+                prefixElement={selectedItems.has("nested3") ? <Check /> : <></>}
+              >
+                <span className="flex-1 truncate">Nested Item 3</span>
+              </List.Item>
+            </List.Content>
+            <List.Item
+              id="root2"
+              selected={selectedItems.has("root2")}
+              onClick={() => handleItemClick("root2")}
+              prefixElement={selectedItems.has("root2") ? <Check /> : <></>}
+            >
+              <span className="flex-1 truncate">Root Item 2</span>
+            </List.Item>
+          </List.Content>
+        </List>
+      </div>
+    )
+  },
+}

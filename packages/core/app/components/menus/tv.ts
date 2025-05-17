@@ -27,15 +27,11 @@ export const MenuTriggerTv = tv({
   },
   variants: {
     hasPrefix: {
-      true: {
-        root: "gap-0",
-      },
+      true: { root: "gap-0" },
       false: { root: "gap-1" },
     },
     hasSuffix: {
-      true: {
-        root: "gap-0",
-      },
+      true: { root: "gap-0" },
       false: { root: "gap-1" },
     },
 
