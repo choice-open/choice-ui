@@ -7,7 +7,7 @@ import { tcx } from "~/utils"
 import { IconButton } from "../icon-button"
 import { BellsTv } from "./tv"
 
-interface BellsProps extends ToasterProps {
+export interface BellsProps extends ToasterProps {
   className?: string
   classNames?: {
     root?: string
@@ -39,7 +39,7 @@ const CloseButton = memo(({ onClick, className }: { onClick: () => void; classNa
 
 CloseButton.displayName = "CloseButton"
 
-const Bell = (props: BellsProps) => {
+const BellBase = (props: BellsProps) => {
   const {
     className,
     classNames,
@@ -177,11 +177,11 @@ const Bell = (props: BellsProps) => {
   )
 }
 
-const MemoizedBell = memo(Bell)
+export const Bell = memo(BellBase)
 
 export function bells(bell: Omit<BellsProps, "id">) {
   return sonnerToast.custom((id) => (
-    <MemoizedBell
+    <Bell
       id={id}
       className={bell.className}
       icon={bell.icon}

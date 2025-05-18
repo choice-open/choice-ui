@@ -5,7 +5,6 @@ import { SpinnerBounce } from "./spinner-bounce"
 const meta: Meta<typeof SpinnerBounce> = {
   title: "Status/Spinner/SpinnerBounce",
   component: SpinnerBounce,
-  tags: ["new"],
   parameters: {
     layout: "centered",
   },

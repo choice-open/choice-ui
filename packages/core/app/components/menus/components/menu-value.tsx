@@ -7,7 +7,7 @@ export interface MenuValueProps extends HTMLProps<HTMLSpanElement> {
 export const MenuValue = memo(({ children, ...rest }: MenuValueProps) => {
   return (
     <span
-      className="flex-1 truncate select-none"
+      className="flex-1 cursor-default truncate select-none"
       {...rest}
     >
       {children}

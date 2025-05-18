@@ -196,12 +196,13 @@ ScrollAreaViewport.displayName = VIEWPORT_NAME
 const VIEWPORT_CONTENT_NAME = "ScrollAreaViewportContent"
 
 const ScrollAreaViewportContent = React.forwardRef<HTMLDivElement, PrimitiveDivProps>(
-  (props: ScopedProps<ScrollAreaViewportProps>) => {
+  (props: ScopedProps<ScrollAreaViewportProps>, forwardedRef) => {
     const { children } = props
     const context = useScrollAreaContext(VIEWPORT_NAME, props.__scopeScrollArea)
+    const composedRefs = useComposedRefs(forwardedRef, context.onContentChange)
     return (
       <div
-        ref={context.onContentChange}
+        ref={composedRefs}
         style={{ minWidth: "100%" }}
         {...props}
       >
