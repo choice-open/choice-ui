@@ -1,7 +1,13 @@
-import { FieldTypeAttachment, FieldTypeCheckbox, FieldTypeCount } from "@choiceform/icons-react"
+import {
+  FieldTypeAttachment,
+  FieldTypeCheckbox,
+  FieldTypeCount,
+  Settings,
+} from "@choiceform/icons-react"
 import { faker } from "@faker-js/faker"
 import type { Meta, StoryObj } from "@storybook/react"
-import React, { useState } from "react"
+import React, { useMemo, useRef, useState } from "react"
+import { Popover } from "../popover"
 import { Select } from "./select"
 
 const meta: Meta<typeof Select> = {
@@ -439,6 +445,65 @@ export const MarginalConditions: Story = {
           </Select.Content>
         </Select>
       </div>
+    )
+  },
+}
+
+export const ItemActive: Story = {
+  render: function ItemActiveStory() {
+    const [open, setOpen] = useState(false)
+    const itemRef = useRef<HTMLDivElement>(null)
+    const [value, setValue] = useState<string | null>(null)
+
+    const options = useMemo(
+      () =>
+        Array.from({ length: 10 }, (_, i) => ({
+          value: `option-${i + 1}`,
+          label: faker.music.songName(),
+        })),
+      [],
+    )
+
+    return (
+      <>
+        <Select
+          value={value}
+          onChange={setValue}
+        >
+          <Select.Trigger className="relative">
+            <Select.Value>
+              {value ? options.find((option) => option.value === value)?.label : "Select ..."}
+            </Select.Value>
+            <div
+              className="absolute inset-x-0 bottom-0 h-px"
+              ref={itemRef}
+            />
+          </Select.Trigger>
+          <Select.Content>
+            {options.map((option) => (
+              <Select.Item
+                key={option.value}
+                value={option.value}
+              >
+                <Select.Value>{option.label}</Select.Value>
+              </Select.Item>
+            ))}
+            <Select.Divider />
+            <Select.Item onClick={() => setOpen(true)}>
+              <Settings />
+              <Select.Value>Open Popover</Select.Value>
+            </Select.Item>
+          </Select.Content>
+        </Select>
+
+        <Popover
+          open={open}
+          onOpenChange={setOpen}
+          triggerRef={itemRef}
+        >
+          <Popover.Content className="w-64 p-4">{faker.lorem.paragraph()}</Popover.Content>
+        </Popover>
+      </>
     )
   },
 }

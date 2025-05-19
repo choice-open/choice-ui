@@ -38,7 +38,6 @@ import { flushSync } from "react-dom"
 import { useEventCallback } from "usehooks-ts"
 import { MenuDivider, MenuLabel, MenuScrollArrow, MenuTrigger, MenuValue } from "../menus"
 import { SelectContent, SelectItem, type SelectItemPublicProps } from "./components"
-import { motion } from "framer-motion"
 
 const PORTAL_ROOT_ID = "floating-menu-root"
 
@@ -370,34 +369,43 @@ const SelectComponent = forwardRef<HTMLButtonElement, SelectProps>(function Sele
   // 使用 useCallback 缓存渲染函数，避免不必要的重新创建
   const renderSelectItem = useCallback(
     (child: ReactElement, index: number) => {
-      // 已在 options 中找到的选项索引
+      // 查找选项索引
       const optionIndex = options.findIndex((o) => o._originalIndex === index)
       if (optionIndex === -1) return null
 
       const option = options[optionIndex]
+      const childProps = isValidElement(child) ? (child.props as SelectItemPublicProps) : {}
+      const customActive = childProps.onClick
 
-      // 选项状态
-      const isActive = activeIndex === optionIndex
-      const isSelected = currentSelectedIndex === optionIndex
-      const isDisabled = blockSelection || !!option.disabled
+      // 选项状态计算
+      const itemStates = {
+        isActive: activeIndex === optionIndex,
+        isSelected: currentSelectedIndex === optionIndex,
+        isDisabled: blockSelection || !!option.disabled,
+      }
 
-      // 事件处理
-      const itemProps = interactions.getItemProps({
-        onTouchStart() {
+      // 事件处理器
+      const eventHandlers = {
+        onTouchStart: () => {
+          if (customActive) return
           refs.allowSelect.current = true
           refs.allowMouseUp.current = false
         },
-        onKeyDown() {
+        onKeyDown: (e: React.KeyboardEvent<HTMLButtonElement>) => {
+          if (customActive) return
           refs.allowSelect.current = true
         },
-        onClick() {
-          handleSelect(optionIndex)
+        onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
+          customActive ? childProps.onClick?.(e) : handleSelect(optionIndex)
         },
-        onMouseUp() {
-          if (!refs.allowMouseUp.current) return
+        onMouseUp: () => {
+          if (!refs.allowMouseUp.current || customActive) return
+
           if (refs.allowSelect.current) {
             handleSelect(optionIndex)
           }
+
+          // 清理并重设超时
           if (refs.selectTimeout.current) {
             clearTimeout(refs.selectTimeout.current)
           }
@@ -405,16 +413,20 @@ const SelectComponent = forwardRef<HTMLButtonElement, SelectProps>(function Sele
             refs.allowSelect.current = true
           })
         },
-      })
+      }
+
+      // 获取交互属性并合并事件处理器
+      const itemProps = interactions.getItemProps(eventHandlers)
 
       return (
         <SelectItem
           key={option.value || `item-${index}`}
           value={option.value || ""}
           ref={(node) => registerItem(optionIndex, node)}
-          active={isActive}
-          selected={isSelected}
-          disabled={isDisabled}
+          active={itemStates.isActive}
+          selected={itemStates.isSelected}
+          disabled={itemStates.isDisabled}
+          customActive={customActive ? true : undefined}
           {...itemProps}
         >
           {option.element && isValidElement(option.element) ? option.element.props.children : null}

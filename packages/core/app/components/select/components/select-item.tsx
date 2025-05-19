@@ -7,11 +7,12 @@ export interface SelectItemPublicProps extends MenuItemProps {
   disabled?: boolean
   active?: boolean
   selected?: boolean
+  customActive?: boolean
 }
 
 export const SelectItem = memo(
   forwardRef<HTMLButtonElement, SelectItemPublicProps>((props, ref) => {
-    const { className, classNames, selected, children, ...rest } = props
+    const { selected, children, customActive, ...rest } = props
 
     const shortcutConfig = useMemo(
       () => ({
@@ -22,8 +23,8 @@ export const SelectItem = memo(
     )
 
     const prefixConfig = useMemo(
-      () => props.prefixElement || (selected ? <Check /> : <></>),
-      [props.prefixElement, selected],
+      () => props.prefixElement || (customActive ? false : selected ? <Check /> : <></>),
+      [props.prefixElement, selected, customActive],
     )
 
     return (
