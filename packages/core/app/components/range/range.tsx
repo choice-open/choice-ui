@@ -129,7 +129,7 @@ export const Range = forwardRef<HTMLDivElement, RangeProps>(function Range(props
     const newValue = Math.round(positionToValue(newPosition) / step) * step
     let clampedValue = clamp(newValue, min, max)
 
-    if (defaultValue && step === 1) {
+    if (defaultValue !== undefined && defaultValue !== null && step === 1) {
       const snapThreshold = (max - min) * 0.05
       const distanceToDefault = Math.abs(clampedValue - defaultValue)
 
@@ -340,8 +340,8 @@ export const Range = forwardRef<HTMLDivElement, RangeProps>(function Range(props
       className={tcx(styles.container(), className)}
       style={
         {
-          "--width": `${trackSize?.width}px`,
-          "--height": `${trackSize?.height}px`,
+          "--width": `${trackSize?.width ?? 256}px`,
+          "--height": `${trackSize?.height ?? 16}px`,
         } as CSSProperties
       }
     >
