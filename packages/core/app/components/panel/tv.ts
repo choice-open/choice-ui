@@ -83,7 +83,7 @@ export const panelSortableRowTv = tv({
       false: "",
     },
     dragging: {
-      true: { root: "pointer-events-none", handle: "pointer-events-none" },
+      true: { root: "children:pointer-events-none cursor-grabbing", handle: "pointer-events-none" },
       false: { handle: "pointer-events-auto" },
     },
     beingDragged: {

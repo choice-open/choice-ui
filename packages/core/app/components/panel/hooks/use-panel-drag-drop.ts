@@ -1,61 +1,28 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useEventCallback } from "usehooks-ts"
 
-/**
- * 面板放置位置类型
- * - 'top': 放置在目标项上方
- * - 'bottom': 放置在目标项下方
- * - null: 没有有效放置位置
- */
 export type PanelDropPosition = "top" | "bottom" | null
 
-/**
- * 面板拖拽状态接口
- * 用于内部追踪拖拽过程中的状态
- */
 export interface PanelDragState {
-  /** 正在拖拽的项目ID */
   dragItemId: string | null
-  /** 放置位置 */
   dropPosition: PanelDropPosition
-  /** 放置目标项目ID */
   dropTargetId: string | null
-  /** 是否正在拖拽 */
   isDragging: boolean
 }
 
-/**
- * 拖拽项目接口
- * 包含项目ID和对应DOM元素
- */
 interface PanelDragItem {
-  /** 项目DOM元素 */
   element: HTMLElement
-  /** 项目唯一ID */
   id: string
 }
 
-/**
- * 拖拽放置钩子属性
- */
 interface UsePanelDragDropProps {
-  /** 节点高度，用于计算放置区域，默认为40 */
   nodeHeight?: number
-  /** 放置回调函数，当项目被放置时触发 */
   onDrop?: (dragId: string, dropId: string, position: PanelDropPosition) => void
 }
 
-/**
- * 指示器类名和样式常量
- * 抽取为常量避免字符串重复
- */
 const INDICATOR_CLASS = "drag-drop-indicator pointer-events-none absolute right-0 left-0 z-20"
 const INDICATOR_LINE_CLASS = "bg-default-foreground"
 
-/**
- * 创建拖拽指示器元素
- * 将DOM创建逻辑抽取为单独函数，提高可维护性
- */
 function createDropIndicator(position: PanelDropPosition): HTMLElement {
   const indicator = document.createElement("div")
   indicator.className = INDICATOR_CLASS
@@ -74,21 +41,13 @@ function createDropIndicator(position: PanelDropPosition): HTMLElement {
   line.className = INDICATOR_LINE_CLASS
   line.style.height = "2px"
   line.style.width = "100%"
-  line.style.borderRadius = "9999px"
+  line.style.borderRadius = "1px"
   indicator.appendChild(line)
 
   return indicator
 }
 
-/**
- * 面板拖拽放置钩子
- * 提供高性能的拖拽排序功能，无需依赖HTML5拖放API
- *
- * @param props 配置项
- * @returns 拖拽控制对象
- */
 export function usePanelDragDrop({ nodeHeight = 40, onDrop }: UsePanelDragDropProps = {}) {
-  // 使用ref存储拖拽状态，避免状态更新触发重渲染
   const dragStateRef = useRef<PanelDragState>({
     isDragging: false,
     dragItemId: null,
@@ -96,7 +55,6 @@ export function usePanelDragDrop({ nodeHeight = 40, onDrop }: UsePanelDragDropPr
     dropPosition: null,
   })
 
-  // 存储最后有效的放置目标，用于最终执行放置操作
   const lastValidRef = useRef<{
     id: string | null
     position: PanelDropPosition
@@ -105,14 +63,11 @@ export function usePanelDragDrop({ nodeHeight = 40, onDrop }: UsePanelDragDropPr
     position: null,
   })
 
-  // 存储鼠标位置，用于计算放置位置
   const mousePositionRef = useRef({ x: 0, y: 0 })
 
-  // 只暴露必要的状态给组件，减少不必要的重渲染
   const [isDragging, setIsDragging] = useState(false)
   const [dragItemId, setDragItemId] = useState<string | null>(null)
 
-  // 存储容器引用
   const containerRef = useRef<HTMLDivElement | null>(null)
 
   // 清理所有放置指示器
@@ -122,7 +77,6 @@ export function usePanelDragDrop({ nodeHeight = 40, onDrop }: UsePanelDragDropPr
       indicator.remove()
     })
 
-    // 清理数据属性
     document.querySelectorAll('[data-drop-target="true"]').forEach((element) => {
       const htmlElement = element as HTMLElement
       htmlElement.dataset.dropTarget = "false"
@@ -353,7 +307,6 @@ export function usePanelDragDrop({ nodeHeight = 40, onDrop }: UsePanelDragDropPr
     document.addEventListener("mouseup", handleGlobalMouseUp)
   })
 
-  // 对外暴露的API
   return {
     containerRef,
     isDragging,

@@ -37,11 +37,11 @@ export const PanelSortableRow = memo(
       <PanelRow
         ref={mergeRefs(ref, rowRef)}
         className={tcx(styles.root(), className)}
+        onMouseDown={handleOnMouseDown}
         {...rest}
       >
         <div
           className={styles.handle()}
-          onMouseDown={handleOnMouseDown}
           aria-label="Drag handle"
         >
           <GripVerticalSmall />

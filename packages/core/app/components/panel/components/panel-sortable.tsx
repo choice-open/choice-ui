@@ -9,7 +9,7 @@ import {
   useSortablePane,
   useSortableRowItem,
 } from "../context"
-import { usePanelDragDrop } from "../hooks/use-panel-drag-drop"
+import { usePanelDragDrop } from "../hooks"
 import { setupIndexGenerator } from "../utils"
 
 interface PanelSortableProps<T extends SortableItem> {
