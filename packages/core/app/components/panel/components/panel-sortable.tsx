@@ -164,32 +164,11 @@ export const PanelSortable = forwardRef(function PanelSortable<T extends Sortabl
       }
     }
 
-    // 键盘事件：按Delete或Backspace删除选中项
-    const handleKeyDown = (e: KeyboardEvent) => {
-      const id = selectedId
-      if ((e.key === "Delete" || e.key === "Backspace") && id) {
-        const items = data
-        const index = items.findIndex((item) => item.id === id)
-        if (index !== -1) {
-          const newItems = items.filter((_, i) => i !== index) as T[]
-
-          // 更新索引生成器
-          indexGeneratorRef.current.updateList(newItems.map((item) => item.indexKey))
-
-          onDataChange(newItems)
-          onSelectedIdChange(null)
-        }
-      }
-    }
-
     document.addEventListener("click", handleDocumentClick)
-    document.addEventListener("keydown", handleKeyDown)
-
     return () => {
-      document.removeEventListener("keydown", handleKeyDown)
       document.removeEventListener("click", handleDocumentClick)
     }
-  }, [data, onDataChange, onSelectedIdChange, selectedId, isDragging, containerRef])
+  }, [isDragging, onSelectedIdChange, containerRef])
 
   const contextValue: SortablePaneContextValue = useMemo(
     () => ({

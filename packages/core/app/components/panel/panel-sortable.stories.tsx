@@ -5,7 +5,7 @@ import { observer, use$, useObservable } from "@legendapp/state/react"
 import type { Meta, StoryObj } from "@storybook/react"
 import { IndexGenerator } from "fractional-indexing-jittered"
 import { nanoid } from "nanoid"
-import React, { useRef } from "react"
+import React, { useEffect, useRef } from "react"
 import { useEventCallback } from "usehooks-ts"
 import { IconButton, Popover, Scroll, Select, Splitter } from "../../components"
 import { tcx } from "../../utils"
@@ -361,6 +361,21 @@ export const Basic: Story = {
     const handleSelect = useEventCallback((id: string | null) => {
       selectedId$.set(id)
     })
+
+    // 键盘删除
+    useEffect(() => {
+      const handleKeyDown = (e: KeyboardEvent) => {
+        const id = selectedId$.get()
+        if ((e.key === "Delete" || e.key === "Backspace") && id) {
+          handleRemove(id)
+        }
+      }
+
+      window.addEventListener("keydown", handleKeyDown)
+      return () => {
+        window.removeEventListener("keydown", handleKeyDown)
+      }
+    }, [])
 
     return (
       <>

@@ -16,12 +16,22 @@ interface PanelDragItem {
 }
 
 interface UsePanelDragDropProps {
+  // 自动滚动相关配置
+  autoScroll?: boolean
   nodeHeight?: number
   onDrop?: (dragId: string, dropId: string, position: PanelDropPosition) => void
+  scrollContainer?: HTMLElement | null
+  scrollEdgeSize?: number // 边缘区域大小
+  scrollSpeed?: number // 滚动速度
 }
 
 const INDICATOR_CLASS = "drag-drop-indicator pointer-events-none absolute right-0 left-0 z-20"
 const INDICATOR_LINE_CLASS = "bg-default-foreground"
+
+// 默认边缘区域大小（像素）
+const DEFAULT_SCROLL_EDGE_SIZE = 40
+// 默认最大滚动速度（像素/帧）
+const DEFAULT_SCROLL_SPEED = 10
 
 function createDropIndicator(position: PanelDropPosition): HTMLElement {
   const indicator = document.createElement("div")
@@ -47,7 +57,12 @@ function createDropIndicator(position: PanelDropPosition): HTMLElement {
   return indicator
 }
 
-export function usePanelDragDrop({ nodeHeight = 40, onDrop }: UsePanelDragDropProps = {}) {
+export function usePanelDragDrop({
+  onDrop,
+  autoScroll = true,
+  scrollEdgeSize = DEFAULT_SCROLL_EDGE_SIZE,
+  scrollSpeed = DEFAULT_SCROLL_SPEED,
+}: UsePanelDragDropProps = {}) {
   const dragStateRef = useRef<PanelDragState>({
     isDragging: false,
     dragItemId: null,
@@ -64,6 +79,11 @@ export function usePanelDragDrop({ nodeHeight = 40, onDrop }: UsePanelDragDropPr
   })
 
   const mousePositionRef = useRef({ x: 0, y: 0 })
+
+  // 存储自动滚动的动画帧请求ID，用于清理
+  const autoScrollRAFRef = useRef<number | null>(null)
+  // 记录滚动容器
+  const scrollContainerRef = useRef<HTMLElement | null>(null)
 
   const [isDragging, setIsDragging] = useState(false)
   const [dragItemId, setDragItemId] = useState<string | null>(null)
@@ -84,11 +104,84 @@ export function usePanelDragDrop({ nodeHeight = 40, onDrop }: UsePanelDragDropPr
     })
   })
 
+  // 查找或创建滚动容器
+  const findScrollContainer = useEventCallback(() => {
+    if (scrollContainerRef.current) return scrollContainerRef.current
+
+    if (containerRef.current) {
+      // 尝试查找第一个可滚动的父元素
+      let parent = containerRef.current.parentElement
+
+      while (parent) {
+        // 检查元素是否可滚动
+        const hasVerticalScroll = parent.scrollHeight > parent.clientHeight
+        const style = window.getComputedStyle(parent)
+        const isScrollable = style.overflowY === "auto" || style.overflowY === "scroll"
+
+        if (hasVerticalScroll && isScrollable) {
+          scrollContainerRef.current = parent
+          return parent
+        }
+        parent = parent.parentElement
+      }
+    }
+
+    return null
+  })
+
+  // 处理自动滚动
+  const handleAutoScroll = useEventCallback(() => {
+    if (!isDragging || !autoScroll) return
+
+    const scrollContainer = findScrollContainer()
+    if (!scrollContainer) return
+
+    const containerRect = scrollContainer.getBoundingClientRect()
+    const { y } = mousePositionRef.current
+
+    // 计算鼠标距离顶部和底部边缘的距离
+    const distanceToTop = y - containerRect.top
+    const distanceToBottom = containerRect.bottom - y
+
+    let scrollAmount = 0
+
+    // 如果鼠标在顶部边缘区域内，向上滚动
+    if (distanceToTop < scrollEdgeSize && distanceToTop >= 0) {
+      // 计算滚动速度：越接近边缘，速度越快
+      const scrollFactor = 1 - distanceToTop / scrollEdgeSize
+      scrollAmount = -Math.round(scrollSpeed * scrollFactor)
+    }
+    // 如果鼠标在底部边缘区域内，向下滚动
+    else if (distanceToBottom < scrollEdgeSize && distanceToBottom >= 0) {
+      // 计算滚动速度：越接近边缘，速度越快
+      const scrollFactor = 1 - distanceToBottom / scrollEdgeSize
+      scrollAmount = Math.round(scrollSpeed * scrollFactor)
+    }
+
+    // 如果需要滚动
+    if (scrollAmount !== 0) {
+      scrollContainer.scrollTop += scrollAmount
+      // 递归调用，创建动画效果
+      autoScrollRAFRef.current = requestAnimationFrame(handleAutoScroll)
+    } else {
+      // 不需要滚动时，停止递归
+      autoScrollRAFRef.current = null
+    }
+  })
+
+  // 停止自动滚动
+  const stopAutoScroll = useEventCallback(() => {
+    if (autoScrollRAFRef.current !== null) {
+      cancelAnimationFrame(autoScrollRAFRef.current)
+      autoScrollRAFRef.current = null
+    }
+  })
+
   // 预先声明函数，避免循环依赖
   const endDragRef = useRef<() => void>()
 
   // 处理鼠标移动逻辑，判断放置目标和位置
-  const handleDragOver = useCallback(
+  const handleDragOver = useEventCallback(
     (
       currentElement: HTMLElement,
       currentMouseY: number,
@@ -106,7 +199,6 @@ export function usePanelDragDrop({ nodeHeight = 40, onDrop }: UsePanelDragDropPr
         dropPosition,
       }
     },
-    [],
   )
 
   // 全局鼠标移动处理
@@ -116,6 +208,14 @@ export function usePanelDragDrop({ nodeHeight = 40, onDrop }: UsePanelDragDropPr
     }
 
     mousePositionRef.current = { x: e.clientX, y: e.clientY }
+
+    // 处理自动滚动
+    if (autoScroll) {
+      // 先停止之前的自动滚动请求
+      stopAutoScroll()
+      // 启动新的自动滚动
+      autoScrollRAFRef.current = requestAnimationFrame(handleAutoScroll)
+    }
 
     // 获取所有有效的行元素
     const allFoundElements = Array.from(
@@ -219,6 +319,9 @@ export function usePanelDragDrop({ nodeHeight = 40, onDrop }: UsePanelDragDropPr
   const endDrag = useEventCallback(() => {
     if (!dragStateRef.current.isDragging) return
 
+    // 停止自动滚动
+    stopAutoScroll()
+
     // 清理指示器
     clearDropIndicators()
 
@@ -269,8 +372,10 @@ export function usePanelDragDrop({ nodeHeight = 40, onDrop }: UsePanelDragDropPr
         document.removeEventListener("mouseup", handleGlobalMouseUp)
         clearDropIndicators()
       }
+      // 清理滚动动画
+      stopAutoScroll()
     }
-  }, [endDrag, handleGlobalMouseMove, handleGlobalMouseUp, clearDropIndicators])
+  }, [endDrag, handleGlobalMouseMove, handleGlobalMouseUp, clearDropIndicators, stopAutoScroll])
 
   // 处理拖拽开始
   const handleDragStart = useEventCallback((item: PanelDragItem, e: React.MouseEvent) => {
@@ -290,6 +395,11 @@ export function usePanelDragDrop({ nodeHeight = 40, onDrop }: UsePanelDragDropPr
       position: null,
     }
 
+    // 查找滚动容器
+    if (autoScroll) {
+      findScrollContainer()
+    }
+
     // 更新拖拽状态
     dragStateRef.current = {
       isDragging: true,
@@ -307,6 +417,7 @@ export function usePanelDragDrop({ nodeHeight = 40, onDrop }: UsePanelDragDropPr
     document.addEventListener("mouseup", handleGlobalMouseUp)
   })
 
+  // 对外暴露的API
   return {
     containerRef,
     isDragging,
