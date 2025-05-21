@@ -19,24 +19,24 @@ const PORTAL_ROOT_ID = "floating-popover-root"
 const DEFAULT_OFFSET = 8
 
 export interface PopoverProps {
-  className?: string
+  autoSize?: boolean
+  autoUpdate?: boolean
   children?: React.ReactNode
-  triggerRef?: React.RefObject<HTMLElement>
+  className?: string
+  contentRef?: React.RefObject<HTMLDivElement>
+  defaultOpen?: boolean
+  delay?: { close?: number; open?: number }
   draggable?: boolean
-  placement?: Placement
+  initialFocus?: number | React.MutableRefObject<HTMLElement | null>
   interactions?: "hover" | "click" | "focus" | "none"
   offset?: number
-  defaultOpen?: boolean
-  open?: boolean
   onOpenChange?: (isOpen: boolean) => void
-  portalId?: string
-  autoUpdate?: boolean
-  contentRef?: React.RefObject<HTMLDivElement>
-  delay?: { open?: number; close?: number }
-  initialFocus?: number | React.MutableRefObject<HTMLElement | null>
+  open?: boolean
   outsidePressIgnore?: string
-  autoSize?: boolean
+  placement?: Placement
+  portalId?: string
   rememberPosition?: boolean
+  triggerRef?: React.RefObject<HTMLElement>
 }
 
 // Popover 组件实现
@@ -217,13 +217,13 @@ export const DragPopover = memo(function DragPopover({
 })
 
 interface PopoverComponent extends React.FC<PopoverProps> {
-  Trigger: typeof PopoverTrigger
   Content: typeof ModalContent
-  Header: typeof PopoverHeader
   Footer: typeof ModalFooter
+  Header: typeof PopoverHeader
+  Trigger: typeof PopoverTrigger
 }
 
-const PopoverBase: React.FC<PopoverProps> = memo((props) => {
+const PopoverBase = memo((props: PopoverProps) => {
   const parentId = useFloatingParentNodeId()
 
   if (parentId === null) {
@@ -236,6 +236,8 @@ const PopoverBase: React.FC<PopoverProps> = memo((props) => {
 
   return <DragPopover {...props} />
 })
+
+PopoverBase.displayName = "Popover"
 
 export const Popover = Object.assign(PopoverBase, {
   Trigger: PopoverTrigger,

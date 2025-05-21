@@ -1,22 +1,21 @@
-import { createContext } from "react"
-import { useContext } from "react"
+import { createContext, useContext } from "react"
 
 interface PopoverContextValue {
-  open: boolean
-  setOpen: (open: boolean) => void
-  triggerRef: React.RefObject<HTMLElement>
-  getReferenceProps: (props?: any) => any
-  getFloatingProps: (props?: any) => any
-  refs: {
-    setReference: (node: HTMLElement | null) => void
-    setFloating: (node: HTMLElement | null) => void
-  }
-  draggable: boolean
-  handleDragStart: (e: React.MouseEvent) => void
-  onCloseClick: () => void
-  titleId: string
   descriptionId: string
   dragContentRef: React.RefObject<HTMLDivElement>
+  draggable: boolean
+  getFloatingProps: (userProps?: React.HTMLProps<HTMLElement>) => Record<string, unknown>
+  getReferenceProps: (userProps?: React.HTMLProps<HTMLElement>) => Record<string, unknown>
+  handleDragStart: (e: React.MouseEvent) => void
+  onCloseClick: () => void
+  open: boolean
+  refs: {
+    setFloating: (node: HTMLElement | null) => void
+    setReference: (node: HTMLElement | null) => void
+  }
+  setOpen: (open: boolean) => void
+  titleId: string
+  triggerRef: React.RefObject<HTMLElement>
 }
 
 export const PopoverContext = createContext<PopoverContextValue | null>(null)

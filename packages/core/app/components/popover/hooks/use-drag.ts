@@ -160,7 +160,6 @@ export function useDrag({ draggable, floatingRef, rememberPosition = false }: Us
   // 重置位置到初始状态 - 只在不记住位置时调用
   const resetPosition = useCallback(() => {
     if (!rememberPosition) {
-      positionRef.current = initialPositionRef.current
       setState((prev) => ({
         ...prev,
         position: initialPositionRef.current,
@@ -179,6 +178,18 @@ export function useDrag({ draggable, floatingRef, rememberPosition = false }: Us
       }
     }
   }, [draggable, state.isDragging, handleDrag, handleDragEnd])
+
+  // 监听 floatingRef.current 变化，重置初始位置和拖拽状态。
+  useEffect(() => {
+    if (rememberPosition) return
+    initialPositionRef.current = null
+    positionRef.current = null
+    setState({
+      isDragging: false,
+      position: null,
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [floatingRef.current])
 
   // 当rememberPosition变化时
   useEffect(() => {

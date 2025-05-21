@@ -18,21 +18,21 @@ import { useCallback, useEffect, useRef, useState } from "react"
 import { useMergedValue } from "~/hooks"
 
 interface UseFloatingPopoverParams {
-  open?: boolean
-  defaultOpen?: boolean
-  onOpenChange?: (open: boolean) => void
-  placement?: Placement
-  offset?: number
-  interactions?: "hover" | "click" | "focus" | "none"
-  outsidePressIgnore?: string
-  delay?: { open?: number; close?: number }
+  autoSize?: boolean
   autoUpdate?: boolean
+  defaultOpen?: boolean
+  delay?: { close?: number; open?: number }
   draggable: boolean
+  interactions?: "hover" | "click" | "focus" | "none"
   nodeId: string
+  offset?: number
+  onOpenChange?: (open: boolean) => void
+  open?: boolean
+  outsidePressIgnore?: string
+  placement?: Placement
+  rememberPosition?: boolean
   resetDragState: () => void
   resetPosition: () => void
-  rememberPosition?: boolean
-  autoSize?: boolean
 }
 
 export function useFloatingPopover({
@@ -59,6 +59,7 @@ export function useFloatingPopover({
 
   const triggerRefs = useRef({
     last: null as HTMLElement | null,
+    changed: false,
   })
 
   const [innerOpen, setInnerOpen] = useMergedValue({
@@ -181,7 +182,7 @@ export function useFloatingPopover({
       }
       return true
     },
-    [outsidePressIgnore, draggable, isClosing],
+    [outsidePressIgnore],
   )
 
   const dismiss = useDismiss(context, {
@@ -226,7 +227,10 @@ export function useFloatingPopover({
 
   const handleTriggerRef = useCallback(
     (triggerRef: React.RefObject<HTMLElement>) => {
+      // 只有在触发器实际变化时才更新引用
       if (triggerRef?.current && triggerRef.current !== triggerRefs.current.last) {
+        // 标记此次触发器变化
+        triggerRefs.current.changed = true
         triggerRefs.current.last = triggerRef.current
         refs.setReference(triggerRef.current)
       }

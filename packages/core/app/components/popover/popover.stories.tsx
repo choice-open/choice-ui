@@ -9,6 +9,10 @@ import { Select } from "../select"
 import { Tabs } from "../tabs"
 import { Popover } from "./popover"
 import { Scroll } from "../scroll"
+import { NumericInput } from "../numeric-input/numeric-input"
+import { IconButton } from "../icon-button"
+import { EllipsisSmall } from "@choiceform/icons-react"
+import { NumericInputMenuTrigger } from "../numeric-input/components"
 
 const meta: Meta<typeof Popover> = {
   title: "Overlays/Popover",
@@ -564,6 +568,91 @@ export const AutoHeight: Story = {
         >
           {autoSize ? "Disable Auto Size" : "Enable Auto Size"}
         </Button>
+      </div>
+    )
+  },
+}
+
+export const MultiTrigger: Story = {
+  render: function MultiTriggerStory() {
+    const [leftValue, setLeftValue] = useState(0)
+    const [rightValue, setRightValue] = useState(0)
+
+    const leftTriggerRef = useRef<HTMLButtonElement>(null)
+    const rightTriggerRef = useRef<HTMLButtonElement>(null)
+
+    const [currentTrigger, setCurrentTrigger] = useState<"left" | "right" | null>(null)
+
+    const [open, setOpen] = useState(false)
+
+    return (
+      <div className="grid grid-cols-2 gap-4">
+        <NumericInput
+          value={leftValue}
+          onChange={(value) => setLeftValue(value as number)}
+        >
+          <NumericInput.Suffix type="action">
+            <Dropdown>
+              <Dropdown.Trigger
+                asChild
+                ref={leftTriggerRef}
+              >
+                <NumericInputMenuTrigger type="action" />
+              </Dropdown.Trigger>
+              <Dropdown.Content>
+                <Dropdown.Item>Option 1</Dropdown.Item>
+                <Dropdown.Divider />
+                <Dropdown.Item
+                  onMouseUp={() => {
+                    setCurrentTrigger("left")
+                    setOpen(true)
+                  }}
+                >
+                  Open Popover
+                </Dropdown.Item>
+              </Dropdown.Content>
+            </Dropdown>
+          </NumericInput.Suffix>
+        </NumericInput>
+
+        <NumericInput
+          value={rightValue}
+          onChange={(value) => setRightValue(value as number)}
+        >
+          <NumericInput.Suffix type="action">
+            <Dropdown>
+              <Dropdown.Trigger
+                asChild
+                ref={rightTriggerRef}
+              >
+                <NumericInputMenuTrigger type="action" />
+              </Dropdown.Trigger>
+              <Dropdown.Content>
+                <Dropdown.Item>Option 1</Dropdown.Item>
+                <Dropdown.Divider />
+                <Dropdown.Item
+                  onMouseUp={() => {
+                    setCurrentTrigger("right")
+                    setOpen(true)
+                  }}
+                >
+                  Open Popover
+                </Dropdown.Item>
+              </Dropdown.Content>
+            </Dropdown>
+          </NumericInput.Suffix>
+        </NumericInput>
+
+        <Popover
+          triggerRef={currentTrigger === "left" ? leftTriggerRef : rightTriggerRef}
+          placement="bottom-end"
+          open={open}
+          onOpenChange={setOpen}
+          draggable
+        >
+          <Popover.Header title="Action" />
+          <Popover.Content className="w-64 p-3">{faker.lorem.paragraph(3)}</Popover.Content>
+        </Popover>
       </div>
     )
   },
