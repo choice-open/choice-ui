@@ -1,62 +1,48 @@
-import { forwardRef, useRef } from "react"
-import { mergeRefs, tcx } from "~/utils"
-import { PanelRow, PanelRowProps } from "./panel-row"
-import { useSortablePane } from "./panel-sortable"
 import { GripVerticalSmall } from "@choiceform/icons-react"
+import { forwardRef, memo, useRef } from "react"
+import { useEventCallback } from "usehooks-ts"
+import { mergeRefs, tcx } from "~/utils"
+import { panelSortableRowTv } from "../tv"
+import { PanelRow, PanelRowProps } from "./panel-row"
+import { useSortablePane, useSortableRowItem, SortableItem } from "../context"
 
-interface PanelSortableRowProps extends PanelRowProps {
-  id: string
-  index: number
+interface PanelSortableRowProps extends Omit<PanelRowProps, "id"> {
   children: React.ReactNode
 }
 
-export const PanelSortableRow = forwardRef<HTMLFieldSetElement, PanelSortableRowProps>(
-  function PanelSortableRow(props, ref) {
-    const { id, children, ...rest } = props
+export const PanelSortableRow = memo(
+  forwardRef<HTMLFieldSetElement, PanelSortableRowProps>(function PanelSortableRow(props, ref) {
+    const { children, className, ...rest } = props
 
-    const { selectedId, dragState, handleDragStart } = useSortablePane()
+    const item = useSortableRowItem<SortableItem>()
+    const { id } = item
+
+    const { selectedId, isDragging, isNodeBeingDragged, handleMouseDown } = useSortablePane()
     const rowRef = useRef<HTMLFieldSetElement>(null)
 
-    // 获取上下文中的拖拽状态
-    const isDragging = dragState.isDragging
-    const isBeingDragged = dragState.dragNodeId === id
+    const isBeingDragged = isNodeBeingDragged(id)
 
-    // Setup drag handlers
-    const handleOnDragStart = (e: React.DragEvent) => {
+    const handleOnMouseDown = useEventCallback((e: React.MouseEvent) => {
       e.stopPropagation()
+      handleMouseDown(id, e)
+    })
 
-      // Set basic drag properties
-      e.dataTransfer.effectAllowed = "move"
-
-      // Use custom drag image if available
-      if (rowRef.current) {
-        e.dataTransfer.setDragImage(rowRef.current, 10, 10)
-      }
-
-      // Call the parent component's drag start handler
-      handleDragStart(id, e)
-    }
+    const styles = panelSortableRowTv({
+      selected: selectedId === id,
+      dragging: isDragging,
+      beingDragged: isBeingDragged,
+    })
 
     return (
       <PanelRow
         ref={mergeRefs(ref, rowRef)}
-        className={tcx(
-          "panel-sortable-row",
-          selectedId === id && "bg-selected-background",
-          isDragging && "pointer-events-none",
-        )}
+        className={tcx(styles.root(), className)}
         {...rest}
       >
         <div
-          draggable={true}
-          onDragStart={handleOnDragStart}
-          className={tcx(
-            "absolute inset-y-0 left-0 w-6 cursor-grab",
-            "text-secondary-foreground flex items-center justify-center",
-            "transition-opacity duration-150",
-            "pointer-events-auto",
-            isBeingDragged ? "cursor-grabbing opacity-100" : "opacity-0 hover:opacity-100",
-          )}
+          className={styles.handle()}
+          onMouseDown={handleOnMouseDown}
+          aria-label="Drag handle"
         >
           <GripVerticalSmall />
         </div>
@@ -64,7 +50,7 @@ export const PanelSortableRow = forwardRef<HTMLFieldSetElement, PanelSortableRow
         {children}
       </PanelRow>
     )
-  },
+  }),
 )
 
 PanelSortableRow.displayName = "PanelSortableRow"

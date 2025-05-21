@@ -67,3 +67,33 @@ export const propertiesPanelRowTv = tv({
     active: false,
   },
 })
+
+export const panelSortableRowTv = tv({
+  slots: {
+    root: "panel-sortable-row",
+    handle: [
+      "absolute inset-y-0 left-0 w-6 cursor-grab",
+      "text-secondary-foreground flex items-center justify-center",
+      "transition-opacity duration-150",
+    ],
+  },
+  variants: {
+    selected: {
+      true: { root: "bg-selected-background" },
+      false: "",
+    },
+    dragging: {
+      true: { root: "pointer-events-none", handle: "pointer-events-none" },
+      false: { handle: "pointer-events-auto" },
+    },
+    beingDragged: {
+      true: { handle: "cursor-grabbing opacity-100" },
+      false: { handle: "opacity-0 hover:opacity-100" },
+    },
+  },
+  defaultVariants: {
+    selected: false,
+    dragging: false,
+    beingDragged: false,
+  },
+})

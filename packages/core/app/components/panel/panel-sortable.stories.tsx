@@ -1,14 +1,15 @@
-import { AddSmall, DeleteSmall, Grid, Hidden, Styles, Visible } from "@choiceform/icons-react"
+import { AddSmall, DeleteSmall, EffectDropShadow, Hidden, Visible } from "@choiceform/icons-react"
 import { faker } from "@faker-js/faker"
 import { batch, Observable, observable } from "@legendapp/state"
 import { observer, use$, useObservable } from "@legendapp/state/react"
 import type { Meta, StoryObj } from "@storybook/react"
-import "allotment/dist/style.css"
+import { IndexGenerator } from "fractional-indexing-jittered"
 import { nanoid } from "nanoid"
 import React, { useRef } from "react"
 import { useEventCallback } from "usehooks-ts"
 import { IconButton, Popover, Scroll, Select, Splitter } from "../../components"
 import { tcx } from "../../utils"
+import { useSortableRowItem } from "./context"
 import { Panel } from "./panel"
 
 const meta: Meta<typeof Panel> = {
@@ -20,13 +21,7 @@ export default meta
 
 type Story = StoryObj<typeof Panel>
 
-const AllotmentContainer = ({
-  children,
-  header,
-}: {
-  children: React.ReactNode
-  header: React.ReactNode
-}) => {
+const AllotmentContainer = ({ children }: { children: React.ReactNode }) => {
   return (
     <Splitter
       defaultSizes={[800, 240]}
@@ -38,10 +33,8 @@ const AllotmentContainer = ({
 
       <Splitter.Pane minSize={240}>
         <Scroll>
-          <Scroll.Viewport className="bg-default-background pb-16">
-            <div className="flex items-center border-b p-4 text-sm font-medium">{header}</div>
-
-            {children}
+          <Scroll.Viewport className="bg-default-background h-full pb-16">
+            <Scroll.Content className="h-full">{children}</Scroll.Content>
           </Scroll.Viewport>
         </Scroll>
       </Splitter.Pane>
@@ -49,15 +42,66 @@ const AllotmentContainer = ({
   )
 }
 
-const DATA$ = observable([
-  { id: nanoid(), index: 0, visible: true, value: "option-1" },
-  { id: nanoid(), index: 1, visible: true, value: "option-2" },
-  { id: nanoid(), index: 2, visible: true, value: "option-3" },
-])
+// 初始化fractional indexing器作为全局实例
+const globalIndexGenerator = new IndexGenerator([])
+
+// 维护一个全局的键列表
+const indexKeysList: string[] = []
+
+// 添加新键并更新生成器的辅助函数
+function updateKeysList(newKey: string) {
+  indexKeysList.push(newKey)
+  globalIndexGenerator.updateList(indexKeysList)
+}
+
+// 定义排序数据类型（Panel.Sortable负责处理）
+interface SortableItem {
+  id: string
+  indexKey: string
+}
+
+// 定义完整的项目数据类型（包含所有属性）
+interface ItemData {
+  value: string
+  visible: boolean
+}
+
+// 生成初始排序数据
+const initialSortData: SortableItem[] = []
+// 生成初始项目数据（使用id作为键）
+const initialItemsData: Record<string, ItemData> = {}
+
+// 生成 Faker 初始数据
+for (let i = 0; i < 10; i++) {
+  // 创建唯一ID
+  const id = nanoid()
+
+  // 生成排序键
+  const indexKey = i === 0 ? globalIndexGenerator.keyStart() : globalIndexGenerator.keyEnd()
+
+  // 更新键列表和生成器
+  updateKeysList(indexKey)
+
+  // 添加到排序数据
+  initialSortData.push({
+    id,
+    indexKey,
+  })
+
+  // 添加到项目数据
+  initialItemsData[id] = {
+    visible: true,
+    value: `Option ${i + 1}`,
+  }
+}
+
+// 创建两个独立的可观察数据源
+const SORT_DATA$ = observable(initialSortData)
+const ITEMS_DATA$ = observable(initialItemsData)
 
 interface SortablePopoverProps {
-  triggerRefs: React.MutableRefObject<Map<string, HTMLFieldSetElement>>
   open$: Observable<string | null>
+  triggerRefs: React.MutableRefObject<Map<string, HTMLFieldSetElement>>
 }
 
 const SortablePopover = observer(function SortablePopover({
@@ -79,7 +123,7 @@ const SortablePopover = observer(function SortablePopover({
   )
 })
 
-const Sortable = observer(function SortablePopover({
+const SortableRowContent = observer(function SortableRowContentInner({
   sortableTriggerRefs,
   open$,
   selectedId$,
@@ -87,190 +131,135 @@ const Sortable = observer(function SortablePopover({
   handleVisible,
   handleRemove,
 }: {
-  sortableTriggerRefs: React.MutableRefObject<Map<string, HTMLFieldSetElement>>
-  open$: Observable<string | null>
-  selectedId$: Observable<string | null>
+  handleRemove: (id: string) => void
   handleSelect: (id: string | null) => void
   handleVisible: (id: string, visible: boolean) => void
-  handleRemove: (id: string) => void
+  open$: Observable<string | null>
+  selectedId$: Observable<string | null>
+  sortableTriggerRefs: React.MutableRefObject<Map<string, HTMLFieldSetElement>>
 }) {
-  const open = use$(open$)
-  const selectedId = use$(selectedId$)
+  const item = useSortableRowItem<{ id: string; indexKey: string }>()
+  const itemsData = use$(ITEMS_DATA$)
+
+  // 获取当前行的具体显示数据
+  const currentItemDisplayData = itemsData[item.id]
+  const visible = currentItemDisplayData ? currentItemDisplayData.visible : true
+  const valueToDisplay = currentItemDisplayData ? currentItemDisplayData.value : item.indexKey
+
+  return (
+    <Panel.SortableRow
+      ref={(el) => {
+        if (el) {
+          sortableTriggerRefs.current.set(item.id, el)
+        }
+      }}
+      // id 和 indexKey 不再通过 props 传递
+      type="one-icon-one-input-two-icon"
+      onClick={(e) => {
+        e.stopPropagation()
+        handleSelect(item.id)
+      }}
+    >
+      <IconButton
+        active={open$.get() === item.id}
+        variant="highlight"
+        className={tcx("[grid-area:icon-1]", !visible && "text-disabled-foreground")}
+        tooltip={{ content: "Effect drop shadow-sm" }}
+        onClick={(e) => {
+          e.stopPropagation()
+        }}
+        onMouseDown={(e) => {
+          e.stopPropagation()
+          selectedId$.set(null)
+          if (open$.get() !== item.id) {
+            open$.set(item.id)
+          } else {
+            open$.set(null)
+          }
+        }}
+      >
+        <EffectDropShadow />
+      </IconButton>
+
+      <Select
+        matchTriggerWidth
+        value={item.indexKey}
+      >
+        <Select.Trigger
+          className={tcx(
+            !visible && "text-disabled-foreground",
+            "group-data-[selected=true]/sortable-row:border-selected-boundary [grid-area:input]",
+          )}
+        >
+          <span className="flex-1 truncate">{valueToDisplay}</span>
+        </Select.Trigger>
+        <Select.Content>
+          <Select.Item value={item.indexKey}>{valueToDisplay}</Select.Item>
+        </Select.Content>
+      </Select>
+      <IconButton
+        className="[grid-area:icon-2]"
+        tooltip={{ content: "Visible" }}
+        onClick={(e) => {
+          e.stopPropagation()
+          handleVisible(item.id, !visible)
+        }}
+      >
+        {visible ? <Visible /> : <Hidden />}
+      </IconButton>
+
+      <IconButton
+        className="[grid-area:icon-3]"
+        tooltip={{ content: "Delete" }}
+        onClick={(e) => {
+          e.stopPropagation()
+          handleRemove(item.id)
+        }}
+      >
+        <DeleteSmall />
+      </IconButton>
+    </Panel.SortableRow>
+  )
+})
+
+const Sortable = observer(function Sortable({
+  // Renamed from SortablePopover to Sortable
+  sortableTriggerRefs,
+  open$,
+  selectedId$,
+  handleSelect,
+  handleVisible,
+  handleRemove,
+}: {
+  handleRemove: (id: string) => void
+  handleSelect: (id: string | null) => void
+  handleVisible: (id: string, visible: boolean) => void
+  open$: Observable<string | null>
+  selectedId$: Observable<string | null>
+  sortableTriggerRefs: React.MutableRefObject<Map<string, HTMLFieldSetElement>>
+}) {
+  const sortData = use$(SORT_DATA$)
 
   return (
     <Panel.Sortable
-      data={DATA$.get()}
+      data={sortData}
       selectedId={selectedId$.get()}
-      onDataChange={(data) =>
-        DATA$.set(data as { id: string; index: number; visible: boolean; value: string }[])
-      }
+      indexGenerator={globalIndexGenerator}
+      onDataChange={(data) => SORT_DATA$.set(data as { id: string; indexKey: string }[])}
       onSelectedIdChange={(id) => selectedId$.set(id)}
     >
-      {(id, index) => {
-        const item = DATA$.peek().find((item) => item.id === id)
-        if (!item) {
-          return null
-        }
-        const { visible } = item
-
-        return (
-          <Panel.SortableRow
-            ref={(el) => {
-              if (el) {
-                sortableTriggerRefs.current.set(id, el)
-              }
-            }}
-            id={id}
-            index={index}
-            type="one-icon-one-input-two-icon"
-            onClick={(e) => {
-              e.stopPropagation()
-              handleSelect(id)
-            }}
-          >
-            <IconButton
-              active={open === id}
-              variant="highlight"
-              className={tcx("[grid-area:icon-1]", !visible && "text-secondary-foreground")}
-              tooltip={{ content: "Effect drop shadow-sm" }}
-              onClick={(e) => {
-                e.stopPropagation()
-              }}
-              onMouseDown={(e) => {
-                e.stopPropagation()
-                selectedId$.set(null)
-                if (open !== id) {
-                  open$.set(id)
-                } else {
-                  open$.set(null)
-                }
-              }}
-            >
-              <Grid />
-            </IconButton>
-
-            <Select
-              matchTriggerWidth
-              value={item.value}
-            >
-              <Select.Trigger className="group-data-[selected=true]/sortable-row:border-selected-boundary [grid-area:input]">
-                <span className="flex-1 truncate">{item.value}</span>
-              </Select.Trigger>
-
-              <Select.Content>
-                {[
-                  { label: "Option 1", value: "option-1" },
-                  { label: "Option 2", value: "option-2" },
-                  { label: "Option 3", value: "option-3" },
-                  { label: "Option 4", value: "option-4" },
-                  { label: "Option 5", value: "option-5" },
-                  { label: "Option 6", value: "option-6" },
-                  { label: "Option 7", value: "option-7" },
-                  { label: "Option 8", value: "option-8" },
-                  { label: "Option 9", value: "option-9" },
-                ].map((option) => (
-                  <Select.Item
-                    key={option.value}
-                    value={option.value}
-                  >
-                    <span className="flex-1 truncate">{option.label}</span>
-                  </Select.Item>
-                ))}
-              </Select.Content>
-            </Select>
-            <IconButton
-              className="[grid-area:icon-2]"
-              tooltip={{ content: "Visible" }}
-              onClick={(e) => {
-                e.stopPropagation()
-                handleVisible(id, !visible)
-              }}
-            >
-              {visible ? <Visible /> : <Hidden />}
-            </IconButton>
-
-            <IconButton
-              className="[grid-area:icon-3]"
-              tooltip={{ content: "Delete" }}
-              onClick={(e) => {
-                e.stopPropagation()
-                handleRemove(id)
-              }}
-            >
-              <DeleteSmall />
-            </IconButton>
-          </Panel.SortableRow>
-        )
-      }}
+      <SortableRowContent
+        sortableTriggerRefs={sortableTriggerRefs}
+        open$={open$}
+        selectedId$={selectedId$}
+        handleSelect={handleSelect}
+        handleVisible={handleVisible}
+        handleRemove={handleRemove}
+      />
     </Panel.Sortable>
   )
 })
 
-/**
- * `PanelSortable` is a panel component that supports drag-and-drop sorting functionality.
- *
- * ### Core Features
- * - Drag-and-drop sorting of list items
- * - Visual drag indicators and feedback
- * - Integrated selection functionality
- *
- * ### Interaction Features
- * - Drag-and-Drop: Vertical sorting via left-side handle
- * - Selection: Click to select/deselect items
- * - Visibility Toggle: Show/hide individual items
- *
- * ### State Management
- * - Maintains order of items during sorting
- * - Tracks selected items for batch operations
- * - Manages visibility state per item
- *
- * ### Best Practices
- * - Use for lists requiring frequent reordering (layers, styles, effects)
- * - Implement selection for batch operations
- * - Maintain consistent item styling and clear visual feedback
- * - Ensure smooth animations for drag operations
- *
- * ```tsx
- * interface SortableItem {
- *   id: string
- *   index: number
- * }
- *
- * interface PanelSortableProps<T extends SortableItem> {
- *   className?: string
- *   data: T[]
- *   onDataChange: (data: T[]) => void
- *   selectedId: string | null
- *   onSelectedIdChange: (id: string | null) => void
- *   children: (id: string, index: number) => React.ReactNode
- * }
- *
- * interface PanelSortableRowProps extends PanelRowProps {
- *   id: string
- *   index: number
- *   children: React.ReactNode
- * }
- * ```
- *
- * ### Example
- *
- * ```tsx
- * <PanelSortable
- *   data={DATA$.get()}
- *   selectedId={selectedId$.get()}
- *   onDataChange={(data) => DATA$.set(data)}
- *   onSelectedIdChange={(id) => selectedId$.set(id)}
- * >
- *   {(id, index) => (
- *     <PanelSortableRow
- *       id={id}
- *       index={index}
- *     >
- *       ...
- *     </PanelSortableRow>
- *   )}
- * </PanelSortable>
- */
 export const Basic: Story = {
   render: function BasicStory() {
     const sortableTriggerRefs = useRef<Map<string, HTMLFieldSetElement>>(new Map())
@@ -279,11 +268,25 @@ export const Basic: Story = {
 
     const handleAdd = useEventCallback(() => {
       batch(() => {
-        const items = DATA$.peek()
+        const items = SORT_DATA$.peek()
         const newId = nanoid()
-        const newItem = {
+
+        let newIndexKey
+        if (items.length === 0) {
+          newIndexKey = globalIndexGenerator.keyStart()
+        } else {
+          const lastItem = items[items.length - 1]
+          newIndexKey = globalIndexGenerator.keyAfter(lastItem.indexKey)
+        }
+
+        updateKeysList(newIndexKey)
+
+        const newSortItem = {
           id: newId,
-          index: 0,
+          indexKey: newIndexKey,
+        }
+
+        const newItemData = {
           visible: true,
           value: faker.helpers.arrayElement([
             "option-1",
@@ -298,37 +301,52 @@ export const Basic: Story = {
           ]),
         }
 
-        DATA$.set([newItem, ...items])
-        DATA$.set(
-          DATA$.peek().map((item, index) => ({
-            ...item,
-            index,
-          })),
-        )
+        SORT_DATA$.set([...items, newSortItem])
+
+        ITEMS_DATA$.set({
+          ...ITEMS_DATA$.peek(),
+          [newId]: newItemData,
+        })
       })
     })
 
     const handleRemove = useEventCallback((id: string) => {
       batch(() => {
-        const items = DATA$.peek()
-        const newItems = items
-          .filter((item) => item.id !== id)
-          .map((item, idx) => ({
-            ...item,
-            index: idx,
-          }))
-        DATA$.set(newItems)
+        const sortItems = SORT_DATA$.peek()
+        const itemToRemove = sortItems.find((item) => item.id === id)
+        if (!itemToRemove) return
+
+        const newSortItems = sortItems.filter((item) => item.id !== id)
+        SORT_DATA$.set(newSortItems)
+
+        const keyIndex = indexKeysList.indexOf(itemToRemove.indexKey)
+        if (keyIndex !== -1) {
+          indexKeysList.splice(keyIndex, 1)
+          globalIndexGenerator.updateList(indexKeysList)
+        }
+
+        const itemsData = ITEMS_DATA$.peek()
+        const newItemsData = { ...itemsData }
+        delete newItemsData[id]
+        ITEMS_DATA$.set(newItemsData)
+
         selectedId$.set(null)
       })
     })
 
     const handleVisible = useEventCallback((id: string, visible: boolean) => {
       batch(() => {
-        const items = [...DATA$.peek()]
-        const index = items.findIndex((item) => item.id === id)
-        if (index !== -1) {
-          items[index] = { ...items[index], visible }
-          DATA$.set(items)
+        const itemsData = ITEMS_DATA$.peek()
+
+        if (itemsData[id]) {
+          ITEMS_DATA$.set({
+            ...itemsData,
+            [id]: {
+              ...itemsData[id],
+              visible,
+            },
+          })
+
           selectedId$.set(null)
         }
       })
@@ -341,23 +359,14 @@ export const Basic: Story = {
 
     return (
       <>
-        <AllotmentContainer
-          header={
-            <>
-              <span className="flex-1">Sortable</span>
+        <AllotmentContainer>
+          <Panel>
+            <Panel.Title title="Sortable">
               <IconButton
                 onClick={handleAdd}
                 tooltip={{ content: "Add fill" }}
               >
                 <AddSmall />
-              </IconButton>
-            </>
-          }
-        >
-          <Panel>
-            <Panel.Title title="Sortable">
-              <IconButton tooltip={{ content: "Styles" }}>
-                <Styles />
               </IconButton>
             </Panel.Title>
 

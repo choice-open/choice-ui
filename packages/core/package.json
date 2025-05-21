@@ -1,6 +1,6 @@
 {
   "name": "@choiceform/design-system",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "description": "A modern React UI component library",
   "sideEffects": false,
   "type": "module",
@@ -57,6 +57,7 @@
     "dayjs": "^1.11.13",
     "emoji-mart": "^5.6.0",
     "es-toolkit": "^1.13.1",
+    "fractional-indexing-jittered": "^1.0.0",
     "framer-motion": "^11.2.13",
     "is-hotkey": "^0.2.0",
     "nanoid": "^5.0.7",
