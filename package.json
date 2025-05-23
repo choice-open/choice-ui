@@ -16,6 +16,11 @@
     "colors:storybook": "pnpm --filter=\"@choiceform/colors\" run storybook",
     "colors:lint": "eslint packages/colors/app/**/*.{ts,tsx} --ext .ts,.tsx",
     "colors:lint:fix": "eslint packages/colors/app/**/*.{ts,tsx} --ext .ts,.tsx --fix",
+    "calendar:dev": "pnpm --filter=\"@choiceform/calendar\" run dev",
+    "calendar:build": "pnpm --filter=\"@choiceform/calendar\" run build",
+    "calendar:storybook": "pnpm --filter=\"@choiceform/calendar\" run storybook",
+    "calendar:lint": "eslint packages/calendar/app/**/*.{ts,tsx} --ext .ts,.tsx",
+    "calendar:lint:fix": "eslint packages/calendar/app/**/*.{ts,tsx} --ext .ts,.tsx --fix",
     "test": "pnpm --filter=\"./packages/**\" run test",
     "clean": "pnpm --filter=\"./packages/**\" run clean",
     "preinstall": "npx only-allow pnpm"
