@@ -190,6 +190,8 @@ const SortableRowContent = observer(function SortableRowContentInner({
         <EffectDropShadow />
       </IconButton>
 
+      {/* <NumericInput className="[grid-area:input]" /> */}
+
       <Select
         matchTriggerWidth
         value={item.indexKey}
@@ -248,7 +250,7 @@ const Sortable = observer(function Sortable({
   onRemove,
   onDrop,
 }: {
-  onDrop: (id: string, newIndex: number) => void
+  onDrop: (position: "top" | "bottom" | null, id: string, newIndex: number) => void
   onRemove: (id: string) => void
   onSelect: (id: string | null) => void
   onVisible: (id: string, visible: boolean) => void
@@ -373,40 +375,57 @@ export const Basic: Story = {
       selectedId$.set(id)
     })
 
-    const handleDrop = useEventCallback((id: string, newIndex: number) => {
-      batch(() => {
-        const sortItems = SORT_DATA$.peek()
-        const indexList = sortItems.map((item) => item.indexKey)
+    const handleDrop = useEventCallback(
+      (position: "top" | "bottom" | null, id: string, newIndex: number) => {
+        batch(() => {
+          const sortItems = SORT_DATA$.peek()
+          const indexList = sortItems.map((item) => item.indexKey)
 
-        const itemToMove = sortItems.find((item) => item.id === id)
-        if (!itemToMove) return
+          const itemToMove = sortItems.find((item) => item.id === id)
+          if (!itemToMove) return
 
-        // 更新索引键列表
-        globalIndexGenerator.updateList(indexList)
+          // 更新索引键列表
+          globalIndexGenerator.updateList(indexList)
 
-        let newIndexKey: string | undefined
-        if (newIndex === 0) {
-          newIndexKey = globalIndexGenerator.keyBefore(sortItems[0]?.indexKey)
-        } else if (newIndex === sortItems.length - 1) {
-          newIndexKey = globalIndexGenerator.keyEnd()
-        } else {
-          newIndexKey = globalIndexGenerator.keyAfter(sortItems[newIndex - 1].indexKey)
-        }
+          let isStart = false
+          let isEnd = false
 
-        if (!newIndexKey) return
+          if (newIndex === 0 && position === "top") {
+            isStart = true
+          }
 
-        // 更新排序数据
-        const newSortItems = sortItems.map((item) =>
-          item.id === id ? { ...item, indexKey: newIndexKey } : item,
-        )
+          if (newIndex === sortItems.length - 1 && position === "bottom") {
+            isEnd = true
+          }
 
-        // 重新排序
-        newSortItems.sort((a, b) => sortByIndex(a, b))
+          let newIndexKey: string | undefined
+          if (isStart) {
+            newIndexKey = globalIndexGenerator.keyStart()
+          } else if (isEnd) {
+            newIndexKey = globalIndexGenerator.keyEnd()
+          } else {
+            if (position === "top") {
+              newIndexKey = globalIndexGenerator.keyBefore(sortItems[newIndex - 1].indexKey)
+            } else {
+              newIndexKey = globalIndexGenerator.keyAfter(sortItems[newIndex].indexKey)
+            }
+          }
 
-        // 更新索引键列表
-        SORT_DATA$.set(newSortItems)
-      })
-    })
+          if (!newIndexKey) return
+
+          // 更新排序数据
+          const newSortItems = sortItems.map((item) =>
+            item.id === id ? { ...item, indexKey: newIndexKey } : item,
+          )
+
+          // 重新排序
+          newSortItems.sort((a, b) => sortByIndex(a, b))
+
+          // 更新索引键列表
+          SORT_DATA$.set(newSortItems)
+        })
+      },
+    )
 
     // 键盘删除
     useEffect(() => {

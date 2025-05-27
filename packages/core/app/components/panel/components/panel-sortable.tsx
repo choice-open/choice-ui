@@ -14,7 +14,7 @@ interface PanelSortableProps<T extends SortableItem> {
   children: React.ReactNode
   className?: string
   data: T[]
-  onDrop: (id: string, newIndex: number) => void
+  onDrop: (position: "top" | "bottom" | null, id: string, newIndex: number) => void
   onSelectedIdChange: (id: string | null) => void
   selectedId: string | null
 }
@@ -51,11 +51,7 @@ export const PanelSortable = forwardRef(function PanelSortable<T extends Sortabl
         return
       }
 
-      if (position === "top") {
-        onDrop(dragId, dropIndex)
-      } else {
-        onDrop(dragId, dropIndex + 1)
-      }
+      onDrop(position, dragId, dropIndex)
     },
     [data, onDrop],
   )
