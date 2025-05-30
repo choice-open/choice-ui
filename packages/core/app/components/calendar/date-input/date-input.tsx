@@ -1,31 +1,30 @@
 import { format, isValid } from "date-fns"
 import { zhCN } from "date-fns/locale"
-import React, { useCallback, useEffect, useRef, useState } from "react"
+import React, { forwardRef, useCallback, useEffect, useRef, useState } from "react"
+import { TextField, TextFieldProps } from "~/components"
 import { handleShortcuts, parseExtendedRelativeDate, tryRelaxedParsing } from "../utils/input"
 import type { DateFormat } from "./types"
+import { FieldTypeDate } from "@choiceform/icons-react"
+import { mergeRefs } from "~/utils"
 
-interface DateInputProps {
-  className?: string
-  disabled?: boolean
+interface DateInputProps extends Omit<TextFieldProps, "value" | "onChange" | "format"> {
   format?: DateFormat
   onChange?: (date: Date | null) => void
-  placeholder?: string
-  readOnly?: boolean
   value?: Date | null
 }
 
-export function DateInput({
-  value,
-  onChange,
-  format: dateFormat = "yyyy-MM-dd",
-  placeholder = "输入日期...",
-  className = "",
-  disabled = false,
-  readOnly = false,
-}: DateInputProps) {
+export const DateInput = forwardRef<HTMLInputElement, DateInputProps>((props, ref) => {
+  const {
+    value,
+    onChange,
+    format: dateFormat = "yyyy-MM-dd",
+    placeholder = "Enter date...",
+    className = "",
+    ...rest
+  } = props
+
   const [inputValue, setInputValue] = useState("")
 
-  const inputRef = useRef<HTMLInputElement>(null)
   const isUpdatingRef = useRef(false)
 
   // 从 Date 值同步到 input
@@ -39,10 +38,10 @@ export function DateInput({
   }, [value, dateFormat])
 
   // 处理输入变化
-  const handleInputChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = useCallback((value: string) => {
     if (isUpdatingRef.current) return
 
-    const text = event.target.value
+    const text = value
     setInputValue(text)
   }, [])
 
@@ -113,23 +112,20 @@ export function DateInput({
   }, [handleSubmit])
 
   return (
-    <div className={`relative ${className}`}>
-      <input
-        ref={inputRef}
-        type="text"
-        value={inputValue}
-        onChange={handleInputChange}
-        onKeyDown={handleKeyDown}
-        onBlur={handleBlur}
-        placeholder={placeholder}
-        disabled={disabled}
-        readOnly={readOnly}
-        className={`w-full rounded-md border border-gray-300 px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none disabled:cursor-not-allowed disabled:bg-gray-100 ${readOnly ? "bg-gray-50" : "bg-white"}`}
-        style={{
-          minHeight: "40px",
-          fontFamily: "inherit",
-        }}
-      />
-    </div>
+    <TextField
+      ref={ref}
+      value={inputValue}
+      onChange={handleInputChange}
+      onKeyDown={handleKeyDown}
+      onBlur={handleBlur}
+      placeholder={placeholder}
+      {...rest}
+    >
+      <TextField.Prefix>
+        <FieldTypeDate />
+      </TextField.Prefix>
+    </TextField>
   )
-}
+})
+
+DateInput.displayName = "DateInput"

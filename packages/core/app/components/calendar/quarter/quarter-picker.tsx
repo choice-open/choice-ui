@@ -1,6 +1,6 @@
 import { tcx } from "@choiceform/design-system"
 import React, { useMemo, useCallback } from "react"
-import { ChevronLeft, ChevronRight } from "lucide-react"
+import { ChevronLeft, ChevronRight } from "@choiceform/icons-react"
 import type { QuarterPickerProps, QuarterItem, Quarter } from "./types"
 import { QuarterPickerTv } from "./tv"
 import { getYearQuarters, getCurrentQuarter, isQuarterEqual, formatQuarter } from "./utils"
@@ -104,7 +104,7 @@ export const QuarterPicker: React.FC<QuarterPickerProps> = (props) => {
             disabled={isPrevDisabled}
             aria-label="上一年"
           >
-            <ChevronLeft size={16} />
+            <ChevronLeft />
           </button>
           <button
             type="button"
@@ -113,7 +113,7 @@ export const QuarterPicker: React.FC<QuarterPickerProps> = (props) => {
             disabled={isNextDisabled}
             aria-label="下一年"
           >
-            <ChevronRight size={16} />
+            <ChevronRight />
           </button>
         </div>
       </div>

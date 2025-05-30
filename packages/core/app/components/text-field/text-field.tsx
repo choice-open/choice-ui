@@ -18,10 +18,10 @@ export interface TextFieldProps extends Omit<InputProps, "children"> {
 
 interface TextFieldComponent
   extends React.ForwardRefExoticComponent<TextFieldProps & React.RefAttributes<HTMLInputElement>> {
+  Description: typeof FieldDescription
+  Label: typeof FieldLabel
   Prefix: typeof FieldAddon
   Suffix: typeof FieldAddon
-  Label: typeof FieldLabel
-  Description: typeof FieldDescription
 }
 
 const TextFieldContent = ({
@@ -33,11 +33,11 @@ const TextFieldContent = ({
   inputRef,
 }: {
   className?: string
-  prefixNode: ReactElement | null
-  suffixNode: ReactElement | null
-  inputProps: any
-  styles: any
+  inputProps: InputProps
   inputRef: React.Ref<HTMLInputElement>
+  prefixNode: ReactElement | null
+  styles: ReturnType<typeof TextFieldTv>
+  suffixNode: ReactElement | null
 }) => (
   <div className={tcx(styles.root(), className)}>
     {prefixNode &&

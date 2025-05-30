@@ -1,6 +1,6 @@
 import { tcx } from "@choiceform/design-system"
 import React, { useMemo, useCallback, useState } from "react"
-import { ChevronLeft, ChevronRight } from "lucide-react"
+import { ChevronLeft, ChevronRight } from "@choiceform/icons-react"
 import type { YearPickerProps, YearItem } from "./types"
 import { YearPickerTv } from "./tv"
 
@@ -147,7 +147,7 @@ export const YearPicker: React.FC<YearPickerProps> = (props) => {
             disabled={isPrevDisabled}
             aria-label="上一组年份"
           >
-            <ChevronLeft size={16} />
+            <ChevronLeft />
           </button>
           <button
             type="button"
@@ -156,7 +156,7 @@ export const YearPicker: React.FC<YearPickerProps> = (props) => {
             disabled={isNextDisabled}
             aria-label="下一组年份"
           >
-            <ChevronRight size={16} />
+            <ChevronRight />
           </button>
         </div>
       </div>

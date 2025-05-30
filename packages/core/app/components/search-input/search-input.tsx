@@ -7,8 +7,8 @@ import { searchInputTv } from "./tv"
 
 export interface SearchInputProps extends TextFieldProps {
   defaultText?: {
-    placeholder: string
     clear: string
+    placeholder: string
   }
 }
 

@@ -6,12 +6,12 @@ import { InputTv } from "./tv"
 export interface InputProps
   extends Omit<HTMLProps<HTMLInputElement>, "value" | "onChange" | "size"> {
   className?: string
-  selected?: boolean
-  variant?: "default" | "dark" | "reset"
-  size?: "default" | "large"
-  value?: string
   onChange?: (value: string) => void
   onIsEditingChange?: (isEditing: boolean) => void
+  selected?: boolean
+  size?: "default" | "large"
+  value?: string
+  variant?: "default" | "dark" | "reset"
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(props, ref) {

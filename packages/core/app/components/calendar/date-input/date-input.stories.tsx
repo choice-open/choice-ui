@@ -1,13 +1,14 @@
 import type { Meta, StoryObj } from "@storybook/react"
-import React, { useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { DateInput } from "./date-input"
+import { Popover } from "../../popover"
+import { MonthCalendar } from "../../calendar"
+import { Panel } from "../../panel"
+import { isToday } from "date-fns"
 
 const meta: Meta<typeof DateInput> = {
   title: "DateAndTime/DateInput",
   component: DateInput,
-  parameters: {
-    layout: "centered",
-  },
   tags: ["new"],
 }
 
@@ -428,4 +429,48 @@ export const EnglishMonthSupport: Story = {
       </div>
     </div>
   ),
+}
+
+export const Basic: Story = {
+  render: function Basic() {
+    const [open, setOpen] = useState(false)
+    const ref = useRef<HTMLInputElement>(null)
+    const [date, setDate] = useState<Date | null>(isToday(new Date()) ? new Date() : null)
+    console.log(date)
+
+    return (
+      <div className="grid h-screen w-full grid-cols-[1fr_16rem]">
+        <div></div>
+        <Panel className="border-l">
+          <Panel.Title title="Select Date" />
+          <Panel.Row triggerRef={ref}>
+            <DateInput
+              onMouseDown={() => setOpen(true)}
+              value={date}
+              onChange={setDate}
+            />
+          </Panel.Row>
+        </Panel>
+
+        <Popover
+          triggerRef={ref}
+          open={open}
+          onOpenChange={setOpen}
+          placement="left-start"
+          initialFocus={ref}
+        >
+          <Popover.Content>
+            <MonthCalendar
+              className="w-48"
+              selectedDate={date || undefined}
+              onDateClick={(date) => {
+                setDate(date)
+                setOpen(false)
+              }}
+            />
+          </Popover.Content>
+        </Popover>
+      </div>
+    )
+  },
 }
