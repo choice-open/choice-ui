@@ -40,6 +40,7 @@
   },
   "dependencies": {
     "@choiceform/icons-react": "^1.0.3",
+    "@date-fns/tz": "^1.2.0",
     "@emoji-mart/data": "^1.2.1",
     "@emoji-mart/react": "^1.1.1",
     "@floating-ui/react": "0.24.3",
@@ -54,6 +55,7 @@
     "allotment": "^1.20.2",
     "chroma-js": "^2.4.2",
     "classnames": "^2.5.1",
+    "date-fns": "^4.1.0",
     "dayjs": "^1.11.13",
     "emoji-mart": "^5.6.0",
     "es-toolkit": "^1.13.1",
