@@ -1,26 +1,29 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import React, { useState } from "react"
-import { QuarterPicker } from "./quarter-picker"
-import type { QuarterPickerProps, Quarter } from "./types"
-import { getCurrentQuarter, formatQuarter } from "./utils"
+import { Quarter, getCurrentQuarter, formatQuarter } from "../utils"
+import { QuarterCalendar } from "./quarter-calendar"
+import type { QuarterCalendarProps } from "./types"
 
 // 辅助组件
-const QuarterPickerDemo = (args: QuarterPickerProps) => {
-  const [selectedQuarter, setSelectedQuarter] = useState<Quarter | undefined>(
-    args.selectedQuarter ?? getCurrentQuarter(args.currentYear, args.locale),
-  )
-  const [currentYear, setCurrentYear] = useState<number>(
-    args.currentYear ?? new Date().getFullYear(),
+const QuarterCalendarDemo = (args: QuarterCalendarProps) => {
+  const [selectedQuarter, setSelectedQuarter] = useState<Quarter | null>(
+    args.value ?? getCurrentQuarter(args.currentYear, args.locale),
   )
 
   return (
     <div className="space-y-4">
-      <QuarterPicker
+      <QuarterCalendar
         {...args}
-        selectedQuarter={selectedQuarter}
-        currentYear={currentYear}
-        onQuarterSelect={setSelectedQuarter}
-        onYearChange={setCurrentYear}
+        value={selectedQuarter}
+        onChange={setSelectedQuarter}
+        className="w-48 rounded-lg border"
+      />
+      <QuarterCalendar
+        {...args}
+        value={selectedQuarter}
+        onChange={setSelectedQuarter}
+        className="w-48 rounded-lg border"
+        variant="dark"
       />
       <div className="text-sm text-gray-600">
         选中季度: {selectedQuarter ? formatQuarter(selectedQuarter) : "未选择"}
@@ -29,28 +32,24 @@ const QuarterPickerDemo = (args: QuarterPickerProps) => {
   )
 }
 
-const ComparisonDemo = (args: QuarterPickerProps) => {
-  const [zhQuarter, setZhQuarter] = useState<Quarter | undefined>(
+const ComparisonDemo = (args: QuarterCalendarProps) => {
+  const [zhQuarter, setZhQuarter] = useState<Quarter | null>(
     getCurrentQuarter(args.currentYear, "zh-CN"),
   )
-  const [enQuarter, setEnQuarter] = useState<Quarter | undefined>(
+  const [enQuarter, setEnQuarter] = useState<Quarter | null>(
     getCurrentQuarter(args.currentYear, "en-US"),
   )
-  const [zhYear, setZhYear] = useState<number>(args.currentYear!)
-  const [enYear, setEnYear] = useState<number>(args.currentYear!)
 
   return (
     <div className="space-y-8">
       <div>
         <h3 className="mb-4 text-lg font-medium">中文版本</h3>
         <div className="space-y-2">
-          <QuarterPicker
+          <QuarterCalendar
             {...args}
-            selectedQuarter={zhQuarter}
-            currentYear={zhYear}
+            value={zhQuarter}
             locale="zh-CN"
-            onQuarterSelect={setZhQuarter}
-            onYearChange={setZhYear}
+            onChange={setZhQuarter}
           />
           <div className="text-sm text-gray-600">
             选中季度: {zhQuarter ? formatQuarter(zhQuarter) : "未选择"}
@@ -61,13 +60,11 @@ const ComparisonDemo = (args: QuarterPickerProps) => {
       <div>
         <h3 className="mb-4 text-lg font-medium">英文版本</h3>
         <div className="space-y-2">
-          <QuarterPicker
+          <QuarterCalendar
             {...args}
-            selectedQuarter={enQuarter}
-            currentYear={enYear}
+            value={enQuarter}
             locale="en-US"
-            onQuarterSelect={setEnQuarter}
-            onYearChange={setEnYear}
+            onChange={setEnQuarter}
           />
           <div className="text-sm text-gray-600">
             选中季度: {enQuarter ? formatQuarter(enQuarter) : "未选择"}
@@ -79,26 +76,23 @@ const ComparisonDemo = (args: QuarterPickerProps) => {
 }
 
 // 单个语言的季度选择器组件
-const LocaleQuarterPicker: React.FC<{
-  args: QuarterPickerProps
+const LocaleQuarterCalendar: React.FC<{
+  args: QuarterCalendarProps
   locale: { code: string; name: string }
 }> = ({ locale, args }) => {
-  const [quarter, setQuarter] = useState<Quarter | undefined>(
+  const [quarter, setQuarter] = useState<Quarter | null>(
     getCurrentQuarter(args.currentYear, locale.code),
   )
-  const [year, setYear] = useState<number>(args.currentYear!)
 
   return (
     <div>
       <h3 className="mb-4 text-lg font-medium">{locale.name}</h3>
       <div className="space-y-2">
-        <QuarterPicker
+        <QuarterCalendar
           {...args}
-          selectedQuarter={quarter}
-          currentYear={year}
+          value={quarter}
           locale={locale.code}
-          onQuarterSelect={setQuarter}
-          onYearChange={setYear}
+          onChange={setQuarter}
         />
         <div className="text-sm text-gray-600">
           选中季度: {quarter ? formatQuarter(quarter) : "未选择"}
@@ -108,7 +102,7 @@ const LocaleQuarterPicker: React.FC<{
   )
 }
 
-const MultiLanguageDemo = (args: QuarterPickerProps) => {
+const MultiLanguageDemo = (args: QuarterCalendarProps) => {
   const locales = [
     { code: "zh-CN", name: "中文" },
     { code: "en-US", name: "English" },
@@ -121,7 +115,7 @@ const MultiLanguageDemo = (args: QuarterPickerProps) => {
   return (
     <div className="grid grid-cols-2 gap-6">
       {locales.map((locale) => (
-        <LocaleQuarterPicker
+        <LocaleQuarterCalendar
           key={locale.code}
           locale={locale}
           args={args}
@@ -131,9 +125,9 @@ const MultiLanguageDemo = (args: QuarterPickerProps) => {
   )
 }
 
-const meta: Meta<typeof QuarterPicker> = {
-  title: "DateAndTime/QuarterPicker",
-  component: QuarterPicker,
+const meta: Meta<typeof QuarterCalendar> = {
+  title: "DateAndTime/QuarterCalendar",
+  component: QuarterCalendar,
   parameters: {
     layout: "centered",
   },
@@ -152,7 +146,7 @@ export const Default: Story = {
     locale: "zh-CN",
     disabled: false,
   },
-  render: (args) => <QuarterPickerDemo {...args} />,
+  render: (args) => <QuarterCalendarDemo {...args} />,
 }
 
 // 英文版本
@@ -162,7 +156,7 @@ export const English: Story = {
     locale: "en-US",
     disabled: false,
   },
-  render: (args) => <QuarterPickerDemo {...args} />,
+  render: (args) => <QuarterCalendarDemo {...args} />,
 }
 
 // 日文版本
@@ -172,7 +166,7 @@ export const Japanese: Story = {
     locale: "ja-JP",
     disabled: false,
   },
-  render: (args) => <QuarterPickerDemo {...args} />,
+  render: (args) => <QuarterCalendarDemo {...args} />,
 }
 
 // 韩文版本
@@ -182,7 +176,7 @@ export const Korean: Story = {
     locale: "ko-KR",
     disabled: false,
   },
-  render: (args) => <QuarterPickerDemo {...args} />,
+  render: (args) => <QuarterCalendarDemo {...args} />,
 }
 
 // 范围限制
@@ -194,7 +188,7 @@ export const WithRange: Story = {
     locale: "zh-CN",
     disabled: false,
   },
-  render: (args) => <QuarterPickerDemo {...args} />,
+  render: (args) => <QuarterCalendarDemo {...args} />,
 }
 
 // 禁用特定季度
@@ -208,7 +202,7 @@ export const WithDisabledQuarters: Story = {
     locale: "zh-CN",
     disabled: false,
   },
-  render: (args) => <QuarterPickerDemo {...args} />,
+  render: (args) => <QuarterCalendarDemo {...args} />,
 }
 
 // 禁用状态
@@ -218,14 +212,14 @@ export const Disabled: Story = {
     locale: "zh-CN",
     disabled: true,
   },
-  render: (args) => <QuarterPickerDemo {...args} />,
+  render: (args) => <QuarterCalendarDemo {...args} />,
 }
 
 // 指定选中季度
 export const WithSelectedQuarter: Story = {
   args: {
     currentYear,
-    selectedQuarter: {
+    value: {
       quarter: 2,
       year: currentYear,
       label: "第二季度",
@@ -234,7 +228,22 @@ export const WithSelectedQuarter: Story = {
     locale: "zh-CN",
     disabled: false,
   },
-  render: (args) => <QuarterPickerDemo {...args} />,
+  render: (args) => <QuarterCalendarDemo {...args} />,
+}
+
+// 深色主题
+export const DarkVariant: Story = {
+  args: {
+    currentYear,
+    locale: "zh-CN",
+    variant: "dark",
+    disabled: false,
+  },
+  render: (args) => (
+    <div className="rounded-lg bg-slate-900 p-4">
+      <QuarterCalendarDemo {...args} />
+    </div>
+  ),
 }
 
 // 对比展示

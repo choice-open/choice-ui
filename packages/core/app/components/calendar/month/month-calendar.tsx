@@ -1,59 +1,157 @@
-import { tcx } from "@choiceform/design-system"
-import { useCallback, useEffect, useMemo, useState } from "react"
+import { enUS } from "date-fns/locale"
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { useEventCallback } from "usehooks-ts"
-import type { DateRange, MonthCalendarProps } from "./types"
+import { useMergedValue } from "~/hooks"
+import { tcx } from "~/utils"
 import {
   calculateWeekNumbers,
   dateUtils,
   formatMonthTitle,
   generateCalendarDays,
   generateWeekdayNames,
+  inferMonthFromValue,
+  inferSelectionMode,
+  isCalendarValueEqual,
+  isSameDayInTimeZone,
+  isWithinRange,
 } from "../utils"
 import { MonthCalendarDateCell } from "./month-calendar-date-cell"
 import { MonthCalendarHeader } from "./month-calendar-header"
 import { MonthCalendarWeekDay } from "./month-calendar-week-day"
 import { MonthCalendarWeekNumber } from "./month-calendar-week-number"
 import { MonthCalendarTv } from "./tv"
+import type { CalendarValue, DateRange, MonthCalendarProps } from "./types"
 
-export const MonthCalendar = (props: MonthCalendarProps) => {
+export const MonthCalendar = memo(function MonthCalendar(props: MonthCalendarProps) {
   const {
     className,
+    direction = "horizontal",
     currentMonth: propCurrentMonth,
     dateComparisonMode = "date-only",
+    defaultValue,
     disabledDates = [],
     highlightDates = [],
     highlightToday = true,
-    locale = "zh-CN",
+    locale = enUS,
     maxDate,
     minDate,
-    multiSelect = false,
-    rangeSelect = false,
-    onDateClick,
+    onChange,
     onMonthChange,
-    onMultiSelect,
-    onRangeSelect,
-    selectedDate,
-    selectedDates = [],
-    selectedRange,
+    selectionMode: propSelectionMode,
     showOutsideDays = true,
     showWeekNumbers = false,
     timeZone = "Asia/Shanghai",
+    value,
     weekStartsOn = 1,
     weekdayNames: customWeekdayNames,
     fixedGrid = true,
+    variant = "default",
   } = props
 
+  // 🎯 高级数据流方向检测
+  const dataFlowRef = useRef<{
+    direction: "external" | "internal" | "idle"
+    interactionType: "range-selecting" | "multi-selecting" | "single-selecting" | null
+    isUserInteracting: boolean
+    lastExternalValue: CalendarValue
+  }>({
+    direction: "idle",
+    lastExternalValue: null,
+    isUserInteracting: false,
+    interactionType: null,
+  })
+
+  // 使用 useMergedValue 管理选择状态
+  const [currentValue, setCurrentValue] = useMergedValue<CalendarValue>({
+    value,
+    defaultValue,
+    onChange,
+  })
+
+  // 🔄 监听外部 value 变化，检测数据流方向
+  useEffect(() => {
+    const flow = dataFlowRef.current
+
+    // 检测是否为外部数据变化（处理 undefined）
+    const normalizedValue = value ?? null
+    const isExternalChange = !isCalendarValueEqual(
+      normalizedValue,
+      flow.lastExternalValue,
+      timeZone,
+      dateComparisonMode,
+    )
+
+    if (isExternalChange) {
+      // 🔄 外部数据流：如果用户正在交互，暂停响应外部更新
+      if (flow.isUserInteracting) {
+        // 更新记录但不影响当前状态
+        flow.lastExternalValue = normalizedValue
+        return
+      }
+
+      // 🔄 外部数据流：更新内部状态
+      flow.direction = "external"
+      flow.lastExternalValue = normalizedValue
+
+      // 短暂延迟后恢复内部处理
+      setTimeout(() => {
+        if (dataFlowRef.current.direction === "external") {
+          dataFlowRef.current.direction = "idle"
+        }
+      }, 50)
+    }
+  }, [value, currentValue, timeZone, dateComparisonMode])
+
+  // 内部月份状态（用于用户手动导航）
+  const [internalMonth, setInternalMonth] = useState<Date | null>(null)
+
+  // 计算最终显示的月份
+  const currentMonth = useMemo(() => {
+    // 1. 如果有受控的 currentMonth，优先使用
+    if (propCurrentMonth) {
+      return propCurrentMonth
+    }
+
+    // 2. 如果用户手动导航过，使用内部状态
+    if (internalMonth) {
+      return internalMonth
+    }
+
+    // 3. 否则从当前值推导
+    const inferFromValue = inferMonthFromValue(currentValue)
+    if (inferFromValue) {
+      return inferFromValue
+    }
+
+    // 4. 最后使用当前日期
+    return new Date()
+  }, [propCurrentMonth, internalMonth, currentValue])
+
+  // 确定当前选择模式
+  const selectionMode = propSelectionMode || inferSelectionMode(currentValue)
+
   // 内部状态
-  const [currentMonth, setCurrentMonth] = useState(propCurrentMonth || new Date())
   const [hoverDate, setHoverDate] = useState<Date | null>(null)
   const [selectingRange, setSelectingRange] = useState(false)
 
-  // 同步外部currentMonth变化
+  // 🎯 范围选择状态管理 - 检测用户是否正在进行范围选择
   useEffect(() => {
-    if (propCurrentMonth) {
-      setCurrentMonth(propCurrentMonth)
+    const flow = dataFlowRef.current
+
+    if (selectionMode === "range") {
+      if (selectingRange) {
+        flow.isUserInteracting = true
+        flow.interactionType = "range-selecting"
+      } else if (flow.interactionType === "range-selecting") {
+        // 范围选择完成，短暂延迟后结束交互状态
+        setTimeout(() => {
+          dataFlowRef.current.isUserInteracting = false
+          dataFlowRef.current.interactionType = null
+          dataFlowRef.current.direction = "idle"
+        }, 200)
+      }
     }
-  }, [propCurrentMonth])
+  }, [selectingRange, selectionMode])
 
   // 动态生成或使用自定义的星期名称
   const weekdayNames = useMemo(() => {
@@ -93,166 +191,240 @@ export const MonthCalendar = (props: MonthCalendarProps) => {
     (date: Date): boolean => {
       if (minDate && date < minDate) return true
       if (maxDate && date > maxDate) return true
-      return disabledDates.some((disabledDate) => dateUtils.isSameDay(date, disabledDate))
+      return disabledDates.some((disabledDate) => isSameDayInTimeZone(date, disabledDate, timeZone))
     },
-    [minDate, maxDate, disabledDates],
+    [minDate, maxDate, disabledDates, timeZone],
   )
 
   // 检查是否被高亮
   const isHighlighted = useCallback(
     (date: Date): boolean => {
-      return highlightDates.some((highlightDate) => dateUtils.isSameDay(date, highlightDate))
+      return highlightDates.some((highlightDate) =>
+        isSameDayInTimeZone(date, highlightDate, timeZone),
+      )
     },
-    [highlightDates],
+    [highlightDates, timeZone],
   )
 
   // 检查是否被选中
   const isSelected = useCallback(
     (date: Date): boolean => {
-      if (multiSelect) {
-        return selectedDates.some((selectedDate) => dateUtils.isSameDay(date, selectedDate))
+      if (!currentValue) return false
+
+      if (selectionMode === "multiple" && Array.isArray(currentValue)) {
+        return currentValue.some((selectedDate) =>
+          isSameDayInTimeZone(date, selectedDate, timeZone),
+        )
       }
-      if (selectedDate) {
-        return dateUtils.isSameDay(date, selectedDate)
+
+      if (selectionMode === "single" && currentValue instanceof Date) {
+        return isSameDayInTimeZone(date, currentValue, timeZone)
       }
+
+      if (
+        selectionMode === "range" &&
+        !Array.isArray(currentValue) &&
+        typeof currentValue === "object" &&
+        "start" in currentValue
+      ) {
+        const range = currentValue as DateRange
+        // 在 range 模式下，start 和 end 日期都应该被标记为选中
+        return (
+          isSameDayInTimeZone(date, range.start, timeZone) ||
+          isSameDayInTimeZone(date, range.end, timeZone)
+        )
+      }
+
       return false
     },
-    [multiSelect, selectedDates, selectedDate],
+    [currentValue, selectionMode, timeZone],
   )
 
   // 检查是否在范围内
   const isInRange = useCallback(
     (date: Date): boolean => {
-      if (!selectedRange) return false
-      return date >= selectedRange.start && date <= selectedRange.end
+      if (
+        selectionMode !== "range" ||
+        !currentValue ||
+        Array.isArray(currentValue) ||
+        typeof currentValue !== "object"
+      ) {
+        return false
+      }
+      const range = currentValue as DateRange
+      return isWithinRange(date, range.start, range.end, timeZone, dateComparisonMode)
     },
-    [selectedRange],
+    [currentValue, selectionMode, timeZone, dateComparisonMode],
   )
 
   // 导航函数
-  const handleToday = useCallback(() => {
+  const handleToday = useEventCallback(() => {
     const today = dateUtils.now()
-    setCurrentMonth(today)
+    setInternalMonth(today)
     onMonthChange?.(today)
-  }, [onMonthChange])
+  })
 
-  const handlePrevMonth = useCallback(() => {
+  const handlePrevMonth = useEventCallback(() => {
     const prevMonth = dateUtils.addMonths(currentMonth, -1)
-    setCurrentMonth(prevMonth)
+    setInternalMonth(prevMonth)
     onMonthChange?.(prevMonth)
-  }, [currentMonth, onMonthChange])
+  })
 
-  const handleNextMonth = useCallback(() => {
+  const handleNextMonth = useEventCallback(() => {
     const nextMonth = dateUtils.addMonths(currentMonth, 1)
-    setCurrentMonth(nextMonth)
+    setInternalMonth(nextMonth)
     onMonthChange?.(nextMonth)
-  }, [currentMonth, onMonthChange])
+  })
+
+  // 🚀 优化的内部状态更新函数
+  const updateInternalValue = useCallback(
+    (newValue: CalendarValue) => {
+      const flow = dataFlowRef.current
+
+      // 🔄 标记为内部数据流
+      flow.direction = "internal"
+      flow.lastExternalValue = newValue
+
+      // 更新内部状态
+      setCurrentValue(newValue)
+
+      // 重置为空闲状态
+      setTimeout(() => {
+        if (dataFlowRef.current.direction === "internal") {
+          dataFlowRef.current.direction = "idle"
+        }
+      }, 100)
+    },
+    [setCurrentValue],
+  )
 
   // 日期点击处理
-  const handleDateClick = useCallback(
-    (date: Date) => {
-      if (isDateDisabled(date)) return
+  const handleDateClick = useEventCallback((date: Date) => {
+    if (isDateDisabled(date)) return
 
-      if (rangeSelect) {
-        if (!selectedRange || !selectingRange) {
-          // 开始新的范围选择
-          const newRange: DateRange = { start: date, end: date }
-          onRangeSelect?.(newRange)
-          setSelectingRange(true)
-        } else {
-          // 完成范围选择
-          const start = selectedRange.start
-          const end = date
-          const orderedRange: DateRange = {
-            start: start <= end ? start : end,
-            end: start <= end ? end : start,
-          }
-          onRangeSelect?.(orderedRange)
-          setSelectingRange(false)
-          setHoverDate(null)
-        }
-      } else if (multiSelect) {
-        const isCurrentlySelected = selectedDates.some((selectedDate) =>
-          dateUtils.isSameDay(date, selectedDate),
-        )
+    const flow = dataFlowRef.current
 
-        let newSelectedDates: Date[]
-        if (isCurrentlySelected) {
-          newSelectedDates = selectedDates.filter(
-            (selectedDate) => !dateUtils.isSameDay(date, selectedDate),
-          )
-        } else {
-          newSelectedDates = [...selectedDates, date]
-        }
+    if (selectionMode === "range") {
+      const currentRange =
+        currentValue && !Array.isArray(currentValue) && typeof currentValue === "object"
+          ? (currentValue as DateRange)
+          : null
 
-        onMultiSelect?.(newSelectedDates)
+      if (!currentRange || !selectingRange) {
+        // 🎯 开始新的范围选择
+        flow.isUserInteracting = true
+        flow.interactionType = "range-selecting"
+
+        const newRange: DateRange = { start: date, end: date }
+        updateInternalValue(newRange)
+        setSelectingRange(true)
       } else {
-        // 单选模式
-        onDateClick?.(date)
+        // 🎯 完成范围选择
+        const start = currentRange.start
+        const end = date
+        const orderedRange: DateRange = {
+          start: start <= end ? start : end,
+          end: start <= end ? end : start,
+        }
+        updateInternalValue(orderedRange)
+        setSelectingRange(false)
+        setHoverDate(null)
       }
-    },
-    [
-      isDateDisabled,
-      rangeSelect,
-      multiSelect,
-      selectedRange,
-      selectingRange,
-      selectedDates,
-      onRangeSelect,
-      onMultiSelect,
-      onDateClick,
-    ],
-  )
+    } else if (selectionMode === "multiple") {
+      // 🎯 多选模式
+      flow.isUserInteracting = true
+      flow.interactionType = "multi-selecting"
+
+      const currentDates = Array.isArray(currentValue) ? currentValue : []
+      const isCurrentlySelected = currentDates.some((selectedDate) =>
+        isSameDayInTimeZone(date, selectedDate, timeZone),
+      )
+
+      let newSelectedDates: Date[]
+      if (isCurrentlySelected) {
+        newSelectedDates = currentDates.filter(
+          (selectedDate) => !isSameDayInTimeZone(date, selectedDate, timeZone),
+        )
+      } else {
+        newSelectedDates = [...currentDates, date]
+      }
+
+      updateInternalValue(newSelectedDates)
+
+      // 多选模式下立即结束交互状态
+      setTimeout(() => {
+        dataFlowRef.current.isUserInteracting = false
+        dataFlowRef.current.interactionType = null
+      }, 100)
+    } else {
+      // 🎯 单选模式
+      flow.isUserInteracting = true
+      flow.interactionType = "single-selecting"
+
+      updateInternalValue(date)
+
+      // 单选模式下立即结束交互状态
+      setTimeout(() => {
+        dataFlowRef.current.isUserInteracting = false
+        dataFlowRef.current.interactionType = null
+      }, 100)
+    }
+  })
 
   // 范围选择辅助函数
   const rangeHelpers = useMemo(() => {
     const isSameDay = (date1: Date | null, date2: Date | null): boolean => {
       if (!date1 || !date2) return false
-      return dateUtils.isSameDay(date1, date2)
+      return isSameDayInTimeZone(date1, date2, timeZone)
     }
+
+    const currentRange =
+      selectionMode === "range" &&
+      currentValue &&
+      !Array.isArray(currentValue) &&
+      typeof currentValue === "object"
+        ? (currentValue as DateRange)
+        : null
 
     return {
       isSameDay,
       isFirstInRange: (date: Date): boolean => {
-        if (!selectedRange) return false
-        return isSameDay(date, selectedRange.start)
+        if (!currentRange) return false
+        return isSameDay(date, currentRange.start)
       },
       isLastInRange: (date: Date): boolean => {
-        if (!selectedRange) return false
-        return isSameDay(date, selectedRange.end)
+        if (!currentRange) return false
+        return isSameDay(date, currentRange.end)
       },
       isInHoverRange: (date: Date): boolean => {
-        if (!selectingRange || !selectedRange || !hoverDate) return false
-
-        const dateTime = date.getTime()
-        const startDateTime = selectedRange.start.getTime()
-        const hoverDateTime = hoverDate.getTime()
-
-        return (
-          (dateTime >= startDateTime && dateTime <= hoverDateTime) ||
-          (dateTime <= startDateTime && dateTime >= hoverDateTime)
-        )
+        if (!selectingRange || !currentRange || !hoverDate) return false
+        // 🚀 使用专业的范围检查工具 - 需要判断方向
+        const minDate = currentRange.start <= hoverDate ? currentRange.start : hoverDate
+        const maxDate = currentRange.start <= hoverDate ? hoverDate : currentRange.start
+        return isWithinRange(date, minDate, maxDate, timeZone, dateComparisonMode)
       },
       isFirstInHoverRange: (date: Date): boolean => {
-        if (!selectingRange || !selectedRange || !hoverDate) return false
+        if (!selectingRange || !currentRange || !hoverDate) return false
 
-        if (selectedRange.start.getTime() <= hoverDate.getTime()) {
-          return isSameDay(date, selectedRange.start)
+        // 🔧 判断哪个是范围的起始点
+        if (currentRange.start <= hoverDate) {
+          return isSameDay(date, currentRange.start)
         } else {
           return isSameDay(date, hoverDate)
         }
       },
       isLastInHoverRange: (date: Date): boolean => {
-        if (!selectingRange || !selectedRange || !hoverDate) return false
+        if (!selectingRange || !currentRange || !hoverDate) return false
 
-        if (selectedRange.start.getTime() <= hoverDate.getTime()) {
+        // 🔧 判断哪个是范围的结束点
+        if (currentRange.start <= hoverDate) {
           return isSameDay(date, hoverDate)
         } else {
-          return isSameDay(date, selectedRange.start)
+          return isSameDay(date, currentRange.start)
         }
       },
     }
-  }, [selectedRange, selectingRange, hoverDate])
+  }, [currentValue, selectionMode, selectingRange, hoverDate, timeZone, dateComparisonMode])
 
   // 鼠标事件处理
   const handleMouseEnter = useEventCallback((date: Date) => {
@@ -271,6 +443,7 @@ export const MonthCalendar = (props: MonthCalendarProps) => {
 
   const tv = MonthCalendarTv({
     showWeekNumbers,
+    variant,
   })
 
   return (
@@ -282,14 +455,12 @@ export const MonthCalendar = (props: MonthCalendarProps) => {
         handlePrevMonth={handlePrevMonth}
         handleNextMonth={handleNextMonth}
         showWeekNumbers={showWeekNumbers}
+        variant={variant}
+        direction={direction}
       />
 
       <div className={tv.weekdaysContainer()}>
-        {showWeekNumbers && (
-          <div className="flex items-center justify-center text-xs font-medium text-gray-500">
-            {/* 周数列头 - 空白 */}
-          </div>
-        )}
+        {showWeekNumbers && <div />}
         {weekdayNames.map((day, index) => (
           <MonthCalendarWeekDay
             key={index}
@@ -341,6 +512,7 @@ export const MonthCalendar = (props: MonthCalendarProps) => {
             isFirstInHoverRange: firstInHoverRange,
             isLastInHoverRange: lastInHoverRange,
             inHoverRange,
+            selectionMode,
           })
 
           const elements = []
@@ -362,7 +534,7 @@ export const MonthCalendar = (props: MonthCalendarProps) => {
             <MonthCalendarDateCell
               key={index}
               date={date}
-              dayClasses={dayClasses}
+              className={dayClasses}
               disabled={disabled}
               inRange={inRange}
               inHoverRange={inHoverRange}
@@ -378,4 +550,6 @@ export const MonthCalendar = (props: MonthCalendarProps) => {
       </div>
     </div>
   )
-}
+})
+
+MonthCalendar.displayName = "MonthCalendar"

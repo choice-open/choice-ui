@@ -3,7 +3,7 @@ import { tv } from "tailwind-variants"
 export const MonthCalendarTv = tv({
   slots: {
     // 容器
-    container: "bg-default-background rounded-md select-none",
+    container: "select-none",
 
     // 头部
     header: "grid items-center pt-2 pr-1 pl-3",
@@ -11,7 +11,7 @@ export const MonthCalendarTv = tv({
     title: "flex-1 truncate font-medium",
 
     // 星期标题区域
-    weekdaysContainer: "text-secondary-foreground grid gap-0 px-2 text-center",
+    weekdaysContainer: "grid gap-0 px-2 text-center",
     weekday: "flex h-8 items-center justify-center text-sm",
 
     // 日期网格
@@ -29,18 +29,14 @@ export const MonthCalendarTv = tv({
 
     // 日期数字
     dayNumber: "relative z-2",
-    weekNumber: [
-      "text-secondary-foreground aspect-square text-sm",
-      "flex items-center justify-center",
-    ],
+    weekNumber: "flex aspect-square items-center justify-center text-sm",
     emptyDay: "",
   },
 
   variants: {
     // 是否在当前月
     inMonth: {
-      true: { day: "" },
-      false: { day: "text-disabled-foreground" },
+      false: {},
     },
 
     showWeekNumbers: {
@@ -60,22 +56,20 @@ export const MonthCalendarTv = tv({
 
     // 是否选中
     selected: {
-      true: {
-        day: "text-on-accent-foreground after:bg-accent-background after:inset-0.5 after:rounded-md",
-      },
+      true: {},
     },
 
     // 是否在选中范围内
     inRange: {
       true: {
-        day: "before:bg-selected-background before:-inset-x-px before:inset-y-0.25",
+        day: "before:-inset-x-px before:inset-y-0.25",
       },
     },
 
     // 是否在悬停范围内（范围选择的预览）
     inHoverRange: {
       true: {
-        day: "before:bg-secondary-background before:-inset-x-px before:inset-y-0.25",
+        day: "before:-inset-x-px before:inset-y-0.25",
       },
     },
 
@@ -125,7 +119,7 @@ export const MonthCalendarTv = tv({
 
     // 是否禁用
     disabled: {
-      true: { day: "text-disabled-foreground" },
+      true: {},
       false: {},
     },
 
@@ -133,39 +127,155 @@ export const MonthCalendarTv = tv({
     showOutsideDays: {
       false: {},
     },
+
+    selectionMode: {
+      single: {},
+      multiple: {},
+      range: {},
+    },
+
+    variant: {
+      default: {
+        container: "bg-default-background",
+        weekdaysContainer: "text-secondary-foreground",
+        weekNumber: "text-secondary-foreground",
+      },
+      dark: {
+        container: "bg-menu-background text-white",
+        weekdaysContainer: "text-white/40",
+        weekNumber: "text-white/40",
+      },
+    },
   },
 
-  // 变体组合规则
   compoundVariants: [
-    // 非当月且不显示外部日期
+    {
+      inMonth: false,
+      today: false,
+      variant: "default",
+      className: { day: "text-disabled-foreground" },
+    },
+    {
+      inMonth: false,
+      today: false,
+      variant: "dark",
+      className: { day: "text-white/40" },
+    },
     {
       inMonth: false,
       showOutsideDays: false,
       className: { day: "invisible" },
     },
     {
+      selectionMode: ["single", "multiple"],
       selected: true,
       today: false,
       className: {
-        day: "text-on-accent-foreground after:bg-accent-background after:inset-0.5 after:rounded-md",
+        day: "after:inset-0 after:rounded-md",
       },
     },
     {
+      selectionMode: ["single", "multiple"],
+      selected: true,
+      today: false,
+      variant: "default",
+      className: {
+        day: "after:bg-selected-background",
+      },
+    },
+    {
+      selectionMode: ["single", "multiple"],
+      selected: true,
+      today: false,
+      variant: "dark",
+      className: {
+        day: "after:bg-gray-600",
+      },
+    },
+    {
+      selectionMode: ["single", "multiple"],
       selected: true,
       today: true,
       className: {
-        day: "after:ring-accent-background after:ring-offset-default-background after:ring-1 after:ring-offset-1",
+        day: "after:ring-accent-background",
+      },
+    },
+    {
+      selectionMode: ["single", "multiple"],
+      selected: true,
+      today: true,
+      variant: "default",
+      className: {
+        day: "after:ring-offset-default-background after:ring-1 after:ring-offset-1",
+      },
+    },
+    {
+      selectionMode: ["single", "multiple"],
+      selected: true,
+      today: true,
+      variant: "dark",
+      className: {
+        day: "after:ring-2 after:ring-gray-600",
+      },
+    },
+    // Hover
+    {
+      disabled: false,
+      inRange: false,
+      inHoverRange: false,
+      className: {
+        day: "before:inset-0 before:rounded-md",
       },
     },
     {
       disabled: false,
       inRange: false,
       inHoverRange: false,
-      inMonth: true,
+      variant: "default",
       className: {
-        day: "hover:before:bg-secondary-background before:inset-0.25 before:rounded-md",
+        day: "hover:before:bg-secondary-background",
       },
     },
+    {
+      disabled: false,
+      inRange: false,
+      inHoverRange: false,
+      variant: "dark",
+      className: {
+        day: "hover:before:bg-gray-700",
+      },
+    },
+    {
+      inHoverRange: true,
+      variant: "default",
+      className: {
+        day: "before:bg-secondary-background",
+      },
+    },
+    {
+      inRange: true,
+      inHoverRange: false,
+      variant: "default",
+      className: {
+        day: "before:bg-selected-background",
+      },
+    },
+    {
+      inHoverRange: true,
+      variant: "dark",
+      className: {
+        day: "before:bg-gray-600",
+      },
+    },
+    {
+      inRange: true,
+      inHoverRange: false,
+      variant: "dark",
+      className: {
+        day: "before:bg-accent-background/20",
+      },
+    },
+    // Rounded
     {
       isFirstInRow: true,
       className: { day: "before:rounded-l-md" },
@@ -204,6 +314,17 @@ export const MonthCalendarTv = tv({
       isLastInHoverRange: true,
       className: { day: "before:rounded-r-md" },
     },
+    // Disabled
+    {
+      disabled: true,
+      variant: "default",
+      className: { day: "text-disabled-foreground" },
+    },
+    {
+      disabled: true,
+      variant: "dark",
+      className: { day: "text-white/20" },
+    },
   ],
 
   // 默认变体
@@ -219,5 +340,7 @@ export const MonthCalendarTv = tv({
     inHoverRange: false,
     isFirstInRange: false,
     isLastInRange: false,
+    selectionMode: "single",
+    variant: "default",
   },
 })

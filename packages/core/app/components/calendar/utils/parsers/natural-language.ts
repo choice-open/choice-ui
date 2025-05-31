@@ -12,8 +12,8 @@ import {
   addYears,
   subYears,
 } from "date-fns"
-import { naturalLanguageMap, defaultLocaleMap } from "./constants"
 import { type Locale } from "date-fns"
+import { naturalLanguageMap, defaultLocaleMap } from "../constants"
 
 // 解析自然语言日期
 export function parseNaturalLanguage(input: string, localeKey: string = "zh-CN"): Date | null {

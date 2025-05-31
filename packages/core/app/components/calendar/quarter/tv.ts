@@ -1,92 +1,165 @@
 import { tv } from "tailwind-variants"
 
-export const QuarterPickerTv = tv({
+export const QuarterCalendarTv = tv({
   slots: {
     // 容器
-    container: "bg-default-background rounded-md select-none",
-
+    container: "select-none",
     // 头部
-    header: "border-default-200 flex items-center justify-between border-b p-3",
-    title: "text-lg font-medium",
-    navigation: "flex items-center gap-1",
-    navButton: [
-      "h-8 w-8 rounded-md",
-      "flex items-center justify-center",
-      "hover:bg-default-100",
-      "focus:bg-default-100",
-      "transition-colors",
-      "cursor-pointer",
-    ],
-
+    header: "flex items-center pt-2 pr-1 pl-3",
+    title: "flex-1 truncate font-medium",
+    navigation: "flex h-6 items-center",
     // 季度网格
-    quartersGrid: "grid grid-cols-2 gap-3 p-4",
-
+    quartersGrid: "grid grid-cols-4 gap-0 px-2 pb-2",
     // 季度单元格
     quarterCell: [
-      "border-default-200 rounded-lg border p-4",
-      "cursor-pointer select-none",
-      "transition-all duration-200",
-      "hover:border-primary-300 hover:bg-primary-50",
-      "focus:ring-primary-500 focus:ring-2 focus:ring-offset-1 focus:outline-none",
+      "relative w-full rounded-md py-2",
+      "flex flex-col items-center justify-center",
+      "cursor-default select-none",
+      "border border-transparent",
+      "before:absolute before:z-0 before:content-['']",
+      "after:absolute after:z-1 after:content-['']",
     ],
-
     // 季度标题
-    quarterTitle: "mb-2 text-sm font-medium",
-
+    quarterTitle: "relative z-2 font-medium",
     // 月份列表
-    monthsList: "space-y-1",
-    monthItem: "text-secondary-foreground text-xs",
+    monthsList: "relative z-2 mt-2",
+    monthItem: "",
   },
 
   variants: {
+    variant: {
+      default: {
+        container: "bg-default-background",
+      },
+      dark: {
+        container: "bg-menu-background text-white",
+      },
+    },
+
     // 是否选中
     selected: {
-      true: {
-        quarterCell: [
-          "bg-primary-500 text-primary-foreground border-primary-500",
-          "hover:bg-primary-600 hover:border-primary-600",
-        ],
-        quarterTitle: "text-primary-foreground",
-        monthItem: "text-primary-foreground/80",
-      },
+      true: {},
     },
 
     // 是否为当前季度
     current: {
       true: {
-        quarterCell: "border-primary-500 border-2",
+        quarterCell:
+          "text-on-accent-foreground after:bg-danger-background after:inset-0.5 after:rounded-md",
       },
+    },
+
+    // 是否在范围内
+    inRange: {
+      true: {},
+      false: {},
     },
 
     // 是否禁用
     disabled: {
-      true: {
-        quarterCell: [
-          "text-disabled-foreground border-disabled-border cursor-not-allowed",
-          "hover:border-disabled-border hover:bg-transparent",
-        ],
-        quarterTitle: "text-disabled-foreground",
-        monthItem: "text-disabled-foreground",
-      },
+      true: {},
+      false: {},
     },
   },
 
   compoundVariants: [
     {
+      inRange: false,
+      current: false,
+      variant: "default",
+      className: { quarterCell: "text-disabled-foreground" },
+    },
+    {
+      inRange: false,
+      current: false,
+      variant: "dark",
+      className: { quarterCell: "text-white/40" },
+    },
+    // Selected
+    {
       selected: true,
-      current: true,
-      class: {
-        quarterCell: "border-primary-foreground border-2",
+      current: false,
+      className: {
+        quarterCell: "after:inset-0.25 after:rounded-md",
       },
     },
     {
-      disabled: true,
       selected: true,
-      class: {
-        quarterCell: "bg-disabled-background text-disabled-foreground border-disabled-border",
-        quarterTitle: "text-disabled-foreground",
-        monthItem: "text-disabled-foreground",
+      current: false,
+      variant: "default",
+      className: {
+        quarterCell: "after:bg-selected-background",
       },
     },
+    {
+      selected: true,
+      current: false,
+      variant: "dark",
+      className: {
+        quarterCell: "after:bg-gray-600",
+      },
+    },
+    {
+      selected: true,
+      current: true,
+      className: {
+        quarterCell: "after:ring-accent-background",
+      },
+    },
+    {
+      selected: true,
+      current: true,
+      variant: "default",
+      className: {
+        quarterCell: "after:ring-offset-default-background after:ring-1 after:ring-offset-1",
+      },
+    },
+    {
+      selected: true,
+      current: true,
+      variant: "dark",
+      className: {
+        quarterCell: "after:ring-2 after:ring-gray-600",
+      },
+    },
+    // Hover
+    {
+      disabled: false,
+      className: {
+        quarterCell: "before:inset-0.25 before:rounded-md",
+      },
+    },
+    {
+      disabled: false,
+      variant: "default",
+      className: {
+        quarterCell: "hover:before:bg-secondary-background",
+      },
+    },
+    {
+      disabled: false,
+      variant: "dark",
+      className: {
+        quarterCell: "hover:before:bg-gray-700",
+      },
+    },
+    // Disabled
+    {
+      disabled: true,
+      variant: "default",
+      className: { quarterCell: "text-disabled-foreground" },
+    },
+    {
+      disabled: true,
+      variant: "dark",
+      className: { quarterCell: "text-white/20" },
+    },
   ],
+
+  defaultVariants: {
+    variant: "default",
+  },
 })
+
+// 保持向后兼容
+export const QuarterPickerTv = QuarterCalendarTv

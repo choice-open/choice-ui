@@ -3,8 +3,8 @@ import { useEventCallback } from "usehooks-ts"
 import { MonthCalendarTv } from "./tv"
 
 interface Props {
+  className: string
   date: Date
-  dayClasses: string
   disabled: boolean
   inHoverRange: boolean
   inRange: boolean
@@ -14,7 +14,7 @@ interface Props {
 }
 
 export const MonthCalendarDateCell = memo(function MonthCalendarDateCell(props: Props) {
-  const { date, dayClasses, disabled, onDateClick, onMouseEnter, onMouseLeave } = props
+  const { date, className, disabled, onDateClick, onMouseEnter, onMouseLeave } = props
 
   const tv = MonthCalendarTv()
 
@@ -32,7 +32,7 @@ export const MonthCalendarDateCell = memo(function MonthCalendarDateCell(props: 
 
   return (
     <div
-      className={dayClasses}
+      className={className}
       onClick={handleClick}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={onMouseLeave}

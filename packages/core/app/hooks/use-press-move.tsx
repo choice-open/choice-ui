@@ -2,21 +2,21 @@ import { useEffect, useRef } from "react"
 import { PressProps, usePress } from "./use-press"
 
 export type PressMoveProps = PressProps & {
+  disabled?: boolean
+  onPressEnd?: (e: PointerEvent) => void
   onPressMove?: (e: PointerEvent) => void
+  onPressMoveBottom?: (delta: number) => void
   onPressMoveLeft?: (delta: number) => void
   onPressMoveRight?: (delta: number) => void
   onPressMoveTop?: (delta: number) => void
-  onPressMoveBottom?: (delta: number) => void
   onPressStart?: (e: PointerEvent) => void
-  onPressEnd?: (e: PointerEvent) => void
-  disabled?: boolean
 }
 
 export interface PressMoveResult {
   isPressed: boolean
   pressMoveProps: {
-    ref: (el: HTMLElement | null) => void
     onPointerDown: (e: React.PointerEvent<HTMLElement>) => void
+    ref: (el: HTMLElement | null) => void
     style?: React.CSSProperties
   }
 }

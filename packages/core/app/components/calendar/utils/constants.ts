@@ -1,5 +1,5 @@
 import { enUS, zhCN, type Locale } from "date-fns/locale"
-import type { NaturalLanguageMap, RelativeDatePattern } from "../../date-input/types"
+import type { NaturalLanguageMap, RelativeDatePattern } from "../date-input/types"
 
 // 默认语言环境映射
 export const defaultLocaleMap: Record<string, Locale> = {
@@ -70,29 +70,101 @@ export const relativeDatePatterns: RelativeDatePattern[] = [
   { pattern: /(\d+)\s*years?\s*(later|ago)?/gi, type: "year", multiplier: 1 },
 ]
 
-// 常见日期格式
+// 常见日期格式 - 按使用频率排序优化性能
 export const commonDateFormats = [
-  "yyyy-MM-dd",
-  "MM/dd/yyyy",
-  "dd/MM/yyyy",
-  "yyyy/MM/dd",
-  "dd.MM.yyyy",
-  "yyyy.MM.dd",
-  "yyyyMMdd",
-  "yyyy-M-d",
+  "yyyy-MM-dd", // 最常用的 ISO 格式
+  "MM/dd/yyyy", // 美式格式
+  "dd/MM/yyyy", // 欧式格式
+  "yyyy/MM/dd", // 日式格式
+  "yyyyMMdd", // 紧凑格式
+  "yyyy-M-d", // 宽松格式
   "yyyy/M/d",
   "M/d/yyyy",
   "d/M/yyyy",
+  "dd.MM.yyyy", // 德式格式
+  "yyyy.MM.dd",
 ]
 
-// 常见时间格式
+// 常见时间格式 - 按使用频率排序
 export const commonTimeFormats = [
-  "HH:mm",
-  "HH:mm:ss",
-  "H:mm",
-  "h:mm a",
-  "hh:mm a",
+  "HH:mm", // 24小时制（最常用）
+  "H:mm", // 24小时制不补零
+  "HH:mm:ss", // 带秒
+  "h:mm a", // 12小时制
+  "hh:mm a", // 12小时制补零
   "h:mm aa",
-  "HHmm",
+  "HHmm", // 紧凑格式
   "Hmm",
 ]
+
+// 解析器性能配置
+export const parserConfig = {
+  // 解析器优先级（数字越小优先级越高）
+  priority: {
+    digits: 1, // 纯数字解析（最快）
+    shortcuts: 2, // 快捷键解析
+    standardFormat: 3, // 标准格式解析
+    naturalLanguage: 4, // 自然语言解析
+    relativeDate: 5, // 相对日期解析
+    englishDate: 6, // 英文日期解析
+    fuzzyMatch: 7, // 模糊匹配（最慢）
+  },
+
+  // 缓存配置
+  cache: {
+    enabled: true,
+    maxSize: 100, // 最大缓存条目数
+    ttl: 60000, // 缓存时间 (ms)
+  },
+
+  // 性能阈值
+  performance: {
+    maxParseTime: 50, // 最大解析时间 (ms)
+    enableProfiling: false, // 是否启用性能分析
+  },
+}
+
+// 简单的 LRU 缓存实现
+class SimpleCache<T> {
+  private cache = new Map<string, { timestamp: number; value: T }>()
+  private maxSize: number
+  private ttl: number
+
+  constructor(maxSize: number = 100, ttl: number = 60000) {
+    this.maxSize = maxSize
+    this.ttl = ttl
+  }
+
+  get(key: string): T | null {
+    const item = this.cache.get(key)
+    if (!item) return null
+
+    if (Date.now() - item.timestamp > this.ttl) {
+      this.cache.delete(key)
+      return null
+    }
+
+    return item.value
+  }
+
+  set(key: string, value: T): void {
+    if (this.cache.size >= this.maxSize) {
+      const firstKey = Array.from(this.cache.keys())[0]
+      if (firstKey) {
+        this.cache.delete(firstKey)
+      }
+    }
+
+    this.cache.set(key, { value, timestamp: Date.now() })
+  }
+
+  clear(): void {
+    this.cache.clear()
+  }
+}
+
+// 全局解析缓存
+export const parseCache = new SimpleCache<Date | null>(
+  parserConfig.cache.maxSize,
+  parserConfig.cache.ttl,
+)

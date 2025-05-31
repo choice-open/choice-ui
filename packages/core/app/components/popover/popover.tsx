@@ -1,4 +1,4 @@
-import type { Placement } from "@floating-ui/react"
+import type { FloatingContext, Placement } from "@floating-ui/react"
 import {
   FloatingFocusManager,
   FloatingNode,
@@ -18,6 +18,20 @@ import { PopoverContext } from "./popover-context"
 const PORTAL_ROOT_ID = "floating-popover-root"
 const DEFAULT_OFFSET = 8
 
+interface FloatingFocusManagerProps {
+  closeOnFocusOut?: boolean
+  disabled?: boolean
+  getInsideElements?: () => Element[]
+  guards?: boolean
+  initialFocus?: number | React.MutableRefObject<HTMLElement | null>
+  modal?: boolean
+  order?: Array<"reference" | "floating" | "content">
+  outsideElementsInert?: boolean
+  restoreFocus?: boolean
+  returnFocus?: boolean
+  visuallyHiddenDismiss?: boolean | string
+}
+
 export interface PopoverProps {
   autoSize?: boolean
   autoUpdate?: boolean
@@ -27,6 +41,10 @@ export interface PopoverProps {
   defaultOpen?: boolean
   delay?: { close?: number; open?: number }
   draggable?: boolean
+  focusManagerProps?: FloatingFocusManagerProps
+  /**
+   * @deprecated use focusManagerProps.initialFocus instead
+   */
   initialFocus?: number | React.MutableRefObject<HTMLElement | null>
   interactions?: "hover" | "click" | "focus" | "none"
   offset?: number
@@ -55,6 +73,10 @@ export const DragPopover = memo(function DragPopover({
   contentRef,
   delay,
   initialFocus,
+  focusManagerProps = {
+    returnFocus: true,
+    guards: false,
+  },
   outsidePressIgnore,
   portalId = PORTAL_ROOT_ID,
   autoSize = true,
@@ -178,10 +200,9 @@ export const DragPopover = memo(function DragPopover({
       <PopoverContext.Provider value={contextValue}>
         {triggerContent}
         <FloatingFocusManager
-          context={floating.context}
-          returnFocus
-          guards={false}
           initialFocus={initialFocus}
+          {...focusManagerProps}
+          context={floating.context}
         >
           <FloatingPortal id={portalId}>
             {floating.innerOpen && (

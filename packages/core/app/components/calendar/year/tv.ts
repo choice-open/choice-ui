@@ -1,91 +1,161 @@
 import { tv } from "tailwind-variants"
 
-export const YearPickerTv = tv({
+export const YearCalendarTv = tv({
   slots: {
     // 容器
-    container: "bg-default-background rounded-md select-none",
+    container: "select-none",
 
     // 头部
-    header: "flex items-center justify-between p-3",
-    title: "text-lg font-medium",
-    navigation: "flex items-center gap-1",
-    navButton: [
-      "h-8 w-8 rounded-md",
-      "flex items-center justify-center",
-      "hover:bg-default-100",
-      "focus:bg-default-100",
-      "transition-colors",
-      "cursor-pointer",
-    ],
+    header: "flex items-center pt-2 pr-1 pl-3",
+    title: "flex-1 truncate font-medium",
+    navigation: "flex h-6 items-center",
 
     // 年份网格
-    yearsGrid: "grid grid-cols-3 gap-1 p-3",
+    yearsGrid: "grid grid-cols-3 gap-0 px-2 pb-2",
 
     // 年份单元格
     yearCell: [
-      "relative aspect-square w-full rounded-md",
+      "relative h-6 w-full rounded-md",
       "flex items-center justify-center",
-      "cursor-pointer select-none",
+      "cursor-default select-none",
       "border border-transparent",
-      "transition-all duration-200",
-      "hover:bg-default-100",
-      "focus:ring-primary-500 focus:ring-2 focus:ring-offset-1 focus:outline-none",
+      "before:absolute before:z-0 before:content-['']",
+      "after:absolute after:z-1 after:content-['']",
     ],
 
     // 年份数字
-    yearText: "text-sm font-medium",
+    yearText: "relative z-2",
   },
 
   variants: {
     // 是否选中
     selected: {
-      true: {
-        yearCell: ["bg-primary-500 text-primary-foreground", "hover:bg-primary-600"],
-      },
+      true: {},
     },
 
     // 是否为当前年份
     current: {
       true: {
-        yearCell: "border-primary-500 border-2",
+        yearCell:
+          "text-on-accent-foreground after:bg-danger-background after:inset-0.5 after:rounded-md",
       },
     },
 
     // 是否禁用
     disabled: {
-      true: {
-        yearCell: ["text-disabled-foreground cursor-not-allowed", "hover:bg-transparent"],
-      },
+      true: {},
     },
 
     // 是否在范围内
     inRange: {
-      true: { yearCell: "" },
-      false: {
-        yearCell: "text-disabled-foreground opacity-40",
-        yearText: "text-disabled-foreground",
+      true: {},
+      false: {},
+    },
+    variant: {
+      default: {
+        container: "bg-default-background",
+      },
+      dark: {
+        container: "bg-menu-background text-white",
       },
     },
   },
 
   compoundVariants: [
     {
+      inRange: false,
+      current: false,
+      variant: "default",
+      className: { yearCell: "text-disabled-foreground" },
+    },
+    {
+      inRange: false,
+      current: false,
+      variant: "dark",
+      className: { yearCell: "text-white/40" },
+    },
+    // Selected
+    {
       selected: true,
-      current: true,
-      class: {
-        yearCell: "border-primary-foreground",
+      current: false,
+      className: {
+        yearCell: "after:inset-0 after:rounded-md",
       },
     },
     {
-      disabled: true,
       selected: true,
-      class: {
-        yearCell: "bg-disabled-background text-disabled-foreground",
+      current: false,
+      variant: "default",
+      className: {
+        yearCell: "after:bg-selected-background",
       },
+    },
+    {
+      selected: true,
+      current: false,
+      variant: "dark",
+      className: {
+        yearCell: "after:bg-gray-600",
+      },
+    },
+    {
+      selected: true,
+      current: true,
+      className: {
+        yearCell: "after:ring-accent-background",
+      },
+    },
+    {
+      selected: true,
+      current: true,
+      variant: "default",
+      className: {
+        yearCell: "after:ring-offset-default-background after:ring-1 after:ring-offset-1",
+      },
+    },
+    {
+      selected: true,
+      current: true,
+      variant: "dark",
+      className: {
+        yearCell: "after:ring-2 after:ring-gray-600",
+      },
+    },
+    // Hover
+    {
+      disabled: false,
+      className: {
+        yearCell: "before:inset-0 before:rounded-md",
+      },
+    },
+    {
+      disabled: false,
+      variant: "default",
+      className: {
+        yearCell: "hover:before:bg-secondary-background",
+      },
+    },
+    {
+      disabled: false,
+      variant: "dark",
+      className: {
+        yearCell: "hover:before:bg-gray-700",
+      },
+    },
+    // Disabled
+    {
+      disabled: true,
+      variant: "default",
+      className: { yearCell: "text-disabled-foreground" },
+    },
+    {
+      disabled: true,
+      variant: "dark",
+      className: { yearCell: "text-white/20" },
     },
   ],
 
   defaultVariants: {
-    inRange: true,
+    variant: "default",
   },
 })

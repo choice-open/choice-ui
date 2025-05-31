@@ -1,7 +1,7 @@
 import { type Locale } from "date-fns"
 import { enUS } from "date-fns/locale"
-import type { DateFormat } from "../../date-input/types"
-import { defaultLocaleMap } from "./constants"
+import type { DateFormat } from "../../types"
+import { defaultLocaleMap } from "../constants"
 
 // 获取语言环境
 export function getLocale(localeKey?: string): Locale {

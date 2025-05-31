@@ -1,31 +1,30 @@
 import React, { HTMLProps, useCallback, useEffect, useRef, useState } from "react"
-import { PressMoveProps, useMergedValue, usePressMove } from "~/hooks"
+import { PressMoveProps, useMergedValue, useModifierKeys, usePressMove } from "~/hooks"
 import { mergeRefs } from "~/utils"
 import { NumberResult, NumericInputValue } from "../types"
 import { dealWithNumericInputValue } from "../utils/numeric-value-processor"
 import { useInputInteractions } from "./use-input-interactions"
-import { useModifierKeys } from "./use-modifier-keys"
 import { useNumericValueProcessing } from "./use-numeric-value-processing"
 import { useStepCalculation } from "./use-step-calculation"
 
 interface UseNumericInputProps<T extends NumericInputValue>
   extends Omit<HTMLProps<HTMLInputElement>, "value" | "defaultValue" | "onChange" | "onWheel"> {
-  disabled?: boolean
-  readOnly?: boolean
-  value?: T
+  containerRef?: React.RefObject<HTMLElement>
+  decimal?: number
   defaultValue?: T
-  onChange?: (value: T, obj: NumberResult) => void
+  disabled?: boolean
   expression?: string
   max?: number
   min?: number
+  onChange?: (value: T, obj: NumberResult) => void
   onEmpty?: () => void
-  decimal?: number
+  onPressEnd?: PressMoveProps["onPressEnd"]
+  onPressStart?: PressMoveProps["onPressStart"]
+  readOnly?: boolean
+  ref?: React.Ref<HTMLInputElement>
   shiftStep?: number
   step?: number
-  ref?: React.Ref<HTMLInputElement>
-  containerRef?: React.RefObject<HTMLElement>
-  onPressStart?: PressMoveProps["onPressStart"]
-  onPressEnd?: PressMoveProps["onPressEnd"]
+  value?: T
 }
 
 /**

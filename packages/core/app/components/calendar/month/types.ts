@@ -1,3 +1,5 @@
+import { Locale } from "date-fns"
+
 export interface DateRange {
   end: Date
   start: Date
@@ -12,6 +14,12 @@ export type Time = {
   minute: number
 }
 
+/** 日历选择值的类型 */
+export type CalendarValue = Date | Date[] | DateRange | null
+
+/** 选择模式 */
+export type SelectionMode = "single" | "multiple" | "range"
+
 export interface MonthCalendarProps {
   className?: string
   /** 当前显示的月份 */
@@ -22,6 +30,9 @@ export interface MonthCalendarProps {
    * - 'date-only': 仅日期比较，适用于日期选择器等场景（默认）
    */
   dateComparisonMode?: DateComparisonMode
+  /** 非受控模式的默认值 */
+  defaultValue?: CalendarValue
+  direction?: "horizontal" | "vertical"
   /** 禁用的日期数组 */
   disabledDates?: Date[]
   /** 是否固定6行显示（42天），默认true确保高度一致 */
@@ -30,37 +41,32 @@ export interface MonthCalendarProps {
   highlightDates?: Date[]
   /** 是否高亮今天 */
   highlightToday?: boolean
-  /** 语言区域 */
-  locale?: string
+  /** 语言区域 - 支持 Locale 对象或字符串（如 "zh-CN", "en-US"） */
+  locale?: Locale | string
   /** 最大可选日期 */
   maxDate?: Date
   /** 最小可选日期 */
   minDate?: Date
-  /** 是否启用多选模式 */
-  multiSelect?: boolean
-  /** 日期点击回调 */
-  onDateClick?: (date: Date) => void
+  /** 值变更回调 */
+  onChange?: (value: CalendarValue) => void
   /** 月份变更回调 */
   onMonthChange?: (month: Date) => void
-  /** 多选模式下的选择变更回调 */
-  onMultiSelect?: (dates: Date[]) => void
-  /** 范围选择变更回调 */
-  onRangeSelect?: (range: DateRange | null) => void
-  /** 是否启用范围选择模式 */
-  rangeSelect?: boolean
-  /** 单选模式下的选中日期 */
-  selectedDate?: Date
-  /** 多选模式下的选中日期数组 */
-  selectedDates?: Date[]
-  /** 范围选择模式下的选中范围 */
-  selectedRange?: DateRange
+  /**
+   * 选择模式，如果未指定，会根据 value 类型自动推断
+   * - 'single': 单选模式
+   * - 'multiple': 多选模式
+   * - 'range': 范围选择模式
+   */
+  selectionMode?: SelectionMode
   /** 是否显示非当前月份的日期 */
   showOutsideDays?: boolean
-
   /** 是否显示周数，默认false */
   showWeekNumbers?: boolean
   /** 时区 */
   timeZone?: string
+  /** 受控模式的值 */
+  value?: CalendarValue
+  variant?: "default" | "dark"
   /** 一周开始的日期（0=周日, 1=周一） */
   weekStartsOn?: WeekStartsOn
   /** 自定义星期名称 */

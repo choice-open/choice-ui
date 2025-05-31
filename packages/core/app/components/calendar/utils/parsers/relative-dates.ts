@@ -8,7 +8,7 @@ import {
   subMonths,
   subYears,
 } from "date-fns"
-import { relativeDatePatterns } from "./constants"
+import { relativeDatePatterns } from "../constants"
 
 // 解析相对日期
 export function parseRelativeDate(input: string): Date | null {
