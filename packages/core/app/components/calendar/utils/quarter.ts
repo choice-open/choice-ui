@@ -1,13 +1,7 @@
 import { format, isDate, isValid, type Locale } from "date-fns"
 import { zhCN } from "date-fns/locale"
+import type { Quarter } from "../types"
 import { resolveLocale, isChineseLocale } from "./locale"
-
-export interface Quarter {
-  label: string
-  months: string[]
-  quarter: number // 1, 2, 3, 4
-  year: number
-}
 
 // 季度处理工具函数
 export const quarterUtils = {

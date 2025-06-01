@@ -15,7 +15,7 @@ import {
 } from "date-fns"
 import { zhCN } from "date-fns/locale"
 import { getDateKey } from "./date-comparisons"
-import { CalendarValue, SelectionMode } from "../month/types"
+import type { CalendarValue, SelectionMode, WeekStartsOn } from "../types"
 import { isSameDayInTimeZone } from "./date-comparisons"
 import { resolveLocale, isChineseLocale } from "./locale"
 
@@ -65,7 +65,7 @@ export function generateCalendarDays(
   fixedGrid: boolean = true,
 ): Date[] {
   const start = startOfWeek(startOfMonth(currentMonth), {
-    weekStartsOn: weekStartsOn as 0 | 1 | 2 | 3 | 4 | 5 | 6,
+    weekStartsOn: weekStartsOn as WeekStartsOn,
   })
 
   if (fixedGrid) {
@@ -75,7 +75,7 @@ export function generateCalendarDays(
   } else {
     // 根据实际需要动态调整行数
     const end = endOfWeek(endOfMonth(currentMonth), {
-      weekStartsOn: weekStartsOn as 0 | 1 | 2 | 3 | 4 | 5 | 6,
+      weekStartsOn: weekStartsOn as WeekStartsOn,
     })
     return eachDayOfInterval({ start, end })
   }

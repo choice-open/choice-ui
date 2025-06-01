@@ -24,7 +24,7 @@ export function parseNaturalLanguage(input: string, localeKey: string = "zh-CN")
 
   // 检查各种自然语言关键词
   for (const [key, values] of Object.entries(keywords)) {
-    for (const value of values) {
+    for (const value of values as string[]) {
       if (normalizedInput.includes(value.toLowerCase())) {
         switch (key) {
           case "today":

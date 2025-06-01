@@ -1,6 +1,0 @@
-export * from "./month-calendar-date-cell"
-export * from "./month-calendar-header"
-export * from "./month-calendar-week-day"
-export * from "./month-calendar-week-number"
-export * from "./month-calendar"
-export * from "./types"

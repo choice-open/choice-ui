@@ -1,5 +1,5 @@
 import { ArrowRight } from "@choiceform/icons-react"
-import { Locale } from "date-fns"
+import { Locale, differenceInMinutes, format, isBefore } from "date-fns"
 import { enUS } from "date-fns/locale"
 import { useMemo } from "react"
 import { TimeInput } from "../time-input"
@@ -8,50 +8,31 @@ import { resolveLocale } from "../utils"
 
 interface TimeRangeInputProps {
   endPlaceholder?: string
-  endValue?: string | null
+  endValue?: Date | null
   format?: TimeFormat
   locale?: Locale | string
-  onEndChange?: (time: string | null) => void
+  onEndChange?: (time: Date | null) => void
   onEndFocus?: () => void
   onEnterKeyDown?: () => void
-  onStartChange?: (time: string | null) => void
+  onStartChange?: (time: Date | null) => void
   onStartFocus?: () => void
   startPlaceholder?: string
-  startValue?: string | null
+  startValue?: Date | null
 }
 
 /**
  * 计算时间差（以分钟为单位）
  */
-function calculateTimeDifferenceInMinutes(startTime: string, endTime: string): number {
-  // 更宽松的时间解析 - 支持 H:mm 和 HH:mm 格式
-  const parseTime = (timeStr: string): [number, number] => {
-    const parts = timeStr.split(":")
-    if (parts.length !== 2) {
-      throw new Error(`Invalid time format: ${timeStr}`)
-    }
-    const hours = parseInt(parts[0], 10)
-    const minutes = parseInt(parts[1], 10)
-
-    if (isNaN(hours) || isNaN(minutes) || hours < 0 || hours > 23 || minutes < 0 || minutes > 59) {
-      throw new Error(`Invalid time values: ${timeStr}`)
-    }
-
-    return [hours, minutes]
-  }
-
-  const [startHours, startMinutes] = parseTime(startTime)
-  const [endHours, endMinutes] = parseTime(endTime)
-
-  const startTotalMinutes = startHours * 60 + startMinutes
-  let endTotalMinutes = endHours * 60 + endMinutes
+function calculateTimeDifferenceInMinutes(startTime: Date, endTime: Date): number {
+  let timeDiff = differenceInMinutes(endTime, startTime)
 
   // 处理跨日情况（如 22:00 到 02:00）
-  if (endTotalMinutes < startTotalMinutes) {
-    endTotalMinutes += 24 * 60 // 加一天
+  if (timeDiff < 0) {
+    // 假设是跨日，加一天的分钟数
+    timeDiff += 24 * 60
   }
 
-  return endTotalMinutes - startTotalMinutes
+  return timeDiff
 }
 
 /**
@@ -128,26 +109,16 @@ export const TimeRangeInput = (props: TimeRangeInputProps) => {
   const isCrossMidnight = useMemo(() => {
     if (!startValue || !endValue) return false
 
-    const timePattern = /^\d{1,2}:\d{2}$/
-    if (!timePattern.test(startValue.trim()) || !timePattern.test(endValue.trim())) {
-      return false
-    }
-
-    // 简单的字符串比较来判断是否跨日
-    return startValue.trim() >= endValue.trim()
+    // 使用 date-fns 的 isBefore 来比较时间
+    // 如果结束时间在开始时间之前（同一天），则认为是跨日
+    return isBefore(endValue, startValue)
   }, [startValue, endValue])
 
   const rangeDuration = useMemo(() => {
     if (!startValue || !endValue) return ""
 
-    // 更宽松的时间格式验证 - 支持 H:mm 和 HH:mm
-    const timePattern = /^\d{1,2}:\d{2}$/
-    if (!timePattern.test(startValue.trim()) || !timePattern.test(endValue.trim())) {
-      return ""
-    }
-
     try {
-      const minutes = calculateTimeDifferenceInMinutes(startValue.trim(), endValue.trim())
+      const minutes = calculateTimeDifferenceInMinutes(startValue, endValue)
 
       // 防止负数或异常大的值
       if (minutes < 0 || minutes > 24 * 60) {

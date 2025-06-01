@@ -30,14 +30,10 @@ interface DateInputProps extends Omit<TextFieldProps, "value" | "onChange" | "fo
   /** 是否启用性能分析 */
   enableProfiling?: boolean
   format?: DateFormat
-  /** 语言区域 - 支持 Locale 对象或字符串（如 "zh-CN", "en-US"） */
   locale?: Locale | string
-  /** 最大日期 */
   maxDate?: Date
-  /** 最小日期 */
   minDate?: Date
   onChange?: (date: Date | null) => void
-  /** 当用户按回车键时触发（用于控制popover关闭等） */
   onEnterKeyDown?: () => void
   prefixElement?: React.ReactNode
   suffixElement?: React.ReactNode

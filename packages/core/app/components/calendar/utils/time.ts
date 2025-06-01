@@ -1,10 +1,61 @@
 import { format, isValid, parse, setHours, setMinutes, startOfDay, type Locale } from "date-fns"
 import { enUS } from "date-fns/locale"
-import type { TimeInputValue, TimeParserOptions } from "../time-input/types"
-import { Time } from "../time/types"
-import type { TimeFormat } from "../types"
+import type { Time, TimeFormat, TimeInputValue, TimeParserOptions } from "../types"
 import { commonTimeFormats } from "./constants"
 import { resolveLocale } from "./locale"
+
+// 缓存时间字符串到 Date 对象的映射，确保引用稳定性
+let timeStringDateCache: Map<string, Date> | null = null
+let cacheDateKey: string | null = null
+
+/**
+ * 将 Date 对象转换为时间字符串 (HH:mm)
+ * @param date - Date 对象
+ * @returns 时间字符串，格式为 "HH:mm"，如果 date 为 null 则返回 null
+ */
+export function dateToTimeString(date: Date | null): string | null {
+  if (!date) return null
+  return format(date, "HH:mm")
+}
+
+/**
+ * 将时间字符串转换为 Date 对象（今天的日期 + 指定时间）
+ * @param timeStr - 时间字符串，格式为 "HH:mm"
+ * @returns Date 对象，包含今天的日期和指定的时间
+ */
+export function timeStringToDate(timeStr: string): Date {
+  // 获取当前日期作为缓存键
+  const today = new Date()
+  const dateKey = today.toDateString() // 例如: "Mon Jan 01 2024"
+
+  // 如果日期变了，清空缓存
+  if (cacheDateKey !== dateKey) {
+    timeStringDateCache = new Map()
+    cacheDateKey = dateKey
+  }
+
+  // 检查缓存中是否已有这个时间
+  if (timeStringDateCache!.has(timeStr)) {
+    return timeStringDateCache!.get(timeStr)!
+  }
+
+  // 创建新的 Date 对象并缓存
+  const baseDate = startOfDay(today)
+  const [hours, minutes] = timeStr.split(":").map(Number)
+  const dateObject = setMinutes(setHours(baseDate, hours), minutes)
+
+  timeStringDateCache!.set(timeStr, dateObject)
+  return dateObject
+}
+
+/**
+ * 将任意 Date 值标准化为时间字符串格式
+ * @param value - Date 对象或 null
+ * @returns 标准化的时间字符串 (HH:mm) 或 null
+ */
+export function normalizeTimeValue(value: Date | null | undefined): string | null {
+  return dateToTimeString(value ?? null)
+}
 
 // 智能解析时间
 export function smartParseTime(input: string, options: TimeParserOptions): TimeInputValue {
@@ -32,7 +83,10 @@ export function smartParseTime(input: string, options: TimeParserOptions): TimeI
     parsedDate = parse(input, timeFormat, baseDate, { locale: dateFnsLocale })
 
     if (isValid(parsedDate)) {
-      result.time = format(parsedDate, "HH:mm")
+      // 将时间应用到今天的日期上
+      const todayWithTime = timeStringToDate(format(parsedDate, "HH:mm"))
+
+      result.time = todayWithTime
       result.formatted = format(parsedDate, timeFormat, { locale: dateFnsLocale })
       result.isValid = true
       return result
@@ -44,7 +98,10 @@ export function smartParseTime(input: string, options: TimeParserOptions): TimeI
         try {
           parsedDate = parse(input, tryFormat, baseDate, { locale: dateFnsLocale })
           if (isValid(parsedDate)) {
-            result.time = format(parsedDate, "HH:mm")
+            // 将时间应用到今天的日期上
+            const todayWithTime = timeStringToDate(format(parsedDate, "HH:mm"))
+
+            result.time = todayWithTime
             result.formatted = format(parsedDate, timeFormat, { locale: dateFnsLocale })
             result.isValid = true
             return result
@@ -58,12 +115,11 @@ export function smartParseTime(input: string, options: TimeParserOptions): TimeI
     // 3. 使用宽松的智能解析（支持数字、AM/PM、中文等）
     const relaxedResult = tryRelaxedTimeParsing(input, timeFormat, locale || dateFnsLocale)
     if (relaxedResult) {
-      // 解析成功，创建 Date 对象用于格式化
-      const [hours, minutes] = relaxedResult.split(":")
-      const timeDate = setMinutes(setHours(baseDate, parseInt(hours, 10)), parseInt(minutes, 10))
+      // 解析成功，使用公用方法创建 Date 对象
+      const todayWithTime = timeStringToDate(relaxedResult)
 
-      result.time = relaxedResult
-      result.formatted = format(timeDate, timeFormat, { locale: dateFnsLocale })
+      result.time = todayWithTime
+      result.formatted = format(todayWithTime, timeFormat, { locale: dateFnsLocale })
       result.isValid = true
       return result
     }
@@ -320,15 +376,18 @@ export function findClosestValidTime(
   return createTime(closestHour, closestMinute % 60)
 }
 
-export const generateTimeOptions = (format: "12h" | "24h", step: number = 15) => {
+export const generateTimeOptions = (format: TimeFormat, step: number = 15) => {
   const options: Array<{ label: string; value: string }> = []
   const totalMinutes = 24 * 60
+
+  // 判断是否为12小时格式 - 检查格式字符串中是否包含12小时制标识
+  const is12Hour = format.toLowerCase().includes("a") || format === "12h"
 
   for (let i = 0; i < totalMinutes; i += step) {
     const hours = Math.floor(i / 60)
     const minutes = i % 60
 
-    if (format === "12h") {
+    if (is12Hour) {
       const displayHour = hours === 0 ? 12 : hours > 12 ? hours - 12 : hours
       const ampm = hours < 12 ? "AM" : "PM"
       const value = `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`
@@ -344,33 +403,7 @@ export const generateTimeOptions = (format: "12h" | "24h", step: number = 15) =>
   return options
 }
 
-// Helper function to convert time object to string
-export const timeObjectToString = (timeObj: { hour: number; minute: number }): string => {
-  return `${timeObj.hour.toString().padStart(2, "0")}:${timeObj.minute.toString().padStart(2, "0")}`
-}
-
-// Helper function to convert time string to object
-export const timeStringToObject = (timeStr: string): { hour: number; minute: number } => {
-  const [hour, minute] = timeStr.split(":").map(Number)
-  return { hour, minute }
-}
-
-// Normalize value to string format for internal use
-export const normalizeValue = (
-  value: string | { hour: number; minute: number } | undefined | null,
-): string | null => {
-  if (!value) return null
-  if (typeof value === "string") return value
-  return timeObjectToString(value)
-}
-
-// Convert back to original format
-export const convertToOriginalFormat = (
-  stringValue: string,
-  originalValue: string | { hour: number; minute: number } | undefined | null,
-): string | { hour: number; minute: number } => {
-  if (typeof originalValue === "object" && originalValue !== null) {
-    return timeStringToObject(stringValue)
-  }
-  return stringValue
+// 辅助函数：创建今天的指定时间
+export const createTimeToday = (hours: number, minutes: number = 0): Date => {
+  return setMinutes(setHours(startOfDay(new Date()), hours), minutes)
 }

@@ -1,5 +1,5 @@
 import { enUS, zhCN, type Locale } from "date-fns/locale"
-import type { NaturalLanguageMap, RelativeDatePattern } from "../date-input/types"
+import type { CalendarValue, NaturalLanguageMap, RelativeDatePattern } from "../types"
 
 // 默认语言环境映射
 export const defaultLocaleMap: Record<string, Locale> = {
@@ -26,7 +26,7 @@ export const naturalLanguageMap: Record<string, NaturalLanguageMap> = {
     morning: ["早上", "上午", "晨"],
     afternoon: ["下午", "午后"],
     evening: ["晚上", "傍晚"],
-    night: ["深夜", "夜里", "夜间"],
+    night: ["深夜", "夜里", "夜间", "午夜"],
   },
   "en-US": {
     today: ["today", "now"],

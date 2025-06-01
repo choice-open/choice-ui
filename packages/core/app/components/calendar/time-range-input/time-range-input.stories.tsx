@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react"
-import { enUS, zhCN, ja } from "date-fns/locale"
+import { enUS, ja, zhCN } from "date-fns/locale"
 import React, { useState } from "react"
-import { TimeRangeInput } from "./time-range-input"
 import { Panel } from "../../panel"
+import { timeStringToDate } from "../utils/time"
+import { TimeRangeInput } from "./time-range-input"
 
 const meta: Meta<typeof TimeRangeInput> = {
   title: "DateAndTime/TimeRangeInput",
@@ -18,8 +19,8 @@ type Story = StoryObj<typeof meta>
 
 // 演示组件
 const TimeRangeDemo = (args: React.ComponentProps<typeof TimeRangeInput>) => {
-  const [startValue, setStartValue] = useState<string | null>(args.startValue || null)
-  const [endValue, setEndValue] = useState<string | null>(args.endValue || null)
+  const [startValue, setStartValue] = useState<Date | null>(args.startValue || null)
+  const [endValue, setEndValue] = useState<Date | null>(args.endValue || null)
 
   return (
     <Panel className="w-96">
@@ -49,8 +50,8 @@ export const Default: Story = {
 // 预设时间范围
 export const WithPresetRange: Story = {
   args: {
-    startValue: "09:00",
-    endValue: "17:30",
+    startValue: timeStringToDate("09:00"),
+    endValue: timeStringToDate("17:30"),
     startPlaceholder: "工作开始时间",
     endPlaceholder: "工作结束时间",
     format: "HH:mm",
@@ -61,8 +62,8 @@ export const WithPresetRange: Story = {
 // 跨日时间范围
 export const CrossMidnight: Story = {
   args: {
-    startValue: "22:00",
-    endValue: "06:00",
+    startValue: timeStringToDate("22:00"),
+    endValue: timeStringToDate("06:00"),
     startPlaceholder: "夜班开始",
     endPlaceholder: "夜班结束",
     format: "HH:mm",
@@ -87,8 +88,8 @@ export const DifferentFormats: Story = {
           format="HH:mm"
           startPlaceholder="09:00"
           endPlaceholder="17:00"
-          startValue="09:00"
-          endValue="17:00"
+          startValue={timeStringToDate("09:00")}
+          endValue={timeStringToDate("17:00")}
         />
       </div>
 
@@ -99,8 +100,8 @@ export const DifferentFormats: Story = {
           locale={enUS}
           startPlaceholder="9:00 AM"
           endPlaceholder="5:00 PM"
-          startValue="09:00"
-          endValue="17:00"
+          startValue={timeStringToDate("09:00")}
+          endValue={timeStringToDate("17:00")}
         />
       </div>
 
@@ -111,8 +112,8 @@ export const DifferentFormats: Story = {
             format="HH:mm:ss"
             startPlaceholder="09:00:00"
             endPlaceholder="17:00:00"
-            startValue="09:00"
-            endValue="17:00"
+            startValue={timeStringToDate("09:00")}
+            endValue={timeStringToDate("17:00")}
           />
         </div>
       </div>
@@ -130,8 +131,8 @@ export const Internationalization: Story = {
           locale={zhCN}
           startPlaceholder="开始时间"
           endPlaceholder="结束时间"
-          startValue="09:00"
-          endValue="17:30"
+          startValue={timeStringToDate("09:00")}
+          endValue={timeStringToDate("17:30")}
         />
         <div className="mt-2 text-sm text-gray-500">持续时间显示：8小时30分钟</div>
       </div>
@@ -143,8 +144,8 @@ export const Internationalization: Story = {
           format="h:mm a"
           startPlaceholder="Start Time"
           endPlaceholder="End Time"
-          startValue="09:00"
-          endValue="17:30"
+          startValue={timeStringToDate("09:00")}
+          endValue={timeStringToDate("17:30")}
         />
         <div className="mt-2 text-sm text-gray-500">Duration display: 8h 30m</div>
       </div>
@@ -155,8 +156,8 @@ export const Internationalization: Story = {
           locale={ja}
           startPlaceholder="開始時間"
           endPlaceholder="終了時間"
-          startValue="09:00"
-          endValue="17:30"
+          startValue={timeStringToDate("09:00")}
+          endValue={timeStringToDate("17:30")}
         />
         <div className="mt-2 text-sm text-gray-500">持続時間表示：8時間30分</div>
       </div>
@@ -171,8 +172,8 @@ export const CommonScenarios: Story = {
       <div>
         <h3 className="mb-4 font-medium">🏢 工作时间</h3>
         <TimeRangeDemo
-          startValue="09:00"
-          endValue="18:00"
+          startValue={timeStringToDate("09:00")}
+          endValue={timeStringToDate("18:00")}
           startPlaceholder="上班时间"
           endPlaceholder="下班时间"
         />
@@ -181,8 +182,8 @@ export const CommonScenarios: Story = {
       <div>
         <h3 className="mb-4 font-medium">🍽️ 用餐时间</h3>
         <TimeRangeDemo
-          startValue="12:00"
-          endValue="13:00"
+          startValue={timeStringToDate("12:00")}
+          endValue={timeStringToDate("13:00")}
           startPlaceholder="午餐开始"
           endPlaceholder="午餐结束"
         />
@@ -191,8 +192,8 @@ export const CommonScenarios: Story = {
       <div>
         <h3 className="mb-4 font-medium">🏃‍♂️ 锻炼时间</h3>
         <TimeRangeDemo
-          startValue="06:30"
-          endValue="07:30"
+          startValue={timeStringToDate("06:30")}
+          endValue={timeStringToDate("07:30")}
           startPlaceholder="开始锻炼"
           endPlaceholder="结束锻炼"
         />
@@ -201,8 +202,8 @@ export const CommonScenarios: Story = {
       <div>
         <h3 className="mb-4 font-medium">🌙 夜班时间</h3>
         <TimeRangeDemo
-          startValue="22:00"
-          endValue="06:00"
+          startValue={timeStringToDate("22:00")}
+          endValue={timeStringToDate("06:00")}
           startPlaceholder="夜班开始"
           endPlaceholder="夜班结束"
         />
@@ -219,8 +220,8 @@ export const DurationOnly: Story = {
       <div>
         <h3 className="mb-4 font-medium">短时间段</h3>
         <TimeRangeDemo
-          startValue="14:00"
-          endValue="14:45"
+          startValue={timeStringToDate("14:00")}
+          endValue={timeStringToDate("14:45")}
           startPlaceholder="会议开始"
           endPlaceholder="会议结束"
         />
@@ -229,8 +230,8 @@ export const DurationOnly: Story = {
       <div>
         <h3 className="mb-4 font-medium">整点时间</h3>
         <TimeRangeDemo
-          startValue="10:00"
-          endValue="12:00"
+          startValue={timeStringToDate("10:00")}
+          endValue={timeStringToDate("12:00")}
           startPlaceholder="培训开始"
           endPlaceholder="培训结束"
         />
@@ -239,8 +240,8 @@ export const DurationOnly: Story = {
       <div>
         <h3 className="mb-4 font-medium">长时间段</h3>
         <TimeRangeDemo
-          startValue="08:00"
-          endValue="20:00"
+          startValue={timeStringToDate("08:00")}
+          endValue={timeStringToDate("20:00")}
           startPlaceholder="营业开始"
           endPlaceholder="营业结束"
         />

@@ -1,8 +1,16 @@
-import { Clock } from "@choiceform/icons-react"
+import { ActionWaitForSomeTime, Clock } from "@choiceform/icons-react"
 import type { Meta, StoryObj } from "@storybook/react"
-import { enUS, zhCN, ja } from "date-fns/locale"
-import React, { useState } from "react"
+import { enUS, ja, zhCN } from "date-fns/locale"
+import React, { useRef, useState } from "react"
+import { Panel } from "../../panel"
+import { Popover } from "../../popover"
+import { TimeCalendar } from "../time-calendar"
+import { createTimeToday } from "../utils/time"
 import { TimeInput } from "./time-input"
+import { TimeRangeInput } from "../time-range-input"
+import { useEventCallback } from "usehooks-ts"
+import { TimeFormat } from "../types"
+import { Select } from "../../select"
 
 const meta: Meta<typeof TimeInput> = {
   title: "DateAndTime/TimeInput",
@@ -21,10 +29,56 @@ export const Basic: Story = {
   render: (args) => <TimeInput {...args} />,
 }
 
+// 状态演示
+export const States: Story = {
+  render: () => (
+    <div className="space-y-4">
+      <div>
+        <label className="mb-1 block font-medium">Normal</label>
+        <TimeInput placeholder="Enter time..." />
+      </div>
+
+      <div>
+        <label className="mb-1 block font-medium">Disabled</label>
+        <TimeInput
+          disabled
+          value={createTimeToday(14, 30)}
+          placeholder="Disabled state"
+        />
+      </div>
+
+      <div>
+        <label className="mb-1 block font-medium">Readonly</label>
+        <TimeInput
+          readOnly
+          value={createTimeToday(14, 30)}
+          placeholder="Readonly state"
+        />
+      </div>
+
+      <div>
+        <label className="mb-1 block font-medium">No prefix icon</label>
+        <TimeInput
+          prefixElement={null}
+          placeholder="No icon"
+        />
+      </div>
+
+      <div>
+        <label className="mb-1 block font-medium">Custom prefix</label>
+        <TimeInput
+          prefixElement={<ActionWaitForSomeTime className="text-accent-foreground" />}
+          placeholder="Custom prefix"
+        />
+      </div>
+    </div>
+  ),
+}
+
 // 键盘导航演示
 export const KeyboardNavigation: Story = {
   render: function Render() {
-    const [value, setValue] = useState<string | null>(null)
+    const [value, setValue] = useState<Date | null>(null)
     return (
       <div className="space-y-4">
         <TimeInput
@@ -32,19 +86,19 @@ export const KeyboardNavigation: Story = {
           value={value}
           onChange={setValue}
         />
-        <div className="space-y-2 text-sm text-gray-600">
-          <div className="font-medium">⌨️ 键盘快捷键：</div>
+        <div className="text-secondary-foreground space-y-2 rounded-md border p-2">
+          <div className="font-medium">⌨️ Keyboard Navigation</div>
           <div>
-            • <code>↑</code> / <code>↓</code> - 调整1分钟
+            • <code>↑</code> / <code>↓</code> - Adjust 1 minute
           </div>
           <div>
-            • <code>Shift + ↑/↓</code> - 调整15分钟
+            • <code>Shift + ↑/↓</code> - Adjust 15 minutes
           </div>
           <div>
-            • <code>Alt + ↑/↓</code> - 调整1小时
+            • <code>Alt + ↑/↓</code> - Adjust 1 hour
           </div>
           <div>
-            • <code>Enter</code> - 确认输入
+            • <code>Enter</code> - Confirm input
           </div>
         </div>
       </div>
@@ -55,7 +109,7 @@ export const KeyboardNavigation: Story = {
 // 拖拽交互演示
 export const DragInteraction: Story = {
   render: function Render() {
-    const [value, setValue] = useState<string | null>(null)
+    const [value, setValue] = useState<Date | null>(null)
     return (
       <div className="space-y-4">
         <TimeInput
@@ -63,28 +117,60 @@ export const DragInteraction: Story = {
           value={value}
           onChange={setValue}
         />
-        <div className="space-y-2 text-sm text-gray-600">
-          <div className="font-medium">🖱️ 拖拽交互：</div>
-          <div>• 点住时钟图标左右拖拽调整时间</div>
-          <div>• 按住 Shift 键拖拽调整15分钟步长</div>
-          <div>• 按住 Ctrl/Cmd 键拖拽调整1小时步长</div>
+        <div className="text-secondary-foreground space-y-2 rounded-md border p-2">
+          <div className="font-medium">🖱️ Drag Interaction</div>
+          <div>• Click and drag the clock icon to adjust time</div>
+          <div>• Hold Shift key to drag 15 minutes</div>
+          <div>• Hold Ctrl/Cmd key to drag 1 hour</div>
         </div>
       </div>
     )
   },
 }
 
+// 不同格式
+export const Formats: Story = {
+  render: () => (
+    <div className="space-y-6">
+      <div>
+        <h3 className="mb-2 font-medium">24-hour format (HH:mm)</h3>
+        <TimeInput
+          format="HH:mm"
+          placeholder="14:30"
+        />
+      </div>
+
+      <div>
+        <h3 className="mb-2 font-medium">12-hour format (h:mm a)</h3>
+        <TimeInput
+          format="h:mm a"
+          placeholder="2:30 PM"
+          locale={enUS}
+        />
+      </div>
+
+      <div>
+        <h3 className="mb-2 font-medium">With seconds (HH:mm:ss)</h3>
+        <TimeInput
+          format="HH:mm:ss"
+          placeholder="14:30:45"
+        />
+      </div>
+    </div>
+  ),
+}
+
 // 智能补全演示
 export const SmartCompletion: Story = {
   args: {
-    placeholder: "试试输入: 9, 930, 2pm, 下午2点...",
+    placeholder: "Try input: 9, 930, 2pm, 2pm...",
     format: "HH:mm",
   },
   render: (args) => (
     <div className="space-y-4">
       <TimeInput {...args} />
-      <div className="space-y-2 text-sm text-gray-600">
-        <div className="font-medium">💡 智能补全示例：</div>
+      <div className="text-secondary-foreground space-y-2 rounded-md border p-2">
+        <div className="font-medium">💡 Smart Completion</div>
         <div>
           • <code>9</code> → 09:00
         </div>
@@ -108,99 +194,30 @@ export const SmartCompletion: Story = {
   ),
 }
 
-// 不同格式
-export const Formats: Story = {
-  render: () => (
-    <div className="space-y-6">
-      <div>
-        <h3 className="mb-2 font-medium">24小时格式 (HH:mm)</h3>
-        <TimeInput
-          format="HH:mm"
-          placeholder="14:30"
-        />
-      </div>
-
-      <div>
-        <h3 className="mb-2 font-medium">12小时格式 (h:mm a)</h3>
-        <TimeInput
-          format="h:mm a"
-          placeholder="2:30 PM"
-          locale={enUS}
-        />
-      </div>
-
-      <div>
-        <h3 className="mb-2 font-medium">带秒 (HH:mm:ss)</h3>
-        <TimeInput
-          format="HH:mm:ss"
-          placeholder="14:30:45"
-        />
-      </div>
-    </div>
-  ),
-}
-
-// 国际化支持
-export const Internationalization: Story = {
-  render: () => (
-    <div className="space-y-6">
-      <div>
-        <h3 className="mb-2 font-medium">中文 (zh-CN)</h3>
-        <TimeInput
-          format="HH:mm"
-          placeholder="输入时间..."
-          locale={zhCN}
-          value="14:30"
-        />
-      </div>
-
-      <div>
-        <h3 className="mb-2 font-medium">English (en-US)</h3>
-        <TimeInput
-          format="h:mm a"
-          placeholder="Enter time..."
-          locale={enUS}
-          value="14:30"
-        />
-      </div>
-
-      <div>
-        <h3 className="mb-2 font-medium">日本語 (ja-JP)</h3>
-        <TimeInput
-          format="HH:mm"
-          placeholder="時間を入力..."
-          locale={ja}
-          value="14:30"
-        />
-      </div>
-    </div>
-  ),
-}
-
 // 时间范围限制
 export const TimeRange: Story = {
   render: function RenderTimeRange() {
-    const [workTime, setWorkTime] = useState<string | null>("12:00")
-    const [afternoonTime, setAfternoonTime] = useState<string | null>("14:00")
+    const [workTime, setWorkTime] = useState<Date | null>(createTimeToday(12, 0))
+    const [afternoonTime, setAfternoonTime] = useState<Date | null>(createTimeToday(14, 0))
     return (
       <div className="space-y-6">
         <div>
-          <h3 className="mb-2 font-medium">工作时间 (09:00 - 18:00)</h3>
+          <h3 className="mb-2 font-medium">Work time (09:00 - 18:00)</h3>
           <TimeInput
-            placeholder="只能选择工作时间"
-            minTime="09:00"
-            maxTime="18:00"
+            placeholder="Only select work time"
+            minTime={createTimeToday(9, 0)}
+            maxTime={createTimeToday(18, 0)}
             value={workTime}
             onChange={setWorkTime}
           />
         </div>
 
         <div>
-          <h3 className="mb-2 font-medium">下午时间 (12:00 - 23:59)</h3>
+          <h3 className="mb-2 font-medium">Afternoon time (12:00 - 23:59)</h3>
           <TimeInput
-            placeholder="只能选择下午时间"
-            minTime="12:00"
-            maxTime="23:59"
+            placeholder="Only select afternoon time"
+            minTime={createTimeToday(12, 0)}
+            maxTime={createTimeToday(23, 59)}
             value={afternoonTime}
             onChange={setAfternoonTime}
           />
@@ -213,80 +230,168 @@ export const TimeRange: Story = {
 // 自定义步长
 export const CustomSteps: Story = {
   render: function RenderCustomSteps() {
-    const [stepA, setStepA] = useState<string | null>("14:30")
-    const [stepB, setStepB] = useState<string | null>("14:30")
+    const [stepA, setStepA] = useState<Date | null>(createTimeToday(14, 30))
+    const [stepB, setStepB] = useState<Date | null>(createTimeToday(14, 30))
     return (
       <div className="space-y-6">
         <div>
-          <h3 className="mb-2 font-medium">5分钟步长</h3>
+          <h3 className="mb-2 font-medium">5-minute step</h3>
           <TimeInput
-            placeholder="每次调整5分钟"
+            placeholder="Adjust 5 minutes"
             step={5}
             shiftStep={30}
             value={stepA}
             onChange={setStepA}
           />
-          <div className="mt-1 text-sm text-gray-500">↑/↓ 键调整5分钟，Shift+↑/↓ 调整30分钟</div>
+          <div className="mt-1 text-gray-500">
+            ↑/↓ key adjust 5 minutes, Shift+↑/↓ adjust 30 minutes
+          </div>
         </div>
 
         <div>
-          <h3 className="mb-2 font-medium">15分钟步长</h3>
+          <h3 className="mb-2 font-medium">15-minute step</h3>
           <TimeInput
-            placeholder="每次调整15分钟"
+            placeholder="Adjust 15 minutes"
             step={15}
             shiftStep={60}
             value={stepB}
             onChange={setStepB}
           />
-          <div className="mt-1 text-sm text-gray-500">↑/↓ 键调整15分钟，Shift+↑/↓ 调整60分钟</div>
+          <div className="mt-1 text-gray-500">
+            ↑/↓ key adjust 15 minutes, Shift+↑/↓ adjust 60 minutes
+          </div>
         </div>
       </div>
     )
   },
 }
 
-// 状态演示
-export const States: Story = {
-  render: () => (
-    <div className="space-y-4">
-      <div>
-        <label className="mb-1 block text-sm font-medium">正常</label>
-        <TimeInput placeholder="输入时间..." />
-      </div>
+export const Combined: Story = {
+  render: function RenderCombined() {
+    const [activeInput, setActiveInput] = useState<"single" | "range-start" | "range-end" | null>(
+      null,
+    )
 
-      <div>
-        <label className="mb-1 block text-sm font-medium">禁用</label>
-        <TimeInput
-          disabled
-          value="14:30"
-          placeholder="禁用状态"
-        />
-      </div>
+    enum Format {
+      HH_MM = "HH:mm",
+      H_MM_A = "h:mm a",
+    }
 
-      <div>
-        <label className="mb-1 block text-sm font-medium">只读</label>
-        <TimeInput
-          readOnly
-          value="14:30"
-          placeholder="只读状态"
-        />
-      </div>
+    const [format, setFormat] = useState<Format>(Format.HH_MM)
+    const [value, setValue] = useState<Date | null>(createTimeToday(1, 30))
+    const [startTime, setStartTime] = useState<Date | null>(createTimeToday(1, 30))
+    const [endTime, setEndTime] = useState<Date | null>(createTimeToday(2, 30))
 
-      <div>
-        <label className="mb-1 block text-sm font-medium">无前缀图标</label>
-        <TimeInput
-          prefixElement={null}
-          placeholder="无图标"
-        />
-      </div>
+    const [open, setOpen] = useState(false)
+    const timeRef = useRef<HTMLFieldSetElement>(null)
+    const rangeRef = useRef<HTMLFieldSetElement>(null)
 
-      <div>
-        <label className="mb-1 block text-sm font-medium">自定义前缀</label>
-        <TimeInput
-          prefixElement={<Clock className="text-blue-500" />}
-          placeholder="蓝色图标"
-        />
-      </div>
-    </div>
-  ),
+    const currentTriggerRef = activeInput === "single" ? timeRef : rangeRef
+    const currentValue =
+      activeInput === "single"
+        ? value
+        : activeInput === "range-start"
+          ? startTime
+          : activeInput === "range-end"
+            ? endTime
+            : null
+
+    const handleValueChange = useEventCallback((newDate: Date | null) => {
+      if (activeInput === "single") {
+        setValue(newDate)
+        setOpen(false)
+      } else if (activeInput === "range-start") {
+        setStartTime(newDate as Date | null)
+        setOpen(false)
+      } else if (activeInput === "range-end") {
+        setEndTime(newDate as Date | null)
+        setOpen(false)
+      }
+    })
+
+    return (
+      <>
+        <Panel className="w-80 rounded-lg border">
+          <Panel.Title title="Select Time" />
+          <Panel.Row>
+            <Select
+              value={format}
+              onChange={(value) => setFormat(value as Format)}
+            >
+              <Select.Trigger className="[grid-area:input]">
+                <Select.Value>
+                  {format === Format.HH_MM ? "24-hour format (HH:mm)" : "12-hour format (h:mm a)"}
+                </Select.Value>
+              </Select.Trigger>
+              <Select.Content>
+                <Select.Item value={Format.HH_MM}>24-hour format (HH:mm)</Select.Item>
+                <Select.Item value={Format.H_MM_A}>12-hour format (h:mm a)</Select.Item>
+              </Select.Content>
+            </Select>
+          </Panel.Row>
+          <Panel.Row
+            type="single"
+            ref={timeRef}
+            className="time-input"
+          >
+            <TimeInput
+              format={format}
+              className="[grid-area:input]"
+              value={value}
+              onChange={setValue}
+              onFocus={() => {
+                setActiveInput("single")
+                setOpen(true)
+              }}
+              step={15}
+              onEnterKeyDown={() => setOpen(false)}
+            />
+          </Panel.Row>
+
+          <Panel.Row
+            className="time-range-input"
+            type="two-input-two-icon"
+            ref={rangeRef}
+          >
+            <TimeRangeInput
+              format={format}
+              startValue={startTime}
+              endValue={endTime}
+              onStartChange={setStartTime}
+              onEndChange={setEndTime}
+              onStartFocus={() => {
+                setActiveInput("range-start")
+                setOpen(true)
+              }}
+              onEndFocus={() => {
+                setActiveInput("range-end")
+                setOpen(true)
+              }}
+            />
+          </Panel.Row>
+        </Panel>
+        <Popover
+          interactions="focus"
+          open={open}
+          onOpenChange={setOpen}
+          outsidePressIgnore={activeInput === "single" ? "time-input" : "time-range-input"}
+          triggerRef={currentTriggerRef}
+          placement="left-start"
+          focusManagerProps={{
+            initialFocus: -1,
+            returnFocus: false,
+          }}
+        >
+          <Popover.Content className="overflow-hidden">
+            <TimeCalendar
+              format={format}
+              className="h-64"
+              value={currentValue}
+              onChange={handleValueChange}
+            />
+          </Popover.Content>
+        </Popover>
+      </>
+    )
+  },
 }

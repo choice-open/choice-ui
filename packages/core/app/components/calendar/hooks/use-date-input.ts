@@ -1,32 +1,16 @@
-import type { Locale } from "date-fns"
 import { addDays, addMonths, addWeeks, format, isValid } from "date-fns"
 import React, { useCallback, useEffect, useRef, useState } from "react"
 import { useEventCallback } from "usehooks-ts"
 import { PressMoveProps, useMergedValue, useModifierKeys, usePressMove } from "~/hooks"
 import { mergeRefs } from "~/utils"
-import type { DateFormat } from "../types"
-import { parseCache, parseDate, parserConfig, smartCorrectDate } from "../utils"
+import type { BaseDateProps, DateInteractionProps, StepProps } from "../types"
+import { parseCache, parseDate, parserConfig, resolveLocale, smartCorrectDate } from "../utils"
 
-interface UseDateInputProps {
-  defaultValue?: Date | null
-  disabled?: boolean
-  enableCache?: boolean
-  enableKeyboardNavigation?: boolean
-  enableProfiling?: boolean
-  format?: DateFormat
-  locale: Locale
-  maxDate?: Date
-  metaStep?: number
-  minDate?: Date
-  onChange?: (date: Date | null) => void
-  onEnterKeyDown?: () => void
+interface UseDateInputProps extends BaseDateProps, StepProps, DateInteractionProps {
   onPressEnd?: PressMoveProps["onPressEnd"]
   onPressStart?: PressMoveProps["onPressStart"]
   readOnly?: boolean
   ref?: React.Ref<HTMLInputElement>
-  shiftStep?: number
-  step?: number
-  value?: Date | null
 }
 
 export function useDateInput(props: UseDateInputProps) {
@@ -44,13 +28,16 @@ export function useDateInput(props: UseDateInputProps) {
     onPressStart,
     onPressEnd,
     format: dateFormat,
-    locale,
+    locale: propLocale,
     enableCache = true,
     enableKeyboardNavigation = true,
     enableProfiling = false,
     onEnterKeyDown,
     ref,
   } = props
+
+  // 🔧 使用公用的 locale 解析
+  const locale = resolveLocale(propLocale)
 
   const innerRef = useRef<HTMLInputElement>(null)
   const [inputValue, setInputValue] = useState("")
@@ -126,9 +113,24 @@ export function useDateInput(props: UseDateInputProps) {
       flow.lastExternalValue = normalizedValue
 
       if (normalizedValue && isValid(normalizedValue)) {
-        const formatted = format(normalizedValue, dateFormat || "yyyy-MM-dd", { locale })
-        setInputValue(formatted)
-        flow.lastInternalInput = formatted
+        try {
+          const formatted = format(normalizedValue, dateFormat || "yyyy-MM-dd", { locale })
+          setInputValue(formatted)
+          flow.lastInternalInput = formatted
+        } catch (error) {
+          console.warn("Date formatting error:", error)
+          // 降级使用默认格式
+          try {
+            const formatted = format(normalizedValue, "yyyy-MM-dd", { locale })
+            setInputValue(formatted)
+            flow.lastInternalInput = formatted
+          } catch {
+            // 最后降级：不格式化，直接显示 ISO 字符串
+            const isoString = normalizedValue.toISOString().split("T")[0]
+            setInputValue(isoString)
+            flow.lastInternalInput = isoString
+          }
+        }
       } else {
         setInputValue("")
         flow.lastInternalInput = ""
@@ -145,9 +147,24 @@ export function useDateInput(props: UseDateInputProps) {
   useEffect(() => {
     // 如果当前有值且不在外部数据流状态，重新格式化
     if (innerValue && isValid(innerValue) && dataFlowRef.current.direction !== "external") {
-      const formatted = format(innerValue, dateFormat || "yyyy-MM-dd", { locale })
-      setInputValue(formatted)
-      dataFlowRef.current.lastInternalInput = formatted
+      try {
+        const formatted = format(innerValue, dateFormat || "yyyy-MM-dd", { locale })
+        setInputValue(formatted)
+        dataFlowRef.current.lastInternalInput = formatted
+      } catch (error) {
+        console.warn("Date formatting error:", error)
+        // 降级使用默认格式
+        try {
+          const formatted = format(innerValue, "yyyy-MM-dd", { locale })
+          setInputValue(formatted)
+          dataFlowRef.current.lastInternalInput = formatted
+        } catch {
+          // 最后降级：显示 ISO 字符串
+          const isoString = innerValue.toISOString().split("T")[0]
+          setInputValue(isoString)
+          dataFlowRef.current.lastInternalInput = isoString
+        }
+      }
     }
   }, [dateFormat, locale]) // 只依赖 dateFormat 和 locale
 
@@ -309,13 +326,28 @@ export function useDateInput(props: UseDateInputProps) {
         }
 
         // 格式化显示
-        const formatted = format(finalDate, dateFormat || "yyyy-MM-dd", { locale })
-        if (formatted !== text) {
-          setInputValue(formatted)
-          flow.lastInternalInput = formatted
-        } else if (!isRepeatInput) {
-          // 更新内部输入记录，即使格式化结果相同
-          flow.lastInternalInput = text
+        try {
+          const formatted = format(finalDate, dateFormat || "yyyy-MM-dd", { locale })
+          if (formatted !== text) {
+            setInputValue(formatted)
+            flow.lastInternalInput = formatted
+          } else if (!isRepeatInput) {
+            // 更新内部输入记录，即使格式化结果相同
+            flow.lastInternalInput = text
+          }
+        } catch (error) {
+          console.warn("Date formatting error in handleSubmit:", error)
+          // 降级处理：使用默认格式或保持原输入
+          try {
+            const formatted = format(finalDate, "yyyy-MM-dd", { locale })
+            setInputValue(formatted)
+            flow.lastInternalInput = formatted
+          } catch {
+            // 最后降级：保持用户输入
+            if (!isRepeatInput) {
+              flow.lastInternalInput = text
+            }
+          }
         }
       }
     } catch (error) {
@@ -412,25 +444,34 @@ export function useDateInput(props: UseDateInputProps) {
       }
 
       // 🔄 更新状态和显示
-      const formatted = format(newDate, dateFormat || "yyyy-MM-dd", { locale })
+      try {
+        const formatted = format(newDate, dateFormat || "yyyy-MM-dd", { locale })
 
-      // 🚀 关键修复：立即更新显示，延迟更新值以避免竞态条件
-      flow.direction = "internal"
-      flow.lastInternalInput = formatted
-      setInputValue(formatted)
+        // 🚀 关键修复：立即更新显示，延迟更新值以避免竞态条件
+        flow.direction = "internal"
+        flow.lastInternalInput = formatted
+        setInputValue(formatted)
 
-      // 延迟更新值，避免与 useEffect 的数据流检测冲突
-      setTimeout(() => {
-        // 二次检查：确保状态仍然是内部操作
-        if (flow.direction === "internal") {
-          // 更新外部值状态以防止 useEffect 误判为外部变化
-          flow.lastExternalValue = newDate
-          setValue(newDate)
+        // 延迟更新值，避免与 useEffect 的数据流检测冲突
+        setTimeout(() => {
+          // 二次检查：确保状态仍然是内部操作
+          if (flow.direction === "internal") {
+            // 更新外部值状态以防止 useEffect 误判为外部变化
+            flow.lastExternalValue = newDate
+            setValue(newDate)
 
-          // 标记操作完成
-          flow.direction = "idle"
-        }
-      }, 10)
+            // 标记操作完成
+            flow.direction = "idle"
+          }
+        }, 10)
+      } catch (error) {
+        console.warn("Date formatting error during keyboard navigation:", error)
+        // 降级处理：直接更新值而不格式化
+        flow.direction = "internal"
+        setValue(newDate)
+        flow.lastExternalValue = newDate
+        flow.direction = "idle"
+      }
     }
   })
 

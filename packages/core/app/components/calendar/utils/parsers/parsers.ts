@@ -1,6 +1,6 @@
 import { format, isValid, parse, type Locale } from "date-fns"
 import { enUS } from "date-fns/locale"
-import type { DateInputValue, DateParserOptions } from "../../date-input/types"
+import type { DateInputValue, DateParserOptions } from "../../types"
 import type { DateFormat } from "../../types"
 import { commonDateFormats } from "../constants"
 import { resolveLocale } from "../locale"
