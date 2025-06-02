@@ -8,22 +8,22 @@ import { processMenuChildren } from "../utils"
 
 export interface ContextSubmenuProps {
   children: ReactNode
-  disabled?: boolean
   className?: string
   contentProps?: Omit<ContextSubmenuContentProps, "children">
+  disabled?: boolean
 }
 
 export interface ContextSubmenuTriggerProps {
   children: ReactNode
-  disabled?: boolean
   className?: string
+  disabled?: boolean
 }
 
 export interface ContextSubmenuContentProps {
+  alignOffset?: number
   children: ReactNode
   className?: string
   sideOffset?: number
-  alignOffset?: number
 }
 
 export const ContextSubmenuRoot = forwardRef<HTMLDivElement, ContextSubmenuProps>(

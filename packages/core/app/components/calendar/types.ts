@@ -54,7 +54,7 @@ export type TimeFormat = string
 
 // ====== 时间相关的基础类型 ======
 
-import type { Locale } from "date-fns"
+import type { Day, Locale, Quarter as Quarters } from "date-fns"
 
 /**
  * 时间对象（小时和分钟）
@@ -184,7 +184,7 @@ export interface DateRange {
 /**
  * 一周开始的日期
  */
-export type WeekStartsOn = 0 | 1 | 2 | 3 | 4 | 5 | 6
+export type WeekStartsOn = Day
 
 /**
  * 日期比较模式
@@ -415,7 +415,7 @@ export interface CalendarActions {
 export interface Quarter {
   label: string
   months: string[]
-  quarter: number // 1, 2, 3, 4
+  quarter: Quarters // 1, 2, 3, 4
   year: number
 }
 

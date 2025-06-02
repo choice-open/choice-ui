@@ -1,5 +1,6 @@
 import * as CM from "@radix-ui/react-context-menu"
-import React, { ReactNode } from "react"
+import { ReactNode } from "react"
+import { MenuValue } from "../menus"
 import {
   ContextMenuContent,
   ContextMenuDivider,
@@ -10,13 +11,12 @@ import {
 } from "./components"
 import { ContextMenuContext } from "./context-menu-context"
 import { processMenuChildren } from "./utils"
-import { MenuValue } from "../menus"
 
-export interface ContextMenuProps {
+export interface ContextMenuProps extends CM.ContextMenuProps {
   children: ReactNode
-  open?: boolean
-  onOpenChange?: (open: boolean) => void
   modal?: boolean
+  onOpenChange?: (open: boolean) => void
+  open?: boolean
   selection?: boolean
 }
 
@@ -52,6 +52,7 @@ const ContextMenuComponent = ({
       <CM.Root
         modal={modal}
         dir="ltr"
+        onOpenChange={onOpenChange}
       >
         {triggerElement}
         {contentElement}

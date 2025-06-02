@@ -19,7 +19,7 @@ export interface MenuItemProps extends React.HTMLAttributes<HTMLButtonElement> {
     modifier?: KbdKey | KbdKey[] | undefined
   }
   suffixElement?: ReactNode
-  variant?: "default" | "highlight"
+  variant?: "default" | "highlight" | "danger" | "reste"
 }
 
 export const MenuItem = memo(

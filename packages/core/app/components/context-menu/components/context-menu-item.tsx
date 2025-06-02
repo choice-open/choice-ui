@@ -8,17 +8,18 @@ import { useContextMenu } from "../context-menu-context"
 
 export interface ContextMenuItemProps {
   children?: ReactNode
+  className?: string
   disabled?: boolean
-  selected?: boolean
-  prefixElement?: ReactNode
-  suffixElement?: ReactNode
-  shortcut?: {
-    modifier?: KbdKey | KbdKey[] | undefined
-    keys?: ReactNode
-  }
   onClick?: () => void
   onHover?: () => void
-  className?: string
+  prefixElement?: ReactNode
+  selected?: boolean
+  shortcut?: {
+    keys?: ReactNode
+    modifier?: KbdKey | KbdKey[] | undefined
+  }
+  suffixElement?: ReactNode
+  variant?: "default" | "highlight" | "danger" | "reste"
 }
 
 export const ContextMenuItem = forwardRef<HTMLDivElement, ContextMenuItemProps>(
@@ -28,11 +29,12 @@ export const ContextMenuItem = forwardRef<HTMLDivElement, ContextMenuItemProps>(
       disabled,
       onClick,
       selected,
-      prefixElement = <Check />,
+      prefixElement,
       suffixElement,
       shortcut,
       onHover,
       className,
+      variant = "default",
       ...props
     },
     ref,
@@ -45,12 +47,13 @@ export const ContextMenuItem = forwardRef<HTMLDivElement, ContextMenuItemProps>(
       disabled,
       hasPrefix,
       hasSuffix: !!shortcut || !!suffixElement,
+      variant,
     })
 
     const renderPrefixElement = () => {
       if (!selection) return null
 
-      return <div className={styles.icon()}>{selected ? prefixElement : null}</div>
+      return <div className={styles.icon()}>{selected ? <Check /> : null}</div>
     }
 
     const renderShortcut = () => {
@@ -58,7 +61,10 @@ export const ContextMenuItem = forwardRef<HTMLDivElement, ContextMenuItemProps>(
 
       return (
         <Kbd
-          className={styles.shortcut()}
+          className={tcx(
+            styles.shortcut(),
+            "group-data-[highlighted]/menu-item:text-on-accent-foreground",
+          )}
           keys={shortcut.modifier}
         >
           {shortcut.keys}
@@ -80,7 +86,9 @@ export const ContextMenuItem = forwardRef<HTMLDivElement, ContextMenuItemProps>(
         onSelect={onClick}
         className={tcx(
           styles.root(),
-          "data-[highlighted]:bg-accent-background data-[highlighted]:text-on-accent-foreground",
+          variant === "default" && "data-[highlighted]:bg-accent-background",
+          variant === "danger" && "data-[highlighted]:bg-danger-background",
+          "data-[highlighted]:text-on-accent-foreground",
           className,
         )}
         onMouseEnter={() => {
@@ -88,8 +96,13 @@ export const ContextMenuItem = forwardRef<HTMLDivElement, ContextMenuItemProps>(
           onHover?.()
         }}
       >
-        {renderPrefixElement()}
-        <span className="flex-1">{children}</span>
+        {prefixElement ? (
+          <div className={styles.icon()}>{prefixElement}</div>
+        ) : (
+          renderPrefixElement()
+        )}
+
+        {children}
         {renderShortcut()}
         {renderSuffixElement()}
       </CM.Item>

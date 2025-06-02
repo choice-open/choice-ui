@@ -2,9 +2,9 @@ import * as CM from "@radix-ui/react-context-menu"
 import { ReactNode, forwardRef } from "react"
 
 export interface ContextMenuTriggerProps {
+  asChild?: boolean
   children: ReactNode
   disabled?: boolean
-  asChild?: boolean
 }
 
 export const ContextMenuTrigger = forwardRef<HTMLDivElement, ContextMenuTriggerProps>(

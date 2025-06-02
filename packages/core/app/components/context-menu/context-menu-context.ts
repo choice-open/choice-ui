@@ -1,8 +1,8 @@
 import { createContext, useContext } from "react"
 
 interface ContextMenuContextValue {
-  open?: boolean
   onOpenChange?: (open: boolean) => void
+  open?: boolean
   selection?: boolean
 }
 

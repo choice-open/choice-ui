@@ -1,4 +1,4 @@
-import { format, isDate, isValid, type Locale } from "date-fns"
+import { format, isDate, isValid, type Locale, Quarter as Quarters } from "date-fns"
 import { zhCN } from "date-fns/locale"
 import type { Quarter } from "../types"
 import { resolveLocale, isChineseLocale } from "./locale"
@@ -22,9 +22,9 @@ export const quarterUtils = {
   },
 
   /** 获取当前季度数字 (1-4) */
-  getCurrentQuarterNumber(): number {
+  getCurrentQuarterNumber(): Quarters {
     const currentMonth = new Date().getMonth() + 1 // 1-12
-    return Math.ceil(currentMonth / 3)
+    return Math.ceil(currentMonth / 3) as Quarters
   },
 
   /** 验证年份是否在有效范围内 */
@@ -69,7 +69,7 @@ export function getQuarterMonths(quarter: number, locale: Locale | string = zhCN
 
 /** 创建季度对象 */
 export function createQuarter(
-  quarter: number,
+  quarter: Quarters,
   year: number,
   locale: Locale | string = zhCN,
 ): Quarter {
@@ -109,7 +109,7 @@ export function getCurrentQuarter(year?: number, locale: Locale | string = zhCN)
 
 /** 获取年份的所有季度 */
 export function getYearQuarters(year: number, locale: Locale | string = zhCN): Quarter[] {
-  return [1, 2, 3, 4].map((quarter) => createQuarter(quarter, year, locale))
+  return [1, 2, 3, 4].map((quarter) => createQuarter(quarter as Quarters, year, locale))
 }
 
 /** 检查两个季度是否相等 */

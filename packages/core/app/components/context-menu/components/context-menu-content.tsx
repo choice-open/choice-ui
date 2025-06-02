@@ -4,11 +4,11 @@ import { tcx } from "~/utils/tcx"
 import { MenusTv } from "../../menus/tv"
 
 export interface ContextMenuContentProps {
+  align?: "start" | "center" | "end"
+  alignOffset?: number
   children: ReactNode
   className?: string
   sideOffset?: number
-  align?: "start" | "center" | "end"
-  alignOffset?: number
 }
 
 export const ContextMenuContent = forwardRef<HTMLDivElement, ContextMenuContentProps>(

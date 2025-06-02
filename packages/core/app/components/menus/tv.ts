@@ -77,7 +77,7 @@ export const MenuTriggerTv = tv({
 export const MenuItemTv = tv({
   slots: {
     root: [
-      "flex h-6 w-full flex-none items-center rounded-md",
+      "group/menu-item flex h-6 w-full flex-none items-center rounded-md",
       "leading-md tracking-md text-md text-left",
       "cursor-default",
     ],
@@ -113,6 +113,8 @@ export const MenuItemTv = tv({
     variant: {
       default: {},
       highlight: {},
+      danger: {},
+      reste: {},
     },
   },
   compoundVariants: [
@@ -138,6 +140,15 @@ export const MenuItemTv = tv({
       active: false,
       class: {
         root: "bg-white/10",
+      },
+    },
+    {
+      disabled: false,
+      variant: "danger",
+      selected: true,
+      active: false,
+      class: {
+        root: "bg-danger-background text-on-accent-foreground",
       },
     },
   ],
