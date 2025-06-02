@@ -93,6 +93,7 @@ export const TimeInput = forwardRef<HTMLInputElement, TimeInputProps>((props, re
             className={tcx(
               "cursor-ew-resize",
               rest.disabled ? "text-disabled-foreground" : "text-secondary-foreground",
+              rest.variant === "dark" ? "text-white/50" : undefined,
             )}
           >
             {prefixElement}

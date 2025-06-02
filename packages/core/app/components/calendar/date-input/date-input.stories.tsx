@@ -1,6 +1,6 @@
 import { FieldTypeDateAndTime, ArrowRight } from "@choiceform/icons-react"
 import type { Meta, StoryObj } from "@storybook/react"
-import { addDays, isToday } from "date-fns"
+import { addDays, isToday, Locale } from "date-fns"
 import { de, enUS, fr, zhCN } from "date-fns/locale"
 import React, { useRef, useState } from "react"
 import { MonthCalendar } from "../../calendar"
@@ -8,9 +8,10 @@ import { Panel } from "../../panel"
 import { Popover } from "../../popover"
 import { Select } from "../../select"
 import { DateRangeInput } from "../date-range-input"
-import type { CalendarValue } from "../types"
+import type { CalendarValue, DateFormat } from "../types"
 import { LOCALE_MAP } from "../utils/locale"
 import { DateInput } from "./date-input"
+import { TextField } from "../../text-field"
 
 const meta: Meta<typeof DateInput> = {
   title: "DateAndTime/DateInput",
@@ -33,46 +34,71 @@ export const Basic: Story = {
 export const States: Story = {
   render: () => (
     <div className="space-y-4">
-      <div>
-        <label className="mb-1 block font-medium">Normal</label>
-        <DateInput placeholder="Enter time..." />
-      </div>
+      <DateInput placeholder="Enter time...">
+        <TextField.Label>Normal</TextField.Label>
+      </DateInput>
 
-      <div>
-        <label className="mb-1 block font-medium">Disabled</label>
-        <DateInput
-          disabled
-          value={new Date()}
-          placeholder="Disabled state"
-        />
-      </div>
+      <DateInput
+        disabled
+        value={new Date()}
+        placeholder="Disabled state"
+      >
+        <TextField.Label>Disabled</TextField.Label>
+      </DateInput>
 
-      <div>
-        <label className="mb-1 block font-medium">Readonly</label>
-        <DateInput
-          readOnly
-          value={new Date()}
-          placeholder="Readonly state"
-        />
-      </div>
+      <DateInput
+        readOnly
+        value={new Date()}
+        placeholder="Readonly state"
+      >
+        <TextField.Label>Readonly</TextField.Label>
+      </DateInput>
 
-      <div>
-        <label className="mb-1 block font-medium">No prefix icon</label>
-        <DateInput
-          prefixElement={null}
-          placeholder="No icon"
-        />
-      </div>
+      <DateInput
+        prefixElement={null}
+        placeholder="No icon"
+      >
+        <TextField.Label>No prefix icon</TextField.Label>
+      </DateInput>
 
-      <div>
-        <label className="mb-1 block font-medium">Custom prefix</label>
-        <DateInput
-          prefixElement={<FieldTypeDateAndTime className="text-accent-foreground" />}
-          placeholder="Custom prefix"
-        />
-      </div>
+      <DateInput
+        prefixElement={<FieldTypeDateAndTime className="text-accent-foreground" />}
+        placeholder="Custom prefix"
+      >
+        <TextField.Label>Custom prefix</TextField.Label>
+      </DateInput>
     </div>
   ),
+}
+
+export const Size: Story = {
+  render: function Render() {
+    const [value, setValue] = useState<Date | null>(null)
+    return (
+      <div className="space-y-4">
+        <DateInput
+          size="large"
+          value={value}
+          onChange={setValue}
+        />
+      </div>
+    )
+  },
+}
+
+export const Variable: Story = {
+  render: function Render() {
+    const [value, setValue] = useState<Date | null>(null)
+    return (
+      <div className="bg-gray-800 p-8">
+        <DateInput
+          variant="dark"
+          value={value}
+          onChange={setValue}
+        />
+      </div>
+    )
+  },
 }
 
 // 键盘导航演示
@@ -134,56 +160,88 @@ export const Formats: Story = {
     const [value, setValue] = useState<Date | null>(new Date())
 
     return (
-      <div className="space-y-6">
-        <div>
-          <h3 className="mb-2 font-medium">ISO Format: yyyy-MM-dd</h3>
-          <DateInput
-            format="yyyy-MM-dd"
-            value={value}
-            onChange={setValue}
-          />
-        </div>
+      <div className="grid grid-cols-2 gap-4">
+        <DateInput
+          format="yyyy-MM-dd"
+          value={value}
+          onChange={setValue}
+        >
+          <TextField.Label>ISO Format: yyyy-MM-dd</TextField.Label>
+        </DateInput>
 
-        <div>
-          <h3 className="mb-2 font-medium">Format: yyyy年MM月dd日</h3>
-          <DateInput
-            format="yyyy年MM月dd日"
-            locale={zhCN}
-            value={value}
-            onChange={setValue}
-          />
-        </div>
+        <DateInput
+          format="yyyy年MM月dd日"
+          locale={zhCN}
+          value={value}
+          onChange={setValue}
+        >
+          <TextField.Label>Format: yyyy年MM月dd日</TextField.Label>
+        </DateInput>
 
-        <div>
-          <h3 className="mb-2 font-medium">Format: yy年 MMM do eee</h3>
-          <DateInput
-            format="yy年 MMM do eee"
-            locale={zhCN}
-            value={value}
-            onChange={setValue}
-          />
-        </div>
+        <DateInput
+          format="yy年 MMM do eee"
+          locale={zhCN}
+          value={value}
+          onChange={setValue}
+        >
+          <TextField.Label>Format: yy年 MMM do eee</TextField.Label>
+        </DateInput>
 
-        <div>
-          <h3 className="mb-2 font-medium">Format: MM/dd/yyyy</h3>
-          <DateInput
-            format="MM/dd/yyyy"
-            value={value}
-            onChange={setValue}
-          />
-        </div>
+        <DateInput
+          format="MM/dd/yyyy"
+          value={value}
+          onChange={setValue}
+        >
+          <TextField.Label>Format: MM/dd/yyyy</TextField.Label>
+        </DateInput>
 
-        <div>
-          <h3 className="mb-2 font-medium">Format: {`EE MM dd 'yy`}</h3>
-          <DateInput
-            format="EE MM dd ''yy"
-            value={value}
-            onChange={setValue}
-          />
-        </div>
+        <DateInput
+          format="EE MM dd ''yy"
+          value={value}
+          onChange={setValue}
+        >
+          <TextField.Label>Format: {`EE MM dd 'yy`}</TextField.Label>
+        </DateInput>
       </div>
     )
   },
+}
+
+const VariableLengthFormatsComponent = ({
+  title,
+  value,
+  onChange,
+  format,
+  placeholder,
+  locale,
+}: {
+  format: DateFormat
+  locale: string
+  onChange: (date: Date | null) => void
+  placeholder: string
+  title: string
+  value: Date | null
+}) => {
+  return (
+    <div className="space-y-4 rounded-md border p-4">
+      <DateInput
+        format={format}
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+      >
+        <TextField.Label className="text-blue-600">{title}</TextField.Label>
+      </DateInput>
+      <div className="text-secondary-foreground text-xs">
+        Format: <code>{format}</code>
+        <br />
+        Example: {placeholder}
+      </div>
+      <div className="text-xs text-gray-500">
+        Current Value: {value ? value.toLocaleDateString(locale) : "None"}
+      </div>
+    </div>
+  )
 }
 
 // 不同长度格式演示
@@ -195,6 +253,8 @@ export const VariableLengthFormats: Story = {
     const [shortEnglishValue, setShortEnglishValue] = useState<Date | null>(null)
     const [flexibleChineseValue, setFlexibleChineseValue] = useState<Date | null>(null)
     const [compactValue, setCompactValue] = useState<Date | null>(null)
+    const [longFrenchValue, setLongFrenchValue] = useState<Date | null>(null)
+    const [longGermanValue, setLongGermanValue] = useState<Date | null>(null)
 
     return (
       <div className="space-y-8">
@@ -204,128 +264,83 @@ export const VariableLengthFormats: Story = {
           months, etc.
         </div>
 
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-          {/* 中文长格式 */}
-          <div className="space-y-4 rounded-lg border p-4">
-            <div className="font-medium text-blue-600">🇨🇳 Chinese Long Format</div>
-            <DateInput
-              format="yyyy年MM月dd日"
-              placeholder="2025年12月31日"
-              value={longChineseValue}
-              onChange={setLongChineseValue}
+        <div className="grid grid-cols-4 gap-4">
+          {[
+            {
+              title: "🇨🇳 Chinese Long Format",
+              format: "yyyy年MM月dd日",
+              placeholder: "2025年12月31日",
+              value: longChineseValue,
+              onChange: setLongChineseValue,
+              locale: "zh-CN",
+            },
+            {
+              title: "🇨🇳 Chinese Short Format",
+              format: "yy年M月d日",
+              placeholder: "25年12月31日",
+              value: shortChineseValue,
+              onChange: setShortChineseValue,
+              locale: "zh-CN",
+            },
+            {
+              title: "🇨🇳 Chinese Flexible Format",
+              format: "yyyy年M月d日",
+              placeholder: "2025年1月5日",
+              value: flexibleChineseValue,
+              onChange: setFlexibleChineseValue,
+              locale: "zh-CN",
+            },
+            {
+              title: "🇺🇸 English Long Format",
+              format: "MMMM dd, yyyy",
+              placeholder: "December 25, 2025",
+              value: longEnglishValue,
+              onChange: setLongEnglishValue,
+              locale: "en-US",
+            },
+            {
+              title: "🇺🇸 English Short Format",
+              format: "MMM dd, yy",
+              placeholder: "Dec 25, 25",
+              value: shortEnglishValue,
+              onChange: setShortEnglishValue,
+              locale: "en-US",
+            },
+            {
+              title: "📱 Compact Format",
+              format: "M/d/yy",
+              placeholder: "12/25/25",
+              value: compactValue,
+              onChange: setCompactValue,
+              locale: "en-US",
+            },
+            {
+              title: "🇫🇷 Français",
+              format: "MMM d yyyy",
+              placeholder: "Déc 25 2025",
+              value: longFrenchValue,
+              onChange: setLongFrenchValue,
+              locale: "fr",
+            },
+            {
+              title: "🇩🇪 Deutsch",
+              format: "dd.MM.yyyy",
+              placeholder: "25.12.2025",
+              value: longGermanValue,
+              onChange: setLongGermanValue,
+              locale: "de",
+            },
+          ].map((item) => (
+            <VariableLengthFormatsComponent
+              key={item.title}
+              title={item.title}
+              format={item.format}
+              placeholder={item.placeholder}
+              value={item.value}
+              onChange={item.onChange}
+              locale={item.locale}
             />
-            <div className="text-secondary-foreground text-xs">
-              Format: <code>yyyy年MM月dd日</code>
-              <br />
-              Example: 2025年12月31日
-            </div>
-            <div className="text-xs text-gray-500">
-              Current Value:{" "}
-              {longChineseValue ? longChineseValue.toLocaleDateString("zh-CN") : "None"}
-            </div>
-          </div>
-
-          {/* 中文短格式 */}
-          <div className="space-y-4 rounded-lg border p-4">
-            <div className="font-medium text-purple-600">🇨🇳 Chinese Short Format</div>
-            <DateInput
-              format="yy年M月d日"
-              placeholder="25年12月31日"
-              value={shortChineseValue}
-              onChange={setShortChineseValue}
-            />
-            <div className="text-secondary-foreground text-xs">
-              Format: <code>yy年M月d日</code>
-              <br />
-              Example: 25年12月31日
-            </div>
-            <div className="text-xs text-gray-500">
-              Current Value:{" "}
-              {shortChineseValue ? shortChineseValue.toLocaleDateString("zh-CN") : "None"}
-            </div>
-          </div>
-
-          {/* 灵活中文格式 */}
-          <div className="space-y-4 rounded-lg border p-4">
-            <div className="font-medium text-indigo-600">🇨🇳 Chinese Flexible Format</div>
-            <DateInput
-              format="yyyy年M月d日"
-              placeholder="2025年1月5日"
-              value={flexibleChineseValue}
-              onChange={setFlexibleChineseValue}
-            />
-            <div className="text-secondary-foreground text-xs">
-              Format: <code>yyyy年M月d日</code>
-              <br />
-              Example: 2025年1月5日 (no zero padding)
-            </div>
-            <div className="text-xs text-gray-500">
-              Current Value:{" "}
-              {flexibleChineseValue ? flexibleChineseValue.toLocaleDateString("zh-CN") : "None"}
-            </div>
-          </div>
-
-          {/* 英文长格式 */}
-          <div className="space-y-4 rounded-lg border p-4">
-            <div className="font-medium text-green-600">🇺🇸 English Long Format</div>
-            <DateInput
-              locale={enUS}
-              format="MMMM dd, yyyy"
-              placeholder="December 25, 2025"
-              value={longEnglishValue}
-              onChange={setLongEnglishValue}
-            />
-            <div className="text-secondary-foreground text-xs">
-              Format: <code>MMMM dd, yyyy</code>
-              <br />
-              Example: December 25, 2025
-            </div>
-            <div className="text-xs text-gray-500">
-              Current Value:{" "}
-              {longEnglishValue ? longEnglishValue.toLocaleDateString("en-US") : "None"}
-            </div>
-          </div>
-
-          {/* 英文短格式 */}
-          <div className="space-y-4 rounded-lg border p-4">
-            <div className="font-medium text-orange-600">🇺🇸 English Short Format</div>
-            <DateInput
-              locale={enUS}
-              format="MMM dd, yy"
-              placeholder="Dec 25, 25"
-              value={shortEnglishValue}
-              onChange={setShortEnglishValue}
-            />
-            <div className="text-secondary-foreground text-xs">
-              Format: <code>MMM dd, yy</code>
-              <br />
-              Example: Dec 25, 25
-            </div>
-            <div className="text-xs text-gray-500">
-              Current Value:{" "}
-              {shortEnglishValue ? shortEnglishValue.toLocaleDateString("en-US") : "None"}
-            </div>
-          </div>
-
-          {/* 紧凑格式 */}
-          <div className="space-y-4 rounded-lg border p-4">
-            <div className="font-medium text-red-600">📱 Compact Format</div>
-            <DateInput
-              locale={enUS}
-              format="M/d/yy"
-              placeholder="12/25/25"
-              value={compactValue}
-              onChange={setCompactValue}
-            />
-            <div className="text-secondary-foreground text-xs">
-              Format: <code>M/d/yy</code>
-              <br />
-              Example: 12/25/25 (no zero padding)
-            </div>
-            <div className="text-xs text-gray-500">
-              Current Value: {compactValue ? compactValue.toLocaleDateString("en-US") : "None"}
-            </div>
-          </div>
+          ))}
         </div>
 
         <div className="space-y-4 rounded-md border p-4">
@@ -394,26 +409,6 @@ export const VariableLengthFormats: Story = {
         </div>
 
         <div className="rounded-md border p-4">
-          <div className="mb-2 font-medium">✨ Flexibility Advantage</div>
-          <div className="text-secondary-foreground space-y-2">
-            <div>
-              • <strong>Unlimited</strong>: Supports any date-fns format string combination
-            </div>
-            <div>
-              • <strong>Smart Parsing</strong>: Automatically recognize and parse various formats
-            </div>
-            <div>
-              • <strong>Internationalization</strong>: Automatically adapt month names based on
-              locale
-            </div>
-            <div>
-              • <strong>Developer Friendly</strong>: TypeScript smart suggestions and format
-              validation
-            </div>
-          </div>
-        </div>
-
-        <div className="rounded-md border p-4">
           <div className="mb-2 font-medium">💡 Usage Tips</div>
           <div className="text-secondary-foreground">
             Now you can use any date-fns format string directly, no longer limited by predefined
@@ -436,7 +431,7 @@ export const VariableLengthFormats: Story = {
 // 高级功能展示
 export const Prediction: Story = {
   args: {
-    placeholder: "试试智能预测功能...",
+    placeholder: "Try intelligent prediction...",
     format: "yyyy-MM-dd",
     enablePrediction: true,
   },
@@ -444,64 +439,45 @@ export const Prediction: Story = {
     <div className="space-y-6">
       <DateInput {...args} />
 
-      <div className="space-y-4 text-sm">
+      <div className="space-y-4">
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <div className="space-y-3">
-            <div className="font-medium text-blue-600">🎨 实时高亮</div>
+            <div className="font-medium text-blue-600">🎨 Real-time Highlight</div>
             <div className="text-secondary-foreground space-y-2">
-              <div>• 数字自动高亮显示</div>
-              <div>• 快捷键变色提示</div>
-              <div>• 输入内容智能识别</div>
+              <div>• Number automatically highlights</div>
+              <div>• Shortcut key color change prompt</div>
+              <div>• Intelligent recognition of input content</div>
             </div>
           </div>
 
           <div className="space-y-3">
-            <div className="font-medium text-purple-600">💡 智能预测</div>
+            <div className="font-medium text-purple-600">💡 Intelligent Prediction</div>
             <div className="text-secondary-foreground space-y-2">
-              <div>• 实时预测提示框 ✅</div>
-              <div>• 数字格式识别 ✅</div>
-              <div>• 智能补全建议 ✅</div>
+              <div>• Real-time prediction prompt box ✅</div>
+              <div>• Number format recognition ✅</div>
+              <div>• Intelligent completion suggestions ✅</div>
             </div>
           </div>
 
           <div className="space-y-3">
-            <div className="font-medium text-green-600">⌨️ 键盘交互</div>
+            <div className="font-medium text-green-600">⌨️ Keyboard Interaction</div>
             <div className="text-secondary-foreground space-y-2">
               <div>
-                • <kbd className="rounded bg-gray-100 px-1">Enter</kbd> 确认输入
+                • <kbd className="rounded bg-gray-100 px-1">Enter</kbd> Confirm input
               </div>
               <div>
-                • <kbd className="rounded bg-gray-100 px-1">Esc</kbd> 隐藏提示
+                • <kbd className="rounded bg-gray-100 px-1">Esc</kbd> Hide prompt
               </div>
-              <div>• 失焦自动格式化</div>
+              <div>• Automatic formatting when focus is lost</div>
             </div>
           </div>
 
           <div className="space-y-3">
-            <div className="font-medium text-orange-600">🔄 格式化</div>
+            <div className="font-medium text-orange-600">🔄 Formatting</div>
             <div className="text-secondary-foreground space-y-2">
-              <div>• 自动格式化输出</div>
-              <div>• 智能错误修正</div>
-              <div>• 实时内容同步</div>
-            </div>
-          </div>
-        </div>
-
-        <div className="rounded-lg bg-purple-50 p-4">
-          <div className="mb-2 font-medium text-purple-800">🎉 新功能亮点</div>
-          <div className="space-y-2 text-purple-700">
-            <div>
-              • <strong>智能预测</strong>：现在会在输入框下方实时显示预测结果
-            </div>
-            <div>
-              • <strong>数字识别</strong>：自动识别各种数字格式并提供智能提示
-            </div>
-            <div>
-              • <strong>置信度指示</strong>：不同颜色表示预测的可信度
-              <br />
-              <span className="text-green-600">绿色</span> = 高置信度 |{" "}
-              <span className="text-blue-600">蓝色</span> = 中等置信度 |{" "}
-              <span className="text-secondary-foreground">灰色</span> = 低置信度
+              <div>• Automatic formatting output</div>
+              <div>• Intelligent error correction</div>
+              <div>• Real-time content synchronization</div>
             </div>
           </div>
         </div>
@@ -779,7 +755,6 @@ const InternationalizationDemo = () => {
   const [enValue, setEnValue] = useState<Date | null>(null)
   const [deValue, setDeValue] = useState<Date | null>(null)
   const [frValue, setFrValue] = useState<Date | null>(null)
-  const [jaValue, setJaValue] = useState<Date | null>(null)
 
   return (
     <div className="space-y-8">
@@ -792,17 +767,15 @@ const InternationalizationDemo = () => {
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         {/* 中文 */}
         <div className="space-y-4 rounded-lg border p-4">
-          <div className="flex items-center gap-2">
-            <span className="text-lg">🇨🇳</span>
-            <div className="font-medium">中文 (zhCN)</div>
-          </div>
           <DateInput
             locale={zhCN}
             format="yyyy年MM月dd日"
             placeholder="试试输入 '今天' 或 '明天'..."
             value={zhValue}
             onChange={setZhValue}
-          />
+          >
+            <TextField.Label className="text-blue-600">🇨🇳 中文 (zhCN)</TextField.Label>
+          </DateInput>
           <div className="text-secondary-foreground space-y-2">
             <div className="font-medium">支持的中文输入：</div>
             <div className="grid grid-cols-2 gap-1 text-xs">
@@ -819,17 +792,15 @@ const InternationalizationDemo = () => {
 
         {/* 英文 */}
         <div className="space-y-4 rounded-lg border p-4">
-          <div className="flex items-center gap-2">
-            <span className="text-lg">🇺🇸</span>
-            <div className="font-medium">English (enUS)</div>
-          </div>
           <DateInput
             locale={enUS}
             format="MM/dd/yyyy"
             placeholder="Try 'today' or 'tomorrow'..."
             value={enValue}
             onChange={setEnValue}
-          />
+          >
+            <TextField.Label className="text-blue-600">🇺🇸 English (enUS)</TextField.Label>
+          </DateInput>
           <div className="text-secondary-foreground space-y-2">
             <div className="font-medium">Supported English input:</div>
             <div className="grid grid-cols-2 gap-1 text-xs">
@@ -846,17 +817,15 @@ const InternationalizationDemo = () => {
 
         {/* 德文 */}
         <div className="space-y-4 rounded-lg border p-4">
-          <div className="flex items-center gap-2">
-            <span className="text-lg">🇩🇪</span>
-            <div className="font-medium">Deutsch (de)</div>
-          </div>
           <DateInput
             locale={de}
             format="dd.MM.yyyy"
             placeholder="Versuchen Sie '25.12.2024'..."
             value={deValue}
             onChange={setDeValue}
-          />
+          >
+            <TextField.Label className="text-blue-600">🇩🇪 Deutsch (de)</TextField.Label>
+          </DateInput>
           <div className="text-secondary-foreground space-y-2">
             <div className="font-medium">Deutsche Formate:</div>
             <div className="text-xs">
@@ -873,17 +842,15 @@ const InternationalizationDemo = () => {
 
         {/* 法文 */}
         <div className="space-y-4 rounded-lg border p-4">
-          <div className="flex items-center gap-2">
-            <span className="text-lg">🇫🇷</span>
-            <div className="font-medium">Français (fr)</div>
-          </div>
           <DateInput
             locale={fr}
             format="dd/MM/yyyy"
             placeholder="Essayez '25/12/2024'..."
             value={frValue}
             onChange={setFrValue}
-          />
+          >
+            <TextField.Label className="text-blue-600">🇫🇷 Français (fr)</TextField.Label>
+          </DateInput>
           <div className="text-secondary-foreground space-y-2">
             <div className="font-medium">Formats français:</div>
             <div className="text-xs">
@@ -899,29 +866,7 @@ const InternationalizationDemo = () => {
         </div>
       </div>
 
-      <div className="rounded-lg bg-blue-50 p-4">
-        <div className="mb-2 font-medium text-blue-800">💡 Internationalization Features</div>
-        <div className="space-y-2 text-blue-700">
-          <div>
-            • <strong>Automatic Language Detection</strong>: Automatically use the corresponding
-            language for natural language parsing based on locale
-          </div>
-          <div>
-            • <strong>Format Adaptation</strong>: Automatically adapt to local habits for month
-            names and date formats
-          </div>
-          <div>
-            • <strong>Input Intelligence</strong>: Support for abbreviated, full, and other input
-            methods in different languages
-          </div>
-          <div>
-            • <strong>Cache Optimization</strong>: Independent caching by language region to improve
-            parsing performance
-          </div>
-        </div>
-      </div>
-
-      <div className="rounded-lg bg-green-50 p-4">
+      <div>
         <div className="mb-2 font-medium text-green-800">🚀 Usage</div>
         <div className="text-green-700">
           Simply pass the <code className="rounded bg-green-100 px-1">locale</code> property to
@@ -1020,26 +965,7 @@ export const Combined: Story = {
       <>
         <Panel className="w-80 rounded-lg border">
           <Panel.Title title="Select Date" />
-          <Panel.Row>
-            <Select
-              value={localeKey}
-              onChange={setLocaleKey}
-            >
-              <Select.Trigger className="[grid-area:input]">
-                <Select.Value>{localeDisplayNames[localeKey] || localeKey}</Select.Value>
-              </Select.Trigger>
-              <Select.Content>
-                {Object.keys(LOCALE_MAP).map((localeKey) => (
-                  <Select.Item
-                    key={localeKey}
-                    value={localeKey}
-                  >
-                    {localeDisplayNames[localeKey] || localeKey}
-                  </Select.Item>
-                ))}
-              </Select.Content>
-            </Select>
-          </Panel.Row>
+
           <Panel.Row>
             <Select
               value={localeKey}
@@ -1093,7 +1019,6 @@ export const Combined: Story = {
               startValue={start}
               endValue={end}
               onStartChange={(newStart) => {
-                console.log("🔥 Start onChange:", newStart)
                 if (newStart) {
                   // 计算当前range长度（毫秒），fallback为1天（与初始状态一致）
                   const currentRange =
@@ -1102,21 +1027,14 @@ export const Combined: Story = {
                   const newEnd = new Date(newStart.getTime() + currentRange)
                   setStart(newStart)
                   setEnd(newEnd)
-                  console.log("🔥 Start推动:", {
-                    newStart: newStart.toISOString(),
-                    newEnd: newEnd.toISOString(),
-                    rangeDays: currentRange / (24 * 60 * 60 * 1000),
-                  })
                 } else {
                   setStart(newStart)
                 }
               }}
               onEndChange={(newEnd) => {
-                console.log("🔥 End onChange:", newEnd)
                 if (newEnd && start && newEnd <= start) {
                   // end <= start 时推动start
                   setStart(newEnd)
-                  console.log("🔥 End推动start:", newEnd.toISOString())
                 }
                 setEnd(newEnd)
               }}

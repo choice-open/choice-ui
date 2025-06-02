@@ -1,31 +1,33 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import React, { useState } from "react"
-import { MonthCalendar } from "./month-calendar"
-import type { MonthCalendarProps, DateRange, CalendarValue } from "./types"
+import { MonthCalendar, MonthCalendarProps } from "./month-calendar"
+import type { CalendarValue } from "../types"
 
 // 单选模式示例组件
 const SingleSelectDemo = (args: MonthCalendarProps) => {
   const [value, setValue] = useState<CalendarValue>(null)
 
   return (
-    <div className="grid grid-cols-2 gap-4">
-      <MonthCalendar
-        {...args}
-        value={value}
-        onChange={setValue}
-        selectionMode="single"
-        className="w-50 rounded-lg border"
-      />
-      <MonthCalendar
-        {...args}
-        value={value}
-        onChange={setValue}
-        selectionMode="single"
-        className="w-50 rounded-lg border"
-        variant="dark"
-      />
+    <div className="space-y-4">
+      <div className="grid grid-cols-2 gap-4">
+        <MonthCalendar
+          {...args}
+          value={value}
+          onChange={setValue}
+          selectionMode="single"
+          className="w-50 rounded-lg border"
+        />
+        <MonthCalendar
+          {...args}
+          value={value}
+          onChange={setValue}
+          selectionMode="single"
+          className="w-50 rounded-lg border"
+          variant="dark"
+        />
+      </div>
       {value && value instanceof Date && (
-        <p className="text-sm text-gray-600">选中日期: {value.toLocaleDateString("zh-CN")}</p>
+        <p className="text-gray-600">选中日期: {value.toLocaleDateString("zh-CN")}</p>
       )}
     </div>
   )
@@ -36,17 +38,27 @@ const MultiSelectDemo = (args: MonthCalendarProps) => {
   const [value, setValue] = useState<CalendarValue>([])
 
   return (
-    <div className="grid grid-cols-2 gap-4">
-      <MonthCalendar
-        {...args}
-        value={value}
-        onChange={setValue}
-        selectionMode="multiple"
-        className="w-50 rounded-lg border"
-      />
+    <div className="space-y-4">
+      <div className="grid grid-cols-2 gap-4">
+        <MonthCalendar
+          {...args}
+          value={value}
+          onChange={setValue}
+          selectionMode="multiple"
+          className="w-50 rounded-lg border"
+        />
+        <MonthCalendar
+          {...args}
+          value={value}
+          onChange={setValue}
+          selectionMode="multiple"
+          className="w-50 rounded-lg border"
+          variant="dark"
+        />
+      </div>
       {Array.isArray(value) && value.length > 0 && (
-        <div className="text-sm text-gray-600">
-          <p>选中日期 ({value.length}):</p>
+        <div className="text-secondary-foreground">
+          <p>Selected date ({value.length}):</p>
           <ul className="list-inside list-disc">
             {value.map((date, index) => (
               <li key={index}>{date.toLocaleDateString("zh-CN")}</li>
@@ -63,27 +75,29 @@ const RangeSelectDemo = (args: MonthCalendarProps) => {
   const [value, setValue] = useState<CalendarValue>(null)
 
   return (
-    <div className="grid grid-cols-2 gap-4">
-      <MonthCalendar
-        {...args}
-        value={value}
-        onChange={setValue}
-        selectionMode="range"
-        className="w-50 rounded-lg border"
-      />
-      <MonthCalendar
-        {...args}
-        value={value}
-        onChange={setValue}
-        selectionMode="range"
-        className="w-50 rounded-lg border"
-        variant="dark"
-      />
+    <div className="space-y-4">
+      <div className="grid grid-cols-2 gap-4">
+        <MonthCalendar
+          {...args}
+          value={value}
+          onChange={setValue}
+          selectionMode="range"
+          className="w-50 rounded-lg border"
+        />
+        <MonthCalendar
+          {...args}
+          value={value}
+          onChange={setValue}
+          selectionMode="range"
+          className="w-50 rounded-lg border"
+          variant="dark"
+        />
+      </div>
       {value && typeof value === "object" && "start" in value && (
-        <div className="text-sm text-gray-600">
-          <p>选中范围:</p>
-          <p>开始: {value.start.toLocaleDateString("zh-CN")}</p>
-          <p>结束: {value.end.toLocaleDateString("zh-CN")}</p>
+        <div className="text-secondary-foreground">
+          <p>Selected range:</p>
+          <p>Start: {value.start.toLocaleDateString("zh-CN")}</p>
+          <p>End: {value.end.toLocaleDateString("zh-CN")}</p>
         </div>
       )}
     </div>
@@ -105,17 +119,33 @@ const DisabledDatesDemo = (args: MonthCalendarProps) => {
 
   return (
     <div className="space-y-4">
-      <MonthCalendar
-        {...args}
-        value={value}
-        onChange={setValue}
-        disabledDates={disabledDates}
-        selectionMode="single"
-        className="w-50 rounded-lg border"
-      />
-      <div className="text-sm text-gray-600">
-        <p>禁用的日期包括：昨天、前天、每月15号和25号</p>
-        {value && value instanceof Date && <p>选中日期: {value.toLocaleDateString("zh-CN")}</p>}
+      <div className="grid grid-cols-2 gap-4">
+        <MonthCalendar
+          {...args}
+          value={value}
+          onChange={setValue}
+          disabledDates={disabledDates}
+          selectionMode="single"
+          className="w-50 rounded-lg border"
+        />
+        <MonthCalendar
+          {...args}
+          value={value}
+          onChange={setValue}
+          disabledDates={disabledDates}
+          selectionMode="single"
+          className="w-50 rounded-lg border"
+          variant="dark"
+        />
+      </div>
+      <div className="text-secondary-foreground">
+        <p>
+          Disabled dates include: yesterday, the day before yesterday, the 15th and 25th of each
+          month
+        </p>
+        {value && value instanceof Date && (
+          <p>Selected date: {value.toLocaleDateString("zh-CN")}</p>
+        )}
       </div>
     </div>
   )
@@ -136,17 +166,30 @@ const HighlightDatesDemo = (args: MonthCalendarProps) => {
 
   return (
     <div className="space-y-4">
-      <MonthCalendar
-        {...args}
-        value={value}
-        onChange={setValue}
-        highlightDates={highlightDates}
-        selectionMode="single"
-        className="w-50 rounded-lg border"
-      />
-      <div className="text-sm text-gray-600">
-        <p>高亮的日期包括：每月1号、10号、20号和30号</p>
-        {value && value instanceof Date && <p>选中日期: {value.toLocaleDateString("zh-CN")}</p>}
+      <div className="grid grid-cols-2 gap-4">
+        <MonthCalendar
+          {...args}
+          value={value}
+          onChange={setValue}
+          highlightDates={highlightDates}
+          selectionMode="single"
+          className="w-50 rounded-lg border"
+        />
+        <MonthCalendar
+          {...args}
+          value={value}
+          onChange={setValue}
+          highlightDates={highlightDates}
+          selectionMode="single"
+          className="w-50 rounded-lg border"
+          variant="dark"
+        />
+      </div>
+      <div className="text-secondary-foreground">
+        <p>Highlighted dates include: the 1st, 10th, 20th and 30th of each month</p>
+        {value && value instanceof Date && (
+          <p>Selected date: {value.toLocaleDateString("zh-CN")}</p>
+        )}
       </div>
     </div>
   )
@@ -197,7 +240,9 @@ export const WithWeekNumbers: Story = {
           {...args}
           className="w-50 rounded-lg border"
         />
-        <p className="text-sm text-gray-600">显示左侧周数列，使用ISO周数标准（周一开始）</p>
+        <p className="text-secondary-foreground">
+          Display the left week number column, using the ISO week number standard (Monday starts)
+        </p>
       </div>
     )
   },
@@ -282,7 +327,9 @@ export const CustomWeekdays: Story = {
           {...args}
           className="w-50 rounded-lg border"
         />
-        <p className="text-sm text-gray-600">使用自定义星期名称数组，覆盖多语言自动生成</p>
+        <p className="text-secondary-foreground">
+          Use custom weekday name array to override automatic generation of multiple languages
+        </p>
       </div>
     )
   },
@@ -297,7 +344,7 @@ export const MultiLanguage: Story = {
     return (
       <div className="grid grid-cols-4 gap-3">
         <div>
-          <h3 className="mb-2 text-sm font-medium">中文 (zh-CN)</h3>
+          <h3 className="mb-2 font-medium">中文 (zh-CN)</h3>
           <MonthCalendar
             {...args}
             locale="zh-CN"
@@ -305,7 +352,7 @@ export const MultiLanguage: Story = {
           />
         </div>
         <div>
-          <h3 className="mb-2 text-sm font-medium">English (en-US)</h3>
+          <h3 className="mb-2 font-medium">English (en-US)</h3>
           <MonthCalendar
             {...args}
             locale="en-US"
@@ -313,7 +360,7 @@ export const MultiLanguage: Story = {
           />
         </div>
         <div>
-          <h3 className="mb-2 text-sm font-medium">日本語 (ja-JP)</h3>
+          <h3 className="mb-2 font-medium">日本語 (ja-JP)</h3>
           <MonthCalendar
             {...args}
             locale="ja-JP"
@@ -321,7 +368,7 @@ export const MultiLanguage: Story = {
           />
         </div>
         <div>
-          <h3 className="mb-2 text-sm font-medium">한국어 (ko-KR)</h3>
+          <h3 className="mb-2 font-medium">한국어 (ko-KR)</h3>
           <MonthCalendar
             {...args}
             locale="ko-KR"
@@ -342,33 +389,36 @@ export const WeekStartOptions: Story = {
   },
   render: (args) => {
     return (
-      <div className="grid grid-cols-3 gap-4">
-        <div>
-          <h3 className="mb-2 text-sm font-medium">Week starts on Sunday (0) + Week Numbers</h3>
-          <MonthCalendar
-            {...args}
-            weekStartsOn={0}
-            className="w-50 rounded-lg border"
-          />
+      <div className="space-y-4">
+        <div className="grid grid-cols-3 gap-4">
+          <div>
+            <h3 className="mb-2 font-medium">Starts on Sunday (0) + Week Numbers</h3>
+            <MonthCalendar
+              {...args}
+              weekStartsOn={0}
+              className="w-50 rounded-lg border"
+            />
+          </div>
+          <div>
+            <h3 className="mb-2 font-medium">Starts on Monday (1) + Week Numbers</h3>
+            <MonthCalendar
+              {...args}
+              weekStartsOn={1}
+              className="w-50 rounded-lg border"
+            />
+          </div>
+          <div>
+            <h3 className="mb-2 font-medium">Starts on Saturday (6) + Week Numbers</h3>
+            <MonthCalendar
+              {...args}
+              weekStartsOn={6}
+              className="w-50 rounded-lg border"
+            />
+          </div>
         </div>
-        <div>
-          <h3 className="mb-2 text-sm font-medium">Week starts on Monday (1) + Week Numbers</h3>
-          <MonthCalendar
-            {...args}
-            weekStartsOn={1}
-            className="w-50 rounded-lg border"
-          />
-        </div>
-        <div>
-          <h3 className="mb-2 text-sm font-medium">Week starts on Saturday (6) + Week Numbers</h3>
-          <MonthCalendar
-            {...args}
-            weekStartsOn={6}
-            className="w-50 rounded-lg border"
-          />
-        </div>
-        <p className="text-sm text-gray-600">
-          周数基于ISO标准计算，不同的周开始日设置会影响日历布局但不影响周数计算
+        <p className="text-secondary-foreground max-w-xl">
+          The week number is calculated based on the ISO standard, and the different week start days
+          will affect the calendar layout but not the week number calculation
         </p>
       </div>
     )
@@ -388,7 +438,10 @@ export const DynamicRows: Story = {
           {...args}
           className="w-50 rounded-lg border"
         />
-        <p className="text-sm text-gray-600">动态行数模式：根据月份实际需要显示4-6行，高度会变化</p>
+        <p className="text-secondary-foreground">
+          Dynamic row mode: display 4-6 rows based on the actual needs of the month, and the height
+          will change
+        </p>
       </div>
     )
   },
@@ -409,97 +462,46 @@ const UnifiedInterfaceExample = () => {
   return (
     <div className="grid grid-cols-4 gap-3">
       <div>
-        <h3 className="mb-4 text-lg font-semibold">单选模式 (使用统一接口)</h3>
+        <h3 className="mb-4 text-lg font-semibold">Single Select</h3>
         <MonthCalendar
           value={singleValue}
           onChange={setSingleValue}
           selectionMode="single"
           className="w-50 rounded-lg border"
         />
-        <p className="mt-2 text-sm text-gray-600">
-          选中: {singleValue instanceof Date ? singleValue.toLocaleDateString() : "无"}
+        <p className="text-secondary-foreground mt-2">
+          Selected: {singleValue instanceof Date ? singleValue.toLocaleDateString() : "None"}
         </p>
       </div>
 
       <div>
-        <h3 className="mb-4 text-lg font-semibold">多选模式 (使用统一接口)</h3>
+        <h3 className="mb-4 text-lg font-semibold">Multi Select</h3>
         <MonthCalendar
           value={multiValue}
           onChange={setMultiValue}
           selectionMode="multiple"
           className="w-50 rounded-lg border"
         />
-        <p className="mt-2 text-sm text-gray-600">
-          选中: {Array.isArray(multiValue) ? `${multiValue.length} 个日期` : "无"}
+        <p className="text-secondary-foreground mt-2">
+          Selected: {Array.isArray(multiValue) ? `${multiValue.length} dates` : "None"}
         </p>
       </div>
 
       <div>
-        <h3 className="mb-4 text-lg font-semibold">范围选择模式 (使用统一接口)</h3>
+        <h3 className="mb-4 text-lg font-semibold">Range Select</h3>
         <MonthCalendar
           value={rangeValue}
           onChange={setRangeValue}
           selectionMode="range"
           className="w-50 rounded-lg border"
         />
-        <p className="mt-2 text-sm text-gray-600">
-          选中范围:{" "}
+        <p className="text-secondary-foreground mt-2">
+          Selected range:{" "}
           {rangeValue && typeof rangeValue === "object" && "start" in rangeValue
             ? `${rangeValue.start.toLocaleDateString()} - ${rangeValue.end.toLocaleDateString()}`
-            : "无"}
+            : "None"}
         </p>
       </div>
-    </div>
-  )
-}
-
-// 自动推断模式示例组件
-const AutoInferModeExample = () => {
-  const [value, setValue] = useState<CalendarValue>(new Date())
-
-  const switchToMultiple = () => setValue([new Date()])
-  const switchToRange = () =>
-    setValue({ start: new Date(), end: new Date(Date.now() + 7 * 86400000) })
-  const switchToSingle = () => setValue(new Date())
-
-  return (
-    <div className="space-y-4">
-      <div className="flex gap-2">
-        <button
-          onClick={switchToSingle}
-          className="rounded bg-blue-500 px-3 py-1 text-white"
-        >
-          切换到单选
-        </button>
-        <button
-          onClick={switchToMultiple}
-          className="rounded bg-green-500 px-3 py-1 text-white"
-        >
-          切换到多选
-        </button>
-        <button
-          onClick={switchToRange}
-          className="rounded bg-purple-500 px-3 py-1 text-white"
-        >
-          切换到范围选择
-        </button>
-      </div>
-
-      <MonthCalendar
-        value={value}
-        onChange={setValue}
-        // selectionMode 未指定，将根据 value 类型自动推断
-        className="rounded-lg border p-4"
-      />
-
-      <p className="text-sm text-gray-600">
-        当前模式:{" "}
-        {Array.isArray(value)
-          ? "多选"
-          : value && typeof value === "object" && "start" in value
-            ? "范围选择"
-            : "单选"}
-      </p>
     </div>
   )
 }

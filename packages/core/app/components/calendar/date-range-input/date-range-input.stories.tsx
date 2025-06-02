@@ -4,6 +4,7 @@ import { enUS, ja, ko, zhCN } from "date-fns/locale"
 import React, { useState } from "react"
 import { Panel } from "../../panel"
 import { DateRangeInput } from "./date-range-input"
+import { useEventCallback } from "usehooks-ts"
 
 const meta: Meta<typeof DateRangeInput> = {
   title: "DateAndTime/DateRangeInput",
@@ -35,17 +36,18 @@ const DateRangeDemo = (args: React.ComponentProps<typeof DateRangeInput>) => {
   const [endValue, setEndValue] = useState<Date | null>(args.endValue || null)
 
   return (
-    <Panel className="w-96">
-      <Panel.Row type="two-input-two-icon">
-        <DateRangeInput
-          {...args}
-          startValue={startValue}
-          endValue={endValue}
-          onStartChange={setStartValue}
-          onEndChange={setEndValue}
-        />
-      </Panel.Row>
-    </Panel>
+    <Panel.Row
+      type="two-input-two-icon"
+      className="px-0"
+    >
+      <DateRangeInput
+        {...args}
+        startValue={startValue}
+        endValue={endValue}
+        onStartChange={setStartValue}
+        onEndChange={setEndValue}
+      />
+    </Panel.Row>
   )
 }
 
@@ -54,8 +56,7 @@ const RangeSyncDemo = () => {
   const [startValue, setStartValue] = useState<Date | null>(new Date())
   const [endValue, setEndValue] = useState<Date | null>(addDays(new Date(), 3))
 
-  const handleStartChange = (newStart: Date | null) => {
-    console.log("🔥 Start onChange:", newStart)
+  const handleStartChange = useEventCallback((newStart: Date | null) => {
     if (newStart) {
       // 计算当前range长度（毫秒），fallback为1天
       const currentRange =
@@ -64,63 +65,65 @@ const RangeSyncDemo = () => {
       const newEnd = new Date(newStart.getTime() + currentRange)
       setStartValue(newStart)
       setEndValue(newEnd)
-      console.log("🔥 Start推动:", {
-        newStart: newStart.toISOString(),
-        newEnd: newEnd.toISOString(),
-        rangeDays: currentRange / (24 * 60 * 60 * 1000),
-      })
     } else {
       setStartValue(newStart)
     }
-  }
+  })
 
-  const handleEndChange = (newEnd: Date | null) => {
-    console.log("🔥 End onChange:", newEnd)
+  const handleEndChange = useEventCallback((newEnd: Date | null) => {
     if (newEnd && startValue && newEnd <= startValue) {
       // end <= start 时推动start
       setStartValue(newEnd)
-      console.log("🔥 End推动start:", newEnd.toISOString())
     }
     setEndValue(newEnd)
-  }
+  })
 
   return (
     <div className="space-y-6">
-      <Panel className="w-96">
-        <Panel.Row type="two-input-two-icon">
-          <DateRangeInput
-            startValue={startValue}
-            endValue={endValue}
-            onStartChange={handleStartChange}
-            onEndChange={handleEndChange}
-            startPlaceholder="开始日期"
-            endPlaceholder="结束日期"
-            locale={zhCN}
-          />
-        </Panel.Row>
-      </Panel>
+      <Panel.Row
+        type="two-input-two-icon"
+        className="px-0"
+      >
+        <DateRangeInput
+          startValue={startValue}
+          endValue={endValue}
+          onStartChange={handleStartChange}
+          onEndChange={handleEndChange}
+          startPlaceholder="Start Date"
+          endPlaceholder="End Date"
+          locale={zhCN}
+        />
+      </Panel.Row>
 
-      <div className="space-y-4 text-sm">
-        <div className="font-medium">🎯 范围同步逻辑</div>
-        <div className="space-y-2 text-gray-600">
+      <div className="space-y-4">
+        <div className="font-medium">🎯 Range Synchronization</div>
+        <div className="text-secondary-foreground space-y-2">
           <div>
-            • <strong>开始日期变化</strong>：自动调整结束日期，保持原有范围长度
+            • <strong>Start Date Change</strong>：Automatically adjust the end date to maintain the
+            original range length
           </div>
           <div>
-            • <strong>结束日期变化</strong>：如果 结束 ≤ 开始，则推动开始日期到结束位置
+            • <strong>End Date Change</strong>：If the end date is less than or equal to the start
+            date, the start date is pushed to the end position
           </div>
           <div>
-            • <strong>动态范围</strong>
-            ：先调整结束日期设置想要的范围长度，然后开始日期的任何变化都会保持这个长度
+            • <strong>Dynamic Range</strong>：First adjust the end date to set the desired range
+            length, then any changes to the start date will maintain this length
           </div>
         </div>
 
-        <div className="rounded-lg bg-blue-50 p-4">
-          <div className="font-medium text-blue-800">🧪 测试步骤</div>
-          <div className="mt-2 space-y-1 text-blue-700">
-            <div>1. 调整结束日期到5天后 → 范围变成5天</div>
-            <div>2. 修改开始日期 → 结束日期自动调整保持5天距离</div>
-            <div>3. 设置结束日期早于开始日期 → 开始日期被推到结束位置</div>
+        <div className="rounded-md border p-4">
+          <div className="font-medium">🧪 Test Steps</div>
+          <div className="mt-2 space-y-1">
+            <div>1. Adjust the end date to 5 days later → the range becomes 5 days</div>
+            <div>
+              2. Modify the start date → the end date is automatically adjusted to maintain a 5-day
+              distance
+            </div>
+            <div>
+              3. Set the end date to be earlier than the start date → the start date is pushed to
+              the end position
+            </div>
           </div>
         </div>
       </div>
@@ -139,6 +142,26 @@ export const Default: Story = {
   render: (args) => <DateRangeDemo {...args} />,
 }
 
+export const Size: Story = {
+  render: function Render() {
+    return (
+      <div className="space-y-4">
+        <DateRangeDemo size="large" />
+      </div>
+    )
+  },
+}
+
+export const Variable: Story = {
+  render: function Render() {
+    return (
+      <div className="rounded-lg bg-gray-800 p-8">
+        <DateRangeDemo variant="dark" />
+      </div>
+    )
+  },
+}
+
 // 范围同步
 export const RangeSynchronization: Story = {
   render: () => <RangeSyncDemo />,
@@ -149,8 +172,8 @@ export const WithPresetRange: Story = {
   args: {
     startValue: new Date(),
     endValue: addDays(new Date(), 7),
-    startPlaceholder: "开始日期",
-    endPlaceholder: "结束日期",
+    startPlaceholder: "Start Date",
+    endPlaceholder: "End Date",
     format: "yyyy-MM-dd",
     locale: zhCN,
   },
@@ -221,7 +244,7 @@ export const DifferentFormats: Story = {
   render: () => (
     <div className="space-y-8">
       <div>
-        <h3 className="mb-4 font-medium">ISO 格式 (yyyy-MM-dd)</h3>
+        <h3 className="mb-4 font-medium">ISO Format (yyyy-MM-dd)</h3>
         <DateRangeDemo
           format="yyyy-MM-dd"
           startValue={new Date()}
@@ -231,7 +254,7 @@ export const DifferentFormats: Story = {
       </div>
 
       <div>
-        <h3 className="mb-4 font-medium">美式格式 (MM/dd/yyyy)</h3>
+        <h3 className="mb-4 font-medium">American Format (MM/dd/yyyy)</h3>
         <DateRangeDemo
           format="MM/dd/yyyy"
           startValue={new Date()}
@@ -241,7 +264,7 @@ export const DifferentFormats: Story = {
       </div>
 
       <div>
-        <h3 className="mb-4 font-medium">中文格式 (yyyy年MM月dd日)</h3>
+        <h3 className="mb-4 font-medium">Chinese Format (yyyy年MM月dd日)</h3>
         <DateRangeDemo
           format="yyyy年MM月dd日"
           startValue={new Date()}
@@ -251,7 +274,7 @@ export const DifferentFormats: Story = {
       </div>
 
       <div>
-        <h3 className="mb-4 font-medium">欧式格式 (dd.MM.yyyy)</h3>
+        <h3 className="mb-4 font-medium">European Format (dd.MM.yyyy)</h3>
         <DateRangeDemo
           format="dd.MM.yyyy"
           startValue={new Date()}
@@ -268,20 +291,22 @@ export const CommonScenarios: Story = {
   render: () => (
     <div className="space-y-8">
       <div>
-        <h3 className="mb-4 font-medium">🏖️ 假期规划</h3>
+        <h3 className="mb-4 font-medium">🏖️ Holiday Planning</h3>
         <DateRangeDemo
           startValue={addDays(new Date(), 30)}
           endValue={addDays(new Date(), 37)}
-          startPlaceholder="假期开始"
-          endPlaceholder="假期结束"
+          startPlaceholder="Holiday Start"
+          endPlaceholder="Holiday End"
           locale={zhCN}
           format="yyyy年MM月dd日"
         />
-        <div className="mt-2 text-sm text-gray-500">💡 规划一周假期，显示总天数</div>
+        <div className="text-secondary-foreground mt-2">
+          💡 Planning a week-long holiday, displaying the total number of days
+        </div>
       </div>
 
       <div>
-        <h3 className="mb-4 font-medium">📊 数据分析周期</h3>
+        <h3 className="mb-4 font-medium">📊 Data Analysis Period</h3>
         <DateRangeDemo
           startValue={subDays(new Date(), 30)}
           endValue={new Date()}
@@ -290,11 +315,13 @@ export const CommonScenarios: Story = {
           locale={enUS}
           format="yyyy-MM-dd"
         />
-        <div className="mt-2 text-sm text-gray-500">💡 过去30天的数据分析期间</div>
+        <div className="text-secondary-foreground mt-2">
+          💡 Data analysis period for the past 30 days
+        </div>
       </div>
 
       <div>
-        <h3 className="mb-4 font-medium">🎫 活动时间</h3>
+        <h3 className="mb-4 font-medium">🎫 Event Time</h3>
         <DateRangeDemo
           startValue={addDays(new Date(), 15)}
           endValue={addDays(new Date(), 17)}
@@ -303,7 +330,9 @@ export const CommonScenarios: Story = {
           locale={ja}
           format="yyyy/MM/dd"
         />
-        <div className="mt-2 text-sm text-gray-500">💡 3天活动期间，日本语环境</div>
+        <div className="text-secondary-foreground mt-2">
+          💡 3-day event period, Japanese environment
+        </div>
       </div>
     </div>
   ),
@@ -314,34 +343,40 @@ export const EdgeCases: Story = {
   render: () => (
     <div className="space-y-8">
       <div>
-        <h3 className="mb-4 font-medium">相同时间点</h3>
+        <h3 className="mb-4 font-medium">Same Time Point</h3>
         <DateRangeDemo
           startValue={new Date()}
           endValue={new Date()}
           locale={enUS}
         />
-        <div className="mt-2 text-sm text-gray-500">💡 相同时间点显示为1天</div>
+        <div className="text-secondary-foreground mt-2">
+          💡 Display as 1 day at the same time point
+        </div>
       </div>
 
       <div>
-        <h3 className="mb-4 font-medium">反向时间范围</h3>
+        <h3 className="mb-4 font-medium">Reverse Time Range</h3>
         <DateRangeDemo
           startValue={addDays(new Date(), 5)}
           endValue={new Date()}
           locale={enUS}
         />
-        <div className="mt-2 text-sm text-gray-500">💡 反向范围显示绝对值差距</div>
+        <div className="text-secondary-foreground mt-2">
+          💡 Display the absolute difference in reverse range
+        </div>
       </div>
 
       <div>
-        <h3 className="mb-4 font-medium">跨年范围</h3>
+        <h3 className="mb-4 font-medium">Cross-year Range</h3>
         <DateRangeDemo
           startValue={new Date("2024-12-25")}
           endValue={new Date("2025-01-05")}
           locale={zhCN}
           format="yyyy年MM月dd日"
         />
-        <div className="mt-2 text-sm text-gray-500">💡 跨年日期范围计算</div>
+        <div className="text-secondary-foreground mt-2">
+          💡 Calculating the cross-year date range
+        </div>
       </div>
     </div>
   ),
@@ -352,7 +387,7 @@ export const DisabledStates: Story = {
   render: () => (
     <div className="space-y-8">
       <div>
-        <h3 className="mb-4 font-medium">开始日期禁用</h3>
+        <h3 className="mb-4 font-medium">Start Date Disabled</h3>
         <DateRangeDemo
           startValue={new Date()}
           endValue={addDays(new Date(), 7)}
@@ -362,7 +397,7 @@ export const DisabledStates: Story = {
       </div>
 
       <div>
-        <h3 className="mb-4 font-medium">结束日期禁用</h3>
+        <h3 className="mb-4 font-medium">End Date Disabled</h3>
         <DateRangeDemo
           startValue={new Date()}
           endValue={addDays(new Date(), 7)}
@@ -372,7 +407,7 @@ export const DisabledStates: Story = {
       </div>
 
       <div>
-        <h3 className="mb-4 font-medium">全部禁用</h3>
+        <h3 className="mb-4 font-medium">All Disabled</h3>
         <DateRangeDemo
           startValue={new Date()}
           endValue={addDays(new Date(), 7)}

@@ -13,21 +13,23 @@ const QuarterCalendarDemo = (args: QuarterCalendarProps) => {
 
   return (
     <div className="space-y-4">
-      <QuarterCalendar
-        {...args}
-        value={selectedQuarter}
-        onChange={setSelectedQuarter}
-        className="w-48 rounded-lg border"
-      />
-      <QuarterCalendar
-        {...args}
-        value={selectedQuarter}
-        onChange={setSelectedQuarter}
-        className="w-48 rounded-lg border"
-        variant="dark"
-      />
-      <div className="text-sm text-gray-600">
-        选中季度: {selectedQuarter ? formatQuarter(selectedQuarter) : "未选择"}
+      <div className="grid grid-cols-2 gap-4">
+        <QuarterCalendar
+          {...args}
+          value={selectedQuarter}
+          onChange={setSelectedQuarter}
+          className="w-48 rounded-lg border"
+        />
+        <QuarterCalendar
+          {...args}
+          value={selectedQuarter}
+          onChange={setSelectedQuarter}
+          className="w-48 rounded-lg border"
+          variant="dark"
+        />
+      </div>
+      <div className="text-secondary-foreground">
+        Selected quarter: {selectedQuarter ? formatQuarter(selectedQuarter) : "None"}
       </div>
     </div>
   )
@@ -44,7 +46,7 @@ const ComparisonDemo = (args: QuarterCalendarProps) => {
   return (
     <div className="space-y-8">
       <div>
-        <h3 className="mb-4 text-lg font-medium">中文版本</h3>
+        <h3 className="mb-4 text-lg font-medium">Chinese</h3>
         <div className="space-y-2">
           <QuarterCalendar
             {...args}
@@ -52,14 +54,14 @@ const ComparisonDemo = (args: QuarterCalendarProps) => {
             locale="zh-CN"
             onChange={setZhQuarter}
           />
-          <div className="text-sm text-gray-600">
-            选中季度: {zhQuarter ? formatQuarter(zhQuarter) : "未选择"}
+          <div className="text-secondary-foreground">
+            Selected quarter: {zhQuarter ? formatQuarter(zhQuarter) : "None"}
           </div>
         </div>
       </div>
 
       <div>
-        <h3 className="mb-4 text-lg font-medium">英文版本</h3>
+        <h3 className="mb-4 text-lg font-medium">English</h3>
         <div className="space-y-2">
           <QuarterCalendar
             {...args}
@@ -67,8 +69,8 @@ const ComparisonDemo = (args: QuarterCalendarProps) => {
             locale="en-US"
             onChange={setEnQuarter}
           />
-          <div className="text-sm text-gray-600">
-            选中季度: {enQuarter ? formatQuarter(enQuarter) : "未选择"}
+          <div className="text-secondary-foreground">
+            Selected quarter: {enQuarter ? formatQuarter(enQuarter) : "None"}
           </div>
         </div>
       </div>
@@ -94,9 +96,10 @@ const LocaleQuarterCalendar: React.FC<{
           value={quarter}
           locale={locale.code}
           onChange={setQuarter}
+          className="w-48 rounded-lg border"
         />
-        <div className="text-sm text-gray-600">
-          选中季度: {quarter ? formatQuarter(quarter) : "未选择"}
+        <div className="text-secondary-foreground">
+          Selected quarter: {quarter ? formatQuarter(quarter) : "None"}
         </div>
       </div>
     </div>
@@ -144,37 +147,7 @@ const currentYear = new Date().getFullYear()
 export const Default: Story = {
   args: {
     currentYear,
-    locale: "zh-CN",
-    disabled: false,
-  },
-  render: (args) => <QuarterCalendarDemo {...args} />,
-}
-
-// 英文版本
-export const English: Story = {
-  args: {
-    currentYear,
     locale: "en-US",
-    disabled: false,
-  },
-  render: (args) => <QuarterCalendarDemo {...args} />,
-}
-
-// 日文版本
-export const Japanese: Story = {
-  args: {
-    currentYear,
-    locale: "ja-JP",
-    disabled: false,
-  },
-  render: (args) => <QuarterCalendarDemo {...args} />,
-}
-
-// 韩文版本
-export const Korean: Story = {
-  args: {
-    currentYear,
-    locale: "ko-KR",
     disabled: false,
   },
   render: (args) => <QuarterCalendarDemo {...args} />,

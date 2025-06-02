@@ -16,9 +16,9 @@ const SingleColumnDemo = (args: TimeCalendarProps) => {
         onChange={setTime}
         className="h-64"
       />
-      <div className="text-sm text-gray-600">
-        选中时间:{" "}
-        {time ? time.toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit" }) : "未选择"}
+      <div className="text-secondary-foreground">
+        Selected time:{" "}
+        {time ? time.toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit" }) : "None"}
       </div>
     </div>
   )
@@ -35,12 +35,12 @@ const SpecialValueDemo = (args: TimeCalendarProps) => {
         onChange={setTime}
         className="h-64"
       />
-      <div className="text-sm text-gray-600">
-        选中时间:{" "}
-        {time ? time.toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit" }) : "未选择"}
+      <div className="text-secondary-foreground">
+        Selected time:{" "}
+        {time ? time.toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit" }) : "None"}
         <br />
         <span className="text-orange-600">
-          注意：14:37 不在 15 分钟步进范围内，但仍会显示在列表中
+          Note: 14:37 is not in the 15-minute step range, but it will still be displayed in the list
         </span>
       </div>
     </div>
@@ -55,7 +55,7 @@ const UncontrolledDemo = (args: TimeCalendarProps) => {
         defaultValue={createTimeToday(10, 45)}
         className="h-64"
       />
-      <div className="text-sm text-gray-600">非受控模式，默认值: 10:45</div>
+      <div className="text-secondary-foreground">Uncontrolled mode, default value: 10:45</div>
     </div>
   )
 }
@@ -77,7 +77,6 @@ export const Default: Story = {
   args: {
     format: "HH:mm",
     step: 15,
-    selection: true,
   },
   render: (args) => <SingleColumnDemo {...args} />,
 }
@@ -87,7 +86,6 @@ export const TwelveHourFormat: Story = {
   args: {
     format: "h:mm a",
     step: 15,
-    selection: true,
   },
   render: (args) => <SingleColumnDemo {...args} />,
 }
@@ -97,7 +95,6 @@ export const CustomSteps: Story = {
   args: {
     format: "HH:mm",
     step: 30,
-    selection: true,
   },
   render: (args) => <SingleColumnDemo {...args} />,
 }
@@ -107,7 +104,6 @@ export const PreciseMinutes: Story = {
   args: {
     format: "HH:mm",
     step: 5,
-    selection: true,
   },
   render: (args) => <SingleColumnDemo {...args} />,
 }
@@ -117,7 +113,6 @@ export const SpecialValue: Story = {
   args: {
     format: "HH:mm",
     step: 15,
-    selection: true,
   },
   render: (args) => <SpecialValueDemo {...args} />,
 }
@@ -127,17 +122,6 @@ export const Uncontrolled: Story = {
   args: {
     format: "HH:mm",
     step: 15,
-    selection: true,
   },
   render: (args) => <UncontrolledDemo {...args} />,
-}
-
-// 无选择图标
-export const NoSelection: Story = {
-  args: {
-    format: "HH:mm",
-    step: 15,
-    selection: false,
-  },
-  render: (args) => <SingleColumnDemo {...args} />,
 }

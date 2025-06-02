@@ -75,6 +75,36 @@ export const States: Story = {
   ),
 }
 
+export const Size: Story = {
+  render: function Render() {
+    const [value, setValue] = useState<Date | null>(null)
+    return (
+      <div className="space-y-4">
+        <TimeInput
+          size="large"
+          value={value}
+          onChange={setValue}
+        />
+      </div>
+    )
+  },
+}
+
+export const Variable: Story = {
+  render: function Render() {
+    const [value, setValue] = useState<Date | null>(null)
+    return (
+      <div className="bg-gray-800 p-8">
+        <TimeInput
+          variant="dark"
+          value={value}
+          onChange={setValue}
+        />
+      </div>
+    )
+  },
+}
+
 // 键盘导航演示
 export const KeyboardNavigation: Story = {
   render: function Render() {
@@ -375,7 +405,6 @@ export const Combined: Story = {
               startValue={startTime}
               endValue={endTime}
               onStartChange={(newStart) => {
-                console.log("🔥 Start onChange:", newStart)
                 if (newStart) {
                   // 计算当前range长度（毫秒），fallback为1小时
                   const currentRange =
@@ -386,21 +415,14 @@ export const Combined: Story = {
                   const newEnd = new Date(newStart.getTime() + currentRange)
                   setStartTime(newStart)
                   setEndTime(newEnd)
-                  console.log("🔥 Start推动:", {
-                    newStart: newStart.toTimeString(),
-                    newEnd: newEnd.toTimeString(),
-                    rangeHours: currentRange / (60 * 60 * 1000),
-                  })
                 } else {
                   setStartTime(newStart)
                 }
               }}
               onEndChange={(newEnd) => {
-                console.log("🔥 End onChange:", newEnd)
                 if (newEnd && startTime && newEnd <= startTime) {
                   // end <= start 时推动start
                   setStartTime(newEnd)
-                  console.log("🔥 End推动start:", newEnd.toTimeString())
                 }
                 setEndTime(newEnd)
               }}

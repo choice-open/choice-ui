@@ -4,6 +4,7 @@ import React, { useState } from "react"
 import { Panel } from "../../panel"
 import { timeStringToDate } from "../utils/time"
 import { TimeRangeInput } from "./time-range-input"
+import { useEventCallback } from "usehooks-ts"
 
 const meta: Meta<typeof TimeRangeInput> = {
   title: "DateAndTime/TimeRangeInput",
@@ -23,17 +24,18 @@ const TimeRangeDemo = (args: React.ComponentProps<typeof TimeRangeInput>) => {
   const [endValue, setEndValue] = useState<Date | null>(args.endValue || null)
 
   return (
-    <Panel className="w-96">
-      <Panel.Row type="two-input-two-icon">
-        <TimeRangeInput
-          {...args}
-          startValue={startValue}
-          endValue={endValue}
-          onStartChange={setStartValue}
-          onEndChange={setEndValue}
-        />
-      </Panel.Row>
-    </Panel>
+    <Panel.Row
+      type="two-input-two-icon"
+      className="w-96 px-0"
+    >
+      <TimeRangeInput
+        {...args}
+        startValue={startValue}
+        endValue={endValue}
+        onStartChange={setStartValue}
+        onEndChange={setEndValue}
+      />
+    </Panel.Row>
   )
 }
 
@@ -42,8 +44,7 @@ const RangeSyncDemo = () => {
   const [startValue, setStartValue] = useState<Date | null>(timeStringToDate("09:00"))
   const [endValue, setEndValue] = useState<Date | null>(timeStringToDate("17:00"))
 
-  const handleStartChange = (newStart: Date | null) => {
-    console.log("🔥 Start onChange:", newStart)
+  const handleStartChange = useEventCallback((newStart: Date | null) => {
     if (newStart) {
       // 计算当前range长度（毫秒），fallback为8小时
       const currentRange =
@@ -52,64 +53,67 @@ const RangeSyncDemo = () => {
       const newEnd = new Date(newStart.getTime() + currentRange)
       setStartValue(newStart)
       setEndValue(newEnd)
-      console.log("🔥 Start推动:", {
-        newStart: newStart.toTimeString(),
-        newEnd: newEnd.toTimeString(),
-        rangeHours: currentRange / (60 * 60 * 1000),
-      })
     } else {
       setStartValue(newStart)
     }
-  }
+  })
 
-  const handleEndChange = (newEnd: Date | null) => {
-    console.log("🔥 End onChange:", newEnd)
+  const handleEndChange = useEventCallback((newEnd: Date | null) => {
     if (newEnd && startValue && newEnd <= startValue) {
       // end <= start 时推动start
       setStartValue(newEnd)
-      console.log("🔥 End推动start:", newEnd.toTimeString())
     }
     setEndValue(newEnd)
-  }
+  })
 
   return (
     <div className="space-y-6">
-      <Panel className="w-96">
-        <Panel.Row type="two-input-two-icon">
-          <TimeRangeInput
-            startValue={startValue}
-            endValue={endValue}
-            onStartChange={handleStartChange}
-            onEndChange={handleEndChange}
-            startPlaceholder="开始时间"
-            endPlaceholder="结束时间"
-            format="HH:mm"
-          />
-        </Panel.Row>
-      </Panel>
+      <Panel.Row
+        type="two-input-two-icon"
+        className="px-0"
+      >
+        <TimeRangeInput
+          startValue={startValue}
+          endValue={endValue}
+          onStartChange={handleStartChange}
+          onEndChange={handleEndChange}
+          startPlaceholder="开始时间"
+          endPlaceholder="结束时间"
+          format="HH:mm"
+        />
+      </Panel.Row>
 
-      <div className="space-y-4 text-sm">
-        <div className="font-medium">🎯 时间范围同步逻辑</div>
-        <div className="space-y-2 text-gray-600">
+      <div className="space-y-4">
+        <div className="font-medium">🎯 Time Range Synchronization Logic</div>
+        <div className="text-secondary-foreground space-y-2">
           <div>
-            • <strong>开始时间变化</strong>：自动调整结束时间，保持原有范围长度
+            • <strong>Start Time Change</strong>：Automatically adjust the end time to maintain the
+            original range length
           </div>
           <div>
-            • <strong>结束时间变化</strong>：如果 结束 ≤ 开始，则推动开始时间到结束位置
+            • <strong>End Time Change</strong>：If the end time is less than or equal to the start
+            time, the start time is pushed to the end position
           </div>
           <div>
-            • <strong>动态范围</strong>
-            ：先调整结束时间设置想要的范围长度，然后开始时间的任何变化都会保持这个长度
+            • <strong>Dynamic Range</strong>
+            ：First adjust the end time to set the desired range length, then any changes to the
+            start time will maintain this length
           </div>
         </div>
 
-        <div className="rounded-lg bg-blue-50 p-4">
-          <div className="font-medium text-blue-800">🧪 测试步骤</div>
-          <div className="mt-2 space-y-1 text-blue-700">
-            <div>1. 调整结束时间到比如 19:00 → 范围变成10小时</div>
-            <div>2. 修改开始时间到 10:00 → 结束时间自动调整到 20:00 保持10小时距离</div>
-            <div>3. 设置结束时间早于开始时间（如 08:00）→ 开始时间被推到 08:00</div>
-            <div>4. 支持跨日范围：开始时间 22:00，结束时间次日 06:00</div>
+        <div className="rounded-md border p-4">
+          <div className="font-medium">🧪 Test Steps</div>
+          <div className="mt-2 space-y-1">
+            <div>1. Adjust the end time to 19:00 → the range becomes 10 hours</div>
+            <div>
+              2. Modify the start time to 10:00 → the end time is automatically adjusted to 20:00 to
+              maintain a 10-hour distance
+            </div>
+            <div>
+              3. Set the end time to be earlier than the start time (e.g., 08:00) → the start time
+              is pushed to 08:00
+            </div>
+            <div>4. Support cross-day range: start time 22:00, end time the next day 06:00</div>
           </div>
         </div>
       </div>
@@ -127,6 +131,26 @@ export const Default: Story = {
   render: (args) => <TimeRangeDemo {...args} />,
 }
 
+export const Size: Story = {
+  render: function Render() {
+    return (
+      <div className="space-y-4">
+        <TimeRangeDemo size="large" />
+      </div>
+    )
+  },
+}
+
+export const Variable: Story = {
+  render: function Render() {
+    return (
+      <div className="rounded-lg bg-gray-800 p-8">
+        <TimeRangeDemo variant="dark" />
+      </div>
+    )
+  },
+}
+
 // 时间范围同步
 export const RangeSynchronization: Story = {
   render: () => <RangeSyncDemo />,
@@ -137,8 +161,8 @@ export const WithPresetRange: Story = {
   args: {
     startValue: timeStringToDate("09:00"),
     endValue: timeStringToDate("17:30"),
-    startPlaceholder: "工作开始时间",
-    endPlaceholder: "工作结束时间",
+    startPlaceholder: "Start Time",
+    endPlaceholder: "End Time",
     format: "HH:mm",
   },
   render: (args) => <TimeRangeDemo {...args} />,
@@ -149,15 +173,15 @@ export const CrossMidnight: Story = {
   args: {
     startValue: timeStringToDate("22:00"),
     endValue: timeStringToDate("06:00"),
-    startPlaceholder: "夜班开始",
-    endPlaceholder: "夜班结束",
+    startPlaceholder: "Start Time",
+    endPlaceholder: "End Time",
     format: "HH:mm",
   },
   render: (args) => (
     <div className="space-y-4">
       <TimeRangeDemo {...args} />
-      <div className="text-sm text-gray-600">
-        💡 支持跨日时间范围（如夜班从 22:00 到次日 06:00）
+      <div className="text-secondary-foreground">
+        💡 Support cross-day time range (e.g., night shift from 22:00 to the next day 06:00)
       </div>
     </div>
   ),
@@ -166,9 +190,9 @@ export const CrossMidnight: Story = {
 // 不同时间格式
 export const DifferentFormats: Story = {
   render: () => (
-    <div className="space-y-8">
+    <div className="flex flex-col gap-8">
       <div>
-        <h3 className="mb-4 font-medium">24小时格式 (HH:mm)</h3>
+        <h3 className="mb-4 font-medium">24-hour format (HH:mm)</h3>
         <TimeRangeDemo
           format="HH:mm"
           startPlaceholder="09:00"
@@ -179,7 +203,7 @@ export const DifferentFormats: Story = {
       </div>
 
       <div>
-        <h3 className="mb-4 font-medium">12小时格式 (h:mm a)</h3>
+        <h3 className="mb-4 font-medium">12-hour format (h:mm a)</h3>
         <TimeRangeDemo
           format="h:mm a"
           locale={enUS}
@@ -191,16 +215,14 @@ export const DifferentFormats: Story = {
       </div>
 
       <div>
-        <h3 className="mb-4 font-medium">带秒格式 (HH:mm:ss)</h3>
-        <div className="grid grid-cols-[1fr_auto_1fr_auto_1fr] items-center gap-2">
-          <TimeRangeDemo
-            format="HH:mm:ss"
-            startPlaceholder="09:00:00"
-            endPlaceholder="17:00:00"
-            startValue={timeStringToDate("09:00")}
-            endValue={timeStringToDate("17:00")}
-          />
-        </div>
+        <h3 className="mb-4 font-medium">With seconds format (HH:mm:ss)</h3>
+        <TimeRangeDemo
+          format="HH:mm:ss"
+          startPlaceholder="09:00:00"
+          endPlaceholder="17:00:00"
+          startValue={timeStringToDate("09:00")}
+          endValue={timeStringToDate("17:00")}
+        />
       </div>
     </div>
   ),
@@ -219,7 +241,7 @@ export const Internationalization: Story = {
           startValue={timeStringToDate("09:00")}
           endValue={timeStringToDate("17:30")}
         />
-        <div className="mt-2 text-sm text-gray-500">持续时间显示：8小时30分钟</div>
+        <div className="mt-2 text-sm text-gray-500">Duration display: 8h 30m</div>
       </div>
 
       <div>
@@ -244,7 +266,7 @@ export const Internationalization: Story = {
           startValue={timeStringToDate("09:00")}
           endValue={timeStringToDate("17:30")}
         />
-        <div className="mt-2 text-sm text-gray-500">持続時間表示：8時間30分</div>
+        <div className="mt-2 text-sm text-gray-500">Duration display: 8h 30m</div>
       </div>
     </div>
   ),
@@ -255,44 +277,44 @@ export const CommonScenarios: Story = {
   render: () => (
     <div className="space-y-8">
       <div>
-        <h3 className="mb-4 font-medium">🏢 工作时间</h3>
+        <h3 className="mb-4 font-medium">🏢 Work Time</h3>
         <TimeRangeDemo
           startValue={timeStringToDate("09:00")}
           endValue={timeStringToDate("18:00")}
-          startPlaceholder="上班时间"
-          endPlaceholder="下班时间"
+          startPlaceholder="Start Time"
+          endPlaceholder="End Time"
         />
       </div>
 
       <div>
-        <h3 className="mb-4 font-medium">🍽️ 用餐时间</h3>
+        <h3 className="mb-4 font-medium">🍽️ Lunch Time</h3>
         <TimeRangeDemo
           startValue={timeStringToDate("12:00")}
           endValue={timeStringToDate("13:00")}
-          startPlaceholder="午餐开始"
-          endPlaceholder="午餐结束"
+          startPlaceholder="Start Time"
+          endPlaceholder="End Time"
         />
       </div>
 
       <div>
-        <h3 className="mb-4 font-medium">🏃‍♂️ 锻炼时间</h3>
+        <h3 className="mb-4 font-medium">🏃‍♂️ Exercise Time</h3>
         <TimeRangeDemo
           startValue={timeStringToDate("06:30")}
           endValue={timeStringToDate("07:30")}
-          startPlaceholder="开始锻炼"
-          endPlaceholder="结束锻炼"
+          startPlaceholder="Start Time"
+          endPlaceholder="End Time"
         />
       </div>
 
       <div>
-        <h3 className="mb-4 font-medium">🌙 夜班时间</h3>
+        <h3 className="mb-4 font-medium">🌙 Night Shift Time</h3>
         <TimeRangeDemo
           startValue={timeStringToDate("22:00")}
           endValue={timeStringToDate("06:00")}
-          startPlaceholder="夜班开始"
-          endPlaceholder="夜班结束"
+          startPlaceholder="Start Time"
+          endPlaceholder="End Time"
         />
-        <div className="mt-2 text-sm text-gray-500">💡 跨日工作，持续8小时</div>
+        <div className="mt-2 text-sm text-gray-500">💡 Cross-day work, 8 hours</div>
       </div>
     </div>
   ),
@@ -303,32 +325,32 @@ export const DurationOnly: Story = {
   render: () => (
     <div className="space-y-6">
       <div>
-        <h3 className="mb-4 font-medium">短时间段</h3>
+        <h3 className="mb-4 font-medium">Short Time Range</h3>
         <TimeRangeDemo
           startValue={timeStringToDate("14:00")}
           endValue={timeStringToDate("14:45")}
-          startPlaceholder="会议开始"
-          endPlaceholder="会议结束"
+          startPlaceholder="Start Time"
+          endPlaceholder="End Time"
         />
       </div>
 
       <div>
-        <h3 className="mb-4 font-medium">整点时间</h3>
+        <h3 className="mb-4 font-medium">Full Hour Time Range</h3>
         <TimeRangeDemo
           startValue={timeStringToDate("10:00")}
           endValue={timeStringToDate("12:00")}
-          startPlaceholder="培训开始"
-          endPlaceholder="培训结束"
+          startPlaceholder="Start Time"
+          endPlaceholder="End Time"
         />
       </div>
 
       <div>
-        <h3 className="mb-4 font-medium">长时间段</h3>
+        <h3 className="mb-4 font-medium">Long Time Range</h3>
         <TimeRangeDemo
           startValue={timeStringToDate("08:00")}
           endValue={timeStringToDate("20:00")}
-          startPlaceholder="营业开始"
-          endPlaceholder="营业结束"
+          startPlaceholder="Start Time"
+          endPlaceholder="End Time"
         />
       </div>
     </div>

@@ -6,8 +6,10 @@ import { TimeInput } from "../time-input"
 import type { TimeFormat } from "../types"
 import { resolveLocale } from "../utils"
 import { TextFieldProps } from "~/components/text-field"
+import { tcx } from "~/utils"
 
-interface TimeRangeInputProps extends TextFieldProps {
+interface TimeRangeInputProps
+  extends Omit<TextFieldProps, "value" | "onChange" | "step" | "defaultValue"> {
   endDisabled?: boolean
   endPlaceholder?: string
   endValue?: Date | null
@@ -109,6 +111,7 @@ export const TimeRangeInput = (props: TimeRangeInputProps) => {
     endDisabled,
     maxTime,
     minTime,
+    ...rest
   } = props
 
   // 🔧 使用公用的 locale 解析
@@ -145,6 +148,7 @@ export const TimeRangeInput = (props: TimeRangeInputProps) => {
         onEnterKeyDown={onEnterKeyDown}
         disabled={startDisabled}
         minTime={minTime}
+        {...rest}
       />
 
       <TimeInput
@@ -159,8 +163,14 @@ export const TimeRangeInput = (props: TimeRangeInputProps) => {
         prefixElement={<ArrowRight />}
         disabled={endDisabled}
         maxTime={maxTime}
+        {...rest}
       />
-      <span className="text-secondary-foreground col-span-3 col-start-5 row-start-2 truncate select-none">
+      <span
+        className={tcx(
+          "col-span-3 col-start-5 row-start-2 truncate select-none",
+          rest.variant === "dark" ? "text-gray-400" : "text-secondary-foreground",
+        )}
+      >
         {rangeDuration}
       </span>
     </>

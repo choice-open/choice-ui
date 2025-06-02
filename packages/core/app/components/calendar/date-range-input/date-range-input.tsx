@@ -5,8 +5,11 @@ import { useMemo } from "react"
 import { DateInput } from "../date-input"
 import type { DateFormat } from "../types"
 import { resolveLocale } from "../utils"
+import { TextFieldProps } from "~/components/text-field"
+import { tcx } from "~/utils"
 
-interface DateRangeInputProps {
+interface DateRangeInputProps
+  extends Omit<TextFieldProps, "value" | "onChange" | "step" | "defaultValue"> {
   endDisabled?: boolean
   endPlaceholder?: string
   endValue?: Date | null
@@ -49,6 +52,7 @@ export const DateRangeInput = (props: DateRangeInputProps) => {
     endDisabled,
     maxDate,
     minDate,
+    ...rest
   } = props
 
   // 🔧 使用公用的 locale 解析
@@ -89,6 +93,7 @@ export const DateRangeInput = (props: DateRangeInputProps) => {
         onEnterKeyDown={onEnterKeyDown}
         disabled={startDisabled}
         minDate={minDate}
+        {...rest}
       />
 
       <DateInput
@@ -103,9 +108,13 @@ export const DateRangeInput = (props: DateRangeInputProps) => {
         prefixElement={<ArrowRight />}
         disabled={endDisabled}
         maxDate={maxDate}
+        {...rest}
       />
       <span
-        className="text-secondary-foreground col-span-3 col-start-5 row-start-2 truncate select-none"
+        className={tcx(
+          "col-span-3 col-start-5 row-start-2 truncate select-none",
+          rest.variant === "dark" ? "text-gray-400" : "text-secondary-foreground",
+        )}
         data-testid="range-length"
       >
         {rangeLength}

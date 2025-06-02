@@ -171,6 +171,7 @@ export const DateInput = forwardRef<HTMLInputElement, DateInputProps>((props, re
       placeholder={placeholder}
       {...rest}
     >
+      {rest.children}
       {prefixElement && (
         <TextField.Prefix>
           <div
@@ -178,6 +179,7 @@ export const DateInput = forwardRef<HTMLInputElement, DateInputProps>((props, re
             className={tcx(
               "cursor-ew-resize",
               rest.disabled ? "text-disabled-foreground" : "text-secondary-foreground",
+              rest.variant === "dark" ? "text-white/50" : undefined,
             )}
           >
             {prefixElement}

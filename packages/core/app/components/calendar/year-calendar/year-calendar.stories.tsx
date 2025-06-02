@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react"
 import { useState } from "react"
 import type { YearCalendarProps } from "./year-calendar"
 import { YearCalendar } from "./year-calendar"
+import React from "react"
 
 // 辅助组件
 const YearPickerDemo = (args: YearCalendarProps) => {
@@ -9,21 +10,23 @@ const YearPickerDemo = (args: YearCalendarProps) => {
 
   return (
     <div className="space-y-4">
-      <YearCalendar
-        {...args}
-        value={selectedYear}
-        onChange={setSelectedYear}
-        className="w-48 rounded-lg border"
-      />
-      <YearCalendar
-        {...args}
-        value={selectedYear}
-        onChange={setSelectedYear}
-        className="w-48 rounded-lg border"
-        variant="dark"
-      />
-      <div className="text-sm text-gray-600">
-        选中年份: {selectedYear?.getFullYear() ?? "未选择"}
+      <div className="grid grid-cols-2 gap-4">
+        <YearCalendar
+          {...args}
+          value={selectedYear}
+          onChange={setSelectedYear}
+          className="w-48 rounded-lg border"
+        />
+        <YearCalendar
+          {...args}
+          value={selectedYear}
+          onChange={setSelectedYear}
+          className="w-48 rounded-lg border"
+          variant="dark"
+        />
+      </div>
+      <div className="text-secondary-foreground">
+        Selected year: {selectedYear?.getFullYear() ?? "None"}
       </div>
     </div>
   )

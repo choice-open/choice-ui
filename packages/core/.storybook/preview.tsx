@@ -76,7 +76,7 @@ const StoryRenderer = React.memo(({ StoryFn, storyId }: { StoryFn: any; storyId:
   return (
     <div
       key={storyId}
-      className="bg-default-background flex h-full w-full flex-col items-center justify-center"
+      className="bg-default-background flex w-full flex-col items-center justify-center"
     >
       <StoryFn />
     </div>
