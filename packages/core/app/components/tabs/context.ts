@@ -1,9 +1,9 @@
 import { createContext, useContext } from "react"
 
 export interface TabsContextValue {
-  value: string
-  onChange: (value: string) => void
   id: string
+  onChange: (value: string) => void
+  value: string
 }
 
 export const TabsContext = createContext<TabsContextValue | null>(null)

@@ -5,9 +5,9 @@ import { useTabsContext } from "./context"
 import { tabsTv } from "./tv"
 
 export interface TabItemProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "value"> {
-  value: string
-  disabled?: boolean
   children: ReactNode
+  disabled?: boolean
+  value: string
 }
 
 export const TabItem = memo(

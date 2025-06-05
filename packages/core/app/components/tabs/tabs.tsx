@@ -6,10 +6,10 @@ import { TabItem } from "./tab-item"
 import { tabsTv } from "./tv"
 
 interface TabsProps extends Omit<HTMLProps<HTMLDivElement>, "onChange"> {
-  className?: string
-  value: string
-  onChange?: (value: string) => void
   children?: ReactNode
+  className?: string
+  onChange?: (value: string) => void
+  value: string
 }
 
 interface TabsComponent
