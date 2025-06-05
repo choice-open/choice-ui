@@ -10,17 +10,8 @@ export interface DropdownItemProps extends MenuItemProps {
 }
 
 export const DropdownItem = memo(function DropdownItem(props: DropdownItemProps) {
-  const {
-    className,
-    disabled,
-    selected,
-    shortcut,
-    prefixElement,
-    variant,
-    onClick,
-    onMouseUp,
-    ...rest
-  } = props
+  const { disabled, selected, shortcut, prefixElement, variant, onClick, onMouseUp, ...rest } =
+    props
 
   const menu = useContext(DropdownContext)
   const item = useListItem()
