@@ -127,6 +127,7 @@ export const MenuItemTv = tv({
     },
     {
       disabled: false,
+      variant: "default",
       active: true,
       class: {
         root: "bg-accent-background text-on-accent-foreground",
