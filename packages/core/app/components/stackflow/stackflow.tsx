@@ -1,4 +1,13 @@
-import { Children, forwardRef, HTMLProps, ReactNode, useCallback, useState } from "react"
+import {
+  Children,
+  forwardRef,
+  HTMLProps,
+  ReactNode,
+  useCallback,
+  useState,
+  Fragment,
+  isValidElement,
+} from "react"
 import { tcx } from "~/utils"
 import { StackflowItem, StackflowPrefix, StackflowSuffix } from "./components"
 import { StackflowContext } from "./context"
@@ -40,14 +49,28 @@ const StackflowRoot = forwardRef<HTMLDivElement, StackflowProps>(function Stackf
   const controls = useStackflow(items, defaultId || initialId)
   const tv = stackflowTv()
 
-  // 提取 Prefix、Suffix 和 Items
-  const prefixElements: ReactNode[] = []
-  const suffixElements: ReactNode[] = []
-  const itemElements: ReactNode[] = []
+  // 递归处理子组件，包括 Fragment
+  const processChildren = (
+    children: ReactNode,
+  ): {
+    itemElements: ReactNode[]
+    prefixElements: ReactNode[]
+    suffixElements: ReactNode[]
+  } => {
+    const prefixElements: ReactNode[] = []
+    const suffixElements: ReactNode[] = []
+    const itemElements: ReactNode[] = []
 
-  Children.forEach(children, (child) => {
-    if (child && typeof child === "object" && "type" in child) {
-      if (child.type === StackflowPrefix) {
+    const processChild = (child: ReactNode) => {
+      if (!isValidElement(child)) return
+
+      if (child.type === Fragment) {
+        // 递归处理 Fragment 内的子组件
+        const fragmentResult = processChildren(child.props.children)
+        prefixElements.push(...fragmentResult.prefixElements)
+        suffixElements.push(...fragmentResult.suffixElements)
+        itemElements.push(...fragmentResult.itemElements)
+      } else if (child.type === StackflowPrefix) {
         prefixElements.push(child)
       } else if (child.type === StackflowSuffix) {
         suffixElements.push(child)
@@ -55,7 +78,13 @@ const StackflowRoot = forwardRef<HTMLDivElement, StackflowProps>(function Stackf
         itemElements.push(child)
       }
     }
-  })
+
+    Children.forEach(children, processChild)
+
+    return { prefixElements, suffixElements, itemElements }
+  }
+
+  const { prefixElements, suffixElements, itemElements } = processChildren(children)
 
   return (
     <StackflowContext.Provider

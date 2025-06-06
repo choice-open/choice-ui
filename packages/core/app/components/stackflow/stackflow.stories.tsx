@@ -485,18 +485,20 @@ const NodesListWithSearch = () => {
         />
       </Stackflow.Prefix>
 
-      <Stackflow.Item id="categories">
-        <CategoryList searchQuery={searchValue} />
-      </Stackflow.Item>
-
-      {NODE_CATEGORIES.map((category) => (
-        <Stackflow.Item
-          key={category.id}
-          id={category.id}
-        >
-          <CategoryDetail categoryId={category.id} />
+      <>
+        <Stackflow.Item id="categories">
+          <CategoryList searchQuery={searchValue} />
         </Stackflow.Item>
-      ))}
+
+        {NODE_CATEGORIES.map((category) => (
+          <Stackflow.Item
+            key={category.id}
+            id={category.id}
+          >
+            <CategoryDetail categoryId={category.id} />
+          </Stackflow.Item>
+        ))}
+      </>
     </>
   )
 }
