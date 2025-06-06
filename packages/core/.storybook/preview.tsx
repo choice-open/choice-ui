@@ -395,7 +395,13 @@ const withCustomDecorator: Decorator = (StoryFn, context) => {
 }
 
 const preview: Preview = {
-  // decorators: [withCustomDecorator, (Story) => <Story />],
+  decorators: [
+    (Story) => (
+      <TooltipProvider>
+        <Story />
+      </TooltipProvider>
+    ),
+  ],
   parameters: {
     layout: "centered",
     controls: {
