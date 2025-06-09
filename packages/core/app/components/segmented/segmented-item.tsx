@@ -6,12 +6,13 @@ import { useSegmentedContext } from "./context"
 import { segmentedControlTv } from "./tv"
 
 export interface SegmentedItemProps {
-  className?: string
-  value: string
-  disabled?: boolean
-  tooltip?: TooltipProps
-  children: ReactNode
   "aria-label"?: string
+  children: ReactNode
+  className?: string
+  disabled?: boolean
+  onHoverChange?: (isHovered: boolean) => void
+  tooltip?: TooltipProps
+  value: string
 }
 
 export const SegmentedItem = memo(
@@ -21,6 +22,7 @@ export const SegmentedItem = memo(
       children,
       value,
       disabled,
+      onHoverChange,
       tooltip,
       "aria-label": ariaLabel,
       ...rest
@@ -39,6 +41,14 @@ export const SegmentedItem = memo(
       if (e.target.checked) {
         onChange(value)
       }
+    })
+
+    const handleMouseEnter = useEventCallback(() => {
+      onHoverChange?.(true)
+    })
+
+    const handleMouseLeave = useEventCallback(() => {
+      onHoverChange?.(false)
     })
 
     const optionClassName = tcx(styles.option(), className)
@@ -74,6 +84,8 @@ export const SegmentedItem = memo(
         htmlFor={optionId}
         className="pointer-events-none relative"
         aria-disabled={disabled}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
         {...rest}
       >
         {inputElement}
