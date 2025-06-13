@@ -2,16 +2,18 @@ import { memo, useId, useRef } from "react"
 import { MultiLineTextInput, MultiLineTextInputProps } from "~/components/multi-line-text-input"
 
 interface ModalMultiLineInputProps extends MultiLineTextInputProps {
-  label: string
-  placeholder?: string
-  minRows?: number
   description?: string
+  label?: string
+  minRows?: number
+  onChange?: (value: string) => void
+  placeholder?: string
+  value?: string
 }
 
 export const ModalMultiLineInput = memo(function ModalMultiLineInput(
   props: ModalMultiLineInputProps,
 ) {
-  const { label, placeholder, minRows = 10, description, ...rest } = props
+  const { label, placeholder, minRows = 10, description, value, onChange, ...rest } = props
   const id = useId()
   const inputRef = useRef<HTMLDivElement>(null)
 

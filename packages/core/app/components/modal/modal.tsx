@@ -7,19 +7,21 @@ import {
   ModalMultiLineInput,
   ModalSelect,
 } from "./components"
+import { ModalInput } from "./components/modal-input"
 import { ModalTv } from "./tv"
 
 interface ModalProps extends Omit<HTMLProps<HTMLDivElement>, "title"> {
   className?: string
-  title?: ReactNode
   onClose?: () => void
+  title?: ReactNode
 }
 
 interface ModalComponent
   extends React.ForwardRefExoticComponent<ModalProps & React.RefAttributes<HTMLDivElement>> {
-  Header: typeof ModalHeader
   Content: typeof ModalContent
   Footer: typeof ModalFooter
+  Header: typeof ModalHeader
+  Input: typeof ModalInput
   MultiLineInput: typeof ModalMultiLineInput
   Select: typeof ModalSelect
 }
@@ -43,6 +45,7 @@ const Modal = ModalBase as ModalComponent
 Modal.Header = ModalHeader
 Modal.Content = ModalContent
 Modal.Footer = ModalFooter
+Modal.Input = ModalInput
 Modal.MultiLineInput = ModalMultiLineInput
 Modal.Select = ModalSelect
 export { Modal }

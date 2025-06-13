@@ -154,20 +154,26 @@ export const Basic: Story = {
 export const ModalContent: Story = {
   render: function ModalContentStory() {
     const [select, setSelect] = useState("option-1")
+    const [input, setInput] = useState("")
+    const [multiLineInput, setMultiLineInput] = useState("")
+
     return (
       <Modal>
         <Modal.Header title="Modal" />
         <Modal.Content className="flex w-md flex-col gap-4 p-4">
-          <TextField
-            size="large"
-            className="w-full"
-          >
-            <TextField.Label>Name</TextField.Label>
-          </TextField>
+          <Modal.Input
+            label="Name"
+            placeholder="Please enter your name"
+            description="This is a description"
+            value={input}
+            onChange={setInput}
+          />
           <Modal.MultiLineInput
             label="Multi-line input"
             placeholder="Please enter your multi-line input"
             description="This is a description"
+            value={multiLineInput}
+            onChange={setMultiLineInput}
           />
           <Modal.Select
             label="Select"
