@@ -1,11 +1,12 @@
 import { useMemo } from "react"
 import { EmojiData, EmojiPicker, Popover } from "~/components"
+import { useEventCallback } from "usehooks-ts"
 
 interface CommentInputEmojiPopoverProps {
-  setSelectedEmoji: (emoji: string) => void
   anchorRect: React.RefObject<HTMLButtonElement>
-  open?: boolean
   onOpenChange?: (open: boolean) => void
+  open?: boolean
+  setSelectedEmoji: (emoji: string) => void
 }
 
 export const CommentInputEmojiPopover = ({
@@ -14,18 +15,18 @@ export const CommentInputEmojiPopover = ({
   open = false,
   onOpenChange,
 }: CommentInputEmojiPopoverProps) => {
-  const handleEmojiSelect = (emoji: EmojiData) => {
-    setSelectedEmoji(emoji.native)
+  const handleEmojiSelect = useEventCallback((emoji: EmojiData) => {
+    setSelectedEmoji(emoji.emoji)
 
     if (onOpenChange) {
       onOpenChange(false)
     }
-  }
+  })
 
   const emojiPickerContent = useMemo(
     () => (
       <EmojiPicker
-        onEmojiSelect={(emoji) => {
+        onChange={(emoji: EmojiData) => {
           handleEmojiSelect(emoji)
         }}
       />

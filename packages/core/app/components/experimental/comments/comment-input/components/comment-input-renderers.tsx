@@ -12,7 +12,7 @@ export const renderElement = (props: ExtendedRenderElement) => {
   const { attributes, children, element, editor, handleRemoveImage } = props
 
   switch ((element as CustomElement).type) {
-    case "mention":
+    case "mention": {
       const mentionElement = element as MentionElement
       return (
         <Mention
@@ -22,7 +22,8 @@ export const renderElement = (props: ExtendedRenderElement) => {
           {children}
         </Mention>
       )
-    case "image":
+    }
+    case "image": {
       const imageElement = element as ImageElement
       return (
         <AttachmentsEdit
@@ -36,6 +37,7 @@ export const renderElement = (props: ExtendedRenderElement) => {
           {children}
         </AttachmentsEdit>
       )
+    }
     case "paragraph":
       return (
         <p

@@ -17,16 +17,16 @@ import { useEventCallback } from "usehooks-ts"
 
 export interface CommentInputProps {
   className?: string
+  defaultText?: InputDefaultText
   initialValue?: Descendant[]
-  variant?: "default" | "solid"
-  placeholder?: string
-  users?: User[]
   maxUploadFiles?: number
+  onCancel?: () => void
   onChange?: (value: Descendant[]) => void
   onSubmit?: (value: Descendant[]) => void
-  onCancel?: () => void
   onTypingChange?: (isTyping: boolean) => void
-  defaultText?: InputDefaultText
+  placeholder?: string
+  users?: User[]
+  variant?: "default" | "solid"
 }
 
 export const CommentInput = forwardRef<HTMLDivElement, CommentInputProps>((props, ref) => {

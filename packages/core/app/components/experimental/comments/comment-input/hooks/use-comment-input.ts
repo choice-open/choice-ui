@@ -8,11 +8,11 @@ import type { CustomEditor, ImageElement, ParagraphElement } from "../types"
 import { isEmptyContent, isImageElement, isMentionElement } from "../utils"
 
 interface UseCommentInputProps {
-  users?: User[]
-  onChange?: (value: Descendant[]) => void
-  onSubmit?: (value: Descendant[]) => void
   initialValue?: Descendant[]
   maxUploadFiles?: number
+  onChange?: (value: Descendant[]) => void
+  onSubmit?: (value: Descendant[]) => void
+  users?: User[]
 }
 
 // 定义一个安全的日志记录函数
@@ -513,7 +513,7 @@ export const useCommentInput = ({
         // 并行处理文件
         const processedAttachments = await Promise.all(
           filesToProcess.map((file) => {
-            return new Promise<{ url: string; name: string; type: string; size: number }>(
+            return new Promise<{ name: string; size: number; type: string; url: string }>(
               (resolve) => {
                 const reader = new FileReader()
                 reader.addEventListener("load", () => {

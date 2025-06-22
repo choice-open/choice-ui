@@ -24,13 +24,13 @@ import type { User } from "../../types"
 const PORTAL_ROOT_ID = "floating-menu-root"
 
 interface CommentInputMentionPopoverProps {
-  target: Range | null
   editor: ReactEditor
-  users: User[]
+  onKeyNavigation: (index: number) => void
+  onSelectMention: (user: User) => void
   searchText: string
   selectedIndex: number
-  onSelectMention: (user: User) => void
-  onKeyNavigation: (index: number) => void
+  target: Range | null
+  users: User[]
 }
 
 export const CommentInputMentionPopover = ({

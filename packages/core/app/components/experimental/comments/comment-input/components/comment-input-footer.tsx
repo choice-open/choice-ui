@@ -6,22 +6,22 @@ import { InputDefaultText } from "../../types"
 import { CommentInputTv } from "../tv"
 
 interface CommentInputFooterProps {
-  className?: string
-  onEmojiClick?: () => void
-  onMentionClick?: () => void
-  onImageUpload?: (event: ChangeEvent<HTMLInputElement>) => void
-  onSubmit?: () => void
-  onCancel?: () => void
-  disabled?: boolean
-  typing?: boolean
   allowSubmission?: boolean
-  isEditMode?: boolean
-  emojiButtonRef?: React.RefObject<HTMLButtonElement>
-  disableImageUpload?: boolean
-  imageCount?: number
-  maxImageCount?: number
-  hasOnlyImages?: boolean
+  className?: string
   defaultText: InputDefaultText
+  disableImageUpload?: boolean
+  disabled?: boolean
+  emojiButtonRef?: React.RefObject<HTMLButtonElement>
+  hasOnlyImages?: boolean
+  imageCount?: number
+  isEditMode?: boolean
+  maxImageCount?: number
+  onCancel?: () => void
+  onEmojiClick?: () => void
+  onImageUpload?: (event: ChangeEvent<HTMLInputElement>) => void
+  onMentionClick?: () => void
+  onSubmit?: () => void
+  typing?: boolean
 }
 
 export const CommentInputFooter = (props: CommentInputFooterProps) => {

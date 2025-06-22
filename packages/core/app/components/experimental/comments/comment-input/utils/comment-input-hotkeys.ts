@@ -11,9 +11,9 @@ const HOTKEYS: Record<string, keyof Omit<TextFormat, "text">> = {
 
 // 定义文本格式接口
 interface TextFormat {
-  text: string
   bold?: boolean
   italic?: boolean
+  text: string
   underline?: boolean
 }
 
