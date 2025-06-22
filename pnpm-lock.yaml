@@ -672,8 +672,8 @@ importers:
         specifier: ^7.27.1
         version: 7.27.1(@babel/core@7.27.4)
       '@choiceform/icons-react':
-        specifier: ^1.1.0
-        version: 1.1.0(react@18.2.0)
+        specifier: ^1.1.5
+        version: 1.1.5(react@18.2.0)
       '@chromatic-com/storybook':
         specifier: ^3.2.4
         version: 3.2.6(react@18.2.0)(storybook@8.6.14)
@@ -2390,6 +2390,14 @@ packages:
 
   /@choiceform/icons-react@1.1.0(react@18.2.0):
     resolution: {integrity: sha512-Y5d87b0PXJcgDfznPjRHPyORHIviCug/6AXAsruNjArxsFTReQm1miA6OWP7qahf60+rspn73wDDnlH4+ONcMw==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 18.2.0
+    dev: true
+
+  /@choiceform/icons-react@1.1.5(react@18.2.0):
+    resolution: {integrity: sha512-Lttlvb2sYGhk8VvvuOYJbPTkTCGL5U/QIZbWYJm+ABrghnMQRb9e8uYVe48tmx5lCG1TqEzF0EqBAh5WU8uvsg==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
     dependencies:

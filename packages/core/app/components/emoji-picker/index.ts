@@ -1,4 +1,3 @@
-export * from "./emoji-picker"
-export * from "./emoji-picker-types"
-export * from "./use-emoji-picker"
-export * from "./lazy-picker"
+export { EmojiPicker } from "./emoji-picker"
+export { emojis } from "./utils"
+export type { EmojiData } from "./hooks"
