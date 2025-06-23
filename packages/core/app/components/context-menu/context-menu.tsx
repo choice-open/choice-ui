@@ -39,6 +39,7 @@ const PORTAL_ROOT_ID = "floating-menu-root"
 
 export interface ContextMenuProps extends HTMLProps<HTMLDivElement> {
   children?: ReactNode
+  disabled?: boolean
   offset?: number
   onOpenChange?: (open: boolean) => void
   open?: boolean
@@ -68,6 +69,7 @@ interface ContextMenuComponentProps
 
 // Context for ContextMenu
 interface ContextMenuContextType {
+  disabled: boolean
   handleContextMenu: (e: MouseEvent) => void
 }
 
@@ -80,6 +82,10 @@ const ContextMenuTarget: React.FC<ContextMenuTargetProps> = ({ children, ...prop
   const handleContextMenu = useCallback(
     (e: React.MouseEvent) => {
       e.preventDefault()
+      // Don't handle context menu if disabled
+      if (contextMenu?.disabled) {
+        return
+      }
       contextMenu?.handleContextMenu(e.nativeEvent)
     },
     [contextMenu],
@@ -88,6 +94,7 @@ const ContextMenuTarget: React.FC<ContextMenuTargetProps> = ({ children, ...prop
   return (
     <div
       {...props}
+      data-disabled={contextMenu?.disabled ? "" : undefined}
       onContextMenu={handleContextMenu}
     >
       {children}
@@ -98,6 +105,7 @@ const ContextMenuTarget: React.FC<ContextMenuTargetProps> = ({ children, ...prop
 const ContextMenuComponent = memo(function ContextMenuComponent(props: ContextMenuProps) {
   const {
     children,
+    disabled = false,
     offset,
     placement,
     portalId = PORTAL_ROOT_ID,
@@ -124,7 +132,6 @@ const ContextMenuComponent = memo(function ContextMenuComponent(props: ContextMe
     context,
     getReferenceProps,
     getFloatingProps,
-    getItemProps,
     dropdownContextValue,
     contextMenuContextValue,
     handleArrowScroll,
@@ -133,6 +140,7 @@ const ContextMenuComponent = memo(function ContextMenuComponent(props: ContextMe
     handlePointerMove,
     handleScroll,
   } = useContextMenu({
+    disabled,
     offset,
     placement,
     selection,
@@ -151,13 +159,25 @@ const ContextMenuComponent = memo(function ContextMenuComponent(props: ContextMe
     // Add contextmenu event listener
     const handleContextMenu = (e: MouseEvent) => {
       e.preventDefault()
+      // Don't handle context menu if disabled
+      if (contextMenuContextValue.disabled) {
+        return
+      }
       contextMenuContextValue.handleContextMenu(e)
+    }
+
+    // Set disabled attribute for styling
+    if (contextMenuContextValue.disabled) {
+      element.setAttribute("data-context-menu-disabled", "")
+    } else {
+      element.removeAttribute("data-context-menu-disabled")
     }
 
     element.addEventListener("contextmenu", handleContextMenu)
 
     return () => {
       element.removeEventListener("contextmenu", handleContextMenu)
+      element.removeAttribute("data-context-menu-disabled")
     }
   }, [triggerRef, refs, contextMenuContextValue])
 

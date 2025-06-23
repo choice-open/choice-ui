@@ -25,6 +25,7 @@ import { useEventCallback } from "usehooks-ts"
 const DEFAULT_OFFSET = 4
 
 export interface UseContextMenuProps {
+  disabled?: boolean
   offset?: number
   onOpenChange?: (open: boolean) => void
   open?: boolean
@@ -37,6 +38,7 @@ export interface UseContextMenuReturn {
   activeIndex: number | null
   context: ReturnType<typeof useFloating>["context"]
   contextMenuContextValue: {
+    disabled: boolean
     handleContextMenu: (e: MouseEvent) => void
   }
   // Context values
@@ -92,6 +94,7 @@ export interface UseContextMenuReturn {
 
 export function useContextMenu(props: UseContextMenuProps): UseContextMenuReturn {
   const {
+    disabled = false,
     offset: offsetDistance = DEFAULT_OFFSET,
     placement = "bottom-start",
     selection = false,
@@ -203,6 +206,11 @@ export function useContextMenu(props: UseContextMenuProps): UseContextMenuReturn
     (e: MouseEvent) => {
       e.preventDefault()
 
+      // Don't open menu if disabled
+      if (disabled) {
+        return
+      }
+
       // Set virtual position reference
       refs.setPositionReference({
         getBoundingClientRect() {
@@ -229,7 +237,7 @@ export function useContextMenu(props: UseContextMenuProps): UseContextMenuReturn
 
       return () => clearTimeout(timeout)
     },
-    [refs, handleOpenChange],
+    [disabled, refs, handleOpenChange],
   )
 
   useEffect(() => {
@@ -328,8 +336,9 @@ export function useContextMenu(props: UseContextMenuProps): UseContextMenuReturn
   const contextMenuContextValue = useMemo(
     () => ({
       handleContextMenu,
+      disabled,
     }),
-    [handleContextMenu],
+    [handleContextMenu, disabled],
   )
 
   // Memoize the return object to avoid creating new objects on every render
@@ -408,6 +417,7 @@ export function useContextMenu(props: UseContextMenuProps): UseContextMenuReturn
       setHasFocusInside,
       dropdownContextValue,
       contextMenuContextValue,
+      disabled,
     ],
   )
 }

@@ -633,3 +633,124 @@ export const WithTriggerRef: Story = {
     )
   },
 }
+
+/**
+ * WithDisabled: Demonstrates disabled ContextMenu functionality.
+ *
+ * Features:
+ * - Shows how to disable the entire context menu
+ * - Right-click events are prevented when disabled=true
+ * - Visual feedback through data attributes for styling
+ * - Useful for conditional menu availability
+ *
+ * Implementation:
+ * - Set disabled={true} to prevent context menu activation
+ * - Can use CSS selectors like [data-disabled] for styling
+ * - Both Target and triggerRef approaches support disabled state
+ *
+ * Usage:
+ * ```tsx
+ * <ContextMenu disabled={isReadOnly}>
+ *   <ContextMenu.Target>...</ContextMenu.Target>
+ *   <ContextMenu.Content>...</ContextMenu.Content>
+ * </ContextMenu>
+ * ```
+ */
+export const WithDisabled: Story = {
+  render: function WithDisabledStory() {
+    const [isDisabled, setIsDisabled] = useState(false)
+
+    return (
+      <div className="space-y-8 p-8">
+        <div>
+          <label className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              checked={isDisabled}
+              onChange={(e) => setIsDisabled(e.target.checked)}
+            />
+            Disable context menu
+          </label>
+        </div>
+
+        <div className="flex gap-8">
+          {/* Using ContextMenu.Target */}
+          <div>
+            <p className="mb-2 text-sm font-medium">Using ContextMenu.Target</p>
+            <ContextMenu disabled={isDisabled}>
+              <ContextMenu.Target>
+                <div className="bg-secondary-background border-accent-background rounded-lg border-2 border-dashed p-8">
+                  {isDisabled ? "Context menu disabled" : "Right click me"}
+                </div>
+              </ContextMenu.Target>
+              <ContextMenu.Content>
+                <ContextMenu.Item>
+                  <ContextMenu.Value>Copy</ContextMenu.Value>
+                </ContextMenu.Item>
+                <ContextMenu.Item>
+                  <ContextMenu.Value>Cut</ContextMenu.Value>
+                </ContextMenu.Item>
+                <ContextMenu.Item>
+                  <ContextMenu.Value>Paste</ContextMenu.Value>
+                </ContextMenu.Item>
+                <ContextMenu.Divider />
+                <ContextMenu.Item variant="danger">
+                  <ContextMenu.Value>Delete</ContextMenu.Value>
+                </ContextMenu.Item>
+              </ContextMenu.Content>
+            </ContextMenu>
+          </div>
+
+          {/* Using triggerRef */}
+          <div>
+            <p className="mb-2 text-sm font-medium">Using triggerRef</p>
+            <DisabledWithTriggerRef disabled={isDisabled} />
+          </div>
+        </div>
+
+        <div className="bg-accent-background rounded-lg p-4 text-sm">
+          <strong>Tip:</strong> When disabled=true, the context menu will not open on right-click.
+          You can style disabled states using CSS selectors like <code>[data-disabled]</code> or
+          <code>[data-context-menu-disabled]</code>.
+        </div>
+      </div>
+    )
+  },
+}
+
+// Helper component for triggerRef example
+function DisabledWithTriggerRef({ disabled }: { disabled: boolean }) {
+  const triggerRef = useRef<HTMLDivElement>(null)
+
+  return (
+    <>
+      <div
+        ref={triggerRef}
+        className="bg-secondary-background border-accent-background rounded-lg border-2 border-dashed p-8"
+      >
+        {disabled ? "Context menu disabled" : "Right click me"}
+      </div>
+
+      <ContextMenu
+        disabled={disabled}
+        triggerRef={triggerRef}
+      >
+        <ContextMenu.Content>
+          <ContextMenu.Item>
+            <ContextMenu.Value>Copy</ContextMenu.Value>
+          </ContextMenu.Item>
+          <ContextMenu.Item>
+            <ContextMenu.Value>Cut</ContextMenu.Value>
+          </ContextMenu.Item>
+          <ContextMenu.Item>
+            <ContextMenu.Value>Paste</ContextMenu.Value>
+          </ContextMenu.Item>
+          <ContextMenu.Divider />
+          <ContextMenu.Item variant="danger">
+            <ContextMenu.Value>Delete</ContextMenu.Value>
+          </ContextMenu.Item>
+        </ContextMenu.Content>
+      </ContextMenu>
+    </>
+  )
+}
