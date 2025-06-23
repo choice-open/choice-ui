@@ -15,6 +15,7 @@ import React, {
   ReactNode,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
 } from "react"
 import {
@@ -44,6 +45,7 @@ export interface ContextMenuProps extends HTMLProps<HTMLDivElement> {
   placement?: Placement
   portalId?: string
   selection?: boolean
+  triggerRef?: React.RefObject<HTMLElement>
 }
 
 interface ContextMenuTargetProps extends HTMLProps<HTMLDivElement> {
@@ -102,6 +104,7 @@ const ContextMenuComponent = memo(function ContextMenuComponent(props: ContextMe
     selection,
     open,
     onOpenChange,
+    triggerRef,
     ...rest
   } = props
 
@@ -137,6 +140,27 @@ const ContextMenuComponent = memo(function ContextMenuComponent(props: ContextMe
     onOpenChange,
   })
 
+  // Handle triggerRef support - Combined effect for better performance
+  useEffect(() => {
+    const element = triggerRef?.current
+    if (!element || !contextMenuContextValue) return
+
+    // Set the floating reference to the triggerRef element
+    refs.setReference(element)
+
+    // Add contextmenu event listener
+    const handleContextMenu = (e: MouseEvent) => {
+      e.preventDefault()
+      contextMenuContextValue.handleContextMenu(e)
+    }
+
+    element.addEventListener("contextmenu", handleContextMenu)
+
+    return () => {
+      element.removeEventListener("contextmenu", handleContextMenu)
+    }
+  }, [triggerRef, refs, contextMenuContextValue])
+
   // Process children to find target, subtrigger and content
   const { targetElement, subTriggerElement, contentElement } = useMemo(() => {
     const childrenArray = React.Children.toArray(children)
@@ -164,7 +188,7 @@ const ContextMenuComponent = memo(function ContextMenuComponent(props: ContextMe
   return (
     <FloatingNode id={nodeId}>
       <ContextMenuContext.Provider value={contextMenuContextValue}>
-        {/* Render target for root level, SubTrigger for nested */}
+        {/* Render target for root level, SubTrigger for nested, but skip target if triggerRef is provided */}
         {isNested
           ? subTriggerElement && (
               <div
@@ -178,7 +202,7 @@ const ContextMenuComponent = memo(function ContextMenuComponent(props: ContextMe
                 {cloneElement(subTriggerElement, { active: isControlledOpen })}
               </div>
             )
-          : targetElement}
+          : !triggerRef && targetElement}
 
         <DropdownContext.Provider value={dropdownContextValue}>
           <DropdownSelectionContext.Provider value={selection || false}>

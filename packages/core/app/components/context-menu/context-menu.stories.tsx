@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react"
-import React, { useState } from "react"
+import React, { useRef, useState } from "react"
 import { Dropdown } from "../dropdown"
 import { ContextMenu } from "./context-menu"
 
@@ -475,6 +475,158 @@ export const WithDisabledItems: Story = {
             <ContextMenu.Item disabled>
               <ContextMenu.Value>Also Disabled</ContextMenu.Value>
             </ContextMenu.Item>
+          </ContextMenu.Content>
+        </ContextMenu>
+      </div>
+    )
+  },
+}
+
+/**
+ * ContextMenuNestedDropdown: Fixed implementation using triggerRef to avoid component conflicts.
+ *
+ * This story demonstrates the solution to the original nesting problem:
+ * - ContextMenu.Target was interfering with Dropdown's Slot mechanism
+ * - Using triggerRef bypasses the wrapper issue entirely
+ * - Both components now work perfectly together
+ *
+ * Features:
+ * - Left-click opens Dropdown menu
+ * - Right-click opens ContextMenu
+ * - No component wrapping conflicts
+ * - Clean, working implementation
+ */
+export const ContextMenuNestedDropdown: Story = {
+  render: function ContextMenuNestedDropdownStory() {
+    const triggerRef = useRef<HTMLDivElement>(null)
+
+    const ContextMenuContent = () => (
+      <>
+        <ContextMenu.Item>
+          <ContextMenu.Value>Available Action</ContextMenu.Value>
+        </ContextMenu.Item>
+        <ContextMenu.Item>
+          <ContextMenu.Value>Another Available Action</ContextMenu.Value>
+        </ContextMenu.Item>
+        <ContextMenu.Divider />
+        <ContextMenu.Item>
+          <ContextMenu.Value>Another Available Action</ContextMenu.Value>
+        </ContextMenu.Item>
+        <ContextMenu.Divider />
+        <ContextMenu.Item>
+          <ContextMenu.Value>Another Available Action</ContextMenu.Value>
+        </ContextMenu.Item>
+      </>
+    )
+
+    return (
+      <div className="flex h-64 items-center justify-center">
+        <div
+          ref={triggerRef}
+          className="bg-secondary-background border-accent-background rounded-lg border-2 border-dashed p-8"
+        >
+          <Dropdown>
+            <Dropdown.Trigger>
+              <Dropdown.Value>Left/Right click for different menus</Dropdown.Value>
+            </Dropdown.Trigger>
+            <Dropdown.Content>
+              <ContextMenuContent />
+            </Dropdown.Content>
+          </Dropdown>
+        </div>
+
+        <ContextMenu triggerRef={triggerRef}>
+          <ContextMenu.Content>
+            <ContextMenuContent />
+          </ContextMenu.Content>
+        </ContextMenu>
+      </div>
+    )
+  },
+}
+
+/**
+ * WithTriggerRef: Demonstrates using triggerRef to avoid component wrapping conflicts.
+ *
+ * This approach solves complex nesting scenarios by:
+ * - Using a ref to directly bind the context menu to any DOM element
+ * - Avoiding wrapper components that might interfere with other libraries
+ * - Providing maximum flexibility for integration
+ *
+ * Features:
+ * - Left-click opens Dropdown normally
+ * - Right-click opens ContextMenu via triggerRef
+ * - No component wrapping conflicts
+ * - Clean separation of concerns
+ *
+ * Usage:
+ * ```tsx
+ * const triggerRef = useRef<HTMLDivElement>(null)
+ *
+ * return (
+ *   <>
+ *     <div ref={triggerRef}>
+ *       <Dropdown>...</Dropdown>
+ *     </div>
+ *     <ContextMenu triggerRef={triggerRef}>
+ *       <ContextMenu.Content>...</ContextMenu.Content>
+ *     </ContextMenu>
+ *   </>
+ * )
+ * ```
+ */
+export const WithTriggerRef: Story = {
+  render: function WithTriggerRefStory() {
+    const triggerRef = useRef<HTMLDivElement>(null)
+
+    const MenuContent = () => (
+      <>
+        <ContextMenu.Item>
+          <ContextMenu.Value>Copy</ContextMenu.Value>
+        </ContextMenu.Item>
+        <ContextMenu.Item>
+          <ContextMenu.Value>Cut</ContextMenu.Value>
+        </ContextMenu.Item>
+        <ContextMenu.Item>
+          <ContextMenu.Value>Paste</ContextMenu.Value>
+        </ContextMenu.Item>
+        <ContextMenu.Divider />
+        <ContextMenu.Item variant="danger">
+          <ContextMenu.Value>Delete</ContextMenu.Value>
+        </ContextMenu.Item>
+      </>
+    )
+
+    return (
+      <div className="flex h-64 items-center justify-center">
+        <div
+          ref={triggerRef}
+          className="bg-secondary-background border-accent-background rounded-lg border-2 border-dashed p-8"
+        >
+          <Dropdown>
+            <Dropdown.Trigger>
+              <Dropdown.Value>Left click for Dropdown, Right click for ContextMenu</Dropdown.Value>
+            </Dropdown.Trigger>
+            <Dropdown.Content>
+              <Dropdown.Label>Dropdown Menu</Dropdown.Label>
+              <Dropdown.Item>
+                <Dropdown.Value>New File</Dropdown.Value>
+              </Dropdown.Item>
+              <Dropdown.Item>
+                <Dropdown.Value>New Folder</Dropdown.Value>
+              </Dropdown.Item>
+              <Dropdown.Divider />
+              <Dropdown.Item>
+                <Dropdown.Value>Settings</Dropdown.Value>
+              </Dropdown.Item>
+            </Dropdown.Content>
+          </Dropdown>
+        </div>
+
+        <ContextMenu triggerRef={triggerRef}>
+          <ContextMenu.Content>
+            <ContextMenu.Label>Context Menu</ContextMenu.Label>
+            <MenuContent />
           </ContextMenu.Content>
         </ContextMenu>
       </div>

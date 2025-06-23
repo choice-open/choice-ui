@@ -26,68 +26,68 @@ const DEFAULT_OFFSET = 4
 
 export interface UseContextMenuProps {
   offset?: number
+  onOpenChange?: (open: boolean) => void
+  open?: boolean
   placement?: Placement
   portalId?: string
   selection?: boolean
-  open?: boolean
-  onOpenChange?: (open: boolean) => void
 }
 
 export interface UseContextMenuReturn {
-  // State
-  isControlledOpen: boolean
   activeIndex: number | null
-  scrollTop: number
-  touch: boolean
-  isNested: boolean
-
-  // Refs
-  scrollRef: React.RefObject<HTMLDivElement>
-  elementsRef: React.MutableRefObject<Array<HTMLElement | null>>
-  labelsRef: React.MutableRefObject<Array<string | null>>
-
-  // IDs
-  menuId: string
-  nodeId: string
-
-  // Floating UI
-  refs: ReturnType<typeof useFloating>["refs"]
-  floatingStyles: ReturnType<typeof useFloating>["floatingStyles"]
   context: ReturnType<typeof useFloating>["context"]
-  isPositioned: boolean
-
-  // Interaction handlers
-  getReferenceProps: ReturnType<typeof useInteractions>["getReferenceProps"]
-  getFloatingProps: ReturnType<typeof useInteractions>["getFloatingProps"]
-  getItemProps: ReturnType<typeof useInteractions>["getItemProps"]
-
-  // Event handlers
-  handleContextMenu: (e: MouseEvent) => void
-  handleArrowScroll: (amount: number) => void
-  handleArrowHide: () => void
-  handleTouchStart: () => void
-  handlePointerMove: (e: React.PointerEvent) => void
-  handleScroll: (e: React.UIEvent) => void
-  handleClose: () => void
-
-  // State setters
-  setActiveIndex: (index: number | null) => void
-  setHasFocusInside: (value: boolean) => void
-
-  // Context values
-  dropdownContextValue: {
-    activeIndex: number | null
-    setActiveIndex: (index: number | null) => void
-    getItemProps: ReturnType<typeof useInteractions>["getItemProps"]
-    setHasFocusInside: (value: boolean) => void
-    isOpen: boolean
-    selection: boolean
-    close: () => void
-  }
-
   contextMenuContextValue: {
     handleContextMenu: (e: MouseEvent) => void
   }
+  // Context values
+  dropdownContextValue: {
+    activeIndex: number | null
+    close: () => void
+    getItemProps: ReturnType<typeof useInteractions>["getItemProps"]
+    isOpen: boolean
+    selection: boolean
+    setActiveIndex: (index: number | null) => void
+    setHasFocusInside: (value: boolean) => void
+  }
+  elementsRef: React.MutableRefObject<Array<HTMLElement | null>>
+
+  floatingStyles: ReturnType<typeof useFloating>["floatingStyles"]
+  getFloatingProps: ReturnType<typeof useInteractions>["getFloatingProps"]
+  getItemProps: ReturnType<typeof useInteractions>["getItemProps"]
+
+  // Interaction handlers
+  getReferenceProps: ReturnType<typeof useInteractions>["getReferenceProps"]
+  handleArrowHide: () => void
+
+  handleArrowScroll: (amount: number) => void
+  handleClose: () => void
+  // Event handlers
+  handleContextMenu: (e: MouseEvent) => void
+  handlePointerMove: (e: React.PointerEvent) => void
+
+  handleScroll: (e: React.UIEvent) => void
+  handleTouchStart: () => void
+  // State
+  isControlledOpen: boolean
+
+  isNested: boolean
+  isPositioned: boolean
+  labelsRef: React.MutableRefObject<Array<string | null>>
+  // IDs
+  menuId: string
+  nodeId: string
+  // Floating UI
+  refs: ReturnType<typeof useFloating>["refs"]
+  // Refs
+  scrollRef: React.RefObject<HTMLDivElement>
+
+  scrollTop: number
+  // State setters
+  setActiveIndex: (index: number | null) => void
+
+  setHasFocusInside: (value: boolean) => void
+
+  touch: boolean
 }
 
 export function useContextMenu(props: UseContextMenuProps): UseContextMenuReturn {
@@ -332,49 +332,82 @@ export function useContextMenu(props: UseContextMenuProps): UseContextMenuReturn
     [handleContextMenu],
   )
 
-  return {
-    // State
-    isControlledOpen,
-    activeIndex,
-    scrollTop,
-    touch,
-    isNested,
+  // Memoize the return object to avoid creating new objects on every render
+  return useMemo(
+    () => ({
+      // State
+      isControlledOpen,
+      activeIndex,
+      scrollTop,
+      touch,
+      isNested,
 
-    // Refs
-    scrollRef,
-    elementsRef,
-    labelsRef,
+      // Refs
+      scrollRef,
+      elementsRef,
+      labelsRef,
 
-    // IDs
-    menuId,
-    nodeId,
+      // IDs
+      menuId,
+      nodeId,
 
-    // Floating UI
-    refs,
-    floatingStyles,
-    context,
-    isPositioned,
+      // Floating UI
+      refs,
+      floatingStyles,
+      context,
+      isPositioned,
 
-    // Interaction handlers
-    getReferenceProps,
-    getFloatingProps,
-    getItemProps,
+      // Interaction handlers
+      getReferenceProps,
+      getFloatingProps,
+      getItemProps,
 
-    // Event handlers
-    handleContextMenu,
-    handleArrowScroll,
-    handleArrowHide,
-    handleTouchStart,
-    handlePointerMove,
-    handleScroll,
-    handleClose,
+      // Event handlers
+      handleContextMenu,
+      handleArrowScroll,
+      handleArrowHide,
+      handleTouchStart,
+      handlePointerMove,
+      handleScroll,
+      handleClose,
 
-    // State setters
-    setActiveIndex,
-    setHasFocusInside,
+      // State setters
+      setActiveIndex,
+      setHasFocusInside,
 
-    // Context values
-    dropdownContextValue,
-    contextMenuContextValue,
-  }
+      // Context values
+      dropdownContextValue,
+      contextMenuContextValue,
+    }),
+    [
+      isControlledOpen,
+      activeIndex,
+      scrollTop,
+      touch,
+      isNested,
+      scrollRef,
+      elementsRef,
+      labelsRef,
+      menuId,
+      nodeId,
+      refs,
+      floatingStyles,
+      context,
+      isPositioned,
+      getReferenceProps,
+      getFloatingProps,
+      getItemProps,
+      handleContextMenu,
+      handleArrowScroll,
+      handleArrowHide,
+      handleTouchStart,
+      handlePointerMove,
+      handleScroll,
+      handleClose,
+      setActiveIndex,
+      setHasFocusInside,
+      dropdownContextValue,
+      contextMenuContextValue,
+    ],
+  )
 }
