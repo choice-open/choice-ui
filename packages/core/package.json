@@ -1,6 +1,6 @@
 {
   "name": "@choiceform/design-system",
-  "version": "0.8.8",
+  "version": "0.8.9",
   "description": "A modern React UI component library",
   "sideEffects": false,
   "type": "module",
