@@ -15,12 +15,12 @@ import type { Scope } from "@radix-ui/react-context"
 type Direction = "ltr" | "rtl"
 type Sizes = {
   content: number
-  viewport: number
   scrollbar: {
-    size: number
-    paddingStart: number
     paddingEnd: number
+    paddingStart: number
+    size: number
   }
+  viewport: number
 }
 
 /* -------------------------------------------------------------------------------------------------
@@ -33,24 +33,24 @@ type ScopedProps<P> = P & { __scopeScrollArea?: Scope }
 const [createScrollAreaContext, createScrollAreaScope] = createContextScope(SCROLL_AREA_NAME)
 
 type ScrollAreaContextValue = {
-  type: "auto" | "always" | "scroll" | "hover"
-  dir: Direction
-  scrollHideDelay: number
-  scrollArea: ScrollAreaElement | null
-  viewport: ScrollAreaViewportElement | null
-  onViewportChange(viewport: ScrollAreaViewportElement | null): void
   content: HTMLDivElement | null
+  dir: Direction
   onContentChange(content: HTMLDivElement): void
-  scrollbarX: ScrollAreaScrollbarElement | null
-  onScrollbarXChange(scrollbar: ScrollAreaScrollbarElement | null): void
-  scrollbarXEnabled: boolean
-  onScrollbarXEnabledChange(rendered: boolean): void
-  scrollbarY: ScrollAreaScrollbarElement | null
-  onScrollbarYChange(scrollbar: ScrollAreaScrollbarElement | null): void
-  scrollbarYEnabled: boolean
-  onScrollbarYEnabledChange(rendered: boolean): void
-  onCornerWidthChange(width: number): void
   onCornerHeightChange(height: number): void
+  onCornerWidthChange(width: number): void
+  onScrollbarXChange(scrollbar: ScrollAreaScrollbarElement | null): void
+  onScrollbarXEnabledChange(rendered: boolean): void
+  onScrollbarYChange(scrollbar: ScrollAreaScrollbarElement | null): void
+  onScrollbarYEnabledChange(rendered: boolean): void
+  onViewportChange(viewport: ScrollAreaViewportElement | null): void
+  scrollArea: ScrollAreaElement | null
+  scrollHideDelay: number
+  scrollbarX: ScrollAreaScrollbarElement | null
+  scrollbarXEnabled: boolean
+  scrollbarY: ScrollAreaScrollbarElement | null
+  scrollbarYEnabled: boolean
+  type: "auto" | "always" | "scroll" | "hover"
+  viewport: ScrollAreaViewportElement | null
 }
 
 const [ScrollAreaProvider, useScrollAreaContext] =
@@ -59,9 +59,9 @@ const [ScrollAreaProvider, useScrollAreaContext] =
 type ScrollAreaElement = React.ComponentRef<typeof Primitive.div>
 type PrimitiveDivProps = React.ComponentPropsWithoutRef<typeof Primitive.div>
 interface ScrollAreaProps extends PrimitiveDivProps {
-  type?: ScrollAreaContextValue["type"]
   dir?: ScrollAreaContextValue["dir"]
   scrollHideDelay?: number
+  type?: ScrollAreaContextValue["type"]
 }
 
 const ScrollArea = React.forwardRef<ScrollAreaElement, ScrollAreaProps>(
@@ -111,13 +111,15 @@ const ScrollArea = React.forwardRef<ScrollAreaElement, ScrollAreaProps>(
           dir={direction}
           {...scrollAreaProps}
           ref={composedRefs}
-          style={{
-            position: "relative",
-            // Pass corner sizes as CSS vars to reduce re-renders of context consumers
-            ["--radix-scroll-area-corner-width" as any]: cornerWidth + "px",
-            ["--radix-scroll-area-corner-height" as any]: cornerHeight + "px",
-            ...props.style,
-          }}
+          style={
+            {
+              position: "relative",
+              // Pass corner sizes as CSS vars to reduce re-renders of context consumers
+              "--radix-scroll-area-corner-width": cornerWidth + "px",
+              "--radix-scroll-area-corner-height": cornerHeight + "px",
+              ...props.style,
+            } as React.CSSProperties
+          }
         />
       </ScrollAreaProvider>
     )
@@ -233,9 +235,17 @@ const ScrollAreaScrollbar = React.forwardRef<ScrollAreaScrollbarElement, ScrollA
     const isHorizontal = props.orientation === "horizontal"
 
     React.useEffect(() => {
-      isHorizontal ? onScrollbarXEnabledChange(true) : onScrollbarYEnabledChange(true)
+      if (isHorizontal) {
+        onScrollbarXEnabledChange(true)
+      } else {
+        onScrollbarYEnabledChange(true)
+      }
       return () => {
-        isHorizontal ? onScrollbarXEnabledChange(false) : onScrollbarYEnabledChange(false)
+        if (isHorizontal) {
+          onScrollbarXEnabledChange(false)
+        } else {
+          onScrollbarYEnabledChange(false)
+        }
       }
     }, [isHorizontal, onScrollbarXEnabledChange, onScrollbarYEnabledChange])
 
@@ -314,6 +324,7 @@ const ScrollAreaScrollbarHover = React.forwardRef<
     </Presence>
   )
 })
+ScrollAreaScrollbarHover.displayName = "ScrollAreaScrollbarHover"
 
 type ScrollAreaScrollbarScrollElement = ScrollAreaScrollbarVisibleElement
 interface ScrollAreaScrollbarScrollProps extends ScrollAreaScrollbarVisibleProps {
@@ -386,6 +397,7 @@ const ScrollAreaScrollbarScroll = React.forwardRef<
     </Presence>
   )
 })
+ScrollAreaScrollbarScroll.displayName = "ScrollAreaScrollbarScroll"
 
 type ScrollAreaScrollbarAutoElement = ScrollAreaScrollbarVisibleElement
 interface ScrollAreaScrollbarAutoProps extends ScrollAreaScrollbarVisibleProps {
@@ -421,6 +433,7 @@ const ScrollAreaScrollbarAuto = React.forwardRef<
     </Presence>
   )
 })
+ScrollAreaScrollbarAuto.displayName = "ScrollAreaScrollbarAuto"
 
 /* -----------------------------------------------------------------------------------------------*/
 
@@ -508,19 +521,20 @@ const ScrollAreaScrollbarVisible = React.forwardRef<
 
   return null
 })
+ScrollAreaScrollbarVisible.displayName = "ScrollAreaScrollbarVisible"
 
 /* -----------------------------------------------------------------------------------------------*/
 
 type ScrollAreaScrollbarAxisPrivateProps = {
   hasThumb: boolean
-  sizes: Sizes
+  onDragScroll(pointerPos: number): void
   onSizesChange(sizes: Sizes): void
   onThumbChange(thumb: ScrollAreaThumbElement | null): void
   onThumbPointerDown(pointerPos: number): void
   onThumbPointerUp(): void
   onThumbPositionChange(): void
   onWheelScroll(scrollPos: number): void
-  onDragScroll(pointerPos: number): void
+  sizes: Sizes
 }
 
 type ScrollAreaScrollbarAxisElement = ScrollAreaScrollbarImplElement
@@ -548,13 +562,15 @@ const ScrollAreaScrollbarX = React.forwardRef<
       {...scrollbarProps}
       ref={composeRefs}
       sizes={sizes}
-      style={{
-        bottom: 0,
-        left: context.dir === "rtl" ? "var(--radix-scroll-area-corner-width)" : 0,
-        right: context.dir === "ltr" ? "var(--radix-scroll-area-corner-width)" : 0,
-        ["--radix-scroll-area-thumb-width" as any]: getThumbSize(sizes) + "px",
-        ...props.style,
-      }}
+      style={
+        {
+          bottom: 0,
+          left: context.dir === "rtl" ? "var(--radix-scroll-area-corner-width)" : 0,
+          right: context.dir === "ltr" ? "var(--radix-scroll-area-corner-width)" : 0,
+          "--radix-scroll-area-thumb-width": getThumbSize(sizes) + "px",
+          ...props.style,
+        } as React.CSSProperties
+      }
       onThumbPointerDown={(pointerPos) => props.onThumbPointerDown(pointerPos.x)}
       onDragScroll={(pointerPos) => props.onDragScroll(pointerPos.x)}
       onWheelScroll={(event, maxScrollPos) => {
@@ -583,6 +599,7 @@ const ScrollAreaScrollbarX = React.forwardRef<
     />
   )
 })
+ScrollAreaScrollbarX.displayName = "ScrollAreaScrollbarX"
 
 const ScrollAreaScrollbarY = React.forwardRef<
   ScrollAreaScrollbarAxisElement,
@@ -604,14 +621,16 @@ const ScrollAreaScrollbarY = React.forwardRef<
       {...scrollbarProps}
       ref={composeRefs}
       sizes={sizes}
-      style={{
-        top: 0,
-        right: context.dir === "ltr" ? 0 : undefined,
-        left: context.dir === "rtl" ? 0 : undefined,
-        bottom: "var(--radix-scroll-area-corner-height)",
-        ["--radix-scroll-area-thumb-height" as any]: getThumbSize(sizes) + "px",
-        ...props.style,
-      }}
+      style={
+        {
+          top: 0,
+          right: context.dir === "ltr" ? 0 : undefined,
+          left: context.dir === "rtl" ? 0 : undefined,
+          bottom: "var(--radix-scroll-area-corner-height)",
+          "--radix-scroll-area-thumb-height": getThumbSize(sizes) + "px",
+          ...props.style,
+        } as React.CSSProperties
+      }
       onThumbPointerDown={(pointerPos) => props.onThumbPointerDown(pointerPos.y)}
       onDragScroll={(pointerPos) => props.onDragScroll(pointerPos.y)}
       onWheelScroll={(event, maxScrollPos) => {
@@ -640,16 +659,17 @@ const ScrollAreaScrollbarY = React.forwardRef<
     />
   )
 })
+ScrollAreaScrollbarY.displayName = "ScrollAreaScrollbarY"
 
 /* -----------------------------------------------------------------------------------------------*/
 
 type ScrollbarContext = {
   hasThumb: boolean
-  scrollbar: ScrollAreaScrollbarElement | null
   onThumbChange(thumb: ScrollAreaThumbElement | null): void
-  onThumbPointerUp(): void
   onThumbPointerDown(pointerPos: { x: number; y: number }): void
+  onThumbPointerUp(): void
   onThumbPositionChange(): void
+  scrollbar: ScrollAreaScrollbarElement | null
 }
 
 const [ScrollbarProvider, useScrollbarContext] =
@@ -657,15 +677,15 @@ const [ScrollbarProvider, useScrollbarContext] =
 
 type ScrollAreaScrollbarImplElement = React.ComponentRef<typeof Primitive.div>
 type ScrollAreaScrollbarImplPrivateProps = {
-  sizes: Sizes
   hasThumb: boolean
-  onThumbChange: ScrollbarContext["onThumbChange"]
-  onThumbPointerUp: ScrollbarContext["onThumbPointerUp"]
-  onThumbPointerDown: ScrollbarContext["onThumbPointerDown"]
-  onThumbPositionChange: ScrollbarContext["onThumbPositionChange"]
-  onWheelScroll(event: WheelEvent, maxScrollPos: number): void
   onDragScroll(pointerPos: { x: number; y: number }): void
   onResize(): void
+  onThumbChange: ScrollbarContext["onThumbChange"]
+  onThumbPointerDown: ScrollbarContext["onThumbPointerDown"]
+  onThumbPointerUp: ScrollbarContext["onThumbPointerUp"]
+  onThumbPositionChange: ScrollbarContext["onThumbPositionChange"]
+  onWheelScroll(event: WheelEvent, maxScrollPos: number): void
+  sizes: Sizes
 }
 interface ScrollAreaScrollbarImplProps
   extends Omit<PrimitiveDivProps, keyof ScrollAreaScrollbarImplPrivateProps>,
@@ -717,8 +737,9 @@ const ScrollAreaScrollbarImpl = React.forwardRef<
       const isScrollbarWheel = scrollbar?.contains(element)
       if (isScrollbarWheel) handleWheelScroll(event, maxScrollPos)
     }
-    document.addEventListener("wheel", handleWheel, { passive: false })
-    return () => document.removeEventListener("wheel", handleWheel, { passive: false } as any)
+    document.addEventListener("wheel", handleWheel, { passive: false } as EventListenerOptions)
+    return () =>
+      document.removeEventListener("wheel", handleWheel, { passive: false } as EventListenerOptions)
   }, [viewport, scrollbar, maxScrollPos, handleWheelScroll])
 
   /**
@@ -771,6 +792,7 @@ const ScrollAreaScrollbarImpl = React.forwardRef<
     </ScrollbarProvider>
   )
 })
+ScrollAreaScrollbarImpl.displayName = "ScrollAreaScrollbarImpl"
 
 /* -------------------------------------------------------------------------------------------------
  * ScrollAreaThumb
@@ -801,9 +823,10 @@ const ScrollAreaThumb = React.forwardRef<ScrollAreaThumbElement, ScrollAreaThumb
     )
   },
 )
+ScrollAreaThumb.displayName = THUMB_NAME
 
 type ScrollAreaThumbImplElement = React.ComponentRef<typeof Primitive.div>
-interface ScrollAreaThumbImplProps extends PrimitiveDivProps {}
+type ScrollAreaThumbImplProps = PrimitiveDivProps
 
 const ScrollAreaThumbImpl = React.forwardRef<ScrollAreaThumbImplElement, ScrollAreaThumbImplProps>(
   (props: ScopedProps<ScrollAreaThumbImplProps>, forwardedRef) => {
@@ -868,8 +891,7 @@ const ScrollAreaThumbImpl = React.forwardRef<ScrollAreaThumbImplElement, ScrollA
     )
   },
 )
-
-ScrollAreaThumb.displayName = THUMB_NAME
+ScrollAreaThumbImpl.displayName = "ScrollAreaThumbImpl"
 
 /* -------------------------------------------------------------------------------------------------
  * ScrollAreaCorner
@@ -878,7 +900,7 @@ ScrollAreaThumb.displayName = THUMB_NAME
 const CORNER_NAME = "ScrollAreaCorner"
 
 type ScrollAreaCornerElement = ScrollAreaCornerImplElement
-interface ScrollAreaCornerProps extends ScrollAreaCornerImplProps {}
+type ScrollAreaCornerProps = ScrollAreaCornerImplProps
 
 const ScrollAreaCorner = React.forwardRef<ScrollAreaCornerElement, ScrollAreaCornerProps>(
   (props: ScopedProps<ScrollAreaCornerProps>, forwardedRef) => {
@@ -899,7 +921,7 @@ ScrollAreaCorner.displayName = CORNER_NAME
 /* -----------------------------------------------------------------------------------------------*/
 
 type ScrollAreaCornerImplElement = React.ComponentRef<typeof Primitive.div>
-interface ScrollAreaCornerImplProps extends PrimitiveDivProps {}
+type ScrollAreaCornerImplProps = PrimitiveDivProps
 
 const ScrollAreaCornerImpl = React.forwardRef<
   ScrollAreaCornerImplElement,
@@ -939,6 +961,7 @@ const ScrollAreaCornerImpl = React.forwardRef<
     />
   ) : null
 })
+ScrollAreaCornerImpl.displayName = "ScrollAreaCornerImpl"
 
 /* -----------------------------------------------------------------------------------------------*/
 
