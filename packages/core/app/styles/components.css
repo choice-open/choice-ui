@@ -147,29 +147,29 @@
     }
   }
 
-  .condition-group {
+  .condition__group {
     grid-template-columns: 1fr 1.5rem;
     grid-template-rows: repeat(auto-fill, minmax(0, 1fr));
   }
 
-  .logical-operator {
+  .condition__logical-operator {
+    top: 2.25rem;
+    bottom: 2.75rem;
     &:before {
       position: absolute;
       content: "";
       width: 1.5rem;
       left: 1.5rem;
-      top: 3.5rem;
-      bottom: 2rem;
+      top: 1.25rem;
+      bottom: 1.25rem;
       border-radius: var(--radius-lg) 0 0 var(--radius-lg);
       border-left: 1px solid var(--color-default-boundary);
       border-top: 1px solid var(--color-default-boundary);
       border-bottom: 1px solid var(--color-default-boundary);
     }
     &[data-level="0"] {
-      &:before {
-        top: 1.5rem;
-        bottom: 1.5rem;
-      }
+      top: 0.25rem;
+      bottom: 2.25rem;
     }
   }
 

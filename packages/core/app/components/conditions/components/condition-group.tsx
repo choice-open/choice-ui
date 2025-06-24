@@ -1,8 +1,10 @@
-import React, { useCallback, useRef, useState } from "react"
+import { GripVerticalSmall } from "@choiceform/icons-react"
 import { nanoid } from "nanoid"
+import React, { useCallback, useRef, useState } from "react"
+import { IconButton } from "~/components/icon-button"
+import { Input } from "~/components/input"
 import { tcx } from "~/utils"
 import { useDragAndDrop } from "../hooks"
-import { generateGroupName } from "../utils"
 import {
   ComparisonOperator,
   LogicalOperator,
@@ -10,6 +12,7 @@ import {
   type ConditionGroupProps,
   type ConditionGroup as ConditionGroupType,
 } from "../types"
+import { generateGroupName } from "../utils"
 import { ConditionItem } from "./condition-item"
 import {
   AddConditionDropdown,
@@ -17,9 +20,6 @@ import {
   GroupActionsDropdown,
   LogicalOperatorChip,
 } from "./group-renderers"
-import { GripVerticalSmall } from "@choiceform/icons-react"
-import { IconButton } from "~/components/icon-button"
-import { Input } from "~/components/input"
 
 export function ConditionGroup({
   group,
@@ -401,7 +401,7 @@ export function ConditionGroup({
           // 嵌套组添加背景色和边框
           level > 0
             ? "bg-default-background rounded-lg border border-dashed py-2 pr-2"
-            : "condition-group",
+            : "condition__group",
           hasMultipleItems ? "pl-12" : "pl-2",
         )}
         onDragOver={(e) => handlers.handleGroupDragOver(e, group.conditions.length)}
@@ -414,7 +414,7 @@ export function ConditionGroup({
         {/* 逻辑操作符覆盖层 - 覆盖在所有条件上方 */}
         {hasMultipleItems && (
           <div
-            className="logical-operator pointer-events-none absolute top-0 bottom-8 left-0 flex items-center justify-center"
+            className="condition__logical-operator pointer-events-none absolute left-0 flex items-center justify-center"
             data-level={level}
           >
             <div className="pointer-events-auto">
@@ -461,7 +461,6 @@ export function ConditionGroup({
               <div
                 className="hover:bg-secondary-background flex h-6 items-center truncate rounded-md border border-transparent px-1 font-medium"
                 onClick={() => setGroupNameEditing(true)}
-                title="Click to edit group name"
               >
                 {group.name || "Unnamed Group"}
               </div>

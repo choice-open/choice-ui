@@ -15,7 +15,6 @@ export function LogicalOperatorChip({ operator, disabled, onChange }: LogicalOpe
     <div className="flex w-12 items-center justify-center px-1">
       <Chip
         className="bg-default-background ring-default-background relative z-2 ring-2"
-        variant="accent"
         onClick={() => {
           const newOperator =
             operator === LogicalOperator.And ? LogicalOperator.Or : LogicalOperator.And
