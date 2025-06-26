@@ -1,6 +1,6 @@
 {
   "name": "@choiceform/design-system",
-  "version": "0.9.3",
+  "version": "0.9.4",
   "description": "A modern React UI component library",
   "sideEffects": false,
   "type": "module",
@@ -54,7 +54,7 @@
     "@radix-ui/react-tooltip": "1.1.7",
     "@tanstack/react-virtual": "^3.12.1",
     "ahooks": "^3.8.0",
-    "allotment": "^1.20.2",
+    "allotment": "^1.20.4",
     "chroma-js": "^2.4.2",
     "classnames": "^2.5.1",
     "date-fns": "^4.1.0",

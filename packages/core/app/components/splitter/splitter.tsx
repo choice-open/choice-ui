@@ -3,10 +3,8 @@ import {
   type AllotmentProps,
   type AllotmentHandle as SplitterHandle,
 } from "allotment"
-import "allotment/dist/style.css"
-
-interface SplitterProps extends AllotmentProps {}
+// import "allotment/dist/style.css"
 
 export { Splitter }
 
-export type { SplitterHandle, SplitterProps }
+export type { SplitterHandle, AllotmentProps }

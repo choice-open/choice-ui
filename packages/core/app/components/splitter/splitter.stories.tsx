@@ -8,6 +8,9 @@ import { Button } from "../button"
 const meta = {
   title: "Layouts/Splitter",
   component: Splitter,
+  parameters: {
+    layout: "fullscreen",
+  },
   tags: ["new"],
 } satisfies Meta<typeof Splitter>
 
@@ -97,7 +100,10 @@ export const Pane = {
 export const Nested = {
   render: function NestedStory() {
     return (
-      <Splitter minSize={100}>
+      <Splitter
+        minSize={100}
+        className="h-screen w-screen"
+      >
         <Splitter.Pane maxSize={400}>
           <Splitter vertical>
             <Splitter.Pane minSize={100}>
@@ -138,6 +144,7 @@ export const Close = {
       <Splitter
         vertical
         minSize={100}
+        className="h-screen w-screen"
       >
         <Splitter.Pane maxSize={400}>
           <Splitter>
