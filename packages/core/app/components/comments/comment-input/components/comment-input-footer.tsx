@@ -1,8 +1,9 @@
 import { ArrowUp, AtSign, Image, Smile } from "@choiceform/icons-react"
 import { ChangeEvent, useRef } from "react"
-import { Button } from "../../../../button"
-import { IconButton } from "../../../../icon-button"
-import { InputDefaultText } from "../../types"
+import { tcx } from "~/utils"
+import { Button } from "~/components/button"
+import { IconButton } from "~/components/icon-button"
+import type { InputDefaultText } from "../../types"
 import { CommentInputTv } from "../tv"
 
 interface CommentInputFooterProps {

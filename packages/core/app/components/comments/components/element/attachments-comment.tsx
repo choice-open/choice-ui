@@ -5,9 +5,9 @@ import { CommentInputElementTv } from "./tv"
 
 interface AttachmentsCommentProps extends Omit<RenderElementProps, "element" | "children"> {
   attachments: Attachment[]
-  imageElement: ImageElement
-  handleOnImageClick?: (attachmentIndex?: number) => void
   children?: React.ReactNode
+  handleOnImageClick?: (attachmentIndex?: number) => void
+  imageElement: ImageElement
 }
 
 export const AttachmentsComment = memo(function AttachmentsComment(props: AttachmentsCommentProps) {

@@ -56,9 +56,24 @@ import { DropdownContext, DropdownSelectionContext } from "./dropdown-context"
 const PORTAL_ROOT_ID = "floating-menu-root"
 const DEFAULT_OFFSET = 4
 
+interface FloatingFocusManagerProps {
+  closeOnFocusOut?: boolean
+  disabled?: boolean
+  getInsideElements?: () => Element[]
+  guards?: boolean
+  initialFocus?: number | React.MutableRefObject<HTMLElement | null>
+  modal?: boolean
+  order?: Array<"reference" | "floating" | "content">
+  outsideElementsInert?: boolean
+  restoreFocus?: boolean
+  returnFocus?: boolean
+  visuallyHiddenDismiss?: boolean | string
+}
+
 export interface DropdownProps extends HTMLProps<HTMLDivElement> {
   children?: ReactNode
   disabledNested?: boolean
+  focusManagerProps?: FloatingFocusManagerProps
   matchTriggerWidth?: boolean
   nested?: boolean
   offset?: number
@@ -94,6 +109,10 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
     matchTriggerWidth = false,
     open: controlledOpen,
     onOpenChange,
+    focusManagerProps = {
+      modal: false,
+      returnFocus: false,
+    },
     ...rest
   } = props
 
@@ -357,9 +376,8 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
                 >
                   <FloatingFocusManager
                     context={context}
-                    modal={false}
                     initialFocus={isNested ? -1 : 0}
-                    returnFocus={false}
+                    {...focusManagerProps}
                   >
                     <div
                       id={menuId}

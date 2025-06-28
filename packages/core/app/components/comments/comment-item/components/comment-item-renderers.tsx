@@ -1,9 +1,5 @@
 import { RenderElementProps } from "slate-react"
-import type {
-  CustomElement,
-  ImageElement,
-  MentionElement,
-} from "~/components/experimental/comments/comment-input/types"
+import type { CustomElement, ImageElement, MentionElement } from "../../comment-input/types"
 import { AttachmentsComment, Mention } from "../../components/element"
 
 interface ExtendedRenderElementProps extends RenderElementProps {
@@ -14,7 +10,7 @@ export const renderElementWrapper = (props: ExtendedRenderElementProps) => {
   const { attributes, children, element, handleOnImageClick } = props
 
   switch ((element as CustomElement).type) {
-    case "mention":
+    case "mention": {
       const mentionElement = element as MentionElement
       return (
         <Mention
@@ -23,7 +19,8 @@ export const renderElementWrapper = (props: ExtendedRenderElementProps) => {
           className="cursor-pointer"
         />
       )
-    case "image":
+    }
+    case "image": {
       const imageElement = element as ImageElement
       return (
         <AttachmentsComment
@@ -33,6 +30,7 @@ export const renderElementWrapper = (props: ExtendedRenderElementProps) => {
           attributes={attributes}
         />
       )
+    }
     case "paragraph":
       return (
         <p

@@ -17,8 +17,9 @@ import { flushSync } from "react-dom"
 import { Range } from "slate"
 import { ReactEditor } from "slate-react"
 import { useEventCallback } from "usehooks-ts"
-import { Avatar } from "../../../../avatar"
-import { Menus, MenusBase, MenuScrollArrow } from "../../../../menus"
+import { tcx } from "~/utils"
+import { Avatar } from "~/components/avatar"
+import { MenusBase, MenuItem, MenuScrollArrow } from "~/components/menus"
 import type { User } from "../../types"
 
 const PORTAL_ROOT_ID = "floating-menu-root"
@@ -322,7 +323,7 @@ export const CommentInputMentionPopover = ({
               style={{ overflow: "auto" }}
             >
               {filteredUsers.map((user, index) => (
-                <Menus.Item
+                <MenuItem
                   key={user.id}
                   active={index === activeIndex}
                   onMouseUp={() => handleSelectWithFocus(user)}
@@ -330,7 +331,7 @@ export const CommentInputMentionPopover = ({
                     onKeyNavigation(index)
                     checkNeedsScrolling()
                   }}
-                  ref={(node) => {
+                  ref={(node: HTMLElement | null) => {
                     elementsRef.current[index] = node
                   }}
                   {...getItemProps({
@@ -345,7 +346,7 @@ export const CommentInputMentionPopover = ({
                     />
                   ) : null}
                   <span className="flex-1 truncate">{user.name}</span>
-                </Menus.Item>
+                </MenuItem>
               ))}
             </MenusBase>
 

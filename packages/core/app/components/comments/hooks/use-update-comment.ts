@@ -10,29 +10,29 @@ interface UseUpdateCommentOptions {
 
 interface UseUpdateCommentReturn {
   /**
-   * ID of the comment currently being edited
-   */
-  editingCommentId: string | null
-  /**
    * Current content being edited
    */
   currentValue: Descendant[]
   /**
-   * Handler to start editing a comment
+   * ID of the comment currently being edited
    */
-  handleEdit: (comment: SubmittedCommentData) => void
+  editingCommentId: string | null
+  /**
+   * Handler to cancel editing
+   */
+  handleCancel: () => void
   /**
    * Handler to delete a comment (soft delete)
    */
   handleDelete: (comment: SubmittedCommentData) => void
   /**
+   * Handler to start editing a comment
+   */
+  handleEdit: (comment: SubmittedCommentData) => void
+  /**
    * Handler to save edited comment
    */
   handleSave: (newContent: Descendant[]) => void
-  /**
-   * Handler to cancel editing
-   */
-  handleCancel: () => void
   /**
    * Set current value being edited
    */

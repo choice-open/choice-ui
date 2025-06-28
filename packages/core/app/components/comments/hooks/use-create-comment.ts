@@ -5,9 +5,9 @@ import { nanoid } from "nanoid"
 import { useEventCallback } from "usehooks-ts"
 
 interface UseCreateCommentOptions {
+  author: User
   comments: SubmittedCommentData[]
   setComments: (comments: SubmittedCommentData[]) => void
-  author: User
   setMeasureCommentId: (id: string | null) => void
 }
 

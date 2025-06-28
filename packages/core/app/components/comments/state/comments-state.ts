@@ -10,23 +10,23 @@ const PAGE_SIZE = 20
 // 评论状态存储
 export const comments$ = observable<{
   byId: Record<string, SubmittedCommentData>
-  // 用于追踪评论的顺序，从新到旧排序
-  order: string[]
-  // 当前正在编辑的评论 ID
-  editingId: string | null
   // 当前编辑内容
   editingContent: Descendant[]
+  // 当前正在编辑的评论 ID
+  editingId: string | null
+  // 新评论通知
+  newComment: {
+    hasNew: boolean
+    id: string | null
+  }
+  // 用于追踪评论的顺序，从新到旧排序
+  order: string[]
   // 分页和加载相关状态
   pagination: {
     currentPage: number
     hasMore: boolean
     isLoading: boolean
     totalCount: number
-  }
-  // 新评论通知
-  newComment: {
-    hasNew: boolean
-    id: string | null
   }
 }>({
   byId: {},

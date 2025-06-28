@@ -6,9 +6,9 @@ import type { MentionElement } from "../../comment-input/types"
 import { CommentInputElementTv } from "./tv"
 
 interface MentionProps extends Omit<RenderElementProps, "element" | "children"> {
-  mentionElement: MentionElement
   children?: React.ReactNode
   className?: string
+  mentionElement: MentionElement
 }
 
 export const Mention = memo(function Mention(props: MentionProps) {

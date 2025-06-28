@@ -4,9 +4,9 @@ import { createEditor, Descendant } from "slate"
 import { withHistory } from "slate-history"
 import { Editable, RenderElementProps, Slate, withReact } from "slate-react"
 import { Avatar } from "~/components/avatar"
-import { Dropdown } from "../../../dropdown"
-import { IconButton } from "../../../icon-button"
-import { Tooltip } from "../../../tooltip"
+import { Dropdown } from "~/components/dropdown"
+import { IconButton } from "~/components/icon-button"
+import { Tooltip } from "~/components/tooltip"
 import { renderLeaf } from "../comment-input/components"
 import type { ItemDefaultText, Reaction, User } from "../types"
 import { CommentItemReactions, EmptyReactionButton, renderElementWrapper } from "./components"
@@ -14,26 +14,26 @@ import { DateLocale, useFormattedDate } from "./hooks"
 import { CommentItemTv } from "./tv"
 
 export interface CommentItemProps {
-  className?: string
   author: User
+  className?: string
   created_at: Date
-  message_meta: Descendant[]
-  locale?: DateLocale
-  handleOnImageClick?: (attachmentIndex?: number) => void
-  handleOnEdit?: () => void
+  defaultText?: ItemDefaultText
   handleOnDelete?: () => void
-  reactionsPopoverIsOpen?: boolean
-  handleOnReactionPopoverClick?: () => void
+  handleOnEdit?: () => void
+  handleOnImageClick?: (attachmentIndex?: number) => void
   handleOnReactionClick?: (reaction: GroupedReaction) => void
+  handleOnReactionPopoverClick?: () => void
+  locale?: DateLocale
+  message_meta: Descendant[]
   reactionAnchorRef?: React.RefObject<HTMLButtonElement>
   reactions: Reaction[] | null
-  defaultText?: ItemDefaultText
+  reactionsPopoverIsOpen?: boolean
 }
 
 // Helper type for grouped reactions
 interface GroupedReaction {
-  emoji: string
   count: number
+  emoji: string
   users: User[]
 }
 
@@ -71,7 +71,7 @@ export const CommentItem = memo(
         return renderElementWrapper({
           ...props,
           handleOnImageClick,
-        } as any)
+        })
       },
       [handleOnImageClick],
     )
@@ -103,8 +103,10 @@ export const CommentItem = memo(
             </IconButton>
           </Dropdown.Trigger>
 
-          <Dropdown.Item onMouseUp={handleOnEdit}>{defaultText.DELETE}</Dropdown.Item>
-          <Dropdown.Item onMouseUp={handleOnDelete}>{defaultText.DELETE}</Dropdown.Item>
+          <Dropdown.Content>
+            <Dropdown.Item onMouseUp={handleOnEdit}>{defaultText.EDIT}</Dropdown.Item>
+            <Dropdown.Item onMouseUp={handleOnDelete}>{defaultText.DELETE}</Dropdown.Item>
+          </Dropdown.Content>
         </Dropdown>
 
         {reactions === null ? (

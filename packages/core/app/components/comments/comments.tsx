@@ -3,9 +3,9 @@ import { createRef, forwardRef, HTMLProps, useMemo, useRef, useState } from "rea
 import { Descendant } from "slate"
 import { useEventCallback } from "usehooks-ts"
 import { tcx } from "~/utils"
-import { Avatar } from "../../avatar"
-import { Button } from "../../button"
-import { Scroll } from "../../scroll"
+import { Avatar } from "~/components/avatar"
+import { Button } from "~/components/button"
+import { Scroll } from "~/components/scroll"
 import { CommentInput } from "./comment-input"
 import { CommentInputEmojiPopover } from "./comment-input/components"
 import { CommentItem } from "./comment-item"
@@ -16,9 +16,9 @@ import { CommentsTv } from "./tv"
 import type { DefaultText, SubmittedCommentData, User } from "./types"
 
 interface CommentsProps extends HTMLProps<HTMLDivElement> {
-  className?: string
-  users?: User[]
   author: User
+  className?: string
+  defaultText?: DefaultText
   // 可选的获取更多评论的函数
   fetchMoreComments?: (
     page: number,
@@ -31,120 +31,120 @@ interface CommentsProps extends HTMLProps<HTMLDivElement> {
   initialComments?: SubmittedCommentData[]
   // 评论总数（可选，如果不提供则使用initialComments.length）
   totalCount?: number
-  defaultText?: DefaultText
+  users?: User[]
 }
 
-export const Comments = observer(
-  forwardRef<HTMLDivElement, CommentsProps>((props, ref) => {
-    const {
-      className,
-      users,
-      author,
-      fetchMoreComments,
-      initialComments = [],
-      totalCount,
-      defaultText = {
-        LOAD_MORE: "Load more comments",
-        LOADING: "Loading...",
-      },
-      ...rest
-    } = props
+const CommentsComponent = forwardRef<HTMLDivElement, CommentsProps>((props, ref) => {
+  const {
+    className,
+    users,
+    author,
+    fetchMoreComments,
+    initialComments = [],
+    totalCount,
+    defaultText = {
+      LOAD_MORE: "Load more comments",
+      LOADING: "Loading...",
+    },
+    ...rest
+  } = props
 
-    // 滚动引用
-    const scrollToBottomRef = useRef<HTMLDivElement>(null)
-    const inputContainerRef = useRef<HTMLDivElement>(null)
+  // 滚动引用
+  const scrollToBottomRef = useRef<HTMLDivElement>(null)
+  const inputContainerRef = useRef<HTMLDivElement>(null)
 
-    const [openImagePreviewDialog, setOpenImagePreviewDialog] = useState(false)
+  const [openImagePreviewDialog, setOpenImagePreviewDialog] = useState(false)
 
-    // 使用 Legend State 的评论状态
-    const {
-      comments: filteredComments,
-      editingId,
-      editingContent,
-      pagination,
-      newComment,
-      startEditing,
-      cancelEditing,
-      saveEditedComment,
-      createComment,
-      deleteComment,
-      setEditingContent,
-      toggleReaction,
-      loadMoreComments,
-      initComments,
-    } = useCommentsState()
+  // 使用 Legend State 的评论状态
+  const {
+    comments: filteredComments,
+    editingId,
+    editingContent,
+    pagination,
+    newComment,
+    startEditing,
+    cancelEditing,
+    saveEditedComment,
+    createComment,
+    deleteComment,
+    setEditingContent,
+    toggleReaction,
+    loadMoreComments,
+    initComments,
+  } = useCommentsState()
 
-    // 使用滚动到底部的hook
-    const { smoothScrollToBottom, setShouldScrollToBottom, setTyping, handleScroll } =
-      useScrollToBottom(scrollToBottomRef, inputContainerRef, [filteredComments.length])
+  // 使用滚动到底部的hook
+  const { smoothScrollToBottom, setShouldScrollToBottom, setTyping, handleScroll } =
+    useScrollToBottom(scrollToBottomRef, inputContainerRef, [filteredComments.length])
 
-    const isEmpty = useMemo(() => {
-      return filteredComments.length === 0
-    }, [filteredComments])
+  const isEmpty = useMemo(() => {
+    return filteredComments.length === 0
+  }, [filteredComments])
 
-    // 加载更多评论
-    const handleLoadMore = async () => {
-      // 加载更多时，不应该自动滚动到底部
-      setShouldScrollToBottom(false)
-      await loadMoreComments(fetchMoreComments)
+  // 加载更多评论
+  const handleLoadMore = async () => {
+    // 加载更多时，不应该自动滚动到底部
+    setShouldScrollToBottom(false)
+    await loadMoreComments(fetchMoreComments)
+  }
+
+  // 创建表情按钮引用
+  const emojiButtonRefs = useMemo(() => {
+    return filteredComments.map(() => createRef<HTMLButtonElement>())
+  }, [filteredComments])
+
+  // 默认引用
+  const fallbackRef = useRef<HTMLButtonElement>(null)
+
+  // 跟踪活动的表情按钮
+  const [activeEmojiButtonIndex, setActiveEmojiButtonIndex] = useState<number | null>(null)
+  const [openEmojiPopover, setOpenEmojiPopover] = useState<number | null>(null)
+
+  const [onOpenImage, setOnOpenImage] = useState<number | undefined>(undefined)
+  // 添加当前点击的评论ID状态
+  const [currentCommentId, setCurrentCommentId] = useState<string | null>(null)
+
+  // 获取当前活动的按钮引用
+  const getActiveButtonRef = useMemo(() => {
+    if (activeEmojiButtonIndex !== null && emojiButtonRefs[activeEmojiButtonIndex]) {
+      return emojiButtonRefs[activeEmojiButtonIndex]
     }
+    return fallbackRef
+  }, [activeEmojiButtonIndex, emojiButtonRefs])
 
-    // 创建表情按钮引用
-    const emojiButtonRefs = useMemo(() => {
-      return filteredComments.map(() => createRef<HTMLButtonElement>())
-    }, [filteredComments])
+  const styles = CommentsTv({ isEmpty })
 
-    // 默认引用
-    const fallbackRef = useRef<HTMLButtonElement>(null)
+  // 处理typing状态变化 - 使用hook中的setTyping
+  const handleTypingChange = useEventCallback((typing: boolean) => {
+    setTyping(typing)
+  })
 
-    // 跟踪活动的表情按钮
-    const [activeEmojiButtonIndex, setActiveEmojiButtonIndex] = useState<number | null>(null)
-    const [openEmojiPopover, setOpenEmojiPopover] = useState<number | null>(null)
+  // 处理评论提交
+  const handleSubmit = useEventCallback((content: Descendant[]) => {
+    // 先滚动到底部，保证视觉上更连贯
+    setShouldScrollToBottom(true)
 
-    const [onOpenImage, setOnOpenImage] = useState<number | undefined>(undefined)
-    // 添加当前点击的评论ID状态
-    const [currentCommentId, setCurrentCommentId] = useState<string | null>(null)
+    // 创建评论
+    createComment(content, author)
 
-    // 获取当前活动的按钮引用
-    const getActiveButtonRef = useMemo(() => {
-      if (activeEmojiButtonIndex !== null && emojiButtonRefs[activeEmojiButtonIndex]) {
-        return emojiButtonRefs[activeEmojiButtonIndex]
-      }
-      return fallbackRef
-    }, [activeEmojiButtonIndex, emojiButtonRefs])
+    // 延迟一点，让创建动作先执行，然后再次滚动到底部
+    setTimeout(() => {
+      requestAnimationFrame(smoothScrollToBottom)
+    }, 100)
+  })
 
-    const styles = CommentsTv({ isEmpty })
-
-    // 处理typing状态变化 - 使用hook中的setTyping
-    const handleTypingChange = useEventCallback((typing: boolean) => {
-      setTyping(typing)
-    })
-
-    // 处理评论提交
-    const handleSubmit = useEventCallback((content: Descendant[]) => {
-      // 先滚动到底部，保证视觉上更连贯
-      setShouldScrollToBottom(true)
-
-      // 创建评论
-      createComment(content, author)
-
-      // 延迟一点，让创建动作先执行，然后再次滚动到底部
-      setTimeout(() => {
-        requestAnimationFrame(smoothScrollToBottom)
-      }, 100)
-    })
-
-    return (
-      <>
-        <Scroll
-          className={tcx("flex h-full flex-col", className)}
-          scrollbarMode="large-b"
-          ref={ref}
+  return (
+    <>
+      <Scroll
+        className={tcx("flex h-full flex-col", className)}
+        scrollbarMode="large-b"
+        ref={ref}
+      >
+        <Scroll.Viewport
+          ref={scrollToBottomRef}
+          onScroll={handleScroll}
         >
-          <Scroll.Viewport
-            ref={scrollToBottomRef}
-            onScroll={handleScroll}
-          >
+          <Scroll.Content>
             {/* 加载更早评论的按钮 - 放在顶部 */}
             {pagination.hasMore && (
               <div className="flex justify-center py-2">
@@ -231,38 +231,40 @@ export const Comments = observer(
                 onTypingChange={handleTypingChange}
               />
             </div>
-          </Scroll.Viewport>
-        </Scroll>
+          </Scroll.Content>
+        </Scroll.Viewport>
+      </Scroll>
 
-        <CommentInputEmojiPopover
-          setSelectedEmoji={(emoji) => {
-            if (!emoji || activeEmojiButtonIndex === null) return
+      <CommentInputEmojiPopover
+        setSelectedEmoji={(emoji) => {
+          if (!emoji || activeEmojiButtonIndex === null) return
 
-            const activeComment = filteredComments[activeEmojiButtonIndex]
-            if (activeComment) {
-              toggleReaction(activeComment.uuid, emoji, author)
-              setOpenEmojiPopover(null)
-            }
-          }}
-          anchorRect={getActiveButtonRef}
-          open={openEmojiPopover !== null}
-          onOpenChange={(open) => {
-            if (!open) {
-              setOpenEmojiPopover(null)
-            }
-          }}
-        />
+          const activeComment = filteredComments[activeEmojiButtonIndex]
+          if (activeComment) {
+            toggleReaction(activeComment.uuid, emoji, author)
+            setOpenEmojiPopover(null)
+          }
+        }}
+        anchorRect={getActiveButtonRef}
+        open={openEmojiPopover !== null}
+        onOpenChange={(open) => {
+          if (!open) {
+            setOpenEmojiPopover(null)
+          }
+        }}
+      />
 
-        <ImagePreviewPopover
-          onOpenImage={onOpenImage}
-          currentCommentId={currentCommentId}
-          filteredComments={filteredComments}
-          isOpen={openImagePreviewDialog}
-          setIsOpen={setOpenImagePreviewDialog}
-        />
-      </>
-    )
-  }),
-)
+      <ImagePreviewPopover
+        onOpenImage={onOpenImage}
+        currentCommentId={currentCommentId}
+        filteredComments={filteredComments}
+        isOpen={openImagePreviewDialog}
+        setIsOpen={setOpenImagePreviewDialog}
+      />
+    </>
+  )
+})
 
-Comments.displayName = "Comments"
+CommentsComponent.displayName = "CommentsComponent"
+
+export const Comments = observer(CommentsComponent)

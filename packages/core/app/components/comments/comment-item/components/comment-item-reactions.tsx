@@ -6,20 +6,20 @@ import type { Reaction, User } from "../../types"
 import { CommentItemReactionsTv } from "../tv"
 
 interface GroupedReaction {
-  emoji: string
   count: number
+  emoji: string
   users: User[]
 }
 
 interface CommentItemReactionsProps {
-  reactions: Reaction[]
-  reactionsPopoverIsOpen?: boolean
-  handleOnReactionPopoverClick?: () => void
-  reactionAnchorRef?: React.RefObject<HTMLButtonElement>
-  handleOnReactionClick?: (reaction: GroupedReaction) => void
   defaultText: {
     ADD_REACTIONS: string
   }
+  handleOnReactionClick?: (reaction: GroupedReaction) => void
+  handleOnReactionPopoverClick?: () => void
+  reactionAnchorRef?: React.RefObject<HTMLButtonElement>
+  reactions: Reaction[]
+  reactionsPopoverIsOpen?: boolean
 }
 
 export const CommentItemReactions = React.memo(function CommentItemReactions(

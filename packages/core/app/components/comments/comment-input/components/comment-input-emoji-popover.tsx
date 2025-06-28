@@ -40,7 +40,9 @@ export const CommentInputEmojiPopover = ({
       onOpenChange={onOpenChange}
       triggerRef={anchorRect}
     >
-      <Popover.Content className="overflow-hidden p-0">{emojiPickerContent}</Popover.Content>
+      <Popover.Content className="overflow-hidden rounded-lg p-0">
+        {emojiPickerContent}
+      </Popover.Content>
     </Popover>
   )
 }

@@ -4,10 +4,10 @@ import { PicturePreview } from "~/components/picture-preview"
 import { SubmittedCommentData } from "../types"
 
 interface ImagePreviewPopoverProps {
-  onOpenImage: number | undefined
   currentCommentId: string | null
   filteredComments: SubmittedCommentData[]
   isOpen: boolean
+  onOpenImage: number | undefined
   setIsOpen: (open: boolean) => void
 }
 

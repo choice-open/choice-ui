@@ -1,11 +1,13 @@
 import { faker } from "@faker-js/faker"
 import type { Meta, StoryObj } from "@storybook/react"
 import React, { useMemo, useState } from "react"
-import { CustomElement } from "../comment-input/types"
-import { Dialog } from "../../../dialog"
-import { Modal } from "../../../modal"
-import { PicturePreview } from "../../../picture-preview"
+import { Descendant } from "slate"
+import { CustomElement, ImageElement } from "../comment-input/types"
+import { Dialog } from "../../dialog"
+import { Modal } from "../../modal"
+import { PicturePreview } from "../../picture-preview"
 import { CommentItem } from "./comment-item"
+import type { User, Reaction } from "../types"
 
 const meta = {
   title: "Pickers/Comments/CommentItem",
@@ -24,18 +26,27 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-// 基本评论示例（使用字符串日期）
+// 创建一个 mock user
+const mockUser: User = {
+  id: "1",
+  name: "Jane Doe",
+  email: "jane@example.com",
+  photo_url: "https://i.pravatar.cc/150?img=1",
+  color: null,
+}
+
+// 基本评论示例
 export const Basic: Story = {
   args: {
-    avatar: "https://i.pravatar.cc/150?img=1",
-    name: "Jane Doe",
-    date: "2 hours ago",
-    content: [
+    author: mockUser,
+    created_at: new Date(Date.now() - 2 * 60 * 60 * 1000), // 2 hours ago
+    message_meta: [
       {
         type: "paragraph",
         children: [{ text: "This is a basic comment without any formatting." }],
       } as CustomElement,
     ],
+    reactions: null,
     locale: "zh-cn",
   },
 }
@@ -43,10 +54,15 @@ export const Basic: Story = {
 // 带格式的评论示例（1天前）- 中文
 export const WithFormattingChinese: Story = {
   args: {
-    avatar: "https://i.pravatar.cc/150?img=2",
-    name: "John Smith",
-    date: new Date(Date.now() - 86400000), // 1 day ago
-    content: [
+    author: {
+      id: "2",
+      name: "John Smith",
+      email: "john@example.com",
+      photo_url: "https://i.pravatar.cc/150?img=2",
+      color: null,
+    },
+    created_at: new Date(Date.now() - 86400000), // 1 day ago
+    message_meta: [
       {
         type: "paragraph",
         children: [
@@ -62,6 +78,7 @@ export const WithFormattingChinese: Story = {
         ],
       } as CustomElement,
     ],
+    reactions: null,
     locale: "zh-cn",
   },
 }
@@ -69,10 +86,15 @@ export const WithFormattingChinese: Story = {
 // 带格式的评论示例（1天前）- 英文
 export const WithFormattingEnglish: Story = {
   args: {
-    avatar: "https://i.pravatar.cc/150?img=2",
-    name: "John Smith",
-    date: new Date(Date.now() - 86400000), // 1 day ago
-    content: [
+    author: {
+      id: "2",
+      name: "John Smith",
+      email: "john@example.com",
+      photo_url: "https://i.pravatar.cc/150?img=2",
+      color: null,
+    },
+    created_at: new Date(Date.now() - 86400000), // 1 day ago
+    message_meta: [
       {
         type: "paragraph",
         children: [
@@ -88,22 +110,29 @@ export const WithFormattingEnglish: Story = {
         ],
       } as CustomElement,
     ],
-    locale: "en",
+    reactions: null,
+    locale: "en-us",
   },
 }
 
 // 今日内评论示例（2小时前）- 中文
 export const RecentCommentChinese: Story = {
   args: {
-    avatar: "https://i.pravatar.cc/150?img=9",
-    name: "Rebecca Moore",
-    date: new Date(Date.now() - 2 * 60 * 60 * 1000), // 2 hours ago
-    content: [
+    author: {
+      id: "9",
+      name: "Rebecca Moore",
+      email: "rebecca@example.com",
+      photo_url: "https://i.pravatar.cc/150?img=9",
+      color: null,
+    },
+    created_at: new Date(Date.now() - 2 * 60 * 60 * 1000), // 2 hours ago
+    message_meta: [
       {
         type: "paragraph",
         children: [{ text: "这条评论是最近发布的，显示相对时间格式。" }],
       } as CustomElement,
     ],
+    reactions: null,
     locale: "zh-cn",
   },
 }
@@ -111,31 +140,43 @@ export const RecentCommentChinese: Story = {
 // 今日内评论示例（2小时前）- 英文
 export const RecentCommentEnglish: Story = {
   args: {
-    avatar: "https://i.pravatar.cc/150?img=9",
-    name: "Rebecca Moore",
-    date: new Date(Date.now() - 2 * 60 * 60 * 1000), // 2 hours ago
-    content: [
+    author: {
+      id: "9",
+      name: "Rebecca Moore",
+      email: "rebecca@example.com",
+      photo_url: "https://i.pravatar.cc/150?img=9",
+      color: null,
+    },
+    created_at: new Date(Date.now() - 2 * 60 * 60 * 1000), // 2 hours ago
+    message_meta: [
       {
         type: "paragraph",
         children: [{ text: "This comment was posted recently, showing the relative time format." }],
       } as CustomElement,
     ],
-    locale: "en",
+    reactions: null,
+    locale: "en-us",
   },
 }
 
 // 本年内评论示例（3个月前）- 中文
 export const ThisYearCommentChinese: Story = {
   args: {
-    avatar: "https://i.pravatar.cc/150?img=10",
-    name: "Thomas Wilson",
-    date: new Date(new Date().setMonth(new Date().getMonth() - 3)), // 3 months ago
-    content: [
+    author: {
+      id: "10",
+      name: "Thomas Wilson",
+      email: "thomas@example.com",
+      photo_url: "https://i.pravatar.cc/150?img=10",
+      color: null,
+    },
+    created_at: new Date(new Date().setMonth(new Date().getMonth() - 3)), // 3 months ago
+    message_meta: [
       {
         type: "paragraph",
         children: [{ text: "这条评论发布于今年，显示月份和日期格式。" }],
       } as CustomElement,
     ],
+    reactions: null,
     locale: "zh-cn",
   },
 }
@@ -143,31 +184,43 @@ export const ThisYearCommentChinese: Story = {
 // 本年内评论示例（3个月前）- 英文
 export const ThisYearCommentEnglish: Story = {
   args: {
-    avatar: "https://i.pravatar.cc/150?img=10",
-    name: "Thomas Wilson",
-    date: new Date(new Date().setMonth(new Date().getMonth() - 3)), // 3 months ago
-    content: [
+    author: {
+      id: "10",
+      name: "Thomas Wilson",
+      email: "thomas@example.com",
+      photo_url: "https://i.pravatar.cc/150?img=10",
+      color: null,
+    },
+    created_at: new Date(new Date().setMonth(new Date().getMonth() - 3)), // 3 months ago
+    message_meta: [
       {
         type: "paragraph",
         children: [{ text: "This comment was posted within this year, showing month and day." }],
       } as CustomElement,
     ],
-    locale: "en",
+    reactions: null,
+    locale: "en-us",
   },
 }
 
 // 去年评论示例 - 中文
 export const LastYearCommentChinese: Story = {
   args: {
-    avatar: "https://i.pravatar.cc/150?img=11",
-    name: "Patricia Clark",
-    date: new Date(new Date().setFullYear(new Date().getFullYear() - 1)), // 1 year ago
-    content: [
+    author: {
+      id: "11",
+      name: "Patricia Clark",
+      email: "patricia@example.com",
+      photo_url: "https://i.pravatar.cc/150?img=11",
+      color: null,
+    },
+    created_at: new Date(new Date().setFullYear(new Date().getFullYear() - 1)), // 1 year ago
+    message_meta: [
       {
         type: "paragraph",
         children: [{ text: "这条评论发布于去年，显示完整日期格式。" }],
       } as CustomElement,
     ],
+    reactions: null,
     locale: "zh-cn",
   },
 }
@@ -175,26 +228,37 @@ export const LastYearCommentChinese: Story = {
 // 去年评论示例 - 英文
 export const LastYearCommentEnglish: Story = {
   args: {
-    avatar: "https://i.pravatar.cc/150?img=11",
-    name: "Patricia Clark",
-    date: new Date(new Date().setFullYear(new Date().getFullYear() - 1)), // 1 year ago
-    content: [
+    author: {
+      id: "11",
+      name: "Patricia Clark",
+      email: "patricia@example.com",
+      photo_url: "https://i.pravatar.cc/150?img=11",
+      color: null,
+    },
+    created_at: new Date(new Date().setFullYear(new Date().getFullYear() - 1)), // 1 year ago
+    message_meta: [
       {
         type: "paragraph",
         children: [{ text: "This comment was posted last year, showing the full date format." }],
       } as CustomElement,
     ],
-    locale: "en",
+    reactions: null,
+    locale: "en-us",
   },
 }
 
 // 带提及和图片的评论示例
 export const WithMentionAndImage: Story = {
   args: {
-    avatar: "https://i.pravatar.cc/150?img=3",
-    name: "Alex Johnson",
-    date: "5 hours ago",
-    content: [
+    author: {
+      id: "3",
+      name: "Alex Johnson",
+      email: "alex@example.com",
+      photo_url: "https://i.pravatar.cc/150?img=3",
+      color: null,
+    },
+    created_at: new Date(Date.now() - 5 * 60 * 60 * 1000), // 5 hours ago
+    message_meta: [
       {
         type: "paragraph",
         children: [
@@ -204,8 +268,9 @@ export const WithMentionAndImage: Story = {
             user: {
               id: "user-1",
               name: "Sarah Parker",
-              avatar: "https://i.pravatar.cc/150?img=5",
+              photo_url: "https://i.pravatar.cc/150?img=5",
               email: "sarah.parker@example.com",
+              color: null,
             },
             children: [{ text: "" }],
           } as CustomElement,
@@ -231,8 +296,9 @@ export const WithMentionAndImage: Story = {
             user: {
               id: "user-2",
               name: "Robert Davis",
-              avatar: "https://i.pravatar.cc/150?img=8",
+              photo_url: "https://i.pravatar.cc/150?img=8",
               email: "robert.davis@example.com",
+              color: null,
             },
             children: [{ text: "" }],
           } as CustomElement,
@@ -240,6 +306,7 @@ export const WithMentionAndImage: Story = {
         ],
       } as CustomElement,
     ],
+    reactions: null,
     locale: "zh-cn",
   },
 }
@@ -247,10 +314,15 @@ export const WithMentionAndImage: Story = {
 // 带列表的评论示例
 export const WithLists: Story = {
   args: {
-    avatar: "https://i.pravatar.cc/150?img=4",
-    name: "Emily Wilson",
-    date: "1 day ago",
-    content: [
+    author: {
+      id: "4",
+      name: "Emily Wilson",
+      email: "emily@example.com",
+      photo_url: "https://i.pravatar.cc/150?img=4",
+      color: null,
+    },
+    created_at: new Date(Date.now() - 24 * 60 * 60 * 1000), // 1 day ago
+    message_meta: [
       {
         type: "paragraph",
         children: [{ text: "Here are some key points:" }],
@@ -294,6 +366,7 @@ export const WithLists: Story = {
         ],
       } as CustomElement,
     ],
+    reactions: null,
   },
 }
 
@@ -303,7 +376,7 @@ export const MultipleImages = {
     const [isOpen, setIsOpen] = useState(false)
     const [imageIndex, setImageIndex] = useState<number | undefined>(undefined)
 
-    const content = [
+    const message_meta: Descendant[] = [
       {
         type: "paragraph",
         children: [{ text: "Check out these images from our trip:" }],
@@ -337,26 +410,32 @@ export const MultipleImages = {
     ]
 
     const currentImage = useMemo(() => {
-      const image = content.find((item) => item.type === "image")
-      if (!image) return null
-      return image.attachments?.[imageIndex ?? 0]
-    }, [content, imageIndex])
+      const image = message_meta.find((item) => {
+        // 检查是否为 CustomElement 并且是 image 类型
+        return (item as CustomElement).type === "image"
+      }) as ImageElement | undefined
 
-    const profiles = useMemo(() => {
+      if (!image || !image.attachments) return null
+      return image.attachments[imageIndex ?? 0]
+    }, [message_meta, imageIndex])
+
+    const author = useMemo(() => {
       return {
+        id: faker.string.uuid(),
         name: faker.person.fullName(),
-        avatar: faker.image.avatar(),
         email: faker.internet.email(),
+        photo_url: faker.image.avatar(),
+        color: null,
       }
     }, [])
 
     return (
       <>
         <CommentItem
-          avatar={profiles.avatar}
-          name={profiles.name}
-          date={faker.date.recent()}
-          content={content}
+          author={author}
+          created_at={faker.date.recent()}
+          message_meta={message_meta}
+          reactions={null}
           handleOnImageClick={(index) => {
             setImageIndex(index)
             setIsOpen(true)

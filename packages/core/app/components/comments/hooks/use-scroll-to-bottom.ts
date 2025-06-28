@@ -10,7 +10,7 @@ import { useCallback, useEffect, useState } from "react"
 export function useScrollToBottom<T extends HTMLElement>(
   scrollRef: React.RefObject<T>,
   inputContainerRef: React.RefObject<T>,
-  dependencies: any[] = [],
+  dependencies: unknown[] = [],
   options = {
     behavior: "smooth" as ScrollBehavior,
     threshold: 30, // 判断是否在底部的阈值像素

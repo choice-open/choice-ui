@@ -2,16 +2,17 @@ import { RemoveSmall } from "@choiceform/icons-react"
 import { memo } from "react"
 import { Path } from "slate"
 import { ReactEditor, RenderElementProps } from "slate-react"
-import { IconButton } from "../../../../icon-button"
+import { IconButton } from "~/components/icon-button"
 import type { Attachment, CustomElement, ImageElement } from "../../comment-input/types"
 import { CommentInputElementTv } from "./tv"
+import { tcx } from "~/utils"
 
 interface AttachmentsEditProps extends Omit<RenderElementProps, "element"> {
   attachments: Attachment[]
-  imageElement: ImageElement
   editor: ReactEditor
   element: CustomElement
   handleRemoveImage?: (path: Path, attachmentIndex?: number) => void
+  imageElement: ImageElement
 }
 
 export const AttachmentsEdit = memo(function AttachmentsEdit(props: AttachmentsEditProps) {

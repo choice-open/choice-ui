@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import React, { useEffect, useMemo, useRef, useState } from "react"
-import { Dialog } from "../../dialog"
+import { Dialog } from "../dialog"
 import { Comments } from "./comments"
 import type { SubmittedCommentData, User } from "./types"
 import { comments$, useCommentsState, sortedComments$ } from "./state/comments-state"
 import { faker } from "@faker-js/faker"
-import { tcx } from "../../../utils"
+import { tcx } from "../../utils"
 
 const meta = {
   title: "Pickers/Comments",
@@ -238,11 +238,32 @@ export const Basic = {
         <button
           className="rounded bg-blue-500 px-2 py-1 text-xs text-white"
           onClick={() => {
-            const { createComment } = useCommentsState()
-            createComment(
-              [{ type: "paragraph", children: [{ text: faker.lorem.sentence() }] }],
-              mockUsers[0],
-            )
+            // 直接使用 comments$ observable 来创建评论
+            const currentState = comments$.get()
+            const newId = `comment-${Date.now()}`
+            const newComment: SubmittedCommentData = {
+              uuid: newId,
+              author: mockUsers[0],
+              created_at: new Date(),
+              deleted_at: null,
+              is_deleted: false,
+              message: faker.lorem.sentence(),
+              message_meta: [{ type: "paragraph", children: [{ text: faker.lorem.sentence() }] }],
+              order_id: null,
+              page_id: null,
+              reactions: null,
+              resolved_at: null,
+              updated_at: new Date(),
+            }
+
+            comments$.set({
+              ...currentState,
+              byId: {
+                ...currentState.byId,
+                [newId]: newComment,
+              },
+              order: [...currentState.order, newId],
+            })
           }}
         >
           添加新评论

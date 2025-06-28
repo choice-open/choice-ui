@@ -41,9 +41,24 @@ import { SelectContent, SelectItem, type SelectItemPublicProps } from "./compone
 
 const PORTAL_ROOT_ID = "floating-menu-root"
 
+interface FloatingFocusManagerProps {
+  closeOnFocusOut?: boolean
+  disabled?: boolean
+  getInsideElements?: () => Element[]
+  guards?: boolean
+  initialFocus?: number | React.MutableRefObject<HTMLElement | null>
+  modal?: boolean
+  order?: Array<"reference" | "floating" | "content">
+  outsideElementsInert?: boolean
+  restoreFocus?: boolean
+  returnFocus?: boolean
+  visuallyHiddenDismiss?: boolean | string
+}
+
 export interface SelectProps {
   children?: ReactNode
   disabled?: boolean
+  focusManagerProps?: FloatingFocusManagerProps
   matchTriggerWidth?: boolean
   onChange?: (value: string) => void
   onOpenChange?: (open: boolean) => void
@@ -77,6 +92,10 @@ const SelectComponent = forwardRef<HTMLButtonElement, SelectProps>(function Sele
     portalId = PORTAL_ROOT_ID,
     placement = "bottom-start",
     children,
+    focusManagerProps = {
+      returnFocus: true,
+      modal: false,
+    },
   } = props
 
   // 提取子元素 - 优化确保稳定引用
@@ -510,8 +529,7 @@ const SelectComponent = forwardRef<HTMLButtonElement, SelectProps>(function Sele
           >
             <FloatingFocusManager
               context={floating.context}
-              modal={false}
-              returnFocus={false}
+              {...focusManagerProps}
             >
               <div
                 style={{
