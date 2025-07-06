@@ -205,3 +205,14 @@ export const ModalContent: Story = {
     )
   },
 }
+
+export const LongTitle: Story = {
+  render: function LongTitleStory() {
+    return (
+      <Modal className="w-sm">
+        <Modal.Header title={faker.lorem.sentence(10)} />
+        <Modal.Content className="p-4">{faker.lorem.sentence(10)}</Modal.Content>
+      </Modal>
+    )
+  },
+}

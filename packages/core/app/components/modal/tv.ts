@@ -9,7 +9,8 @@ export const ModalTv = tv({
 export const ModalHeaderTv = tv({
   slots: {
     root: "modal__header border-default-boundary w-full flex-none items-center border-b",
-    title: "leading-md tracking-md flex items-center gap-2 p-2 font-medium [grid-area:title]",
+    title:
+      "leading-md tracking-md flex min-w-0 items-center gap-2 p-2 font-medium [grid-area:title]",
     close: "p-2 [grid-area:close]",
   },
   variants: {
@@ -21,9 +22,16 @@ export const ModalHeaderTv = tv({
         title: "ml-2",
       },
     },
+    close: {
+      true: {
+        root: "modal__header--action",
+      },
+      false: {},
+    },
   },
   defaultVariants: {
     validElement: false,
+    close: true,
   },
 })
 

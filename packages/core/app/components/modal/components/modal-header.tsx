@@ -5,8 +5,8 @@ import { IconButton } from "../../icon-button"
 import { ModalHeaderTv } from "../tv"
 
 export interface ModalHeaderProps extends Omit<HTMLProps<HTMLDivElement>, "title"> {
-  title?: ReactNode
   onClose?: () => void
+  title?: ReactNode
 }
 
 export const ModalHeader = forwardRef<HTMLDivElement, ModalHeaderProps>((props, ref) => {
@@ -16,7 +16,7 @@ export const ModalHeader = forwardRef<HTMLDivElement, ModalHeaderProps>((props, 
     return isValidElement(title)
   }, [title])
 
-  const styles = ModalHeaderTv({ validElement })
+  const styles = ModalHeaderTv({ validElement, close: !!onClose })
 
   return (
     <div
@@ -24,7 +24,11 @@ export const ModalHeader = forwardRef<HTMLDivElement, ModalHeaderProps>((props, 
       className={tcx(styles.root(), className)}
       {...rest}
     >
-      {title && <div className={styles.title()}>{title}</div>}
+      {title && (
+        <div className={styles.title()}>
+          <span className="min-w-0 truncate">{title}</span>
+        </div>
+      )}
 
       {children}
 
