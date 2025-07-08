@@ -19,7 +19,7 @@ import {
   shouldShowCloseButton,
 } from "./utils"
 
-const PORTAL_ROOT_ID = "alert-dialog-root"
+const PORTAL_ROOT_ID = "floating-alert-root"
 
 export interface AlertDialogProps {
   className?: string

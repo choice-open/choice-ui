@@ -158,13 +158,21 @@
 
   --shadow-shapes: 0px 1px 3px 0px rgba(0, 0, 0, 0.15), 0px 0px 0.5px 0px rgba(0, 0, 0, 0.3);
 
-  --shadow-stickies: 0px 1px 3px 0px rgba(0, 0, 0, 0.1), 0px 3px 8px 0px rgba(0, 0, 0, 0.1), 0px 0px 0.5px 0px rgba(0, 0, 0, 0.18);
+  --shadow-stickies:
+    0px 1px 3px 0px rgba(0, 0, 0, 0.1), 0px 3px 8px 0px rgba(0, 0, 0, 0.1),
+    0px 0px 0.5px 0px rgba(0, 0, 0, 0.18);
 
-  --shadow-tooltip: 0px 1px 3px 0px rgba(0, 0, 0, 0.1), 0px 5px 12px 0px rgba(0, 0, 0, 0.13), 0px 0px 0.5px 0px rgba(0, 0, 0, 0.15);
+  --shadow-tooltip:
+    0px 1px 3px 0px rgba(0, 0, 0, 0.1), 0px 5px 12px 0px rgba(0, 0, 0, 0.13),
+    0px 0px 0.5px 0px rgba(0, 0, 0, 0.15);
 
-  --shadow-menu: 0px 2px 5px 0px rgba(0, 0, 0, 0.15), 0px 10px 16px 0px rgba(0, 0, 0, 0.12), 0px 0px 0.5px 0px rgba(0, 0, 0, 0.12);
+  --shadow-menu:
+    0px 2px 5px 0px rgba(0, 0, 0, 0.15), 0px 10px 16px 0px rgba(0, 0, 0, 0.12),
+    0px 0px 0.5px 0px rgba(0, 0, 0, 0.12);
 
-  --shadow-modals: 0px 2px 5px 0px rgba(0, 0, 0, 0.15), 0px 10px 24px 0px rgba(0, 0, 0, 0.18), 0px 0px 0.5px 0px rgba(0, 0, 0, 0.08);
+  --shadow-modals:
+    0px 2px 5px 0px rgba(0, 0, 0, 0.15), 0px 10px 24px 0px rgba(0, 0, 0, 0.18),
+    0px 0px 0.5px 0px rgba(0, 0, 0, 0.08);
 }
 
 .dark,
@@ -292,15 +300,28 @@
   --boundary-strong: rgba(255, 255, 255, 0.9);
   --boundary-selected-strong: var(--blue-400);
 
-  --shadow-shapes: inset 0px 0.5px 0px 0px rgba(255, 255, 255, 0.1), inset 0px 0px 0.5px 0px rgba(255, 255, 255, 0.3), 0px 0px 0.5px 0px rgba(0, 0, 0, 0.5), 0px 1px 3px 0px rgba(0, 0, 0, 0.4)
+  --shadow-shapes:
+    inset 0px 0.5px 0px 0px rgba(255, 255, 255, 0.1),
+    inset 0px 0px 0.5px 0px rgba(255, 255, 255, 0.3), 0px 0px 0.5px 0px rgba(0, 0, 0, 0.5),
+    0px 1px 3px 0px rgba(0, 0, 0, 0.4) --shadow-stickies: inset 0px 0.5px 0px 0px
+      rgba(255, 255, 255, 0.08),
+    inset 0px 0px 0.5px 0px rgba(255, 255, 255, 0.3), 0px 1px 3px 0px rgba(0, 0, 0, 0.35),
+    0px 3px 8px 0px rgba(0, 0, 0, 0.4);
 
-  --shadow-stickies: inset 0px 0.5px 0px 0px rgba(255, 255, 255, 0.08), inset 0px 0px 0.5px 0px rgba(255, 255, 255, 0.3), 0px 1px 3px 0px rgba(0, 0, 0, 0.35), 0px 3px 8px 0px rgba(0, 0, 0, 0.4);
+  --shadow-tooltip:
+    inset 0px 0.5px 0px 0px rgba(255, 255, 255, 0.08),
+    inset 0px 0px 0.5px 0px rgba(255, 255, 255, 0.3), 0px 1px 3px 0px rgba(0, 0, 0, 0.5),
+    0px 5px 12px 0px rgba(0, 0, 0, 0.35);
 
-  --shadow-tooltip: inset 0px 0.5px 0px 0px rgba(255, 255, 255, 0.08), inset 0px 0px 0.5px 0px rgba(255, 255, 255, 0.3), 0px 1px 3px 0px rgba(0, 0, 0, 0.5), 0px 5px 12px 0px rgba(0, 0, 0, 0.35);
+  --shadow-menu:
+    inset 0px 0.5px 0px 0px rgba(255, 255, 255, 0.08),
+    inset 0px 0px 0.5px 0px rgba(255, 255, 255, 0.35), 0px 2px 5px 0px rgba(0, 0, 0, 0.35),
+    0px 10px 16px 0px rgba(0, 0, 0, 0.35);
 
-  --shadow-menu: inset 0px 0.5px 0px 0px rgba(255, 255, 255, 0.08), inset 0px 0px 0.5px 0px rgba(255, 255, 255, 0.35), 0px 2px 5px 0px rgba(0, 0, 0, 0.35), 0px 10px 16px 0px rgba(0, 0, 0, 0.35);
-
-  --shadow-modals: inset 0px 0.5px 0px 0px rgba(255, 255, 255, 0.08), inset 0px 0px 0.5px 0px rgba(255, 255, 255, 0.35), 0px 3px 5px 0px rgba(0, 0, 0, 0.35), 0px 10px 24px 0px rgba(0, 0, 0, 0.45);
+  --shadow-modals:
+    inset 0px 0.5px 0px 0px rgba(255, 255, 255, 0.08),
+    inset 0px 0px 0.5px 0px rgba(255, 255, 255, 0.35), 0px 3px 5px 0px rgba(0, 0, 0, 0.35),
+    0px 10px 24px 0px rgba(0, 0, 0, 0.45);
 }
 
 @theme {
@@ -468,7 +489,7 @@
   --color-component-background: var(--purple-500);
   --color-component-hover-background: var(--purple-600);
   --color-component-secondary-background: var(--purple-700);
-  
+
   --color-menu-background: var(--color-gray-900);
   --color-toolbar-background: var(--color-gray-800);
 
@@ -531,6 +552,7 @@
   --z-index-backdrop: 800;
   --z-index-modals: 810;
   --z-index-popover: 820;
+  --z-index-alert: 830;
   --z-index-menu: 910;
   --z-index-tooltip: 1000;
   --z-index-notification: 1100;

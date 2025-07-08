@@ -3,7 +3,7 @@ import { tv } from "tailwind-variants"
 // Alert Dialog 主容器样式
 export const alertDialogTv = tv({
   slots: {
-    overlay: ["z-modals fixed inset-0 grid place-items-center"],
+    overlay: ["z-alert fixed inset-0 grid place-items-center"],
     container: "max-w-none",
     content: "flex flex-col gap-4 px-4 py-2",
     header: "border-b-transparent",
