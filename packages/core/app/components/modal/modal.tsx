@@ -6,6 +6,7 @@ import {
   ModalHeader,
   ModalMultiLineInput,
   ModalSelect,
+  ModalBackdrop,
 } from "./components"
 import { ModalInput } from "./components/modal-input"
 import { ModalTv } from "./tv"
@@ -18,6 +19,7 @@ interface ModalProps extends Omit<HTMLProps<HTMLDivElement>, "title"> {
 
 interface ModalComponent
   extends React.ForwardRefExoticComponent<ModalProps & React.RefAttributes<HTMLDivElement>> {
+  Backdrop: typeof ModalBackdrop
   Content: typeof ModalContent
   Footer: typeof ModalFooter
   Header: typeof ModalHeader
@@ -48,4 +50,5 @@ Modal.Footer = ModalFooter
 Modal.Input = ModalInput
 Modal.MultiLineInput = ModalMultiLineInput
 Modal.Select = ModalSelect
+Modal.Backdrop = ModalBackdrop
 export { Modal }

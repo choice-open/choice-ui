@@ -2,8 +2,8 @@ import { FloatingOverlay, FloatingPortal } from "@floating-ui/react"
 import { Slot } from "@radix-ui/react-slot"
 import React, { memo, useId, useMemo, useRef } from "react"
 import { findChildByType, tcx } from "~/utils"
-import { Modal, ModalContent, ModalFooter } from "../modal"
-import { DialogBackdrop, DialogHeader, DialogTrigger } from "./components"
+import { Modal, ModalBackdrop, ModalContent, ModalFooter } from "../modal"
+import { DialogHeader, DialogTrigger } from "./components"
 import { DialogContext } from "./dialog-context"
 import { useDrag, useFloatingDialog, useResize } from "./hooks"
 import { dragDialogTv } from "./tv"
@@ -157,8 +157,17 @@ const DialogComponent = memo(function DialogComponent({
   }, [children])
 
   const backdropContent = useMemo(() => {
-    return findChildByType(children, DialogBackdrop)
-  }, [children])
+    const backdropChild = findChildByType(children, ModalBackdrop)
+
+    if (!backdropChild) return null
+
+    // 克隆 ModalBackdrop 并传递必要的 props
+    return React.cloneElement(backdropChild, {
+      isOpen: floating.innerOpen,
+      onClose: floating.handleClose,
+      ...backdropChild.props, // 保留原有的 props
+    })
+  }, [children, floating.innerOpen, floating.handleClose])
 
   const footerContent = useMemo(() => {
     return findChildByType(children, ModalFooter)
@@ -202,8 +211,6 @@ const DialogComponent = memo(function DialogComponent({
             lockScroll
             className={tcx(style.overlay())}
           >
-            {backdropContent}
-
             <Modal
               ref={(node) => {
                 if (node) {
@@ -267,12 +274,14 @@ const DialogComponent = memo(function DialogComponent({
           </FloatingOverlay>
         </FloatingPortal>
       )}
+
+      {backdropContent}
     </DialogContext.Provider>
   )
 })
 
 type DialogComponentType = React.FC<DialogProps> & {
-  Backdrop: typeof DialogBackdrop
+  Backdrop: typeof ModalBackdrop
   Content: typeof ModalContent
   Footer: typeof ModalFooter
   Header: typeof DialogHeader
@@ -283,6 +292,6 @@ export const Dialog = Object.assign(DialogComponent, {
   Trigger: DialogTrigger,
   Content: ModalContent,
   Header: DialogHeader,
-  Backdrop: DialogBackdrop,
+  Backdrop: ModalBackdrop,
   Footer: ModalFooter,
 }) as DialogComponentType

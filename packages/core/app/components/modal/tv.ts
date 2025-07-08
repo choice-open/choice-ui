@@ -46,3 +46,7 @@ export const ModalFooterTv = tv({
     root: "border-default-boundary flex h-10 flex-none items-center justify-between gap-2 border-t p-2",
   },
 })
+
+export const ModalBackdropTv = tv({
+  base: "z-modals fixed inset-0 grid place-items-center bg-black/20",
+})
