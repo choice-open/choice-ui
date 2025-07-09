@@ -207,8 +207,8 @@ export const MenuScrollArrowTv = tv({
   ],
   variants: {
     dir: {
-      up: "top-0 rounded-t-lg border-b",
-      down: "bottom-0 rounded-b-lg border-t",
+      up: "top-0 rounded-t-xl border-b",
+      down: "bottom-0 rounded-b-xl border-t",
     },
     visible: {
       true: "visible",
