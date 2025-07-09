@@ -89,6 +89,7 @@ export const MenuContextSubTrigger = memo(
         {...menu.getItemProps({
           ...rest,
           onFocus: handleFocus,
+          size: undefined,
         })}
       >
         {children}
