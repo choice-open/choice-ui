@@ -25,6 +25,7 @@ interface UseFloatingPopoverParams {
   delay?: { close?: number; open?: number }
   draggable: boolean
   interactions?: "hover" | "click" | "focus" | "none"
+  maxWidth?: number
   nodeId: string | undefined
   offset?: number
   onOpenChange?: (open: boolean) => void
@@ -52,6 +53,7 @@ export function useFloatingPopover({
   resetPosition,
   rememberPosition = false,
   autoSize = true,
+  maxWidth: maxWidthValue = 320,
 }: UseFloatingPopoverParams) {
   const [isClosing, setIsClosing] = useState(false)
   const positionRef = useRef({ x: 0, y: 0 })
@@ -77,7 +79,7 @@ export function useFloatingPopover({
       autoSize
         ? size({
             apply({ availableWidth, availableHeight, elements }) {
-              const maxWidth = Math.min(availableWidth, 320)
+              const maxWidth = Math.min(availableWidth, maxWidthValue)
               Object.assign(elements.floating.style, {
                 maxWidth: `${maxWidth}px`,
                 maxHeight: `${availableHeight}px`,
@@ -87,7 +89,7 @@ export function useFloatingPopover({
           })
         : undefined,
     ].filter(Boolean) // 过滤掉 undefined
-  }, [offsetDistance, autoSize])
+  }, [offsetDistance, autoSize, maxWidthValue])
 
   // 🔧 缓存 onOpenChange 回调，避免每次渲染重新创建
   const handleOpenChange = useEventCallback((nextOpen: boolean) => {

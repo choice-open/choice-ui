@@ -995,3 +995,25 @@ export const MultiplePopovers: Story = {
     )
   },
 }
+
+export const MaxWidth: Story = {
+  render: function MaxWidthStory() {
+    const [value, setValue] = useState(1)
+    return (
+      <div>
+        <Popover maxWidth={640}>
+          <Popover.Trigger>
+            <Button>Open</Button>
+          </Popover.Trigger>
+          <Popover.Content className="p-3">
+            {faker.lorem.paragraph(value)}
+            <div className="flex gap-2">
+              <Button onClick={() => setValue(value + 1)}>Add</Button>
+              <Button onClick={() => setValue(value - 1)}>Sub</Button>
+            </div>
+          </Popover.Content>
+        </Popover>
+      </div>
+    )
+  },
+}

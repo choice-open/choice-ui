@@ -47,6 +47,7 @@ export interface PopoverProps {
    */
   initialFocus?: number | React.MutableRefObject<HTMLElement | null>
   interactions?: "hover" | "click" | "focus" | "none"
+  maxWidth?: number
   offset?: number
   onOpenChange?: (isOpen: boolean) => void
   open?: boolean
@@ -82,6 +83,7 @@ export const DragPopover = memo(function DragPopover({
   portalId = PORTAL_ROOT_ID,
   autoSize = true,
   rememberPosition = false,
+  maxWidth,
 }: PopoverProps) {
   const titleId = useId()
   const descriptionId = useId()
@@ -103,21 +105,22 @@ export const DragPopover = memo(function DragPopover({
   })
 
   const floating = useFloatingPopover({
-    open,
-    defaultOpen,
-    onOpenChange,
-    placement,
-    offset: offsetDistance,
-    interactions,
-    outsidePressIgnore,
-    delay,
+    autoSize,
     autoUpdate,
+    defaultOpen,
+    delay,
     draggable,
+    interactions,
+    maxWidth,
     nodeId,
+    offset: offsetDistance,
+    onOpenChange,
+    open,
+    outsidePressIgnore,
+    placement,
+    rememberPosition,
     resetDragState,
     resetPosition,
-    rememberPosition,
-    autoSize,
   })
 
   useEffect(() => {
