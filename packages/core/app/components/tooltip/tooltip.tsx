@@ -1,5 +1,5 @@
 import type { Placement } from "@floating-ui/react"
-import { createContext, useContext } from "react"
+import { createContext, ReactNode, useContext } from "react"
 import { Kbd, type KbdKey } from "../kbd"
 import { TooltipContent } from "./components/tooltip-content"
 import { TooltipTrigger } from "./components/tooltip-trigger"
@@ -27,7 +27,7 @@ export interface TooltipProps {
   placement?: Placement
   portalId?: string
   shortcut?: {
-    keys: string
+    keys: ReactNode
     modifier?: KbdKey[]
   }
   variant?: "default" | "light"
