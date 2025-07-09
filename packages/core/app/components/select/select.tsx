@@ -3,6 +3,7 @@ import {
   flip,
   FloatingFocusManager,
   FloatingList,
+  FloatingNode,
   FloatingOverlay,
   FloatingPortal,
   FloatingTree,
@@ -14,6 +15,7 @@ import {
   useClick,
   useDismiss,
   useFloating,
+  useFloatingNodeId,
   useFloatingParentNodeId,
   useInnerOffset,
   useInteractions,
@@ -227,6 +229,7 @@ const SelectComponent = memo(
     // 生成唯一 ID
     const baseId = useId()
     const menuId = `menu-${baseId}`
+    const nodeId = useFloatingNodeId()
 
     // 处理打开状态变化
     const handleOpenChange = useEventCallback((newOpen: boolean) => {
@@ -254,6 +257,7 @@ const SelectComponent = memo(
 
     // 核心：macOS 风格的 floating 配置
     const floating = useFloating({
+      nodeId,
       placement,
       open: isControlledOpen,
       onOpenChange: handleOpenChange,
@@ -518,7 +522,7 @@ const SelectComponent = memo(
     }
 
     return (
-      <>
+      <FloatingNode id={nodeId}>
         <Slot
           ref={floating.refs.setReference}
           aria-haspopup="listbox"
@@ -600,7 +604,7 @@ const SelectComponent = memo(
             </FloatingOverlay>
           )}
         </FloatingPortal>
-      </>
+      </FloatingNode>
     )
   }),
 )
