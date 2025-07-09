@@ -354,7 +354,12 @@ const withCustomDecorator: Decorator = (StoryFn, context) => {
   const source = context.parameters?.docs?.source?.originalSource
 
   return (
-    <TooltipProvider>
+    <TooltipProvider
+      delay={{
+        open: 400,
+        close: 200,
+      }}
+    >
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -397,7 +402,12 @@ const withCustomDecorator: Decorator = (StoryFn, context) => {
 const preview: Preview = {
   decorators: [
     (Story) => (
-      <TooltipProvider>
+      <TooltipProvider
+        delay={{
+          open: 400,
+          close: 200,
+        }}
+      >
         <Story />
       </TooltipProvider>
     ),

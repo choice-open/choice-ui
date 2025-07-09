@@ -24,6 +24,7 @@ import {
   useRole,
   useTypeahead,
   type FloatingFocusManagerProps,
+  type Placement,
 } from "@floating-ui/react"
 import React, {
   Children,
@@ -67,7 +68,7 @@ export interface DropdownProps {
   offset?: number
   onOpenChange?: (open: boolean) => void
   open?: boolean
-  placement?: "bottom-start" | "bottom-end" | "right-start" | "right-end"
+  placement?: Placement
   portalId?: string
   selection?: boolean
 }

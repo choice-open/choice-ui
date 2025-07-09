@@ -49,13 +49,13 @@ export function useDragDrop({ allowDrag, allowDrop, nodeHeight, onNodeDrop }: Us
   // Refs
   const listRef = useRef<HTMLDivElement>(null)
   // 用于存储拖拽过程中的展开延时计时器
-  const dragExpandTimeouts = useRef<Record<string, number>>({})
+  const dragExpandTimeouts = useRef<Record<string, ReturnType<typeof setTimeout>>>({})
   // 跟踪最后悬停的节点ID和时间
   const lastHoveredNode = useRef<{ id: string; timestamp: number } | null>(null)
   // 跟踪是否处于自动滚动状态
   const isAutoScrolling = useRef(false)
   // 存储自动滚动interval ID
-  const autoScrollIntervalRef = useRef<number | null>(null)
+  const autoScrollIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
   // 存储全局拖拽事件处理函数的引用
   const handleGlobalDragOverRef = useRef<(event: DragEvent) => void>()
   // Ref for drag overlay element

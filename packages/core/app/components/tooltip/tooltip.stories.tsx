@@ -277,31 +277,6 @@ export const DelayGroup: Story = {
           </TooltipProvider>
         </div>
       </div>
-
-      <div>
-        <h3 className="mb-4 font-medium">Without DelayGroup (for comparison)</h3>
-        <p className="mb-4 text-sm text-gray-600">Each tooltip has no DelayGroup optimization</p>
-        <div className="flex gap-4">
-          <Tooltip>
-            <TooltipTrigger>
-              <Button>First</Button>
-            </TooltipTrigger>
-            <TooltipContent>Independent tooltip</TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger>
-              <Button>Second</Button>
-            </TooltipTrigger>
-            <TooltipContent>Independent tooltip</TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger>
-              <Button>Third</Button>
-            </TooltipTrigger>
-            <TooltipContent>Independent tooltip</TooltipContent>
-          </Tooltip>
-        </div>
-      </div>
     </div>
   ),
 }

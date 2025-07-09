@@ -17,8 +17,8 @@ export function useTooltipState() {
 
 const PORTAL_ROOT_ID = "floating-tooltip-root"
 
-interface TooltipProps {
-  children: React.ReactNode
+export interface TooltipProps {
+  children?: React.ReactNode
   content?: React.ReactNode
   disabled?: boolean
   offset?: number
@@ -45,7 +45,7 @@ export function Tooltip(props: TooltipProps) {
     shortcut,
     withArrow = true,
     variant = "default",
-    offset = 5,
+    offset = 8,
     portalId = PORTAL_ROOT_ID,
   } = props
 
