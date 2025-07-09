@@ -766,7 +766,7 @@ const InternationalizationDemo = () => {
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         {/* 中文 */}
-        <div className="space-y-4 rounded-lg border p-4">
+        <div className="space-y-4 rounded-xl border p-4">
           <DateInput
             locale={zhCN}
             format="yyyy年MM月dd日"
@@ -791,7 +791,7 @@ const InternationalizationDemo = () => {
         </div>
 
         {/* 英文 */}
-        <div className="space-y-4 rounded-lg border p-4">
+        <div className="space-y-4 rounded-xl border p-4">
           <DateInput
             locale={enUS}
             format="MM/dd/yyyy"
@@ -816,7 +816,7 @@ const InternationalizationDemo = () => {
         </div>
 
         {/* 德文 */}
-        <div className="space-y-4 rounded-lg border p-4">
+        <div className="space-y-4 rounded-xl border p-4">
           <DateInput
             locale={de}
             format="dd.MM.yyyy"
@@ -841,7 +841,7 @@ const InternationalizationDemo = () => {
         </div>
 
         {/* 法文 */}
-        <div className="space-y-4 rounded-lg border p-4">
+        <div className="space-y-4 rounded-xl border p-4">
           <DateInput
             locale={fr}
             format="dd/MM/yyyy"
@@ -963,7 +963,7 @@ export const Combined: Story = {
 
     return (
       <>
-        <Panel className="w-80 rounded-lg border">
+        <Panel className="w-80 rounded-xl border">
           <Panel.Title title="Select Date" />
 
           <Panel.Row>
@@ -1067,7 +1067,7 @@ export const Combined: Story = {
             returnFocus: false,
           }}
         >
-          <Popover.Content className="overflow-hidden rounded-lg">
+          <Popover.Content className="overflow-hidden rounded-xl">
             <MonthCalendar
               locale={locale}
               className="w-48"

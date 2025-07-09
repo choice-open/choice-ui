@@ -740,7 +740,7 @@ export const Accessibility: Story = {
 
     return (
       <div className="space-y-6">
-        <div className="rounded-lg border border-blue-200 bg-blue-50 p-4">
+        <div className="rounded-xl border border-blue-200 bg-blue-50 p-4">
           <h3 className="mb-2 text-lg font-semibold text-blue-900">♿ Accessibility Features</h3>
           <ul className="space-y-1 text-sm text-blue-800">
             <li>• Full WAI-ARIA compliance with proper roles and attributes</li>
@@ -759,7 +759,7 @@ export const Accessibility: Story = {
             Accessible Item List
           </h3>
           <ScrollArea
-            className="relative h-96 w-full max-w-2xl overflow-hidden rounded-lg border border-gray-200 shadow-sm"
+            className="relative h-96 w-full max-w-2xl overflow-hidden rounded-xl border border-gray-200 shadow-sm"
             orientation="vertical"
             aria-label="Accessible item list with keyboard navigation"
             aria-labelledby="accessible-list-title"
@@ -772,7 +772,7 @@ export const Accessibility: Story = {
           </ScrollArea>
         </div>
 
-        <div className="rounded-lg border border-green-200 bg-green-50 p-4">
+        <div className="rounded-xl border border-green-200 bg-green-50 p-4">
           <h3 className="mb-2 text-lg font-semibold text-green-900">🎯 Testing Instructions</h3>
           <div className="space-y-2 text-sm text-green-800">
             <div>
@@ -817,7 +817,7 @@ function VirtualScrollArea({
 
   return (
     <ScrollArea
-      className="relative h-96 w-80 overflow-hidden rounded-lg border border-gray-200"
+      className="relative h-96 w-80 overflow-hidden rounded-xl border border-gray-200"
       type="hover"
       scrollbarMode="large-y"
     >

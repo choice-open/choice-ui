@@ -367,7 +367,7 @@ const CategoryList = ({ searchQuery = "" }: { searchQuery?: string }) => {
           {categories.map((item) => (
             <div
               key={item.id}
-              className={`p-4 bg-${item.color}-50 border border-${item.color}-200 cursor-pointer rounded-lg hover:bg-${item.color}-100 transition-colors`}
+              className={`p-4 bg-${item.color}-50 border border-${item.color}-200 cursor-pointer rounded-xl hover:bg-${item.color}-100 transition-colors`}
               onClick={() => push(item.id)}
             >
               <div className="flex items-center justify-between">
@@ -390,7 +390,7 @@ const CategoryList = ({ searchQuery = "" }: { searchQuery?: string }) => {
           {nodes.map((item) => (
             <div
               key={item.id}
-              className={`p-4 bg-${item.color}-50 border border-${item.color}-200 cursor-pointer rounded-lg hover:bg-${item.color}-100 transition-colors`}
+              className={`p-4 bg-${item.color}-50 border border-${item.color}-200 cursor-pointer rounded-xl hover:bg-${item.color}-100 transition-colors`}
               onClick={() => {
                 // 节点点击后的行为 - 可以是选择节点或其他操作
                 alert(`选择了节点: ${item.label}`)
@@ -441,7 +441,7 @@ const CategoryDetail = ({ categoryId }: { categoryId: string }) => {
         {category.children?.map((item, index) => (
           <div
             key={item.id || index}
-            className={`p-3 bg-${category.color}-50 border border-${category.color}-200 rounded-lg hover:bg-${category.color}-100 cursor-pointer transition-colors`}
+            className={`p-3 bg-${category.color}-50 border border-${category.color}-200 rounded-xl hover:bg-${category.color}-100 cursor-pointer transition-colors`}
             onClick={() => {
               if (item.type === "category") {
                 // 导航到子分类
@@ -543,7 +543,7 @@ const CompleteNodesListExample = () => {
 
   return (
     <Stackflow
-      className="w-80 overflow-y-auto rounded-lg border shadow-lg"
+      className="w-80 overflow-y-auto rounded-xl border shadow-lg"
       defaultId="categories"
     >
       <Stackflow.Prefix className="border-b bg-white p-4">
@@ -578,7 +578,7 @@ export const NodesListExample: Story = {
 export const Basic: Story = {
   render: () => (
     <Stackflow
-      className="w-96 rounded-lg border shadow-lg"
+      className="w-96 rounded-xl border shadow-lg"
       defaultId="about"
     >
       <Stackflow.Prefix>

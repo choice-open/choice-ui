@@ -64,6 +64,7 @@ export interface SelectProps {
   open?: boolean
   placement?: "bottom-start" | "bottom-end"
   portalId?: string
+  size?: "default" | "large"
   value?: string | null
 }
 
@@ -98,6 +99,7 @@ const SelectComponent = memo(
       portalId = PORTAL_ROOT_ID,
       placement = "bottom-start",
       children,
+      size: sizeProp = "default",
       focusManagerProps = {
         returnFocus: false,
         modal: true,
@@ -495,6 +497,7 @@ const SelectComponent = memo(
             ref={(node: HTMLButtonElement | null) => registerItem(currentSelectableIndex, node)}
             selected={isSelected}
             disabled={isDisabled}
+            size={sizeProp}
             customActive={customActive ? true : undefined}
             {...eventHandlers}
           >
@@ -502,16 +505,26 @@ const SelectComponent = memo(
           </MenuContextItem>
         )
       })
-    }, [options, currentSelectedIndex, refs, handleSelect, registerItem])
+    }, [
+      options,
+      currentSelectedIndex,
+      sizeProp,
+      refs.allowSelect,
+      refs.allowMouseUp,
+      refs.selectTimeout,
+      handleSelect,
+      registerItem,
+    ])
 
     const enhancedTriggerElement = useMemo(() => {
       if (!triggerElement) return null
       return cloneElement(triggerElement, {
         ...triggerElement.props,
         active: isControlledOpen,
+        size: sizeProp,
         ref,
       })
-    }, [triggerElement, isControlledOpen, ref])
+    }, [triggerElement, isControlledOpen, ref, sizeProp])
 
     // 错误处理
     if (!triggerElement || !contentElement) {

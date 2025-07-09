@@ -60,7 +60,7 @@ const TextFieldContent = ({
 )
 
 const TextFieldBase = forwardRef<HTMLInputElement, TextFieldProps>((props, ref) => {
-  const { className, variant, size, children, disabled, ...rest } = props
+  const { className, variant, size, children, disabled, selected, ...rest } = props
 
   const childrenArray = Children.toArray(children)
 
@@ -91,6 +91,7 @@ const TextFieldBase = forwardRef<HTMLInputElement, TextFieldProps>((props, ref) 
     hasPrefix: !!prefixNode,
     hasSuffix: !!suffixNode,
     disabled,
+    selected,
   })
 
   const uuid = useId()

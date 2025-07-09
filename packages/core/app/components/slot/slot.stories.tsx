@@ -169,7 +169,7 @@ export const UseSlotHook: Story = {
   render: function UseSlotHookStory() {
     const CustomSlotComponent = ({ children }: { children: React.ReactNode }) => {
       const slottedChild = useSlot(children, {
-        className: "border-4 border-blue-500 p-4 rounded-lg",
+        className: "border-4 border-blue-500 p-4 rounded-xl",
         onClick: () => console.log("Hook-based slot clicked"),
         "data-enhanced": "true",
       })

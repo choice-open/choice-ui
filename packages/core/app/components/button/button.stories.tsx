@@ -80,17 +80,17 @@ export const Sizes: Story = {
 export const Variants: Story = {
   render: function Variants() {
     enum Variant {
-      Primary = "primary",
-      Secondary = "secondary",
-      Solid = "solid",
+      Dark = "dark",
       Destructive = "destructive",
-      SecondaryDestruct = "secondary-destruct",
+      Ghost = "ghost",
       Inverse = "inverse",
-      Success = "success",
       Link = "link",
       LinkDanger = "link-danger",
-      Ghost = "ghost",
-      Dark = "dark",
+      Primary = "primary",
+      Secondary = "secondary",
+      SecondaryDestruct = "secondary-destruct",
+      Solid = "solid",
+      Success = "success",
     }
 
     enum Size {
@@ -99,11 +99,11 @@ export const Variants: Story = {
     }
 
     enum State {
-      Rest = "rest",
       Active = "active",
+      Disabled = "disabled",
       Focused = "focused",
       Loading = "loading",
-      Disabled = "disabled",
+      Rest = "rest",
     }
 
     const [variant, setVariant] = useState<Variant>(Variant.Primary)
@@ -112,7 +112,7 @@ export const Variants: Story = {
     return (
       <div
         className={tcx(
-          "flex flex-col items-start gap-4 rounded-lg p-4",
+          "flex flex-col items-start gap-4 rounded-xl p-4",
           variant === Variant.Dark && "bg-gray-800",
         )}
       >

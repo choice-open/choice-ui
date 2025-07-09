@@ -183,7 +183,7 @@ export function ConditionItem({
         "group/condition-item",
         "bg-default-background flex items-center gap-2 border p-2",
         // 判断在组内：level > 0 表示在嵌套组中
-        level > 0 ? "col-span-2 rounded-md" : "rounded-lg",
+        level > 0 ? "col-span-2 rounded-md" : "rounded-xl",
         className,
       )}
     >

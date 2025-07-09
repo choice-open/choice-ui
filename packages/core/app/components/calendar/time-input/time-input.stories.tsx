@@ -358,7 +358,7 @@ export const Combined: Story = {
 
     return (
       <>
-        <Panel className="w-80 rounded-lg border">
+        <Panel className="w-80 rounded-xl border">
           <Panel.Title title="Select Time" />
           <Panel.Row>
             <Select

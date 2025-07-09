@@ -3,7 +3,7 @@ import { tv } from "tailwind-variants"
 export const MenusTv = tv({
   base: [
     "relative flex flex-col",
-    "z-menu rounded-lg",
+    "z-menu rounded-xl",
     "h-full p-2",
     "bg-menu-background text-white shadow-lg",
     "scrollbar-hide overflow-y-auto overscroll-contain",
@@ -63,7 +63,7 @@ export const MenuTriggerTv = tv({
     {
       size: "large",
       hasSuffix: true,
-      class: { root: "pr-1" },
+      class: { root: "pr-0" },
     },
   ],
   defaultVariants: {
@@ -77,7 +77,7 @@ export const MenuTriggerTv = tv({
 export const MenuItemTv = tv({
   slots: {
     root: [
-      "group/menu-item flex h-6 w-full flex-none items-center rounded-md",
+      "group/menu-item flex w-full flex-none items-center rounded-md",
       "leading-md tracking-md text-md text-left",
       "cursor-default",
     ],
@@ -85,6 +85,10 @@ export const MenuItemTv = tv({
     icon: "flex h-4 min-w-4 flex-none items-center justify-center",
   },
   variants: {
+    size: {
+      default: { root: "h-6" },
+      large: { root: "h-8" },
+    },
     active: {
       true: {},
       false: {
@@ -158,6 +162,7 @@ export const MenuItemTv = tv({
     hasPrefix: false,
     hasSuffix: false,
     variant: "default",
+    size: "default",
   },
 })
 

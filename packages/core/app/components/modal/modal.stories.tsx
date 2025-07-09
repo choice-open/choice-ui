@@ -1,4 +1,4 @@
-import { ChevronLeft, ThemeSunBright } from "@choiceform/icons-react"
+import { ChevronLeft, LockAspectRatio, ThemeSunBright } from "@choiceform/icons-react"
 import { faker } from "@faker-js/faker"
 import { Story } from "@storybook/blocks"
 import type { Meta, StoryObj } from "@storybook/react"
@@ -11,6 +11,9 @@ import { Tabs } from "../tabs"
 import { TextField } from "../text-field"
 import { Modal } from "./modal"
 import { SearchInput } from "../search-input"
+import { LinkButton } from "../link-button"
+import { ModalInput } from "./components/modal-input"
+import { Dropdown } from "../dropdown"
 
 const meta: Meta<typeof Modal> = {
   title: "Overlays/Modal",
@@ -82,14 +85,25 @@ export const Basic: Story = {
         </Modal.Header>
         <Modal.Header
           title={
-            <>
+            <div className="flex items-center gap-2">
               <IconButton>
                 <ChevronLeft />
               </IconButton>
               Modal
-            </>
+            </div>
           }
         />
+        <Modal.Header
+          title="Title"
+          onClose={() => {}}
+        >
+          <div className="flex items-center justify-end">
+            <LinkButton>
+              <LockAspectRatio />
+              Link
+            </LinkButton>
+          </div>
+        </Modal.Header>
         <Modal.Header
           title={
             <Tabs
@@ -153,14 +167,56 @@ export const Basic: Story = {
  */
 export const ModalContent: Story = {
   render: function ModalContentStory() {
+    const [search, setSearch] = useState("")
     const [select, setSelect] = useState("option-1")
     const [input, setInput] = useState("")
     const [multiLineInput, setMultiLineInput] = useState("")
+    const [dropdown, setDropdown] = useState("option-1")
+    const [open, setOpen] = useState(false)
 
     return (
       <Modal>
         <Modal.Header title="Modal" />
         <Modal.Content className="flex w-md flex-col gap-4 p-4">
+          <div className="flex w-full items-center gap-2">
+            <TextField
+              className="flex-1 rounded-lg"
+              size="large"
+              placeholder="Please enter your name"
+              selected={open}
+              value={search}
+              onChange={setSearch}
+            >
+              <TextField.Suffix className="px-1">
+                <Select
+                  open={open}
+                  onOpenChange={setOpen}
+                  value={dropdown}
+                  onChange={setDropdown}
+                >
+                  <Select.Trigger>
+                    <Select.Value>{dropdown}</Select.Value>
+                  </Select.Trigger>
+                  <Select.Content>
+                    {["option-1", "option-2", "option-3"].map((option) => (
+                      <Select.Item
+                        key={option}
+                        value={option}
+                      >
+                        {option}
+                      </Select.Item>
+                    ))}
+                  </Select.Content>
+                </Select>
+              </TextField.Suffix>
+            </TextField>
+            <Button
+              className="rounded-lg px-4 font-medium"
+              size="large"
+            >
+              Share
+            </Button>
+          </div>
           <Modal.Input
             size="large"
             label="Name"
@@ -180,6 +236,7 @@ export const ModalContent: Story = {
 
           <Modal.Select
             label="Select"
+            size="large"
             value={select}
             onChange={setSelect}
           >
@@ -188,7 +245,7 @@ export const ModalContent: Story = {
               className="gap-2"
             >
               <Avatar
-                photo={faker.image.avatar()}
+                photo={"https://api.dicebear.com/7.x/avataaars/svg?seed=Jennifer%20Miller"}
                 name={faker.name.fullName()}
                 size="small"
               />

@@ -33,7 +33,7 @@ export const Basic: Story = {
       <div className="flex h-64 items-center justify-center">
         <ContextMenu>
           <ContextMenu.Target>
-            <div className="bg-secondary-background border-accent-background rounded-lg border-2 border-dashed p-8">
+            <div className="bg-secondary-background border-accent-background rounded-xl border-2 border-dashed p-8">
               Right click me to open context menu
             </div>
           </ContextMenu.Target>
@@ -86,7 +86,7 @@ export const WithSelection: Story = {
       <div className="flex h-64 items-center justify-center">
         <ContextMenu selection={true}>
           <ContextMenu.Target>
-            <div className="bg-secondary-background border-accent-background rounded-lg border-2 border-dashed p-8">
+            <div className="bg-secondary-background border-accent-background rounded-xl border-2 border-dashed p-8">
               Right click me for selection menu
             </div>
           </ContextMenu.Target>
@@ -164,7 +164,7 @@ export const SharedMenuContent: Story = {
           <p className="mb-2">Context menu with same content</p>
           <ContextMenu>
             <ContextMenu.Target>
-              <div className="bg-secondary-background border-accent-background rounded-lg border-2 border-dashed p-8">
+              <div className="bg-secondary-background border-accent-background rounded-xl border-2 border-dashed p-8">
                 Right click me for context menu (same content)
               </div>
             </ContextMenu.Target>
@@ -196,7 +196,7 @@ export const WithDividers: Story = {
       <div className="flex h-64 items-center justify-center">
         <ContextMenu>
           <ContextMenu.Target>
-            <div className="bg-secondary-background border-accent-background rounded-lg border-2 border-dashed p-8 text-center">
+            <div className="bg-secondary-background border-accent-background rounded-xl border-2 border-dashed p-8 text-center">
               Right click for complex menu
             </div>
           </ContextMenu.Target>
@@ -298,7 +298,7 @@ export const FileManagerExample: Story = {
           </div>
         </div>
 
-        <div className="bg-accent-background rounded-lg p-4 text-sm">
+        <div className="bg-accent-background rounded-xl p-4 text-sm">
           <strong>Business Value:</strong> Same menu logic works in both toolbar dropdown and
           right-click menu, reducing code duplication and ensuring interaction consistency.
         </div>
@@ -335,7 +335,7 @@ export const NestedSubmenus: Story = {
       <div className="flex h-96 items-center justify-center">
         <ContextMenu>
           <ContextMenu.Target>
-            <div className="bg-secondary-background border-accent-background rounded-lg border-2 border-dashed p-8 text-center">
+            <div className="bg-secondary-background border-accent-background rounded-xl border-2 border-dashed p-8 text-center">
               Right click for nested menus
             </div>
           </ContextMenu.Target>
@@ -457,7 +457,7 @@ export const WithDisabledItems: Story = {
       <div className="flex h-64 items-center justify-center">
         <ContextMenu>
           <ContextMenu.Target>
-            <div className="bg-secondary-background border-accent-background rounded-lg border-2 border-dashed p-8">
+            <div className="bg-secondary-background border-accent-background rounded-xl border-2 border-dashed p-8">
               Right click for menu with disabled items
             </div>
           </ContextMenu.Target>
@@ -523,7 +523,7 @@ export const ContextMenuNestedDropdown: Story = {
       <div className="flex h-64 items-center justify-center">
         <div
           ref={triggerRef}
-          className="bg-secondary-background border-accent-background rounded-lg border-2 border-dashed p-8"
+          className="bg-secondary-background border-accent-background rounded-xl border-2 border-dashed p-8"
         >
           <Dropdown>
             <Dropdown.Trigger>
@@ -601,7 +601,7 @@ export const WithTriggerRef: Story = {
       <div className="flex h-64 items-center justify-center">
         <div
           ref={triggerRef}
-          className="bg-secondary-background border-accent-background rounded-lg border-2 border-dashed p-8"
+          className="bg-secondary-background border-accent-background rounded-xl border-2 border-dashed p-8"
         >
           <Dropdown>
             <Dropdown.Trigger>
@@ -679,7 +679,7 @@ export const WithDisabled: Story = {
             <p className="mb-2 text-sm font-medium">Using ContextMenu.Target</p>
             <ContextMenu disabled={isDisabled}>
               <ContextMenu.Target>
-                <div className="bg-secondary-background border-accent-background rounded-lg border-2 border-dashed p-8">
+                <div className="bg-secondary-background border-accent-background rounded-xl border-2 border-dashed p-8">
                   {isDisabled ? "Context menu disabled" : "Right click me"}
                 </div>
               </ContextMenu.Target>
@@ -708,7 +708,7 @@ export const WithDisabled: Story = {
           </div>
         </div>
 
-        <div className="bg-accent-background rounded-lg p-4 text-sm">
+        <div className="bg-accent-background rounded-xl p-4 text-sm">
           <strong>Tip:</strong> When disabled=true, the context menu will not open on right-click.
           You can style disabled states using CSS selectors like <code>[data-disabled]</code> or
           <code>[data-context-menu-disabled]</code>.
@@ -726,7 +726,7 @@ function DisabledWithTriggerRef({ disabled }: { disabled: boolean }) {
     <>
       <div
         ref={triggerRef}
-        className="bg-secondary-background border-accent-background rounded-lg border-2 border-dashed p-8"
+        className="bg-secondary-background border-accent-background rounded-xl border-2 border-dashed p-8"
       >
         {disabled ? "Context menu disabled" : "Right click me"}
       </div>

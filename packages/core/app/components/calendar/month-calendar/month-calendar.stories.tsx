@@ -15,14 +15,14 @@ const SingleSelectDemo = (args: MonthCalendarProps) => {
           value={value}
           onChange={setValue}
           selectionMode="single"
-          className="w-50 rounded-lg border"
+          className="w-50 rounded-xl border"
         />
         <MonthCalendar
           {...args}
           value={value}
           onChange={setValue}
           selectionMode="single"
-          className="w-50 rounded-lg border"
+          className="w-50 rounded-xl border"
           variant="dark"
         />
       </div>
@@ -45,14 +45,14 @@ const MultiSelectDemo = (args: MonthCalendarProps) => {
           value={value}
           onChange={setValue}
           selectionMode="multiple"
-          className="w-50 rounded-lg border"
+          className="w-50 rounded-xl border"
         />
         <MonthCalendar
           {...args}
           value={value}
           onChange={setValue}
           selectionMode="multiple"
-          className="w-50 rounded-lg border"
+          className="w-50 rounded-xl border"
           variant="dark"
         />
       </div>
@@ -82,14 +82,14 @@ const RangeSelectDemo = (args: MonthCalendarProps) => {
           value={value}
           onChange={setValue}
           selectionMode="range"
-          className="w-50 rounded-lg border"
+          className="w-50 rounded-xl border"
         />
         <MonthCalendar
           {...args}
           value={value}
           onChange={setValue}
           selectionMode="range"
-          className="w-50 rounded-lg border"
+          className="w-50 rounded-xl border"
           variant="dark"
         />
       </div>
@@ -126,7 +126,7 @@ const DisabledDatesDemo = (args: MonthCalendarProps) => {
           onChange={setValue}
           disabledDates={disabledDates}
           selectionMode="single"
-          className="w-50 rounded-lg border"
+          className="w-50 rounded-xl border"
         />
         <MonthCalendar
           {...args}
@@ -134,7 +134,7 @@ const DisabledDatesDemo = (args: MonthCalendarProps) => {
           onChange={setValue}
           disabledDates={disabledDates}
           selectionMode="single"
-          className="w-50 rounded-lg border"
+          className="w-50 rounded-xl border"
           variant="dark"
         />
       </div>
@@ -173,7 +173,7 @@ const HighlightDatesDemo = (args: MonthCalendarProps) => {
           onChange={setValue}
           highlightDates={highlightDates}
           selectionMode="single"
-          className="w-50 rounded-lg border"
+          className="w-50 rounded-xl border"
         />
         <MonthCalendar
           {...args}
@@ -181,7 +181,7 @@ const HighlightDatesDemo = (args: MonthCalendarProps) => {
           onChange={setValue}
           highlightDates={highlightDates}
           selectionMode="single"
-          className="w-50 rounded-lg border"
+          className="w-50 rounded-xl border"
           variant="dark"
         />
       </div>
@@ -221,7 +221,7 @@ export const Default: Story = {
     return (
       <MonthCalendar
         {...args}
-        className="w-50 rounded-lg border"
+        className="w-50 rounded-xl border"
       />
     )
   },
@@ -238,7 +238,7 @@ export const WithWeekNumbers: Story = {
       <div className="space-y-4">
         <MonthCalendar
           {...args}
-          className="w-50 rounded-lg border"
+          className="w-50 rounded-xl border"
         />
         <p className="text-secondary-foreground">
           Display the left week number column, using the ISO week number standard (Monday starts)
@@ -256,7 +256,7 @@ export const SingleSelect: Story = {
   render: (args) => (
     <SingleSelectDemo
       {...args}
-      className="w-50 rounded-lg border"
+      className="w-50 rounded-xl border"
     />
   ),
 }
@@ -269,7 +269,7 @@ export const MultiSelect: Story = {
   render: (args) => (
     <MultiSelectDemo
       {...args}
-      className="w-50 rounded-lg border"
+      className="w-50 rounded-xl border"
     />
   ),
 }
@@ -282,7 +282,7 @@ export const RangeSelect: Story = {
   render: (args) => (
     <RangeSelectDemo
       {...args}
-      className="w-50 rounded-lg border"
+      className="w-50 rounded-xl border"
     />
   ),
 }
@@ -295,7 +295,7 @@ export const DisabledDates: Story = {
   render: (args) => (
     <DisabledDatesDemo
       {...args}
-      className="w-50 rounded-lg border"
+      className="w-50 rounded-xl border"
     />
   ),
 }
@@ -308,7 +308,7 @@ export const HighlightDates: Story = {
   render: (args) => (
     <HighlightDatesDemo
       {...args}
-      className="w-50 rounded-lg border"
+      className="w-50 rounded-xl border"
     />
   ),
 }
@@ -325,7 +325,7 @@ export const CustomWeekdays: Story = {
       <div className="space-y-4">
         <MonthCalendar
           {...args}
-          className="w-50 rounded-lg border"
+          className="w-50 rounded-xl border"
         />
         <p className="text-secondary-foreground">
           Use custom weekday name array to override automatic generation of multiple languages
@@ -348,7 +348,7 @@ export const MultiLanguage: Story = {
           <MonthCalendar
             {...args}
             locale="zh-CN"
-            className="w-50 rounded-lg border"
+            className="w-50 rounded-xl border"
           />
         </div>
         <div>
@@ -356,7 +356,7 @@ export const MultiLanguage: Story = {
           <MonthCalendar
             {...args}
             locale="en-US"
-            className="w-50 rounded-lg border"
+            className="w-50 rounded-xl border"
           />
         </div>
         <div>
@@ -364,7 +364,7 @@ export const MultiLanguage: Story = {
           <MonthCalendar
             {...args}
             locale="ja-JP"
-            className="w-50 rounded-lg border"
+            className="w-50 rounded-xl border"
           />
         </div>
         <div>
@@ -372,7 +372,7 @@ export const MultiLanguage: Story = {
           <MonthCalendar
             {...args}
             locale="ko-KR"
-            className="w-50 rounded-lg border"
+            className="w-50 rounded-xl border"
           />
         </div>
       </div>
@@ -396,7 +396,7 @@ export const WeekStartOptions: Story = {
             <MonthCalendar
               {...args}
               weekStartsOn={0}
-              className="w-50 rounded-lg border"
+              className="w-50 rounded-xl border"
             />
           </div>
           <div>
@@ -404,7 +404,7 @@ export const WeekStartOptions: Story = {
             <MonthCalendar
               {...args}
               weekStartsOn={1}
-              className="w-50 rounded-lg border"
+              className="w-50 rounded-xl border"
             />
           </div>
           <div>
@@ -412,7 +412,7 @@ export const WeekStartOptions: Story = {
             <MonthCalendar
               {...args}
               weekStartsOn={6}
-              className="w-50 rounded-lg border"
+              className="w-50 rounded-xl border"
             />
           </div>
         </div>
@@ -436,7 +436,7 @@ export const DynamicRows: Story = {
       <div className="space-y-4">
         <MonthCalendar
           {...args}
-          className="w-50 rounded-lg border"
+          className="w-50 rounded-xl border"
         />
         <p className="text-secondary-foreground">
           Dynamic row mode: display 4-6 rows based on the actual needs of the month, and the height
@@ -467,7 +467,7 @@ const UnifiedInterfaceExample = () => {
           value={singleValue}
           onChange={setSingleValue}
           selectionMode="single"
-          className="w-50 rounded-lg border"
+          className="w-50 rounded-xl border"
         />
         <p className="text-secondary-foreground mt-2">
           Selected: {singleValue instanceof Date ? singleValue.toLocaleDateString() : "None"}
@@ -480,7 +480,7 @@ const UnifiedInterfaceExample = () => {
           value={multiValue}
           onChange={setMultiValue}
           selectionMode="multiple"
-          className="w-50 rounded-lg border"
+          className="w-50 rounded-xl border"
         />
         <p className="text-secondary-foreground mt-2">
           Selected: {Array.isArray(multiValue) ? `${multiValue.length} dates` : "None"}
@@ -493,7 +493,7 @@ const UnifiedInterfaceExample = () => {
           value={rangeValue}
           onChange={setRangeValue}
           selectionMode="range"
-          className="w-50 rounded-lg border"
+          className="w-50 rounded-xl border"
         />
         <p className="text-secondary-foreground mt-2">
           Selected range:{" "}

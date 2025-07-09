@@ -18,6 +18,7 @@ export interface MenuItemProps extends React.HTMLAttributes<HTMLButtonElement> {
     keys?: ReactNode
     modifier?: KbdKey | KbdKey[] | undefined
   }
+  size?: "default" | "large"
   suffixElement?: ReactNode
   variant?: "default" | "highlight" | "danger" | "reset"
 }
@@ -34,6 +35,7 @@ export const MenuItem = memo(
       prefixElement,
       suffixElement,
       variant = "default",
+      size = "default",
       ...rest
     } = props
 
@@ -44,6 +46,7 @@ export const MenuItem = memo(
       hasPrefix: !!prefixElement,
       hasSuffix: !!suffixElement,
       variant,
+      size,
     })
 
     const hasValidShortcut = shortcut && (shortcut.modifier || shortcut.keys)

@@ -2,7 +2,7 @@ import { tv } from "tailwind-variants"
 
 export const BellsTv = tv({
   slots: {
-    root: ["relative flex", "h-10 max-w-80 overflow-hidden rounded-lg shadow-lg"],
+    root: ["relative flex", "h-10 max-w-80 overflow-hidden rounded-xl shadow-lg"],
     content: "relative flex min-w-0 items-center gap-1 px-2",
     icon: "flex h-6 w-6 flex-none items-center justify-center",
     text: "truncate",

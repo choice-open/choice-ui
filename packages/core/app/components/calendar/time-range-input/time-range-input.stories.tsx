@@ -144,7 +144,7 @@ export const Size: Story = {
 export const Variable: Story = {
   render: function Render() {
     return (
-      <div className="rounded-lg bg-gray-800 p-8">
+      <div className="rounded-xl bg-gray-800 p-8">
         <TimeRangeDemo variant="dark" />
       </div>
     )

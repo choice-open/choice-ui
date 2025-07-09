@@ -166,7 +166,7 @@ export const Placements: Story = {
 
         {/* 中心元素 */}
         <div className="flex items-center justify-center">
-          <div className="rounded-lg border-2 border-dashed border-gray-300 p-8">
+          <div className="rounded-xl border-2 border-dashed border-gray-300 p-8">
             <span className="text-gray-500">Hover around buttons to see tooltips</span>
           </div>
         </div>

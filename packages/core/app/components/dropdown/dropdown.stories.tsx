@@ -529,7 +529,7 @@ export const MultipleDropdowns: Story = {
 
     return (
       <div className="space-y-6">
-        <div className="rounded-lg border border-blue-200 bg-blue-50 p-4">
+        <div className="rounded-xl border border-blue-200 bg-blue-50 p-4">
           <h3 className="mb-2 text-lg font-semibold text-blue-900">
             🔄 Multiple Dropdown Switching Test
           </h3>
@@ -610,7 +610,7 @@ export const MultipleDropdowns: Story = {
           </div>
         </div>
 
-        <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
+        <div className="rounded-xl border border-gray-200 bg-gray-50 p-4">
           <h4 className="mb-2 font-medium">Test Instructions:</h4>
           <ol className="list-inside list-decimal space-y-1 text-sm text-gray-700">
             <li>Click &quot;Menu 1&quot; to open the first dropdown</li>
@@ -740,6 +740,23 @@ export const ComplexMenu: Story = {
           <Dropdown.Item variant="danger">
             <Dropdown.Value>Sign Out</Dropdown.Value>
           </Dropdown.Item>
+        </Dropdown.Content>
+      </Dropdown>
+    )
+  },
+}
+
+export const Large: Story = {
+  render: function LargeStory() {
+    return (
+      <Dropdown>
+        <Dropdown.Trigger size="large">
+          <Dropdown.Value>Large</Dropdown.Value>
+        </Dropdown.Trigger>
+        <Dropdown.Content>
+          <Dropdown.Item size="large">Option 1</Dropdown.Item>
+          <Dropdown.Item size="large">Option 2</Dropdown.Item>
+          <Dropdown.Item size="large">Option 3</Dropdown.Item>
         </Dropdown.Content>
       </Dropdown>
     )

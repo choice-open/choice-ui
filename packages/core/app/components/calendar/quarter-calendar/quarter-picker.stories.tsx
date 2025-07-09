@@ -18,13 +18,13 @@ const QuarterCalendarDemo = (args: QuarterCalendarProps) => {
           {...args}
           value={selectedQuarter}
           onChange={setSelectedQuarter}
-          className="w-48 rounded-lg border"
+          className="w-48 rounded-xl border"
         />
         <QuarterCalendar
           {...args}
           value={selectedQuarter}
           onChange={setSelectedQuarter}
-          className="w-48 rounded-lg border"
+          className="w-48 rounded-xl border"
           variant="dark"
         />
       </div>
@@ -96,7 +96,7 @@ const LocaleQuarterCalendar: React.FC<{
           value={quarter}
           locale={locale.code}
           onChange={setQuarter}
-          className="w-48 rounded-lg border"
+          className="w-48 rounded-xl border"
         />
         <div className="text-secondary-foreground">
           Selected quarter: {quarter ? formatQuarter(quarter) : "None"}
@@ -214,7 +214,7 @@ export const DarkVariant: Story = {
     disabled: false,
   },
   render: (args) => (
-    <div className="rounded-lg bg-slate-900 p-4">
+    <div className="rounded-xl bg-slate-900 p-4">
       <QuarterCalendarDemo {...args} />
     </div>
   ),

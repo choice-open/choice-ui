@@ -444,7 +444,7 @@ export const CompoundComponent: Story = {
           </Select.Content>
         </Select>
 
-        <div className="rounded-lg bg-stone-50 p-4">
+        <div className="rounded-xl bg-stone-50 p-4">
           <div className="mb-2 text-sm font-medium text-stone-700">Current Selection:</div>
           <div className="font-mono text-sm text-stone-600">{value || "None"}</div>
         </div>
@@ -608,7 +608,7 @@ export const Multiple: Story = {
           </div>
         </div>
 
-        <div className="flex flex-col gap-2 rounded-lg bg-stone-50 p-4">
+        <div className="flex flex-col gap-2 rounded-xl bg-stone-50 p-4">
           <div className="text-sm font-medium text-stone-700">Current Values:</div>
           <div className="text-sm text-stone-600">
             First: <span className="font-mono">{value1}</span>
@@ -851,7 +851,7 @@ export const Advanced: Story = {
           </div>
         </div>
 
-        <div className="rounded-lg border bg-stone-50 p-4">
+        <div className="rounded-xl border bg-stone-50 p-4">
           <h3 className="mb-2 font-medium">Current Configuration</h3>
           <div className="space-y-1 text-sm">
             <div>
@@ -866,6 +866,47 @@ export const Advanced: Story = {
           </div>
         </div>
       </div>
+    )
+  },
+}
+
+export const Large: Story = {
+  render: function LargeStory() {
+    const [value, setValue] = useState<string>("option-1")
+    const options = useMemo(
+      () =>
+        Array.from({ length: 8 }, (_, i) => ({
+          value: `option-${i + 1}`,
+          label: faker.music.songName(),
+        })),
+      [],
+    )
+
+    return (
+      <Select
+        size="large"
+        value={value}
+        onChange={setValue}
+      >
+        <Select.Trigger
+          prefixElement={<Settings />}
+          className="w-48"
+        >
+          <Select.Value>
+            {value ? options.find((option) => option.value === value)?.label : "Select song..."}
+          </Select.Value>
+        </Select.Trigger>
+        <Select.Content>
+          {options.map((option) => (
+            <Select.Item
+              key={option.value}
+              value={option.value}
+            >
+              <Select.Value>{option.label}</Select.Value>
+            </Select.Item>
+          ))}
+        </Select.Content>
+      </Select>
     )
   },
 }

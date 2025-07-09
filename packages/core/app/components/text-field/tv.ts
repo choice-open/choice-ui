@@ -59,6 +59,12 @@ export const TextFieldTv = tv({
       },
       false: {},
     },
+    selected: {
+      true: {
+        root: "before:border-selected-boundary",
+      },
+      false: {},
+    },
   },
   compoundVariants: [
     {
@@ -99,5 +105,6 @@ export const TextFieldTv = tv({
     hasPrefix: false,
     hasSuffix: false,
     disabled: false,
+    selected: false,
   },
 })

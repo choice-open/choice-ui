@@ -19,7 +19,7 @@ export const ModalInput = memo(
         {...rest}
       >
         {label && <TextField.Label>{label}</TextField.Label>}
-        {description && <TextField.Description>{description}</TextField.Description>}
+        {description && <TextField.Description>{description}</TextField.Description>}z
       </TextField>
     )
   }),

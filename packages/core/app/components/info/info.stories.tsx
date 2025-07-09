@@ -44,7 +44,7 @@ export const CustomIcon: Story = {
 // Basic info example matching the screenshot
 export const Default: Story = {
   render: () => (
-    <div className="flex items-center gap-2 rounded-lg bg-gray-50 p-8">
+    <div className="flex items-center gap-2 rounded-xl bg-gray-50 p-8">
       <span className="font-medium text-gray-900">Reason</span>
       <Info content="Optional reason" />
     </div>

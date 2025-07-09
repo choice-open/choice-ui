@@ -520,7 +520,8 @@
 
   --radius-sm: 0.125rem;
   --radius-md: 0.3125rem;
-  --radius-lg: 0.8125rem;
+  --radius-lg: 0.4375rem;
+  --radius-xl: 0.8125rem;
 
   --leading-sm: 0.875rem;
   --leading-md: 1rem;

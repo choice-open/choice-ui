@@ -15,13 +15,13 @@ const YearPickerDemo = (args: YearCalendarProps) => {
           {...args}
           value={selectedYear}
           onChange={setSelectedYear}
-          className="w-48 rounded-lg border"
+          className="w-48 rounded-xl border"
         />
         <YearCalendar
           {...args}
           value={selectedYear}
           onChange={setSelectedYear}
-          className="w-48 rounded-lg border"
+          className="w-48 rounded-xl border"
           variant="dark"
         />
       </div>

@@ -400,7 +400,7 @@ export function ConditionGroup({
           "relative grid items-center gap-x-2",
           // 嵌套组添加背景色和边框
           level > 0
-            ? "bg-default-background rounded-lg border border-dashed py-2 pr-2"
+            ? "bg-default-background rounded-xl border border-dashed py-2 pr-2"
             : "condition__group",
           hasMultipleItems ? "pl-12" : "pl-2",
         )}

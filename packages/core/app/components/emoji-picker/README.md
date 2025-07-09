@@ -149,7 +149,7 @@ function ChatInput() {
       <button onClick={() => setShowEmojiPicker(!showEmojiPicker)}>😀</button>
 
       {showEmojiPicker && (
-        <div className="absolute bottom-full right-0 z-10">
+        <div className="absolute right-0 bottom-full z-10">
           <EmojiPicker
             value={selectedEmoji}
             onChange={handleEmojiChange}
@@ -225,7 +225,7 @@ function CommentForm() {
         value={comment}
         onChange={(e) => setComment(e.target.value)}
         placeholder="添加评论..."
-        className="w-full rounded-lg border p-3"
+        className="w-full rounded-xl border p-3"
       />
 
       <EmojiPicker

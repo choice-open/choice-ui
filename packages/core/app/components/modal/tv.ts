@@ -2,7 +2,7 @@ import { tv } from "tailwind-variants"
 
 export const ModalTv = tv({
   slots: {
-    root: "bg-default-background z-modals pointer-events-auto relative flex max-w-fit flex-col rounded-lg shadow-xl",
+    root: "bg-default-background z-modals pointer-events-auto relative flex max-w-fit flex-col rounded-xl shadow-xl",
   },
 })
 

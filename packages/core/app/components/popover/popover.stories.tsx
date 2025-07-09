@@ -260,14 +260,14 @@ export const ControlledFixed: Story = {
 
     return (
       <div className="space-y-6">
-        <div className="rounded-lg border border-green-200 bg-green-50 p-4">
+        <div className="rounded-xl border border-green-200 bg-green-50 p-4">
           <h3 className="mb-2 text-lg font-semibold text-green-900">✅ 受控模式修复验证</h3>
           <p className="text-sm text-green-800">
             基于 Floating UI 官方文档的正确实现，解决了开启一次关闭后无法再次显示的问题
           </p>
         </div>
 
-        <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
+        <div className="rounded-xl border border-gray-200 bg-gray-50 p-4">
           <div className="mb-4 space-y-2">
             <div className="text-sm font-medium text-gray-700">
               当前状态：
@@ -536,7 +536,7 @@ export const OutsidePressIgnore: Story = {
   render: function OutsidePressIgnoreStory() {
     const [open, setOpen] = useState(false)
     return (
-      <div className="outside-press-ignore rounded-lg border p-16">
+      <div className="outside-press-ignore rounded-xl border p-16">
         <Popover
           open={open}
           onOpenChange={setOpen}
@@ -864,7 +864,7 @@ export const MultiplePopovers: Story = {
 
     return (
       <div className="space-y-8">
-        <div className="rounded-lg border border-orange-200 bg-orange-50 p-4">
+        <div className="rounded-xl border border-orange-200 bg-orange-50 p-4">
           <h3 className="mb-2 text-lg font-semibold text-orange-900">🔍 问题重现测试</h3>
           <p className="text-sm text-orange-800">
             测试场景：在一个画布上有多个 Popover，当第一个 Popover 打开时，点击第二个 Popover 按钮
@@ -957,7 +957,7 @@ export const MultiplePopovers: Story = {
           </div>
         </div>
 
-        <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
+        <div className="rounded-xl border border-gray-200 bg-gray-50 p-4">
           <h4 className="mb-2 font-medium">测试步骤：</h4>
           <ol className="list-inside list-decimal space-y-1 text-sm text-gray-700">
             <li>点击 &quot;Popover 1&quot; 按钮打开第一个 Popover</li>

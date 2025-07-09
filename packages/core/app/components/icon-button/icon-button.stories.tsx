@@ -83,12 +83,12 @@ export const Basic: Story = {
 export const Variants: Story = {
   render: function Variants() {
     enum Variant {
+      Dark = "dark",
       Default = "default",
+      Ghost = "ghost",
+      Highlight = "highlight",
       Secondary = "secondary",
       Solid = "solid",
-      Highlight = "highlight",
-      Ghost = "ghost",
-      Dark = "dark",
     }
 
     enum Size {
@@ -97,18 +97,23 @@ export const Variants: Story = {
     }
 
     enum State {
-      Rest = "rest",
       Active = "active",
+      Disabled = "disabled",
       Focused = "focused",
       Loading = "loading",
-      Disabled = "disabled",
+      Rest = "rest",
     }
 
     const [variant, setVariant] = useState<Variant>(Variant.Default)
     const [size, setSize] = useState<Size>(Size.Default)
 
     return (
-      <div className={tcx("flex flex-col items-start gap-4 rounded-lg p-4", variant === Variant.Dark && "bg-gray-800")}>
+      <div
+        className={tcx(
+          "flex flex-col items-start gap-4 rounded-xl p-4",
+          variant === Variant.Dark && "bg-gray-800",
+        )}
+      >
         <div className="flex gap-4">
           <Select
             value={variant}
@@ -244,5 +249,3 @@ export const AsChild: Story = {
     </IconButton>
   ),
 }
-
-

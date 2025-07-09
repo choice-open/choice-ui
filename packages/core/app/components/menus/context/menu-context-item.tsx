@@ -30,6 +30,7 @@ export const MenuContextItem = memo(
         value = "",
         disabled,
         selected,
+        size,
         shortcut,
         prefixElement,
         variant,
@@ -147,6 +148,7 @@ export const MenuContextItem = memo(
           prefixElement={prefixConfig}
           shortcut={shortcutConfig}
           variant={variant}
+          size={size}
           {...menu.getItemProps({
             onClick: handleClick,
             onMouseDown: handleMouseDown,

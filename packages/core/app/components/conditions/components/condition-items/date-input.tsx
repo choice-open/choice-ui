@@ -107,7 +107,7 @@ export function ConditionDateInput({ condition, field, disabled, onChange }: Bas
           returnFocus: false,
         }}
       >
-        <Popover.Content className="overflow-hidden rounded-lg">
+        <Popover.Content className="overflow-hidden rounded-xl">
           <MonthCalendar
             className="w-64"
             value={parseValue(condition.value)}
@@ -229,7 +229,7 @@ export function ConditionDateRangeInput({
           returnFocus: false,
         }}
       >
-        <Popover.Content className="overflow-hidden rounded-lg">
+        <Popover.Content className="overflow-hidden rounded-xl">
           <MonthCalendar
             className="w-64"
             value={parseValue(condition.secondValue)}

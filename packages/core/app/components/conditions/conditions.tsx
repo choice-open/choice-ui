@@ -318,7 +318,7 @@ export function Conditions({
     }
 
     return (
-      <div className="mt-4 rounded-lg border border-red-200 bg-red-50 p-3">
+      <div className="mt-4 rounded-xl border border-red-200 bg-red-50 p-3">
         <h4 className="mb-2 text-sm font-medium text-red-800">Validation Errors:</h4>
         <ul className="space-y-1 text-sm text-red-700">
           {validationResult.errors.map((error, index) => (

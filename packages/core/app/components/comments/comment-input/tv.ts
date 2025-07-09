@@ -2,11 +2,11 @@ import { tv } from "tailwind-variants"
 
 export const CommentInputTv = tv({
   slots: {
-    root: "relative flex flex-col rounded-lg text-default-foreground leading-md tracking-md text-lg",
-    editor: "focus:outline-none pl-4 py-[7px] cursor-text",
+    root: "text-default-foreground leading-md tracking-md relative flex flex-col rounded-xl text-lg",
+    editor: "cursor-text py-[7px] pl-4 focus:outline-none",
     placeholder:
-      "absolute left-4 right-10 top-2 text-secondary-foreground h-6 pointer-events-none flex items-center select-none text-md",
-    footer: "pl-1 py-1 pr-2 flex items-center justify-between h-10 border-t",
+      "text-secondary-foreground text-md pointer-events-none absolute top-2 right-10 left-4 flex h-6 items-center select-none",
+    footer: "flex h-10 items-center justify-between border-t py-1 pr-2 pl-1",
     footerActions: "flex items-center gap-1 px-1",
     error: "text-secondary-foreground flex h-10 items-center",
   },
@@ -39,7 +39,7 @@ export const CommentInputMentionPopoverTv = tv({
   slots: {
     root: [
       "flex flex-col gap-0",
-      "rounded-lg",
+      "rounded-xl",
       "p-2",
       "bg-menu-background text-white shadow-lg",
       "overflow-y-auto overscroll-contain",
