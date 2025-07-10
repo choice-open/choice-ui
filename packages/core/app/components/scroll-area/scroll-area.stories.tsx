@@ -1,10 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/react"
-import { useMemo } from "react"
+import { useMemo, useState } from "react"
 import { ScrollArea } from "./scroll-area"
 import React from "react"
 import { Modal } from "../modal"
 import { useVirtualizer } from "@tanstack/react-virtual"
 import { faker } from "@faker-js/faker"
+import { Button } from "../button"
+import { useScrollPerformanceMonitor } from "./hooks"
 
 const meta: Meta<typeof ScrollArea> = {
   title: "Layouts/ScrollArea",
@@ -800,6 +802,303 @@ export const Accessibility: Story = {
     )
   },
 }
+/**
+ * DynamicContent: Tests ScrollArea with dynamically changing content.
+ *
+ * Features:
+ * - 🔧 Tests fix for scrollbar length not updating with content changes
+ * - Demonstrates real-time scrollbar updates when content is added/removed
+ * - Shows proper scrollbar hiding when content becomes smaller than container
+ * - Tests MutationObserver and ResizeObserver integration
+ *
+ * This story validates the fixes for:
+ * - Scrollbar length not updating when content changes dynamically
+ * - Proper scrollbar visibility when content shrinks below container size
+ */
+export const DynamicContent: Story = {
+  render: function DynamicContentStory() {
+    const [itemCount, setItemCount] = useState(5)
+    const [itemHeight, setItemHeight] = useState(60)
+
+    const items = useMemo(() => {
+      return Array.from({ length: itemCount }, (_, i) => ({
+        id: i,
+        title: `Dynamic Item ${i + 1}`,
+        content: `This is the content of the ${i + 1}th item, with a height of ${itemHeight}px`,
+      }))
+    }, [itemCount, itemHeight])
+
+    return (
+      <div className="space-y-6">
+        <div className="rounded-xl border border-blue-200 bg-blue-50 p-4">
+          <h3 className="mb-2 text-lg font-semibold text-blue-900">
+            🔧 Test Dynamic Content Changes
+          </h3>
+          <p className="text-sm text-blue-800">
+            This test case validates the correct behavior of scrollbars when content changes
+            dynamically, including length updates and display/hide logic.
+          </p>
+        </div>
+
+        <div className="flex gap-4">
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Item Count: {itemCount}
+              </label>
+              <input
+                type="range"
+                min="1"
+                max="50"
+                value={itemCount}
+                onChange={(e) => setItemCount(Number(e.target.value))}
+                className="w-full"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Item Height: {itemHeight}px
+              </label>
+              <input
+                type="range"
+                min="30"
+                max="120"
+                value={itemHeight}
+                onChange={(e) => setItemHeight(Number(e.target.value))}
+                className="w-full"
+              />
+            </div>
+            <div className="flex gap-2">
+              <Button
+                size="default"
+                onClick={() => setItemCount((prev) => Math.max(1, prev - 5))}
+              >
+                Remove Item
+              </Button>
+              <Button
+                size="default"
+                onClick={() => setItemCount((prev) => prev + 5)}
+              >
+                Add Item
+              </Button>
+            </div>
+          </div>
+
+          <ScrollArea
+            className="relative h-80 w-80 overflow-hidden rounded-xl border border-gray-200"
+            orientation="vertical"
+            type="auto"
+          >
+            <ScrollArea.Viewport className="h-full">
+              <ScrollArea.Content className="p-4">
+                <div className="space-y-2">
+                  {items.map((item) => (
+                    <div
+                      key={item.id}
+                      className="rounded-md border p-2"
+                      style={{ height: itemHeight }}
+                    >
+                      <div className="font-medium">{item.title}</div>
+                      <div className="text-secondary-foreground text-sm">{item.content}</div>
+                    </div>
+                  ))}
+                </div>
+              </ScrollArea.Content>
+            </ScrollArea.Viewport>
+          </ScrollArea>
+        </div>
+      </div>
+    )
+  },
+}
+
+/**
+ * PerformanceMonitoring: Demonstrates performance monitoring capabilities.
+ *
+ * Features:
+ * - 🔍 Real-time performance metrics monitoring
+ * - Frame rate and update frequency tracking
+ * - Performance bottleneck detection
+ * - Console-based performance reporting
+ *
+ * This story demonstrates the built-in performance monitoring tools that help:
+ * - Identify scroll performance issues
+ * - Monitor frame rates and dropped frames
+ * - Track event frequencies
+ * - Optimize scroll area performance
+ *
+ * Check the browser console for detailed performance reports when enabled.
+ */
+export const PerformanceMonitoring: Story = {
+  render: function PerformanceMonitoringStory() {
+    const [monitoringEnabled, setMonitoringEnabled] = useState(false)
+    const [itemCount, setItemCount] = useState(1000)
+    const [viewport, setViewport] = useState<HTMLDivElement | null>(null)
+
+    // 🔍 启用性能监控
+    const performanceMetrics = useScrollPerformanceMonitor(viewport, {
+      enabled: monitoringEnabled,
+      logInterval: 3000, // 3秒报告一次
+      frameTimeThreshold: 16.67, // 60fps阈值
+    })
+
+    const items = useMemo(() => {
+      return Array.from({ length: itemCount }, (_, i) => ({
+        id: i,
+        title: `Performance Item ${i + 1}`,
+        content: faker.lorem.sentence(),
+        value: Math.floor(Math.random() * 1000),
+      }))
+    }, [itemCount])
+
+    return (
+      <div className="space-y-6">
+        <div className="rounded-xl border border-purple-200 bg-purple-50 p-4">
+          <h3 className="mb-2 text-lg font-semibold text-purple-900">
+            🔍 Performance Monitoring Test
+          </h3>
+          <p className="text-sm text-purple-800">
+            Enable performance monitoring to track scroll performance metrics. Check the browser
+            console for detailed performance reports.
+          </p>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-4">
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              id="monitoring"
+              checked={monitoringEnabled}
+              onChange={(e) => setMonitoringEnabled(e.target.checked)}
+              className="rounded"
+            />
+            <label
+              htmlFor="monitoring"
+              className="text-sm font-medium"
+            >
+              Enable Performance Monitoring 📊
+            </label>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <label className="text-sm font-medium">Item Count:</label>
+            <select
+              value={itemCount}
+              onChange={(e) => setItemCount(Number(e.target.value))}
+              className="rounded border border-gray-300 px-2 py-1 text-sm"
+            >
+              <option value={100}>100 items (light)</option>
+              <option value={500}>500 items (medium)</option>
+              <option value={1000}>1000 items (heavy)</option>
+              <option value={5000}>5000 items (very heavy)</option>
+            </select>
+          </div>
+
+          {monitoringEnabled && performanceMetrics && (
+            <div className="rounded bg-gray-100 px-3 py-2 text-xs">
+              <span className="font-medium">Real-time Metrics:</span>
+              <span className="ml-2">
+                FPS:{" "}
+                {performanceMetrics.averageFrameTime > 0
+                  ? (1000 / performanceMetrics.averageFrameTime).toFixed(1)
+                  : "0"}
+              </span>
+              <span className="ml-2">Dropped Frames: {performanceMetrics.droppedFrames}</span>
+            </div>
+          )}
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <h4 className="mb-2 text-sm font-medium">Basic Scroll Test</h4>
+            <ScrollArea
+              className="relative h-80 w-full overflow-hidden rounded-xl border border-gray-200"
+              orientation="vertical"
+              type="auto"
+            >
+              <ScrollArea.Viewport
+                className="h-full"
+                ref={setViewport}
+              >
+                <ScrollArea.Content className="p-4">
+                  <div className="space-y-2">
+                    {items.map((item) => (
+                      <div
+                        key={item.id}
+                        className="rounded border border-gray-200 bg-white p-3 shadow-sm"
+                      >
+                        <div className="font-medium text-gray-900">{item.title}</div>
+                        <div className="text-sm text-gray-500">{item.content}</div>
+                        <div className="mt-1 text-xs text-blue-600">Value: {item.value}</div>
+                      </div>
+                    ))}
+                  </div>
+                </ScrollArea.Content>
+              </ScrollArea.Viewport>
+            </ScrollArea>
+          </div>
+
+          <div>
+            <h4 className="mb-2 text-sm font-medium">Complex Layout Test</h4>
+            <ScrollArea
+              className="relative h-80 w-full overflow-hidden rounded-xl border border-gray-200"
+              orientation="both"
+              type="hover"
+            >
+              <ScrollArea.Viewport className="h-full">
+                <ScrollArea.Content className="p-4">
+                  <div
+                    className="grid grid-cols-5 gap-2"
+                    style={{ minWidth: "800px" }}
+                  >
+                    {items.slice(0, Math.min(500, items.length)).map((item) => (
+                      <div
+                        key={item.id}
+                        className="rounded border border-gray-200 bg-gradient-to-br from-blue-50 to-purple-50 p-2 shadow-sm"
+                        style={{ minHeight: "120px" }}
+                      >
+                        <div className="text-xs font-medium text-gray-900">{item.title}</div>
+                        <div className="mt-1 text-xs text-gray-600">
+                          {item.content.slice(0, 50)}...
+                        </div>
+                        <div className="mt-2 rounded bg-white px-2 py-1 text-center text-xs">
+                          {item.value}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </ScrollArea.Content>
+              </ScrollArea.Viewport>
+            </ScrollArea>
+          </div>
+        </div>
+
+        <div className="rounded-xl border border-green-200 bg-green-50 p-4">
+          <h3 className="mb-2 text-lg font-semibold text-green-900">
+            📈 Performance Monitoring Instructions
+          </h3>
+          <div className="space-y-2 text-sm text-green-800">
+            <div>
+              <strong>Average Frame Time</strong>: Should be &lt; 16.67ms (60fps)
+            </div>
+            <div>
+              <strong>Dropped Frames</strong>: Should be as few as possible, too many indicates
+              performance issues
+            </div>
+            <div>
+              <strong>Scroll Event Frequency</strong>: Too high may need throttling optimization
+            </div>
+            <div>
+              <strong>Update Frequency</strong>: Should match actual needs
+            </div>
+            <div className="mt-3 text-xs">💡 Tip: Open the browser developer tools</div>
+          </div>
+        </div>
+      </div>
+    )
+  },
+}
+
 // Helper component that integrates ScrollArea with react-virtual
 function VirtualScrollArea({
   items,

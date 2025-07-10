@@ -27,21 +27,6 @@ export const ScrollAreaScrollbar = forwardRef<HTMLDivElement, ScrollbarProps>(
     const hasOverflow = useHasOverflow(scrollState, orientation)
     const shouldShow = useScrollbarShouldShow(type, hasOverflow, isScrolling, isHovering)
 
-    // 计算滚动条的 ARIA 值
-    const ariaValues = useMemo(() => {
-      if (orientation === "vertical") {
-        const maxScrollTop = Math.max(0, scrollState.scrollHeight - scrollState.clientHeight)
-        const valuenow =
-          maxScrollTop > 0 ? Math.round((scrollState.scrollTop / maxScrollTop) * 100) : 0
-        return { valuenow, valuetext: `${valuenow}% scrolled vertically` }
-      } else {
-        const maxScrollLeft = Math.max(0, scrollState.scrollWidth - scrollState.clientWidth)
-        const valuenow =
-          maxScrollLeft > 0 ? Math.round((scrollState.scrollLeft / maxScrollLeft) * 100) : 0
-        return { valuenow, valuetext: `${valuenow}% scrolled horizontally` }
-      }
-    }, [scrollState, orientation])
-
     // 缓存事件处理器
     const handleTrackClick = useCallback(
       (e: React.MouseEvent) => {
@@ -98,8 +83,6 @@ export const ScrollAreaScrollbar = forwardRef<HTMLDivElement, ScrollbarProps>(
         aria-orientation={orientation}
         aria-valuemin={0}
         aria-valuemax={100}
-        aria-valuenow={ariaValues.valuenow}
-        aria-valuetext={ariaValues.valuetext}
         aria-label={`${orientation} scrollbar`}
         tabIndex={-1}
         {...props}
