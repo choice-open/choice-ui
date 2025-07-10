@@ -1,5 +1,5 @@
 import { LayoutWallpaper } from "@choiceform/icons-react"
-import type { StoryObj } from "@storybook/react"
+import type { StoryObj } from "@storybook/react-vite"
 import React, { useEffect, useState } from "react"
 import { toast as sonnerToast, Toaster } from "sonner"
 import { tcx } from "../../utils"

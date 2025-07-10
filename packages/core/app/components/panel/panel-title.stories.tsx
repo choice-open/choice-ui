@@ -1,5 +1,5 @@
 import { Styles, Target } from "@choiceform/icons-react"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import React, { useState } from "react"
 import { tcx } from "../../utils"
 import { Button } from "../button"

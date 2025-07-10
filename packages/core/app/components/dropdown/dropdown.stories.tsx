@@ -1,6 +1,6 @@
 import { FieldTypeAttachment, Search, Settings } from "@choiceform/icons-react"
 import { faker } from "@faker-js/faker"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import React, { useMemo, useState } from "react"
 import { Button } from "../button"
 import { IconButton } from "../icon-button"

@@ -1,7 +1,7 @@
 import { Hide, Show } from "@choiceform/icons-react"
-import type { Decorator } from "@storybook/react"
-import { Preview } from "@storybook/react"
-import { themes } from "@storybook/theming"
+import type { Decorator } from "@storybook/react-vite"
+import { Preview } from "@storybook/react-vite"
+import { themes } from "storybook/theming"
 import { motion } from "framer-motion"
 import React, { useCallback, useEffect, useRef, useState } from "react"
 import Markdown from "react-markdown"
@@ -414,6 +414,7 @@ const preview: Preview = {
   ],
   parameters: {
     layout: "centered",
+
     controls: {
       matchers: {
         color: /(background|color)$/i,
@@ -432,6 +433,10 @@ const preview: Preview = {
         ...themes.light,
         ...lightTheme,
       },
+    },
+
+    docs: {
+      codePanel: true,
     },
   },
 }

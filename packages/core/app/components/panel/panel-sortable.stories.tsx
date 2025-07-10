@@ -2,7 +2,7 @@ import { AddSmall, DeleteSmall, EffectDropShadow, Hidden, Visible } from "@choic
 import { faker } from "@faker-js/faker"
 import { batch, Observable, observable } from "@legendapp/state"
 import { observer, use$, useObservable } from "@legendapp/state/react"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { IndexGenerator } from "fractional-indexing-jittered"
 import { nanoid } from "nanoid"
 import React, { useEffect, useRef } from "react"

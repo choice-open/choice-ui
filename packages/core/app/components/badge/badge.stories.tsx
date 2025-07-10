@@ -1,6 +1,6 @@
 import { Dot } from "@choiceform/icons-react"
-import { Story } from "@storybook/blocks"
-import type { Meta, StoryObj } from "@storybook/react"
+import { Story } from "@storybook/addon-docs/blocks"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import React, { Fragment } from "react"
 import { Badge } from "./badge"
 

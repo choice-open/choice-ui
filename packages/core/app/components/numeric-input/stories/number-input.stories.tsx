@@ -11,7 +11,7 @@ import {
   Relative,
   Variable,
 } from "@choiceform/icons-react"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import React, { useState } from "react"
 import { useEventCallback } from "usehooks-ts"
 import { Dropdown } from "../../dropdown"

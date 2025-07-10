@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker"
-import { Story } from "@storybook/blocks"
-import type { Meta, StoryObj } from "@storybook/react"
+import { Story } from "@storybook/addon-docs/blocks"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import React, { useMemo } from "react"
 import { Avatar } from "./avatar"
 

@@ -6,5 +6,86 @@
 }
 
 body {
-  overflow: hidden;
+}
+
+.custom-container .docblock-source {
+  box-shadow: none;
+  border: 1px solid var(--color-default-boundary);
+  border-radius: var(--radius-xl);
+  background-color: transparent;
+  color: var(--color-default-foreground);
+}
+
+/* 只重置 Storybook 的特定样式，保留 prose 样式 */
+.css-x28zkw :where(h1:not(.sb-anchor, .sb-unstyled, .sb-unstyled h1)),
+.css-x28zkw :where(h2:not(.sb-anchor, .sb-unstyled, .sb-unstyled h2)),
+.css-x28zkw :where(h3:not(.sb-anchor, .sb-unstyled, .sb-unstyled h3)),
+.css-x28zkw :where(h4:not(.sb-anchor, .sb-unstyled, .sb-unstyled h4)),
+.css-x28zkw :where(h5:not(.sb-anchor, .sb-unstyled, .sb-unstyled h5)),
+.css-x28zkw :where(h6:not(.sb-anchor, .sb-unstyled, .sb-unstyled h6)) {
+  margin: revert !important;
+  border-bottom: none !important;
+  padding: revert !important;
+  color: revert !important;
+  font-weight: revert !important;
+  font-size: revert !important;
+  line-height: revert !important;
+  font-family: revert !important;
+  -webkit-font-smoothing: revert !important;
+  -webkit-tap-highlight-color: revert !important;
+  position: revert !important;
+  cursor: revert !important;
+}
+
+/* 特别针对已知的 Storybook 样式类 */
+.css-x28zkw {
+  font-family: revert !important;
+}
+
+/* 确保 prose 容器内的元素不被 Storybook 样式影响 */
+.prose.prose-slate :where(h1, h2, h3, h4, h5, h6, p, li, ul, ol, blockquote, hr, figure, pre),
+.prose.prose-lg :where(h1, h2, h3, h4, h5, h6, p, li, ul, ol, blockquote, hr, figure, pre) {
+  /* 让 prose 样式优先 */
+  all: revert;
+}
+
+/* 移除 Storybook 特有的字体 */
+*:where([class*="css-"]) {
+  font-family: revert !important;
+}
+
+.sbdocs.sbdocs-wrapper {
+  background-color: transparent;
+}
+.token.keyword,
+.token.attr-value,
+.token.atrule {
+  color: var(--color-accent-foreground) !important;
+}
+.token.operator,
+.token.punctuation,
+.token.selector,
+.token.tag,
+.token.class-name {
+  color: var(--color-default-foreground) !important;
+}
+
+.token.attr-name {
+  color: var(--color-warning-foreground) !important;
+}
+.token.variable,
+.token.comment {
+  color: var(--color-success-foreground) !important;
+}
+.token.string,
+.token.property {
+  color: var(--color-danger-foreground) !important;
+}
+
+.token.function {
+  color: var(--color-accent-foreground) !important;
+}
+
+.token.number {
+  color: var(--color-warning-foreground) !important;
 }

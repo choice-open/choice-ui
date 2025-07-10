@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import React, { useMemo, useState } from "react"
 import { Descendant } from "slate"
 import { CustomElement, ImageElement } from "../comment-input/types"

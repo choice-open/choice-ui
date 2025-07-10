@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { Fragment, useState } from "react"
 import { Select } from "../select"
 import { ToggleButton } from "./toggle-button"

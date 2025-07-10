@@ -1,5 +1,5 @@
 import { FieldTypeDateAndTime, ArrowRight } from "@choiceform/icons-react"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { addDays, isToday, Locale } from "date-fns"
 import { de, enUS, fr, zhCN } from "date-fns/locale"
 import React, { useRef, useState } from "react"

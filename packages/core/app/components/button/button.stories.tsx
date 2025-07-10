@@ -1,6 +1,6 @@
 import { SearchSmall } from "@choiceform/icons-react"
-import { Story } from "@storybook/blocks"
-import type { Meta, StoryObj } from "@storybook/react"
+import { Story } from "@storybook/addon-docs/blocks"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { Fragment, useState } from "react"
 import { Select } from "../select"
 import { Button } from "./button"

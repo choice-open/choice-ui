@@ -1,5 +1,5 @@
 import { FieldTypeAttachment, FieldTypeCheckbox, FieldTypeCount } from "@choiceform/icons-react"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import React, { useState } from "react"
 import { Segmented } from "./segmented"
 

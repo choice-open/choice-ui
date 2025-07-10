@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import React, { useState } from "react"
 import type { Quarter } from "../types"
 import { formatQuarter, getCurrentQuarter } from "../utils"

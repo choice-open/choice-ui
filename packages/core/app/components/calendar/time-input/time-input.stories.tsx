@@ -1,5 +1,5 @@
 import { ActionWaitForSomeTime, Clock } from "@choiceform/icons-react"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { enUS, ja, zhCN } from "date-fns/locale"
 import React, { useRef, useState } from "react"
 import { Panel } from "../../panel"

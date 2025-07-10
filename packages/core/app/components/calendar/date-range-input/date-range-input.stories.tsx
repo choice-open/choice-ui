@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { addDays, addHours, subDays } from "date-fns"
 import { enUS, ja, ko, zhCN } from "date-fns/locale"
 import React, { useState } from "react"

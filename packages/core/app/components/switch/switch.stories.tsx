@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import React, { Fragment, useState } from "react"
 import { Tooltip } from "../tooltip"
 import { Switch } from "./switch"

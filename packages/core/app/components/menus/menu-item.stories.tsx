@@ -6,8 +6,8 @@ import {
   ThemeSystem,
 } from "@choiceform/icons-react"
 import { faker } from "@faker-js/faker"
-import { Story } from "@storybook/blocks"
-import type { Meta, StoryObj } from "@storybook/react"
+import { Story } from "@storybook/addon-docs/blocks"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import React, { ReactNode, useMemo, useState } from "react"
 import { tcx } from "../../utils"
 import { Avatar } from "../avatar"

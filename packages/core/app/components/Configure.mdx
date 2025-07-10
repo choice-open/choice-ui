@@ -1,0 +1,289 @@
+import { Meta } from "@storybook/addon-docs/blocks"
+
+<Meta title="Getting Started/Quick Start" />
+
+<div className="max-w-4xl mx-auto p-4 prose prose-slate lg:prose-lg custom-container dark:prose-invert">
+
+# Quick Start Guide
+
+Get up and running with @choiceform/design-system in minutes. This guide covers installation, configuration, and key concepts to help you build beautiful interfaces efficiently.
+
+## Installation
+
+Install the design system using your preferred package manager:
+
+```bash
+# Using pnpm (recommended)
+pnpm add @choiceform/design-system
+
+# Using npm
+npm install @choiceform/design-system
+
+# Using yarn
+yarn add @choiceform/design-system
+```
+
+## CSS Configuration
+
+### Import Required Styles
+
+Add these imports to your main `tailwind.css` file:
+
+```css
+@import "tailwindcss";
+@import "@choiceform/design-system/styles/theme.css";
+@import "@choiceform/design-system/styles/components.css";
+@source "../../../node_modules/@choiceform/design-system";
+```
+
+### Understanding the @source Directive
+
+The `@source` directive is a powerful Tailwind CSS 4.0 feature that tells Tailwind where to scan for class names:
+
+#### What @source Does
+
+- **Content Detection**: Instructs Tailwind to scan specific directories for class usage
+- **Automatic Scanning**: Includes component library files in the build process
+- **Performance Optimization**: Ensures only necessary styles are generated
+- **Module Integration**: Seamlessly integrates third-party component libraries
+
+#### Why You Need It
+
+```css
+@source "../../../node_modules/@choiceform/design-system";
+```
+
+This directive is essential because:
+
+1. **Library Integration**: Ensures Tailwind finds classes used in the design system components
+2. **Build Optimization**: Prevents unused component styles from being purged
+3. **Automatic Discovery**: Eliminates manual configuration of content paths
+4. **Cross-Package Support**: Enables style sharing across monorepo packages
+
+#### Advanced @source Usage
+
+```css
+/* Include specific paths */
+@source "./src/components";
+@source "../shared/ui";
+
+/* Exclude unwanted paths */
+@source not "./src/legacy";
+
+/* Force include specific classes (safelist) */
+@source inline("animate-pulse bg-gradient-to-r");
+
+/* Complex patterns with brace expansion */
+@source inline("{hover:,focus:}bg-{red,blue,green}-{500,600,700}");
+```
+
+## Assemble a Component Philosophy
+
+Our design system embraces the **"Assemble a Component"** approach, a modern methodology for building scalable and maintainable user interfaces.
+
+### Core Concept
+
+Instead of monolithic components, we provide **composable building blocks** that can be assembled to create complex interfaces:
+
+```tsx
+// ❌ Monolithic approach
+<DataTable
+  data={users}
+  columns={columns}
+  pagination={true}
+  sorting={true}
+  filtering={true}
+/>
+
+// ✅ Assemble a Component approach
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.Head sortable>Name</Table.Head>
+      <Table.Head>Email</Table.Head>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    {users.map(user => (
+      <Table.Row key={user.id}>
+        <Table.Cell>{user.name}</Table.Cell>
+        <Table.Cell>{user.email}</Table.Cell>
+      </Table.Row>
+    ))}
+  </Table.Body>
+</Table>
+```
+
+### Key Advantages
+
+#### **Flexibility**
+
+- Mix and match components as needed
+- Easy customization without prop drilling
+- Adaptable to unique design requirements
+
+#### **Composability**
+
+- Small, focused components with single responsibilities
+- Natural component composition patterns
+- Reusable across different contexts
+
+#### **Scalability**
+
+- Easy to extend with new variants
+- Maintainable component architecture
+- Future-proof design patterns
+
+#### **Design Consistency**
+
+- Shared design tokens across all components
+- Consistent spacing, typography, and colors
+- Unified interaction patterns
+
+### Real-World Examples
+
+#### Modal Assembly
+
+```tsx
+<Modal>
+  <Modal.Header>
+    <Modal.Title>User Settings</Modal.Title>
+    <Modal.Close />
+  </Modal.Header>
+  <Modal.Content>
+    <Form>
+      <Input label="Name" />
+      <Input
+        label="Email"
+        type="email"
+      />
+    </Form>
+  </Modal.Content>
+  <Modal.Footer>
+    <Button variant="secondary">Cancel</Button>
+    <Button variant="primary">Save</Button>
+  </Modal.Footer>
+</Modal>
+```
+
+#### Navigation Assembly
+
+```tsx
+<Navigation>
+  <Navigation.Brand>
+    <Logo />
+  </Navigation.Brand>
+  <Navigation.Links>
+    <Navigation.Link href="/dashboard">Dashboard</Navigation.Link>
+    <Navigation.Link href="/settings">Settings</Navigation.Link>
+  </Navigation.Links>
+  <Navigation.Actions>
+    <Button variant="ghost">Profile</Button>
+  </Navigation.Actions>
+</Navigation>
+```
+
+## Theme Configuration
+
+Configure theme mode by adding the appropriate class or attribute to your HTML element:
+
+### Option 1: CSS Class (Recommended)
+
+```html
+<!-- Light mode -->
+<html class="light">
+  <!-- Your app content -->
+</html>
+
+<!-- Dark mode -->
+<html class="dark">
+  <!-- Your app content -->
+</html>
+```
+
+### Option 2: Data Attribute
+
+```html
+<!-- Light mode -->
+<html data-theme="light">
+  <!-- Your app content -->
+</html>
+
+<!-- Dark mode -->
+<html data-theme="dark">
+  <!-- Your app content -->
+</html>
+```
+
+### Dynamic Theme Switching
+
+```tsx
+function ThemeProvider({ children }) {
+  const [theme, setTheme] = useState("light")
+
+  useEffect(() => {
+    document.documentElement.className = theme
+    // or
+    document.documentElement.setAttribute("data-theme", theme)
+  }, [theme])
+
+  return <ThemeContext.Provider value={{ theme, setTheme }}>{children}</ThemeContext.Provider>
+}
+```
+
+## Basic Usage
+
+Once configured, you can start using components immediately:
+
+```tsx
+import { Button, Input, Card } from "@choiceform/design-system"
+
+export default function App() {
+  return (
+    <div className="p-4">
+      <Card>
+        <Card.Header>
+          <Card.Title>Welcome to Design System</Card.Title>
+        </Card.Header>
+        <Card.Content>
+          <div className="space-y-4">
+            <Input
+              label="Your Name"
+              placeholder="Enter your name..."
+            />
+            <Button variant="primary">Get Started</Button>
+          </div>
+        </Card.Content>
+      </Card>
+    </div>
+  )
+}
+```
+
+## Next Steps
+
+- **Explore Components**: Browse our component library in Storybook
+- **Check Examples**: View real-world usage patterns in the examples section
+- **Read Documentation**: Dive deeper into component APIs and customization
+- **Join Community**: Connect with other developers using the design system
+
+## TypeScript Support
+
+Full TypeScript support is included out of the box:
+
+```tsx
+import type { ButtonProps } from "@choiceform/design-system"
+
+const MyButton: React.FC<ButtonProps> = (props) => {
+  return <Button {...props} />
+}
+```
+
+## Additional Resources
+
+- [Component Documentation](/?path=/docs/components)
+- [Design Tokens](/?path=/docs/design-tokens)
+- [Customization Guide](/?path=/docs/customization)
+- [Migration Guide](/?path=/docs/migration)
+
+</div>

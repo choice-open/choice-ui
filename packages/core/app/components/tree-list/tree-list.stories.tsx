@@ -1,7 +1,7 @@
 import { Element, ToolbarFrame } from "@choiceform/icons-react"
 import { observable } from "@legendapp/state"
 import { observer } from "@legendapp/state/react"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import React, { useState } from "react"
 import { Splitter } from "../splitter"
 import { TreeList } from "./tree-list"

@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker"
 import type { Placement as FloatingPlacement } from "@floating-ui/react"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import React, { useMemo, useRef, useState } from "react"
 import { Button } from "../button"
 import { Dropdown } from "../dropdown"

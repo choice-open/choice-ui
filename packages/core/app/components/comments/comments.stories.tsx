@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { Dialog } from "../dialog"
 import { Comments } from "./comments"

@@ -5,7 +5,7 @@ import {
   Settings,
 } from "@choiceform/icons-react"
 import { faker } from "@faker-js/faker"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import React, { useMemo, useRef, useState } from "react"
 import { Popover } from "../popover"
 import { Select } from "./select"
