@@ -31,9 +31,6 @@ type Story = StoryObj<typeof ScrollArea>
  * - Integration with other components like Modal
  * - Customizable viewport and scrollbar styling
  * - Four scrollbar visibility modes: auto, always, scroll, hover
- * - ♿ Full WAI-ARIA accessibility compliance
- * - ⌨️ Complete keyboard navigation support
- * - 🔊 Screen reader announcements and live regions
  *
  * Scrollbar Visibility Types:
  * - "auto": Scrollbars visible when content overflows (default web behavior)
@@ -55,34 +52,6 @@ type Story = StoryObj<typeof ScrollArea>
  * - Use ScrollArea.Viewport for the scrollable content
  * - Apply appropriate padding inside the viewport
  * - Simply set orientation prop - scrollbars are added automatically!
- * - Add aria-label or aria-labelledby for accessible names
- * - Test with keyboard navigation and screen readers
- *
- * Accessibility Features:
- * - ♿ Full WAI-ARIA compliance with proper roles and attributes
- * - ⌨️ Keyboard navigation: Arrow keys, Page Up/Down, Home/End, Space
- * - 🔊 Screen reader support with scroll position announcements
- * - 🎯 Proper focus management and visible focus indicators
- * - 🔗 ARIA relationships between scrollbars and viewport
- * - 📢 Live regions for dynamic content updates
- * - 🏷️ Accessible names and descriptions for all interactive elements
- *
- * Keyboard Navigation:
- * - Arrow Keys: Scroll by small steps (20px)
- * - Page Up/Down: Scroll by page height (80% of viewport)
- * - Home/End: Jump to start/end of content
- * - Space/Shift+Space: Page down/up scrolling
- * - Tab: Move focus to/from scrollable region
- *
- * ARIA Attributes:
- * - role="application" on root container
- * - role="region" on viewport with tabindex="0" for keyboard focus
- * - role="scrollbar" on scrollbar elements
- * - aria-controls linking scrollbars to viewport
- * - aria-valuenow, aria-valuemin, aria-valuemax for scroll position
- * - aria-valuetext for human-readable scroll position
- * - aria-label and aria-labelledby for accessible names
- * - aria-live="polite" for non-intrusive announcements
  */
 
 /**
@@ -695,113 +664,6 @@ export const VirtualList: Story = {
   },
 }
 
-/**
- * Accessibility: Demonstrates ScrollArea with full WAI-ARIA support.
- *
- * Features:
- * - Full WAI-ARIA compliance with proper roles and attributes
- * - Keyboard navigation support (arrow keys, page up/down, home/end, space)
- * - Screen reader announcements for scroll position
- * - Proper focus management and visible focus indicators
- * - Accessible names and descriptions
- * - ARIA live regions for dynamic content updates
- *
- * Accessibility Features:
- * - role="application" on root container
- * - role="region" on viewport with tabindex="0" for keyboard focus
- * - role="scrollbar" on scrollbar elements with proper ARIA attributes
- * - aria-controls linking scrollbars to viewport
- * - aria-valuenow, aria-valuemin, aria-valuemax for scroll position
- * - aria-valuetext for human-readable scroll position
- * - aria-label and aria-labelledby for accessible names
- * - Keyboard navigation instructions via screen reader
- *
- * Keyboard Navigation:
- * - Arrow keys: Scroll by small steps
- * - Page Up/Down: Scroll by page height
- * - Home/End: Jump to start/end of content
- * - Space/Shift+Space: Page down/up
- */
-export const Accessibility: Story = {
-  render: function AccessibilityStory() {
-    const contents = useMemo(() => {
-      return Array.from({ length: 100 }, (_, i) => (
-        <div
-          key={i}
-          className="border-b p-4 focus:bg-blue-50 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-          tabIndex={0}
-        >
-          <div className="font-semibold text-gray-900">Item {i + 1}</div>
-          <div className="text-sm text-gray-600">
-            This is item {i + 1} with some description text. You can focus this item and navigate
-            with keyboard.
-          </div>
-        </div>
-      ))
-    }, [])
-
-    return (
-      <div className="space-y-6">
-        <div className="rounded-xl border border-blue-200 bg-blue-50 p-4">
-          <h3 className="mb-2 text-lg font-semibold text-blue-900">♿ Accessibility Features</h3>
-          <ul className="space-y-1 text-sm text-blue-800">
-            <li>• Full WAI-ARIA compliance with proper roles and attributes</li>
-            <li>• Keyboard navigation: Arrow keys, Page Up/Down, Home/End, Space</li>
-            <li>• Screen reader support with live announcements</li>
-            <li>• Proper focus management and visible focus indicators</li>
-            <li>• Tab into the scroll area below and use keyboard to navigate</li>
-          </ul>
-        </div>
-
-        <div>
-          <h3
-            id="accessible-list-title"
-            className="mb-4 text-lg font-semibold"
-          >
-            Accessible Item List
-          </h3>
-          <ScrollArea
-            className="relative h-96 w-full max-w-2xl overflow-hidden rounded-xl border border-gray-200 shadow-sm"
-            orientation="vertical"
-            aria-label="Accessible item list with keyboard navigation"
-            aria-labelledby="accessible-list-title"
-          >
-            <ScrollArea.Viewport className="h-full focus:ring-2 focus:ring-blue-500 focus:outline-none">
-              <ScrollArea.Content className="p-2">
-                <div className="space-y-0">{contents}</div>
-              </ScrollArea.Content>
-            </ScrollArea.Viewport>
-          </ScrollArea>
-        </div>
-
-        <div className="rounded-xl border border-green-200 bg-green-50 p-4">
-          <h3 className="mb-2 text-lg font-semibold text-green-900">🎯 Testing Instructions</h3>
-          <div className="space-y-2 text-sm text-green-800">
-            <div>
-              <strong>Keyboard Users:</strong>
-              <ol className="mt-1 ml-4 list-decimal space-y-1">
-                <li>Press Tab to focus the scroll area</li>
-                <li>Use Arrow keys to scroll content</li>
-                <li>Use Page Up/Down for larger scrolls</li>
-                <li>Use Home/End to jump to start/end</li>
-                <li>Use Space/Shift+Space for page scrolling</li>
-              </ol>
-            </div>
-            <div>
-              <strong>Screen Reader Users:</strong>
-              <ol className="mt-1 ml-4 list-decimal space-y-1">
-                <li>Navigate to the scroll area region</li>
-                <li>Listen for scroll position announcements</li>
-                <li>Use standard scrolling commands</li>
-                <li>Notice the accessible names and descriptions</li>
-              </ol>
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  },
-}
 /**
  * DynamicContent: Tests ScrollArea with dynamically changing content.
  *

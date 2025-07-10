@@ -27,6 +27,17 @@ export const ScrollAreaScrollbar = forwardRef<HTMLDivElement, ScrollbarProps>(
     const hasOverflow = useHasOverflow(scrollState, orientation)
     const shouldShow = useScrollbarShouldShow(type, hasOverflow, isScrolling, isHovering)
 
+    // 计算滚动位置百分比
+    const scrollPercentage = useMemo(() => {
+      if (orientation === "vertical") {
+        const maxScroll = scrollState.scrollHeight - scrollState.clientHeight
+        return maxScroll > 0 ? Math.round((scrollState.scrollTop / maxScroll) * 100) : 0
+      } else {
+        const maxScroll = scrollState.scrollWidth - scrollState.clientWidth
+        return maxScroll > 0 ? Math.round((scrollState.scrollLeft / maxScroll) * 100) : 0
+      }
+    }, [scrollState, orientation])
+
     // 缓存事件处理器
     const handleTrackClick = useCallback(
       (e: React.MouseEvent) => {
@@ -83,8 +94,9 @@ export const ScrollAreaScrollbar = forwardRef<HTMLDivElement, ScrollbarProps>(
         aria-orientation={orientation}
         aria-valuemin={0}
         aria-valuemax={100}
+        aria-valuenow={scrollPercentage}
+        aria-valuetext={`${scrollPercentage}% scrolled ${orientation}ly`}
         aria-label={`${orientation} scrollbar`}
-        tabIndex={-1}
         {...props}
       />
     )

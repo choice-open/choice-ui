@@ -2,55 +2,42 @@
 
 ## 概述
 
-ScrollArea 组件已完全遵循 WAI-ARIA 规范，提供了完整的可访问性支持，确保所有用户都能有效使用该组件。
+ScrollArea 组件提供了基本的可访问性支持，确保屏幕阅读器用户可以理解滚动区域的结构和内容。
 
 ## WAI-ARIA 合规性检查表
 
 ### ✅ 已实现的 ARIA 属性
 
-| 属性                 | 元素           | 描述                       | 状态 |
-| -------------------- | -------------- | -------------------------- | ---- |
-| `role="application"` | Root           | 指示这是一个交互式应用区域 | ✅   |
-| `role="region"`      | Viewport       | 标识可滚动区域             | ✅   |
-| `role="scrollbar"`   | Scrollbar      | 标识滚动条控件             | ✅   |
-| `aria-controls`      | Scrollbar      | 链接滚动条到控制的视口     | ✅   |
-| `aria-valuenow`      | Scrollbar      | 当前滚动位置 (0-100)       | ✅   |
-| `aria-valuemin`      | Scrollbar      | 最小值 (0)                 | ✅   |
-| `aria-valuemax`      | Scrollbar      | 最大值 (100)               | ✅   |
-| `aria-valuetext`     | Scrollbar      | 人类可读的滚动位置         | ✅   |
-| `aria-orientation`   | Scrollbar      | 滚动方向                   | ✅   |
-| `aria-label`         | Root/Scrollbar | 可访问名称                 | ✅   |
-| `aria-labelledby`    | Root           | 引用标签元素               | ✅   |
-| `aria-describedby`   | Root           | 引用描述元素               | ✅   |
-| `aria-live`          | Viewport       | 动态内容更新通知           | ✅   |
-| `aria-atomic`        | Viewport       | 控制 live region 行为      | ✅   |
-| `aria-hidden`        | Thumb/Corner   | 隐藏装饰性元素             | ✅   |
-| `tabindex`           | Viewport       | 启用键盘焦点               | ✅   |
+| 属性               | 元素           | 描述                   | 状态 |
+| ------------------ | -------------- | ---------------------- | ---- |
+| `role="scrollbar"` | Scrollbar      | 标识滚动条控件         | ✅   |
+| `aria-controls`    | Scrollbar      | 链接滚动条到控制的视口 | ✅   |
+| `aria-valuenow`    | Scrollbar      | 当前滚动位置 (0-100)   | ✅   |
+| `aria-valuemin`    | Scrollbar      | 最小值 (0)             | ✅   |
+| `aria-valuemax`    | Scrollbar      | 最大值 (100)           | ✅   |
+| `aria-valuetext`   | Scrollbar      | 人类可读的滚动位置     | ✅   |
+| `aria-orientation` | Scrollbar      | 滚动方向               | ✅   |
+| `aria-label`       | Root/Scrollbar | 可访问名称             | ✅   |
+| `aria-labelledby`  | Root           | 引用标签元素           | ✅   |
+| `aria-hidden`      | Thumb/Corner   | 隐藏装饰性元素         | ✅   |
 
-### ✅ 键盘导航支持
+### ❌ 未实现的特性
 
-| 按键          | 功能                     | 状态 |
-| ------------- | ------------------------ | ---- |
-| `ArrowUp`     | 向上滚动 20px            | ✅   |
-| `ArrowDown`   | 向下滚动 20px            | ✅   |
-| `ArrowLeft`   | 向左滚动 20px (水平模式) | ✅   |
-| `ArrowRight`  | 向右滚动 20px (水平模式) | ✅   |
-| `PageUp`      | 向上滚动 80% 视口高度    | ✅   |
-| `PageDown`    | 向下滚动 80% 视口高度    | ✅   |
-| `Home`        | 跳到内容开始             | ✅   |
-| `End`         | 跳到内容结束             | ✅   |
-| `Space`       | 向下滚动一页             | ✅   |
-| `Shift+Space` | 向上滚动一页             | ✅   |
-| `Tab`         | 进入/离开滚动区域        | ✅   |
+| 特性         | 描述                  | 状态 |
+| ------------ | --------------------- | ---- |
+| 键盘导航     | 使用键盘滚动内容      | ❌   |
+| 应用程序角色 | role="application"    | ❌   |
+| 焦点管理     | tabindex 和焦点指示器 | ❌   |
+| 区域角色     | role="region" 在视口  | ❌   |
+| 动态内容通知 | aria-live 区域        | ❌   |
+| 使用说明     | 键盘导航使用说明      | ❌   |
 
-### ✅ 屏幕阅读器支持
+### 🔊 屏幕阅读器支持
 
 | 特性         | 描述                                     | 状态 |
 | ------------ | ---------------------------------------- | ---- |
 | 可访问名称   | 通过 `aria-label` 或 `aria-labelledby`   | ✅   |
 | 滚动位置通知 | 通过 `aria-valuetext` 提供位置信息       | ✅   |
-| 使用说明     | 通过隐藏描述元素提供键盘导航说明         | ✅   |
-| 动态更新     | 通过 `aria-live` 通知内容变化            | ✅   |
 | 角色识别     | 正确的 ARIA 角色让屏幕阅读器理解组件功能 | ✅   |
 
 ## 实施详情
@@ -59,11 +46,8 @@ ScrollArea 组件已完全遵循 WAI-ARIA 规范，提供了完整的可访问�
 
 ```tsx
 <div
-  role="application"
   aria-label="Scrollable content"
   aria-labelledby="external-label-id"
-  aria-describedby="viewport-desc"
-  onKeyDown={handleKeyDown}
 >
 ```
 
@@ -71,10 +55,6 @@ ScrollArea 组件已完全遵循 WAI-ARIA 规范，提供了完整的可访问�
 
 ```tsx
 <div
-  role="region"
-  aria-live="polite"
-  aria-atomic="false"
-  tabIndex={0}
   id="viewport-id"
 >
 ```
@@ -94,40 +74,24 @@ ScrollArea 组件已完全遵循 WAI-ARIA 规范，提供了完整的可访问�
 >
 ```
 
-### 4. 使用说明元素
-
-```tsx
-<div
-  id="viewport-desc"
-  className="sr-only"
->
-  Use arrow keys to scroll, Page Up/Down for larger steps, Home/End for start/end
-</div>
-```
-
 ## 测试建议
 
 ### 自动化测试
 
 1. 使用 `@testing-library/react` 验证 ARIA 属性
 2. 使用 `axe-core` 进行无障碍性自动化测试
-3. 验证键盘事件处理
+3. 验证滚动条属性和位置计算
 
 ### 手动测试
 
-1. **键盘导航测试**
-   - 使用 Tab 键导航到滚动区域
-   - 使用所有支持的键盘快捷键
-   - 验证焦点指示器的可见性
-
-2. **屏幕阅读器测试**
+1. **屏幕阅读器测试**
    - 使用 NVDA/JAWS (Windows)
    - 使用 VoiceOver (macOS)
    - 使用 Orca (Linux)
    - 验证所有元素的可访问名称
    - 验证滚动位置通知
 
-3. **浏览器兼容性**
+2. **浏览器兼容性**
    - Chrome + ChromeVox
    - Firefox + NVDA
    - Safari + VoiceOver
@@ -166,20 +130,33 @@ ScrollArea 组件已完全遵循 WAI-ARIA 规范，提供了完整的可访问�
 </ScrollArea>
 ```
 
+## 限制和注意事项
+
+### 当前限制
+
+1. **无键盘导航**: 组件不支持键盘滚动，用户需要使用鼠标或触摸设备
+2. **无焦点管理**: 视口不能接收键盘焦点
+3. **无动态通知**: 内容变化不会主动通知屏幕阅读器
+4. **无应用程序角色**: 不提供应用程序级别的交互体验
+
+### 使用建议
+
+1. 为组件提供合适的 `aria-label` 或 `aria-labelledby`
+2. 确保内容本身具有良好的可访问性
+3. 考虑为复杂交互提供备用的键盘友好方案
+4. 测试屏幕阅读器的滚动位置播报
+
 ## 符合的标准
 
-- [WAI-ARIA 1.1 Specification](https://www.w3.org/TR/wai-aria-1.1/)
-- [ARIA Authoring Practices Guide](https://www.w3.org/WAI/ARIA/apg/)
-- [WCAG 2.1 AA Guidelines](https://www.w3.org/WAI/WCAG21/quickref/)
-- [Section 508 Standards](https://www.section508.gov/)
+- [WAI-ARIA 1.1 Specification](https://www.w3.org/TR/wai-aria-1.1/) (部分)
+- [WCAG 2.1 AA Guidelines](https://www.w3.org/WAI/WCAG21/quickref/) (基本)
 
 ## 更新历史
 
-- \*\*2025-07-08: 初始实现 WAI-ARIA 支持
-- \*\*2025-07-08: 添加完整的键盘导航
-- \*\*2025-07-08: 增强屏幕阅读器支持
-- \*\*2025-07-08: 添加可访问性测试 story
+- **2025-07-08**: 移除键盘导航支持，简化为基本可访问性
+- **2025-07-08**: 保留滚动条 ARIA 属性和屏幕阅读器支持
+- **2025-07-08**: 更新文档以反映当前功能限制
 
 ---
 
-_本文档记录了 ScrollArea 组件的完整可访问性实现，确保符合现代 Web 无障碍标准。_
+_本文档记录了 ScrollArea 组件的基本可访问性实现。如需完整的键盘导航支持，请考虑使用其他具有完整可访问性的滚动组件。_

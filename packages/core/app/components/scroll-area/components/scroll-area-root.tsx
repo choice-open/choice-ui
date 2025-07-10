@@ -2,7 +2,6 @@ import React, { createContext, forwardRef, useCallback, useContext, useMemo, use
 import { tcx } from "../../../utils"
 import {
   useHasOverflow,
-  useKeyboardNavigation,
   useScrollbarShouldShow,
   useScrollStateAndVisibility,
   useThumbDrag,
@@ -66,9 +65,6 @@ export const ScrollAreaRoot = forwardRef<HTMLDivElement, ScrollAreaProps>(
 
     const { scrollState, isHovering, isScrolling, handleMouseEnter, handleMouseLeave } =
       useScrollStateAndVisibility(viewport)
-
-    // 使用新的键盘导航 hook
-    const { handleKeyDown } = useKeyboardNavigation(viewport, orientation)
 
     // 缓存静态配置，避免每次渲染重新创建
     const staticConfig = useMemo(
@@ -207,21 +203,11 @@ export const ScrollAreaRoot = forwardRef<HTMLDivElement, ScrollAreaProps>(
           className={tcx(tvConfig.root(), classNames?.root, className)}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
-          onKeyDown={handleKeyDown}
           // WAI-ARIA 属性
-          role="application"
           aria-label={ariaLabel}
           aria-labelledby={ariaLabelledBy}
-          aria-describedby={`${viewportId}-desc`}
           {...props}
         >
-          {/* 隐藏的描述元素 */}
-          <div
-            id={`${viewportId}-desc`}
-            className="sr-only"
-          >
-            Use arrow keys to scroll, Page Up/Down for larger steps, Home/End for start/end
-          </div>
           {renderedChildren}
           {autoScrollbars}
         </div>

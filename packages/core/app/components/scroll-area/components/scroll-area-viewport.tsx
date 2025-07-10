@@ -36,11 +36,6 @@ export const ScrollAreaViewport = forwardRef<HTMLDivElement, React.ComponentProp
         ref={setRef}
         id={viewportId}
         className={tcx("scrollbar-hide h-full w-full", scrollClass, className)}
-        // WAI-ARIA 属性
-        role="region"
-        aria-live="polite"
-        aria-atomic="false"
-        tabIndex={0}
         {...props}
       >
         {children}
