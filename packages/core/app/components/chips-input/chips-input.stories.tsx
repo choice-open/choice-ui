@@ -6,7 +6,7 @@ import { ChipsInput, RenderChipProps, type ChipsInputProps } from "."
 const meta = {
   title: "Forms/ChipsInput",
   component: ChipsInput,
-  tags: ["beta"],
+  tags: ["beta", "autodocs"],
 } satisfies Meta<typeof ChipsInput>
 
 export default meta

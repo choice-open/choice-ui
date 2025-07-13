@@ -7,7 +7,7 @@ import { Avatar } from "./avatar"
 const meta: Meta<typeof Avatar> = {
   title: "Feedback/Avatar",
   component: Avatar,
-  tags: ["new"],
+  tags: ["new", "autodocs"],
 }
 
 export default meta
@@ -101,9 +101,9 @@ export const Photo: Story = {
 export const Sizes: Story = {
   render: function SizesStory() {
     enum Sizes {
-      Small = "small",
-      Medium = "medium",
       Large = "large",
+      Medium = "medium",
+      Small = "small",
     }
 
     return (
@@ -135,8 +135,8 @@ export const Sizes: Story = {
 export const States: Story = {
   render: function StatesStory() {
     enum States {
-      Default = "default",
       Dash = "dash",
+      Default = "default",
       Design = "design",
       Spotlight = "spotlight",
     }

@@ -9,7 +9,7 @@ import { Dropdown } from "./dropdown"
 const meta: Meta<typeof Dropdown> = {
   title: "Collections/Dropdown",
   component: Dropdown,
-  tags: ["upgrade"],
+  tags: ["upgrade", "autodocs"],
 }
 
 export default meta

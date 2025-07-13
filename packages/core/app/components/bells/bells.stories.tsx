@@ -10,7 +10,7 @@ import { bells } from "./bells"
 const meta = {
   title: "Status/Bells",
   component: bells,
-  tags: ["new"],
+  tags: ["new", "autodocs"],
 }
 
 export default meta

@@ -6,6 +6,7 @@ import { Checkbox } from "./checkbox"
 const meta: Meta<typeof Checkbox> = {
   title: "Forms/Checkbox",
   component: Checkbox,
+  tags: ["autodocs"],
 }
 
 export default meta
@@ -50,20 +51,20 @@ type Story = StoryObj<typeof Checkbox>
 export const Basic: Story = {
   render: function BasicStory() {
     enum State {
-      Rest = "rest",
-      Focused = "focused",
       Disabled = "disabled",
+      Focused = "focused",
+      Rest = "rest",
     }
 
     enum Interaction {
-      On = "on",
       Mixed = "mixed",
       Off = "off",
+      On = "on",
     }
 
     enum Variant {
-      Default = "default",
       Accent = "accent",
+      Default = "default",
       Outline = "outline",
     }
 

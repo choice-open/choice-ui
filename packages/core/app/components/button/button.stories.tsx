@@ -10,6 +10,7 @@ import { tcx } from "../../utils"
 const meta: Meta<typeof Button> = {
   title: "Buttons/Button",
   component: Button,
+  tags: ["autodocs"],
 }
 
 export default meta

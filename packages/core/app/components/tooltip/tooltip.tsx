@@ -19,6 +19,7 @@ const PORTAL_ROOT_ID = "floating-tooltip-root"
 
 export interface TooltipProps {
   children?: React.ReactNode
+  className?: string
   content?: React.ReactNode
   disabled?: boolean
   offset?: number
@@ -37,6 +38,7 @@ export interface TooltipProps {
 export function Tooltip(props: TooltipProps) {
   const {
     children,
+    className,
     placement,
     open,
     onOpenChange,
@@ -66,6 +68,7 @@ export function Tooltip(props: TooltipProps) {
           withArrow={withArrow}
           variant={variant}
           portalId={portalId}
+          className={className}
         >
           {content}
           {shortcut && (

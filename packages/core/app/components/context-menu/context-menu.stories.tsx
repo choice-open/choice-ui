@@ -6,7 +6,7 @@ import { ContextMenu } from "./context-menu"
 const meta: Meta<typeof ContextMenu> = {
   title: "Collections/ContextMenu",
   component: ContextMenu,
-  tags: ["upgrade"],
+  tags: ["upgrade", "autodocs"],
 }
 
 export default meta

@@ -7,7 +7,7 @@ import { Badge } from "./badge"
 const meta: Meta<typeof Badge> = {
   title: "Feedback/Badge",
   component: Badge,
-  tags: ["new"],
+  tags: ["new", "autodocs"],
 }
 
 export default meta
@@ -42,18 +42,18 @@ type Story = StoryObj<typeof Badge>
 export const Basic: Story = {
   render: function BasicStory() {
     enum Variant {
-      Default = "default",
       Brand = "brand",
-      Inverted = "inverted",
       Component = "component",
+      Default = "default",
+      Error = "error",
+      Inverted = "inverted",
       Success = "success",
       Warning = "warning",
-      Error = "error",
     }
 
     enum Strong {
-      True = "true",
       False = "false",
+      True = "true",
     }
 
     return (

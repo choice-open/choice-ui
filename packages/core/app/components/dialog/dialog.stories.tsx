@@ -11,6 +11,7 @@ import { ScrollArea } from "../scroll-area"
 const meta: Meta<typeof Dialog> = {
   title: "Overlays/Dialog",
   component: Dialog,
+  tags: ["autodocs"],
 }
 
 export default meta
@@ -383,16 +384,24 @@ export const Nested: Story = {
 
 export const Footer: Story = {
   render: function FooterStory() {
+    const [open, setOpen] = useState(false)
+
     return (
-      <Dialog open={true}>
-        <Dialog.Header title="Dialog Title" />
-        <Dialog.Content className="flex flex-col gap-4 p-4">
-          {faker.lorem.paragraphs(3)}
-        </Dialog.Content>
-        <Dialog.Footer className="justify-end">
-          <Button>Close</Button>
-        </Dialog.Footer>
-      </Dialog>
+      <>
+        <Button onClick={() => setOpen(!open)}>Open Dialog</Button>
+        <Dialog
+          open={open}
+          onOpenChange={setOpen}
+        >
+          <Dialog.Header title="Dialog Title" />
+          <Dialog.Content className="flex flex-col gap-4 p-4">
+            {faker.lorem.paragraphs(3)}
+          </Dialog.Content>
+          <Dialog.Footer className="justify-end">
+            <Button onClick={() => setOpen(false)}>Close</Button>
+          </Dialog.Footer>
+        </Dialog>
+      </>
     )
   },
 }

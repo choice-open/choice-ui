@@ -6,7 +6,7 @@ import { Chip } from "."
 const meta = {
   title: "Feedback/Chip",
   component: Chip,
-  tags: ["beta"],
+  tags: ["beta", "autodocs"],
 } satisfies Meta<typeof Chip>
 
 export default meta

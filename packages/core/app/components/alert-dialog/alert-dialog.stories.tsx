@@ -7,7 +7,7 @@ import { AlertDialogProvider, useAlertDialog } from "./index"
 const meta: Meta = {
   title: "Overlays/Alert Dialog",
   component: AlertDialogProvider,
-  tags: ["new"],
+  tags: ["new", "autodocs"],
 }
 
 export default meta
