@@ -30,7 +30,7 @@ interface UseFloatingPopoverParams {
   offset?: number
   onOpenChange?: (open: boolean) => void
   open?: boolean
-  outsidePressIgnore?: string
+  outsidePressIgnore?: string | string[] | boolean
   placement?: Placement
   rememberPosition?: boolean
   resetDragState: () => void
@@ -156,7 +156,24 @@ export function useFloatingPopover({
     (event: MouseEvent) => {
       let checkingNode = event.target
       while (checkingNode instanceof Element) {
-        if (outsidePressIgnore && checkingNode.classList.contains(outsidePressIgnore)) {
+        if (outsidePressIgnore === true) {
+          return false
+        }
+        if (
+          outsidePressIgnore &&
+          typeof outsidePressIgnore === "string" &&
+          checkingNode instanceof Element &&
+          checkingNode.classList.contains(outsidePressIgnore)
+        ) {
+          return false
+        }
+        if (
+          outsidePressIgnore &&
+          Array.isArray(outsidePressIgnore) &&
+          outsidePressIgnore.some(
+            (ignore) => checkingNode instanceof Element && checkingNode.classList.contains(ignore),
+          )
+        ) {
           return false
         }
         checkingNode = checkingNode.parentElement

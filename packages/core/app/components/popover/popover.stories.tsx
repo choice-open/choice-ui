@@ -554,6 +554,76 @@ export const OutsidePressIgnore: Story = {
 }
 
 /**
+ * OutsidePressIgnoreArray: Demonstrates excluding specific elements from outside click dismissal.
+ *
+ * Features:
+ * - Exclude specific elements from outside click dismissal
+ * - Maintains typical behavior for non-ignored areas
+ * - Uses array value to determine if specific elements should be ignored
+ *
+ * This pattern is useful for:
+ * - Complex interfaces with related but separate UI elements
+ * - Preventing accidental dismissal for important popovers
+ * - Creating modal-like experiences without full modals
+ */
+export const OutsidePressIgnoreArray: Story = {
+  render: function OutsidePressIgnoreArrayStory() {
+    const [open, setOpen] = useState(false)
+    return (
+      <div className="flex items-center gap-4">
+        <div className="outside-press-ignore-1 rounded-xl border p-16">Outside Press Ignore 1</div>
+
+        <Popover
+          open={open}
+          onOpenChange={setOpen}
+          outsidePressIgnore={["outside-press-ignore-1", "outside-press-ignore-2"]}
+        >
+          <Popover.Trigger>
+            <Button>{open ? "Close" : "Open"}</Button>
+          </Popover.Trigger>
+          <Popover.Content className="w-64 p-3">{faker.lorem.paragraph(3)}</Popover.Content>
+        </Popover>
+
+        <div className="outside-press-ignore-2 rounded-xl border p-16">Outside Press Ignore 2</div>
+      </div>
+    )
+  },
+}
+
+/**
+ * OutsidePressIgnoreBoolean: Demonstrates excluding all elements from outside click dismissal.
+ *
+ * Features:
+ * - Exclude all elements from outside click dismissal
+ * - Maintains typical behavior for non-ignored areas
+ * - Uses boolean value to determine if all elements should be ignored
+ *
+ * This pattern is useful for:
+ * - Complex interfaces with related but separate UI elements
+ * - Preventing accidental dismissal for important popovers
+ * - Creating modal-like experiences without full modals
+ */
+
+export const OutsidePressIgnoreBoolean: Story = {
+  render: function OutsidePressIgnoreBooleanStory() {
+    const [open, setOpen] = useState(false)
+    return (
+      <Popover
+        open={open}
+        onOpenChange={setOpen}
+        outsidePressIgnore={true}
+      >
+        <Popover.Header title="Outside Press Ignore Boolean" />
+        <Popover.Trigger>
+          <Button>{open ? "Close" : "Open"}</Button>
+        </Popover.Trigger>
+        <Popover.Content className="w-64 p-3">{faker.lorem.paragraph(3)}</Popover.Content>
+      </Popover>
+    )
+  },
+}
+
+/**
  * Header: Demonstrates adding complex UI to the popover header.
  *
  * Features:

@@ -51,7 +51,7 @@ export interface PopoverProps {
   offset?: number
   onOpenChange?: (isOpen: boolean) => void
   open?: boolean
-  outsidePressIgnore?: string
+  outsidePressIgnore?: string | string[] | boolean
   placement?: Placement
   portalId?: string
   rememberPosition?: boolean
