@@ -75,7 +75,8 @@ export function useDrag(elementRef: React.RefObject<HTMLElement>, options: UseDr
 
       isInitializedRef.current = true
     }
-  }, [])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []) // 仅在首次初始化时设置当前位置
 
   const handleDragStart = useEventCallback((e: React.MouseEvent) => {
     if (!enabled) return
@@ -143,7 +144,7 @@ export function useDrag(elementRef: React.RefObject<HTMLElement>, options: UseDr
     } else {
       setState((prev) => ({ ...prev, isDragging: false }))
     }
-  }, [enabled, onDragEnd])
+  }, [elementRef, enabled, onDragEnd])
 
   // 重置拖拽状态
   const resetDragState = useCallback(() => {
@@ -156,10 +157,10 @@ export function useDrag(elementRef: React.RefObject<HTMLElement>, options: UseDr
   // 重置位置到初始状态 - 只在不记住位置时调用
   const resetPosition = useCallback(() => {
     if (!rememberPosition) {
-      positionRef.current = initialPositionRef.current
+      positionRef.current = null
       setState((prev) => ({
         ...prev,
-        position: initialPositionRef.current,
+        position: null,
       }))
     }
   }, [rememberPosition])
@@ -167,6 +168,7 @@ export function useDrag(elementRef: React.RefObject<HTMLElement>, options: UseDr
   // 完全重置，包括所有状态和引用
   const reset = useCallback(() => {
     if (!rememberPosition) {
+      // 不记住位置时，完全重置
       positionRef.current = null
       isInitializedRef.current = false
       initialPositionRef.current = null

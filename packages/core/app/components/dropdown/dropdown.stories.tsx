@@ -5,6 +5,7 @@ import React, { useMemo, useState } from "react"
 import { Button } from "../button"
 import { IconButton } from "../icon-button"
 import { Dropdown } from "./dropdown"
+import { Popover } from "../popover"
 
 const meta: Meta<typeof Dropdown> = {
   title: "Collections/Dropdown",
@@ -168,6 +169,46 @@ export const Nested: Story = {
           </Dropdown.Item>
         </Dropdown.Content>
       </Dropdown>
+    )
+  },
+}
+
+/**
+ * Nested dropdown in `Popover` or `Dialog`
+ *
+ * Note: When using Dropdown nested inside a Popover or Dialog, you must pass the
+ * `disabledNested={true}` prop to ensure proper rendering.
+ */
+export const NestedInPopover: Story = {
+  render: function NestedInPopoverStory() {
+    return (
+      <Popover>
+        <Popover.Trigger>
+          <Button>Open Popover</Button>
+        </Popover.Trigger>
+        <Popover.Content className="flex w-48 flex-col gap-2 p-4">
+          <p>
+            Note: When using Dropdown nested inside a Popover or Dialog, you must pass the
+            `disabledNested={true}` prop to ensure proper rendering.
+          </p>
+          <Dropdown disabledNested>
+            <Dropdown.Trigger>
+              <Dropdown.Value>Nested Menu</Dropdown.Value>
+            </Dropdown.Trigger>
+            <Dropdown.Content>
+              <Dropdown.Item>
+                <Dropdown.Value>Option 1</Dropdown.Value>
+              </Dropdown.Item>
+              <Dropdown.Item>
+                <Dropdown.Value>Option 2</Dropdown.Value>
+              </Dropdown.Item>
+              <Dropdown.Item>
+                <Dropdown.Value>Option 3</Dropdown.Value>
+              </Dropdown.Item>
+            </Dropdown.Content>
+          </Dropdown>
+        </Popover.Content>
+      </Popover>
     )
   },
 }
@@ -678,8 +719,7 @@ export const ComplexMenu: Story = {
 
     return (
       <Dropdown>
-        <Dropdown.Trigger>
-          <Settings />
+        <Dropdown.Trigger prefixElement={<Settings />}>
           <Dropdown.Value>Application Settings</Dropdown.Value>
         </Dropdown.Trigger>
         <Dropdown.Content>

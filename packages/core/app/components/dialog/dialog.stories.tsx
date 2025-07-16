@@ -5,8 +5,11 @@ import { Button } from "../button"
 import { Dropdown } from "../dropdown"
 import { Popover } from "../popover"
 import { Select } from "../select"
-import { Dialog } from "./dialog"
+import { Dialog, DialogPosition } from "./dialog"
 import { ScrollArea } from "../scroll-area"
+import { Checkbox } from "../checkbox"
+import { NumericInput } from "../numeric-input"
+import { FillWidth } from "@choiceform/icons-react"
 
 const meta: Meta<typeof Dialog> = {
   title: "Overlays/Dialog",
@@ -87,6 +90,118 @@ export const Draggable: Story = {
         >
           <Dialog.Header title="Draggable Dialog Title" />
           <Dialog.Content className="w-96 p-3">{faker.lorem.paragraphs(3)}</Dialog.Content>
+        </Dialog>
+      </>
+    )
+  },
+}
+
+/**
+ * InitialPosition: Demonstrates a dialog with preset initial positions.
+ * Use the `initialPosition` prop to set the dialog's starting position without manual x,y coordinates.
+ * Supports: left-top, center-top, right-top, left-center, center, right-center, left-bottom, center-bottom, right-bottom.
+ */
+export const InitialPosition: Story = {
+  render: function InitialPositionStory() {
+    const [open, setOpen] = useState(false)
+    const [position, setPosition] = useState<DialogPosition>("left-top")
+    const [rememberPosition, setRememberPosition] = useState(false)
+    const [resizable, setResizable] = useState({ width: false, height: false })
+    const [rememberSize, setRememberSize] = useState(false)
+    const [positionPadding, setPositionPadding] = useState(32)
+
+    return (
+      <>
+        <div className="flex flex-col gap-4">
+          <Button onClick={() => setOpen(!open)}>Open Dialog</Button>
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center gap-2">
+              <label htmlFor="position-select">Position:</label>
+              <Select
+                value={position}
+                onChange={(value) => setPosition(value as DialogPosition)}
+              >
+                <Select.Trigger>
+                  <Select.Value>{position}</Select.Value>
+                </Select.Trigger>
+                <Select.Content>
+                  <Select.Item value="left-top">Left Top</Select.Item>
+                  <Select.Item value="center-top">Center Top</Select.Item>
+                  <Select.Item value="right-top">Right Top</Select.Item>
+                  <Select.Item value="left-center">Left Center</Select.Item>
+                  <Select.Item value="center">Center</Select.Item>
+                  <Select.Item value="right-center">Right Center</Select.Item>
+                  <Select.Item value="left-bottom">Left Bottom</Select.Item>
+                  <Select.Item value="center-bottom">Center Bottom</Select.Item>
+                  <Select.Item value="right-bottom">Right Bottom</Select.Item>
+                </Select.Content>
+              </Select>
+            </div>
+            <Checkbox
+              value={rememberPosition}
+              onChange={setRememberPosition}
+            >
+              <Checkbox.Label>Remember Position</Checkbox.Label>
+            </Checkbox>
+            <div className="flex items-center gap-2">
+              <Checkbox
+                value={resizable.width}
+                onChange={() => setResizable({ ...resizable, width: !resizable.width })}
+              >
+                <Checkbox.Label>Resizable Width</Checkbox.Label>
+              </Checkbox>
+              <Checkbox
+                value={resizable.height}
+                onChange={() => setResizable({ ...resizable, height: !resizable.height })}
+              >
+                <Checkbox.Label>Resizable Height</Checkbox.Label>
+              </Checkbox>
+            </div>
+            <Checkbox
+              value={rememberSize}
+              onChange={setRememberSize}
+            >
+              <Checkbox.Label>Remember Size</Checkbox.Label>
+            </Checkbox>
+            <div className="flex items-center gap-2">
+              <label htmlFor="position-padding-input">Position Padding:</label>
+              <NumericInput
+                value={positionPadding}
+                onChange={(value) => setPositionPadding(value as number)}
+              >
+                <NumericInput.Prefix>
+                  <FillWidth />
+                </NumericInput.Prefix>
+              </NumericInput>
+            </div>
+          </div>
+        </div>
+        <Dialog
+          draggable
+          open={open}
+          onOpenChange={setOpen}
+          initialPosition={position}
+          positionPadding={positionPadding}
+          rememberPosition={rememberPosition}
+          rememberSize={rememberSize}
+          resizable={resizable}
+          defaultWidth={320}
+          defaultHeight={240}
+          minWidth={200}
+          minHeight={150}
+          maxWidth={800}
+          maxHeight={600}
+        >
+          <Dialog.Header title={`Dialog at ${position}`} />
+          <Dialog.Content className="w-full p-4">
+            <p className="mb-2">
+              This dialog starts at the <strong>{position}</strong> position.
+            </p>
+            <p className="text-secondary-foreground text-sm break-words">
+              You can drag this dialog around. Change the position in the dropdown and reopen to see
+              different starting positions.
+            </p>
+          </Dialog.Content>
         </Dialog>
       </>
     )

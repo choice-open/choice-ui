@@ -10,6 +10,17 @@ import { dragDialogTv } from "./tv"
 
 const PORTAL_ROOT_ID = "floating-modal-root"
 
+export type DialogPosition =
+  | "left-top"
+  | "center-top"
+  | "right-top"
+  | "left-center"
+  | "center"
+  | "right-center"
+  | "left-bottom"
+  | "center-bottom"
+  | "right-bottom"
+
 export interface DialogProps {
   afterOpenChange?: (isOpen: boolean) => void
   children?: React.ReactNode
@@ -17,6 +28,7 @@ export interface DialogProps {
   defaultHeight?: number
   defaultWidth?: number
   draggable?: boolean
+  initialPosition?: DialogPosition
   maxHeight?: number
   maxWidth?: number
   minHeight?: number
@@ -25,6 +37,7 @@ export interface DialogProps {
   open?: boolean
   outsidePress?: boolean
   overlay?: boolean
+  positionPadding?: number
   rememberPosition?: boolean
   rememberSize?: boolean
   resizable?: {
@@ -37,6 +50,8 @@ const DialogComponent = memo(function DialogComponent({
   className,
   children,
   draggable = false,
+  initialPosition = "center",
+  positionPadding = 32,
   resizable = { width: false, height: false },
   defaultWidth = 512,
   defaultHeight = 384,
@@ -89,7 +104,7 @@ const DialogComponent = memo(function DialogComponent({
     open: controlledOpen,
     onOpenChange,
     outsidePress,
-    draggable,
+    initialPosition,
     resetDragState,
     resetPosition,
     resetResizeState,
@@ -97,6 +112,7 @@ const DialogComponent = memo(function DialogComponent({
     rememberPosition,
     rememberSize,
     afterOpenChange,
+    positionPadding,
   })
 
   const getStyleWithDefaults = useMemo(() => {
@@ -119,7 +135,7 @@ const DialogComponent = memo(function DialogComponent({
       }
     }
 
-    return floating.getStyles(dragState.position || null, sizeObj)
+    return floating.getStyles(dragState.position || null, sizeObj, dialogRef)
   }, [
     resizeState.size,
     isResizable,

@@ -8,15 +8,18 @@ import {
 } from "@floating-ui/react"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useMergedValue } from "~/hooks"
+import { DialogPosition } from "../dialog"
+import { calculateInitialPosition } from "../utils"
 
 interface UseFloatingDialogParams {
   afterOpenChange?: (isOpen: boolean) => void
   autoUpdate?: boolean
   defaultOpen?: boolean
-  draggable?: boolean
+  initialPosition?: DialogPosition
   onOpenChange?: (open: boolean) => void
   open?: boolean
   outsidePress?: boolean
+  positionPadding?: number
   rememberPosition?: boolean
   rememberSize?: boolean
   resetDragState: () => void
@@ -31,13 +34,14 @@ export function useFloatingDialog({
   onOpenChange,
   outsidePress = false,
   autoUpdate = true,
-  draggable,
+  initialPosition = "center",
   resetDragState,
   resetPosition,
   resetResizeState,
   resetSize,
   rememberPosition = false,
   rememberSize = false,
+  positionPadding = 32,
   afterOpenChange,
 }: UseFloatingDialogParams) {
   const [isReady, setIsReady] = useState(false)
@@ -142,9 +146,10 @@ export function useFloatingDialog({
     (
       dragPosition: { x: number; y: number } | null,
       resizeSize?: { height: number; width: number },
+      elementRef?: React.RefObject<HTMLElement>,
     ) => {
-      // 如果存在拖拽位置且拖拽功能开启，优先使用拖拽位置
-      if (dragPosition && draggable) {
+      // 如果存在拖拽位置，优先使用该位置
+      if (dragPosition) {
         const dragStyles = {
           ...floatingStyles,
           position: "fixed",
@@ -163,6 +168,44 @@ export function useFloatingDialog({
         return dragStyles
       }
 
+      // 如果没有拖拽位置但有初始位置设置，计算初始位置
+      if (initialPosition && initialPosition !== "center") {
+        // 尝试获取实际的元素尺寸
+        let dialogWidth = resizeSize?.width || 512
+        let dialogHeight = resizeSize?.height || 384
+
+        // 如果有 elementRef，尝试获取实际尺寸
+        if (elementRef?.current) {
+          const rect = elementRef.current.getBoundingClientRect()
+          if (rect.width > 0 && rect.height > 0) {
+            dialogWidth = rect.width
+            dialogHeight = rect.height
+          }
+        }
+
+        const position = calculateInitialPosition(
+          initialPosition,
+          dialogWidth,
+          dialogHeight,
+          positionPadding,
+        )
+
+        const initialStyles = {
+          ...floatingStyles,
+          position: "fixed",
+          top: `${position.y}px`,
+          left: `${position.x}px`,
+          transform: "none",
+        } as React.CSSProperties
+
+        if (resizeSize) {
+          initialStyles.width = `${resizeSize.width}px`
+          initialStyles.height = `${resizeSize.height}px`
+        }
+
+        return initialStyles
+      }
+
       // 默认居中样式
       const baseStyles = {
         ...floatingStyles,
@@ -179,7 +222,7 @@ export function useFloatingDialog({
 
       return baseStyles
     },
-    [floatingStyles, draggable],
+    [floatingStyles, initialPosition, positionPadding],
   )
 
   const handleClose = useCallback(() => {
@@ -207,7 +250,11 @@ export function useFloatingDialog({
     innerOpen,
     setInnerOpen,
     getFloatingProps,
-    getStyles,
+    getStyles: (
+      dragPosition: { x: number; y: number } | null,
+      resizeSize?: { height: number; width: number },
+      elementRef?: React.RefObject<HTMLElement>,
+    ) => getStyles(dragPosition, resizeSize, elementRef),
     handleClose,
   }
 }
