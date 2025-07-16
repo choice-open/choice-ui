@@ -38,15 +38,54 @@ const meta: Meta<typeof YearCalendar> = {
   parameters: {
     layout: "centered",
   },
-  tags: ["new"],
+  tags: ["new", "autodocs"],
 }
 
 export default meta
 type Story = StoryObj<typeof meta>
 
+/**
+ * `YearCalendar` is a specialized calendar component for year selection with flexible range and display options.
+ *
+ * Features:
+ * - Grid-based year selection with customizable year count
+ * - Year range restrictions with minimum and maximum year limits
+ * - Selective year disabling for specific years
+ * - Current year highlighting and navigation
+ * - Light and dark theme variants
+ * - Customizable starting year and display range
+ * - Disabled state support for entire component
+ * - Keyboard navigation and accessibility support
+ * - Compact grid layout optimized for year selection
+ * - Proper year boundary handling and validation
+ *
+ * Usage:
+ * - Use for year selection in date pickers and filters
+ * - Ideal for historical data selection or future planning
+ * - Perfect for birth year selection or document year filtering
+ * - Combine with other calendar components for comprehensive date selection
+ *
+ * Best Practices:
+ * - Set appropriate year ranges based on your data requirements
+ * - Use disabled years to prevent selection of irrelevant years
+ * - Consider the year count for optimal display and navigation
+ * - Provide clear visual feedback for current and selected years
+ *
+ * Accessibility:
+ * - Full keyboard navigation with arrow keys and enter/space selection
+ * - Screen reader friendly with proper ARIA labels and year announcements
+ * - High contrast support for all year states
+ * - Semantic HTML structure with proper year semantics
+ */
+
 const currentYear = new Date()
 
-// 基础用法
+/**
+ * Default: Shows the basic YearCalendar with standard configuration.
+ * - Demonstrates year selection with 12 years displayed in a grid.
+ * - Shows both light and dark theme variants side by side.
+ * - Uses current year as the selected value and reference point.
+ */
 export const Default: Story = {
   args: {
     value: currentYear,
@@ -57,7 +96,12 @@ export const Default: Story = {
   render: (args) => <YearPickerDemo {...args} />,
 }
 
-// 范围限制
+/**
+ * WithRange: Demonstrates YearCalendar with year range restrictions.
+ * - Shows how to limit selectable years to a specific range (±5 years from current).
+ * - Displays navigation boundaries and how they affect user interaction.
+ * - Useful for applications with relevant time period constraints.
+ */
 export const WithRange: Story = {
   args: {
     value: currentYear,
@@ -70,7 +114,12 @@ export const WithRange: Story = {
   render: (args) => <YearPickerDemo {...args} />,
 }
 
-// 禁用特定年份
+/**
+ * WithDisabledYears: Demonstrates selective year disabling functionality.
+ * - Shows how to disable specific years (2 years ago, 1 year ago, 1 year ahead).
+ * - Displays disabled years with visual indicators and prevented interaction.
+ * - Useful for restricting selection based on data availability or business rules.
+ */
 export const WithDisabledYears: Story = {
   args: {
     value: currentYear,
@@ -86,7 +135,12 @@ export const WithDisabledYears: Story = {
   render: (args) => <YearPickerDemo {...args} />,
 }
 
-// 不同年份数量
+/**
+ * DifferentCount: Demonstrates customizable year count display.
+ * - Shows 9 years instead of the default 12 years in the grid.
+ * - Displays how year count affects the grid layout and navigation.
+ * - Useful for compact displays or when fewer years are needed.
+ */
 export const DifferentCount: Story = {
   args: {
     value: currentYear,
@@ -97,7 +151,12 @@ export const DifferentCount: Story = {
   render: (args) => <YearPickerDemo {...args} />,
 }
 
-// 禁用状态
+/**
+ * Disabled: Demonstrates the completely disabled state of YearCalendar.
+ * - Shows how the entire component appears and behaves when disabled.
+ * - Displays proper disabled styling and interaction prevention.
+ * - Useful for readonly scenarios or when year selection is not applicable.
+ */
 export const Disabled: Story = {
   args: {
     value: currentYear,
@@ -108,7 +167,12 @@ export const Disabled: Story = {
   render: (args) => <YearPickerDemo {...args} />,
 }
 
-// 自定义起始年份
+/**
+ * CustomStartYear: Demonstrates custom starting year configuration.
+ * - Shows year selection starting from 2020 with 15 years displayed.
+ * - Displays how to control the year range and starting point.
+ * - Useful for historical data selection or specific year range requirements.
+ */
 export const CustomStartYear: Story = {
   args: {
     value: new Date(2025, 0, 1),

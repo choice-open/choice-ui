@@ -201,13 +201,53 @@ const meta: Meta<typeof MonthCalendar> = {
   parameters: {
     layout: "centered",
   },
-  tags: ["new"],
+  tags: ["new", "autodocs"],
 }
 
 export default meta
 type Story = StoryObj<typeof meta>
 
-// 基础用法
+/**
+ * `MonthCalendar` is a comprehensive calendar component for displaying and selecting dates within a month view.
+ *
+ * Features:
+ * - Multiple selection modes: single, multiple, and range selection
+ * - Comprehensive internationalization support with locale-aware formatting
+ * - Flexible week start configuration (Sunday through Saturday)
+ * - Week number display with ISO standard support
+ * - Date highlighting and disabling capabilities
+ * - Light and dark theme variants
+ * - Dynamic or fixed grid layout options
+ * - Outside day display control
+ * - Today highlighting and navigation
+ * - Keyboard navigation and accessibility support
+ * - Customizable weekday names and formatting
+ *
+ * Usage:
+ * - Use for date selection in forms, filters, and scheduling interfaces
+ * - Ideal for booking systems, event planners, and date range pickers
+ * - Combine with input components for complete date selection workflows
+ * - Leverage multiple selection modes for different use cases
+ *
+ * Best Practices:
+ * - Choose appropriate selection mode based on user needs
+ * - Consider locale and cultural differences in week start preferences
+ * - Use highlighting and disabling to guide user selection
+ * - Provide clear visual feedback for selected dates
+ *
+ * Accessibility:
+ * - Full keyboard navigation with arrow keys and space/enter selection
+ * - Screen reader friendly with proper ARIA labels and descriptions
+ * - High contrast support for all states and variants
+ * - Semantic HTML structure with proper date semantics
+ */
+
+/**
+ * Default: Shows the basic MonthCalendar with standard configuration.
+ * - Demonstrates default month view with Chinese locale and Monday week start.
+ * - Shows today highlighting and outside day display.
+ * - Provides a foundation for calendar implementation.
+ */
 export const Default: Story = {
   args: {
     highlightToday: true,
@@ -227,7 +267,12 @@ export const Default: Story = {
   },
 }
 
-// 显示周数
+/**
+ * WithWeekNumbers: Demonstrates MonthCalendar with week numbers displayed.
+ * - Shows ISO standard week numbers in the left column.
+ * - Displays how week numbers enhance date navigation and reference.
+ * - Useful for applications requiring week-based scheduling or reporting.
+ */
 export const WithWeekNumbers: Story = {
   args: {
     ...Default.args,
@@ -248,7 +293,12 @@ export const WithWeekNumbers: Story = {
   },
 }
 
-// 单选模式
+/**
+ * SingleSelect: Demonstrates single date selection mode with light and dark variants.
+ * - Shows how to select one date with visual feedback and state management.
+ * - Displays both light and dark theme variants side by side.
+ * - Useful for basic date selection in forms and filters.
+ */
 export const SingleSelect: Story = {
   args: {
     ...Default.args,
@@ -261,7 +311,12 @@ export const SingleSelect: Story = {
   ),
 }
 
-// 多选模式
+/**
+ * MultiSelect: Demonstrates multiple date selection mode.
+ * - Shows how to select multiple individual dates with visual feedback.
+ * - Displays selected dates count and list in both light and dark variants.
+ * - Useful for event scheduling, availability selection, or batch operations.
+ */
 export const MultiSelect: Story = {
   args: {
     ...Default.args,
@@ -274,7 +329,12 @@ export const MultiSelect: Story = {
   ),
 }
 
-// 范围选择模式
+/**
+ * RangeSelect: Demonstrates date range selection mode.
+ * - Shows how to select a continuous date range with start and end dates.
+ * - Displays range selection with visual highlighting between dates.
+ * - Useful for booking systems, vacation planning, or report period selection.
+ */
 export const RangeSelect: Story = {
   args: {
     ...Default.args,
@@ -287,7 +347,12 @@ export const RangeSelect: Story = {
   ),
 }
 
-// 禁用日期
+/**
+ * DisabledDates: Demonstrates date disabling functionality.
+ * - Shows how to disable specific dates (past dates, 15th, 25th of month).
+ * - Displays disabled dates with visual indicators and prevented interaction.
+ * - Useful for availability systems, booking restrictions, or business rule enforcement.
+ */
 export const DisabledDates: Story = {
   args: {
     ...Default.args,
@@ -300,7 +365,12 @@ export const DisabledDates: Story = {
   ),
 }
 
-// 高亮日期
+/**
+ * HighlightDates: Demonstrates date highlighting functionality.
+ * - Shows how to highlight specific dates (1st, 10th, 20th, 30th of month).
+ * - Displays highlighted dates with special visual styling to draw attention.
+ * - Useful for marking holidays, deadlines, important events, or special dates.
+ */
 export const HighlightDates: Story = {
   args: {
     ...Default.args,
@@ -313,7 +383,12 @@ export const HighlightDates: Story = {
   ),
 }
 
-// 自定义星期名称
+/**
+ * CustomWeekdays: Demonstrates custom weekday name configuration.
+ * - Shows how to override default locale-generated weekday names.
+ * - Displays custom abbreviated weekday names in English format.
+ * - Useful for applications requiring specific weekday formatting or branding.
+ */
 export const CustomWeekdays: Story = {
   args: {
     ...Default.args,
@@ -335,14 +410,19 @@ export const CustomWeekdays: Story = {
   },
 }
 
-// 多语言支持
+/**
+ * MultiLanguage: Demonstrates comprehensive internationalization support.
+ * - Shows MonthCalendar in 4 different languages (Chinese, English, Japanese, Korean).
+ * - Displays locale-specific weekday names, month names, and date formatting.
+ * - Useful for testing international compatibility and understanding localization features.
+ */
 export const MultiLanguage: Story = {
   args: {
     ...Default.args,
   },
   render: (args) => {
     return (
-      <div className="grid grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 gap-4">
         <div>
           <h3 className="mb-2 font-medium">中文 (zh-CN)</h3>
           <MonthCalendar
@@ -380,7 +460,12 @@ export const MultiLanguage: Story = {
   },
 }
 
-// 不同周开始日 + 多语言 + 周数
+/**
+ * WeekStartOptions: Demonstrates different week start day configurations with week numbers.
+ * - Shows calendars starting on Sunday, Monday, and Saturday.
+ * - Displays how week start affects layout while maintaining ISO week numbers.
+ * - Useful for accommodating different cultural preferences for week structure.
+ */
 export const WeekStartOptions: Story = {
   args: {
     ...Default.args,
@@ -390,7 +475,7 @@ export const WeekStartOptions: Story = {
   render: (args) => {
     return (
       <div className="space-y-4">
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 gap-4">
           <div>
             <h3 className="mb-2 font-medium">Starts on Sunday (0) + Week Numbers</h3>
             <MonthCalendar
@@ -425,7 +510,12 @@ export const WeekStartOptions: Story = {
   },
 }
 
-// 动态行数（不固定6行）
+/**
+ * DynamicRows: Demonstrates dynamic row layout without fixed 6-row grid.
+ * - Shows calendar with 4-6 rows based on actual month requirements.
+ * - Displays variable height calendar that adapts to month structure.
+ * - Useful for space-efficient layouts or when consistent height isn't required.
+ */
 export const DynamicRows: Story = {
   args: {
     ...Default.args,
@@ -460,7 +550,7 @@ const UnifiedInterfaceExample = () => {
   })
 
   return (
-    <div className="grid grid-cols-4 gap-3">
+    <div className="grid grid-cols-2 gap-4">
       <div>
         <h3 className="mb-4 text-lg font-semibold">Single Select</h3>
         <MonthCalendar
@@ -506,7 +596,12 @@ const UnifiedInterfaceExample = () => {
   )
 }
 
-// 添加新的统一接口示例
+/**
+ * UnifiedInterface: Demonstrates all three selection modes with unified interface.
+ * - Shows single, multiple, and range selection modes side by side.
+ * - Displays how the same component API handles different selection types.
+ * - Useful for understanding the component's versatility and selection mode differences.
+ */
 export const UnifiedInterface: StoryObj<typeof MonthCalendar> = {
   render: () => <UnifiedInterfaceExample />,
 }

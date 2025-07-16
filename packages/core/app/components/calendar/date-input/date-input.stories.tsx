@@ -1,17 +1,17 @@
-import { FieldTypeDateAndTime, ArrowRight } from "@choiceform/icons-react"
+import { FieldTypeDateAndTime } from "@choiceform/icons-react"
 import type { Meta, StoryObj } from "@storybook/react-vite"
-import { addDays, isToday, Locale } from "date-fns"
+import { addDays, isToday } from "date-fns"
 import { de, enUS, fr, zhCN } from "date-fns/locale"
 import React, { useRef, useState } from "react"
 import { MonthCalendar } from "../../calendar"
 import { Panel } from "../../panel"
 import { Popover } from "../../popover"
 import { Select } from "../../select"
+import { TextField } from "../../text-field"
 import { DateRangeInput } from "../date-range-input"
 import type { CalendarValue, DateFormat } from "../types"
 import { LOCALE_MAP } from "../utils/locale"
 import { DateInput } from "./date-input"
-import { TextField } from "../../text-field"
 
 const meta: Meta<typeof DateInput> = {
   title: "DateAndTime/DateInput",
@@ -19,18 +19,59 @@ const meta: Meta<typeof DateInput> = {
   parameters: {
     layout: "centered",
   },
-  tags: ["new"],
+  tags: ["new", "autodocs"],
 }
 
 export default meta
 type Story = StoryObj<typeof meta>
 
-// 基础用法
+/**
+ * `DateInput` is a sophisticated date input component with intelligent parsing, prediction, and keyboard navigation.
+ *
+ * Features:
+ * - Intelligent date parsing with natural language support (today, tomorrow, yesterday)
+ * - Multiple format support (ISO, localized, custom date-fns formats)
+ * - Keyboard navigation (arrow keys, shortcuts) and mouse drag interaction
+ * - Real-time prediction and validation with smart date correction
+ * - Internationalization support with multiple locales
+ * - English month name recognition (jan, feb, march, etc.)
+ * - Flexible input modes with customizable prefix icons
+ * - Seamless integration with calendar components
+ *
+ * Usage:
+ * - Use for date entry in forms, filters, and date selection interfaces
+ * - Combine with calendar popovers for enhanced date selection
+ * - Leverage natural language parsing for improved user experience
+ * - Support multiple locales for international applications
+ *
+ * Best Practices:
+ * - Choose appropriate date formats for your target audience
+ * - Provide clear placeholder text to guide user input
+ * - Use consistent date formats across your application
+ * - Test with various locales if supporting international users
+ *
+ * Accessibility:
+ * - Full keyboard navigation support with arrow keys and shortcuts
+ * - Screen reader friendly with proper ARIA labels
+ * - Focus management and proper error handling
+ * - Semantic HTML input elements for optimal accessibility
+ */
+
+/**
+ * Basic: Shows the default DateInput usage.
+ * - Demonstrates a simple date input with default styling and behavior.
+ * - Use as a starting point for date input implementation.
+ */
 export const Basic: Story = {
   render: (args) => <DateInput {...args} />,
 }
 
-// 状态演示
+/**
+ * States: Demonstrates all interactive states of the DateInput component.
+ * - Shows normal, disabled, readonly, and custom prefix configurations.
+ * - Displays how the component behaves in different states.
+ * - Useful for testing component behavior across various conditions.
+ */
 export const States: Story = {
   render: () => (
     <div className="space-y-4">
@@ -71,6 +112,11 @@ export const States: Story = {
   ),
 }
 
+/**
+ * Size: Demonstrates the different size options for the DateInput component.
+ * - Shows the large size variant for prominent date selection interfaces.
+ * - Useful for adapting the component to different UI layouts and emphasis levels.
+ */
 export const Size: Story = {
   render: function Render() {
     const [value, setValue] = useState<Date | null>(null)
@@ -86,6 +132,11 @@ export const Size: Story = {
   },
 }
 
+/**
+ * Variable: Demonstrates the DateInput component with dark theme variant.
+ * - Shows the dark variant styling for use in dark theme contexts.
+ * - Useful for applications with multiple theme options or dark mode support.
+ */
 export const Variable: Story = {
   render: function Render() {
     const [value, setValue] = useState<Date | null>(null)
@@ -101,7 +152,12 @@ export const Variable: Story = {
   },
 }
 
-// 键盘导航演示
+/**
+ * KeyboardNavigation: Demonstrates the keyboard navigation capabilities of the DateInput component.
+ * - Shows how to use arrow keys with modifiers to adjust dates quickly.
+ * - Displays interactive keyboard shortcuts for efficient date navigation.
+ * - Useful for power users who prefer keyboard-driven date selection.
+ */
 export const KeyboardNavigation: Story = {
   render: function Render() {
     const [value, setValue] = useState<Date | null>(null)
@@ -132,7 +188,12 @@ export const KeyboardNavigation: Story = {
   },
 }
 
-// 拖拽交互演示
+/**
+ * DragInteraction: Demonstrates the mouse drag interaction feature of the DateInput component.
+ * - Shows how to click and drag the calendar icon to adjust dates.
+ * - Displays modifier keys (Shift, Ctrl/Cmd) for different drag increments.
+ * - Provides an intuitive mouse-based alternative to keyboard navigation.
+ */
 export const DragInteraction: Story = {
   render: function Render() {
     const [value, setValue] = useState<Date | null>(null)
@@ -154,7 +215,12 @@ export const DragInteraction: Story = {
   },
 }
 
-// 不同格式演示
+/**
+ * Formats: Demonstrates various date format options supported by the DateInput component.
+ * - Shows ISO format (yyyy-MM-dd), localized formats, and custom date-fns patterns.
+ * - Displays how different formats render with various locales.
+ * - Useful for understanding format flexibility and localization support.
+ */
 export const Formats: Story = {
   render: function Render() {
     const [value, setValue] = useState<Date | null>(new Date())
@@ -244,7 +310,12 @@ const VariableLengthFormatsComponent = ({
   )
 }
 
-// 不同长度格式演示
+/**
+ * VariableLengthFormats: Demonstrates the flexible date format support with variable length patterns.
+ * - Shows how the component handles different year, month, and day format lengths.
+ * - Displays various international formats with different separators and structures.
+ * - Includes a comprehensive guide to date-fns format patterns and usage tips.
+ */
 export const VariableLengthFormats: Story = {
   render: function Render() {
     const [longChineseValue, setLongChineseValue] = useState<Date | null>(null)
@@ -264,7 +335,7 @@ export const VariableLengthFormats: Story = {
           months, etc.
         </div>
 
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 gap-4">
           {[
             {
               title: "🇨🇳 Chinese Long Format",
@@ -345,7 +416,7 @@ export const VariableLengthFormats: Story = {
 
         <div className="space-y-4 rounded-md border p-4">
           <div className="text-secondary-foreground font-medium">📖 Format Description</div>
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+          <div className="grid grid-cols-2 gap-4">
             <div className="bg-blue-50">
               <div className="mb-2 font-medium text-blue-800">Year Format</div>
               <div className="space-y-1 text-blue-700">
@@ -428,7 +499,13 @@ export const VariableLengthFormats: Story = {
   },
 }
 
-// 高级功能展示
+/**
+ * Prediction: Demonstrates the intelligent prediction and real-time highlighting features.
+ * - Shows real-time prediction suggestions as users type.
+ * - Displays intelligent number format recognition and completion.
+ * - Demonstrates keyboard interaction with prediction prompts.
+ * - Includes automatic formatting and error correction capabilities.
+ */
 export const Prediction: Story = {
   args: {
     placeholder: "Try intelligent prediction...",
@@ -486,7 +563,13 @@ export const Prediction: Story = {
   ),
 }
 
-// 快捷键演示
+/**
+ * ShortcutKeys: Demonstrates the natural language shortcut key support.
+ * - Shows how to use text shortcuts like "today", "yesterday", "tomorrow".
+ * - Displays multilingual support for shortcut keys (English and Chinese).
+ * - Demonstrates relative date shortcuts like "this week", "this month".
+ * - Useful for users who prefer typing natural language date expressions.
+ */
 export const ShortcutKeys: Story = {
   args: {
     placeholder: "Try shortcut keys...",
@@ -535,7 +618,13 @@ export const ShortcutKeys: Story = {
   ),
 }
 
-// 英文月份识别演示
+/**
+ * EnglishMonthSupport: Demonstrates the English month name recognition feature.
+ * - Shows support for full month names, abbreviations, and various formats.
+ * - Displays flexible date input patterns like "may 15", "15 may", "may 15, 2024".
+ * - Demonstrates intelligent parsing of month names with dots and variants.
+ * - Useful for international users who prefer English month names.
+ */
 export const EnglishMonthSupport: Story = {
   args: {
     placeholder: "Try English month...",
@@ -635,7 +724,13 @@ export const EnglishMonthSupport: Story = {
   ),
 }
 
-// 智能日期修正演示
+/**
+ * SmartDateCorrection: Demonstrates the intelligent date correction feature.
+ * - Shows how invalid dates are automatically corrected to valid dates.
+ * - Displays correction rules for dates exceeding month limits, invalid months, and leap years.
+ * - Demonstrates seamless user experience without error prompts.
+ * - Useful for preventing user frustration with invalid date inputs.
+ */
 export const SmartDateCorrection: Story = {
   args: {
     placeholder: "Try invalid date, like 2025-04-31...",
@@ -883,11 +978,24 @@ const InternationalizationDemo = () => {
   )
 }
 
-// 国际化支持演示
+/**
+ * InternationalizationSupport: Demonstrates comprehensive internationalization support.
+ * - Shows DateInput working with multiple locales (Chinese, English, German, French).
+ * - Displays natural language parsing in different languages.
+ * - Demonstrates locale-specific date formatting and display.
+ * - Includes usage examples and integration code snippets.
+ */
 export const InternationalizationSupport: Story = {
   render: () => <InternationalizationDemo />,
 }
 
+/**
+ * Combined: Demonstrates a complete integration example with calendar popover.
+ * - Shows DateInput integrated with MonthCalendar in a popover.
+ * - Displays both single date input and date range input functionality.
+ * - Demonstrates locale switching and proper state management.
+ * - Useful as a reference for real-world implementation patterns.
+ */
 export const Combined: Story = {
   render: function Combined() {
     const [localeKey, setLocaleKey] = useState<string>("en-US")

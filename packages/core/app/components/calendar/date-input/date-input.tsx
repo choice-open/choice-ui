@@ -10,24 +10,34 @@ import type { DateFormat } from "../types"
 import { getEnhancedPrediction, resolveLocale, type PredictionResult } from "../utils"
 
 interface DateInputProps extends Omit<TextFieldProps, "value" | "onChange" | "format"> {
-  /** 是否启用解析缓存 */
+  /**
+   * Whether to enable cache
+   * @default true
+   */
   enableCache?: boolean
   /**
-   * 是否启用键盘导航（默认启用）
+   * Whether to enable keyboard navigation (default enabled)
    *
-   * 快捷键说明：
-   * - ↑ 键：减少 1 天（向过去）
-   * - ↓ 键：增加 1 天（向未来）
-   * - Shift + ↑ 键：减少 1 周
-   * - Shift + ↓ 键：增加 1 周
-   * - Ctrl/Cmd + ↑ 键：减少 1 月
-   * - Ctrl/Cmd + ↓ 键：增加 1 月
-   * - Enter 键：确认输入
+   * Keyboard shortcuts:
+   * - ↑ key: Decrease 1 day (past)
+   * - ↓ key: Increase 1 day (future)
+   * - Shift + ↑ key: Decrease 1 week
+   * - Shift + ↓ key: Increase 1 week
+   * - Ctrl/Cmd + ↑ key: Decrease 1 month
+   * - Ctrl/Cmd + ↓ key: Increase 1 month
+   * - Enter key: Confirm input
+   * @default true
    */
   enableKeyboardNavigation?: boolean
-  /** 是否启用智能预测（默认启用） */
+  /**
+   * Whether to enable intelligent prediction
+   * @default false
+   */
   enablePrediction?: boolean
-  /** 是否启用性能分析 */
+  /**
+   * Whether to enable performance analysis
+   * @default false
+   */
   enableProfiling?: boolean
   format?: DateFormat
   locale?: Locale | string
@@ -41,16 +51,15 @@ interface DateInputProps extends Omit<TextFieldProps, "value" | "onChange" | "fo
 }
 
 /**
- * 高级日期输入组件
+ * Advanced date input component
  *
- * 特性：
- * - 🎯 智能日期解析：支持多种格式和自然语言
- * - ⌨️ 键盘导航：上键向过去，下键向未来（直觉性操作）
- * - 🔄 竞态保护：智能检测数据流方向，避免循环更新
- * - 🚀 性能优化：使用 useEventCallback 和缓存机制
- * - 🛡️ 类型安全：完整的 TypeScript 支持
- * - 🌍 国际化支持：可配置语言区域
- * - 💡 智能预测：实时预测提示和节假日识别
+ * Features:
+ * - 🎯 Intelligent date parsing: Supports multiple formats and natural language
+ * - ⌨️ Keyboard navigation: Up key to past, down key to future (intuitive operation)
+ * - 🔄 Race protection: Smartly detect data flow direction, avoid loop updates
+ * - 🛡️ Type safety: Complete TypeScript support
+ * - 🌍 Internationalization support: Configurable language region
+ * - 💡 Intelligent prediction: Real-time prediction prompts and holiday recognition
  */
 export const DateInput = forwardRef<HTMLInputElement, DateInputProps>((props, ref) => {
   const {

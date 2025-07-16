@@ -12,7 +12,7 @@ const meta: Meta<typeof DateRangeInput> = {
   parameters: {
     layout: "centered",
   },
-  tags: ["new"],
+  tags: ["new", "autodocs"],
   argTypes: {
     locale: {
       control: { type: "select" },
@@ -29,6 +29,38 @@ const meta: Meta<typeof DateRangeInput> = {
 
 export default meta
 type Story = StoryObj<typeof meta>
+
+/**
+ * `DateRangeInput` is a sophisticated component for selecting date ranges with intelligent synchronization and validation.
+ *
+ * Features:
+ * - Dual date input fields with automatic range synchronization
+ * - Smart range preservation when adjusting start dates
+ * - Boundary validation with automatic start date adjustment
+ * - Comprehensive internationalization support
+ * - Multiple date format options and locale-aware formatting
+ * - Flexible sizing and theming variants
+ * - Disabled state support for individual inputs
+ * - Real-time range calculation and display
+ *
+ * Usage:
+ * - Use for date range selection in filters, reports, and booking systems
+ * - Combine with calendar components for enhanced date picking
+ * - Leverage range synchronization for consistent user experience
+ * - Support international users with multiple locale options
+ *
+ * Best Practices:
+ * - Provide clear placeholder text for start and end dates
+ * - Use consistent date formats across your application
+ * - Consider range synchronization behavior for optimal UX
+ * - Test with various locales for international compatibility
+ *
+ * Accessibility:
+ * - Full keyboard navigation between input fields
+ * - Screen reader friendly with proper ARIA labels
+ * - Semantic HTML structure for optimal accessibility
+ * - Clear focus indicators and validation feedback
+ */
 
 // 演示组件
 const DateRangeDemo = (args: React.ComponentProps<typeof DateRangeInput>) => {
@@ -131,7 +163,12 @@ const RangeSyncDemo = () => {
   )
 }
 
-// 基础用法
+/**
+ * Default: Shows the basic DateRangeInput usage with standard configuration.
+ * - Demonstrates dual input fields for start and end dates.
+ * - Uses ISO date format and English locale as defaults.
+ * - Provides a foundation for date range selection implementation.
+ */
 export const Default: Story = {
   args: {
     startPlaceholder: "Start Date",
@@ -142,6 +179,11 @@ export const Default: Story = {
   render: (args) => <DateRangeDemo {...args} />,
 }
 
+/**
+ * Size: Demonstrates the large size variant of DateRangeInput.
+ * - Shows the component with increased dimensions for prominent interfaces.
+ * - Useful for applications requiring larger touch targets or enhanced visibility.
+ */
 export const Size: Story = {
   render: function Render() {
     return (
@@ -152,6 +194,11 @@ export const Size: Story = {
   },
 }
 
+/**
+ * Variable: Demonstrates the dark theme variant of DateRangeInput.
+ * - Shows the component styled for dark theme environments.
+ * - Useful for applications with dark mode or specialized UI themes.
+ */
 export const Variable: Story = {
   render: function Render() {
     return (
@@ -162,12 +209,22 @@ export const Variable: Story = {
   },
 }
 
-// 范围同步
+/**
+ * RangeSynchronization: Demonstrates the intelligent range synchronization feature.
+ * - Shows how start date changes automatically adjust the end date to maintain range length.
+ * - Displays boundary validation where end dates push start dates when necessary.
+ * - Includes comprehensive explanation and test scenarios for understanding the behavior.
+ */
 export const RangeSynchronization: Story = {
   render: () => <RangeSyncDemo />,
 }
 
-// 预设日期范围
+/**
+ * WithPresetRange: Demonstrates DateRangeInput with pre-filled date values.
+ * - Shows the component with initial start and end dates already set.
+ * - Displays a 7-day range as an example of preset configurations.
+ * - Useful for forms or filters that need default date ranges.
+ */
 export const WithPresetRange: Story = {
   args: {
     startValue: new Date(),
@@ -180,7 +237,12 @@ export const WithPresetRange: Story = {
   render: (args) => <DateRangeDemo {...args} />,
 }
 
-// 国际化支持
+/**
+ * Internationalization: Demonstrates comprehensive multi-language support.
+ * - Shows DateRangeInput working with Chinese, English, Japanese, and Korean locales.
+ * - Displays locale-specific date formats and placeholder text.
+ * - Demonstrates proper range calculation display in multiple languages.
+ */
 export const Internationalization: Story = {
   render: () => (
     <div className="space-y-8">
@@ -239,7 +301,12 @@ export const Internationalization: Story = {
   ),
 }
 
-// 不同日期格式
+/**
+ * DifferentFormats: Demonstrates various date format options and their visual representation.
+ * - Shows ISO format, American format, Chinese format, and European format.
+ * - Displays how different formats affect the display and input experience.
+ * - Useful for understanding format flexibility and regional preferences.
+ */
 export const DifferentFormats: Story = {
   render: () => (
     <div className="space-y-8">
@@ -286,7 +353,12 @@ export const DifferentFormats: Story = {
   ),
 }
 
-// 常见使用场景
+/**
+ * CommonScenarios: Demonstrates real-world usage scenarios for DateRangeInput.
+ * - Shows holiday planning, data analysis periods, and event scheduling examples.
+ * - Displays practical applications with appropriate date ranges and contexts.
+ * - Useful for understanding when and how to implement date range selection.
+ */
 export const CommonScenarios: Story = {
   render: () => (
     <div className="space-y-8">
@@ -338,7 +410,12 @@ export const CommonScenarios: Story = {
   ),
 }
 
-// 边界情况
+/**
+ * EdgeCases: Demonstrates how DateRangeInput handles boundary and edge cases.
+ * - Shows same time point handling, reverse time ranges, and cross-year ranges.
+ * - Displays proper validation and calculation behavior in unusual scenarios.
+ * - Useful for understanding component robustness and error handling.
+ */
 export const EdgeCases: Story = {
   render: () => (
     <div className="space-y-8">
@@ -382,7 +459,12 @@ export const EdgeCases: Story = {
   ),
 }
 
-// 禁用状态
+/**
+ * DisabledStates: Demonstrates various disabled state configurations.
+ * - Shows individual input field disabling (start only, end only, or both).
+ * - Displays how disabled states affect user interaction and visual appearance.
+ * - Useful for implementing conditional form controls and readonly scenarios.
+ */
 export const DisabledStates: Story = {
   render: () => (
     <div className="space-y-8">

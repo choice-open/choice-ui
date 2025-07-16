@@ -18,7 +18,7 @@ const meta: Meta<typeof TimeInput> = {
   parameters: {
     layout: "centered",
   },
-  tags: ["new"],
+  tags: ["new", "autodocs"],
 }
 
 export default meta

@@ -66,13 +66,51 @@ const meta: Meta<typeof TimeCalendar> = {
   parameters: {
     layout: "centered",
   },
-  tags: ["new"],
+  tags: ["new", "autodocs"],
 }
 
 export default meta
 type Story = StoryObj<typeof meta>
 
-// 基础用法
+/**
+ * `TimeCalendar` is a specialized calendar component for time selection with customizable time steps and formats.
+ *
+ * Features:
+ * - Scrollable time list with configurable step intervals (1, 5, 15, 30 minutes)
+ * - Support for both 12-hour and 24-hour time formats
+ * - Intelligent handling of values outside step ranges
+ * - Smooth scrolling and keyboard navigation
+ * - Controlled and uncontrolled modes
+ * - Customizable time format strings
+ * - Compact vertical layout optimized for popovers
+ * - Accessibility support with proper ARIA labels
+ * - Today's current time highlighting
+ *
+ * Usage:
+ * - Use in time picker popovers and dropdowns
+ * - Ideal for scheduling applications and time-based forms
+ * - Combine with time input components for complete time selection
+ * - Perfect for appointment booking and event scheduling
+ *
+ * Best Practices:
+ * - Choose appropriate step intervals based on use case precision
+ * - Use 24-hour format for international applications
+ * - Consider 12-hour format for US-focused applications
+ * - Provide reasonable default values for better UX
+ *
+ * Accessibility:
+ * - Full keyboard navigation with arrow keys and page up/down
+ * - Screen reader friendly with proper time announcements
+ * - Focus management and proper ARIA roles
+ * - High contrast support for all time entries
+ */
+
+/**
+ * Default: Shows the basic TimeCalendar with 24-hour format and 15-minute steps.
+ * - Demonstrates standard time selection with scrollable list interface.
+ * - Uses 24-hour format (HH:mm) with 15-minute intervals.
+ * - Shows selected time display and state management.
+ */
 export const Default: Story = {
   args: {
     format: "HH:mm",
@@ -81,7 +119,12 @@ export const Default: Story = {
   render: (args) => <SingleColumnDemo {...args} />,
 }
 
-// 12小时制
+/**
+ * TwelveHourFormat: Demonstrates 12-hour time format with AM/PM indicators.
+ * - Shows time selection using 12-hour format with AM/PM suffix.
+ * - Maintains 15-minute step intervals in 12-hour display.
+ * - Useful for applications targeting US users or 12-hour time preferences.
+ */
 export const TwelveHourFormat: Story = {
   args: {
     format: "h:mm a",
@@ -90,7 +133,12 @@ export const TwelveHourFormat: Story = {
   render: (args) => <SingleColumnDemo {...args} />,
 }
 
-// 不同步进设置
+/**
+ * CustomSteps: Demonstrates 30-minute step intervals for broader time selection.
+ * - Shows time selection with 30-minute intervals instead of default 15-minute.
+ * - Useful for applications with less precise time requirements.
+ * - Reduces list length for faster navigation in broad time ranges.
+ */
 export const CustomSteps: Story = {
   args: {
     format: "HH:mm",
@@ -99,7 +147,12 @@ export const CustomSteps: Story = {
   render: (args) => <SingleColumnDemo {...args} />,
 }
 
-// 精确分钟（5分钟步进）
+/**
+ * PreciseMinutes: Demonstrates 5-minute step intervals for precise time selection.
+ * - Shows time selection with 5-minute intervals for high precision.
+ * - Ideal for applications requiring detailed time scheduling.
+ * - Provides more granular control over time selection.
+ */
 export const PreciseMinutes: Story = {
   args: {
     format: "HH:mm",
@@ -108,7 +161,12 @@ export const PreciseMinutes: Story = {
   render: (args) => <SingleColumnDemo {...args} />,
 }
 
-// 特殊值（不在步进范围内）
+/**
+ * SpecialValue: Demonstrates handling of times outside the configured step range.
+ * - Shows how the component handles 14:37 with 15-minute steps.
+ * - Displays special values that don't align with step intervals.
+ * - Useful for understanding flexible time value handling.
+ */
 export const SpecialValue: Story = {
   args: {
     format: "HH:mm",
@@ -117,7 +175,12 @@ export const SpecialValue: Story = {
   render: (args) => <SpecialValueDemo {...args} />,
 }
 
-// 非受控模式
+/**
+ * Uncontrolled: Demonstrates uncontrolled mode with default value.
+ * - Shows TimeCalendar operating in uncontrolled mode with defaultValue.
+ * - Useful for simple implementations without external state management.
+ * - Demonstrates internal state handling and default value setting.
+ */
 export const Uncontrolled: Story = {
   args: {
     format: "HH:mm",

@@ -135,15 +135,52 @@ const meta: Meta<typeof QuarterCalendar> = {
   parameters: {
     layout: "centered",
   },
-  tags: ["new"],
+  tags: ["new", "autodocs"],
 }
 
 export default meta
 type Story = StoryObj<typeof meta>
 
+/**
+ * `QuarterCalendar` is a specialized calendar component for selecting quarters (Q1, Q2, Q3, Q4) within a year.
+ *
+ * Features:
+ * - Intuitive quarter selection with visual quarter representation
+ * - Year navigation with customizable year range limits
+ * - Comprehensive internationalization support with locale-specific formatting
+ * - Disabled state support for entire component or specific quarters
+ * - Light and dark theme variants
+ * - Accessible keyboard navigation and screen reader support
+ * - Current quarter highlighting and selection state management
+ * - Flexible styling and customization options
+ *
+ * Usage:
+ * - Use for quarterly reporting, financial period selection, or seasonal planning
+ * - Ideal for business applications requiring quarter-based data filtering
+ * - Combine with other calendar components for comprehensive date selection
+ * - Leverage internationalization for global business applications
+ *
+ * Best Practices:
+ * - Provide clear visual feedback for selected quarters
+ * - Use consistent quarter labeling across your application
+ * - Consider business context when setting year ranges
+ * - Test with multiple locales for international compatibility
+ *
+ * Accessibility:
+ * - Full keyboard navigation with arrow keys and enter/space selection
+ * - Screen reader friendly with proper ARIA labels and descriptions
+ * - High contrast support for disabled and selected states
+ * - Semantic HTML structure for optimal accessibility
+ */
+
 const currentYear = new Date().getFullYear()
 
-// 基础用法
+/**
+ * Default: Shows the basic QuarterCalendar usage with standard configuration.
+ * - Demonstrates quarter selection with both light and dark variants side by side.
+ * - Uses English locale and current year as defaults.
+ * - Provides a foundation for quarter selection implementation.
+ */
 export const Default: Story = {
   args: {
     currentYear,
@@ -153,7 +190,12 @@ export const Default: Story = {
   render: (args) => <QuarterCalendarDemo {...args} />,
 }
 
-// 范围限制
+/**
+ * WithRange: Demonstrates QuarterCalendar with year range restrictions.
+ * - Shows how to limit selectable years to a specific range (current year ±2).
+ * - Displays navigation boundaries and how they affect user interaction.
+ * - Useful for applications with relevant time period constraints.
+ */
 export const WithRange: Story = {
   args: {
     currentYear,
@@ -165,7 +207,12 @@ export const WithRange: Story = {
   render: (args) => <QuarterCalendarDemo {...args} />,
 }
 
-// 禁用特定季度
+/**
+ * WithDisabledQuarters: Demonstrates selective quarter disabling functionality.
+ * - Shows how to disable specific quarters (Q1 and Q3 in this example).
+ * - Displays visual and functional differences for disabled quarters.
+ * - Useful for restricting selection based on business rules or data availability.
+ */
 export const WithDisabledQuarters: Story = {
   args: {
     currentYear,
@@ -179,7 +226,12 @@ export const WithDisabledQuarters: Story = {
   render: (args) => <QuarterCalendarDemo {...args} />,
 }
 
-// 禁用状态
+/**
+ * Disabled: Demonstrates the completely disabled state of QuarterCalendar.
+ * - Shows how the entire component appears and behaves when disabled.
+ * - Displays proper disabled styling and interaction prevention.
+ * - Useful for readonly scenarios or when quarter selection is not applicable.
+ */
 export const Disabled: Story = {
   args: {
     currentYear,
@@ -189,7 +241,12 @@ export const Disabled: Story = {
   render: (args) => <QuarterCalendarDemo {...args} />,
 }
 
-// 指定选中季度
+/**
+ * WithSelectedQuarter: Demonstrates QuarterCalendar with a pre-selected quarter.
+ * - Shows Q2 as initially selected with Chinese locale formatting.
+ * - Displays how selected state is visually represented and maintained.
+ * - Useful for forms or interfaces that need default quarter selections.
+ */
 export const WithSelectedQuarter: Story = {
   args: {
     currentYear,
@@ -205,7 +262,12 @@ export const WithSelectedQuarter: Story = {
   render: (args) => <QuarterCalendarDemo {...args} />,
 }
 
-// 深色主题
+/**
+ * DarkVariant: Demonstrates the dark theme styling of QuarterCalendar.
+ * - Shows the component optimized for dark backgrounds and themes.
+ * - Displays proper contrast and accessibility in dark mode.
+ * - Useful for applications with dark UI themes or night mode functionality.
+ */
 export const DarkVariant: Story = {
   args: {
     currentYear,
@@ -220,7 +282,12 @@ export const DarkVariant: Story = {
   ),
 }
 
-// 对比展示
+/**
+ * Comparison: Demonstrates side-by-side comparison of Chinese and English locales.
+ * - Shows how quarter labels and formatting differ between languages.
+ * - Displays independent selection states for each locale variant.
+ * - Useful for understanding localization differences and testing scenarios.
+ */
 export const Comparison: Story = {
   args: {
     currentYear,
@@ -229,7 +296,12 @@ export const Comparison: Story = {
   render: (args) => <ComparisonDemo {...args} />,
 }
 
-// 多语言展示
+/**
+ * MultiLanguage: Demonstrates comprehensive internationalization support.
+ * - Shows QuarterCalendar in 6 different languages (Chinese, English, Japanese, Korean, French, German).
+ * - Displays locale-specific quarter formatting and labeling.
+ * - Useful for testing international compatibility and understanding localization features.
+ */
 export const MultiLanguage: Story = {
   args: {
     currentYear,

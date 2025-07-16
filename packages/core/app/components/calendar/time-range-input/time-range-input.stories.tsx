@@ -12,11 +12,45 @@ const meta: Meta<typeof TimeRangeInput> = {
   parameters: {
     layout: "centered",
   },
-  tags: ["new"],
+  tags: ["new", "autodocs"],
 }
 
 export default meta
 type Story = StoryObj<typeof meta>
+
+/**
+ * `TimeRangeInput` is a sophisticated component for selecting time ranges with intelligent synchronization and validation.
+ *
+ * Features:
+ * - Dual time input fields with automatic range synchronization
+ * - Smart range preservation when adjusting start times
+ * - Cross-midnight time range support (e.g., 22:00 to 06:00)
+ * - Boundary validation with automatic start time adjustment
+ * - Multiple time format support (24-hour, 12-hour, with seconds)
+ * - Comprehensive internationalization support
+ * - Flexible sizing and theming variants
+ * - Duration calculation and display
+ * - Real-time range validation and feedback
+ * - Keyboard navigation and accessibility support
+ *
+ * Usage:
+ * - Use for scheduling applications and shift management
+ * - Ideal for booking systems, time tracking, and event planning
+ * - Perfect for work hour configuration and availability settings
+ * - Combine with calendar components for comprehensive time selection
+ *
+ * Best Practices:
+ * - Provide clear placeholder text for start and end times
+ * - Use consistent time formats across your application
+ * - Consider range synchronization behavior for optimal UX
+ * - Test with cross-midnight scenarios for 24-hour operations
+ *
+ * Accessibility:
+ * - Full keyboard navigation between input fields
+ * - Screen reader friendly with proper ARIA labels
+ * - Clear focus indicators and validation feedback
+ * - Semantic HTML structure for optimal time input
+ */
 
 // 演示组件
 const TimeRangeDemo = (args: React.ComponentProps<typeof TimeRangeInput>) => {
@@ -121,7 +155,12 @@ const RangeSyncDemo = () => {
   )
 }
 
-// 基础用法
+/**
+ * Default: Shows the basic TimeRangeInput usage with standard configuration.
+ * - Demonstrates dual time input fields for start and end times.
+ * - Uses 24-hour format (HH:mm) as the default time format.
+ * - Provides a foundation for time range selection implementation.
+ */
 export const Default: Story = {
   args: {
     startPlaceholder: "Start Time",
@@ -131,6 +170,11 @@ export const Default: Story = {
   render: (args) => <TimeRangeDemo {...args} />,
 }
 
+/**
+ * Size: Demonstrates the large size variant of TimeRangeInput.
+ * - Shows the component with increased dimensions for prominent interfaces.
+ * - Useful for applications requiring larger touch targets or enhanced visibility.
+ */
 export const Size: Story = {
   render: function Render() {
     return (
@@ -141,6 +185,11 @@ export const Size: Story = {
   },
 }
 
+/**
+ * Variable: Demonstrates the dark theme variant of TimeRangeInput.
+ * - Shows the component styled for dark theme environments.
+ * - Useful for applications with dark mode or specialized UI themes.
+ */
 export const Variable: Story = {
   render: function Render() {
     return (
@@ -151,12 +200,22 @@ export const Variable: Story = {
   },
 }
 
-// 时间范围同步
+/**
+ * RangeSynchronization: Demonstrates the intelligent time range synchronization feature.
+ * - Shows how start time changes automatically adjust the end time to maintain range length.
+ * - Displays boundary validation where end times push start times when necessary.
+ * - Includes comprehensive explanation and test scenarios for understanding the behavior.
+ */
 export const RangeSynchronization: Story = {
   render: () => <RangeSyncDemo />,
 }
 
-// 预设时间范围
+/**
+ * WithPresetRange: Demonstrates TimeRangeInput with pre-filled time values.
+ * - Shows the component with initial start (09:00) and end (17:30) times set.
+ * - Displays a typical work schedule as an example of preset configurations.
+ * - Useful for forms or interfaces that need default time ranges.
+ */
 export const WithPresetRange: Story = {
   args: {
     startValue: timeStringToDate("09:00"),
@@ -168,7 +227,12 @@ export const WithPresetRange: Story = {
   render: (args) => <TimeRangeDemo {...args} />,
 }
 
-// 跨日时间范围
+/**
+ * CrossMidnight: Demonstrates cross-midnight time range support.
+ * - Shows time ranges that span across midnight (22:00 to 06:00).
+ * - Displays proper handling of overnight shifts and 24-hour operations.
+ * - Useful for night shift scheduling, security operations, or 24/7 businesses.
+ */
 export const CrossMidnight: Story = {
   args: {
     startValue: timeStringToDate("22:00"),
@@ -187,7 +251,12 @@ export const CrossMidnight: Story = {
   ),
 }
 
-// 不同时间格式
+/**
+ * DifferentFormats: Demonstrates various time format options and their visual representation.
+ * - Shows 24-hour format, 12-hour format with AM/PM, and format with seconds.
+ * - Displays how different formats affect the display and input experience.
+ * - Useful for understanding format flexibility and regional preferences.
+ */
 export const DifferentFormats: Story = {
   render: () => (
     <div className="flex flex-col gap-8">
@@ -228,7 +297,12 @@ export const DifferentFormats: Story = {
   ),
 }
 
-// 国际化支持
+/**
+ * Internationalization: Demonstrates comprehensive multi-language support.
+ * - Shows TimeRangeInput working with Chinese, English, and Japanese locales.
+ * - Displays locale-specific time formatting and placeholder text.
+ * - Demonstrates proper duration display in multiple languages.
+ */
 export const Internationalization: Story = {
   render: () => (
     <div className="space-y-8">
@@ -272,7 +346,12 @@ export const Internationalization: Story = {
   ),
 }
 
-// 常见使用场景
+/**
+ * CommonScenarios: Demonstrates real-world usage scenarios for TimeRangeInput.
+ * - Shows work hours, lunch breaks, exercise time, and night shift examples.
+ * - Displays practical applications with appropriate time ranges and contexts.
+ * - Useful for understanding when and how to implement time range selection.
+ */
 export const CommonScenarios: Story = {
   render: () => (
     <div className="space-y-8">
@@ -320,7 +399,12 @@ export const CommonScenarios: Story = {
   ),
 }
 
-// 仅持续时间显示
+/**
+ * DurationOnly: Demonstrates time range duration calculation and display.
+ * - Shows short duration (45 minutes), full hours (2 hours), and long duration (12 hours).
+ * - Displays how the component calculates and presents time range durations.
+ * - Useful for understanding duration formatting and time range analysis.
+ */
 export const DurationOnly: Story = {
   render: () => (
     <div className="space-y-6">
