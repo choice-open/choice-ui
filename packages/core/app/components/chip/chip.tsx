@@ -1,30 +1,30 @@
-import { RemoveSmall } from "@choiceform/icons-react"
+import { RemoveTiny } from "@choiceform/icons-react"
 import { ElementType, forwardRef, HTMLProps, memo, ReactNode } from "react"
 import { tcx } from "~/utils"
 import { IconButton } from "../icon-button"
 import { chipTv } from "./tv"
 
 export interface ChipProps extends Omit<HTMLProps<HTMLDivElement>, "size" | "as"> {
+  as?: ElementType
   classNames?: {
-    root?: string
+    closeButton?: string
     prefix?: string
+    root?: string
     suffix?: string
     text?: string
-    closeButton?: string
   }
-  prefixElement?: ReactNode
-  suffixElement?: ReactNode
-  size?: "default" | "medium"
-  variant?: "default" | "accent" | "success"
   disabled?: boolean
-  selected?: boolean
-  onClick?: (e: React.MouseEvent<HTMLDivElement>) => void
-  onRemove?: (e: React.MouseEvent<HTMLButtonElement>) => void
-  as?: ElementType
-  defaultText?: {
+  i18n?: {
     chip: string
     remove: string
   }
+  onClick?: (e: React.MouseEvent<HTMLDivElement>) => void
+  onRemove?: (e: React.MouseEvent<HTMLButtonElement>) => void
+  prefixElement?: ReactNode
+  selected?: boolean
+  size?: "default" | "medium"
+  suffixElement?: ReactNode
+  variant?: "default" | "accent" | "success" | "rest"
 }
 
 export const Chip = memo(
@@ -42,7 +42,7 @@ export const Chip = memo(
       suffixElement,
       children,
       as,
-      defaultText = {
+      i18n = {
         chip: "Chip",
         remove: "Remove chip:",
       },
@@ -83,18 +83,21 @@ export const Chip = memo(
         {!disabled && onRemove && (
           <IconButton
             className={tcx(style.closeButton(), classNames?.closeButton)}
-            aria-label={
-              defaultText.remove + (typeof children === "string" ? children : defaultText.chip)
-            }
+            aria-label={i18n.remove + (typeof children === "string" ? children : i18n.chip)}
             disabled={disabled}
             size="reset"
             variant="reset"
+            data-remove-button
             onClick={(e) => {
               e.stopPropagation()
+              e.preventDefault()
               onRemove?.(e)
             }}
+            onMouseDown={(e) => {
+              e.stopPropagation()
+            }}
           >
-            <RemoveSmall />
+            <RemoveTiny />
           </IconButton>
         )}
       </Component>

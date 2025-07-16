@@ -153,7 +153,7 @@ const DropdownComponent = memo(
       onOpenChange?.(newOpen)
     })
 
-    // Floating UI 配置 - 参考 dropdown.tsx 的定位策略
+    // Floating UI 配置  的定位策略
     const { refs, floatingStyles, context, isPositioned } = useFloating({
       nodeId,
       open: isControlledOpen,
@@ -179,7 +179,7 @@ const DropdownComponent = memo(
       whileElementsMounted: autoUpdate,
     })
 
-    // 交互处理器配置 - 参考 dropdown.tsx
+    // 交互处理器配置
     const hover = useHover(context, {
       enabled: isNested,
       delay: { open: 75 },
@@ -222,7 +222,7 @@ const DropdownComponent = memo(
       typeahead,
     ])
 
-    // Tree 事件处理 - 参考 dropdown.tsx
+    // Tree 事件处理
     useEffect(() => {
       if (!tree) return
 
@@ -286,7 +286,7 @@ const DropdownComponent = memo(
       handleOpenChange(false)
     })
 
-    // 处理子元素 - 参考 dropdown.tsx
+    // 处理子元素
     const { triggerElement, subTriggerElement, contentElement } = useMemo(() => {
       const childrenArray = Children.toArray(children)
 

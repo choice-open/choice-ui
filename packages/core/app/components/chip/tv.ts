@@ -3,12 +3,12 @@ import { tv } from "tailwind-variants"
 export const chipTv = tv({
   slots: {
     root: [
-      "rounded-md inline-flex items-center",
+      "inline-flex min-w-0 items-center rounded-md",
       "border border-solid border-transparent",
       "cursor-default select-none",
     ],
-    text: "",
-    closeButton: "",
+    text: "truncate",
+    closeButton: "pointer-events-auto",
     prefix: "",
     suffix: "",
   },
@@ -29,6 +29,9 @@ export const chipTv = tv({
         root: "",
       },
       success: {
+        root: "",
+      },
+      rest: {
         root: "",
       },
     },
@@ -141,12 +144,12 @@ export const chipTv = tv({
     {
       slots: ["prefix", "suffix", "closeButton"],
       size: "default",
-      class: "w-4 h-4",
+      class: "h-4 w-4",
     },
     {
       slots: ["prefix", "suffix", "closeButton"],
       size: "medium",
-      class: "w-6 h-6",
+      class: "h-6 w-6",
     },
     {
       slots: ["prefix", "suffix"],

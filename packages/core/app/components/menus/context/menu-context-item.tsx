@@ -7,6 +7,7 @@ import { MenuContext } from "./menu-context"
 
 export interface MenuContextItemProps extends MenuItemProps {
   customActive?: boolean
+  exclusiveIndex?: number
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void
   onKeyDown?: (e: React.KeyboardEvent<HTMLButtonElement>) => void
   onMouseUp?: (e: React.MouseEvent<HTMLButtonElement>) => void
