@@ -156,23 +156,26 @@
   --boundary-strong: var(--color-gray-800);
   --boundary-selected-strong: var(--blue-600);
 
-  --shadow-shapes: 0px 1px 3px 0px rgba(0, 0, 0, 0.15), 0px 0px 0.5px 0px rgba(0, 0, 0, 0.3);
-
-  --shadow-stickies:
-    0px 1px 3px 0px rgba(0, 0, 0, 0.1), 0px 3px 8px 0px rgba(0, 0, 0, 0.1),
-    0px 0px 0.5px 0px rgba(0, 0, 0, 0.18);
-
-  --shadow-tooltip:
-    0px 1px 3px 0px rgba(0, 0, 0, 0.1), 0px 5px 12px 0px rgba(0, 0, 0, 0.13),
-    0px 0px 0.5px 0px rgba(0, 0, 0, 0.15);
-
-  --shadow-menu:
+  --shadows-border-default: 0px 0px 0px 1px rgba(230, 230, 230, 1);
+  --shadows-border-default-inset: inset 0px 0px 0px 1px rgba(230, 230, 230, 1);
+  --shadows-focus: 0px 0px 0px 1px rgba(255, 255, 255, 1), 0px 0px 0px 2px rgba(13, 153, 255, 1);
+  --shadows-large:
     0px 2px 5px 0px rgba(0, 0, 0, 0.15), 0px 10px 16px 0px rgba(0, 0, 0, 0.12),
     0px 0px 0.5px 0px rgba(0, 0, 0, 0.12);
-
-  --shadow-modals:
+  --shadows-line: inset 0px 0px 0px 1px rgba(0, 0, 0, 0.1);
+  --shadows-medium:
+    0px 1px 3px 0px rgba(0, 0, 0, 0.1), 0px 5px 12px 0px rgba(0, 0, 0, 0.13),
+    0px 0px 0.5px 0px rgba(0, 0, 0, 0.15);
+  --shadows-small:
+    0px 1px 3px 0px rgba(0, 0, 0, 0.1), 0px 3px 8px 0px rgba(0, 0, 0, 0.1),
+    0px 0px 0.5px 0px rgba(0, 0, 0, 0.18);
+  --shadows-extra-large:
     0px 2px 5px 0px rgba(0, 0, 0, 0.15), 0px 10px 24px 0px rgba(0, 0, 0, 0.18),
     0px 0px 0.5px 0px rgba(0, 0, 0, 0.08);
+  --shadows-extra-small: 0px 1px 3px 0px rgba(0, 0, 0, 0.15), 0px 0px 0.5px 0px rgba(0, 0, 0, 0.3);
+  --shadows-2extra-small:
+    0px 0px 2px 0px rgba(0, 0, 0, 0.02), 0px 1px 3px 0px rgba(0, 0, 0, 0.1),
+    0px 0px 0.5px 0px rgba(0, 0, 0, 0.3);
 }
 
 .dark,
@@ -300,28 +303,33 @@
   --boundary-strong: rgba(255, 255, 255, 0.9);
   --boundary-selected-strong: var(--blue-400);
 
-  --shadow-shapes:
-    inset 0px 0.5px 0px 0px rgba(255, 255, 255, 0.1),
-    inset 0px 0px 0.5px 0px rgba(255, 255, 255, 0.3), 0px 0px 0.5px 0px rgba(0, 0, 0, 0.5),
-    0px 1px 3px 0px rgba(0, 0, 0, 0.4) --shadow-stickies: inset 0px 0.5px 0px 0px
-      rgba(255, 255, 255, 0.08),
-    inset 0px 0px 0.5px 0px rgba(255, 255, 255, 0.3), 0px 1px 3px 0px rgba(0, 0, 0, 0.35),
-    0px 3px 8px 0px rgba(0, 0, 0, 0.4);
-
-  --shadow-tooltip:
-    inset 0px 0.5px 0px 0px rgba(255, 255, 255, 0.08),
-    inset 0px 0px 0.5px 0px rgba(255, 255, 255, 0.3), 0px 1px 3px 0px rgba(0, 0, 0, 0.5),
-    0px 5px 12px 0px rgba(0, 0, 0, 0.35);
-
-  --shadow-menu:
+  --shadows-border-default: 0px 0px 0px 1px rgba(68, 68, 68, 1);
+  --shadows-border-default-inset: inset 0px 0px 0px 1px rgba(68, 68, 68, 1);
+  --shadows-focus: 0px 0px 0px 1px rgba(44, 44, 44, 1), 0px 0px 0px 2px rgba(12, 140, 233, 1);
+  --shadows-large:
     inset 0px 0.5px 0px 0px rgba(255, 255, 255, 0.08),
     inset 0px 0px 0.5px 0px rgba(255, 255, 255, 0.35), 0px 2px 5px 0px rgba(0, 0, 0, 0.35),
     0px 10px 16px 0px rgba(0, 0, 0, 0.35);
-
-  --shadow-modals:
+  --shadows-line: inset 0px 0px 0px 1px rgba(255, 255, 255, 0.1);
+  --shadows-medium:
+    inset 0px 0.5px 0px 0px rgba(255, 255, 255, 0.08),
+    inset 0px 0px 0.5px 0px rgba(255, 255, 255, 0.3), 0px 1px 3px 0px rgba(0, 0, 0, 0.5),
+    0px 5px 12px 0px rgba(0, 0, 0, 0.35);
+  --shadows-small:
+    inset 0px 0.5px 0px 0px rgba(255, 255, 255, 0.08),
+    inset 0px 0px 0.5px 0px rgba(255, 255, 255, 0.3), 0px 1px 3px 0px rgba(0, 0, 0, 0.35),
+    0px 3px 8px 0px rgba(0, 0, 0, 0.4);
+  --shadows-extra-large:
     inset 0px 0.5px 0px 0px rgba(255, 255, 255, 0.08),
     inset 0px 0px 0.5px 0px rgba(255, 255, 255, 0.35), 0px 3px 5px 0px rgba(0, 0, 0, 0.35),
     0px 10px 24px 0px rgba(0, 0, 0, 0.45);
+  --shadows-extra-small:
+    inset 0px 0.5px 0px 0px rgba(255, 255, 255, 0.1),
+    inset 0px 0px 0.5px 0px rgba(255, 255, 255, 0.3), 0px 0px 0.5px 0px rgba(0, 0, 0, 0.5),
+    0px 1px 3px 0px rgba(0, 0, 0, 0.4);
+  --shadows-2extra-small:
+    inset 0px 0.5px 0px 0px rgba(255, 255, 255, 0.1), 0px 0px 2px 0px rgba(0, 0, 0, 0.04),
+    0px 1px 3px 0px rgba(0, 0, 0, 0.1), 0px 0px 0.5px 0px rgba(0, 0, 0, 0.8);
 }
 
 @theme {
@@ -533,20 +541,17 @@
   --tracking-lg: -0.002rem;
 
   --shadow-*: initial;
-  --shadow-xs: var(--shadow-shapes);
-  --shadow-sm: var(--shadow-stickies);
-  --shadow-md: var(--shadow-tooltip);
-  --shadow-lg: var(--shadow-menu);
-  --shadow-xl: var(--shadow-modals);
+  --shadow-xxs: var(--shadows-2extra-small);
+  --shadow-xs: var(--shadows-extra-small);
+  --shadow-sm: var(--shadows-small);
+  --shadow-md: var(--shadows-medium);
+  --shadow-lg: var(--shadows-large);
+  --shadow-xl: var(--shadows-extra-large);
 
-  --shadow-focus:
-    0px 0px 0px 1px var(--color-default-background), 0px 0px 0px 2px var(--color-selected-boundary);
-
-  --shadow-line: inset 0 0 0 1px
-    color-mix(in oklch, var(--color-default-foreground) 10%, transparent);
-
-  --shadow-inset-border: inset 0 0 0 1px var(--color-default-boundary);
-  --shadow-border: 0 0 0 1px var(--color-default-boundary);
+  --shadow-focus: var(--shadows-focus);
+  --shadow-line: var(--shadows-line);
+  --shadow-inset-border: var(--shadows-border-default-inset);
+  --shadow-border: var(--shadows-border-default);
   --shadow-border-white: 0 0 0 1px var(--color-white);
 
   --z-index-sticky: 100;

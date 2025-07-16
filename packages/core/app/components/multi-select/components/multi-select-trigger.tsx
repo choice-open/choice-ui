@@ -128,7 +128,7 @@ export const MultiSelectTrigger = memo(
                 variant={variant}
                 disabled={disabled}
                 onRemove={handleRemove}
-                className="bg-default-background"
+                className="bg-default-background shadow-xxs border-none dark:bg-gray-900"
               >
                 {displayValue}
               </Chip>

@@ -23,24 +23,32 @@ export const multiSelectTriggerTv = tv({
     },
     disabled: {
       true: {
-        root: "bg-disabled-background text-disabled-foreground",
-        placeholder: "text-fg-disabled",
+        root: "bg-default-background text-disabled-foreground border-default-boundary",
+        placeholder: "text-disabled-foreground",
         suffix: "text-disabled-foreground",
       },
     },
     open: {
-      true: {
-        root: "border-selected-boundary",
-      },
-      false: {
-        root: "hover:border-default-boundary border-transparent",
-      },
+      true: {},
+      false: {},
     },
     hasValues: {
       true: {},
       false: {},
     },
   },
+  compoundVariants: [
+    {
+      open: true,
+      disabled: false,
+      class: { root: "border-selected-boundary" },
+    },
+    {
+      open: false,
+      disabled: false,
+      class: { root: "hover:border-default-boundary border-transparent" },
+    },
+  ],
   defaultVariants: {
     size: "default",
     open: false,

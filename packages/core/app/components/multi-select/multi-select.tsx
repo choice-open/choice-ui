@@ -200,6 +200,11 @@ const MultiSelectComponent = memo(
 
     // 处理打开状态变化
     const handleOpenChange = useEventCallback((newOpen: boolean) => {
+      // 当组件被禁用时，不允许打开菜单
+      if (disabled && newOpen) {
+        return
+      }
+
       if (controlledOpen === undefined) {
         setOpen(newOpen)
       }
