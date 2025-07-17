@@ -22,6 +22,7 @@ export interface MultiSelectTriggerProps {
   }) => ReactNode
   size?: "default" | "large"
   suffixElement?: ReactNode
+  valueDisabledMap?: Record<string, boolean>
   values?: string[]
   variant?: ChipProps["variant"]
 }
@@ -42,6 +43,7 @@ export const MultiSelectTrigger = memo(
       values = [],
       open = false,
       variant = "default",
+      valueDisabledMap = {},
       ...rest
     } = props
 
@@ -94,8 +96,9 @@ export const MultiSelectTrigger = memo(
       return (
         <div className={style.chips()}>
           {displayValues.map((value, index) => {
+            const chipDisabled = valueDisabledMap[value] ?? disabled
             const handleRemove =
-              !disabled && onRemove
+              !chipDisabled && onRemove
                 ? (e: React.MouseEvent<HTMLButtonElement>) => {
                     e.stopPropagation()
                     onRemove(value)
@@ -114,7 +117,7 @@ export const MultiSelectTrigger = memo(
                     index,
                     displayValue,
                     onRemove: handleRemove,
-                    disabled,
+                    disabled: chipDisabled,
                   })}
                 </div>
               )
@@ -126,7 +129,7 @@ export const MultiSelectTrigger = memo(
                 key={`${value}-${index}`}
                 size={chipSize}
                 variant={variant}
-                disabled={disabled}
+                disabled={chipDisabled}
                 onRemove={handleRemove}
                 className="bg-default-background shadow-xxs border-none dark:bg-gray-900"
               >
@@ -158,6 +161,7 @@ export const MultiSelectTrigger = memo(
       style,
       renderChip,
       variant,
+      valueDisabledMap,
     ])
 
     const renderPlaceholder = useMemo(() => {

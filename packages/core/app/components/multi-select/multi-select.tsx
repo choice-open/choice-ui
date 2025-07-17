@@ -438,6 +438,15 @@ const MultiSelectComponent = memo(
     }, [options, values, sizeProp, handleSelect, registerItem])
 
     // 增强触发器元素
+    const valueDisabledMap = useMemo(() => {
+      const map: Record<string, boolean> = {}
+      values.forEach((v) => {
+        const found = options.find((opt) => opt.value === v)
+        map[v] = !!found?.disabled
+      })
+      return map
+    }, [values, options])
+
     const enhancedTriggerElement = useMemo(() => {
       if (!triggerElement) return null
 
@@ -453,6 +462,7 @@ const MultiSelectComponent = memo(
         placeholder,
         renderChip,
         variant,
+        valueDisabledMap,
       })
     }, [
       triggerElement,
@@ -466,6 +476,7 @@ const MultiSelectComponent = memo(
       placeholder,
       renderChip,
       variant,
+      valueDisabledMap,
     ])
 
     // 错误处理

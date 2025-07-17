@@ -2,7 +2,7 @@ import { tv } from "tailwind-variants"
 
 export const TextFieldTv = tv({
   slots: {
-    container: ["flex min-w-0 flex-col items-start gap-1"],
+    container: ["flex min-w-0 flex-col items-start gap-2"],
     root: [
       "group/text-field relative grid",
       "rounded-md",
@@ -13,9 +13,8 @@ export const TextFieldTv = tv({
     input: ["[grid-area:input]"],
     prefix: ["[grid-area:prefix]"],
     suffix: ["[grid-area:suffix]"],
-    label: ["leading-md tracking-md cursor-default px-0.5 font-medium"],
     description: [
-      "leading-md tracking-md",
+      "leading-md tracking-md mt-1",
       "px-0.5",
       "break-words whitespace-pre-wrap",
       "text-secondary-foreground",
@@ -54,8 +53,8 @@ export const TextFieldTv = tv({
     disabled: {
       true: {
         root: "bg-secondary-background",
-        label: "text-disabled-foreground",
         input: "text-disabled-foreground",
+        description: "text-disabled-foreground",
       },
       false: {},
     },
@@ -79,7 +78,6 @@ export const TextFieldTv = tv({
       disabled: false,
       class: {
         root: ["bg-gray-700 text-white", "hover:not-focus-within:before:border-gray-600"],
-        label: "text-white",
         description: "text-white/40",
       },
     },
@@ -88,7 +86,6 @@ export const TextFieldTv = tv({
       disabled: true,
       class: {
         root: "bg-gray-700 text-white/40",
-        label: "text-white/40",
         description: "text-white/40",
       },
     },

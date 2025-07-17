@@ -123,7 +123,7 @@ export const Dark: Story = {
           variant="dark"
           placeholder="Enter text"
         >
-          <TextField.Label>Label</TextField.Label>
+          <TextField.Label description="This is a description">Label</TextField.Label>
           <TextField.Description>Description</TextField.Description>
         </TextField>
       </div>

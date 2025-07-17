@@ -1,4 +1,5 @@
 import { memo, useId } from "react"
+import { Label } from "~/components"
 import { Select, SelectProps } from "~/components/select"
 import { tcx } from "~/utils"
 
@@ -14,14 +15,7 @@ export const ModalSelect = memo(function ModalSelect(props: ModalSelectProps) {
 
   return (
     <fieldset className={tcx("flex w-full min-w-0 flex-col gap-2", className)}>
-      {label && (
-        <label
-          className="leading-md tracking-md cursor-default font-medium"
-          htmlFor={id}
-        >
-          {label}
-        </label>
-      )}
+      {label && <Label htmlFor={id}>{label}</Label>}
       <Select
         matchTriggerWidth
         {...rest}

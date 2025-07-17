@@ -30,14 +30,6 @@ export interface ChipsInputProps
   extends Omit<HTMLProps<HTMLDivElement>, "value" | "onChange" | "defaultValue" | "size"> {
   allowDuplicates?: boolean
   children?: React.ReactNode
-  classNames?: {
-    chip?: string
-    chipCloseButton?: string
-    chipText?: string
-    input?: string
-    nesting?: string
-    root?: string
-  }
   disabled?: boolean
   onAdd?: (value: string) => void
   onChange?: (value: string[]) => void
@@ -51,7 +43,6 @@ export interface ChipsInputProps
 export const ChipsInput = forwardRef<HTMLDivElement, ChipsInputProps>((props, ref) => {
   const {
     className,
-    classNames,
     value: valueProp,
     onChange,
     onAdd,
@@ -78,7 +69,7 @@ export const ChipsInput = forwardRef<HTMLDivElement, ChipsInputProps>((props, re
   const [isComposing, setIsComposing] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
-  const style = chipsInputTv({ size, disabled, hasValue: chips.length > 0 })
+  const tv = chipsInputTv({ size, disabled, hasValue: chips.length > 0 })
 
   const addChip = useCallback(
     (chipToAdd: string) => {
@@ -187,7 +178,7 @@ export const ChipsInput = forwardRef<HTMLDivElement, ChipsInputProps>((props, re
       ref={mergeRefs(ref, containerRef)}
       tabIndex={-1}
       onKeyDown={handleKeyDown}
-      className={tcx(style.root(), classNames?.root, className)}
+      className={tcx(tv.root(), className)}
       onClick={handleContainerClick}
       aria-disabled={disabled}
       {...rest}
@@ -214,11 +205,7 @@ export const ChipsInput = forwardRef<HTMLDivElement, ChipsInputProps>((props, re
             onRemove={() => handleChipRemoveClick(index)}
             size={size === "large" ? "medium" : "default"}
             disabled={disabled}
-            classNames={{
-              root: classNames?.chip,
-              closeButton: classNames?.chipCloseButton,
-              text: classNames?.chipText,
-            }}
+            className={tcx(tv.chip())}
           >
             {chip}
           </Chip>
@@ -227,7 +214,7 @@ export const ChipsInput = forwardRef<HTMLDivElement, ChipsInputProps>((props, re
 
       <input
         ref={inputRef}
-        className={tcx(style.input(), classNames?.input)}
+        className={tcx(tv.input())}
         disabled={disabled}
         onChange={(e) => setInputValue(e.target.value)}
         onCompositionEnd={() => setIsComposing(false)}
@@ -240,7 +227,7 @@ export const ChipsInput = forwardRef<HTMLDivElement, ChipsInputProps>((props, re
         }}
       />
 
-      {children && <div className={tcx(style.nesting(), classNames?.nesting)}>{children}</div>}
+      {children && <div className={tcx(tv.nesting())}>{children}</div>}
     </div>
   )
 })

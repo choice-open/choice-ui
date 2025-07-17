@@ -457,6 +457,61 @@ export const Disabled: Story = {
 }
 
 /**
+ * Disabled items
+ */
+export const DisabledItems: Story = {
+  render: function DisabledItemsStory() {
+    const [values, setValues] = useState<string[]>(["option-1", "option-3"])
+
+    const options = useMemo(
+      () =>
+        Array.from({ length: 6 }, (_, i) => ({
+          value: `option-${i + 1}`,
+          label: `Option ${i + 1}`,
+          disabled: i === 2,
+        })),
+      [],
+    )
+
+    const getDisplayValue = useCallback(
+      (value: string) => {
+        return options.find((opt) => opt.value === value)?.label || value
+      },
+      [options],
+    )
+
+    return (
+      <div className="space-y-4">
+        <div className="space-y-2">
+          <label className="font-medium">Disabled Items</label>
+          <MultiSelect
+            values={values}
+            onChange={setValues}
+          >
+            <MultiSelect.Trigger
+              placeholder="Select options..."
+              getDisplayValue={getDisplayValue}
+              className="w-80"
+            />
+            <MultiSelect.Content>
+              {options.map((option) => (
+                <MultiSelect.Item
+                  key={option.value}
+                  value={option.value}
+                  disabled={option.disabled}
+                >
+                  {option.label}
+                </MultiSelect.Item>
+              ))}
+            </MultiSelect.Content>
+          </MultiSelect>
+        </div>
+      </div>
+    )
+  },
+}
+
+/**
  * Large size multi-select component.
  */
 export const Large: Story = {

@@ -1,4 +1,5 @@
 import { memo, useId, useRef } from "react"
+import { Label } from "~/components"
 import { MultiLineTextInput, MultiLineTextInputProps } from "~/components/multi-line-text-input"
 import { tcx } from "~/utils"
 
@@ -17,15 +18,7 @@ export const ModalMultiLineInput = memo(function ModalMultiLineInput(
 
   return (
     <fieldset className={tcx("flex w-full min-w-0 flex-col gap-2", className)}>
-      {label && (
-        <label
-          className="leading-md tracking-md cursor-default font-medium"
-          htmlFor={id}
-          onClick={() => inputRef.current?.focus()}
-        >
-          {label}
-        </label>
-      )}
+      {label && <Label htmlFor={id}>{label}</Label>}
       <MultiLineTextInput
         ref={inputRef}
         {...rest}

@@ -14,7 +14,7 @@ export const chipsInputTv = tv({
       "placeholder:text-secondary-foreground",
     ],
     nesting: ["flex flex-none items-center gap-2 px-1"],
-    chip: "",
+    chip: "shadow-xxs border-none",
     closeButton: "",
     text: "",
   },

@@ -9,7 +9,8 @@ import React, {
 } from "react"
 import { tcx } from "~/utils"
 import { Input, type InputProps } from "../input"
-import { FieldAddon, FieldDescription, FieldLabel } from "./components"
+import { Label } from "../label"
+import { FieldAddon, FieldDescription } from "./components"
 import { TextFieldTv } from "./tv"
 
 export interface TextFieldProps extends Omit<InputProps, "children"> {
@@ -19,7 +20,7 @@ export interface TextFieldProps extends Omit<InputProps, "children"> {
 interface TextFieldComponent
   extends React.ForwardRefExoticComponent<TextFieldProps & React.RefAttributes<HTMLInputElement>> {
   Description: typeof FieldDescription
-  Label: typeof FieldLabel
+  Label: typeof Label
   Prefix: typeof FieldAddon
   Suffix: typeof FieldAddon
 }
@@ -100,7 +101,8 @@ const TextFieldBase = forwardRef<HTMLInputElement, TextFieldProps>((props, ref) 
     <div className={tcx(styles.container(), className)}>
       {labelNode &&
         cloneElement(labelNode, {
-          className: tcx(styles.label(), labelNode.props.className),
+          variant,
+          disabled,
           htmlFor: uuid,
         })}
       <TextFieldContent
@@ -142,6 +144,6 @@ const SuffixComponent = (props: React.ComponentProps<typeof FieldAddon>) => (
 export const TextField = Object.assign(TextFieldBase, {
   Prefix: PrefixComponent,
   Suffix: SuffixComponent,
-  Label: FieldLabel,
+  Label: Label,
   Description: FieldDescription,
 }) as TextFieldComponent
