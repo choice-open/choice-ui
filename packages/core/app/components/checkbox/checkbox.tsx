@@ -7,13 +7,13 @@ import { CheckboxLabel } from "./checkbox-label"
 import { checkboxTv } from "./tv"
 
 export interface CheckboxProps extends Omit<HTMLProps<HTMLInputElement>, "value" | "onChange"> {
+  children?: ReactNode
   className?: string
-  variant?: "default" | "accent" | "outline"
-  value?: boolean
   focused?: boolean
   mixed?: boolean
   onChange?: (value: boolean) => void
-  children?: ReactNode
+  value?: boolean
+  variant?: "default" | "accent" | "outline"
 }
 
 const CheckboxBase = forwardRef<HTMLInputElement, CheckboxProps>(function Checkbox(props, ref) {

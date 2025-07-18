@@ -1,6 +1,11 @@
 import type { ReactNode } from "react"
+import { CheckboxProps } from "../checkbox"
 import type { InputProps } from "../input"
 import type { SelectProps } from "../select"
+import { TextareaProps } from "../textarea"
+import type { RadioGroupProps } from "../radio"
+import { SwitchProps } from "../switch"
+import { RangeProps } from "../range"
 
 /**
  * 表单验证器类型
@@ -213,37 +218,88 @@ export interface FormFieldCommonProps<T = unknown> {
 }
 
 /**
+ * 表单字段适配器基础属性
+ * 包含所有表单字段的通用属性
+ */
+export interface FormFieldAdapterProps<T = unknown> {
+  /** 字段描述 */
+  description?: string | ReactNode
+  /** 单个错误信息 */
+  error?: string
+  /** 多个错误信息 */
+  errors?: string[]
+  /** 字段标签 */
+  label?: string
+  /** 失焦回调 */
+  onBlur?: () => void
+  /** 异步失焦验证 */
+  onBlurAsync?: () => void
+  onBlurAsyncDebounceMs?: number
+  /** 值变化回调 */
+  onChange: (value: T) => void
+  /** 异步值变化验证 */
+  onChangeAsync?: (value: T) => void
+  onChangeAsyncDebounceMs?: number
+  /** 聚焦回调 */
+  onFocus?: () => void
+  /** 异步聚焦验证 */
+  onFocusAsync?: () => void
+  onFocusAsyncDebounceMs?: number
+  /** 字段大小 */
+  size?: "default" | "large"
+  /** 字段值 */
+  value: T
+}
+
+/**
  * Input 适配器 Props - 继承 Input 的原生 props
  */
 export interface InputAdapterProps<T extends string = string>
-  extends Omit<InputProps, "value" | "onChange" | "onBlur"> {
-  error?: string
-  errors?: string[]
-  onBlur?: () => void
-  onChange: (value: T) => void
-  size?: "default" | "large"
-  value: T
-  variant?: "default" | "dark"
-}
+  extends Omit<InputProps, "value" | "onChange" | "onBlur" | "onFocus" | "size">,
+    FormFieldAdapterProps<T> {}
+
+/**
+ * Textarea 适配器 Props - 继承 Textarea 的原生 props
+ */
+export interface TextareaAdapterProps<T extends string = string>
+  extends Omit<TextareaProps, "value" | "onChange" | "onBlur" | "onFocus" | "size">,
+    FormFieldAdapterProps<T> {}
 
 /**
  * Select 适配器 Props - 继承 Select 的原生 props
  */
 export interface SelectAdapterProps<T extends string = string>
-  extends Omit<SelectProps, "value" | "onChange" | "children"> {
-  error?: string
-  errors?: string[]
-  label?: string
+  extends Omit<SelectProps, "value" | "onChange" | "children" | "size">,
+    FormFieldAdapterProps<T> {
   name?: string
-  onBlur?: () => void
-  onChange: (value: T) => void
   options?: Array<{
     divider?: boolean
     label?: string
     value?: T
   }>
   placeholder?: string
-  size?: "default" | "large"
-  value: T
-  variant?: "default" | "dark"
 }
+
+/**
+ * Checkbox 适配器 Props - 继承 Checkbox 的原生 props
+ */
+export interface CheckboxAdapterProps<T extends boolean = boolean>
+  extends Omit<CheckboxProps, "value" | "onChange" | "onBlur" | "onFocus" | "children" | "size">,
+    Omit<FormFieldAdapterProps<T>, "value"> {
+  value: T | undefined
+}
+
+/**
+ * RadioGroup 适配器 Props - 继承 RadioGroup 的原生 props
+ */
+export interface RadioGroupAdapterProps<T extends string = string>
+  extends Omit<RadioGroupProps, "value" | "onChange" | "onBlur" | "onFocus" | "children" | "size">,
+    FormFieldAdapterProps<T> {}
+
+export interface SwitchAdapterProps<T extends boolean = boolean>
+  extends Omit<SwitchProps, "value" | "onChange" | "onBlur" | "onFocus" | "children" | "size">,
+    FormFieldAdapterProps<T> {}
+
+export interface RangeAdapterProps<T extends number = number>
+  extends Omit<RangeProps, "value" | "onChange" | "onBlur" | "onFocus" | "children" | "size">,
+    FormFieldAdapterProps<T> {}

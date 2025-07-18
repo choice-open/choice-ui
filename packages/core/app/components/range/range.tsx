@@ -12,26 +12,26 @@ import { useEventCallback } from "usehooks-ts"
 import { mergeRefs, tcx } from "~/utils"
 import { rangeTv } from "./tv"
 
-interface RangeProps {
-  defaultValue?: number
-  value?: number
-  onChange?: (value: number) => void
-  onChangeStart?: () => void
-  onChangeEnd?: () => void
-  min?: number
-  max?: number
-  step?: number
-  disabled?: boolean
+export interface RangeProps {
   className?: string
   connectsClassName?: {
-    positive?: string
     negative?: string
+    positive?: string
   }
-  trackSize?: {
-    width?: number
-    height?: number
-  }
+  defaultValue?: number
+  disabled?: boolean
+  max?: number
+  min?: number
+  onChange?: (value: number) => void
+  onChangeEnd?: () => void
+  onChangeStart?: () => void
+  step?: number
   thumbSize?: number
+  trackSize?: {
+    height?: number
+    width?: number
+  }
+  value?: number
 }
 
 export const Range = forwardRef<HTMLDivElement, RangeProps>(function Range(props, ref) {

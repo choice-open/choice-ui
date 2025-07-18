@@ -10,8 +10,8 @@ type PressEvent = ReactPointerEvent<HTMLElement> | ReactKeyboardEvent<HTMLElemen
 export type PressProps = {
   disabled?: boolean
   onPress?: (event: PressEvent) => void
+  onPressEnd?: (event: PressEvent) => void,
   onPressStart?: (event: PressEvent) => void
-  onPressEnd?: (event: PressEvent) => void
 }
 
 export function usePress({ disabled, onPress, onPressStart, onPressEnd }: PressProps) {

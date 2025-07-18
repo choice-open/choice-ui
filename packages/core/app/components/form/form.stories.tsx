@@ -5,17 +5,15 @@ import { QueryClient, QueryClientProvider, useMutation, useQuery } from "@tansta
 import { useStore } from "@tanstack/react-store"
 import type { AnyFieldApi } from "@tanstack/react-form"
 import { useForm } from "./index"
+import Highlight from "react-syntax-highlighter"
+import { LinkButton } from "../link-button"
+import { tcx } from "../../utils"
+import { Badge } from "../badge"
 
 const meta: Meta = {
   title: "Components/Form",
   parameters: {
     layout: "centered",
-    docs: {
-      description: {
-        component:
-          "A powerful form system built on TanStack Form for complex form state management and validation.",
-      },
-    },
   },
   tags: ["autodocs"],
 }
@@ -23,414 +21,585 @@ const meta: Meta = {
 export default meta
 type Story = StoryObj
 
-// Component for stories that need state
-const BasicFormExample = () => {
-  const [result, setResult] = useState<string>("")
-
-  const form = useForm({
-    defaultValues: {
-      username: "",
-      email: "",
-      role: "admin",
-    },
-    onSubmit: async ({ value }) => {
-      setResult(JSON.stringify(value, null, 2))
-    },
-  })
-
-  return (
-    <div className="space-y-4">
-      <form
-        className="w-80 space-y-4"
-        onSubmit={(e) => {
-          e.preventDefault()
-          e.stopPropagation()
-          form.handleSubmit()
-        }}
-      >
-        <form.Field name="username">
-          {(field) => (
-            <form.Input
-              name={field.name}
-              label="Username"
-              value={field.state.value as string}
-              onChange={field.handleChange}
-              onBlur={field.handleBlur}
-              placeholder="Enter username"
-            />
-          )}
-        </form.Field>
-
-        <form.Field name="email">
-          {(field) => (
-            <form.Input
-              name={field.name}
-              label="Email"
-              value={field.state.value as string}
-              onChange={field.handleChange}
-              onBlur={field.handleBlur}
-              type="email"
-              placeholder="Enter email address"
-            />
-          )}
-        </form.Field>
-
-        <form.Field name="role">
-          {(field) => (
-            <form.Select
-              name={field.name}
-              label="Role"
-              value={field.state.value as string}
-              onChange={field.handleChange}
-              options={[
-                { label: "Select Role" },
-                { label: "Admin", value: "admin" },
-                { label: "User", value: "user" },
-                { label: "Guest", value: "guest" },
-                { divider: true },
-                { label: "Other", value: "other" },
-              ]}
-            />
-          )}
-        </form.Field>
-
-        <form.Button type="submit">Submit Form</form.Button>
-      </form>
-
-      <div className="mt-4 rounded bg-gray-100 p-3 text-sm">
-        <strong>Form Result:</strong>
-        <pre>{result}</pre>
-      </div>
-    </div>
-  )
-}
-
 /**
  * Basic form example with Input and Select fields using TanStack Form
  */
 export const Basic: Story = {
-  render: () => <BasicFormExample />,
+  render: function BasicRender() {
+    const [result, setResult] = useState<string>("")
+
+    const form = useForm({
+      defaultValues: {
+        username: "",
+        email: "",
+        role: "admin",
+      },
+      onSubmit: async ({ value }) => {
+        setResult(JSON.stringify(value, null, 2))
+      },
+    })
+
+    return (
+      <>
+        <form
+          className="w-80 space-y-4"
+          onSubmit={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            form.handleSubmit()
+          }}
+        >
+          <form.Field name="username">
+            {(field) => (
+              <form.Input
+                name={field.name}
+                label="Username"
+                value={field.state.value as string}
+                onChange={field.handleChange}
+                onBlur={field.handleBlur}
+                placeholder="Enter username"
+              />
+            )}
+          </form.Field>
+
+          <form.Field name="email">
+            {(field) => (
+              <form.Input
+                name={field.name}
+                label="Email"
+                value={field.state.value as string}
+                onChange={field.handleChange}
+                onBlur={field.handleBlur}
+                type="email"
+                placeholder="Enter email address"
+              />
+            )}
+          </form.Field>
+
+          <form.Field name="role">
+            {(field) => (
+              <form.Select
+                name={field.name}
+                label="Role"
+                value={field.state.value as string}
+                onChange={field.handleChange}
+                options={[
+                  { label: "Select Role" },
+                  { label: "Admin", value: "admin" },
+                  { label: "User", value: "user" },
+                  { label: "Guest", value: "guest" },
+                  { divider: true },
+                  { label: "Other", value: "other" },
+                ]}
+              />
+            )}
+          </form.Field>
+
+          <form.Field name="isAdmin">
+            {(field) => (
+              <form.Checkbox
+                variant="accent"
+                name={field.name}
+                label="Is Admin"
+                value={field.state.value as boolean}
+                onChange={field.handleChange}
+              />
+            )}
+          </form.Field>
+
+          <form.Field name="gender">
+            {(field) => (
+              <form.RadioGroup
+                name={field.name}
+                label="Gender"
+                value={field.state.value as string}
+                onChange={field.handleChange}
+                options={[
+                  { label: "Male", value: "male" },
+                  { label: "Female", value: "female" },
+                ]}
+              />
+            )}
+          </form.Field>
+
+          <form.Field name="apply">
+            {(field) => (
+              <form.Switch
+                name={field.name}
+                label="Apply"
+                value={field.state.value as boolean}
+                onChange={field.handleChange}
+              />
+            )}
+          </form.Field>
+
+          <form.Field name="age">
+            {(field) => (
+              <form.Range
+                label="Age"
+                value={field.state.value as number}
+                onChange={field.handleChange}
+              />
+            )}
+          </form.Field>
+
+          <form.Button type="submit">Submit Form</form.Button>
+        </form>
+
+        <div className="bg-secondary-background mt-4 rounded-xl p-4">
+          <strong>Form Result:</strong>
+          <Highlight
+            language="json"
+            customStyle={{
+              backgroundColor: "transparent",
+            }}
+            lineProps={{
+              style: {
+                backgroundColor: "transparent",
+              },
+            }}
+          >
+            {result}
+          </Highlight>
+        </div>
+      </>
+    )
+  },
 }
 
-// Component for validation example
-const ValidationFormExample = () => {
-  const form = useForm({
-    defaultValues: {
-      password: "",
-      confirmPassword: "",
-      age: "",
-    },
-    onSubmit: async ({ value }) => {
-      alert("Form submitted successfully!")
-    },
-  })
+/**
+ * Form example with description
+ * 1. description is a string
+ * 2. description is a ReactNode
+ */
+export const WithDescription: Story = {
+  render: function WithDescriptionRender() {
+    const [result, setResult] = useState<string>("")
 
-  return (
-    <form
-      className="w-80 space-y-4"
-      onSubmit={(e) => {
-        e.preventDefault()
-        e.stopPropagation()
-        form.handleSubmit()
-      }}
-    >
-      <form.Field
-        name="password"
-        validators={{
-          onChange: ({ value }) => {
-            if ((value as string).length < 6) {
-              return "Password must be at least 6 characters"
-            }
-          },
-        }}
-      >
-        {(field) => (
-          <div className="space-y-2">
-            <form.Input
-              label="Password"
-              name={field.name}
-              value={field.state.value as string}
-              onChange={field.handleChange}
-              onBlur={field.handleBlur}
-              type="password"
-              placeholder="Enter password"
-            />
-            {field.state.meta.errors.length > 0 && (
-              <div className="text-sm text-red-500">{field.state.meta.errors.join(", ")}</div>
+    const form = useForm({
+      defaultValues: {
+        username: "",
+        email: "",
+        role: "admin",
+      },
+      onSubmit: async ({ value }) => {
+        setResult(JSON.stringify(value, null, 2))
+      },
+    })
+
+    return (
+      <>
+        <form
+          className="w-80 space-y-4"
+          onSubmit={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            form.handleSubmit()
+          }}
+        >
+          <form.Field name="username">
+            {(field) => (
+              <form.Input
+                name={field.name}
+                label="Username"
+                value={field.state.value as string}
+                onChange={field.handleChange}
+                onBlur={field.handleBlur}
+                placeholder="Enter username"
+                description="Username is required"
+              />
             )}
-          </div>
-        )}
-      </form.Field>
+          </form.Field>
 
-      <form.Field name="confirmPassword">
-        {(field) => (
-          <form.Input
-            label="Confirm Password"
-            name={field.name}
-            value={field.state.value as string}
-            onChange={field.handleChange}
-            onBlur={field.handleBlur}
-            type="password"
-            placeholder="Confirm password"
-          />
-        )}
-      </form.Field>
-
-      <form.Field
-        name="age"
-        validators={{
-          onChange: ({ value }) => {
-            const age = parseInt(value as string)
-            if (isNaN(age) || age < 1) {
-              return "Please enter a valid age"
-            }
-            if (age < 18) {
-              return "Must be 18 or older"
-            }
-          },
-        }}
-      >
-        {(field) => (
-          <div className="space-y-2">
-            <form.Input
-              label="Age"
-              name={field.name}
-              value={field.state.value as string}
-              onChange={field.handleChange}
-              onBlur={field.handleBlur}
-              type="number"
-              placeholder="Enter age"
-            />
-            {field.state.meta.errors.length > 0 && (
-              <div className="text-sm text-red-500">{field.state.meta.errors.join(", ")}</div>
+          <form.Field name="email">
+            {(field) => (
+              <form.Input
+                name={field.name}
+                label="Email"
+                value={field.state.value as string}
+                onChange={field.handleChange}
+                onBlur={field.handleBlur}
+                type="email"
+                placeholder="Enter email address"
+                description={
+                  <>
+                    <span>Email is required</span>{" "}
+                    <LinkButton className="float-right">Learn more</LinkButton>
+                  </>
+                }
+              />
             )}
-          </div>
-        )}
-      </form.Field>
+          </form.Field>
 
-      <form.Button type="submit">Create Account</form.Button>
-    </form>
-  )
+          <form.Field name="role">
+            {(field) => (
+              <form.Select
+                name={field.name}
+                label="Role"
+                value={field.state.value as string}
+                onChange={field.handleChange}
+                options={[
+                  { label: "Select Role" },
+                  { label: "Admin", value: "admin" },
+                  { label: "User", value: "user" },
+                  { label: "Guest", value: "guest" },
+                  { divider: true },
+                  { label: "Other", value: "other" },
+                ]}
+                description="Role is required"
+              />
+            )}
+          </form.Field>
+
+          <form.Button type="submit">Submit Form</form.Button>
+        </form>
+
+        <div className="bg-secondary-background mt-4 rounded-xl p-4">
+          <strong>Form Result:</strong>
+          <Highlight
+            language="json"
+            customStyle={{
+              backgroundColor: "transparent",
+            }}
+            lineProps={{
+              style: {
+                backgroundColor: "transparent",
+              },
+            }}
+          >
+            {result}
+          </Highlight>
+        </div>
+      </>
+    )
+  },
 }
 
 /**
  * Form with validation rules and error handling
  */
 export const WithValidation: Story = {
-  render: () => <ValidationFormExample />,
-}
+  render: function WithValidationRender() {
+    const [result, setResult] = useState<string>("")
 
-const SchemaValidationExample = () => {
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [submitResult, setSubmitResult] = useState<string | null>(null)
-
-  // 辅助函数：格式化错误信息
-  const formatErrors = (errors: unknown[]): string[] => {
-    return errors.map((error) => {
-      if (typeof error === "string") return error
-      if (error && typeof error === "object" && "message" in error) {
-        return String(error.message)
-      }
-      return String(error)
+    const form = useForm({
+      defaultValues: {
+        password: "",
+        confirmPassword: "",
+        age: "",
+      },
+      onSubmit: async ({ value }) => {
+        setResult(JSON.stringify(value, null, 2))
+      },
     })
-  }
 
-  // 定义 Zod schema
-  const userSchema = z.object({
-    name: z.string().min(1, "姓名不能为空").min(2, "姓名至少需要2个字符"),
-    email: z.email("请输入有效的邮箱地址"),
-    age: z.number().min(18, "必须年满18岁").max(100, "年龄不能超过100岁"),
-    website: z.url("请输入有效的网址").optional().or(z.literal("")),
-    bio: z.string().max(200, "简介不能超过200个字符").optional(),
-  })
-
-  const form = useForm({
-    defaultValues: {
-      name: "",
-      email: "",
-      age: 18,
-      website: "",
-      bio: "",
-    },
-    validators: {
-      // 使用 Zod schema 进行整体验证
-      onChange: userSchema,
-      onBlur: userSchema,
-    },
-    onSubmit: async ({ value }) => {
-      setIsSubmitting(true)
-      setSubmitResult(null)
-
-      try {
-        // 这里可以调用 API 提交数据
-        await new Promise((resolve) => setTimeout(resolve, 1000))
-        setSubmitResult("表单提交成功！")
-        console.log("Submitted data:", value)
-      } catch (error) {
-        setSubmitResult("提交失败，请重试")
-      } finally {
-        setIsSubmitting(false)
-      }
-    },
-  })
-
-  return (
-    <div className="w-full max-w-md space-y-4">
-      <h3 className="text-lg font-semibold">Schema 验证示例</h3>
-      <p className="text-sm text-gray-600">使用 Zod Schema 进行表单验证，支持复杂的验证规则</p>
-
-      <form
-        onSubmit={(e) => {
-          e.preventDefault()
-          form.handleSubmit()
-        }}
-        className="space-y-4"
-      >
-        <form.Field name="name">
-          {(field) => (
-            <fieldset className="flex flex-col gap-2">
-              <label className="text-sm font-medium">姓名 *</label>
+    return (
+      <>
+        <form
+          className="w-80 space-y-4"
+          onSubmit={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            form.handleSubmit()
+          }}
+        >
+          <form.Field
+            name="password"
+            validators={{
+              onChange: ({ value }) => {
+                if ((value as string).length < 6) {
+                  return "Password must be at least 6 characters"
+                }
+              },
+            }}
+          >
+            {(field) => (
               <form.Input
+                label="Password"
                 name={field.name}
                 value={field.state.value as string}
                 onChange={field.handleChange}
                 onBlur={field.handleBlur}
-                placeholder="请输入姓名"
+                type="password"
+                placeholder="Enter password"
+                error={field.state.meta.errors.join(", ")}
               />
-              {field.state.meta.errors.length > 0 && (
-                <div className="text-sm text-red-500">
-                  {formatErrors(field.state.meta.errors).join(", ")}
-                </div>
-              )}
-            </fieldset>
-          )}
-        </form.Field>
+            )}
+          </form.Field>
 
-        <form.Field name="email">
-          {(field) => (
-            <fieldset className="flex flex-col gap-2">
-              <label className="text-sm font-medium">邮箱 *</label>
+          <form.Field
+            name="confirmPassword"
+            validators={{
+              onChange: ({ value }) => {
+                if (value !== form.state.values.password) {
+                  return "Passwords do not match"
+                }
+              },
+            }}
+          >
+            {(field) => (
               <form.Input
+                label="Confirm Password"
                 name={field.name}
                 value={field.state.value as string}
                 onChange={field.handleChange}
                 onBlur={field.handleBlur}
-                type="email"
-                placeholder="请输入邮箱地址"
+                type="password"
+                placeholder="Confirm password"
+                error={field.state.meta.errors.join(", ")}
               />
-              {field.state.meta.errors.length > 0 && (
-                <div className="text-sm text-red-500">
-                  {formatErrors(field.state.meta.errors).join(", ")}
-                </div>
-              )}
-            </fieldset>
-          )}
-        </form.Field>
+            )}
+          </form.Field>
 
-        <form.Field name="age">
-          {(field) => (
-            <fieldset className="flex flex-col gap-2">
-              <label className="text-sm font-medium">年龄 *</label>
+          <form.Field
+            name="age"
+            validators={{
+              onChange: ({ value }) => {
+                const age = parseInt(value as string)
+                if (isNaN(age) || age < 1) {
+                  return "Please enter a valid age"
+                }
+                if (age < 18 || age > 80) {
+                  return "Must be 18 or older and less than 80"
+                }
+              },
+            }}
+          >
+            {(field) => (
               <form.Input
+                label="Age"
                 name={field.name}
-                value={String(field.state.value)}
-                onChange={(value) => field.handleChange(parseInt(value) || 0)}
+                value={field.state.value as string}
+                onChange={field.handleChange}
                 onBlur={field.handleBlur}
                 type="number"
-                placeholder="请输入年龄"
+                placeholder="Enter age"
+                error={field.state.meta.errors.join(", ")}
               />
-              {field.state.meta.errors.length > 0 && (
-                <div className="text-sm text-red-500">
-                  {formatErrors(field.state.meta.errors).join(", ")}
-                </div>
-              )}
-            </fieldset>
-          )}
-        </form.Field>
+            )}
+          </form.Field>
 
-        <form.Field name="website">
-          {(field) => (
-            <fieldset className="flex flex-col gap-2">
-              <label className="text-sm font-medium">个人网站</label>
-              <form.Input
-                name={field.name}
-                value={field.state.value as string}
-                onChange={field.handleChange}
-                onBlur={field.handleBlur}
-                type="url"
-                placeholder="https://example.com"
-              />
-              {field.state.meta.errors.length > 0 && (
-                <div className="text-sm text-red-500">
-                  {formatErrors(field.state.meta.errors).join(", ")}
-                </div>
-              )}
-            </fieldset>
-          )}
-        </form.Field>
+          <form.Button type="submit">Create Account</form.Button>
+        </form>
 
-        <form.Field name="bio">
-          {(field) => (
-            <fieldset className="flex flex-col gap-2">
-              <label className="text-sm font-medium">个人简介</label>
-              <textarea
-                name={field.name}
-                value={field.state.value as string}
-                onChange={(e) => field.handleChange(e.target.value)}
-                onBlur={field.handleBlur}
-                placeholder="请输入个人简介..."
-                rows={3}
-                className="min-w-0 rounded-md border border-gray-300 px-2 py-1 text-sm focus:border-blue-500 focus:outline-none"
-              />
-              <div className="text-xs text-gray-500">
-                {(field.state.value as string).length}/200
-              </div>
-              {field.state.meta.errors.length > 0 && (
-                <div className="text-sm text-red-500">
-                  {formatErrors(field.state.meta.errors).join(", ")}
-                </div>
-              )}
-            </fieldset>
-          )}
-        </form.Field>
-
-        <form.Button
-          type="submit"
-          disabled={isSubmitting || !form.state.canSubmit}
-        >
-          {isSubmitting ? "提交中..." : "提交表单"}
-        </form.Button>
-
-        {submitResult && (
-          <div
-            className={`rounded p-2 text-sm ${
-              submitResult.includes("成功")
-                ? "bg-green-100 text-green-800"
-                : "bg-red-100 text-red-800"
-            }`}
+        <div className="bg-secondary-background mt-4 rounded-xl p-4">
+          <strong>Form Result:</strong>
+          <Highlight
+            language="json"
+            customStyle={{
+              backgroundColor: "transparent",
+            }}
+            lineProps={{
+              style: {
+                backgroundColor: "transparent",
+              },
+            }}
           >
-            {submitResult}
-          </div>
-        )}
-      </form>
-
-      <div className="mt-4 rounded bg-gray-100 p-4 text-sm">
-        <div className="font-medium">表单状态：</div>
-        <div>可提交: {form.state.canSubmit ? "是" : "否"}</div>
-        <div>已修改: {form.state.isDirty ? "是" : "否"}</div>
-        <div>验证中: {form.state.isValidating ? "是" : "否"}</div>
-        <div>提交中: {form.state.isSubmitting ? "是" : "否"}</div>
-        <div>有效: {form.state.isValid ? "是" : "否"}</div>
-      </div>
-    </div>
-  )
+            {result}
+          </Highlight>
+        </div>
+      </>
+    )
+  },
 }
 
 /**
  * Form with Zod schema validation
  */
 export const WithSchemaValidation: Story = {
-  render: () => <SchemaValidationExample />,
+  render: function WithSchemaValidationRender() {
+    const [isSubmitting, setIsSubmitting] = useState(false)
+    const [submitResult, setSubmitResult] = useState<string | null>(null)
+
+    // 辅助函数：格式化错误信息
+    const formatErrors = (errors: unknown[]): string[] => {
+      const formatted = errors.map((error) => {
+        if (typeof error === "string") return error
+        if (error && typeof error === "object" && "message" in error) {
+          return String(error.message)
+        }
+        return String(error)
+      })
+      // 去重处理
+      return [...new Set(formatted)]
+    }
+
+    // 定义约束常量
+    const NAME_MIN_LENGTH = 2
+    const AGE_MIN_VALUE = 18
+    const AGE_MAX_VALUE = 100
+    const BIO_MAX_LENGTH = 200
+
+    // 定义 Zod schema
+    const userSchema = z.object({
+      name: z
+        .string()
+        .min(NAME_MIN_LENGTH, `Name must be at least ${NAME_MIN_LENGTH} characters`)
+        .refine((value) => value.length > 0, "Name is required"),
+      email: z.email("Please enter a valid email address"),
+      age: z
+        .number()
+        .min(AGE_MIN_VALUE, `Must be at least ${AGE_MIN_VALUE} years old`)
+        .max(AGE_MAX_VALUE, `Age must be less than ${AGE_MAX_VALUE}`),
+      website: z.url("Please enter a valid website").optional().or(z.literal("")),
+      bio: z
+        .string()
+        .max(BIO_MAX_LENGTH, `Bio must be less than ${BIO_MAX_LENGTH} characters`)
+        .optional(),
+    })
+
+    const form = useForm({
+      defaultValues: {
+        name: "",
+        email: "",
+        age: 18,
+        website: "",
+        bio: "",
+      },
+      validators: {
+        // 使用 Zod schema 进行整体验证
+        onChange: userSchema,
+        onBlur: userSchema,
+      },
+      onSubmit: async ({ value }) => {
+        setIsSubmitting(true)
+        setSubmitResult(null)
+
+        try {
+          // 这里可以调用 API 提交数据
+          await new Promise((resolve) => setTimeout(resolve, 1000))
+          setSubmitResult("Form submitted successfully!")
+          console.log("Submitted data:", value)
+        } catch (error) {
+          setSubmitResult("Form submission failed, please try again")
+        } finally {
+          setIsSubmitting(false)
+        }
+      },
+    })
+
+    return (
+      <div className="w-80">
+        <h3 className="font-medium">Schema Validation</h3>
+        <p className="text-secondary-foreground mt-2">
+          Use Zod Schema to validate the form, support complex validation rules
+        </p>
+
+        <form
+          onSubmit={(e) => {
+            e.preventDefault()
+            form.handleSubmit()
+          }}
+          className="mt-4 w-80 space-y-4"
+        >
+          <form.Field name="name">
+            {(field) => (
+              <form.Input
+                label="Name"
+                name={field.name}
+                value={field.state.value as string}
+                onChange={field.handleChange}
+                onBlur={field.handleBlur}
+                placeholder="Enter name"
+                error={formatErrors(field.state.meta.errors).join(", ")}
+              />
+            )}
+          </form.Field>
+
+          <form.Field name="email">
+            {(field) => (
+              <form.Input
+                label="Email"
+                name={field.name}
+                value={field.state.value as string}
+                onChange={field.handleChange}
+                onBlur={field.handleBlur}
+                type="email"
+                placeholder="Enter email address"
+                error={formatErrors(field.state.meta.errors).join(", ")}
+              />
+            )}
+          </form.Field>
+
+          <form.Field name="age">
+            {(field) => (
+              <form.Input
+                label="Age"
+                name={field.name}
+                value={String(field.state.value)}
+                onChange={(value) => field.handleChange(parseInt(value) || 0)}
+                onBlur={field.handleBlur}
+                type="number"
+                placeholder="Enter age"
+                error={formatErrors(field.state.meta.errors).join(", ")}
+              />
+            )}
+          </form.Field>
+
+          <form.Field name="website">
+            {(field) => (
+              <form.Input
+                label="Website"
+                name={field.name}
+                value={field.state.value as string}
+                onChange={field.handleChange}
+                onBlur={field.handleBlur}
+                type="url"
+                placeholder="https://example.com"
+                error={formatErrors(field.state.meta.errors).join(", ")}
+              />
+            )}
+          </form.Field>
+
+          <form.Field name="bio">
+            {(field) => (
+              <>
+                <form.Textarea
+                  label="Bio"
+                  name={field.name}
+                  value={field.state.value as string}
+                  onChange={field.handleChange}
+                  onBlur={field.handleBlur}
+                  placeholder="Enter bio"
+                  error={formatErrors(field.state.meta.errors).join(", ")}
+                  description={`${(field.state.value as string).length}/${BIO_MAX_LENGTH} characters`}
+                />
+              </>
+            )}
+          </form.Field>
+
+          <form.Button
+            type="submit"
+            disabled={isSubmitting || !form.state.canSubmit}
+          >
+            {isSubmitting ? "Submitting..." : "Submit"}
+          </form.Button>
+        </form>
+
+        {submitResult && (
+          <div
+            className={tcx(
+              "rounded-xl p-4",
+              submitResult.includes("success")
+                ? "text-success-foreground bg-green-100"
+                : "text-danger-foreground bg-red-100",
+            )}
+          >
+            {submitResult}
+          </div>
+        )}
+
+        <div className="bg-secondary-background mt-4 grid grid-cols-[auto_1fr] place-items-start gap-2 rounded-xl p-4">
+          <div className="col-span-2 font-medium">Form state:</div>
+          <span>Can submit:</span> <Badge>{form.state.canSubmit ? "Yes" : "No"}</Badge>
+          <span>Is dirty:</span> <Badge>{form.state.isDirty ? "Yes" : "No"}</Badge>
+          <span>Validating:</span> <Badge>{form.state.isValidating ? "Yes" : "No"}</Badge>
+          <span>Submitting:</span> <Badge>{form.state.isSubmitting ? "Yes" : "No"}</Badge>
+          <span>Valid:</span> <Badge>{form.state.isValid ? "Yes" : "No"}</Badge>
+        </div>
+      </div>
+    )
+  },
 }
 
 // FieldInfo 组件用于显示字段验证信息
@@ -799,13 +968,15 @@ const AsyncInitialValuesExample = () => {
 
   // 辅助函数：格式化错误信息
   const formatErrors = (errors: unknown[]): string[] => {
-    return errors.map((error) => {
+    const formatted = errors.map((error) => {
       if (typeof error === "string") return error
       if (error && typeof error === "object" && "message" in error) {
         return String(error.message)
       }
       return String(error)
     })
+    // 去重处理
+    return [...new Set(formatted)]
   }
 
   // 异步加载初始值
@@ -1128,13 +1299,15 @@ const ArrayFormExample = () => {
 
   // 辅助函数：格式化错误信息
   const formatErrors = (errors: unknown[]): string[] => {
-    return errors.map((error) => {
+    const formatted = errors.map((error) => {
       if (typeof error === "string") return error
       if (error && typeof error === "object" && "message" in error) {
         return String(error.message)
       }
       return String(error)
     })
+    // 去重处理
+    return [...new Set(formatted)]
   }
 
   const form = useForm({
@@ -1612,13 +1785,15 @@ const LinkedFieldsExample = () => {
 
   // 辅助函数：格式化错误信息
   const formatErrors = (errors: unknown[]): string[] => {
-    return errors.map((error) => {
+    const formatted = errors.map((error) => {
       if (typeof error === "string") return error
       if (error && typeof error === "object" && "message" in error) {
         return String(error.message)
       }
       return String(error)
     })
+    // 去重处理
+    return [...new Set(formatted)]
   }
 
   const form = useForm({
@@ -1972,13 +2147,15 @@ const ReactivityExample = () => {
 
   // 辅助函数：格式化错误信息
   const formatErrors = (errors: unknown[]): string[] => {
-    return errors.map((error) => {
+    const formatted = errors.map((error) => {
       if (typeof error === "string") return error
       if (error && typeof error === "object" && "message" in error) {
         return String(error.message)
       }
       return String(error)
     })
+    // 去重处理
+    return [...new Set(formatted)]
   }
 
   const form = useForm({
@@ -2452,13 +2629,15 @@ const ListenersExample = () => {
 
   // 辅助函数：格式化错误信息
   const formatErrors = (errors: unknown[]): string[] => {
-    return errors.map((error) => {
+    const formatted = errors.map((error) => {
       if (typeof error === "string") return error
       if (error && typeof error === "object" && "message" in error) {
         return String(error.message)
       }
       return String(error)
     })
+    // 去重处理
+    return [...new Set(formatted)]
   }
 
   // 添加活动日志

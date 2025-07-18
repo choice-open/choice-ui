@@ -5,19 +5,19 @@ import { RadioGroupContext, useRadioGroupContext } from "./context"
 import { Radio, RadioProps } from "./radio"
 
 export interface RadioGroupProps extends Omit<HTMLProps<HTMLDivElement>, "value" | "onChange"> {
+  children?: ReactNode
+  onChange: (value: string) => void
   options?: {
-    value: string
     label: string
+    value: string
   }[]
   value: string
-  onChange: (value: string) => void
   variant?: "default" | "accent" | "outline"
-  children?: ReactNode
 }
 
 type RadioGroupItemProps = Omit<RadioProps, "value" | "onChange"> & {
-  value: string
   children: ReactNode
+  value: string
 }
 
 const RadioGroupItem = memo(

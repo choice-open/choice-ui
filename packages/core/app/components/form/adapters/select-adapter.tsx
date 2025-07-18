@@ -2,6 +2,7 @@ import { Fragment } from "react"
 import { Label } from "~/components/label"
 import { Select } from "../../select"
 import type { SelectAdapterProps } from "../types"
+import { FormTv } from "../tv"
 
 /**
  * Select 适配器 - 将 Select 组件适配到 Form 系统
@@ -14,6 +15,7 @@ import type { SelectAdapterProps } from "../types"
  */
 export function SelectAdapter<T extends string>({
   label,
+  description,
   value,
   onChange,
   onBlur,
@@ -26,12 +28,14 @@ export function SelectAdapter<T extends string>({
   // 将 value 转换为 string 用于比较
   const stringValue = String(value || "")
 
+  const tv = FormTv()
+
   return (
-    <fieldset className="flex flex-col gap-2">
+    <fieldset className={tv.field()}>
       {label && <Label htmlFor={props.name}>{label}</Label>}
       <Select
         value={stringValue}
-        onChange={(selectedValue) => onChange(selectedValue as T)}
+        onChange={(selectedValue) => onChange?.(selectedValue as T)}
         {...props}
       >
         <Select.Trigger
@@ -60,6 +64,8 @@ export function SelectAdapter<T extends string>({
           ))}
         </Select.Content>
       </Select>
+      {description && <p className={tv.description()}>{description}</p>}
+      {(error || errors?.length) && <p className={tv.error()}>{error}</p>}
     </fieldset>
   )
 }

@@ -8,6 +8,7 @@ import { TextareaTv } from "./tv"
 export interface MultiLineTextInputProps {
   className?: string
   disabled?: boolean
+  id?: string
   maxRows?: number
   minRows?: number
   onChange?: (value: string) => void
@@ -46,6 +47,7 @@ const renderLeaf = (props: RenderLeafProps) => <span {...props.attributes}>{prop
 export const MultiLineTextInput = forwardRef<HTMLDivElement, MultiLineTextInputProps>(
   (
     {
+      id,
       value = "",
       onChange,
       minRows = 3,
@@ -155,6 +157,7 @@ export const MultiLineTextInput = forwardRef<HTMLDivElement, MultiLineTextInputP
             >
               <Editable
                 ref={ref}
+                id={id}
                 className="min-w-0"
                 style={{
                   outline: "none",

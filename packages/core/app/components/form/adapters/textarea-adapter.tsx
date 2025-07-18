@@ -1,10 +1,10 @@
+import { Textarea } from "~/components"
 import { Label } from "~/components/label"
-import { Input } from "../../input"
-import type { InputAdapterProps } from "../types"
 import { FormTv } from "../tv"
+import type { TextareaAdapterProps } from "../types"
 
 /**
- * Input 适配器 - 将 Input 组件适配到 Form 系统
+ * Textarea 适配器 - 将 Textarea 组件适配到 Form 系统
  *
  * 核心功能：
  * 1. 值绑定
@@ -12,7 +12,7 @@ import { FormTv } from "../tv"
  * 3. 错误状态显示
  * 4. 样式适配
  */
-export function InputAdapter<T extends string>({
+export function TextareaAdapter<T extends string>({
   label,
   description,
   value,
@@ -21,14 +21,13 @@ export function InputAdapter<T extends string>({
   error,
   errors,
   ...props
-}: InputAdapterProps<T>) {
+}: TextareaAdapterProps<T>) {
   const tv = FormTv()
   return (
     <fieldset className={tv.field()}>
       {label && <Label htmlFor={props.name}>{label}</Label>}
-      <Input
+      <Textarea
         id={props.name}
-        type={props.type}
         name={props.name}
         value={String(value || "")}
         onChange={(inputValue) => onChange?.(inputValue as T)}
@@ -42,17 +41,17 @@ export function InputAdapter<T extends string>({
 }
 
 // 为了方便使用，导出一个创建适配器的工厂函数
-export const createInputAdapter = <T extends string>(
-  defaultProps?: Partial<InputAdapterProps<T>>,
+export const createTextareaAdapter = <T extends string>(
+  defaultProps?: Partial<TextareaAdapterProps<T>>,
 ) => {
-  const AdapterComponent = (props: InputAdapterProps<T>) => (
-    <InputAdapter<T>
+  const AdapterComponent = (props: TextareaAdapterProps<T>) => (
+    <TextareaAdapter<T>
       {...defaultProps}
       {...props}
     />
   )
 
-  AdapterComponent.displayName = "InputAdapter"
+  AdapterComponent.displayName = "TextareaAdapter"
 
   return AdapterComponent
 }

@@ -3,20 +3,21 @@ import { forwardRef, HTMLProps, useId } from "react"
 import { tcx } from "~/utils"
 import { switchTv } from "./tv"
 
-interface SwitchProps extends Omit<HTMLProps<HTMLInputElement>, "size" | "value" | "onChange"> {
+export interface SwitchProps
+  extends Omit<HTMLProps<HTMLInputElement>, "size" | "value" | "onChange"> {
   className?: string
-  value: boolean
+  focused?: boolean
   onChange: (value: boolean) => void
   size?: "small" | "medium"
+  value: boolean
   variant?: "default" | "accent" | "outline"
-  focused?: boolean
 }
 
 interface SwitchStyle extends React.CSSProperties {
   "--switch-height": string
-  "--thumb-size": string
-  "--thumb-margin": string
   "--switch-width": string
+  "--thumb-margin": string
+  "--thumb-size": string
   "--thumb-translate": string
 }
 

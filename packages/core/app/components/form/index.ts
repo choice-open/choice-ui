@@ -1,14 +1,29 @@
 // 导出适配器
-export { InputAdapter, SelectAdapter } from "./adapters"
+export {
+  CheckboxAdapter,
+  InputAdapter,
+  RadioGroupAdapter,
+  SelectAdapter,
+  TextareaAdapter,
+  SwitchAdapter,
+  RangeAdapter,
+} from "./adapters"
 
 // 导出类型
 export type * from "./types"
 
 // 导入 TanStack Form
 import { useForm as useTanStackForm } from "@tanstack/react-form"
-import { InputAdapter } from "./adapters/input-adapter"
-import { SelectAdapter } from "./adapters/select-adapter"
 import { Button } from "../button"
+import {
+  CheckboxAdapter,
+  InputAdapter,
+  RadioGroupAdapter,
+  SelectAdapter,
+  TextareaAdapter,
+  SwitchAdapter,
+  RangeAdapter,
+} from "./adapters"
 
 /**
  * 增强版的 useForm hook
@@ -25,6 +40,11 @@ export function useForm(options: {
   const enhancedForm = Object.assign(form, {
     Input: InputAdapter,
     Select: SelectAdapter,
+    Textarea: TextareaAdapter,
+    Checkbox: CheckboxAdapter,
+    RadioGroup: RadioGroupAdapter,
+    Switch: SwitchAdapter,
+    Range: RangeAdapter,
     Button: Button,
   })
 

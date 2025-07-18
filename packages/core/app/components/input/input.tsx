@@ -43,7 +43,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(pro
       ref,
       spellCheck: false,
       autoComplete: "false",
-      type: "text",
+      type: rest.type || "text",
       value,
       disabled,
       readOnly,
