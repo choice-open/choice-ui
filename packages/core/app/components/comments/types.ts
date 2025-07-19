@@ -1,4 +1,3 @@
-import { extend } from "dayjs"
 import { Descendant } from "slate"
 
 export interface User {

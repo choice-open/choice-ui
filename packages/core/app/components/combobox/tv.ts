@@ -4,16 +4,18 @@ export const comboboxTriggerTv = tv({
   slots: {
     root: "leading-md tracking-md text-md flex min-w-0 items-center rounded-md",
     input: "flex-1 cursor-default appearance-none bg-transparent px-2 outline-none",
-    icon: "flex size-6 flex-none items-center justify-center",
+    icon: "flex flex-none items-center justify-center rounded-sm",
     action: "",
   },
   variants: {
     size: {
       default: {
         root: "h-6",
+        icon: "m-0.5 size-4.5",
       },
       large: {
         root: "h-8",
+        icon: "m-1.25 size-5",
       },
     },
     selected: {

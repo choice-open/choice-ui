@@ -48,7 +48,6 @@ import {
   useMenuScroll,
 } from "../menus"
 import { ComboboxTrigger } from "./combobox-trigger"
-import { Slot } from "../slot"
 
 const PORTAL_ROOT_ID = "floating-menu-root"
 const DEFAULT_OFFSET = 4
@@ -61,7 +60,7 @@ export interface ComboboxProps {
   matchTriggerWidth?: boolean
   onBlur?: (value: string) => void
   onChange?: (value: string) => void
-  onOpenChange?: (open: boolean) => void
+  onOpenChange?: (open: boolean, trigger?: "click" | "focus" | "input") => void
   open?: boolean
   placement?: Placement
   portalId?: string
@@ -145,18 +144,29 @@ const ComboboxComponent = memo(
         if (controlledOpen === undefined) {
           setIsOpen(true)
         }
-        onOpenChange?.(true)
+        onOpenChange?.(true, "input")
       } else {
         if (controlledOpen === undefined) {
           setIsOpen(false)
         }
-        onOpenChange?.(false)
+        onOpenChange?.(false, "input")
       }
     })
 
     // 值变化处理 - 对外回调
     const handleValueChange = useEventCallback((value: string) => {
       updateInputState(value, true)
+    })
+
+    // 处理trigger点击
+    const handleTriggerClick = useEventCallback(() => {
+      if (disabled) return
+
+      // 当点击trigger时，强制打开菜单
+      if (controlledOpen === undefined) {
+        setIsOpen(true)
+      }
+      onOpenChange?.(true, "click")
     })
 
     // DOM 事件处理器
@@ -173,7 +183,7 @@ const ComboboxComponent = memo(
         if (controlledOpen === undefined) {
           setIsOpen(true)
         }
-        onOpenChange?.(true)
+        onOpenChange?.(true, "focus")
         setActiveIndex(activeIndex)
       }
     })
@@ -183,11 +193,18 @@ const ComboboxComponent = memo(
       nodeId,
 
       open: isControlledOpen,
-      onOpenChange: (newOpen) => {
+      onOpenChange: (newOpen, event, reason) => {
         if (controlledOpen === undefined) {
           setIsOpen(newOpen)
         }
-        onOpenChange?.(newOpen)
+
+        // 根据事件类型确定触发方式
+        let trigger: "click" | "focus" | "input" = "click"
+        if (reason === "outside-press" || reason === "escape-key") {
+          trigger = "click"
+        }
+
+        onOpenChange?.(newOpen, trigger)
         if (!newOpen) {
           setActiveIndex(null)
         }
@@ -352,6 +369,7 @@ const ComboboxComponent = memo(
               active: isControlledOpen,
               onBlur,
               disabled,
+              onClick: handleTriggerClick,
             })}
         </div>
 

@@ -1,7 +1,7 @@
-import { faker } from "@faker-js/faker"
 import type { Meta, StoryObj } from "@storybook/react"
-import React, { useEffect, useMemo, useState } from "react"
+import React, { useMemo, useState } from "react"
 import { Combobox } from "."
+import { useEventCallback } from "usehooks-ts"
 
 const meta: Meta<typeof Combobox> = {
   title: "Collections/Combobox",
@@ -44,24 +44,46 @@ const fruits = [
 export const Basic: Story = {
   render: function BasicStory() {
     const [value, setValue] = useState("")
+    const [triggerType, setTriggerType] = useState<"click" | "focus" | "input">("input")
 
-    const filteredFruits = useMemo(() => {
-      if (!value.trim()) return []
+    const itemsToShow = useMemo(() => {
+      if (triggerType === "click") {
+        // 点击trigger时显示所有items
+        return fruits
+      }
+      if (!value.trim()) {
+        return []
+      }
+      // 输入或focus时显示过滤后的items
       return fruits.filter((fruit) => fruit.toLowerCase().startsWith(value.toLowerCase()))
-    }, [value])
+    }, [value, triggerType])
+
+    const handleChange = useEventCallback((newValue: string) => {
+      setValue(newValue)
+      setTriggerType("input")
+    })
+
+    const handleOpenChange = useEventCallback(
+      (open: boolean, trigger: "click" | "focus" | "input" = "input") => {
+        if (open) {
+          setTriggerType(trigger)
+        }
+      },
+    )
 
     return (
       <div className="w-64">
         <Combobox
           value={value}
-          onChange={setValue}
+          onChange={handleChange}
+          onOpenChange={handleOpenChange}
         >
           <Combobox.Trigger placeholder="Search fruits..." />
-          {filteredFruits.length > 0 && (
+          {itemsToShow.length > 0 && (
             <Combobox.Content>
               <>
                 <Combobox.Label>Fruits</Combobox.Label>
-                {filteredFruits.map((fruit) => (
+                {itemsToShow.map((fruit) => (
                   <Combobox.Item
                     key={fruit}
                     onClick={() => setValue(fruit)}

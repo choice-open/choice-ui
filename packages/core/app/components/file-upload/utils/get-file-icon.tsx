@@ -1,19 +1,35 @@
-import { File } from "@choiceform/icons-react"
+import {
+  File,
+  FileArchive,
+  FileCode,
+  FileDocument,
+  FilePicture,
+  FileSettings,
+  FileSound,
+  FileVideo,
+} from "@choiceform/icons-react"
 
 export function getFileIcon(file: File) {
   const type = file.type
   const extension = file.name.split(".").pop()?.toLowerCase() ?? ""
 
   if (type.startsWith("video/")) {
-    return <File />
+    return <FileVideo />
   }
 
   if (type.startsWith("audio/")) {
-    return <File />
+    return <FileSound />
   }
 
   if (type.startsWith("text/") || ["txt", "md", "rtf", "pdf"].includes(extension)) {
-    return <File />
+    return <FileDocument />
+  }
+
+  if (
+    type.startsWith("image/") ||
+    ["jpg", "jpeg", "png", "gif", "bmp", "tiff", "ico"].includes(extension)
+  ) {
+    return <FilePicture />
   }
 
   if (
@@ -35,18 +51,18 @@ export function getFileIcon(file: File) {
       "cs",
     ].includes(extension)
   ) {
-    return <File />
+    return <FileCode />
   }
 
   if (["zip", "rar", "7z", "tar", "gz", "bz2"].includes(extension)) {
-    return <File />
+    return <FileArchive />
   }
 
   if (
     ["exe", "msi", "app", "apk", "deb", "rpm"].includes(extension) ||
     type.startsWith("application/")
   ) {
-    return <File />
+    return <FileSettings />
   }
 
   return <File />

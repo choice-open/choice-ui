@@ -368,4 +368,6 @@ export {
   Trigger,
   //
   useStore as useFileUpload,
+  //
+  type FileUploadRootProps,
 }

@@ -15,6 +15,7 @@ export interface ComboboxTriggerProps
   }
   noMatch?: boolean
   onChange?: (value: string) => void
+  onClick?: () => void
   placeholder?: string
   prefixElement?: ReactNode
   showClear?: boolean
@@ -32,6 +33,7 @@ export const ComboboxTrigger = forwardRef<HTMLInputElement, ComboboxTriggerProps
       disabled = false,
       readOnly = false,
       onChange,
+      onClick,
       onFocus,
       onBlur,
       placeholder,
@@ -106,7 +108,20 @@ export const ComboboxTrigger = forwardRef<HTMLInputElement, ComboboxTriggerProps
             <RemoveSmall />
           </IconButton>
         ) : (
-          suffixElement && <div className={tv.icon()}>{suffixElement}</div>
+          suffixElement && (
+            <IconButton
+              className={tv.icon()}
+              variant="solid"
+              active={active}
+              onClick={(e) => {
+                e.stopPropagation()
+                e.preventDefault()
+                onClick?.()
+              }}
+            >
+              {suffixElement}
+            </IconButton>
+          )
         )}
       </div>
     )
