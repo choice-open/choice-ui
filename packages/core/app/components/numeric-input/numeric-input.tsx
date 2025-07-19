@@ -77,6 +77,7 @@ export const NumericInputBase = forwardRef<HTMLInputElement, NumericInputProps>(
     expression = "{value}",
     max,
     min,
+    placeholder,
     readOnly,
     required,
     shiftStep = 10,
@@ -107,6 +108,7 @@ export const NumericInputBase = forwardRef<HTMLInputElement, NumericInputProps>(
     expression,
     max,
     min,
+    placeholder,
     readOnly,
     shiftStep,
     step,
@@ -270,6 +272,7 @@ export const NumericInputBase = forwardRef<HTMLInputElement, NumericInputProps>(
           aria-describedby={ariaDescribedby}
           aria-valuemin={min}
           aria-valuemax={max}
+          placeholder={placeholder}
         />
 
         {variableNode && cloneElement(variableNode, { hasPrefixElement: !!prefixNode })}

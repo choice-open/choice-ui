@@ -23,18 +23,22 @@
     "calendar:lint:fix": "eslint packages/calendar/app/**/*.{ts,tsx} --ext .ts,.tsx --fix",
     "docs:dev": "pnpm --filter=\"@design-system/docs\" run dev",
     "docs:build": "pnpm --filter=\"@design-system/docs\" run build",
+    "text-editor:dev": "pnpm --filter=\"@choiceform/text-editor\" run dev",
+    "text-editor:build": "pnpm --filter=\"@choiceform/text-editor\" run build",
+    "text-editor:storybook": "pnpm --filter=\"@choiceform/text-editor\" run storybook",
+    "text-editor:lint": "eslint packages/text-editor/app/**/*.{ts,tsx} --ext .ts,.tsx",
+    "text-editor:lint:fix": "eslint packages/text-editor/app/**/*.{ts,tsx} --ext .ts,.tsx --fix",
     "test": "pnpm --filter=\"./packages/**\" run test",
     "clean": "pnpm --filter=\"./packages/**\" run clean",
     "preinstall": "npx only-allow pnpm"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^8.36.0",
+    "@typescript-eslint/eslint-plugin": "^8.37.0",
     "eslint": "^8.57.1",
     "eslint-plugin-typescript-sort-keys": "^3.3.0",
     "prettier": "^3.6.2",
     "prettier-plugin-css-order": "^2.1.2",
-    "prettier-plugin-tailwindcss": "^0.6.14",
-    "storybook-addon-tag-badges": "^1.4.0"
+    "prettier-plugin-tailwindcss": "^0.6.14"
   },
   "engines": {
     "node": ">=18.0.0",
