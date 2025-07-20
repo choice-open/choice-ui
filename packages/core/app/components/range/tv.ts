@@ -24,7 +24,7 @@ export const rangeTv = tv({
     ],
     dotContainer: "pointer-events-none absolute inset-0",
     dot: ["size-1 rounded-full", "absolute top-1/2", "-translate-x-1/2 -translate-y-1/2"],
-    input: "absolute inset-0 cursor-default opacity-0",
+    input: "absolute -inset-1 cursor-default opacity-0",
   },
   variants: {
     overStepValue: {

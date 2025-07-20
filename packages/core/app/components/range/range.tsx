@@ -7,6 +7,7 @@ import React, {
   useMemo,
   useRef,
   useState,
+  useLayoutEffect,
 } from "react"
 import { useEventCallback } from "usehooks-ts"
 import { mergeRefs, tcx } from "~/utils"
@@ -29,7 +30,7 @@ export interface RangeProps {
   thumbSize?: number
   trackSize?: {
     height?: number
-    width?: number
+    width?: number | "auto"
   }
   value?: number
 }
@@ -56,6 +57,8 @@ export const Range = forwardRef<HTMLDivElement, RangeProps>(function Range(props
     },
     thumbSize = 14,
   } = props
+  // 🔥 使用状态存储动态计算的宽度
+  const [actualTrackWidth, setActualTrackWidth] = useState<number | undefined>()
 
   const valueToPosition = useCallback((val: number) => (val - min) / (max - min), [min, max])
 
@@ -90,10 +93,45 @@ export const Range = forwardRef<HTMLDivElement, RangeProps>(function Range(props
     transformX: 0,
   })
 
+  const trackWidth = useMemo(() => {
+    if (trackSize?.width === "auto") {
+      return actualTrackWidth
+    }
+    return trackSize?.width
+  }, [trackSize?.width, actualTrackWidth])
+
+  // 🔥 使用 useLayoutEffect 在 DOM 更新后获取实际尺寸
+  useLayoutEffect(() => {
+    if (trackSize?.width === "auto" && sliderRef.current) {
+      const updateWidth = () => {
+        if (sliderRef.current) {
+          const width = sliderRef.current.getBoundingClientRect().width
+          if (width > 0) {
+            setActualTrackWidth(width)
+          }
+        }
+      }
+
+      // 初始获取尺寸
+      updateWidth()
+
+      // 监听尺寸变化
+      const resizeObserver = new ResizeObserver(() => {
+        updateWidth()
+      })
+
+      resizeObserver.observe(sliderRef.current)
+
+      return () => {
+        resizeObserver.disconnect()
+      }
+    }
+  }, [trackSize?.width])
+
   useEffect(() => {
     const position = valueToPosition(currentValue)
     const minTransform = 1
-    const maxTransform = (trackSize?.width ?? 0) - thumbSize - 1
+    const maxTransform = (trackWidth ?? 0) - thumbSize - 1
     const transformX = minTransform + position * (maxTransform - minTransform)
 
     setTransforms({
@@ -101,7 +139,7 @@ export const Range = forwardRef<HTMLDivElement, RangeProps>(function Range(props
       maxTransform,
       transformX,
     })
-  }, [currentValue, trackSize?.width, thumbSize, valueToPosition])
+  }, [currentValue, trackWidth, thumbSize, valueToPosition])
 
   const dotsData = useMemo(() => {
     if (!step || step <= 1) return null
@@ -340,7 +378,7 @@ export const Range = forwardRef<HTMLDivElement, RangeProps>(function Range(props
       className={tcx(styles.container(), className)}
       style={
         {
-          "--width": `${trackSize?.width ?? 256}px`,
+          "--width": `${trackWidth}px`,
           "--height": `${trackSize?.height ?? 16}px`,
         } as CSSProperties
       }

@@ -3,10 +3,12 @@ import React, { useState } from "react"
 import { Button } from "../button"
 import { Popover } from "../popover"
 import { Range } from "./range"
+import { NumericInput } from "../numeric-input"
 
 const meta: Meta<typeof Range> = {
   title: "Forms/Range",
   component: Range,
+  tags: ["autodocs"],
 }
 
 export default meta
@@ -293,6 +295,63 @@ export const DraggableRangePopover: Story = {
           <div className="w-10 flex-1 text-right">{value}%</div>
         </Popover.Content>
       </Popover>
+    )
+  },
+}
+
+/**
+ * Auto width: Demonstrates the Range component with automatic width calculation.
+ *
+ * Features:
+ * - Automatic width calculation based on the parent container
+ * - Smooth sliding interaction
+ * - Proper value display
+ *
+ * ```tsx
+ * <Range
+ *   value={value}
+ *   onChange={setValue}
+ *   min={0}
+ *   max={100}
+ *   trackSize={{
+ *     width: "auto",
+ *     height: 6,
+ *   }}
+ *   thumbSize={12}
+ * />
+ * ```
+ */
+export const AutoWidth: Story = {
+  render: function AutoWidthStory() {
+    const [value, setValue] = useState(0)
+
+    return (
+      <div className="grid w-40 grid-cols-[1fr_2.5rem] gap-px">
+        <div className="bg-secondary-background flex items-center rounded-l-md px-2">
+          <Range
+            className="bg-default-boundary flex-1"
+            value={value}
+            onChange={setValue}
+            min={0}
+            max={100}
+            trackSize={{
+              width: "auto",
+              height: 6,
+            }}
+            thumbSize={10}
+          />
+        </div>
+        <NumericInput
+          className="before:rounded-l-none"
+          expression="{value}%"
+          value={value}
+          onChange={(value) => setValue(value as number)}
+          min={0}
+          max={100}
+        >
+          <NumericInput.Prefix className="w-2 rounded-l-none" />
+        </NumericInput>
+      </div>
     )
   },
 }
