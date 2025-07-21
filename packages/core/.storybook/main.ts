@@ -15,7 +15,7 @@ const config: StorybookConfig = {
     getAbsolutePath("@storybook/addon-onboarding"),
     getAbsolutePath("@chromatic-com/storybook"),
     // getAbsolutePath("@storybook/addon-interactions"),
-    getAbsolutePath("storybook-dark-mode"),
+    getAbsolutePath("@vueless/storybook-dark-mode"),
     getAbsolutePath("@storybook/addon-a11y"),
     getAbsolutePath("@storybook/addon-docs"),
     getAbsolutePath("storybook-addon-tag-badges"),

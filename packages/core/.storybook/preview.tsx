@@ -1,7 +1,7 @@
 import { Hide, Show } from "@choiceform/icons-react"
 import type { Decorator } from "@storybook/react-vite"
 import { Preview } from "@storybook/react-vite"
-import { themes } from "storybook/theming"
+import { themes } from "@storybook/theming"
 import { motion } from "framer-motion"
 import React, { useCallback, useEffect, useRef, useState } from "react"
 import Markdown from "react-markdown"
