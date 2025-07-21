@@ -257,13 +257,19 @@ const ComboboxComponent = memo(
           padding: 4,
           apply(args) {
             const { elements, availableHeight, rects } = args
-            // 设置最大高度以防止溢出
-            Object.assign(elements.floating.style, {
-              maxHeight: `${availableHeight}px`,
-            })
-            // 只在非坐标模式且需要匹配trigger宽度时设置宽度
-            if (!isCoordinateMode && matchTriggerWidth && rects.reference.width > 0) {
-              elements.floating.style.width = `${rects.reference.width}px`
+
+            if (!isCoordinateMode && rects.reference.width > 0) {
+              Object.assign(elements.floating.style, {
+                height: `${Math.min(elements.floating.clientHeight, availableHeight)}px`,
+              })
+              // 只在非坐标模式且需要匹配trigger宽度时设置宽度
+              if (matchTriggerWidth) {
+                elements.floating.style.width = `${rects.reference.width}px`
+              }
+            } else {
+              Object.assign(elements.floating.style, {
+                maxHeight: `${availableHeight}px`,
+              })
             }
           },
         }),
@@ -280,8 +286,8 @@ const ComboboxComponent = memo(
       onNavigate: setActiveIndex,
       virtual: true,
       loop: true,
-      allowEscape: true, // 官方案例中有这个设置
-      selectedIndex: activeIndex, // 确保选中状态同步
+      allowEscape: !isCoordinateMode, // 官方案例中有这个设置
+      // selectedIndex: isCoordinateMode ? null : activeIndex, // 确保选中状态同步
     })
 
     const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions([

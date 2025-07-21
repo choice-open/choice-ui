@@ -1,18 +1,16 @@
 import React, { useCallback } from "react"
-import { Descendant, Editor, Element as SlateElement, Node } from "slate"
+import { Descendant, Editor, Node } from "slate"
 import {
   Editable,
   RenderElementProps,
   RenderLeafProps,
   RenderPlaceholderProps,
   Slate,
-  useFocused,
-  useSelected,
 } from "slate-react"
-import { Badge } from "../../badge"
 import { ScrollArea } from "../../scroll-area"
 import { contextInputTv } from "../tv"
-import type { ContextInputProps, ContextMentionElement, MentionMatch } from "../types"
+import type { ContextInputProps } from "../types"
+import { MentionElement } from "./mention-element"
 
 interface SlateEditorProps
   extends Pick<
@@ -27,10 +25,15 @@ interface SlateEditorProps
     | "className"
     | "maxLength"
   > {
+  children?: React.ReactNode
   editor: Editor
+  footer?: React.ReactNode
+  hasFooter: boolean
   hasHeader: boolean
+  minHeight: number
   onChange: (value: Descendant[]) => void
   onKeyDown: (event: React.KeyboardEvent) => void
+  size: "default" | "large"
   slateValue: Descendant[]
 }
 
@@ -38,26 +41,27 @@ export const SlateEditor = React.forwardRef<HTMLDivElement, SlateEditorProps>(fu
   {
     editor,
     slateValue,
-    placeholder = "输入消息...",
+    placeholder = "Type someone...",
     disabled = false,
     autoFocus = false,
     variant = "default",
     renderMention,
     className,
     maxLength,
+    minHeight = 80,
     onChange,
     onKeyDown,
     onFocus,
     onBlur,
     hasHeader,
+    hasFooter,
+    size,
+    children,
     ...props
   },
   ref,
 ) {
-  const tv = contextInputTv({ variant, disabled, hasHeader })
-
-  const selected = useSelected()
-  const focused = useFocused()
+  const tv = contextInputTv({ variant, disabled, hasHeader, hasFooter, size })
 
   // 渲染 Mention 元素
   const renderElement = useCallback(
@@ -65,46 +69,18 @@ export const SlateEditor = React.forwardRef<HTMLDivElement, SlateEditorProps>(fu
       const { attributes, children, element } = props
 
       if ((element as unknown as { type: string }).type === "mention") {
-        const mentionElement = element as unknown as ContextMentionElement
-
-        if (renderMention) {
-          return (
-            <span
-              {...attributes}
-              contentEditable={false}
-            >
-              {renderMention({
-                item: {
-                  id: mentionElement.mentionId,
-                  type: mentionElement.mentionType,
-                  label: mentionElement.mentionLabel,
-                  metadata: mentionElement.mentionData,
-                },
-                startIndex: 0,
-                endIndex: 0,
-                text: mentionElement.mentionLabel,
-              } as MentionMatch)}
-              {children}
-            </span>
-          )
-        }
-
         return (
-          <Badge
-            {...attributes}
-            contentEditable={false}
-            className={tv.mention()}
-            variant="brand"
-          >
-            @{mentionElement.mentionLabel}
-            {children}
-          </Badge>
+          <MentionElement
+            {...props}
+            renderMention={renderMention}
+            variant={variant}
+          />
         )
       }
 
       return <div {...attributes}>{children}</div>
     },
-    [renderMention, tv],
+    [renderMention, variant],
   )
 
   // 渲染叶子节点
@@ -117,49 +93,42 @@ export const SlateEditor = React.forwardRef<HTMLDivElement, SlateEditorProps>(fu
     (event: React.KeyboardEvent) => {
       // 先让父组件处理 mentions 相关逻辑
       onKeyDown(event)
-
-      // 检查最大长度
-      if (maxLength) {
-        const currentText = slateValue.map((n) => Node.string(n)).join("")
-        if (
-          currentText.length >= maxLength &&
-          !["Backspace", "Delete", "ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(
-            event.key,
-          )
-        ) {
-          event.preventDefault()
-        }
-      }
     },
-    [onKeyDown, maxLength, slateValue],
+    [onKeyDown],
   )
 
   return (
     <ScrollArea
+      scrollbarMode={size === "large" ? "large-y" : "default"}
       className={tv.scrollArea()}
       ref={ref}
       {...props}
     >
       <ScrollArea.Viewport className={tv.viewport()}>
         <ScrollArea.Content className={tv.scrollContainer()}>
+          {children}
           <Slate
             editor={editor}
             initialValue={slateValue}
             onChange={onChange}
           >
             <Editable
+              spellCheck={false}
               className={tv.editor()}
               placeholder={placeholder}
               renderPlaceholder={({ children }: RenderPlaceholderProps) => (
                 <p className={tv.placeholder()}>{children}</p>
               )}
-              disabled={disabled}
+              readOnly={disabled}
               autoFocus={autoFocus}
               renderElement={renderElement}
               renderLeaf={renderLeaf}
               onKeyDown={handleKeyDown}
               onFocus={onFocus}
               onBlur={onBlur}
+              style={{
+                minHeight,
+              }}
             />
           </Slate>
         </ScrollArea.Content>

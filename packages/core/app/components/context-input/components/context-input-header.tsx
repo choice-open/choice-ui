@@ -1,20 +1,26 @@
 import { forwardRef, memo } from "react"
-import { contextInputTv } from "../tv"
+import { tcx } from "~/utils"
+import { contextInputHeaderTv } from "./tv"
 
 interface ContextInputHeaderProps {
   children?: React.ReactNode
+  className?: string
+  handleClick?: () => void
+  size?: "default" | "large"
 }
 
 export const ContextInputHeader = memo(
   forwardRef<HTMLDivElement, ContextInputHeaderProps>(function ContextInputHeader(props, ref) {
-    const { children } = props
+    const { children, size = "default", className, handleClick, ...rest } = props
 
-    const tv = contextInputTv()
+    const tv = contextInputHeaderTv({ size })
 
     return (
       <div
         ref={ref}
-        className={tv.header()}
+        className={tcx(tv, className)}
+        onClick={handleClick}
+        {...rest}
       >
         {children}
       </div>

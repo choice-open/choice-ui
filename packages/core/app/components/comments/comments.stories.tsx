@@ -8,7 +8,7 @@ import { faker } from "@faker-js/faker"
 import { tcx } from "../../utils"
 
 const meta = {
-  title: "Pickers/Comments",
+  title: "Components/Comments",
   component: Comments,
   tags: ["experimental"],
 } satisfies Meta<typeof Comments>

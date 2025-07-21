@@ -6,7 +6,7 @@ import { CommentInput } from "./comment-input"
 import type { User } from "../types"
 
 const meta = {
-  title: "Pickers/Comments/CommentInput",
+  title: "Components/Comments/CommentInput",
   component: CommentInput,
 } satisfies Meta<typeof CommentInput>
 

@@ -1,34 +1,29 @@
 import { ApplyVariable } from "@choiceform/icons-react"
-import React from "react"
+import { memo } from "react"
 import { Transforms } from "slate"
 import { ReactEditor } from "slate-react"
-import { tcx } from "~/utils"
-import { IconButton } from "../../../icon-button"
-import { useContextInputEditor } from "../../hooks"
-import { insertMentionsButtonTv } from "./tv"
+import { IconButton, type IconButtonProps } from "../../icon-button"
+import { useContextInputEditor } from "../hooks"
+import { insertSpaceBeforeIfNeeded } from "../utils"
 
-interface InsertMentionsButtonProps {
-  className?: string
-  disabled?: boolean
+interface InsertMentionsButtonProps extends IconButtonProps {
   onClick?: () => void
-  size?: "default" | "large" | "reset"
-  variant?: "default" | "secondary" | "solid" | "highlight" | "ghost" | "dark" | "reset"
 }
 
-export const InsertMentionsButton = React.memo(function InsertMentionsButton({
-  className,
+export const InsertMentionsButton = memo(function InsertMentionsButton({
   disabled = false,
-  variant = "ghost",
-  size = "default",
   onClick,
+  ...props
 }: InsertMentionsButtonProps) {
   const editor = useContextInputEditor()
-  const tv = insertMentionsButtonTv()
 
   const handleInsertMention = () => {
     try {
       // 确保编辑器有焦点
       ReactEditor.focus(editor)
+
+      // 检查并插入前导空格（如果需要）
+      insertSpaceBeforeIfNeeded(editor)
 
       // 在当前光标位置插入 @ 符号
       Transforms.insertText(editor, "@")
@@ -42,13 +37,9 @@ export const InsertMentionsButton = React.memo(function InsertMentionsButton({
 
   return (
     <IconButton
-      variant={variant}
-      size={size}
       disabled={disabled}
-      className={tcx(tv.button(), className)}
       onClick={handleInsertMention}
-      aria-label="插入提及"
-      title="插入 @"
+      {...props}
     >
       <ApplyVariable />
     </IconButton>

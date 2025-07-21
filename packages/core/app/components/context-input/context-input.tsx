@@ -1,19 +1,23 @@
-import React, { forwardRef, useCallback } from "react"
+import React, { forwardRef, useCallback, useRef } from "react"
 import { ReactEditor } from "slate-react"
 import {
   ContextInputHeader,
+  ContextInputFooter,
   CopyButton,
   InsertMentionsButton,
   MentionMenu,
+  type MentionMenuRef,
   SlateEditor,
 } from "./components"
 import { ContextInputEditorContext, useContextInput, useMentions, useSlateEditor } from "./hooks"
 import type { ContextInputProps, MentionItem } from "./types"
 import { contextInputTv } from "./tv"
+import { useEventCallback } from "usehooks-ts"
 
 interface ContextInputComponent
   extends React.ForwardRefExoticComponent<ContextInputProps & React.RefAttributes<HTMLDivElement>> {
   CopyButton: typeof CopyButton
+  Footer: typeof ContextInputFooter
   Header: typeof ContextInputHeader
   InsertMentionsButton: typeof InsertMentionsButton
 }
@@ -22,7 +26,7 @@ interface ContextInputComponent
 const ContextInputBase = forwardRef<HTMLDivElement, ContextInputProps>(function ContextInputBase(
   {
     value,
-    placeholder = "输入消息...",
+    placeholder = "Type someone...",
     disabled = false,
     maxLength,
     autoFocus = false,
@@ -38,12 +42,57 @@ const ContextInputBase = forwardRef<HTMLDivElement, ContextInputProps>(function 
     renderMention,
     renderSuggestion,
     children,
+    size = "default",
+    minHeight = 80,
     ...props
   },
   ref,
 ) {
   // 创建编辑器实例
-  const editor = useSlateEditor()
+  const editor = useSlateEditor(maxLength)
+
+  // MentionMenu ref
+  const mentionMenuRef = useRef<MentionMenuRef>(null)
+
+  const handleFocusClick = useEventCallback(() => {
+    ReactEditor.focus(editor)
+  })
+
+  // 分离 header 和 footer children
+  const separateChildren = useCallback(() => {
+    let header: React.ReactNode = null
+    let footer: React.ReactNode = null
+    const otherChildren: React.ReactNode[] = []
+
+    React.Children.forEach(children, (child) => {
+      if (React.isValidElement(child)) {
+        if (child.type === ContextInputHeader) {
+          header = React.cloneElement(child, {
+            ...child.props,
+            size: size as "default" | "large",
+            handleClick: handleFocusClick,
+          })
+        } else if (child.type === ContextInputFooter) {
+          // 自动传递 size 属性给 footer
+          footer = React.cloneElement(child, {
+            ...child.props,
+            size: size as "default" | "large",
+            handleClick: handleFocusClick,
+          })
+        } else {
+          otherChildren.push(child)
+        }
+      } else {
+        otherChildren.push(child)
+      }
+    })
+
+    return { header, footer, otherChildren }
+  }, [children, size, handleFocusClick])
+
+  const { header, footer, otherChildren } = separateChildren()
+  const hasHeader = !!header
+  const hasFooter = !!footer
 
   // Context input 状态管理
   const { slateValue, handleChange } = useContextInput({
@@ -69,15 +118,15 @@ const ContextInputBase = forwardRef<HTMLDivElement, ContextInputProps>(function 
   // 键盘事件处理
   const handleKeyDown = useCallback(
     (event: React.KeyboardEvent) => {
-      // 先处理 mentions 键盘事件
-      if (mentions.handleKeyDown(event)) {
+      // 先尝试让 MentionMenu 处理键盘事件
+      if (mentionMenuRef.current?.handleKeyDown(event)) {
         return
       }
 
       // 处理其他键盘事件
       onKeyDown?.(event)
     },
-    [mentions, onKeyDown],
+    [onKeyDown],
   )
 
   // 处理建议选择
@@ -91,15 +140,17 @@ const ContextInputBase = forwardRef<HTMLDivElement, ContextInputProps>(function 
   // 获取建议位置
   const suggestionPosition = mentions.getSuggestionPosition()
 
-  const tv = contextInputTv({ hasHeader: !!children })
+  const tv = contextInputTv({ hasHeader, hasFooter, size, disabled, variant })
 
   return (
     <ContextInputEditorContext.Provider value={editor}>
       <div className={tv.container({ className })}>
-        {children}
+        {header}
         <SlateEditor
           ref={ref}
-          hasHeader={!!children}
+          size={size}
+          hasHeader={hasHeader}
+          hasFooter={hasFooter}
           editor={editor}
           slateValue={slateValue}
           placeholder={placeholder}
@@ -112,10 +163,15 @@ const ContextInputBase = forwardRef<HTMLDivElement, ContextInputProps>(function 
           onKeyDown={handleKeyDown}
           onFocus={onFocus}
           onBlur={onBlur}
+          minHeight={minHeight}
           {...props}
-        />
+        >
+          {otherChildren}
+        </SlateEditor>
+        {footer}
       </div>
       <MentionMenu
+        ref={mentionMenuRef}
         isOpen={mentions.searchState.isSearching && !!suggestionPosition}
         onClose={mentions.closeMentionSearch}
         suggestions={mentions.searchState.suggestions}
@@ -130,6 +186,7 @@ const ContextInputBase = forwardRef<HTMLDivElement, ContextInputProps>(function 
 
 const ContextInput = ContextInputBase as ContextInputComponent
 ContextInput.Header = ContextInputHeader
+ContextInput.Footer = ContextInputFooter
 ContextInput.CopyButton = CopyButton
 ContextInput.InsertMentionsButton = InsertMentionsButton
 

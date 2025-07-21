@@ -32,11 +32,11 @@ export const Basic: Story = {
     return (
       <div className="flex h-64 items-center justify-center">
         <ContextMenu>
-          <ContextMenu.Target>
+          <ContextMenu.Trigger>
             <div className="bg-secondary-background rounded-xl border border-dashed p-8">
               Right click me to open context menu
             </div>
-          </ContextMenu.Target>
+          </ContextMenu.Trigger>
           <ContextMenu.Content>
             <ContextMenu.Item>
               <ContextMenu.Value>Copy</ContextMenu.Value>
@@ -85,11 +85,11 @@ export const WithSelection: Story = {
     return (
       <div className="flex h-64 items-center justify-center">
         <ContextMenu selection={true}>
-          <ContextMenu.Target>
+          <ContextMenu.Trigger>
             <div className="bg-secondary-background rounded-xl border border-dashed p-8">
               Right click me for selection menu
             </div>
-          </ContextMenu.Target>
+          </ContextMenu.Trigger>
           <ContextMenu.Content>
             <ContextMenu.Label>Select an option</ContextMenu.Label>
             {options.map((option) => (
@@ -163,11 +163,11 @@ export const SharedMenuContent: Story = {
         <div>
           <p className="mb-2">Context menu with same content</p>
           <ContextMenu>
-            <ContextMenu.Target>
+            <ContextMenu.Trigger>
               <div className="bg-secondary-background rounded-xl border border-dashed p-8">
                 Right click me for context menu (same content)
               </div>
-            </ContextMenu.Target>
+            </ContextMenu.Trigger>
             {sharedMenuContent}
           </ContextMenu>
         </div>
@@ -195,11 +195,11 @@ export const WithDividers: Story = {
     return (
       <div className="flex h-64 items-center justify-center">
         <ContextMenu>
-          <ContextMenu.Target>
+          <ContextMenu.Trigger>
             <div className="bg-secondary-background rounded-xl border border-dashed p-8 text-center">
               Right click for complex menu
             </div>
-          </ContextMenu.Target>
+          </ContextMenu.Trigger>
           <ContextMenu.Content>
             <ContextMenu.Label>File Operations</ContextMenu.Label>
             <ContextMenu.Item>
@@ -288,11 +288,11 @@ export const FileManagerExample: Story = {
           <div>
             <p className="mb-2">Right-click Menu</p>
             <ContextMenu>
-              <ContextMenu.Target>
+              <ContextMenu.Trigger>
                 <div className="bg-secondary-background rounded-lg border border-dashed p-4">
                   📁 Folder (right-click)
                 </div>
-              </ContextMenu.Target>
+              </ContextMenu.Trigger>
               {fileOperationsMenu}
             </ContextMenu>
           </div>
@@ -334,11 +334,11 @@ export const NestedSubmenus: Story = {
     return (
       <div className="flex h-96 items-center justify-center">
         <ContextMenu>
-          <ContextMenu.Target>
+          <ContextMenu.Trigger>
             <div className="bg-secondary-background rounded-xl border border-dashed p-8 text-center">
               Right click for nested menus
             </div>
-          </ContextMenu.Target>
+          </ContextMenu.Trigger>
           <ContextMenu.Content>
             <ContextMenu.Item>
               <ContextMenu.Value>Cut</ContextMenu.Value>
@@ -456,11 +456,11 @@ export const WithDisabledItems: Story = {
     return (
       <div className="flex h-64 items-center justify-center">
         <ContextMenu>
-          <ContextMenu.Target>
+          <ContextMenu.Trigger>
             <div className="bg-secondary-background rounded-xl border border-dashed p-8">
               Right click for menu with disabled items
             </div>
-          </ContextMenu.Target>
+          </ContextMenu.Trigger>
           <ContextMenu.Content>
             <ContextMenu.Item>
               <ContextMenu.Value>Available Action</ContextMenu.Value>
@@ -651,7 +651,7 @@ export const WithTriggerRef: Story = {
  * Usage:
  * ```tsx
  * <ContextMenu disabled={isReadOnly}>
- *   <ContextMenu.Target>...</ContextMenu.Target>
+ *   <ContextMenu.Trigger>...</ContextMenu.Trigger>
  *   <ContextMenu.Content>...</ContextMenu.Content>
  * </ContextMenu>
  * ```
@@ -674,15 +674,15 @@ export const WithDisabled: Story = {
         </div>
 
         <div className="flex gap-8">
-          {/* Using ContextMenu.Target */}
+          {/* Using ContextMenu.Trigger */}
           <div>
-            <p className="mb-2 text-sm font-medium">Using ContextMenu.Target</p>
+            <p className="mb-2 text-sm font-medium">Using ContextMenu.Trigger</p>
             <ContextMenu disabled={isDisabled}>
-              <ContextMenu.Target>
+              <ContextMenu.Trigger>
                 <div className="bg-secondary-background rounded-xl border border-dashed p-8">
                   {isDisabled ? "Context menu disabled" : "Right click me"}
                 </div>
-              </ContextMenu.Target>
+              </ContextMenu.Trigger>
               <ContextMenu.Content>
                 <ContextMenu.Item>
                   <ContextMenu.Value>Copy</ContextMenu.Value>

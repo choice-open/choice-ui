@@ -5,6 +5,7 @@ import { Editable, ReactEditor, Slate, withReact } from "slate-react"
 import { Combobox } from "."
 import { useEventCallback } from "usehooks-ts"
 import { Checkbox } from "../checkbox"
+import { faker } from "@faker-js/faker"
 
 const meta: Meta<typeof Combobox> = {
   title: "Collections/Combobox",
@@ -571,43 +572,14 @@ export const MentionsWithSlate: Story = {
 
     // 更多用户数据用于测试过滤
     const allUsers = useMemo(
-      () => [
-        {
-          id: "1",
-          name: "John Doe",
-          username: "johndoe",
-          role: "Software Engineer",
-          avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=john",
-        },
-        {
-          id: "2",
-          name: "Jane Smith",
-          username: "janesmith",
-          role: "Product Manager",
-          avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=jane",
-        },
-        {
-          id: "3",
-          name: "Bob Wilson",
-          username: "bobwilson",
-          role: "Designer",
-          avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=bob",
-        },
-        {
-          id: "4",
-          name: "Alice Johnson",
-          username: "alicejohnson",
-          role: "DevOps Engineer",
-          avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=alice",
-        },
-        {
-          id: "5",
-          name: "Charlie Brown",
-          username: "charliebrown",
-          role: "QA Engineer",
-          avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=charlie",
-        },
-      ],
+      () =>
+        Array.from({ length: 100 }, (_, index) => ({
+          id: index.toString(),
+          name: faker.person.fullName(),
+          username: faker.internet.userName(),
+          role: faker.person.jobTitle(),
+          avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${faker.person.fullName()}`,
+        })),
       [],
     )
 
@@ -847,9 +819,6 @@ export const MentionsWithSlate: Story = {
             </div>
             <div>
               <strong>Should show menu:</strong> {isOpen ? "Yes" : "No"}
-            </div>
-            <div>
-              <strong>Filtered users names:</strong> {filteredUsers.map((u) => u.name).join(", ")}
             </div>
           </div>
 

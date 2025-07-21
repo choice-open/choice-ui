@@ -39,24 +39,25 @@ export interface ContextInputProps {
   maxLength?: number
   maxSuggestions?: number
   mentionClassName?: string
+  minHeight?: number
 
-  onBlur?: () => void
   // 事件回调
+  onBlur?: () => void
   onChange?: (value: ContextInputValue) => void
   onFocus?: () => void
   onKeyDown?: (event: React.KeyboardEvent) => void
-
   onMentionSelect?: (mention: MentionItem, trigger: string) => void
+
   placeholder?: string
   // 渲染自定义
   renderMention?: (mention: MentionMatch) => React.ReactNode
   renderSuggestion?: (item: MentionItem, isSelected: boolean) => React.ReactNode
-  suggestionListClassName?: string
+  size?: "default" | "large"
 
+  suggestionListClassName?: string
   // Mentions 配置
   triggers?: MentionTrigger[]
   value?: ContextInputValue
-
   variant?: "default" | "dark" | "reset"
 }
 

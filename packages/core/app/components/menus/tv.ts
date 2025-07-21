@@ -4,7 +4,7 @@ export const MenusTv = tv({
   base: [
     "relative flex flex-col",
     "z-menu rounded-xl",
-    "h-full p-2",
+    "h-full max-h-[inherit] p-2",
     "bg-menu-background text-white shadow-lg",
     "scrollbar-hide overflow-y-auto overscroll-contain",
     "pointer-events-auto select-none",

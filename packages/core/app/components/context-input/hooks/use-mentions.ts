@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from "react"
-import { Editor, Node, Point, Range, Text, Transforms } from "slate"
+import { Editor, Node, Point, Range, Transforms } from "slate"
 import { ReactEditor } from "slate-react"
 import type { MentionItem, MentionTrigger } from "../types"
+import { insertWithSmartSpacing } from "../utils"
 
 export interface MentionSearchState {
   index: number
@@ -46,6 +47,32 @@ export function useMentions({
     })
     return map
   }, [triggers])
+
+  // 搜索 mentions
+  const searchMentions = useCallback(
+    async (query: string, trigger: string, triggerConfig: MentionTrigger) => {
+      setSearchState((prev) => ({ ...prev, loading: true }))
+
+      try {
+        const results = await triggerConfig.onSearch(query, trigger)
+        const limitedResults = results.slice(0, maxSuggestions)
+
+        setSearchState((prev) => ({
+          ...prev,
+          suggestions: limitedResults,
+          loading: false,
+        }))
+      } catch (error) {
+        console.error("Failed to search mentions:", error)
+        setSearchState((prev) => ({
+          ...prev,
+          suggestions: [],
+          loading: false,
+        }))
+      }
+    },
+    [maxSuggestions],
+  )
 
   // 检查是否在 mention 搜索状态
   const checkMentionSearch = useCallback(() => {
@@ -141,33 +168,7 @@ export function useMentions({
 
     // 没有找到有效的 mention 搜索
     setSearchState((prev) => ({ ...prev, isSearching: false }))
-  }, [editor, triggerMap])
-
-  // 搜索 mentions
-  const searchMentions = useCallback(
-    async (query: string, trigger: string, triggerConfig: MentionTrigger) => {
-      setSearchState((prev) => ({ ...prev, loading: true }))
-
-      try {
-        const results = await triggerConfig.onSearch(query, trigger)
-        const limitedResults = results.slice(0, maxSuggestions)
-
-        setSearchState((prev) => ({
-          ...prev,
-          suggestions: limitedResults,
-          loading: false,
-        }))
-      } catch (error) {
-        console.error("Failed to search mentions:", error)
-        setSearchState((prev) => ({
-          ...prev,
-          suggestions: [],
-          loading: false,
-        }))
-      }
-    },
-    [maxSuggestions],
-  )
+  }, [editor, searchMentions, triggerMap])
 
   // 插入 mention
   const insertMention = useCallback(
@@ -181,23 +182,22 @@ export function useMentions({
       // 删除触发字符和查询文本
       Transforms.delete(editor)
 
-      // 插入 mention 元素
-      const mentionElement: import("../types").ContextMentionElement = {
-        type: "mention" as const,
-        mentionType: mention.type,
-        mentionId: mention.id,
-        mentionLabel: mention.label,
-        mentionData: mention.metadata,
-        children: [{ text: "" }],
-      }
+      // 使用智能间距插入 mention
+      insertWithSmartSpacing(editor, () => {
+        // 插入 mention 元素
+        const mentionElement: import("../types").ContextMentionElement = {
+          type: "mention" as const,
+          mentionType: mention.type,
+          mentionId: mention.id,
+          mentionLabel: mention.label,
+          mentionData: mention.metadata,
+          children: [{ text: "" }],
+        }
 
-      Transforms.insertNodes(editor, mentionElement as unknown as Node)
-
-      // 移动光标到mention节点后面
-      Transforms.move(editor, { distance: 1, unit: "offset" })
-
-      // Focus编辑器，光标已在正确位置（mention节点后面）
-      ReactEditor.focus(editor)
+        Transforms.insertNodes(editor, mentionElement as unknown as Node)
+        // 参考官方案例：移动光标到 mention 节点之后
+        Transforms.move(editor)
+      })
 
       // 重置搜索状态
       setSearchState((prev) => ({ ...prev, isSearching: false }))
@@ -205,6 +205,9 @@ export function useMentions({
       // 触发回调
       onMentionSelect?.(mention, trigger)
       onSearchClose?.()
+
+      // Focus编辑器，确保光标在正确位置
+      ReactEditor.focus(editor)
     },
     [editor, searchState, onMentionSelect, onSearchClose],
   )

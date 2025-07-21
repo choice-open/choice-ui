@@ -11,8 +11,9 @@ import {
 } from "./index"
 
 const meta: Meta<typeof Conditions> = {
-  title: "Forms/Conditions",
+  title: "Components/Conditions",
   component: Conditions,
+  tags: ["autodocs", "beta"],
 }
 
 export default meta

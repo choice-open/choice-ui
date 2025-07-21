@@ -5,6 +5,9 @@ import { tcx } from "~/utils/tcx"
 import { ScrollArea } from "../scroll-area"
 import { TextareaTv } from "./tv"
 
+/**
+ * @deprecated Use Textarea instead.
+ */
 export interface MultiLineTextInputProps {
   className?: string
   disabled?: boolean

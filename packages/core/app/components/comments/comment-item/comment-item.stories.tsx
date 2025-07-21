@@ -10,7 +10,7 @@ import { CommentItem } from "./comment-item"
 import type { User, Reaction } from "../types"
 
 const meta = {
-  title: "Pickers/Comments/CommentItem",
+  title: "Components/Comments/CommentItem",
   component: CommentItem,
   decorators: [
     (Story) => (

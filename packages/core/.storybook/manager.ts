@@ -131,6 +131,26 @@ addons.setConfig({
         toolbar: false,
       },
     },
+    {
+      tags: "deprecated",
+      badge: {
+        text: "Deprecated 🔴",
+        style: {
+          backgroundColor: "transparent",
+          color: "rgba(242, 72, 34, 1)",
+          borderColor: "transparent",
+        },
+        tooltip:
+          "Indicates that a component or feature is deprecated and will be removed in the future.",
+      },
+      display: {
+        sidebar: {
+          skipInherited: true,
+          type: "component",
+        },
+        toolbar: false,
+      },
+    },
     ...defaultConfig,
   ] satisfies TagBadgeParameters,
 })

@@ -71,7 +71,7 @@ export interface ContextMenuProps extends HTMLProps<HTMLDivElement> {
   triggerRef?: React.RefObject<HTMLElement>
 }
 
-interface ContextMenuTargetProps extends HTMLProps<HTMLDivElement> {
+interface ContextMenuTriggerProps extends HTMLProps<HTMLDivElement> {
   children: ReactNode
 }
 
@@ -85,7 +85,7 @@ interface ContextMenuComponentProps
   Label: typeof MenuContextLabel
   Search: typeof MenuSearch
   SubTrigger: typeof MenuContextSubTrigger
-  Target: React.FC<ContextMenuTargetProps>
+  Trigger: React.FC<ContextMenuTriggerProps>
   Value: typeof MenuValue
 }
 
@@ -98,7 +98,7 @@ interface ContextMenuContextType {
 const ContextMenuContext = React.createContext<ContextMenuContextType | null>(null)
 
 // ContextMenu Target component
-const ContextMenuTarget: React.FC<ContextMenuTargetProps> = ({ children, ...props }) => {
+const ContextMenuTrigger: React.FC<ContextMenuTriggerProps> = ({ children, ...props }) => {
   const contextMenu = useContext(ContextMenuContext)
 
   const handleContextMenu = useCallback(
@@ -393,7 +393,7 @@ const ContextMenuComponent = memo(function ContextMenuComponent(props: ContextMe
     const childrenArray = React.Children.toArray(children)
 
     const target = childrenArray.find(
-      (child) => React.isValidElement(child) && child.type === ContextMenuTarget,
+      (child) => React.isValidElement(child) && child.type === ContextMenuTrigger,
     ) as React.ReactElement | null
 
     const subTrigger = childrenArray.find(
@@ -548,7 +548,7 @@ const BaseContextMenu = memo(function ContextMenu(props: ContextMenuProps) {
 // Add static properties and export
 export const ContextMenu = Object.assign(BaseContextMenu, {
   displayName: "ContextMenu",
-  Target: ContextMenuTarget,
+  Trigger: ContextMenuTrigger,
   Item: MenuContextItem,
   SubTrigger: MenuContextSubTrigger,
   Divider: MenuDivider,

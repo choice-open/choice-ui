@@ -1,26 +1,19 @@
-import React, { useState, useContext } from "react"
 import { Check, CopySmall } from "@choiceform/icons-react"
-import { IconButton } from "../../../icon-button"
-import { ContextInputEditorContext } from "../../hooks"
-import { convertSlateToText } from "../../utils"
-import type { Descendant } from "slate"
+import { useContext, useState } from "react"
+import { IconButton, type IconButtonProps } from "../../icon-button"
+import { ContextInputEditorContext } from "../hooks"
+import { convertSlateToText } from "../utils"
 
-export interface CopyButtonProps {
-  /** 是否禁用 */
-  disabled?: boolean
-  /** 点击回调 */
+export interface CopyButtonProps extends Omit<IconButtonProps, "onClick"> {
   onClick?: (copiedText: string) => void
-  /** 按钮尺寸 */
-  size?: "default" | "large"
-  /** 成功状态持续时间 (ms) */
   successDuration?: number
 }
 
 export function CopyButton({
-  size = "default",
   disabled = false,
   successDuration = 2000,
   onClick,
+  ...props
 }: CopyButtonProps) {
   const [copied, setCopied] = useState(false)
   const editor = useContext(ContextInputEditorContext)
@@ -53,11 +46,9 @@ export function CopyButton({
 
   return (
     <IconButton
-      size={size}
       disabled={disabled}
       onClick={handleCopy}
-      aria-label={copied ? "已复制" : "复制内容"}
-      variant={copied ? "solid" : "ghost"}
+      {...props}
     >
       {copied ? <Check /> : <CopySmall />}
     </IconButton>

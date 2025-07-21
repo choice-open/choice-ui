@@ -7,7 +7,7 @@ import { Popover } from "../popover"
 const meta: Meta<typeof MultiLineTextInput> = {
   title: "Forms/MultiLineTextInput",
   component: MultiLineTextInput,
-  tags: ["beta"],
+  tags: ["deprecated", "autodocs"],
 }
 
 export default meta
@@ -15,6 +15,8 @@ export default meta
 type Story = StoryObj<typeof MultiLineTextInput>
 
 /**
+ * @deprecated Use Textarea instead.
+ *
  * `MultiLineTextInput` is a versatile textarea component for multi-line text entry with automatic height adjustment.
  *
  * Features:

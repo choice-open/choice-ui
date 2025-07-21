@@ -557,8 +557,8 @@ importers:
   packages/core:
     dependencies:
       '@choiceform/icons-react':
-        specifier: ^1.2.0
-        version: 1.2.0(react@18.3.1)
+        specifier: ^1.2.2
+        version: 1.2.2(react@18.3.1)
       '@date-fns/tz':
         specifier: ^1.2.0
         version: 1.2.0
@@ -2708,6 +2708,14 @@ packages:
 
   /@choiceform/icons-react@1.2.0(react@18.3.1):
     resolution: {integrity: sha512-QQB+BkBjrvyBTNV8Szc8iGtxBU0TnRALsZMj00u/DbQG298AZs6/cAenNLfu5xFQ3KdLx+ynmKVcSvQVzcV4ow==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 18.3.1
+    dev: false
+
+  /@choiceform/icons-react@1.2.2(react@18.3.1):
+    resolution: {integrity: sha512-RdBAylxfifw4Z7YVyLiRxfKC5ISoZvHcL2m08SnZWpHcgQlsXB0RHQ9Tw20ZlB8yQ2hxypZfH8Ve/KIRCwSR/A==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
     dependencies:

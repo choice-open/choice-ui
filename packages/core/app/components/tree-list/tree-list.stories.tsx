@@ -47,8 +47,9 @@ const generateLargeTestData = (): TreeNodeData[] => {
 const largeTestData = generateLargeTestData()
 
 const meta: Meta<typeof TreeList> = {
-  title: "Layout/Common/TreeList",
+  title: "Components/TreeList",
   component: TreeList,
+  tags: ["autodocs", "beta"],
 }
 
 export default meta
