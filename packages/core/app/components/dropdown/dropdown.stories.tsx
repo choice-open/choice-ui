@@ -1,11 +1,13 @@
-import { FieldTypeAttachment, Search, Settings } from "@choiceform/icons-react"
+import { Add, FieldTypeAttachment, Search, Settings } from "@choiceform/icons-react"
 import { faker } from "@faker-js/faker"
 import type { Meta, StoryObj } from "@storybook/react-vite"
-import React, { useMemo, useState } from "react"
+import React, { useCallback, useMemo, useRef, useState } from "react"
+import { createEditor, Descendant, Node, Transforms } from "slate"
+import { Editable, ReactEditor, Slate, withReact } from "slate-react"
 import { Button } from "../button"
 import { IconButton } from "../icon-button"
-import { Dropdown } from "./dropdown"
 import { Popover } from "../popover"
+import { Dropdown } from "./dropdown"
 
 const meta: Meta<typeof Dropdown> = {
   title: "Collections/Dropdown",
@@ -291,18 +293,6 @@ export const NestedSelection: Story = {
   },
 }
 
-const MODIFIERS = [
-  "command",
-  "shift",
-  "ctrl",
-  "option",
-  "enter",
-  "delete",
-  "escape",
-  "tab",
-] as const
-const KEYS = ["Enter", "Space", "Tab", "Escape", "A", "B", "C", "D", "E"] as const
-
 /**
  * Dropdown with keyboard shortcuts displayed.
  */
@@ -569,12 +559,10 @@ export const MultipleDropdowns: Story = {
     const [dropdown3Open, setDropdown3Open] = useState(false)
 
     return (
-      <div className="space-y-6">
-        <div className="rounded-xl border border-blue-200 bg-blue-50 p-4">
-          <h3 className="mb-2 text-lg font-semibold text-blue-900">
-            🔄 Multiple Dropdown Switching Test
-          </h3>
-          <p className="text-sm text-blue-800">
+      <div className="w-80 space-y-4">
+        <div className="rounded-xl border p-4">
+          <h3 className="mb-2 font-medium">🔄 Multiple Dropdown Switching Test</h3>
+          <p className="text-secondary-foreground">
             Test scenario: When one dropdown is open, clicking another should close the first and
             open the second in one click.
           </p>
@@ -583,7 +571,9 @@ export const MultipleDropdowns: Story = {
         <div className="grid grid-cols-3 gap-4">
           <div>
             <h4 className="font-medium">Dropdown 1</h4>
-            <div className="text-sm text-gray-600">Status: {dropdown1Open ? "Open" : "Closed"}</div>
+            <div className="text-secondary-foreground">
+              Status: {dropdown1Open ? "Open" : "Closed"}
+            </div>
             <Dropdown
               open={dropdown1Open}
               onOpenChange={setDropdown1Open}
@@ -606,7 +596,9 @@ export const MultipleDropdowns: Story = {
 
           <div>
             <h4 className="font-medium">Dropdown 2</h4>
-            <div className="text-sm text-gray-600">Status: {dropdown2Open ? "Open" : "Closed"}</div>
+            <div className="text-secondary-foreground">
+              Status: {dropdown2Open ? "Open" : "Closed"}
+            </div>
             <Dropdown
               open={dropdown2Open}
               onOpenChange={setDropdown2Open}
@@ -629,7 +621,9 @@ export const MultipleDropdowns: Story = {
 
           <div>
             <h4 className="font-medium">Dropdown 3</h4>
-            <div className="text-sm text-gray-600">Status: {dropdown3Open ? "Open" : "Closed"}</div>
+            <div className="text-secondary-foreground">
+              Status: {dropdown3Open ? "Open" : "Closed"}
+            </div>
             <Dropdown
               open={dropdown3Open}
               onOpenChange={setDropdown3Open}
@@ -651,9 +645,9 @@ export const MultipleDropdowns: Story = {
           </div>
         </div>
 
-        <div className="rounded-xl border border-gray-200 bg-gray-50 p-4">
+        <div className="rounded-xl border p-4">
           <h4 className="mb-2 font-medium">Test Instructions:</h4>
-          <ol className="list-inside list-decimal space-y-1 text-sm text-gray-700">
+          <ol className="text-secondary-foreground list-inside list-decimal space-y-1">
             <li>Click &quot;Menu 1&quot; to open the first dropdown</li>
             <li>While keeping Menu 1 open, click &quot;Menu 2&quot;</li>
             <li>Verify Menu 1 closes and Menu 2 opens with a single click</li>
@@ -819,6 +813,272 @@ export const MatchTriggerWidth: Story = {
           <Dropdown.Item>Option 3</Dropdown.Item>
         </Dropdown.Content>
       </Dropdown>
+    )
+  },
+}
+
+/**
+ * Coordinate mode - Dropdown without trigger, positioned at specific coordinates
+ * This mode replaces the deprecated CoordinateMenu component
+ */
+export const CoordinateMode: Story = {
+  render: function CoordinateModeStory() {
+    const [isOpen, setIsOpen] = useState(false)
+    const [position, setPosition] = useState<{ x: number; y: number } | null>(null)
+
+    const handleClick = (event: React.MouseEvent) => {
+      setPosition({
+        x: event.clientX,
+        y: event.clientY,
+      })
+      setIsOpen(true)
+    }
+
+    return (
+      <div className="w-80 space-y-4">
+        <div className="rounded-xl border p-4">
+          <h3 className="mb-2 font-medium">📍 Coordinate Positioning Mode</h3>
+          <p className="text-secondary-foreground">
+            This demonstrates the Dropdown component in coordinate mode - no trigger element,
+            positioned at specific x/y coordinates. Perfect for context menus, mentions, etc.
+          </p>
+        </div>
+
+        <div
+          className="bg-secondary-background relative h-64 rounded-lg border border-dashed p-4"
+          onMouseDown={handleClick}
+        >
+          <p className="text-secondary-foreground text-center">
+            Click anywhere in this area to show dropdown at mouse position
+          </p>
+
+          {position && (
+            <div
+              className="text-secondary-foreground fixed z-10 size-4"
+              style={{ left: position.x - 8, top: position.y - 8 }}
+            >
+              <Add />
+            </div>
+          )}
+        </div>
+
+        {/* Dropdown in coordinate mode */}
+        <div>
+          <Dropdown
+            position={position}
+            open={isOpen}
+            onOpenChange={setIsOpen}
+            placement="bottom-start"
+          >
+            <Dropdown.Content>
+              <Dropdown.Label>Context Menu</Dropdown.Label>
+              <Dropdown.Item onClick={() => setIsOpen(false)}>
+                <Dropdown.Value>Cut</Dropdown.Value>
+              </Dropdown.Item>
+              <Dropdown.Item onClick={() => setIsOpen(false)}>
+                <Dropdown.Value>Copy</Dropdown.Value>
+              </Dropdown.Item>
+              <Dropdown.Item onClick={() => setIsOpen(false)}>
+                <Dropdown.Value>Paste</Dropdown.Value>
+              </Dropdown.Item>
+              <Dropdown.Divider />
+              <Dropdown.Item
+                variant="danger"
+                onClick={() => setIsOpen(false)}
+              >
+                <Dropdown.Value>Delete</Dropdown.Value>
+              </Dropdown.Item>
+            </Dropdown.Content>
+          </Dropdown>
+        </div>
+      </div>
+    )
+  },
+}
+
+/**
+ * Mentions example using coordinate mode with Slate.js editor
+ */
+export const MentionsWithCoordinateMode: Story = {
+  render: function MentionsStory() {
+    const [isOpen, setIsOpen] = useState(false)
+    const [position, setPosition] = useState<{ x: number; y: number } | null>(null)
+    const editorRef = useRef<HTMLDivElement>(null)
+
+    // 创建 Slate 编辑器实例
+    const editor = useMemo(() => withReact(createEditor()), [])
+
+    // 初始值 - 使用类型断言来确保类型安全
+    const initialValue: Descendant[] = [
+      {
+        type: "paragraph",
+        children: [{ text: "" }],
+      } as Descendant,
+    ]
+    const [value, setValue] = useState<Descendant[]>(initialValue)
+
+    const mentionUsers = [
+      {
+        id: "1",
+        name: "John Doe",
+        avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=john",
+        role: "Software Engineer",
+      },
+      {
+        id: "2",
+        name: "Jane Smith",
+        avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=jane",
+        role: "Product Manager",
+      },
+      {
+        id: "3",
+        name: "Bob Wilson",
+        avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=bob",
+        role: "Designer",
+      },
+    ]
+
+    // 获取编辑器文本内容
+    const getEditorText = useCallback(() => {
+      return value.map((n) => Node.string(n)).join("\n")
+    }, [value])
+
+    // 处理编辑器内容变化
+    const handleChange = useCallback((newValue: Descendant[]) => {
+      setValue(newValue)
+
+      const text = newValue.map((n) => Node.string(n)).join("\n")
+      const lastAtIndex = text.lastIndexOf("@")
+
+      // 检查 @ 是否存在，并且 @ 后面没有空格或者是文本的末尾
+      if (lastAtIndex !== -1) {
+        const afterAt = text.substring(lastAtIndex + 1)
+        const hasSpaceAfterAt = afterAt.includes(" ") || afterAt.includes("\n")
+
+        if (!hasSpaceAfterAt) {
+          // 获取编辑器位置
+          const domSelection = window.getSelection()
+          if (domSelection && domSelection.rangeCount > 0) {
+            const range = domSelection.getRangeAt(0)
+            const rect = range.getBoundingClientRect()
+            setPosition({
+              x: rect.left,
+              y: rect.bottom + 4,
+            })
+          } else if (editorRef.current) {
+            // 备选方案：使用编辑器容器位置
+            const rect = editorRef.current.getBoundingClientRect()
+            setPosition({
+              x: rect.left,
+              y: rect.bottom + 4,
+            })
+          }
+          setIsOpen(true)
+        } else {
+          setIsOpen(false)
+        }
+      } else {
+        setIsOpen(false)
+      }
+    }, [])
+
+    // 处理用户选择
+    const handleSelectUser = useCallback(
+      (user: (typeof mentionUsers)[0]) => {
+        // 使用 Slate 的 API 来正确插入提及内容
+        const { selection } = editor
+
+        if (selection) {
+          // 获取当前文本和光标位置
+          const text = getEditorText()
+          const lastAtIndex = text.lastIndexOf("@")
+
+          if (lastAtIndex !== -1) {
+            // 计算需要替换的范围
+            const afterAtText = text.substring(lastAtIndex + 1)
+
+            // 创建选择范围，从 @ 开始到当前光标位置
+            const start = { path: [0, 0], offset: lastAtIndex }
+            const end = { path: [0, 0], offset: lastAtIndex + 1 + afterAtText.length }
+            const range = { anchor: start, focus: end }
+
+            // 选择要替换的文本范围
+            Transforms.select(editor, range)
+
+            // 插入提及文本
+            Transforms.insertText(editor, `@${user.name} `)
+          }
+        }
+
+        setIsOpen(false)
+        // 保持编辑器焦点
+        ReactEditor.focus(editor)
+      },
+      [editor, getEditorText],
+    )
+
+    return (
+      <div className="w-80 space-y-4">
+        <div className="rounded-xl border p-4">
+          <h3 className="mb-2 font-medium">@ Mentions with Slate.js</h3>
+          <p className="text-secondary-foreground">
+            Type @ to trigger the mentions menu. This uses a simple Slate.js editor with Dropdown in
+            coordinate mode.
+          </p>
+        </div>
+
+        {/* 简单的 Slate 编辑器 */}
+        <div
+          ref={editorRef}
+          className="focus-within:border-selected-boundary min-h-[80px] w-full rounded-lg border p-2"
+        >
+          <Slate
+            editor={editor}
+            initialValue={initialValue}
+            onChange={handleChange}
+          >
+            <Editable
+              placeholder="Type @ to mention someone..."
+              className="outline-none"
+              style={{ minHeight: "56px" }}
+            />
+          </Slate>
+        </div>
+
+        {/* Dropdown 菜单 */}
+        <div>
+          <Dropdown
+            position={position}
+            open={isOpen}
+            onOpenChange={setIsOpen}
+            placement="bottom-start"
+          >
+            <Dropdown.Content>
+              <Dropdown.Label>Mention User</Dropdown.Label>
+              {mentionUsers.map((user) => (
+                <Dropdown.Item
+                  key={user.id}
+                  onClick={() => handleSelectUser(user)}
+                  prefixElement={
+                    <img
+                      src={user.avatar}
+                      alt={user.name}
+                      className="size-4 rounded-full"
+                    />
+                  }
+                >
+                  <Dropdown.Value>{user.name}</Dropdown.Value>
+                </Dropdown.Item>
+              ))}
+            </Dropdown.Content>
+          </Dropdown>
+        </div>
+
+        {/* 显示当前值用于调试 */}
+        <div className="bg-secondary-background text-secondary-foreground rounded-lg p-2">
+          Current text: &ldquo;{getEditorText()}&rdquo;
+        </div>
+      </div>
     )
   },
 }

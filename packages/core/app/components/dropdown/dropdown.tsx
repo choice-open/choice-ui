@@ -35,6 +35,7 @@ import React, {
   useContext,
   useEffect,
   useId,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -64,13 +65,14 @@ const DEFAULT_OFFSET = 4
 export interface DropdownProps {
   children?: React.ReactNode
   disabledNested?: boolean
-  focusManagerProps?: FloatingFocusManagerProps
+  focusManagerProps?: Partial<FloatingFocusManagerProps>
   matchTriggerWidth?: boolean
   offset?: number
   onOpenChange?: (open: boolean) => void
   open?: boolean
   placement?: Placement
   portalId?: string
+  position?: { x: number; y: number } | null
   selection?: boolean
 }
 
@@ -98,22 +100,25 @@ interface DropdownComponentType
  * - 优化的性能和代码质量
  * - 完整的键盘导航支持
  * - 触摸设备兼容性
+ * - 支持坐标定位模式（可替代 CoordinateMenu）
  */
 const DropdownComponent = memo(
-  forwardRef<HTMLDivElement, DropdownProps>(function DropdownComponent(props, ref) {
+  forwardRef<HTMLDivElement, DropdownProps>(function DropdownComponent(props) {
     const {
       children,
       disabledNested = false,
       offset: offsetDistance = DEFAULT_OFFSET,
       placement = "bottom-start",
       portalId = PORTAL_ROOT_ID,
+      position,
       selection = false,
       matchTriggerWidth = false,
       open: controlledOpen,
       onOpenChange,
       focusManagerProps = {
         returnFocus: false,
-        modal: true,
+        modal: position ? false : true,
+        ...(position && { disabled: true }), // 坐标模式下禁用焦点管理
       },
     } = props
 
@@ -130,8 +135,15 @@ const DropdownComponent = memo(
     const [scrollTop, setScrollTop] = useState(0)
     const [touch, setTouch] = useState(false)
 
-    // 受控/非受控状态处理
-    const isControlledOpen = controlledOpen === undefined ? isOpen : controlledOpen
+    // 坐标模式检测
+    const isCoordinateMode = position !== null && position !== undefined
+
+    // 受控/非受控状态处理 - 坐标模式下强制使用受控模式
+    const isControlledOpen = isCoordinateMode
+      ? controlledOpen || false
+      : controlledOpen === undefined
+        ? isOpen
+        : controlledOpen
 
     // 生成唯一 ID
     const baseId = useId()
@@ -147,11 +159,33 @@ const DropdownComponent = memo(
 
     // 处理开关状态变化
     const handleOpenChange = useEventCallback((newOpen: boolean) => {
-      if (controlledOpen === undefined) {
+      if (!isCoordinateMode && controlledOpen === undefined) {
         setIsOpen(newOpen)
       }
       onOpenChange?.(newOpen)
     })
+
+    // 虚拟定位函数 - 用于坐标模式
+    const setVirtualPosition = useEventCallback((pos: { x: number; y: number }) => {
+      refs.setPositionReference({
+        getBoundingClientRect() {
+          return {
+            x: pos.x,
+            y: pos.y,
+            width: 0,
+            height: 0,
+            left: pos.x,
+            right: pos.x,
+            top: pos.y,
+            bottom: pos.y,
+          }
+        },
+        contextElement: document.body,
+      })
+    })
+
+    // 使用 ref 避免重复设置虚拟位置
+    const lastPositionRef = useRef<{ x: number; y: number } | null>(null)
 
     // Floating UI 配置  的定位策略
     const { refs, floatingStyles, context, isPositioned } = useFloating({
@@ -179,18 +213,48 @@ const DropdownComponent = memo(
       whileElementsMounted: autoUpdate,
     })
 
+    // 同步设置虚拟位置 - 坐标模式下使用
+    useLayoutEffect(() => {
+      if (
+        position &&
+        isCoordinateMode &&
+        isControlledOpen &&
+        (!lastPositionRef.current ||
+          lastPositionRef.current.x !== position.x ||
+          lastPositionRef.current.y !== position.y)
+      ) {
+        setVirtualPosition(position)
+        lastPositionRef.current = position
+      }
+    }, [position, isCoordinateMode, isControlledOpen, setVirtualPosition])
+
+    // 坐标模式下，菜单打开时自动激活第一个选项
+    useEffect(() => {
+      if (isCoordinateMode && isControlledOpen && activeIndex === null) {
+        setActiveIndex(0)
+      }
+    }, [isCoordinateMode, isControlledOpen, activeIndex])
+
+    // 坐标模式下，菜单关闭时重置 activeIndex
+    useEffect(() => {
+      if (isCoordinateMode && !isControlledOpen) {
+        setActiveIndex(null)
+      }
+    }, [isCoordinateMode, isControlledOpen])
+
     // 交互处理器配置
     const hover = useHover(context, {
-      enabled: isNested,
+      enabled: isNested && !isCoordinateMode,
       delay: { open: 75 },
       handleClose: safePolygon({ blockPointerEvents: true, buffer: 1 }),
     })
 
     const click = useClick(context, {
       event: "mousedown",
-      toggle: !isNested,
+      toggle: !isNested && !isCoordinateMode,
       ignoreMouse: isNested,
       stickIfOpen: false,
+      enabled: !isCoordinateMode, // 坐标模式下禁用点击交互
     })
 
     const role = useRole(context, { role: "menu" })
@@ -276,7 +340,11 @@ const DropdownComponent = memo(
     })
 
     // 焦点处理
-    const handleFocus = useEventCallback((event: React.FocusEvent<HTMLButtonElement>) => {
+    const handleFocus = useEventCallback(() => {
+      // 坐标模式下不执行嵌套焦点管理，避免干扰输入框焦点
+      if (isCoordinateMode) {
+        return
+      }
       setHasFocusInside(false)
       parent?.setHasFocusInside(true)
     })
@@ -334,30 +402,32 @@ const DropdownComponent = memo(
 
     return (
       <FloatingNode id={nodeId}>
-        <Slot
-          ref={refs.setReference}
-          tabIndex={!isNested ? undefined : parent?.activeIndex === item.index ? 0 : -1}
-          role={isNested ? "menuitem" : undefined}
-          data-open={isControlledOpen ? "" : undefined}
-          data-nested={isNested ? "" : undefined}
-          data-focus-inside={hasFocusInside ? "" : undefined}
-          onTouchStart={handleTouchStart}
-          onPointerMove={handlePointerMove}
-          aria-haspopup="menu"
-          aria-expanded={isControlledOpen}
-          aria-controls={menuId}
-          {...getReferenceProps(
-            parent
-              ? parent.getItemProps({
-                  onFocus: handleFocus,
-                })
-              : {},
-          )}
-        >
-          {isNested
-            ? subTriggerElement && cloneElement(subTriggerElement, { active: isControlledOpen })
-            : triggerElement && cloneElement(triggerElement, { active: isControlledOpen })}
-        </Slot>
+        {!isCoordinateMode && (
+          <Slot
+            ref={refs.setReference}
+            tabIndex={!isNested ? undefined : parent?.activeIndex === item.index ? 0 : -1}
+            role={isNested ? "menuitem" : undefined}
+            data-open={isControlledOpen ? "" : undefined}
+            data-nested={isNested ? "" : undefined}
+            data-focus-inside={hasFocusInside ? "" : undefined}
+            onTouchStart={handleTouchStart}
+            onPointerMove={handlePointerMove}
+            aria-haspopup="menu"
+            aria-expanded={isControlledOpen}
+            aria-controls={menuId}
+            {...getReferenceProps(
+              parent
+                ? parent.getItemProps({
+                    onFocus: handleFocus,
+                  })
+                : {},
+            )}
+          >
+            {isNested
+              ? subTriggerElement && cloneElement(subTriggerElement, { active: isControlledOpen })
+              : triggerElement && cloneElement(triggerElement, { active: isControlledOpen })}
+          </Slot>
+        )}
 
         <FloatingList
           elementsRef={elementsRef}
@@ -371,13 +441,16 @@ const DropdownComponent = memo(
               >
                 <FloatingFocusManager
                   context={context}
-                  initialFocus={isNested ? -1 : 0}
+                  initialFocus={isCoordinateMode || isNested ? -1 : 0}
+                  visuallyHiddenDismiss={isCoordinateMode}
                   {...focusManagerProps}
                 >
                   <div
                     id={menuId}
                     style={floatingStyles}
                     ref={refs.setFloating}
+                    onTouchStart={handleTouchStart}
+                    onPointerMove={handlePointerMove}
                     {...getFloatingProps({
                       ...getScrollProps(),
                       onContextMenu(e: React.MouseEvent) {

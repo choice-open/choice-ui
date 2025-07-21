@@ -98,7 +98,7 @@ export const ComboboxTrigger = forwardRef<HTMLInputElement, ComboboxTriggerProps
           {...rest}
         />
 
-        {showClear && value && !isFocused ? (
+        {showClear && value ? (
           <IconButton
             className={tv.icon()}
             variant="ghost"

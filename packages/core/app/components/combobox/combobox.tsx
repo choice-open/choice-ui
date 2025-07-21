@@ -29,6 +29,8 @@ import React, {
   memo,
   useEffect,
   useId,
+  useImperativeHandle,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -52,6 +54,10 @@ import { ComboboxTrigger } from "./combobox-trigger"
 const PORTAL_ROOT_ID = "floating-menu-root"
 const DEFAULT_OFFSET = 4
 
+export interface ComboboxRef {
+  handleKeyDown: (event: React.KeyboardEvent) => void
+}
+
 export interface ComboboxProps {
   autoSelection?: boolean
   children?: React.ReactNode
@@ -64,11 +70,13 @@ export interface ComboboxProps {
   open?: boolean
   placement?: Placement
   portalId?: string
+  position?: { x: number; y: number } | null
+  trigger?: "input" | "coordinate" // 新增：明确指定触发器类型
   value?: string
 }
 
 interface ComboboxComponentType
-  extends React.ForwardRefExoticComponent<ComboboxProps & React.RefAttributes<HTMLDivElement>> {
+  extends React.ForwardRefExoticComponent<ComboboxProps & React.RefAttributes<ComboboxRef>> {
   Button: typeof MenuButton
   Content: typeof MenuContextContent
   Divider: typeof MenuDivider
@@ -80,7 +88,7 @@ interface ComboboxComponentType
 }
 
 const ComboboxComponent = memo(
-  forwardRef<HTMLDivElement, ComboboxProps>(function ComboboxComponent(props, ref) {
+  forwardRef<ComboboxRef, ComboboxProps>(function ComboboxComponent(props, ref) {
     const {
       children,
       autoSelection = true,
@@ -92,9 +100,11 @@ const ComboboxComponent = memo(
       onChange,
       onBlur,
       onOpenChange,
+      position,
+      trigger = "input", // 默认为输入模式
       value: controlledValue = "",
       focusManagerProps = {
-        returnFocus: false,
+        returnFocus: true,
         modal: false,
       },
     } = props
@@ -113,8 +123,15 @@ const ComboboxComponent = memo(
     const [scrollTop, setScrollTop] = useState(0)
     const [touch, setTouch] = useState(false)
 
-    // 受控/非受控状态处理
-    const isControlledOpen = controlledOpen === undefined ? isOpen : controlledOpen
+    // 坐标模式检测 - 基于明确的 trigger prop
+    const isCoordinateMode = trigger === "coordinate"
+
+    // 受控/非受控状态处理 - 坐标模式下强制使用受控模式
+    const isControlledOpen = isCoordinateMode
+      ? (controlledOpen ?? false)
+      : controlledOpen === undefined
+        ? isOpen
+        : controlledOpen
 
     // FloatingNode 相关
     const tree = useFloatingTree()
@@ -164,7 +181,7 @@ const ComboboxComponent = memo(
 
       // 当点击trigger时，强制打开菜单
       if (controlledOpen === undefined) {
-        setIsOpen(true)
+        setIsOpen(!isOpen)
       }
       onOpenChange?.(true, "click")
     })
@@ -180,13 +197,35 @@ const ComboboxComponent = memo(
       const activeIndex = autoSelection ? 0 : null
       // 如果有值，focus时也应该显示菜单
       if (inputValue.trim()) {
-        if (controlledOpen === undefined) {
-          setIsOpen(true)
-        }
+        // if (controlledOpen === undefined) {
+        //   setIsOpen(true)
+        // }
         onOpenChange?.(true, "focus")
         setActiveIndex(activeIndex)
       }
     })
+
+    // 虚拟定位函数 - 用于坐标模式
+    const setVirtualPosition = useEventCallback((pos: { x: number; y: number }) => {
+      refs.setPositionReference({
+        getBoundingClientRect() {
+          return {
+            x: pos.x,
+            y: pos.y,
+            width: 0,
+            height: 0,
+            left: pos.x,
+            right: pos.x,
+            top: pos.y,
+            bottom: pos.y,
+          }
+        },
+        contextElement: document.body,
+      })
+    })
+
+    // 使用 ref 避免重复设置虚拟位置
+    const lastPositionRef = useRef<{ x: number; y: number } | null>(null)
 
     // Floating UI 配置
     const { context, refs, floatingStyles, isPositioned } = useFloating({
@@ -218,10 +257,12 @@ const ComboboxComponent = memo(
           padding: 4,
           apply(args) {
             const { elements, availableHeight, rects } = args
+            // 设置最大高度以防止溢出
             Object.assign(elements.floating.style, {
-              height: `${Math.min(elements.floating.clientHeight, availableHeight)}px`,
+              maxHeight: `${availableHeight}px`,
             })
-            if (matchTriggerWidth) {
+            // 只在非坐标模式且需要匹配trigger宽度时设置宽度
+            if (!isCoordinateMode && matchTriggerWidth && rects.reference.width > 0) {
               elements.floating.style.width = `${rects.reference.width}px`
             }
           },
@@ -240,6 +281,7 @@ const ComboboxComponent = memo(
       virtual: true,
       loop: true,
       allowEscape: true, // 官方案例中有这个设置
+      selectedIndex: activeIndex, // 确保选中状态同步
     })
 
     const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions([
@@ -247,6 +289,44 @@ const ComboboxComponent = memo(
       dismiss,
       listNavigation,
     ])
+
+    // 同步设置虚拟位置 - 坐标模式下使用
+    useLayoutEffect(() => {
+      if (position && isCoordinateMode) {
+        // 只要有position就设置虚拟定位，不管是否open
+        if (
+          !lastPositionRef.current ||
+          lastPositionRef.current.x !== position.x ||
+          lastPositionRef.current.y !== position.y
+        ) {
+          setVirtualPosition(position)
+          lastPositionRef.current = position
+        }
+      }
+    }, [position, isCoordinateMode, setVirtualPosition])
+
+    // 坐标模式下自动选择第一项
+    useEffect(() => {
+      if (isCoordinateMode && isControlledOpen && autoSelection) {
+        // 稍微延迟确保元素已经渲染
+        const timer = setTimeout(() => {
+          if (elementsRef.current.length > 0 && activeIndex === null) {
+            setActiveIndex(0)
+          }
+        }, 16) // 使用 16ms 确保在下一帧渲染后执行
+
+        return () => clearTimeout(timer)
+      }
+    }, [isCoordinateMode, isControlledOpen, autoSelection, activeIndex, elementsRef.current.length])
+
+    // 坐标模式下，当过滤结果变化时重新自动选择第一项
+    useEffect(() => {
+      if (isCoordinateMode && isControlledOpen && autoSelection && elementsRef.current.length > 0) {
+        if (activeIndex === null || activeIndex >= elementsRef.current.length) {
+          setActiveIndex(0)
+        }
+      }
+    }, [isCoordinateMode, isControlledOpen, autoSelection, activeIndex, elementsRef.current.length])
 
     // 使用共享的滚动逻辑
     const { handleArrowScroll, handleArrowHide, getScrollProps } = useMenuScroll({
@@ -296,15 +376,18 @@ const ComboboxComponent = memo(
       }
     }, [tree, isControlledOpen, nodeId, parentId])
 
-    const handleKeyDown = useEventCallback((event: React.KeyboardEvent<HTMLInputElement>) => {
-      if (event.key === "Enter" && activeIndex !== null && isControlledOpen) {
-        event.preventDefault()
-        const activeElement = elementsRef.current[activeIndex]
-        if (activeElement) {
-          activeElement.click()
+    const handleKeyDown = useEventCallback(
+      (event: React.KeyboardEvent<HTMLInputElement | HTMLDivElement>) => {
+        if (event.key === "Enter" && activeIndex !== null && isControlledOpen) {
+          event.preventDefault()
+          const activeElement = elementsRef.current[activeIndex]
+
+          if (activeElement) {
+            activeElement.click()
+          }
         }
-      }
-    })
+      },
+    )
 
     // 创建关闭方法
     const handleClose = useEventCallback(() => {
@@ -348,30 +431,33 @@ const ComboboxComponent = memo(
 
     return (
       <FloatingNode id={nodeId}>
-        <div
-          ref={refs.setReference}
-          onTouchStart={handleTouchStart}
-          onPointerMove={handlePointerMove}
-        >
-          {triggerElement &&
-            cloneElement(triggerElement, {
-              ...getReferenceProps({
-                onChange: handleInputChange,
-                onFocus: handleInputFocus,
-                value: inputValue,
-                "aria-autocomplete": "list" as const,
-                "aria-haspopup": "listbox",
-                "aria-expanded": isControlledOpen,
-                "aria-controls": listboxId,
-                onKeyDown: handleKeyDown,
-              }),
-              onChange: handleValueChange,
-              active: isControlledOpen,
-              onBlur,
-              disabled,
-              onClick: handleTriggerClick,
-            })}
-        </div>
+        {!isCoordinateMode && (
+          <div
+            ref={refs.setReference}
+            onTouchStart={handleTouchStart}
+            onPointerMove={handlePointerMove}
+          >
+            {triggerElement &&
+              cloneElement(triggerElement, {
+                ...getReferenceProps({
+                  ref: inputRef,
+                  onChange: handleInputChange,
+                  onFocus: handleInputFocus,
+                  value: inputValue,
+                  "aria-autocomplete": "list" as const,
+                  "aria-haspopup": "listbox",
+                  "aria-expanded": isControlledOpen,
+                  "aria-controls": listboxId,
+                  onKeyDown: handleKeyDown,
+                }),
+                onChange: handleValueChange,
+                active: isControlledOpen,
+                onBlur,
+                disabled,
+                onClick: handleTriggerClick,
+              })}
+          </div>
+        )}
 
         {/* Floating content */}
         <FloatingList
@@ -399,6 +485,11 @@ const ComboboxComponent = memo(
                       onContextMenu(e: React.MouseEvent) {
                         e.preventDefault()
                       },
+                      // 坐标模式下添加键盘事件处理
+                      ...(isCoordinateMode && {
+                        tabIndex: 0,
+                        onKeyDown: handleKeyDown,
+                      }),
                     })}
                   >
                     <MenuContext.Provider value={contextValue}>
