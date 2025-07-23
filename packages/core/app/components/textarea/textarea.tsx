@@ -1,9 +1,8 @@
 import { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react"
-import TextareaAutosize from "react-textarea-autosize"
 import { useEventCallback, useUnmount } from "usehooks-ts"
 import { tcx } from "~/utils"
 import { ScrollArea } from "../scroll-area"
-import { ResizeHandle } from "./components"
+import { ResizeHandle, TextareaAutosize } from "./components"
 import { TextareaTv } from "./tv"
 import type { TextareaProps } from "./types"
 

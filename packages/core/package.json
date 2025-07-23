@@ -1,6 +1,6 @@
 {
   "name": "@choiceform/design-system",
-  "version": "0.9.969",
+  "version": "0.9.970",
   "description": "A modern React UI component library",
   "sideEffects": false,
   "type": "module",
@@ -62,7 +62,6 @@
     "lodash": "^4.17.21",
     "lodash-es": "^4.17.21",
     "nanoid": "^5.0.7",
-    "react-textarea-autosize": "^8.5.9",
     "slate": "^0.117.2",
     "slate-history": "^0.113.1",
     "slate-hyperscript": "^0.100.0",
