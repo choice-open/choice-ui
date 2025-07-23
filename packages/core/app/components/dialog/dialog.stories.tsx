@@ -10,6 +10,7 @@ import { ScrollArea } from "../scroll-area"
 import { Checkbox } from "../checkbox"
 import { NumericInput } from "../numeric-input"
 import { FillWidth } from "@choiceform/icons-react"
+import { Input } from "../input"
 
 const meta: Meta<typeof Dialog> = {
   title: "Overlays/Dialog",
@@ -515,6 +516,31 @@ export const Footer: Story = {
           <Dialog.Footer className="justify-end">
             <Button onClick={() => setOpen(false)}>Close</Button>
           </Dialog.Footer>
+        </Dialog>
+      </>
+    )
+  },
+}
+
+/**
+ * FocusManagerProps: Demonstrates how to customize the focus manager props.
+ * Use the `focusManagerProps` prop to customize the focus manager props.
+ */
+export const FocusManagerProps: Story = {
+  render: function FocusManagerPropsStory() {
+    const [open, setOpen] = useState(false)
+
+    return (
+      <>
+        <Button onClick={() => setOpen(!open)}>Open Dialog</Button>
+        <Dialog
+          open={open}
+          onOpenChange={setOpen}
+        >
+          <Dialog.Header title="Dialog Title" />
+          <Dialog.Content className="flex flex-col gap-4 p-4">
+            <Input placeholder="Input" />
+          </Dialog.Content>
         </Dialog>
       </>
     )

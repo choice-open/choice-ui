@@ -1,4 +1,9 @@
-import { FloatingOverlay, FloatingPortal } from "@floating-ui/react"
+import {
+  FloatingFocusManager,
+  FloatingFocusManagerProps,
+  FloatingOverlay,
+  FloatingPortal,
+} from "@floating-ui/react"
 import React, { memo, useId, useMemo, useRef } from "react"
 import { findChildByType, tcx } from "~/utils"
 import { Modal, ModalBackdrop, ModalContent, ModalFooter } from "../modal"
@@ -28,6 +33,7 @@ export interface DialogProps {
   defaultHeight?: number
   defaultWidth?: number
   draggable?: boolean
+  focusManagerProps?: Partial<FloatingFocusManagerProps>
   initialPosition?: DialogPosition
   maxHeight?: number
   maxWidth?: number
@@ -66,6 +72,7 @@ const DialogComponent = memo(function DialogComponent({
   afterOpenChange,
   rememberPosition = false,
   rememberSize = false,
+  focusManagerProps = { initialFocus: 1 },
 }: DialogProps) {
   const dialogRef = useRef<HTMLDivElement | null>(null)
   const contentRef = useRef<HTMLDivElement>(null)
@@ -227,66 +234,71 @@ const DialogComponent = memo(function DialogComponent({
             lockScroll
             className={tcx(style.overlay())}
           >
-            <Modal
-              ref={(node) => {
-                if (node) {
-                  dialogRef.current = node
-                  floating.refs.setFloating(node)
-                }
-              }}
-              style={getStyleWithDefaults}
-              className={tcx(style.dialog(), className)}
-              {...floating.getFloatingProps()}
-              aria-labelledby={titleId}
-              aria-describedby={descriptionId}
-              role="dialog"
-              aria-modal="true"
-              data-state={floating.isReady ? "open" : "opening"}
-              data-draggable={draggable ? "true" : undefined}
-              data-dragging={dragState.isDragging ? "true" : undefined}
-              data-closing={floating.isClosing ? "true" : undefined}
-              data-resizable={isResizable ? "true" : undefined}
+            <FloatingFocusManager
+              context={floating.context}
+              {...focusManagerProps}
             >
-              {headerContent}
-              {contentContent}
-              {footerContent}
+              <Modal
+                ref={(node) => {
+                  if (node) {
+                    dialogRef.current = node
+                    floating.refs.setFloating(node)
+                  }
+                }}
+                style={getStyleWithDefaults}
+                className={tcx(style.dialog(), className)}
+                {...floating.getFloatingProps()}
+                aria-labelledby={titleId}
+                aria-describedby={descriptionId}
+                role="dialog"
+                aria-modal="true"
+                data-state={floating.isReady ? "open" : "opening"}
+                data-draggable={draggable ? "true" : undefined}
+                data-dragging={dragState.isDragging ? "true" : undefined}
+                data-closing={floating.isClosing ? "true" : undefined}
+                data-resizable={isResizable ? "true" : undefined}
+              >
+                {headerContent}
+                {contentContent}
+                {footerContent}
 
-              {resizable.width && (
-                <div
-                  className={style.resizeWidthHandle()}
-                  aria-label="Resize dialog width"
-                  tabIndex={0}
-                  onMouseDown={(e) => {
-                    e.preventDefault()
-                    handleResizeStart(e, { width: true, height: false })
-                  }}
-                />
-              )}
+                {resizable.width && (
+                  <div
+                    className={style.resizeWidthHandle()}
+                    aria-label="Resize dialog width"
+                    tabIndex={0}
+                    onMouseDown={(e) => {
+                      e.preventDefault()
+                      handleResizeStart(e, { width: true, height: false })
+                    }}
+                  />
+                )}
 
-              {resizable.height && (
-                <div
-                  className={style.resizeHeightHandle()}
-                  aria-label="Resize dialog height"
-                  tabIndex={0}
-                  onMouseDown={(e) => {
-                    e.preventDefault()
-                    handleResizeStart(e, { width: false, height: true })
-                  }}
-                />
-              )}
+                {resizable.height && (
+                  <div
+                    className={style.resizeHeightHandle()}
+                    aria-label="Resize dialog height"
+                    tabIndex={0}
+                    onMouseDown={(e) => {
+                      e.preventDefault()
+                      handleResizeStart(e, { width: false, height: true })
+                    }}
+                  />
+                )}
 
-              {resizable.width && resizable.height && (
-                <div
-                  className={style.resizeCornerHandle()}
-                  aria-label="Resize dialog width and height"
-                  tabIndex={0}
-                  onMouseDown={(e) => {
-                    e.preventDefault()
-                    handleResizeStart(e, { width: true, height: true })
-                  }}
-                />
-              )}
-            </Modal>
+                {resizable.width && resizable.height && (
+                  <div
+                    className={style.resizeCornerHandle()}
+                    aria-label="Resize dialog width and height"
+                    tabIndex={0}
+                    onMouseDown={(e) => {
+                      e.preventDefault()
+                      handleResizeStart(e, { width: true, height: true })
+                    }}
+                  />
+                )}
+              </Modal>
+            </FloatingFocusManager>
           </FloatingOverlay>
         </FloatingPortal>
       )}
