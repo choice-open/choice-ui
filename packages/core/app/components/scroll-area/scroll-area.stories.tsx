@@ -1025,3 +1025,63 @@ function VirtualScrollArea({
     </ScrollArea>
   )
 }
+
+/**
+ * NestedScrollArea: Demonstrates nested ScrollArea components.
+ *
+ * Features:
+ * - Nested ScrollArea components
+ * - Proper integration between ScrollArea and react-virtual
+ * - Memory efficient rendering of massive lists
+ */
+export const NestedScrollArea: Story = {
+  render: function NestedScrollAreaStory() {
+    const items = useMemo(() => {
+      return Array.from({ length: 1000 }, (_, i) => ({
+        id: i,
+        title: `Item ${i + 1}`,
+        content: faker.lorem.sentence(),
+        value: Math.floor(Math.random() * 1000),
+      }))
+    }, [])
+
+    return (
+      <ScrollArea
+        className="relative h-80 w-full overflow-hidden rounded-xl border border-gray-200"
+        orientation="both"
+        type="hover"
+      >
+        <ScrollArea.Viewport className="h-full">
+          <ScrollArea.Content className="p-4">
+            <div
+              className="grid grid-cols-5 gap-4"
+              style={{ minWidth: "800px" }}
+            >
+              {items.slice(0, Math.min(100, items.length)).map((item) => (
+                <ScrollArea
+                  key={item.id}
+                  className="h-40 rounded-lg p-2 shadow-sm"
+                >
+                  <ScrollArea.Viewport className="h-full">
+                    <ScrollArea.Content>
+                      <div className="space-y-2">
+                        {Array.from({ length: 10 }).map((_, index) => (
+                          <div
+                            key={index}
+                            className="bg-secondary-background rounded-md p-2"
+                          >
+                            <div className="font-medium">{item.title}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </ScrollArea.Content>
+                  </ScrollArea.Viewport>
+                </ScrollArea>
+              ))}
+            </div>
+          </ScrollArea.Content>
+        </ScrollArea.Viewport>
+      </ScrollArea>
+    )
+  },
+}
