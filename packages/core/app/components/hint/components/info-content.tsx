@@ -1,18 +1,18 @@
 import { FloatingPortal, useMergeRefs, useTransitionStyles } from "@floating-ui/react"
 import { forwardRef, HTMLProps, ReactNode, useMemo } from "react"
 import { tcx } from "~/utils"
-import { useInfoState } from "../info"
-import { infoContentVariants } from "../tv"
+import { useHintState } from "../hint"
+import { hintVariants } from "../tv"
 
-interface InfoContentProps extends HTMLProps<HTMLDivElement> {
+interface HintContentProps extends HTMLProps<HTMLDivElement> {
   icon?: ReactNode
   portalId?: string
 }
 
-export const InfoContent = forwardRef<HTMLDivElement, InfoContentProps>(
-  function InfoContent(props, propRef) {
+export const HintContent = forwardRef<HTMLDivElement, HintContentProps>(
+  function HintContent(props, propRef) {
     const { className, children, icon, portalId, ...rest } = props
-    const state = useInfoState()
+    const state = useHintState()
     const ref = useMergeRefs([state.refs.setFloating, propRef])
 
     const { isMounted, styles } = useTransitionStyles(state.context, {
@@ -28,7 +28,7 @@ export const InfoContent = forwardRef<HTMLDivElement, InfoContentProps>(
 
     // 缓存样式变体计算
     const tv = useMemo(
-      () => infoContentVariants({ placement: state.placement as "left-start" | "right-start" }),
+      () => hintVariants({ placement: state.placement as "left-start" | "right-start" }),
       [state.placement],
     )
 

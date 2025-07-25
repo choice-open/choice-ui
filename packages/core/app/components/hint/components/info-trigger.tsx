@@ -1,19 +1,19 @@
 import { useMergeRefs } from "@floating-ui/react"
 import { tcx } from "~/utils"
-import { useInfoState } from "../info"
-import { infoContentVariants } from "../tv"
+import { useHintState } from "../hint"
+import { hintVariants } from "../tv"
 import { cloneElement, forwardRef, HTMLProps, ReactElement, ReactNode } from "react"
 
-interface InfoTriggerProps extends HTMLProps<HTMLButtonElement> {
+interface HintTriggerProps extends HTMLProps<HTMLButtonElement> {
   asChild?: boolean
   icon?: ReactNode
 }
 
-export const InfoTrigger = forwardRef<HTMLButtonElement, InfoTriggerProps>(function InfoTrigger(
+export const HintTrigger = forwardRef<HTMLButtonElement, HintTriggerProps>(function HintTrigger(
   { children, className, asChild = false, icon, ...props },
   propRef,
 ) {
-  const state = useInfoState()
+  const state = useHintState()
 
   const ref = useMergeRefs([state.refs.setReference, propRef])
 
@@ -25,7 +25,7 @@ export const InfoTrigger = forwardRef<HTMLButtonElement, InfoTriggerProps>(funct
       ...(state.disabled && { disabled: true }),
     })
   }
-  const tv = infoContentVariants({ disabled: state.disabled })
+  const tv = hintVariants({ disabled: state.disabled })
 
   return (
     <button

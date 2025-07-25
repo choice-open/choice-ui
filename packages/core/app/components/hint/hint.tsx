@@ -1,24 +1,23 @@
 import { InfoCircle } from "@choiceform/icons-react"
 import { createContext, ReactNode, useContext } from "react"
-import { InfoContent } from "./components/info-content"
-import { InfoTrigger } from "./components/info-trigger"
-import { useInfo } from "./hooks/use-info"
+import { HintContent, HintTrigger } from "./components"
+import { useHint } from "./hooks"
 
-type InfoPlacement = "left-start" | "right-start"
+type HintPlacement = "left-start" | "right-start"
 
-const InfoContext = createContext<ReturnType<typeof useInfo> | null>(null)
+const HintContext = createContext<ReturnType<typeof useHint> | null>(null)
 
 const PORTAL_ROOT_ID = "floating-tooltip-root"
 
-export function useInfoState() {
-  const context = useContext(InfoContext)
+export function useHintState() {
+  const context = useContext(HintContext)
   if (context == null) {
-    throw new Error("Info components must be wrapped in <Info />")
+    throw new Error("Hint components must be wrapped in <Hint />")
   }
   return context
 }
 
-interface InfoProps {
+interface HintProps {
   children?: ReactNode
   className?: string
   content: ReactNode
@@ -26,11 +25,11 @@ interface InfoProps {
   icon?: ReactNode
   onOpenChange?: (open: boolean) => void
   open?: boolean
-  placement?: InfoPlacement
+  placement?: HintPlacement
   portalId?: string
 }
 
-export function Info({
+export function Hint({
   children,
   content,
   disabled = false,
@@ -40,8 +39,8 @@ export function Info({
   className,
   icon = <InfoCircle />,
   portalId = PORTAL_ROOT_ID,
-}: InfoProps) {
-  const info = useInfo({
+}: HintProps) {
+  const hint = useHint({
     disabled,
     onOpenChange,
     open,
@@ -49,19 +48,19 @@ export function Info({
   })
 
   return (
-    <InfoContext.Provider value={info}>
-      <InfoTrigger
+    <HintContext.Provider value={hint}>
+      <HintTrigger
         className={className}
         icon={icon}
       >
         {children}
-      </InfoTrigger>
-      <InfoContent
+      </HintTrigger>
+      <HintContent
         icon={icon}
         portalId={portalId}
       >
         {content}
-      </InfoContent>
-    </InfoContext.Provider>
+      </HintContent>
+    </HintContext.Provider>
   )
 }

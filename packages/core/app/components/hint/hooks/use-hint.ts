@@ -13,23 +13,23 @@ import {
 } from "@floating-ui/react"
 import { useMemo, useRef, useState } from "react"
 
-type InfoPlacement = "left-start" | "right-start"
+type HintPlacement = "left-start" | "right-start"
 
-interface InfoOptions {
+interface HintOptions {
   disabled?: boolean
   initialOpen?: boolean
   onOpenChange?: (open: boolean) => void
   open?: boolean
-  placement?: InfoPlacement
+  placement?: HintPlacement
 }
 
-export function useInfo({
+export function useHint({
   initialOpen = false,
   placement = "right-start",
   open: controlledOpen,
   onOpenChange: setControlledOpen,
   disabled = false,
-}: InfoOptions = {}) {
+}: HintOptions = {}) {
   const [uncontrolledOpen, setUncontrolledOpen] = useState(initialOpen)
 
   const open = controlledOpen ?? uncontrolledOpen

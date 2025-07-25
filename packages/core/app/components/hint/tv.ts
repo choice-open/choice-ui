@@ -1,6 +1,6 @@
 import { tv } from "tailwind-variants"
 
-export const infoContentVariants = tv({
+export const hintVariants = tv({
   slots: {
     content: [
       "z-50",
