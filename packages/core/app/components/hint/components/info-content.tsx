@@ -39,7 +39,7 @@ export const HintContent = forwardRef<HTMLDivElement, HintContentProps>(
       <FloatingPortal id={portalId}>
         <div
           ref={ref}
-          className="pointer-events-none"
+          className="z-tooltip pointer-events-none"
           style={state.floatingStyles}
           {...state.getFloatingProps(rest)}
         >

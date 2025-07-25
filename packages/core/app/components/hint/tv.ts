@@ -3,7 +3,6 @@ import { tv } from "tailwind-variants"
 export const hintVariants = tv({
   slots: {
     content: [
-      "z-tooltip",
       "rounded-md",
       "flex",
       "bg-default-background",
