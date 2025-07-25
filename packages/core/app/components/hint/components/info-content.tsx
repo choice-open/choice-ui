@@ -7,11 +7,12 @@ import { hintVariants } from "../tv"
 interface HintContentProps extends HTMLProps<HTMLDivElement> {
   icon?: ReactNode
   portalId?: string
+  variant?: "default" | "dark"
 }
 
 export const HintContent = forwardRef<HTMLDivElement, HintContentProps>(
   function HintContent(props, propRef) {
-    const { className, children, icon, portalId, ...rest } = props
+    const { className, children, icon, portalId, variant = "default", ...rest } = props
     const state = useHintState()
     const ref = useMergeRefs([state.refs.setFloating, propRef])
 
@@ -44,7 +45,7 @@ export const HintContent = forwardRef<HTMLDivElement, HintContentProps>(
           {...state.getFloatingProps(rest)}
         >
           <div
-            className={tcx(tv.content({ className }))}
+            className={tcx(tv.content({ className, variant }))}
             data-state={state.open ? "open" : "closed"}
             style={styles}
           >

@@ -184,3 +184,31 @@ export const Disabled: Story = {
     </div>
   ),
 }
+
+/**
+ * Dark Variant - Shows hint component in dark variant
+ *
+ * Features:
+ * - Dark background and text color
+ * - Visual consistency with dark theme
+ * - Maintains tooltip functionality in dark mode
+ *
+ * Usage:
+ * ```tsx
+ * <Hint
+ *   content="Dark variant tooltip content"
+ *   variant="dark"
+ * />
+ * ```
+ */
+export const DarkVariant: Story = {
+  render: () => (
+    <div className="flex items-center gap-2">
+      <span>Dark variant</span>
+      <Hint
+        content="Dark variant tooltip content"
+        variant="dark"
+      />
+    </div>
+  ),
+}

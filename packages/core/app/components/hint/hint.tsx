@@ -27,6 +27,7 @@ interface HintProps {
   open?: boolean
   placement?: HintPlacement
   portalId?: string
+  variant?: "default" | "dark"
 }
 
 export function Hint({
@@ -39,6 +40,7 @@ export function Hint({
   className,
   icon = <InfoCircle />,
   portalId = PORTAL_ROOT_ID,
+  variant = "default",
 }: HintProps) {
   const hint = useHint({
     disabled,
@@ -58,6 +60,7 @@ export function Hint({
       <HintContent
         icon={icon}
         portalId={portalId}
+        variant={variant}
       >
         {content}
       </HintContent>
