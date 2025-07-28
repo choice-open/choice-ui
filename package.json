@@ -28,17 +28,26 @@
     "text-editor:storybook": "pnpm --filter=\"@choiceform/text-editor\" run storybook",
     "text-editor:lint": "eslint packages/text-editor/app/**/*.{ts,tsx} --ext .ts,.tsx",
     "text-editor:lint:fix": "eslint packages/text-editor/app/**/*.{ts,tsx} --ext .ts,.tsx --fix",
-    "test": "pnpm --filter=\"./packages/**\" run test",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:ui": "vitest --ui",
+    "test:core": "vitest run packages/core",
+    "test:colors": "vitest run packages/colors",
+    "test:calendar": "vitest run packages/calendar",
+    "test:text-editor": "vitest run packages/text-editor",
     "clean": "pnpm --filter=\"./packages/**\" run clean",
     "preinstall": "npx only-allow pnpm"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^8.37.0",
+    "@vitest/ui": "^3.2.4",
     "eslint": "^8.57.1",
     "eslint-plugin-typescript-sort-keys": "^3.3.0",
     "prettier": "^3.6.2",
     "prettier-plugin-css-order": "^2.1.2",
-    "prettier-plugin-tailwindcss": "^0.6.14"
+    "prettier-plugin-tailwindcss": "^0.6.14",
+    "vitest": "^3.1.2"
   },
   "engines": {
     "node": ">=18.0.0",
