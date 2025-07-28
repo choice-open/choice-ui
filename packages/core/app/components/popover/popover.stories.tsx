@@ -1179,3 +1179,36 @@ export const MatchTriggerWidth: Story = {
     )
   },
 }
+
+/**
+ * Popover footer
+ */
+export const PopoverFooter: Story = {
+  render: function PopoverFooterStory() {
+    const [popoverOpen, setPopoverOpen] = useState(false)
+    return (
+      <Popover
+        open={popoverOpen}
+        onOpenChange={setPopoverOpen}
+      >
+        <Popover.Trigger>
+          <Button variant={popoverOpen ? "secondary" : "primary"}>Popover</Button>
+        </Popover.Trigger>
+        <Popover.Content className="w-64 p-3">
+          <div className="space-y-2">
+            <h5 className="font-medium">Popover content</h5>
+            <p className="text-sm text-gray-600">This is the content of the Popover.</p>
+          </div>
+        </Popover.Content>
+        <Popover.Footer>
+          <Button
+            variant="secondary"
+            onClick={() => setPopoverOpen(false)}
+          >
+            Close
+          </Button>
+        </Popover.Footer>
+      </Popover>
+    )
+  },
+}
