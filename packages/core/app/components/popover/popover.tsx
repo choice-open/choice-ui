@@ -1,4 +1,4 @@
-import type { Placement } from "@floating-ui/react"
+import type { FloatingFocusManagerProps, Placement } from "@floating-ui/react"
 import {
   FloatingFocusManager,
   FloatingNode,
@@ -18,20 +18,6 @@ import { PopoverContext } from "./popover-context"
 const PORTAL_ROOT_ID = "floating-popover-root"
 const DEFAULT_OFFSET = 8
 
-interface FloatingFocusManagerProps {
-  closeOnFocusOut?: boolean
-  disabled?: boolean
-  getInsideElements?: () => Element[]
-  guards?: boolean
-  initialFocus?: number | React.MutableRefObject<HTMLElement | null>
-  modal?: boolean
-  order?: Array<"reference" | "floating" | "content">
-  outsideElementsInert?: boolean
-  restoreFocus?: boolean
-  returnFocus?: boolean
-  visuallyHiddenDismiss?: boolean | string
-}
-
 export interface PopoverProps {
   autoSize?: boolean
   autoUpdate?: boolean
@@ -42,12 +28,13 @@ export interface PopoverProps {
   defaultOpen?: boolean
   delay?: { close?: number; open?: number }
   draggable?: boolean
-  focusManagerProps?: FloatingFocusManagerProps
+  focusManagerProps?: Partial<FloatingFocusManagerProps>
   /**
    * @deprecated use focusManagerProps.initialFocus instead
    */
   initialFocus?: number | React.MutableRefObject<HTMLElement | null>
   interactions?: "hover" | "click" | "focus" | "none"
+  matchTriggerWidth?: boolean
   maxWidth?: number
   offset?: number
   onOpenChange?: (isOpen: boolean) => void
@@ -86,6 +73,7 @@ export const DragPopover = memo(function DragPopover({
   autoSize = true,
   rememberPosition = false,
   maxWidth,
+  matchTriggerWidth = false,
 }: PopoverProps) {
   const titleId = useId()
   const descriptionId = useId()
@@ -114,6 +102,7 @@ export const DragPopover = memo(function DragPopover({
     draggable,
     interactions,
     maxWidth,
+    matchTriggerWidth,
     nodeId,
     offset: offsetDistance,
     onOpenChange,

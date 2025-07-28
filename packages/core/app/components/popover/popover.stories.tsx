@@ -1144,3 +1144,38 @@ export const CloseOnEscape: Story = {
     )
   },
 }
+
+/**
+ * MatchTriggerWidth: Demonstrates the matchTriggerWidth prop functionality.
+ * By default, popovers will not match the width of the trigger. This story shows
+ * two popovers - one with matchTriggerWidth enabled and one with it disabled.
+ */
+export const MatchTriggerWidth: Story = {
+  render: function MatchTriggerWidthStory() {
+    const [matchTriggerWidthOpen, setMatchTriggerWidthOpen] = useState(false)
+    const triggerRef = useRef<HTMLButtonElement>(null)
+    return (
+      <div className="flex gap-8">
+        <div className="flex flex-col gap-2">
+          <Button
+            ref={triggerRef}
+            onClick={() => setMatchTriggerWidthOpen(!matchTriggerWidthOpen)}
+          >
+            Popover with matchTriggerWidth
+          </Button>
+
+          <Popover
+            triggerRef={triggerRef}
+            open={matchTriggerWidthOpen}
+            onOpenChange={setMatchTriggerWidthOpen}
+            matchTriggerWidth={true}
+          >
+            <Popover.Content className="p-3">
+              <p>This popover will match the width of the trigger.</p>
+            </Popover.Content>
+          </Popover>
+        </div>
+      </div>
+    )
+  },
+}
