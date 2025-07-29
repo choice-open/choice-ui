@@ -47,7 +47,7 @@ export const MenuScrollArrow = function MenuScrollArrow(props: MenuScrollArrowPr
   const styles = MenuScrollArrowTv({ dir, visible: show })
 
   useLayoutEffect(() => {
-    if (isPositioned && statusRef.current !== "active") {
+    if (isPositioned) {
       requestAnimationFrame(() => {
         flushSync(() => setShow(shouldShowArrow(scrollRef, dir)))
       })

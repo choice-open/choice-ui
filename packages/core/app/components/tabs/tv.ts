@@ -30,25 +30,84 @@ export const tabsTv = tv({
     ],
   },
   variants: {
+    variant: {
+      default: {},
+      dark: {},
+    },
     active: {
       true: {
-        tab: "bg-secondary-background text-default-foreground font-medium",
+        tab: "",
       },
       false: {
-        tab: "text-secondary-foreground",
+        tab: "",
       },
     },
     disabled: {
-      true: {
+      true: {},
+      false: {},
+    },
+  },
+  compoundVariants: [
+    {
+      variant: "default",
+      active: false,
+      class: {
         tab: "text-secondary-foreground",
       },
-      false: {
+    },
+    {
+      variant: "default",
+      active: true,
+      class: {
+        tab: "bg-secondary-background text-default-foreground font-medium",
+      },
+    },
+    {
+      variant: "default",
+      disabled: false,
+      class: {
         tab: "hover:bg-secondary-background hover:text-default-foreground",
       },
     },
-  },
+    {
+      variant: "default",
+      disabled: true,
+      class: {
+        tab: "text-secondary-foreground",
+      },
+    },
+    {
+      variant: "dark",
+      active: false,
+      class: {
+        tab: "text-white/50",
+      },
+    },
+    {
+      variant: "dark",
+      active: true,
+      class: {
+        tab: "bg-gray-700 font-medium text-white",
+      },
+    },
+    {
+      variant: "dark",
+      disabled: false,
+      class: {
+        tab: "hover:bg-gray-700 hover:text-white",
+      },
+    },
+    {
+      variant: "dark",
+      disabled: true,
+      class: {
+        tab: "text-white/50",
+      },
+    },
+  ],
   defaultVariants: {
     active: false,
     disabled: false,
+    variant: "default",
   },
 })

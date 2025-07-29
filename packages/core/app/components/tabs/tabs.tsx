@@ -10,6 +10,7 @@ interface TabsProps extends Omit<HTMLProps<HTMLDivElement>, "onChange"> {
   className?: string
   onChange?: (value: string) => void
   value: string
+  variant?: "default" | "dark"
 }
 
 interface TabsComponent
@@ -24,6 +25,7 @@ const TabsRoot = forwardRef<HTMLDivElement, TabsProps>(function Tabs(props, ref)
     className,
     "aria-label": ariaLabel,
     children,
+    variant = "default",
     ...rest
   } = props
   const id = useId()
@@ -32,11 +34,14 @@ const TabsRoot = forwardRef<HTMLDivElement, TabsProps>(function Tabs(props, ref)
     onChange?.(newValue)
   })
 
+  const tv = tabsTv({ variant })
+
   return (
     <TabsContext.Provider
       value={{
         value: valueProp,
         onChange: handleChange,
+        variant,
         id,
       }}
     >
@@ -45,7 +50,7 @@ const TabsRoot = forwardRef<HTMLDivElement, TabsProps>(function Tabs(props, ref)
         role="tablist"
         aria-orientation="horizontal"
         aria-label={ariaLabel || "Tabs"}
-        className={tcx(tabsTv().root(), className)}
+        className={tcx(tv.root(), className)}
         {...rest}
       >
         {children}

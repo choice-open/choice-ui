@@ -1,7 +1,7 @@
 import { Add, FieldTypeAttachment, Search, Settings } from "@choiceform/icons-react"
 import { faker } from "@faker-js/faker"
 import type { Meta, StoryObj } from "@storybook/react-vite"
-import React, { useCallback, useMemo, useRef, useState } from "react"
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { createEditor, Descendant, Node, Transforms } from "slate"
 import { Editable, ReactEditor, Slate, withReact } from "slate-react"
 import { Button } from "../button"
@@ -400,6 +400,7 @@ export const WithSearch: Story = {
   render: function WithSearchStory() {
     const [search, setSearch] = useState("")
     const [selected, setSelected] = useState<string[]>([])
+    const [isOpen, setIsOpen] = useState(false)
 
     const allOptions = useMemo(
       () =>
@@ -416,8 +417,18 @@ export const WithSearch: Story = {
       [allOptions, search],
     )
 
+    useEffect(() => {
+      if (!isOpen) {
+        setSearch("")
+      }
+    }, [isOpen])
+
     return (
-      <Dropdown selection={true}>
+      <Dropdown
+        selection={true}
+        open={isOpen}
+        onOpenChange={setIsOpen}
+      >
         <Dropdown.Trigger>
           <Dropdown.Value>Search Music ({selected.length} selected)</Dropdown.Value>
         </Dropdown.Trigger>
@@ -878,6 +889,7 @@ export const CoordinateMode: Story = {
               <Dropdown.Item onClick={() => setIsOpen(false)}>
                 <Dropdown.Value>Copy</Dropdown.Value>
               </Dropdown.Item>
+              <Dropdown.Divider />
               <Dropdown.Item onClick={() => setIsOpen(false)}>
                 <Dropdown.Value>Paste</Dropdown.Value>
               </Dropdown.Item>

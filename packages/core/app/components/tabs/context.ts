@@ -4,6 +4,7 @@ export interface TabsContextValue {
   id: string
   onChange: (value: string) => void
   value: string
+  variant: "default" | "dark"
 }
 
 export const TabsContext = createContext<TabsContextValue | null>(null)

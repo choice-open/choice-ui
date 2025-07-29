@@ -24,9 +24,9 @@ export const TabItem = memo(
     },
     ref,
   ) {
-    const { value: selectedValue, onChange, id } = useTabsContext()
+    const { value: selectedValue, onChange, id, variant } = useTabsContext()
     const isActive = value === selectedValue
-    const styles = tabsTv({ active: isActive, disabled })
+    const tv = tabsTv({ active: isActive, disabled, variant })
     const tabId = `${id}-tab-${value}`
 
     let ariaLabelText = ariaLabel
@@ -64,7 +64,7 @@ export const TabItem = memo(
         aria-disabled={disabled}
         tabIndex={isActive ? 0 : -1}
         id={tabId}
-        className={tcx(styles.tab(), className)}
+        className={tcx(tv.tab(), className)}
         onMouseDown={handleMouseDown}
         onKeyDown={handleKeyDown}
         value={value}
@@ -74,11 +74,11 @@ export const TabItem = memo(
         <>
           <span
             aria-hidden="true"
-            className={tcx(typeof children === "string" ? styles.label() : "sr-only")}
+            className={tcx(typeof children === "string" ? tv.label() : "sr-only")}
           >
             {typeof children === "string" ? children : ariaLabelText}
           </span>
-          <span className={tcx(styles.label())}>{children}</span>
+          <span className={tcx(tv.label())}>{children}</span>
         </>
       </button>
     )

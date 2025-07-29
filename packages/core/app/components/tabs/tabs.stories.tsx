@@ -169,3 +169,25 @@ export const MixedTabs: Story = {
     )
   },
 }
+
+/**
+ * Dark variant.
+ */
+export const DarkVariant: Story = {
+  render: function DarkVariantStory() {
+    const [selectedTab, setSelectedTab] = useState("tab1")
+    return (
+      <div className="rounded-xl bg-gray-900 p-8">
+        <Tabs
+          value={selectedTab}
+          onChange={(value) => setSelectedTab(value)}
+          variant="dark"
+        >
+          <Tabs.Item value="tab1">Tab 1</Tabs.Item>
+          <Tabs.Item value="tab2">Tab 2</Tabs.Item>
+          <Tabs.Item value="tab3">Tab 3</Tabs.Item>
+        </Tabs>
+      </div>
+    )
+  },
+}

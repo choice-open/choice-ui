@@ -133,6 +133,7 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
   const [scrollTop, setScrollTop] = useState(0)
   const [touch, setTouch] = useState(false)
+  const [isMouseOverMenu, setIsMouseOverMenu] = useState(false)
 
   // 坐标模式检测
   const isCoordinateMode = position !== null && position !== undefined
@@ -198,11 +199,13 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
       shift(),
       size({
         padding: 4,
-        apply(args) {
-          const { elements, availableHeight, rects } = args
+        apply({ elements, availableHeight, rects }) {
+          // 只在需要时设置最大高度，避免超出窗口边界
           Object.assign(elements.floating.style, {
-            height: `${Math.min(elements.floating.clientHeight, availableHeight)}px`,
+            maxHeight: `${availableHeight}px`,
           })
+          
+          // 如果需要匹配触发器宽度
           if (matchTriggerWidth) {
             elements.floating.style.width = `${rects.reference.width}px`
           }
@@ -227,12 +230,12 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
     }
   }, [position, isCoordinateMode, isControlledOpen, setVirtualPosition])
 
-  // 坐标模式下，菜单打开时自动激活第一个选项
+  // 坐标模式下，菜单打开时自动激活第一个选项（仅当鼠标不在菜单上时）
   useEffect(() => {
-    if (isCoordinateMode && isControlledOpen && activeIndex === null) {
+    if (isCoordinateMode && isControlledOpen && activeIndex === null && !isMouseOverMenu) {
       setActiveIndex(0)
     }
-  }, [isCoordinateMode, isControlledOpen, activeIndex])
+  }, [isCoordinateMode, isControlledOpen, activeIndex, isMouseOverMenu])
 
   // 坐标模式下，菜单关闭时重置 activeIndex
   useEffect(() => {
@@ -335,6 +338,20 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
   const handlePointerMove = useEventCallback(({ pointerType }: React.PointerEvent) => {
     if (pointerType !== "touch") {
       setTouch(false)
+    }
+  })
+
+  // 处理鼠标进入菜单
+  const handleMouseEnterMenu = useEventCallback(() => {
+    if (isCoordinateMode) {
+      setIsMouseOverMenu(true)
+    }
+  })
+
+  // 处理鼠标离开菜单
+  const handleMouseLeaveMenu = useEventCallback(() => {
+    if (isCoordinateMode) {
+      setIsMouseOverMenu(false)
     }
   })
 
@@ -450,8 +467,9 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
                   ref={refs.setFloating}
                   onTouchStart={handleTouchStart}
                   onPointerMove={handlePointerMove}
+                  onMouseEnter={handleMouseEnterMenu}
+                  onMouseLeave={handleMouseLeaveMenu}
                   {...getFloatingProps({
-                    ...getScrollProps(),
                     onContextMenu(e: React.MouseEvent) {
                       e.preventDefault()
                     },
@@ -462,6 +480,7 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
                       cloneElement(contentElement, {
                         ref: scrollRef,
                         matchTriggerWidth: matchTriggerWidth,
+                        ...getScrollProps(),
                       })}
                   </MenuContext.Provider>
 

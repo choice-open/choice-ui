@@ -5,18 +5,25 @@ import { SearchInput, type SearchInputProps } from "../../search-input"
 import { MenuSearchEmptyTv } from "../tv"
 
 export const MenuSearch = forwardRef<HTMLInputElement, SearchInputProps>((props, ref) => {
-  const {
-    className,
-    onKeyDown,
+  const { className, onKeyDown, onChange, value, ...rest } = props
 
-    ...rest
-  } = props
-
-  // 阻止键盘事件冒泡，防止被 useTypeahead 截获
+  // 处理键盘导航 - 允许箭头键导航到列表项
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
       onKeyDown?.(e)
 
+      // 箭头键：完全交给 useListNavigation 处理，不干扰其逻辑
+      if (["ArrowDown", "ArrowUp"].includes(e.key)) {
+        // 允许事件传播给 useListNavigation
+        return
+      }
+
+      // 导航相关的键允许传播给 useListNavigation
+      if (["Enter", "Escape", "Tab"].includes(e.key)) {
+        return
+      }
+
+      // 阻止其他键传播到 useTypeahead
       e.stopPropagation()
     },
     [onKeyDown],
@@ -26,6 +33,8 @@ export const MenuSearch = forwardRef<HTMLInputElement, SearchInputProps>((props,
     <SearchInput
       {...rest}
       ref={ref}
+      value={value}
+      onChange={onChange}
       autoFocus
       onKeyDown={handleKeyDown}
       variant="dark"
