@@ -63,6 +63,12 @@ const PORTAL_ROOT_ID = "floating-menu-root"
 const DEFAULT_OFFSET = 4
 
 export interface DropdownProps {
+  /**
+   * CoordinateMode, first item auto select
+   * 坐标模式下，是否自动选中第一个选项
+   * @default true
+   */
+  autoSelectFirstItem?: boolean
   children?: React.ReactNode
   disabledNested?: boolean
   focusManagerProps?: Partial<FloatingFocusManagerProps>
@@ -105,6 +111,7 @@ interface DropdownComponentType
 const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) {
   const {
     children,
+    autoSelectFirstItem = true,
     disabledNested = false,
     offset: offsetDistance = DEFAULT_OFFSET,
     placement = "bottom-start",
@@ -204,7 +211,7 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
           Object.assign(elements.floating.style, {
             maxHeight: `${availableHeight}px`,
           })
-          
+
           // 如果需要匹配触发器宽度
           if (matchTriggerWidth) {
             elements.floating.style.width = `${rects.reference.width}px`
@@ -233,9 +240,9 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
   // 坐标模式下，菜单打开时自动激活第一个选项（仅当鼠标不在菜单上时）
   useEffect(() => {
     if (isCoordinateMode && isControlledOpen && activeIndex === null && !isMouseOverMenu) {
-      setActiveIndex(0)
+      setActiveIndex(autoSelectFirstItem ? 0 : null)
     }
-  }, [isCoordinateMode, isControlledOpen, activeIndex, isMouseOverMenu])
+  }, [isCoordinateMode, isControlledOpen, activeIndex, isMouseOverMenu, autoSelectFirstItem])
 
   // 坐标模式下，菜单关闭时重置 activeIndex
   useEffect(() => {

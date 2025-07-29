@@ -8,6 +8,7 @@ import { Button } from "../button"
 import { IconButton } from "../icon-button"
 import { Popover } from "../popover"
 import { Dropdown } from "./dropdown"
+import { Checkbox } from "../checkbox"
 
 const meta: Meta<typeof Dropdown> = {
   title: "Collections/Dropdown",
@@ -836,6 +837,7 @@ export const CoordinateMode: Story = {
   render: function CoordinateModeStory() {
     const [isOpen, setIsOpen] = useState(false)
     const [position, setPosition] = useState<{ x: number; y: number } | null>(null)
+    const [autoSelectFirstItem, setAutoSelectFirstItem] = useState(true)
 
     const handleClick = (event: React.MouseEvent) => {
       setPosition({
@@ -853,6 +855,15 @@ export const CoordinateMode: Story = {
             This demonstrates the Dropdown component in coordinate mode - no trigger element,
             positioned at specific x/y coordinates. Perfect for context menus, mentions, etc.
           </p>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <Checkbox
+            value={autoSelectFirstItem}
+            onChange={setAutoSelectFirstItem}
+          >
+            Auto Select First Item
+          </Checkbox>
         </div>
 
         <div
@@ -876,6 +887,7 @@ export const CoordinateMode: Story = {
         {/* Dropdown in coordinate mode */}
         <div>
           <Dropdown
+            autoSelectFirstItem={autoSelectFirstItem}
             position={position}
             open={isOpen}
             onOpenChange={setIsOpen}
