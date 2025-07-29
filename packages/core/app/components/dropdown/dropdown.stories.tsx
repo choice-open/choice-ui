@@ -1106,3 +1106,224 @@ export const MentionsWithCoordinateMode: Story = {
     )
   },
 }
+
+/**
+ * Interactive test for nested menu click behavior
+ */
+export const NestedMenuClickTest: Story = {
+  render: function DropdownNestedTest() {
+    const [clickLog, setClickLog] = useState<string[]>([])
+    const [mainOpen, setMainOpen] = useState(false)
+    const [submenu1Open, setSubmenu1Open] = useState(false)
+    const [submenu2Open, setSubmenu2Open] = useState(false)
+    const [deepSubmenuOpen, setDeepSubmenuOpen] = useState(false)
+
+    const addLog = (message: string) => {
+      setClickLog((prev) => [...prev, `${new Date().toLocaleTimeString()}: ${message}`])
+    }
+
+    const handleMainOpenChange = (open: boolean) => {
+      setMainOpen(open)
+      addLog(`Main menu ${open ? "opened" : "closed"}`)
+    }
+
+    const handleSubmenu1OpenChange = (open: boolean) => {
+      setSubmenu1Open(open)
+      addLog(`Submenu 1 ${open ? "opened" : "closed"}`)
+    }
+
+    const handleSubmenu2OpenChange = (open: boolean) => {
+      setSubmenu2Open(open)
+      addLog(`Submenu 2 ${open ? "opened" : "closed"}`)
+    }
+
+    const handleDeepSubmenuOpenChange = (open: boolean) => {
+      setDeepSubmenuOpen(open)
+      addLog(`Deep submenu ${open ? "opened" : "closed"}`)
+    }
+
+    const handleItemClick = (itemName: string) => {
+      addLog(`Clicked: ${itemName}`)
+    }
+
+    const clearLog = () => {
+      setClickLog([])
+    }
+
+    return (
+      <div className="space-y-4 p-8">
+        <h1 className="text-2xl font-bold">Dropdown Nested Menu Click Test</h1>
+
+        <div className="rounded-lg bg-gray-100 p-4 dark:bg-gray-800">
+          <h2 className="mb-2 text-lg font-semibold">Test Instructions:</h2>
+          <ol className="list-inside list-decimal space-y-1 text-sm">
+            <li>Click the main dropdown trigger to open the menu</li>
+            <li>Hover over &quot;File&quot; to open the first submenu</li>
+            <li>Hover over &quot;Recent Files&quot; to open the nested submenu</li>
+            <li>Click on any item in the nested submenu</li>
+            <li>Observe if the entire menu closes or just the clicked submenu</li>
+          </ol>
+        </div>
+
+        <div className="flex gap-4">
+          <div className="flex-1">
+            <h3 className="mb-2 text-sm font-medium">Menu State:</h3>
+            <div className="space-y-1 text-sm">
+              <div>
+                Main Menu:{" "}
+                <span className={mainOpen ? "text-green-600" : "text-red-600"}>
+                  {mainOpen ? "Open" : "Closed"}
+                </span>
+              </div>
+              <div>
+                Submenu 1:{" "}
+                <span className={submenu1Open ? "text-green-600" : "text-red-600"}>
+                  {submenu1Open ? "Open" : "Closed"}
+                </span>
+              </div>
+              <div>
+                Submenu 2:{" "}
+                <span className={submenu2Open ? "text-green-600" : "text-red-600"}>
+                  {submenu2Open ? "Open" : "Closed"}
+                </span>
+              </div>
+              <div>
+                Deep Submenu:{" "}
+                <span className={deepSubmenuOpen ? "text-green-600" : "text-red-600"}>
+                  {deepSubmenuOpen ? "Open" : "Closed"}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex-1">
+            <Dropdown
+              open={mainOpen}
+              onOpenChange={handleMainOpenChange}
+            >
+              <Dropdown.Trigger>
+                <Dropdown.Value>Nested Menu Test</Dropdown.Value>
+              </Dropdown.Trigger>
+              <Dropdown.Content>
+                <Dropdown.Item onClick={() => handleItemClick("New")}>
+                  <Dropdown.Value>New</Dropdown.Value>
+                </Dropdown.Item>
+
+                {/* First level submenu */}
+                <Dropdown
+                  open={submenu1Open}
+                  onOpenChange={handleSubmenu1OpenChange}
+                >
+                  <Dropdown.SubTrigger>
+                    <Dropdown.Value>File</Dropdown.Value>
+                  </Dropdown.SubTrigger>
+                  <Dropdown.Content>
+                    <Dropdown.Item onClick={() => handleItemClick("Open File")}>
+                      <Dropdown.Value>Open File</Dropdown.Value>
+                    </Dropdown.Item>
+                    <Dropdown.Item onClick={() => handleItemClick("Save File")}>
+                      <Dropdown.Value>Save File</Dropdown.Value>
+                    </Dropdown.Item>
+
+                    {/* Second level submenu */}
+                    <Dropdown
+                      open={submenu2Open}
+                      onOpenChange={handleSubmenu2OpenChange}
+                    >
+                      <Dropdown.SubTrigger>
+                        <Dropdown.Value>Recent Files</Dropdown.Value>
+                      </Dropdown.SubTrigger>
+                      <Dropdown.Content>
+                        <Dropdown.Item onClick={() => handleItemClick("file1.txt")}>
+                          <Dropdown.Value>file1.txt</Dropdown.Value>
+                        </Dropdown.Item>
+                        <Dropdown.Item onClick={() => handleItemClick("file2.txt")}>
+                          <Dropdown.Value>file2.txt</Dropdown.Value>
+                        </Dropdown.Item>
+
+                        {/* Third level submenu (deep nesting) */}
+                        <Dropdown
+                          open={deepSubmenuOpen}
+                          onOpenChange={handleDeepSubmenuOpenChange}
+                        >
+                          <Dropdown.SubTrigger>
+                            <Dropdown.Value>More Files</Dropdown.Value>
+                          </Dropdown.SubTrigger>
+                          <Dropdown.Content>
+                            <Dropdown.Item onClick={() => handleItemClick("deepfile1.txt")}>
+                              <Dropdown.Value>deepfile1.txt</Dropdown.Value>
+                            </Dropdown.Item>
+                            <Dropdown.Item onClick={() => handleItemClick("deepfile2.txt")}>
+                              <Dropdown.Value>deepfile2.txt</Dropdown.Value>
+                            </Dropdown.Item>
+                          </Dropdown.Content>
+                        </Dropdown>
+                      </Dropdown.Content>
+                    </Dropdown>
+                  </Dropdown.Content>
+                </Dropdown>
+
+                <Dropdown.Divider />
+
+                <Dropdown.Item onClick={() => handleItemClick("Exit")}>
+                  <Dropdown.Value>Exit</Dropdown.Value>
+                </Dropdown.Item>
+              </Dropdown.Content>
+            </Dropdown>
+          </div>
+        </div>
+
+        <div className="mt-6">
+          <div className="mb-2 flex items-center justify-between">
+            <h3 className="text-sm font-medium">Event Log:</h3>
+            <button
+              onClick={clearLog}
+              className="rounded bg-gray-200 px-2 py-1 text-xs hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600"
+            >
+              Clear Log
+            </button>
+          </div>
+          <div className="h-48 overflow-y-auto rounded bg-gray-50 p-3 font-mono text-xs dark:bg-gray-900">
+            {clickLog.length === 0 ? (
+              <div className="text-gray-500">No events yet...</div>
+            ) : (
+              clickLog.map((log, index) => (
+                <div
+                  key={index}
+                  className="py-0.5"
+                >
+                  {log}
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+
+        <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-4 dark:border-yellow-800 dark:bg-yellow-900/20">
+          <h3 className="mb-2 font-semibold text-yellow-800 dark:text-yellow-200">
+            Expected Behavior:
+          </h3>
+          <p className="text-sm text-yellow-700 dark:text-yellow-300">
+            When clicking on any item in a nested menu, the ENTIRE menu hierarchy should close. This
+            is consistent with how the ContextMenu component behaves and provides a better user
+            experience.
+          </p>
+        </div>
+
+        <div className="rounded-lg border border-blue-200 bg-blue-50 p-4 dark:border-blue-800 dark:bg-blue-900/20">
+          <h3 className="mb-2 font-semibold text-blue-800 dark:text-blue-200">
+            Technical Details:
+          </h3>
+          <div className="space-y-1 text-sm text-blue-700 dark:text-blue-300">
+            <p>• The Dropdown uses FloatingTree from @floating-ui/react</p>
+            <p>
+              • Menu items emit a <code>click</code> event via <code>tree.events.emit(click)</code>
+            </p>
+            <p>• The root Dropdown listens for this event and closes when triggered</p>
+            <p>• This ensures all nested menus close together</p>
+          </div>
+        </div>
+      </div>
+    )
+  },
+}

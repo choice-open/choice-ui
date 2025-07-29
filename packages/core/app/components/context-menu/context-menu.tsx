@@ -280,7 +280,7 @@ const ContextMenuComponent = memo(function ContextMenuComponent(props: ContextMe
     allowMouseUpCloseRef.current = false
     const timeout = setTimeout(() => {
       allowMouseUpCloseRef.current = true
-    }, 300)
+    }, 200)
 
     return () => clearTimeout(timeout)
   })
@@ -317,8 +317,16 @@ const ContextMenuComponent = memo(function ContextMenuComponent(props: ContextMe
 
   // 处理鼠标抬起关闭
   useEffect(() => {
-    const handleMouseUp = () => {
+    const handleMouseUp = (event: MouseEvent) => {
       if (allowMouseUpCloseRef.current) {
+        const target = event.target as Node
+        // 检查是否点击在任何浮动菜单内部
+        const menuElements = document.querySelectorAll('[role="menu"]')
+        for (const menuElement of menuElements) {
+          if (menuElement.contains(target)) {
+            return // 如果点击在菜单内部，不关闭
+          }
+        }
         handleOpenChange(false)
       }
     }

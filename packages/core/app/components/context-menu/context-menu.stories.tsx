@@ -4,6 +4,7 @@ import { Dropdown } from "../dropdown"
 import { ContextMenu } from "./context-menu"
 import { Button } from "../button"
 import { Popover } from "../popover"
+import { Checkbox } from "../checkbox"
 
 const meta: Meta<typeof ContextMenu> = {
   title: "Collections/ContextMenu",
@@ -664,16 +665,12 @@ export const WithDisabled: Story = {
 
     return (
       <div className="space-y-8 p-8">
-        <div>
-          <label className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              checked={isDisabled}
-              onChange={(e) => setIsDisabled(e.target.checked)}
-            />
-            Disable context menu
-          </label>
-        </div>
+        <Checkbox
+          value={isDisabled}
+          onChange={setIsDisabled}
+        >
+          Disable context menu
+        </Checkbox>
 
         <div className="flex gap-8">
           {/* Using ContextMenu.Trigger */}
