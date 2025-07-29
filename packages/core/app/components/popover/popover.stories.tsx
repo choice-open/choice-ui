@@ -1144,3 +1144,71 @@ export const CloseOnEscape: Story = {
     )
   },
 }
+
+/**
+ * MatchTriggerWidth: Demonstrates the matchTriggerWidth prop functionality.
+ * By default, popovers will not match the width of the trigger. This story shows
+ * two popovers - one with matchTriggerWidth enabled and one with it disabled.
+ */
+export const MatchTriggerWidth: Story = {
+  render: function MatchTriggerWidthStory() {
+    const [matchTriggerWidthOpen, setMatchTriggerWidthOpen] = useState(false)
+    const triggerRef = useRef<HTMLButtonElement>(null)
+    return (
+      <div className="flex gap-8">
+        <div className="flex flex-col gap-2">
+          <Button
+            ref={triggerRef}
+            onClick={() => setMatchTriggerWidthOpen(!matchTriggerWidthOpen)}
+          >
+            Popover with matchTriggerWidth
+          </Button>
+
+          <Popover
+            triggerRef={triggerRef}
+            open={matchTriggerWidthOpen}
+            onOpenChange={setMatchTriggerWidthOpen}
+            matchTriggerWidth={true}
+          >
+            <Popover.Content className="p-3">
+              <p>This popover will match the width of the trigger.</p>
+            </Popover.Content>
+          </Popover>
+        </div>
+      </div>
+    )
+  },
+}
+
+/**
+ * Popover footer
+ */
+export const PopoverFooter: Story = {
+  render: function PopoverFooterStory() {
+    const [popoverOpen, setPopoverOpen] = useState(false)
+    return (
+      <Popover
+        open={popoverOpen}
+        onOpenChange={setPopoverOpen}
+      >
+        <Popover.Trigger>
+          <Button variant={popoverOpen ? "secondary" : "primary"}>Popover</Button>
+        </Popover.Trigger>
+        <Popover.Content className="w-64 p-3">
+          <div className="space-y-2">
+            <h5 className="font-medium">Popover content</h5>
+            <p className="text-sm text-gray-600">This is the content of the Popover.</p>
+          </div>
+        </Popover.Content>
+        <Popover.Footer>
+          <Button
+            variant="secondary"
+            onClick={() => setPopoverOpen(false)}
+          >
+            Close
+          </Button>
+        </Popover.Footer>
+      </Popover>
+    )
+  },
+}

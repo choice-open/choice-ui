@@ -61,6 +61,7 @@ const DEFAULT_OFFSET = 4
 export interface ContextMenuProps extends HTMLProps<HTMLDivElement> {
   children?: ReactNode
   disabled?: boolean
+  disabledNested?: boolean
   focusManagerProps?: FloatingFocusManagerProps
   offset?: number
   onOpenChange?: (open: boolean) => void
@@ -128,6 +129,7 @@ const ContextMenuComponent = memo(function ContextMenuComponent(props: ContextMe
   const {
     children,
     disabled = false,
+    disabledNested = false,
     offset: offsetDistance = DEFAULT_OFFSET,
     placement = "bottom-start",
     portalId = PORTAL_ROOT_ID,
@@ -168,7 +170,7 @@ const ContextMenuComponent = memo(function ContextMenuComponent(props: ContextMe
   const nodeId = useFloatingNodeId()
   const parentId = useFloatingParentNodeId()
   const item = useListItem()
-  const isNested = parentId != null
+  const isNested = !disabledNested && parentId != null
 
   // 处理开关状态变化
   const handleOpenChange = useEventCallback((newOpen: boolean) => {

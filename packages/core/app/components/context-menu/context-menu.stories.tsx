@@ -2,6 +2,8 @@ import type { Meta, StoryObj } from "@storybook/react-vite"
 import React, { useRef, useState } from "react"
 import { Dropdown } from "../dropdown"
 import { ContextMenu } from "./context-menu"
+import { Button } from "../button"
+import { Popover } from "../popover"
 
 const meta: Meta<typeof ContextMenu> = {
   title: "Collections/ContextMenu",
@@ -753,4 +755,62 @@ function DisabledWithTriggerRef({ disabled }: { disabled: boolean }) {
       </ContextMenu>
     </>
   )
+}
+
+/**
+ * Nested context menu in popover
+ *
+ **/
+
+export const NestedContextMenuInPopover: Story = {
+  render: function NestedContextMenuInPopoverStory() {
+    const triggerRef = useRef<HTMLDivElement>(null)
+
+    const Item = () => {
+      return (
+        <>
+          <div
+            ref={triggerRef}
+            className="p-8"
+          >
+            Right click me for selection menu
+          </div>
+          <ContextMenu
+            disabledNested
+            triggerRef={triggerRef}
+          >
+            <ContextMenu.Content>
+              <ContextMenu.Item>
+                <ContextMenu.Value>Copy</ContextMenu.Value>
+              </ContextMenu.Item>
+              <ContextMenu.Item>
+                <ContextMenu.Value>Cut</ContextMenu.Value>
+              </ContextMenu.Item>
+              <ContextMenu.Item>
+                <ContextMenu.Value>Paste</ContextMenu.Value>
+              </ContextMenu.Item>
+              <ContextMenu.Divider />
+              <ContextMenu.Item variant="danger">
+                <ContextMenu.Value>Delete</ContextMenu.Value>
+              </ContextMenu.Item>
+            </ContextMenu.Content>
+          </ContextMenu>
+        </>
+      )
+    }
+
+    return (
+      <>
+        <Popover>
+          <Popover.Trigger>
+            <Button>Open Popover</Button>
+          </Popover.Trigger>
+
+          <Popover.Content>
+            <Item />
+          </Popover.Content>
+        </Popover>
+      </>
+    )
+  },
 }

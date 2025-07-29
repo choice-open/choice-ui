@@ -58,7 +58,7 @@ export interface SelectProps {
   children?: React.ReactNode
   className?: string
   disabled?: boolean
-  focusManagerProps?: FloatingFocusManagerProps
+  focusManagerProps?: Partial<FloatingFocusManagerProps>
   matchTriggerWidth?: boolean
   onChange?: (value: string) => void
   onOpenChange?: (open: boolean) => void

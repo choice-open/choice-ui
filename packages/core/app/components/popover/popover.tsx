@@ -1,4 +1,4 @@
-import type { Placement } from "@floating-ui/react"
+import type { FloatingFocusManagerProps, Placement } from "@floating-ui/react"
 import {
   FloatingFocusManager,
   FloatingNode,
@@ -8,7 +8,7 @@ import {
   useFloatingParentNodeId,
 } from "@floating-ui/react"
 import React, { memo, useCallback, useEffect, useId, useMemo, useRef } from "react"
-import { findChildByType, mergeRefs } from "~/utils"
+import { findChildByType, mergeRefs, tcx } from "~/utils"
 import { Modal, ModalContent, ModalFooter } from "../modal"
 import { Slot } from "../slot"
 import { PopoverHeader, PopoverTrigger } from "./components"
@@ -17,20 +17,6 @@ import { PopoverContext } from "./popover-context"
 
 const PORTAL_ROOT_ID = "floating-popover-root"
 const DEFAULT_OFFSET = 8
-
-interface FloatingFocusManagerProps {
-  closeOnFocusOut?: boolean
-  disabled?: boolean
-  getInsideElements?: () => Element[]
-  guards?: boolean
-  initialFocus?: number | React.MutableRefObject<HTMLElement | null>
-  modal?: boolean
-  order?: Array<"reference" | "floating" | "content">
-  outsideElementsInert?: boolean
-  restoreFocus?: boolean
-  returnFocus?: boolean
-  visuallyHiddenDismiss?: boolean | string
-}
 
 export interface PopoverProps {
   autoSize?: boolean
@@ -42,12 +28,13 @@ export interface PopoverProps {
   defaultOpen?: boolean
   delay?: { close?: number; open?: number }
   draggable?: boolean
-  focusManagerProps?: FloatingFocusManagerProps
+  focusManagerProps?: Partial<FloatingFocusManagerProps>
   /**
    * @deprecated use focusManagerProps.initialFocus instead
    */
   initialFocus?: number | React.MutableRefObject<HTMLElement | null>
   interactions?: "hover" | "click" | "focus" | "none"
+  matchTriggerWidth?: boolean
   maxWidth?: number
   offset?: number
   onOpenChange?: (isOpen: boolean) => void
@@ -86,6 +73,7 @@ export const DragPopover = memo(function DragPopover({
   autoSize = true,
   rememberPosition = false,
   maxWidth,
+  matchTriggerWidth = false,
 }: PopoverProps) {
   const titleId = useId()
   const descriptionId = useId()
@@ -114,6 +102,7 @@ export const DragPopover = memo(function DragPopover({
     draggable,
     interactions,
     maxWidth,
+    matchTriggerWidth,
     nodeId,
     offset: offsetDistance,
     onOpenChange,
@@ -186,6 +175,12 @@ export const DragPopover = memo(function DragPopover({
     )
   }, [children, dragContentRef, descriptionId])
 
+  const footerContent = useMemo(() => {
+    const footerChild = findChildByType(children, ModalFooter)
+    if (!footerChild) return null
+    return footerChild
+  }, [children])
+
   // 🔧 优化 Context value，减少不必要的依赖项
   const contextValue = useMemo(
     () => ({
@@ -231,7 +226,7 @@ export const DragPopover = memo(function DragPopover({
               <Modal
                 ref={handleFloatingRef}
                 style={combinedStyles}
-                className={className}
+                className={tcx(matchTriggerWidth && "max-w-none", className)}
                 data-state={floating.positionReady ? "open" : "opening"}
                 data-dragging={dragState.isDragging ? "true" : undefined}
                 data-draggable={draggable ? "true" : undefined}
@@ -244,6 +239,7 @@ export const DragPopover = memo(function DragPopover({
               >
                 {headerContent}
                 {floating.positionReady && contentContent}
+                {footerContent}
               </Modal>
             )}
           </FloatingPortal>
