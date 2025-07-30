@@ -63,8 +63,8 @@ export const Basic: Story = {
 export const Photo: Story = {
   render: function PhotoStory() {
     const photos = useMemo(() => {
-      return Array.from({ length: 4 }, () => {
-        const photo = faker.image.avatar()
+      return Array.from({ length: 4 }, (_, index) => {
+        const photo = `https://api.dicebear.com/7.x/avataaars/svg?seed=${index}`
         const name = faker.person.firstName()
         return {
           name,
