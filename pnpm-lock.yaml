@@ -62,6 +62,9 @@ importers:
       es-toolkit:
         specifier: ^1.13.1
         version: 1.39.7
+      fractional-indexing-jittered:
+        specifier: ^1.0.0
+        version: 1.0.0
       framer-motion:
         specifier: ^12.23.6
         version: 12.23.6(react-dom@18.2.0)(react@18.2.0)
