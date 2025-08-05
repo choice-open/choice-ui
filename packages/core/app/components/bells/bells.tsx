@@ -7,7 +7,7 @@ import { tcx } from "~/utils"
 import { IconButton } from "../icon-button"
 import { BellsTv } from "./tv"
 
-export interface BellsProps extends ToasterProps {
+export interface BellsProps extends Omit<ToasterProps, "id"> {
   action?: (id: string | number) => React.ReactNode
   className?: string
   classNames?: {
