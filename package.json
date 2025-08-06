@@ -29,6 +29,7 @@
     "text-editor:lint": "eslint packages/text-editor/app/**/*.{ts,tsx} --ext .ts,.tsx",
     "text-editor:lint:fix": "eslint packages/text-editor/app/**/*.{ts,tsx} --ext .ts,.tsx --fix",
     "ai-assistant:dev": "pnpm --filter=\"@choiceform/ai-assistant\" run dev",
+    "ai-assistant:server": "pnpm --filter=\"@choiceform/ai-assistant-server\" run dev",
     "ai-assistant:build": "pnpm --filter=\"@choiceform/ai-assistant\" run build",
     "ai-assistant:storybook": "pnpm --filter=\"@choiceform/ai-assistant\" run storybook",
     "ai-assistant:lint": "eslint packages/ai-assistant/app/**/*.{ts,tsx} --ext .ts,.tsx",

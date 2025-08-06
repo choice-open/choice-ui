@@ -4,7 +4,7 @@ import { useDialogContext } from "../dialog-context"
 
 export const DialogHeader = memo(
   forwardRef<HTMLDivElement, React.ComponentProps<typeof ModalHeader>>((props, ref) => {
-    const { children, className, ...rest } = props
+    const { children, ...rest } = props
     const { titleId, onCloseClick } = useDialogContext()
 
     return (

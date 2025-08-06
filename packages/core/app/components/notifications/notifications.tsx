@@ -2,7 +2,7 @@ import { useMemo } from "react"
 import { toast as sonnerToast, ToasterProps } from "sonner"
 import { NotificationsTv } from "./tv"
 
-interface NotificationsProps extends ToasterProps {
+interface NotificationsProps extends Omit<ToasterProps, "id"> {
   actions?: (id: string | number) => {
     action?: {
       content: React.ReactNode

@@ -1,2 +1,2 @@
-export * from "./info-box-render";
-export * from "./info-box-tooltips";
+export * from "./info-box-render"
+export * from "./info-box-tooltips"
