@@ -39,6 +39,8 @@ const ContextInputBase = forwardRef<HTMLDivElement, ContextInputProps>(function 
     onFocus,
     onBlur,
     onKeyDown,
+    onCompositionStart,
+    onCompositionEnd,
     onMentionSelect,
     renderMention,
     renderSuggestion,
@@ -186,6 +188,8 @@ const ContextInputBase = forwardRef<HTMLDivElement, ContextInputProps>(function 
           renderMention={renderMention}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
+          onCompositionStart={onCompositionStart}
+          onCompositionEnd={onCompositionEnd}
           onFocus={onFocus}
           onBlur={onBlur}
           minHeight={minHeight}
