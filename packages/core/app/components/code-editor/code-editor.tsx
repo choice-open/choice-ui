@@ -10,6 +10,7 @@ export interface CodeEditorProps {
   customExtensions?: Extension[]
   onChange?(value: string, viewUpdate: ViewUpdate): void
   onEditorUpdate?: (update: ViewUpdate) => void
+  onFormat?: (formattedCode: string) => void
   placeholder?: string | HTMLElement
   readonly?: boolean
   value?: string
@@ -20,7 +21,7 @@ export interface CodeEditorRef {
 }
 
 export const CodeEditor = forwardRef<HTMLDivElement, CodeEditorProps>((props, ref) => {
-  const { value, onChange, autoFocus, className, readonly, onEditorUpdate } = props
+  const { value, onChange, autoFocus, className, readonly, onEditorUpdate, onFormat } = props
 
   const { containerRef } = useCodeEditor({
     value,
@@ -28,6 +29,7 @@ export const CodeEditor = forwardRef<HTMLDivElement, CodeEditorProps>((props, re
     autoFocus,
     readonly,
     onEditorUpdate,
+    onFormat,
   })
 
   return (

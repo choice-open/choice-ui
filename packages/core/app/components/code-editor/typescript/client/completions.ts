@@ -26,6 +26,31 @@ export const matchText = (context: CompletionContext) => {
 export const typescriptCompletionSource: CompletionSource = async (context) => {
   const { worker } = context.state.facet(typescriptWorkerFacet)
 
+  const line = context.state.doc.lineAt(context.pos)
+  const lineText = line.text
+  const importMatch = lineText.match(/^\s*import\s.*from\s*["']([^"']*)$/)
+
+  if (importMatch) {
+    const from = context.pos - importMatch[1].length
+    const modulePrefix = importMatch[1]
+
+    const moduleNames = (await worker.getModuleNames?.()) ?? []
+
+    const options: Completion[] = moduleNames
+      .filter((name) => name.startsWith(modulePrefix))
+      .map((name) => ({
+        label: name,
+        type: "import",
+        apply: name,
+      }))
+
+    return {
+      from,
+      options,
+      filter: false,
+    }
+  }
+
   const word = matchText(context)
 
   const blockComment = context.matchBefore(/\/\*?\*?/)

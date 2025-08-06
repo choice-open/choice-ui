@@ -3,7 +3,7 @@ import type { LanguageServiceWorker, LanguageServiceWorkerInit } from "../types"
 import { indexedDbCache } from "./cache"
 import { bufferChangeSets } from "./utils"
 import { pascalCase } from "change-case"
-import { getCompletionsAtPos } from "./completions"
+import { getCompletionsAtPos, getModuleNamesFromVfs } from "./completions"
 import { LUXON_VERSION } from "./constants"
 import { setupTypescriptEnv } from "./env"
 import { getHoverTooltip } from "./hover-tooltip"
@@ -188,6 +188,9 @@ export const worker: LanguageServiceWorkerInit = {
           fileName: codeFileName,
           env,
         })
+      },
+      getModuleNames() {
+        return getModuleNamesFromVfs(env)
       },
       getDiagnostics() {
         return getDiagnostics({ env, fileName: codeFileName }).map((diagnostic) => ({

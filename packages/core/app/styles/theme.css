@@ -44,16 +44,16 @@
   --blue-900: rgba(9, 48, 119, 1);
   --blue-950: rgba(13, 25, 63, 1);
 
-  --vlolet-100: rgba(245, 245, 255, 1);
-  --vlolet-200: rgba(235, 235, 255, 1);
-  --vlolet-300: rgba(211, 209, 255, 1);
-  --vlolet-400: rgba(180, 178, 255, 1);
-  --vlolet-500: rgba(77, 73, 252, 1);
-  --vlolet-600: rgba(68, 61, 235.1);
-  --vlolet-700: rgba(61, 50, 226, 1);
-  --vlolet-800: rgba(54, 32, 223, 1);
-  --vlolet-900: rgba(47, 21, 172, 1);
-  --vlolet-950: rgba(29, 18, 84, 1);
+  --violet-100: rgba(245, 245, 255, 1);
+  --violet-200: rgba(235, 235, 255, 1);
+  --violet-300: rgba(211, 209, 255, 1);
+  --violet-400: rgba(180, 178, 255, 1);
+  --violet-500: rgba(77, 73, 252, 1);
+  --violet-600: rgba(68, 61, 235.1);
+  --violet-700: rgba(61, 50, 226, 1);
+  --violet-800: rgba(54, 32, 223, 1);
+  --violet-900: rgba(47, 21, 172, 1);
+  --violet-950: rgba(29, 18, 84, 1);
 
   --purple-100: rgba(249, 245, 255, 1);
   --purple-200: rgba(241, 229, 255, 1);
@@ -191,16 +191,16 @@
   --blue-900: rgba(27, 51, 95, 1);
   --blue-950: rgba(22, 30, 54, 1);
 
-  --vlolet-100: rgba(245, 245, 255, 1);
-  --vlolet-200: rgba(230, 229, 255, 1);
-  --vlolet-300: rgba(206, 204, 255, 1);
-  --vlolet-400: rgba(185, 184, 255, 1);
-  --vlolet-500: rgba(61, 56, 245, 1);
-  --vlolet-600: rgba(59, 52, 213, 1);
-  --vlolet-700: rgba(55, 44, 201, 1);
-  --vlolet-800: rgba(57, 39, 190, 1);
-  --vlolet-900: rgba(48, 37, 121, 1);
-  --vlolet-950: rgba(29, 24, 53, 1);
+  --violet-100: rgba(245, 245, 255, 1);
+  --violet-200: rgba(230, 229, 255, 1);
+  --violet-300: rgba(206, 204, 255, 1);
+  --violet-400: rgba(185, 184, 255, 1);
+  --violet-500: rgba(61, 56, 245, 1);
+  --violet-600: rgba(59, 52, 213, 1);
+  --violet-700: rgba(55, 44, 201, 1);
+  --violet-800: rgba(57, 39, 190, 1);
+  --violet-900: rgba(48, 37, 121, 1);
+  --violet-950: rgba(29, 24, 53, 1);
 
   --purple-100: rgba(241, 231, 254, 1);
   --purple-200: rgba(227, 207, 252, 1);
@@ -361,16 +361,16 @@
   --color-blue-900: var(--blue-900);
   --color-blue-950: var(--blue-950);
 
-  --color-vlolet-100: var(--vlolet-100);
-  --color-vlolet-200: var(--vlolet-200);
-  --color-vlolet-300: var(--vlolet-300);
-  --color-vlolet-400: var(--vlolet-400);
-  --color-vlolet-500: var(--vlolet-500);
-  --color-vlolet-600: var(--vlolet-600);
-  --color-vlolet-700: var(--vlolet-700);
-  --color-vlolet-800: var(--vlolet-800);
-  --color-vlolet-900: var(--vlolet-900);
-  --color-vlolet-950: var(--vlolet-950);
+  --color-violet-100: var(--violet-100);
+  --color-violet-200: var(--violet-200);
+  --color-violet-300: var(--violet-300);
+  --color-violet-400: var(--violet-400);
+  --color-violet-500: var(--violet-500);
+  --color-violet-600: var(--violet-600);
+  --color-violet-700: var(--violet-700);
+  --color-violet-800: var(--violet-800);
+  --color-violet-900: var(--violet-900);
+  --color-violet-950: var(--violet-950);
 
   --color-purple-100: var(--purple-100);
   --color-purple-200: var(--purple-200);
@@ -564,4 +564,19 @@
   --z-index-tooltip: 1000;
   --z-index-notification: 1100;
   --z-index-scroll: 1200;
+
+  /* Code Editor Syntax Highlighting */
+  --code-syntax-keyword: var(--color-violet-600);
+  --code-syntax-string: var(--color-green-600);
+  --code-syntax-number: var(--color-orange-600);
+  --code-syntax-boolean: var(--color-orange-600);
+  --code-syntax-function: var(--color-blue-600);
+  --code-syntax-variable: var(--color-default-foreground);
+  --code-syntax-property: var(--color-blue-600);
+  --code-syntax-operator: var(--color-default-foreground);
+  --code-syntax-comment: var(--color-secondary-foreground);
+
+  /* Code Editor Indentation Markers */
+  --color-code-indentation-marker: var(--color-gray-300);
+  --color-code-indentation-marker-active: var(--color-blue-500);
 }

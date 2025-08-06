@@ -10,12 +10,13 @@ type Props = {
   customExtensions?: Extension[]
   onChange?: (value: string, viewUpdate: ViewUpdate) => void
   onEditorUpdate?: (update: ViewUpdate) => void
+  onFormat?: (formattedCode: string) => void
   readonly?: boolean
   value?: string
 }
 
 export function useCodeEditor(props: Props) {
-  const { value, customExtensions, autoFocus, onChange, readonly, onEditorUpdate } = props
+  const { value, customExtensions, autoFocus, onChange, readonly, onEditorUpdate, onFormat } = props
 
   const id = useId()
 
@@ -26,6 +27,7 @@ export function useCodeEditor(props: Props) {
     readonly,
     customExtensions,
     onEditorUpdate: onEditorUpdate ?? (() => {}),
+    onFormat,
   })
 
   const { getFullLanguageExtensions } = useLanguageExtensions({

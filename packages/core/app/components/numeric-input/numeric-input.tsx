@@ -286,6 +286,11 @@ export const NumericInputBase = forwardRef<HTMLInputElement, NumericInputProps>(
             <span
               tabIndex={-1}
               className={styles.tooltip()}
+              onFocusCapture={() => {
+                if (inputRef.current) {
+                  inputRef.current.focus()
+                }
+              }}
             />
           </Tooltip>
         )}

@@ -53,10 +53,6 @@ function isIgnoredDiagnostic(diagnostic: ts.Diagnostic) {
     // No implicit any
     case 7006:
       return true
-    // Cannot find module or its corresponding type declarations.
-    case 2307:
-      // TODO: check if this is needed, it's not used in the code editor
-      return true
   }
 
   return false

@@ -506,6 +506,7 @@ export const Tooltip: Story = {
   render: function TooltipStory() {
     return (
       <NumericInput
+        value={10}
         tooltip={{
           content: "This is a tooltip",
         }}

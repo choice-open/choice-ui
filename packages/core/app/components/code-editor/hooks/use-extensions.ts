@@ -15,16 +15,18 @@ import { closeBrackets, closeBracketsKeymap } from "@codemirror/autocomplete"
 import { highlightSelectionMatches } from "@codemirror/search"
 import { bracketMatching, foldGutter, indentOnInput } from "@codemirror/language"
 import { indentationMarkers } from "@replit/codemirror-indentation-markers"
+import { createFormatExtension } from "../extensions/format"
 
 type Props = {
   customExtensions?: Extension[]
   onEditorUpdate: (update: ViewUpdate) => void
+  onFormat?: (formattedCode: string) => void
   readonly?: boolean
   rows?: number
 }
 
 export function useExtensions(props: Props) {
-  const { readonly, customExtensions = [], rows, onEditorUpdate } = props
+  const { readonly, customExtensions = [], rows, onEditorUpdate, onFormat } = props
 
   const extensions: Extension[] = useMemo(() => {
     const baseExtensions: Extension[] = [
@@ -92,8 +94,10 @@ export function useExtensions(props: Props) {
       )
     }
 
-    return [baseExtensions, ...customExtensions]
-  }, [customExtensions, onEditorUpdate, readonly, rows])
+    const formatExtension = onFormat ? createFormatExtension(onFormat) : []
+
+    return [baseExtensions, formatExtension, ...customExtensions]
+  }, [customExtensions, onEditorUpdate, onFormat, readonly, rows])
 
   return extensions
 }

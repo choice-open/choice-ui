@@ -20,7 +20,7 @@ function typescriptCompletionToEditor(
   const type = convertTsKindtoEditorCompletionType(entry.kind)
 
   return {
-    label: type && ["method", "function"].includes(type) ? entry.name + "()" : entry.name,
+    label: entry.name,
     type: convertTsKindtoEditorCompletionType(entry.kind),
     commitCharacters: entry.commitCharacters ?? completionInfo.defaultCommitCharacters,
     detail: entry.labelDetails?.detail,
@@ -48,6 +48,38 @@ export async function getCompletionsAtPos({
   fileName: string
   pos: number
 }) {
+  const sourceFile = env.getSourceFile(fileName)
+
+  if (sourceFile) {
+    const text = sourceFile.getFullText()
+    const beforeText = text.substring(Math.max(0, pos - 100), pos)
+
+    const importMatch = beforeText.match(/(?:import\s+.*?\s+from\s*|import\s*\(\s*)['"`]([^'"`]*)$/)
+
+    if (importMatch) {
+      const query = importMatch[1] || ""
+      const availableModules = getModuleNamesFromVfs(env)
+
+      const moduleCompletions = availableModules
+        .filter((moduleName) => moduleName.toLowerCase().includes(query.toLowerCase()))
+        .map((moduleName) => ({
+          label: moduleName,
+          type: "module" as const,
+          boost: moduleName.toLowerCase().startsWith(query.toLowerCase()) ? 100 : 50,
+        }))
+
+      if (moduleCompletions.length > 0) {
+        return {
+          result: {
+            from: pos - query.length,
+            options: moduleCompletions,
+          },
+          isGlobal: false,
+        }
+      }
+    }
+  }
+
   const completionInfo = env.languageService.getCompletionsAtPosition(fileName, pos, {}, {})
 
   if (!completionInfo) return null
@@ -60,4 +92,18 @@ export async function getCompletionsAtPos({
     result: { from: pos, options },
     isGlobal: completionInfo.isGlobalCompletion,
   }
+}
+
+export function getModuleNamesFromVfs(env: tsvfs.VirtualTypeScriptEnvironment): string[] {
+  const moduleNames: string[] = []
+
+  // react
+  if (
+    env.getSourceFile("/node_modules/react/index.d.ts") ||
+    env.getSourceFile("/node_modules/@types/react/index.d.ts")
+  ) {
+    moduleNames.push("react")
+  }
+
+  return moduleNames
 }

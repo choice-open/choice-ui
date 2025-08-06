@@ -20,6 +20,7 @@ export type LanguageServiceWorker = {
   getCompletionsAtPos(pos: number): Promise<{ isGlobal: boolean; result: CompletionResult } | null>
   getDiagnostics(): Diagnostic[]
   getHoverTooltip(pos: number): HoverInfo | null
+  getModuleNames(): string[]
   updateFile(changes: ChangeSet): void
   updateNodeTypes(): void
 }
