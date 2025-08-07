@@ -32,6 +32,8 @@ interface SlateEditorProps
   hasHeader: boolean
   minHeight: number
   onChange: (value: Descendant[]) => void
+  onCompositionEnd?: (event: React.CompositionEvent) => void
+  onCompositionStart?: (event: React.CompositionEvent) => void
   onKeyDown: (event: React.KeyboardEvent) => void
   size: "default" | "large"
   slateValue: Descendant[]
@@ -51,6 +53,8 @@ export const SlateEditor = React.forwardRef<HTMLDivElement, SlateEditorProps>(fu
     minHeight = 80,
     onChange,
     onKeyDown,
+    onCompositionStart,
+    onCompositionEnd,
     onFocus,
     onBlur,
     hasHeader,
@@ -124,6 +128,8 @@ export const SlateEditor = React.forwardRef<HTMLDivElement, SlateEditorProps>(fu
               renderElement={renderElement}
               renderLeaf={renderLeaf}
               onKeyDown={handleKeyDown}
+              onCompositionStart={onCompositionStart}
+              onCompositionEnd={onCompositionEnd}
               onFocus={onFocus}
               onBlur={onBlur}
               style={{

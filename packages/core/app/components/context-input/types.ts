@@ -44,6 +44,8 @@ export interface ContextInputProps {
   // 事件回调
   onBlur?: () => void
   onChange?: (value: ContextInputValue) => void
+  onCompositionEnd?: (event: React.CompositionEvent) => void
+  onCompositionStart?: (event: React.CompositionEvent) => void
   onFocus?: () => void
   onKeyDown?: (event: React.KeyboardEvent) => void
   onMentionSelect?: (mention: MentionItem, trigger: string) => void

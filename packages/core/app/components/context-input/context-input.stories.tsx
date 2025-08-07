@@ -993,3 +993,298 @@ export const ClearFunctionTest: Story = {
     )
   },
 }
+
+/**
+ * ControlledValue: Context input with external value control.
+ * - Demonstrates controlled value state management
+ * - External buttons can modify input content and mentions
+ * - Shows programmatic content insertion and clearing
+ * - Auto-focuses editor when value changes externally (when autoFocus is enabled)
+ * - Cursor always moves to end position after value changes
+ * - Useful for form integration and external state management
+ *
+ * ```tsx
+ * const [value, setValue] = useState<ContextInputValue>({ text: "", mentions: [] })
+ *
+ * <ContextInput
+ *   value={value}
+ *   autoFocus
+ *   onChange={setValue}
+ *   triggers={triggers}
+ * />
+ *
+ * <Button onClick={() => setValue({ text: "Hello world!", mentions: [] })}>
+ *   Set Content
+ * </Button>
+ * ```
+ */
+export const ControlledValue: Story = {
+  render: function ControlledValue() {
+    const [value, setValue] = useState<ContextInputValue>({ text: "", mentions: [] })
+    const isDark = useDarkMode()
+    const style = isDark ? oneDark : oneLight
+
+    const presetValues = [
+      {
+        label: "Empty",
+        value: { text: "", mentions: [] },
+      },
+      {
+        label: "Simple Text",
+        value: { text: "Hello, this is a simple message!", mentions: [] },
+      },
+      {
+        label: "With Mention",
+        value: {
+          text: "Hello @John Doe, how are you today?",
+          mentions: [
+            {
+              startIndex: 6,
+              endIndex: 15,
+              text: "@John Doe",
+              item: {
+                id: "1",
+                type: "user" as const,
+                label: "John Doe",
+                avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=john`,
+              },
+            },
+          ],
+        },
+      },
+      {
+        label: "Multiple Mentions",
+        value: {
+          text: "Meeting with @Alice Smith and @Bob Johnson at 3pm in /general channel",
+          mentions: [
+            {
+              startIndex: 13,
+              endIndex: 25,
+              text: "@Alice Smith",
+              item: {
+                id: "2",
+                type: "user" as const,
+                label: "Alice Smith",
+                avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=alice`,
+              },
+            },
+            {
+              startIndex: 30,
+              endIndex: 42,
+              text: "@Bob Johnson",
+              item: {
+                id: "3",
+                type: "user" as const,
+                label: "Bob Johnson",
+                avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=bob`,
+              },
+            },
+            {
+              startIndex: 53,
+              endIndex: 61,
+              text: "/general",
+              item: {
+                id: "4",
+                type: "channel" as const,
+                label: "general",
+                description: "General discussion channel",
+              },
+            },
+          ],
+        },
+      },
+    ]
+
+    const appendText = (text: string) => {
+      setValue((prev) => ({
+        ...prev,
+        text: prev.text + (prev.text ? " " : "") + text,
+      }))
+    }
+
+    return (
+      <div className="w-full max-w-md space-y-4">
+        <div className="space-y-2">
+          <h4 className="font-medium">Value Control Buttons</h4>
+          <div className="flex flex-wrap gap-2">
+            {presetValues.map((preset) => (
+              <Button
+                key={preset.label}
+                variant="secondary"
+                size="default"
+                onClick={() => setValue(preset.value)}
+              >
+                {preset.label}
+              </Button>
+            ))}
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          <h4 className="font-medium">Dynamic Actions</h4>
+          <div className="flex flex-wrap gap-2">
+            <Button
+              variant="secondary"
+              size="default"
+              onClick={() => appendText("Great job!")}
+            >
+              Add &quot;Great job!&quot;
+            </Button>
+            <Button
+              variant="secondary"
+              size="default"
+              onClick={() => appendText("👍")}
+            >
+              Add 👍
+            </Button>
+
+            <Button
+              variant="secondary"
+              size="default"
+              onClick={() =>
+                setValue({
+                  text: "Hello @john, check this @admin message!",
+                  mentions: [
+                    {
+                      item: { id: "john", type: "user", label: "John Doe", metadata: {} },
+                      startIndex: 6,
+                      endIndex: 11,
+                      text: "@john",
+                      context: {
+                        fullContext: "Hello @john, check this @admin message!",
+                        mentionText: "@john",
+                      },
+                    },
+                    {
+                      item: { id: "admin", type: "user", label: "Admin", metadata: {} },
+                      startIndex: 24,
+                      endIndex: 30,
+                      text: "@admin",
+                      context: {
+                        fullContext: "Hello @john, check this @admin message!",
+                        mentionText: "@admin",
+                      },
+                    },
+                  ],
+                })
+              }
+            >
+              Test Multiple @
+            </Button>
+            <Button
+              variant="secondary"
+              size="default"
+              onClick={() => setValue({ text: faker.lorem.sentence(), mentions: [] })}
+            >
+              Random Text
+            </Button>
+            <Button
+              variant="secondary"
+              size="default"
+              onClick={() => setValue({ text: "Hello world!", mentions: [] })}
+            >
+              Simple Text
+            </Button>
+            <Button
+              variant="secondary"
+              size="default"
+              onClick={() => {
+                const text = "Simple text with @user at end"
+                const mentionText = "@user"
+                const startIndex = text.indexOf(mentionText)
+                const endIndex = startIndex + mentionText.length
+
+                setValue({
+                  text: text,
+                  mentions: [
+                    {
+                      item: { id: "test", type: "user", label: "Test User", metadata: {} },
+                      startIndex: startIndex,
+                      endIndex: endIndex,
+                      text: mentionText,
+                      context: {
+                        fullContext: text,
+                        mentionText: mentionText,
+                      },
+                    },
+                  ],
+                })
+              }}
+            >
+              Test End @
+            </Button>
+          </div>
+        </div>
+
+        <ContextInput
+          value={value}
+          autoFocus
+          placeholder="Content is controlled externally..."
+          className="max-h-96 w-80"
+          triggers={[
+            {
+              char: "@",
+              onSearch: async (query) => {
+                return users.filter((user) =>
+                  user.label.toLowerCase().includes(query.toLowerCase()),
+                )
+              },
+            },
+            {
+              char: "/",
+              onSearch: async (query) => {
+                return channels.filter((channel) =>
+                  channel.label.toLowerCase().includes(query.toLowerCase()),
+                )
+              },
+            },
+          ]}
+          onChange={setValue}
+          onMentionSelect={(mention, trigger) => {
+            console.log("Mention selected:", mention, trigger)
+          }}
+        >
+          <ContextInput.Footer>
+            <div className="flex items-center gap-2">
+              <span className="text-secondary-foreground text-sm">
+                Characters: {value.text.length}
+              </span>
+              <span className="text-secondary-foreground text-sm">
+                Mentions: {value.mentions.length}
+              </span>
+            </div>
+            <Button
+              variant="secondary"
+              size="default"
+              onClick={() => setValue({ text: "", mentions: [] })}
+            >
+              Clear All
+            </Button>
+          </ContextInput.Footer>
+        </ContextInput>
+
+        <Result
+          value={value}
+          style={style}
+        />
+
+        <div className="bg-secondary-background rounded-xl p-4">
+          <p className="mb-2 font-medium">Controlled Value Features:</p>
+          <ul className="text-secondary-foreground space-y-1 text-sm">
+            <li>• External buttons control input content</li>
+            <li>• Programmatic mention insertion</li>
+            <li>• Real-time character and mention counts</li>
+            <li>• Preset content examples</li>
+            <li>• Full bidirectional data binding</li>
+            <li>
+              • <strong>Auto-focus:</strong> Editor auto-focuses when autoFocus is enabled
+            </li>
+            <li>
+              • <strong>Cursor positioning:</strong> Always moves to end after value changes
+            </li>
+          </ul>
+        </div>
+      </div>
+    )
+  },
+}
