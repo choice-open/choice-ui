@@ -67,6 +67,22 @@ export default defineConfig(({ mode }) => {
             fs.copyFileSync(llmsFile, targetPath)
             console.log("Copied: llms.txt")
           }
+          
+          // 复制静态文件配置
+          const headersFile = path.resolve(__dirname, "public/_headers")
+          if (fs.existsSync(headersFile)) {
+            const targetPath = path.join(outputDir, "_headers")
+            fs.copyFileSync(headersFile, targetPath)
+            console.log("Copied: _headers")
+          }
+          
+          // 复制重定向配置
+          const redirectsFile = path.resolve(__dirname, "public/_redirects")
+          if (fs.existsSync(redirectsFile)) {
+            const targetPath = path.join(outputDir, "_redirects")
+            fs.copyFileSync(redirectsFile, targetPath)
+            console.log("Copied: _redirects")
+          }
         },
       },
     ],

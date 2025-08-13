@@ -1,0 +1,9 @@
+# Serve README files as plain text
+/components/*/README.md /components/:splat/README.md 200 text/plain
+/hooks/*/README.md /hooks/:splat/README.md 200 text/plain  
+/utils/*/README.md /utils/:splat/README.md 200 text/plain
+/styles/README.md /styles/README.md 200 text/plain
+/llms.txt /llms.txt 200 text/plain
+
+# Fallback for SPA
+/* /index.html 200

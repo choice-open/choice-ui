@@ -1,7 +1,7 @@
 {
   "name": "@choiceform/design-system",
-  "version": "1.0.3",
-  "description": "A modern React UI component library",
+  "version": "1.0.4",
+  "description": "A modern React UI component library - Figma-inspired design system with comprehensive documentation",
   "sideEffects": false,
   "type": "module",
   "main": "./dist/cjs/index.cjs",
@@ -9,7 +9,8 @@
   "types": "./dist/index.d.ts",
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "llms.txt"
   ],
   "exports": {
     ".": {

@@ -1,0 +1,21 @@
+# Static file headers for README files
+*.md
+  Content-Type: text/plain; charset=utf-8
+  X-Content-Type-Options: nosniff
+
+# Prevent markdown files from being treated as HTML
+/components/*/README.md
+  Content-Type: text/plain; charset=utf-8
+  
+/hooks/*/README.md
+  Content-Type: text/plain; charset=utf-8
+  
+/utils/*/README.md
+  Content-Type: text/plain; charset=utf-8
+  
+/styles/README.md
+  Content-Type: text/plain; charset=utf-8
+
+# llms.txt should be served as plain text
+/llms.txt
+  Content-Type: text/plain; charset=utf-8
