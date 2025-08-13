@@ -35,7 +35,7 @@
     "clean": "rimraf dist",
     "prepublishOnly": "pnpm run build",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "NODE_OPTIONS='--max-old-space-size=4096' storybook build",
+    "build-storybook": "NODE_OPTIONS='--max-old-space-size=4096' storybook build && node fix-storybook-paths.js",
     "plop": "pnpm dlx plop",
     "test": "jest",
     "test:watch": "jest --watch",

@@ -1,6 +1,6 @@
 import { RefObject } from "react"
 
-type Direction = "ltr" | "rtl"
+export type Direction = "ltr" | "rtl"
 
 export interface FileState {
   error?: string

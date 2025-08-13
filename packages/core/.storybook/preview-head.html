@@ -36,3 +36,29 @@
 />
 
 <title>ChoiceForm Design System</title>
+
+<!-- 修复 Storybook 9 静态部署路径问题 -->
+<script>
+  // 在页面加载后修复路径
+  document.addEventListener('DOMContentLoaded', function() {
+    // 只在 iframe 中执行
+    if (window.location.pathname.includes('/iframe') || window.parent !== window) {
+      // 修复动态加载的脚本路径
+      const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+          mutation.addedNodes.forEach(function(node) {
+            if (node.tagName === 'SCRIPT' && node.src && node.src.includes('/sb-')) {
+              node.src = node.src.replace(/\/sb-/g, './sb-');
+            }
+            if (node.tagName === 'LINK' && node.href && node.href.includes('/sb-')) {
+              node.href = node.href.replace(/\/sb-/g, './sb-');
+            }
+          });
+        });
+      });
+      
+      observer.observe(document.head, { childList: true, subtree: true });
+      observer.observe(document.body, { childList: true, subtree: true });
+    }
+  });
+</script>
