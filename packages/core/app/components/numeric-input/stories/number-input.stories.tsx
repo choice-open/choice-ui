@@ -1,6 +1,5 @@
 import {
   ChevronDownSmall,
-  ColorTypeGradient,
   ColorTypeSolid,
   FixedHeight,
   FixedWidth,
@@ -355,7 +354,7 @@ export const Expression: Story = {
       <NumericInput
         expression="{width}px, {height}px"
         value={value}
-        onChange={(newValue) => setValue(newValue as { width: number; height: number })}
+        onChange={(newValue) => setValue(newValue as { height: number; width: number })}
       >
         <NumericInput.Prefix>
           <FixedWidth />
@@ -676,11 +675,11 @@ export const MultiValueExpressionUpdate: Story = {
     const [lastUpdatedProperty, setLastUpdatedProperty] = useState("")
 
     const handleChange = (newValue: NumericInputValue, detail: NumberResult) => {
-      setValue(newValue as { width: number; height: number })
+      setValue(newValue as { height: number; width: number })
       setUpdateCount((prev) => prev + 1)
 
       // 确定哪个属性被更新了
-      const newObj = newValue as { width: number; height: number }
+      const newObj = newValue as { height: number; width: number }
       if (newObj.width !== value.width && newObj.height !== value.height) {
         setLastUpdatedProperty("width & height")
       } else if (newObj.width !== value.width) {
@@ -723,8 +722,60 @@ export const MultiValueExpressionUpdate: Story = {
               </p>
             )}
             <p className="text-secondary-foreground mt-2">
-              提示: 输入逗号分隔的两个值（例如 "15, 20"）来更新两个属性，
-              或者保留逗号前的值不变只修改后面的值（例如 ", 25"）来只更新height。
+              提示: 输入逗号分隔的两个值（例如 &quot;15, 20&quot;）来更新两个属性，
+              或者保留逗号前的值不变只修改后面的值（例如 &quot;, 25&quot;）来只更新height。
+            </p>
+          </div>
+        </div>
+      </div>
+    )
+  },
+}
+
+/**
+ * Step and Shift Step: Demonstrates the step functionality with modifier key support
+ *
+ * This example shows how NumericInput responds to different step values based on modifier keys:
+ * - Default: 1 step
+ * - Shift: 10 steps (larger increments)
+ * - Meta/Ctrl: 0.1 steps (finer control)
+ */
+export const StepAndShiftStep: Story = {
+  render: function StepAndShiftStepStory() {
+    const [value, setValue] = useState(100)
+
+    return (
+      <div className="grid w-96 gap-4">
+        <div className="flex flex-col gap-2">
+          <h3 className="text-lg font-medium">Step and Shift Step</h3>
+          <p className="text-secondary-foreground">
+            Focus the input and use arrow keys with modifier keys to see different step values:
+          </p>
+          <ul className="text-secondary-foreground list-disc pl-5">
+            <li>↑/↓: Default step (1)</li>
+            <li>Shift + ↑/↓: Large step (10)</li>
+          </ul>
+        </div>
+
+        <div className="flex flex-col items-start gap-2">
+          <NumericInput
+            value={value}
+            onChange={(newValue) => setValue(newValue as number)}
+            step={1}
+            min={0}
+            max={1000}
+          >
+            <NumericInput.Prefix>
+              <HugWidth />
+            </NumericInput.Prefix>
+          </NumericInput>
+
+          <div className="mt-2 rounded border bg-gray-50 p-3">
+            <p className="text-sm">
+              <b>Current value:</b> {value}
+            </p>
+            <p className="text-secondary-foreground mt-2">
+              Tip: Try holding Shift while using arrow keys to see different step sizes
             </p>
           </div>
         </div>

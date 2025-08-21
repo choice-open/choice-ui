@@ -4,23 +4,23 @@ import { NumberResult, NumericInputValue } from "../types"
 import { dealWithNumericInputValue } from "../utils"
 
 interface UseInputInteractionsProps<T extends NumericInputValue> {
-  inputRef: RefObject<HTMLInputElement>
-  displayValue: string
-  setDisplayValue: (value: string) => void
-  isFocused: boolean
-  setIsFocused: (focused: boolean) => void
-  expression: string
-  min?: number
-  max?: number
   decimal?: number
   disabled?: boolean
-  readOnly?: boolean
-  innerValue?: NumberResult
-  setValue: (value: NumberResult | ((prev: NumberResult | undefined) => NumberResult)) => void
-  updateValue: (updateFn?: (value: number) => number) => void
+  displayValue: string
+  expression: string
   getCurrentStep: () => number
+  innerValue?: NumberResult
+  inputRef: RefObject<HTMLInputElement>
+  isFocused: boolean
+  max?: number
+  min?: number
   onChange?: (value: T, detail: NumberResult) => void
   onEmpty?: () => void
+  readOnly?: boolean
+  setDisplayValue: (value: string) => void
+  setIsFocused: (focused: boolean) => void
+  setValue: (value: NumberResult | ((prev: NumberResult | undefined) => NumberResult)) => void
+  updateValue: (updateFn?: (value: number) => number) => void
   value?: T
 }
 
