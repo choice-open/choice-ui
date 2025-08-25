@@ -267,3 +267,82 @@ export const Controlled: Story = {
     )
   },
 }
+
+/**
+ * FocusSelectionModes: Demonstrates different focus selection behaviors.
+ * 
+ * Features:
+ * - "all": Selects all text on focus (default behavior)
+ * - "end": Moves cursor to end of text on focus
+ * - "none": No selection change on focus
+ * 
+ * Usage:
+ * ```tsx
+ * // Select all text on focus (default)
+ * <Input focusSelection="all" />
+ * 
+ * // Move cursor to end
+ * <Input focusSelection="end" />
+ * 
+ * // No selection change
+ * <Input focusSelection="none" />
+ * ```
+ * 
+ * Best Practices:
+ * - Use "all" for fields where users typically replace the entire value
+ * - Use "end" for fields where users often append to existing content
+ * - Use "none" for fields where cursor position should be preserved
+ */
+export const FocusSelectionModes: Story = {
+  render: function FocusSelectionModesStory() {
+    const [value1, setValue1] = useState("This text will be fully selected on focus")
+    const [value2, setValue2] = useState("Cursor will move to the end on focus")
+    const [value3, setValue3] = useState("No selection change on focus")
+    
+    return (
+      <div className="space-y-6">
+        <div>
+          <h3 className="text-body-small mb-2 text-text-secondary">Select All (Default)</h3>
+          <Input
+            value={value1}
+            onChange={setValue1}
+            focusSelection="all"
+            placeholder="Click to select all text..."
+            className="w-80"
+          />
+          <p className="text-body-small text-text-tertiary mt-1">
+            focusSelection=&quot;all&quot; - Selects all text when focused
+          </p>
+        </div>
+        
+        <div>
+          <h3 className="text-body-small mb-2 text-text-secondary">Move to End</h3>
+          <Input
+            value={value2}
+            onChange={setValue2}
+            focusSelection="end"
+            placeholder="Click to move cursor to end..."
+            className="w-80"
+          />
+          <p className="text-body-small text-text-tertiary mt-1">
+            focusSelection=&quot;end&quot; - Moves cursor to end of text
+          </p>
+        </div>
+        
+        <div>
+          <h3 className="text-body-small mb-2 text-text-secondary">No Selection</h3>
+          <Input
+            value={value3}
+            onChange={setValue3}
+            focusSelection="none"
+            placeholder="Click anywhere to focus..."
+            className="w-80"
+          />
+          <p className="text-body-small text-text-tertiary mt-1">
+            focusSelection=&quot;none&quot; - Maintains cursor position
+          </p>
+        </div>
+      </div>
+    )
+  },
+}

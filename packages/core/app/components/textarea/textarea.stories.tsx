@@ -31,6 +31,7 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import React, { useState } from "react"
 import { Textarea } from "./index"
+import { Switch } from "../switch"
 
 const meta: Meta<typeof Textarea> = {
   title: "Forms/Textarea",
@@ -428,6 +429,277 @@ export const ResizeHandle: Story = {
         onChange={setValue}
         placeholder="Drag the resize handle to adjust height..."
       />
+    )
+  },
+}
+
+/**
+ * Simple Usage: Demonstrates the default simple usage pattern.
+ *
+ * Features:
+ * - Direct value and onChange props
+ * - Auto-sizing with maxRows constraint
+ * - Clean, minimal API
+ *
+ * Usage:
+ * ```tsx
+ * <Textarea
+ *   value={value}
+ *   onChange={setValue}
+ *   placeholder="Enter text..."
+ *   maxRows={6}
+ * />
+ * ```
+ */
+export const SimpleUsage: Story = {
+  render: function SimpleUsage() {
+    const [value, setValue] = useState("")
+
+    return (
+      <div className="space-y-4">
+        <div>
+          <h3 className="text-body-small mb-2">Simple Usage Pattern</h3>
+          <Textarea
+            value={value}
+            onChange={setValue}
+            placeholder="This textarea has a lot of content to demonstrate scrolling behavior."
+            className="w-80"
+            maxRows={6}
+          />
+        </div>
+        <div className="text-body-small text-text-tertiary">Character count: {value.length}</div>
+      </div>
+    )
+  },
+}
+
+/**
+ * Compound Usage: Demonstrates the compound component pattern with Textarea.Content.
+ *
+ * Features:
+ * - Custom content component
+ * - Additional className on content
+ * - Full control over TextareaAutosize props
+ *
+ * Usage:
+ * ```tsx
+ * <Textarea
+ *   value={value}
+ *   onChange={setValue}
+ *   maxRows={6}
+ * >
+ *   <Textarea.Content className="custom-class" />
+ * </Textarea>
+ * ```
+ */
+export const CompoundUsage: Story = {
+  render: function CompoundUsage() {
+    const [value, setValue] = useState("")
+
+    return (
+      <div className="space-y-4">
+        <div>
+          <h3 className="text-body-small mb-2">Compound Component Pattern</h3>
+          <Textarea
+            value={value}
+            onChange={setValue}
+            placeholder="This textarea has a lot of content to demonstrate scrolling behavior."
+            className="w-80"
+            maxRows={6}
+          >
+            <Textarea.Content className="font-mono" />
+          </Textarea>
+        </div>
+        <div className="text-body-small text-text-tertiary">
+          Using Textarea.Content with custom font-mono class
+        </div>
+      </div>
+    )
+  },
+}
+
+/**
+ * Focus Selection Modes: Demonstrates different focus selection behaviors.
+ *
+ * Features:
+ * - "all": Selects all text on focus (default)
+ * - "end": Moves cursor to end of text
+ * - "none": No selection change
+ *
+ * Usage:
+ * ```tsx
+ * <Textarea
+ *   focusSelection="end"
+ *   value={value}
+ *   onChange={setValue}
+ * />
+ * ```
+ */
+export const FocusSelectionModes: Story = {
+  render: function FocusSelectionModes() {
+    const [value1, setValue1] = useState("This text will be fully selected on focus")
+    const [value2, setValue2] = useState("Cursor will move to the end on focus")
+    const [value3, setValue3] = useState("No selection change on focus")
+
+    return (
+      <div className="space-y-6">
+        <div>
+          <h3 className="text-body-small mb-2">Select All (Default)</h3>
+          <Textarea
+            value={value1}
+            onChange={setValue1}
+            focusSelection="all"
+            placeholder="Click to select all text..."
+            className="w-80"
+            minRows={2}
+            maxRows={4}
+          />
+          <p className="text-body-small text-text-tertiary mt-1">
+            focusSelection=&quot;all&quot; - Selects all text when focused
+          </p>
+        </div>
+
+        <div>
+          <h3 className="text-body-small mb-2">Move to End</h3>
+          <Textarea
+            value={value2}
+            onChange={setValue2}
+            focusSelection="end"
+            placeholder="Click to move cursor to end..."
+            className="w-80"
+            minRows={2}
+            maxRows={4}
+          />
+          <p className="text-body-small text-text-tertiary mt-1">
+            focusSelection=&quot;end&quot; - Moves cursor to end of text
+          </p>
+        </div>
+
+        <div>
+          <h3 className="text-body-small mb-2">No Selection</h3>
+          <Textarea
+            value={value3}
+            onChange={setValue3}
+            focusSelection="none"
+            placeholder="Click anywhere to focus..."
+            className="w-80"
+            minRows={2}
+            maxRows={4}
+          />
+          <p className="text-body-small text-text-tertiary mt-1">
+            focusSelection=&quot;none&quot; - Maintains cursor position
+          </p>
+        </div>
+      </div>
+    )
+  },
+}
+
+/**
+ * No Newline Mode: Demonstrates textarea that prevents newline on Enter.
+ *
+ * Features:
+ * - Prevents Enter key from creating new lines
+ * - Useful for single-line input scenarios
+ * - Still allows text wrapping visually
+ *
+ * Usage:
+ * ```tsx
+ * <Textarea
+ *   allowNewline={false}
+ *   value={value}
+ *   onChange={setValue}
+ * />
+ * ```
+ */
+export const NoNewlineMode: Story = {
+  render: function NoNewlineMode() {
+    const [value, setValue] = useState("")
+
+    return (
+      <div className="space-y-4">
+        <div>
+          <h3 className="text-body-small mb-2">No Newline Allowed</h3>
+          <Textarea
+            value={value}
+            onChange={setValue}
+            allowNewline={false}
+            placeholder="Press Enter - it won't create a new line..."
+            className="w-80"
+            minRows={2}
+            maxRows={4}
+          />
+          <p className="text-body-small text-text-tertiary mt-1">
+            allowNewline=false - Enter key is disabled
+          </p>
+        </div>
+        
+        <div>
+          <h3 className="text-body-small mb-2">Normal Mode (for comparison)</h3>
+          <Textarea
+            value={value}
+            onChange={setValue}
+            allowNewline={true}
+            placeholder="Press Enter to create new lines..."
+            className="w-80"
+            minRows={2}
+            maxRows={4}
+          />
+          <p className="text-body-small text-text-tertiary mt-1">
+            allowNewline=true (default) - Enter key works normally
+          </p>
+        </div>
+      </div>
+    )
+  },
+}
+
+/**
+ * Custom Line Height: Demonstrates the customizable lineHeight prop.
+ *
+ * Features:
+ * - Adjustable line height for different text densities
+ * - Automatic height calculation based on custom line height
+ * - Works with minRows and maxRows
+ *
+ * Usage:
+ * ```tsx
+ * <Textarea
+ *   lineHeight={24}
+ *   minRows={3}
+ *   value={value}
+ *   onChange={setValue}
+ * />
+ * ```
+ */
+export const CustomLineHeight: Story = {
+  render: function CustomLineHeight() {
+    const [value, setValue] = useState(
+      "Default line height (16px)\nThis is line 2\nThis is line 3\nThis is line 4",
+    )
+    const [size, setSize] = useState<"default" | "large">("default")
+
+    return (
+      <div className="space-y-6">
+        <Switch
+          value={size === "large"}
+          onChange={() => setSize(size === "large" ? "default" : "large")}
+        >
+          <Switch.Label>Size</Switch.Label>
+        </Switch>
+
+        <Textarea
+          value={value}
+          onChange={setValue}
+          minRows={3}
+          maxRows={5}
+          className="w-80"
+          placeholder="Default line height..."
+          lineHeight={size === "large" ? 22 : 16}
+        >
+          <Textarea.Content className={size === "large" ? "text-body-large" : "text-body-medium"} />
+        </Textarea>
+      </div>
     )
   },
 }

@@ -6,6 +6,7 @@ import { InputTv } from "./tv"
 export interface InputProps
   extends Omit<HTMLProps<HTMLInputElement>, "value" | "onChange" | "size"> {
   className?: string
+  focusSelection?: "all" | "end" | "none"
   onChange?: (value: string) => void
   onIsEditingChange?: (isEditing: boolean) => void
   selected?: boolean
@@ -23,6 +24,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(pro
     value,
     variant = "default",
     size = "default",
+    focusSelection = "all",
     onBlur,
     onChange,
     onFocus,
@@ -52,7 +54,19 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(pro
         onChange?.(e.target.value)
       },
       onFocus: (e: React.FocusEvent<HTMLInputElement>) => {
-        e.target.select()
+        // Handle different focus selection modes
+        if (focusSelection === "all") {
+          e.target.select()
+        } else if (focusSelection === "end") {
+          // Use setTimeout to ensure the value is rendered before setting selection
+          const input = e.target
+          setTimeout(() => {
+            const length = input.value.length
+            input.setSelectionRange(length, length)
+          }, 0)
+        }
+        // focusSelection === "none" - don't change selection
+
         onFocus?.(e)
         onIsEditingChange?.(true)
       },
@@ -69,6 +83,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(pro
     readOnly,
     styles,
     className,
+    focusSelection,
     onChange,
     onFocus,
     onIsEditingChange,

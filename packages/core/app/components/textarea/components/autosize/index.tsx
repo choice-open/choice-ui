@@ -1,4 +1,4 @@
-import React, { forwardRef, useMemo } from "react"
+import React, { forwardRef, useMemo, useRef } from "react"
 import { isBrowser, noop } from "./utils"
 import calculateNodeHeight from "./calculate-node-height"
 import getSizingData, { type SizingData } from "./get-sizing-data"
@@ -32,20 +32,28 @@ export interface TextareaAutosizeProps extends Omit<TextareaProps, "style"> {
 
 // 防抖 hook
 function useDebounce<T extends (...args: unknown[]) => void>(func: T, delay: number): T {
-  const timeoutRef = React.useRef<NodeJS.Timeout>()
+  const timeoutRef = useRef<NodeJS.Timeout>()
+  const funcRef = useRef(func)
 
-  return React.useCallback(
-    ((...args: Parameters<T>) => {
+  // Keep the function reference updated
+  useIsomorphicLayoutEffect(() => {
+    funcRef.current = func
+  })
+
+  // Use useMemo to create the debounced function
+  const debouncedFn = useMemo(() => {
+    return ((...args: Parameters<T>) => {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current)
       }
 
       timeoutRef.current = setTimeout(() => {
-        func(...args)
+        funcRef.current(...args)
       }, delay)
-    }) as T,
-    [func, delay],
-  )
+    }) as T
+  }, [delay])
+
+  return debouncedFn
 }
 
 export const TextareaAutosize = forwardRef<HTMLTextAreaElement, TextareaAutosizeProps>(
@@ -96,20 +104,9 @@ export const TextareaAutosize = forwardRef<HTMLTextAreaElement, TextareaAutosize
 
       const currentValue = node.value || node.placeholder || ""
 
-      // 优化：如果值没有变化且有缓存，跳过重新计算
-      if (
-        cacheMeasurements &&
-        currentValue === lastValueRef.current &&
-        measurementsCacheRef.current
-      ) {
-        return
-      }
-
       try {
-        const nodeSizingData =
-          cacheMeasurements && measurementsCacheRef.current && currentValue === lastValueRef.current
-            ? measurementsCacheRef.current
-            : getSizingData(node)
+        // Always get fresh sizing data when resizing to account for style changes
+        const nodeSizingData = getSizingData(node)
 
         if (!nodeSizingData) {
           return
@@ -172,6 +169,11 @@ export const TextareaAutosize = forwardRef<HTMLTextAreaElement, TextareaAutosize
     useFormResetListener(libRef, formResetCallback)
     useWindowResizeListener(resizeTextarea)
     useFontsLoadedListener(resizeTextarea)
+    
+    // When style changes, trigger resize to recalculate with new line height / padding
+    React.useEffect(() => {
+      resizeTextarea()
+    }, [style?.lineHeight, style?.padding, resizeTextarea])
 
     // 合并样式
     const mergedStyle = useMemo(() => {

@@ -14,6 +14,7 @@ export const TextareaTv = tcv({
       "overflow-hidden",
     ],
     viewport: "h-full w-full",
+    content: "flex flex-col",
     resizeHandle: [
       "absolute right-0 bottom-0 cursor-ns-resize",
       "flex size-6 items-center justify-center",

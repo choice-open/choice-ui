@@ -92,24 +92,47 @@ export default defineConfig(({ mode: _mode }: ConfigEnv): UserConfig => {
         fileName: (format) => `index.${format === "es" ? "js" : "cjs"}`,
       },
       rollupOptions: {
-        external: [
-          "react",
-          "react-dom",
-          "react/jsx-runtime",
-          "@floating-ui/react",
-          "@floating-ui/dom",
-          "ahooks",
-          "class-variance-authority",
-          "clsx",
-          "tailwind-merge",
-          "tailwind-variants",
-          "is-hotkey",
-          "slate",
-          "slate-react",
-          "slate-history",
-          "slate-hyperscript",
-          "sonner",
-        ],
+        external: (id) => {
+          // Always externalize React
+          if (id === "react" || id === "react-dom" || id === "react/jsx-runtime") {
+            return true
+          }
+
+          // Externalize all dependencies and their subpaths
+          const dependencies = [
+            "@choiceform/icons-react",
+            "@choiceform/design-tokens",
+            "@codemirror",
+            "@date-fns",
+            "@floating-ui",
+            "@legendapp",
+            "@lezer",
+            "@replit",
+            "@tanstack",
+            "@typescript",
+            "ahooks",
+            "allotment",
+            "comlink",
+            "date-fns",
+            "es-toolkit",
+            "framer-motion",
+            "is-hotkey",
+            "lodash",
+            "lodash-es",
+            "lodash.debounce",
+            "nanoid",
+            "prettier",
+            "slate",
+            "sonner",
+            "tinycolor2",
+            "usehooks-ts",
+            "xss",
+            "zod",
+          ]
+
+          // Check if the id starts with any of the dependencies
+          return dependencies.some((dep) => id.startsWith(dep))
+        },
         output: [
           {
             format: "es",
@@ -144,7 +167,7 @@ export default defineConfig(({ mode: _mode }: ConfigEnv): UserConfig => {
           },
         ],
       },
-      sourcemap: true,
+      sourcemap: false,
       minify: false,
       emptyOutDir: true,
     },
