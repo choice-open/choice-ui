@@ -15,13 +15,28 @@ This library provides a set of high-quality, customizable React components desig
 
 ## Installation
 
-Add the package to your project:
+Add the packages to your project:
 
 ```bash
-pnpm add @choiceform/design-system
+pnpm add @choiceform/design-system @choiceform/design-tokens
 # or
-npm install @choiceform/design-system
+npm install @choiceform/design-system @choiceform/design-tokens
 ```
+
+## Setup
+
+Import the design tokens in your main CSS file:
+
+```css
+/* In your main CSS file (e.g., app.css or index.css) */
+@import "@choiceform/design-tokens/tokens.css";
+@import "@choiceform/design-tokens/preflight.css";
+@import "@choiceform/design-tokens/tailwind.css";
+```
+
+**Note:** The old `@import "@choiceform/design-system/styles/theme.css"` is no longer needed and should be removed.
+
+Learn more about design tokens at [https://tokens.choiceform.app/](https://tokens.choiceform.app/)
 
 ## Usage
 

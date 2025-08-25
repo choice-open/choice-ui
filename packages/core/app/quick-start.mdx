@@ -10,31 +10,36 @@ Get up and running with @choiceform/design-system in minutes. This guide covers 
 
 ## Installation
 
-Install the design system using your preferred package manager:
+Install the design system and design tokens using your preferred package manager:
 
 ```bash
 # Using pnpm (recommended)
-pnpm add @choiceform/design-system
+pnpm add @choiceform/design-system @choiceform/design-tokens
 
 # Using npm
-npm install @choiceform/design-system
+npm install @choiceform/design-system @choiceform/design-tokens
 
 # Using yarn
-yarn add @choiceform/design-system
+yarn add @choiceform/design-system @choiceform/design-tokens
 ```
 
 ## CSS Configuration
 
 ### Import Required Styles
 
-Add these imports to your main `tailwind.css` file:
+Add these imports to your main CSS file (e.g., `app.css` or `index.css`):
 
 ```css
 @import "tailwindcss";
-@import "@choiceform/design-system/styles/theme.css";
-@import "@choiceform/design-system/styles/components.css";
+@import "@choiceform/design-tokens/tokens.css";
+@import "@choiceform/design-tokens/preflight.css";
+@import "@choiceform/design-tokens/tailwind.css";
 @source "../../../node_modules/@choiceform/design-system";
 ```
+
+**Note:** The old `@import "@choiceform/design-system/styles/theme.css"` is no longer needed and should be removed.
+
+Learn more about design tokens at [https://tokens.choiceform.app/](https://tokens.choiceform.app/)
 
 ### Understanding the @source Directive
 
