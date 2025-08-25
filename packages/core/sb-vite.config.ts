@@ -14,6 +14,20 @@ export default defineConfig(({ mode }) => {
       {
         name: "fix-storybook-modules",
         enforce: "pre",
+        transform(code, id) {
+          // Remove "use client" directives from dependencies that are causing build issues
+          if (
+            (id.includes("@tanstack/react-query") || 
+             id.includes("framer-motion") ||
+             id.includes("node_modules")) &&
+            (code.includes('"use client"') || code.includes("'use client'"))
+          ) {
+            return {
+              code: code.replace(/^['"]use client['"];?\s*/m, ''),
+              map: null
+            }
+          }
+        }
       },
       {
         name: "copy-readme-files",
