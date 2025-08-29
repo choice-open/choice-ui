@@ -8,8 +8,11 @@ export const BezierCurveEditorTv = tcv({
     plane: "absolute",
     planeInner: "fill-none",
     curveWrapper: "relative overflow-visible",
-    line: "stroke-default-foreground",
-    curve: "stroke-current",
+    line: [
+      "stroke-default-foreground transition-colors",
+      "data-[active=true]:stroke-accent-foreground",
+    ],
+    curve: ["stroke-current transition-colors", "data-[active=true]:stroke-accent-foreground"],
     rect: "fill-transparent",
     preview: "fill-default-background stroke-default-foreground",
     handle: [

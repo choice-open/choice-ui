@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef } from "react"
+import { useCallback, useMemo, useRef, useState } from "react"
 import {
   BezierCurveEditorCurve,
   BezierCurveEditorEndPoints,
@@ -43,7 +43,6 @@ interface BezierCurveEditorFixedNodeProps {
 export type BezierCurveEditorProps = BezierCurveEditorBaseProps &
   (BezierCurveEditorEditNodeProps | BezierCurveEditorFixedNodeProps)
 
-// 将 TV 实例移到组件外部，避免每次渲染都重新创建
 const tv = BezierCurveEditorTv()
 
 export const BezierCurveEditor = (props: BezierCurveEditorProps) => {
@@ -85,12 +84,28 @@ export const BezierCurveEditor = (props: BezierCurveEditorProps) => {
     [size, value],
   )
 
+  // 类型安全的回调处理函数
+  const handleValueChange = useCallback(
+    (clampedValue: BezierCurveExpandedValueType) => {
+      if (!props.onChange) return
+
+      if (props.allowNodeEditing) {
+        // 编辑模式：传递完整值
+        props.onChange(clampedValue)
+      } else {
+        // 固定模式：只传递控制手柄值
+        const controlValues = clampedValue.slice(2, 6) as BezierCurveValueType
+        props.onChange(controlValues)
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [props.onChange, props.allowNodeEditing],
+  )
+
   const moveStartHandle = useEventCallback((start: Point, movement: Point) => {
     const nextValue = moveHandle(initialValueRef.current, size, [2, 3], start, movement)
     const clampedValue = clampValue(outerAreaSize, size, nextValue)
-    if (props.onChange && props.allowNodeEditing) props.onChange(clampedValue)
-    if (props.onChange && props.allowNodeEditing !== true)
-      props.onChange(clampedValue.slice(2, 6) as BezierCurveValueType)
+    handleValueChange(clampedValue)
   })
 
   const [
@@ -105,9 +120,7 @@ export const BezierCurveEditor = (props: BezierCurveEditorProps) => {
   const moveEndHandle = useEventCallback((start: Point, movement: Point) => {
     const nextValue = moveHandle(initialValueRef.current, size, [4, 5], start, movement)
     const clampedValue = clampValue(outerAreaSize, size, nextValue)
-    if (props.onChange && props.allowNodeEditing) props.onChange(clampedValue)
-    if (props.onChange && props.allowNodeEditing !== true)
-      props.onChange(clampedValue.slice(2, 6) as BezierCurveValueType)
+    handleValueChange(clampedValue)
   })
 
   const [
@@ -122,9 +135,7 @@ export const BezierCurveEditor = (props: BezierCurveEditorProps) => {
   const moveStartPoint = useEventCallback((start: Point, movement: Point) => {
     const nextValue = moveHandle(initialValueRef.current, size, [0, 1], start, movement)
     const clampedValue = clampValue(outerAreaSize, size, nextValue)
-    if (props.onChange && props.allowNodeEditing) props.onChange(clampedValue)
-    if (props.onChange && props.allowNodeEditing !== true)
-      props.onChange(clampedValue.slice(2, 6) as BezierCurveValueType)
+    handleValueChange(clampedValue)
   })
 
   const [
@@ -139,9 +150,7 @@ export const BezierCurveEditor = (props: BezierCurveEditorProps) => {
   const moveEndPoint = useEventCallback((start: Point, movement: Point) => {
     const nextValue = moveHandle(initialValueRef.current, size, [6, 7], start, movement)
     const clampedValue = clampValue(outerAreaSize, size, nextValue)
-    if (props.onChange && props.allowNodeEditing) props.onChange(clampedValue)
-    if (props.onChange && props.allowNodeEditing !== true)
-      props.onChange(clampedValue.slice(2, 6) as BezierCurveValueType)
+    handleValueChange(clampedValue)
   })
 
   const [
@@ -153,11 +162,143 @@ export const BezierCurveEditor = (props: BezierCurveEditorProps) => {
     },
   ] = useHandleState(moveEndPoint, updateValueRef)
 
+  const moveStartHandleLine = useEventCallback((start: Point, movement: Point) => {
+    const currentValue = initialValueRef.current
+    const nextValue = [...currentValue] as BezierCurveExpandedValueType
+
+    const relXMoved = (movement.x - start.x) / size
+    const relYMoved = (movement.y - start.y) / size
+
+    nextValue[2] = currentValue[2] + relXMoved
+    nextValue[3] = currentValue[3] - relYMoved
+
+    const clampedValue = clampValue(outerAreaSize, size, nextValue)
+    handleValueChange(clampedValue)
+  })
+
+  const moveEndHandleLine = useEventCallback((start: Point, movement: Point) => {
+    const currentValue = initialValueRef.current
+    const nextValue = [...currentValue] as BezierCurveExpandedValueType
+
+    const relXMoved = (movement.x - start.x) / size
+    const relYMoved = (movement.y - start.y) / size
+
+    nextValue[4] = currentValue[4] + relXMoved // 结束控制手柄 X
+    nextValue[5] = currentValue[5] - relYMoved // 结束控制手柄 Y
+
+    const clampedValue = clampValue(outerAreaSize, size, nextValue)
+    handleValueChange(clampedValue)
+  })
+
+  const [movingStartHandleLine, setMovingStartHandleLine] = useState(false)
+  const [movingEndHandleLine, setMovingEndHandleLine] = useState(false)
+  const startHandleLineStartPositionRef = useRef<Point>({ x: 0, y: 0 })
+  const endHandleLineStartPositionRef = useRef<Point>({ x: 0, y: 0 })
+
+  const handleStartHandleLineStartMoving = useEventCallback(
+    (event: React.PointerEvent<SVGLineElement>) => {
+      event.preventDefault()
+
+      if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+        return
+      }
+
+      const startX = event.clientX
+      const startY = event.clientY
+      startHandleLineStartPositionRef.current = { x: startX, y: startY }
+
+      // 设置指针捕获
+      event.currentTarget.setPointerCapture(event.pointerId)
+
+      setMovingStartHandleLine(true)
+      updateValueRef()
+    },
+  )
+
+  const handleStartHandleLinePointerMove = useEventCallback(
+    (event: React.PointerEvent<SVGLineElement>) => {
+      if (movingStartHandleLine && event.currentTarget.hasPointerCapture(event.pointerId)) {
+        const x = event.clientX
+        const y = event.clientY
+        moveStartHandleLine(startHandleLineStartPositionRef.current, { x, y })
+      }
+    },
+  )
+
+  const handleStartHandleLinePointerLeaveOrUp = useEventCallback(
+    (event: React.PointerEvent<SVGLineElement>) => {
+      setMovingStartHandleLine(false)
+
+      try {
+        if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+          event.currentTarget.releasePointerCapture(event.pointerId)
+        }
+      } catch (error) {
+        console.warn("Failed to release pointer capture:", error)
+      }
+    },
+  )
+
+  const handleEndHandleLineStartMoving = useEventCallback(
+    (event: React.PointerEvent<SVGLineElement>) => {
+      event.preventDefault()
+
+      // 如果已经在拖拽中，不要重复开始
+      if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+        return
+      }
+
+      // 先捕获起始位置
+      const startX = event.clientX
+      const startY = event.clientY
+      endHandleLineStartPositionRef.current = { x: startX, y: startY }
+
+      // 设置指针捕获
+      event.currentTarget.setPointerCapture(event.pointerId)
+
+      // 然后更新状态
+      setMovingEndHandleLine(true)
+      updateValueRef()
+    },
+  )
+
+  const handleEndHandleLinePointerMove = useEventCallback(
+    (event: React.PointerEvent<SVGLineElement>) => {
+      if (movingEndHandleLine && event.currentTarget.hasPointerCapture(event.pointerId)) {
+        const x = event.clientX
+        const y = event.clientY
+        moveEndHandleLine(endHandleLineStartPositionRef.current, { x, y })
+      }
+    },
+  )
+
+  const handleEndHandleLinePointerLeaveOrUp = useEventCallback(
+    (event: React.PointerEvent<SVGLineElement>) => {
+      setMovingEndHandleLine(false)
+
+      try {
+        if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+          event.currentTarget.releasePointerCapture(event.pointerId)
+        }
+      } catch (error) {
+        console.warn("Failed to release pointer capture:", error)
+      }
+    },
+  )
+
   // 缓存预览状态计算
   const previewState = useMemo(() => {
     if (!enablePreview) return "hidden"
-    return movingStartHandle || movingEndHandle ? "paused" : "running"
-  }, [enablePreview, movingStartHandle, movingEndHandle])
+    return movingStartHandle || movingEndHandle || movingStartHandleLine || movingEndHandleLine
+      ? "paused"
+      : "running"
+  }, [
+    enablePreview,
+    movingStartHandle,
+    movingEndHandle,
+    movingStartHandleLine,
+    movingEndHandleLine,
+  ])
 
   // 缓存内联样式对象
   const presentationStyle = useMemo(
@@ -222,6 +363,15 @@ export const BezierCurveEditor = (props: BezierCurveEditorProps) => {
           duration={duration}
           delay={delay}
           previewState={previewState}
+          isEditable={props.allowNodeEditing}
+          movingStartHandleLine={movingStartHandleLine}
+          movingEndHandleLine={movingEndHandleLine}
+          handleStartHandleLineStartMoving={handleStartHandleLineStartMoving}
+          handleStartHandleLinePointerMove={handleStartHandleLinePointerMove}
+          handleStartHandleLinePointerLeaveOrUp={handleStartHandleLinePointerLeaveOrUp}
+          handleEndHandleLineStartMoving={handleEndHandleLineStartMoving}
+          handleEndHandleLinePointerMove={handleEndHandleLinePointerMove}
+          handleEndHandleLinePointerLeaveOrUp={handleEndHandleLinePointerLeaveOrUp}
         />
 
         <BezierCurveEditorEndPoints

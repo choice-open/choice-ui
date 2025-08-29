@@ -7,6 +7,15 @@ type Props = {
   delay: number
   disabledPoints: [boolean, boolean]
   duration: number
+  handleEndHandleLinePointerLeaveOrUp?: React.PointerEventHandler<SVGLineElement>
+  handleEndHandleLinePointerMove?: React.PointerEventHandler<SVGLineElement>
+  handleEndHandleLineStartMoving?: React.PointerEventHandler<SVGLineElement>
+  handleStartHandleLinePointerLeaveOrUp?: React.PointerEventHandler<SVGLineElement>
+  handleStartHandleLinePointerMove?: React.PointerEventHandler<SVGLineElement>
+  handleStartHandleLineStartMoving?: React.PointerEventHandler<SVGLineElement>
+  isEditable?: boolean
+  movingEndHandleLine?: boolean
+  movingStartHandleLine?: boolean
   outerAreaSize: number
   previewState?: "running" | "paused" | "hidden"
   size: number
@@ -43,8 +52,25 @@ function guessBezierCurveType(value: BezierCurveExpandedValueType): BezierCurveT
 
 export const BezierCurveEditorCurve = memo<Props>((props) => {
   /* eslint-disable react/prop-types */
-  const { disabledPoints, duration, delay, outerAreaSize, previewState, size, strokeWidth, value } =
-    props
+  const {
+    disabledPoints,
+    duration,
+    delay,
+    outerAreaSize,
+    previewState,
+    size,
+    strokeWidth,
+    value,
+    isEditable,
+    movingStartHandleLine,
+    movingEndHandleLine,
+    handleStartHandleLineStartMoving,
+    handleStartHandleLinePointerMove,
+    handleStartHandleLinePointerLeaveOrUp,
+    handleEndHandleLineStartMoving,
+    handleEndHandleLinePointerMove,
+    handleEndHandleLinePointerLeaveOrUp,
+  } = props
   /* eslint-enable react/prop-types */
 
   // 缓存坐标计算结果
@@ -123,28 +149,80 @@ export const BezierCurveEditorCurve = memo<Props>((props) => {
           />
 
           {disabledPoints[0] ? null : (
-            <line
-              data-slot="line"
-              className={tv.line()}
-              strokeWidth="1"
-              strokeLinecap="round"
-              x1={startCoordinate[0]}
-              y1={startCoordinate[1]}
-              x2={startBezierHandle[0]}
-              y2={startBezierHandle[1]}
-            />
+            <>
+              <line
+                data-slot="line"
+                data-active={movingStartHandleLine}
+                className={tv.line()}
+                strokeWidth="8"
+                strokeLinecap="round"
+                x1={startCoordinate[0]}
+                y1={startCoordinate[1]}
+                x2={startBezierHandle[0]}
+                y2={startBezierHandle[1]}
+                style={{
+                  stroke: "transparent",
+                  pointerEvents: "auto",
+                }}
+                onPointerDown={handleStartHandleLineStartMoving}
+                onPointerMove={handleStartHandleLinePointerMove}
+                onPointerUp={handleStartHandleLinePointerLeaveOrUp}
+                onPointerCancel={handleStartHandleLinePointerLeaveOrUp}
+              />
+              {/* 视觉线段 */}
+              <line
+                data-slot="line"
+                data-active={movingStartHandleLine}
+                className={tv.line()}
+                strokeWidth="1"
+                strokeLinecap="round"
+                x1={startCoordinate[0]}
+                y1={startCoordinate[1]}
+                x2={startBezierHandle[0]}
+                y2={startBezierHandle[1]}
+                style={{
+                  pointerEvents: "none",
+                }}
+              />
+            </>
           )}
           {disabledPoints[1] ? null : (
-            <line
-              data-slot="line"
-              className={tv.line()}
-              strokeWidth="1"
-              strokeLinecap="round"
-              x1={endCoordinate[0]}
-              y1={endCoordinate[1]}
-              x2={endBezierHandle[0]}
-              y2={endBezierHandle[1]}
-            />
+            <>
+              <line
+                data-slot="line"
+                data-active={movingEndHandleLine}
+                className={tv.line()}
+                strokeWidth="8"
+                strokeLinecap="round"
+                x1={endCoordinate[0]}
+                y1={endCoordinate[1]}
+                x2={endBezierHandle[0]}
+                y2={endBezierHandle[1]}
+                style={{
+                  stroke: "transparent",
+                  pointerEvents: "auto",
+                }}
+                onPointerDown={handleEndHandleLineStartMoving}
+                onPointerMove={handleEndHandleLinePointerMove}
+                onPointerUp={handleEndHandleLinePointerLeaveOrUp}
+                onPointerCancel={handleEndHandleLinePointerLeaveOrUp}
+              />
+              {/* 视觉线段 */}
+              <line
+                data-slot="line"
+                data-active={movingEndHandleLine}
+                className={tv.line()}
+                strokeWidth="1"
+                strokeLinecap="round"
+                x1={endCoordinate[0]}
+                y1={endCoordinate[1]}
+                x2={endBezierHandle[0]}
+                y2={endBezierHandle[1]}
+                style={{
+                  pointerEvents: "none",
+                }}
+              />
+            </>
           )}
           <path
             data-slot="curve"
