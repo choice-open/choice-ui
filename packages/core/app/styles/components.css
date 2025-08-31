@@ -527,6 +527,7 @@
   --separator-border: var(--color-default-boundary);
 
   --shadow-border-white: 0 0 0 1px var(--color-white);
+  --shadow-border-white-inset: inset 0 0 0 1px var(--color-white);
 
   --shadow-range-thumb:
     0 0 0 2px rgb(255 255 255), 0 1px 4px 2px rgba(0 0 0 / 0.1), 0 4px 8px 2px rgba(0 0 0 / 0.1),

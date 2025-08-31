@@ -6,9 +6,8 @@ export const switchTv = tcv({
     track: [
       "relative",
       "rounded-full",
-      "border border-solid border-transparent",
+      "border border-solid",
       "h-(--switch-height) w-(--switch-width)",
-      "transition-colors",
     ],
     thumb: [
       "absolute",
@@ -51,74 +50,93 @@ export const switchTv = tcv({
     },
   },
   compoundVariants: [
-    // 未选中状态
+    // Base states - 未选中
     {
       checked: false,
       disabled: false,
+      focused: false,
       variant: ["default", "accent"],
       class: {
-        track: "bg-tertiary-background",
-        thumb: "shadow-small bg-white",
+        track: "bg-tertiary-background border-transparent",
+        thumb: "shadow-sm bg-white",
       },
     },
-    // 选中状态 - default
-    {
-      variant: ["default", "outline"],
-      checked: true,
-      disabled: false,
-      class: {
-        track: "bg-default-foreground",
-        thumb: "shadow-small bg-default-background",
-      },
-    },
-    // 选中状态 - accent
-    {
-      variant: "accent",
-      checked: true,
-      disabled: false,
-      class: {
-        track: "bg-accent-background",
-        thumb: "shadow-small bg-white",
-      },
-    },
-    // 未选中状态 - outline
     {
       variant: "outline",
       checked: false,
       disabled: false,
+      focused: false,
       class: {
         track: "border-default-foreground bg-transparent",
         thumb: "bg-default-foreground shadow-none",
       },
     },
-    // hover 状态 - default & accent
+
+    // Base states - 选中
+    {
+      variant: ["default", "outline"],
+      checked: true,
+      disabled: false,
+      focused: false,
+      class: {
+        track: "bg-default-foreground border-transparent",
+        thumb: "shadow-sm bg-default-background",
+      },
+    },
+    {
+      variant: "accent",
+      checked: true,
+      disabled: false,
+      focused: false,
+      class: {
+        track: "bg-accent-background border-transparent",
+        thumb: "shadow-sm bg-white",
+      },
+    },
+
+    // Hover states - 未选中
     {
       variant: ["default", "accent"],
       checked: false,
       disabled: false,
+      focused: false,
       class: {
         track: "hover:bg-tertiary-background",
       },
     },
-    // hover 状态 - outline
     {
       variant: "outline",
       checked: false,
       disabled: false,
+      focused: false,
       class: {
         track: "hover:bg-secondary-background",
+      },
+    },
+
+    // Focused states - 未选中
+    {
+      focused: true,
+      checked: false,
+      disabled: false,
+      variant: ["default", "accent"],
+      class: {
+        track: "bg-tertiary-background border-selected-boundary",
+        thumb: "shadow-none bg-white",
       },
     },
     {
       focused: true,
       checked: false,
       disabled: false,
-      variant: ["default", "accent", "outline"],
+      variant: "outline",
       class: {
-        track: "border-selected-boundary",
-        thumb: "shadow-none",
+        track: "border-selected-boundary bg-transparent",
+        thumb: "bg-default-foreground shadow-none",
       },
     },
+
+    // Focused states - 选中
     {
       focused: true,
       checked: true,
@@ -126,7 +144,7 @@ export const switchTv = tcv({
       variant: ["default", "outline"],
       class: {
         track: "border-selected-boundary shadow-switch-focused",
-        thumb: "shadow-border-white",
+        thumb: "shadow-border-white-inset bg-default-background",
       },
     },
     {
@@ -135,10 +153,12 @@ export const switchTv = tcv({
       disabled: false,
       variant: "accent",
       class: {
-        track: "border-selected-boundary shadow-checked-focused",
-        thumb: "shadow-border-white",
+        track: "bg-accent-background border-selected-boundary shadow-checked-focused",
+        thumb: "shadow-border-white-inset bg-white",
       },
     },
+
+    // Focus-visible states (keyboard focus) - 未选中
     {
       focused: false,
       checked: false,
@@ -146,9 +166,11 @@ export const switchTv = tcv({
       variant: ["default", "accent", "outline"],
       class: {
         track: "peer-focus-visible:border-selected-boundary",
-        thumb: "peer-focus-visible:shadow-border-white",
+        thumb: "peer-focus-visible:shadow-none",
       },
     },
+
+    // Focus-visible states (keyboard focus) - 选中
     {
       focused: false,
       checked: true,
@@ -159,11 +181,11 @@ export const switchTv = tcv({
           "peer-focus-visible:border-selected-boundary",
           "peer-focus-visible:shadow-switch-focused",
         ],
-        thumb: "peer-focus-visible:shadow-border-white",
+        thumb: "peer-focus-visible:shadow-border-white-inset",
       },
     },
     {
-      focused: true,
+      focused: false,
       checked: true,
       disabled: false,
       variant: "accent",
@@ -172,7 +194,7 @@ export const switchTv = tcv({
           "peer-focus-visible:border-selected-boundary",
           "peer-focus-visible:shadow-checked-focused",
         ],
-        thumb: "peer-focus-visible:shadow-border-white",
+        thumb: "peer-focus-visible:shadow-border-white-inset",
       },
     },
   ],

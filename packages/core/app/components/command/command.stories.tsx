@@ -384,7 +384,7 @@ export const WithEmptyState: Story = {
 const commandOptions = [
   {
     label: "Files",
-    items: Array.from({ length: 4 }, (_, i) => ({
+    items: Array.from({ length: 100 }, (_, i) => ({
       icon: `https://api.dicebear.com/7.x/avataaars/svg?seed=${i}`,
       label: faker.music.songName(),
       value: i.toString(),
@@ -392,7 +392,7 @@ const commandOptions = [
   },
   {
     label: "Settings",
-    items: Array.from({ length: 4 }, (_, j) => ({
+    items: Array.from({ length: 100 }, (_, j) => ({
       icon: `https://api.dicebear.com/7.x/avataaars/svg?seed=${j + 4}`,
       label: faker.music.songName(),
       value: (j + 4).toString(),
