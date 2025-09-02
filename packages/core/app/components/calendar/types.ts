@@ -319,6 +319,7 @@ export interface DateInteractionProps {
  * 月历组件的基础属性
  */
 export interface BaseCalendarProps {
+  children?: React.ReactNode
   /** 自定义类名 */
   className?: string
   /** 当前显示的月份 */
@@ -447,6 +448,7 @@ export interface YearItem {
  * 季度组件的基础属性
  */
 export interface BaseQuarterProps {
+  children?: React.ReactNode
   /** 当前显示的年份 */
   currentYear?: number
   /** 默认值 */
@@ -493,6 +495,7 @@ export interface QuarterLayoutProps {
  * 年份组件的基础属性
  */
 export interface BaseYearProps {
+  children?: React.ReactNode
   /** 当前显示的年份（用于高亮） */
   currentYear?: Date
   /** 默认值 */

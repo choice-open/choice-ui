@@ -27,6 +27,7 @@ export interface MonthCalendarProps extends BaseCalendarProps, CalendarLayoutPro
 export const MonthCalendar = memo(function MonthCalendar(props: MonthCalendarProps) {
   const {
     className,
+    children,
     direction = "horizontal",
     currentMonth: propCurrentMonth,
     dateComparisonMode = "date-only",
@@ -550,6 +551,8 @@ export const MonthCalendar = memo(function MonthCalendar(props: MonthCalendarPro
           return elements
         })}
       </div>
+
+      {children}
     </div>
   )
 })

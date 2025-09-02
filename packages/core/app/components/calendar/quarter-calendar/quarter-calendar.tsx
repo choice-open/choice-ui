@@ -28,6 +28,7 @@ export const QuarterCalendar = forwardRef<HTMLDivElement, QuarterCalendarProps>(
     onChange,
     onNavigate,
     className,
+    children,
     minYear,
     maxYear,
     disabledQuarters = [],
@@ -218,6 +219,8 @@ export const QuarterCalendar = forwardRef<HTMLDivElement, QuarterCalendarProps>(
           />
         ))}
       </div>
+
+      {children}
     </div>
   )
 })

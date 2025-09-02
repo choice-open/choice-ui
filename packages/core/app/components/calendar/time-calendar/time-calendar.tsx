@@ -7,6 +7,7 @@ import type { BaseTimeProps, StepProps } from "../types"
 import { generateTimeOptions, normalizeTimeValue, timeStringToDate } from "../utils"
 
 export interface TimeCalendarProps extends BaseTimeProps, StepProps {
+  children?: React.ReactNode
   /** 自定义类名 */
   className?: string
   /** 小时步进，默认1小时 */
@@ -23,6 +24,7 @@ export const TimeCalendar = memo(function TimeCalendar(props: TimeCalendarProps)
     format: timeFormat = "HH:mm",
     step = 15,
     className,
+    children,
     ...rest
   } = props
 
@@ -405,6 +407,8 @@ export const TimeCalendar = memo(function TimeCalendar(props: TimeCalendarProps)
           </React.Fragment>
         )
       })}
+
+      {children}
     </Menus>
   )
 })

@@ -20,6 +20,7 @@ export const YearCalendar = forwardRef<HTMLDivElement, YearCalendarProps>((props
     onChange,
     onNavigate,
     className,
+    children,
     minYear,
     maxYear,
     disabledYears = [],
@@ -223,6 +224,8 @@ export const YearCalendar = forwardRef<HTMLDivElement, YearCalendarProps>((props
           )
         })}
       </div>
+
+      {children}
     </div>
   )
 })
