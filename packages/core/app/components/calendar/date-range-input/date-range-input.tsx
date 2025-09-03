@@ -12,6 +12,7 @@ interface DateRangeInputProps
   extends Omit<TextFieldProps, "value" | "onChange" | "step" | "defaultValue"> {
   endDisabled?: boolean
   endPlaceholder?: string
+  endSuffixElement?: React.ReactNode
   endValue?: Date | null
   format?: DateFormat
   locale?: Locale | string
@@ -32,6 +33,7 @@ interface DateRangeInputProps
   rangePrecision?: number
   startDisabled?: boolean
   startPlaceholder?: string
+  startSuffixElement?: React.ReactNode
   startValue?: Date | null
 }
 
@@ -52,6 +54,8 @@ export const DateRangeInput = (props: DateRangeInputProps) => {
     endDisabled,
     maxDate,
     minDate,
+    startSuffixElement,
+    endSuffixElement,
     ...rest
   } = props
 
@@ -93,6 +97,7 @@ export const DateRangeInput = (props: DateRangeInputProps) => {
         onEnterKeyDown={onEnterKeyDown}
         disabled={startDisabled}
         minDate={minDate}
+        suffixElement={startSuffixElement}
         {...rest}
       />
 
@@ -106,6 +111,7 @@ export const DateRangeInput = (props: DateRangeInputProps) => {
         onChange={onEndChange}
         onEnterKeyDown={onEnterKeyDown}
         prefixElement={<ArrowRight />}
+        suffixElement={endSuffixElement}
         disabled={endDisabled}
         maxDate={maxDate}
         {...rest}

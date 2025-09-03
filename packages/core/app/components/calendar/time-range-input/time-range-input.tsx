@@ -12,6 +12,7 @@ interface TimeRangeInputProps
   extends Omit<TextFieldProps, "value" | "onChange" | "step" | "defaultValue"> {
   endDisabled?: boolean
   endPlaceholder?: string
+  endSuffixElement?: React.ReactNode
   endValue?: Date | null
   format?: TimeFormat
   locale?: Locale | string
@@ -24,6 +25,7 @@ interface TimeRangeInputProps
   onStartFocus?: () => void
   startDisabled?: boolean
   startPlaceholder?: string
+  startSuffixElement?: React.ReactNode
   startValue?: Date | null
 }
 
@@ -111,6 +113,8 @@ export const TimeRangeInput = (props: TimeRangeInputProps) => {
     endDisabled,
     maxTime,
     minTime,
+    startSuffixElement,
+    endSuffixElement,
     ...rest
   } = props
 
@@ -148,6 +152,7 @@ export const TimeRangeInput = (props: TimeRangeInputProps) => {
         onEnterKeyDown={onEnterKeyDown}
         disabled={startDisabled}
         minTime={minTime}
+        suffixElement={startSuffixElement}
         {...rest}
       />
 
@@ -161,6 +166,7 @@ export const TimeRangeInput = (props: TimeRangeInputProps) => {
         onChange={onEndChange}
         onEnterKeyDown={onEnterKeyDown}
         prefixElement={<ArrowRight />}
+        suffixElement={endSuffixElement}
         disabled={endDisabled}
         maxTime={maxTime}
         {...rest}
