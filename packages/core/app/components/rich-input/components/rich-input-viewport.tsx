@@ -9,13 +9,13 @@ import { RichInputViewportProps } from "../types"
  * 使用 ScrollArea 提供滚动功能
  */
 export const RichInputViewport = forwardRef<HTMLDivElement, RichInputViewportProps>(
-  ({ className, children }) => {
+  ({ className, children }, ref) => {
     const context = useRichInputContext()
     const tv = useMemo(() => richInputTv(), [])
 
     return (
       <ScrollArea.Viewport
-        ref={context.viewportRef}
+        ref={ref || context.viewportRef}
         className={tv.viewport({ className })}
       >
         <ScrollArea.Content className={tv.content()}>{children}</ScrollArea.Content>

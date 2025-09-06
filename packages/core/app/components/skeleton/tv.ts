@@ -24,7 +24,7 @@ export const skeletonTv = tcv({
     variant: {
       text: {
         root: [
-          "h-auto",
+          "h-4", // 添加默认高度
           "my-0",
           "scale-y-[0.6]",
           "origin-[0_55%]",
@@ -66,7 +66,7 @@ export const skeletonTv = tcv({
     },
     heightAuto: {
       true: {
-        root: "h-auto",
+        root: "!h-auto", // 使用 !important 覆盖默认高度
       },
       false: {},
     },

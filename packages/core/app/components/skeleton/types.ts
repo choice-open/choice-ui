@@ -35,3 +35,35 @@ export interface SkeletonProps extends ComponentPropsWithoutRef<"span"> {
    */
   asChild?: boolean
 }
+
+export interface SkeletonSubComponentProps extends Omit<ComponentPropsWithoutRef<"span">, 'children'> {
+  /**
+   * The animation type
+   * @default 'pulse'
+   */
+  animation?: SkeletonAnimation
+  /**
+   * Width of the skeleton
+   */
+  width?: number | string
+  /**
+   * Height of the skeleton
+   */
+  height?: number | string
+  /**
+   * Additional CSS classes
+   */
+  className?: string
+  /**
+   * Whether to render as child element
+   */
+  asChild?: boolean
+}
+
+export interface SkeletonComponent {
+  (props: SkeletonProps): JSX.Element
+  Text: (props: SkeletonSubComponentProps) => JSX.Element
+  Rectangular: (props: SkeletonSubComponentProps) => JSX.Element
+  Rounded: (props: SkeletonSubComponentProps) => JSX.Element
+  Circular: (props: SkeletonSubComponentProps) => JSX.Element
+}
