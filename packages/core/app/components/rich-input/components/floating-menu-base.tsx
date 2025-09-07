@@ -22,6 +22,7 @@ export const FloatingMenuContainer = ({
         ...style,
       }}
       onMouseDown={onMouseDown}
+      className="z-tooltip"
       {...getFloatingProps()}
     >
       {children}
