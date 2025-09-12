@@ -24,9 +24,15 @@ export const TabItem = memo(
     },
     ref,
   ) {
-    const { value: selectedValue, onChange, id, variant } = useTabsContext()
+    const {
+      value: selectedValue,
+      onChange,
+      id,
+      variant,
+      disabled: contextDisabled,
+    } = useTabsContext()
     const isActive = value === selectedValue
-    const tv = tabsTv({ active: isActive, disabled, variant })
+    const tv = tabsTv({ active: isActive, disabled: contextDisabled || disabled, variant })
     const tabId = `${id}-tab-${value}`
 
     let ariaLabelText = ariaLabel
@@ -35,7 +41,7 @@ export const TabItem = memo(
     }
 
     const handleMouseDown = useEventCallback((e: MouseEvent<HTMLButtonElement>) => {
-      if (!disabled) {
+      if (!contextDisabled && !disabled) {
         e.preventDefault()
         onChange(value)
       }
@@ -46,7 +52,7 @@ export const TabItem = memo(
     })
 
     const handleKeyDown = useEventCallback((e: KeyboardEvent<HTMLButtonElement>) => {
-      if (!disabled && (e.key === "Enter" || e.key === " ")) {
+      if (!contextDisabled && !disabled && (e.key === "Enter" || e.key === " ")) {
         e.preventDefault()
         onChange(value)
       }
@@ -61,14 +67,14 @@ export const TabItem = memo(
         role="tab"
         type="button"
         aria-selected={isActive}
-        aria-disabled={disabled}
+        aria-disabled={contextDisabled || disabled}
         tabIndex={isActive ? 0 : -1}
         id={tabId}
         className={tcx(tv.tab(), className)}
         onMouseDown={handleMouseDown}
         onKeyDown={handleKeyDown}
         value={value}
-        disabled={disabled}
+        disabled={contextDisabled || disabled}
         {...props}
       >
         <>

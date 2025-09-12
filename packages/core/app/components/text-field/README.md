@@ -14,7 +14,7 @@ import { TextField } from "@choiceform/design-system"
 - Compound component architecture with Label, Description, Prefix, and Suffix
 - Automatic ID generation and label association
 - Grid-based layout for perfect alignment of addons
-- Multiple visual variants (default, dark, reset)
+- Multiple visual variants (default, light, dark, reset)
 - Two sizes for different density needs
 - Selected state for visual emphasis
 - Complete accessibility with proper ARIA relationships
@@ -100,8 +100,16 @@ import { Search, Settings } from "@choiceform/icons-react"
 ### Variants
 
 ```tsx
+// Default - follows page theme
 <TextField variant="default" value={value} onChange={setValue} />
+
+// Light - fixed light appearance
+<TextField variant="light" value={value} onChange={setValue} />
+
+// Dark - fixed dark appearance
 <TextField variant="dark" value={value} onChange={setValue} />
+
+// Reset - no variant styling
 <TextField variant="reset" value={value} onChange={setValue} />
 ```
 
@@ -154,7 +162,7 @@ Inherits all props from `InputProps`:
 - `value?: string` - Current field value
 - `onChange?: (value: string) => void` - Value change callback
 - `onIsEditingChange?: (isEditing: boolean) => void` - Editing state callback
-- `variant?: "default" | "dark" | "reset"` - Visual style variant
+- `variant?: "default" | "light" | "dark" | "reset"` - Visual style variant
 - `size?: "default" | "large"` - Field size
 - `selected?: boolean` - Selected/highlighted state
 - `disabled?: boolean` - Disabled state
@@ -351,4 +359,8 @@ const CustomPrefix = ({ children, className }) => (
 - Only renders the container div when Label or Description is present
 - Grid layout ensures consistent alignment regardless of addon content
 - All sub-components are properly typed and support ref forwarding
-- The reset variant provides minimal styling for custom implementations
+- Variant options:
+  - `default`: Follows the page theme dynamically (light/dark mode)
+  - `light`: Fixed light appearance regardless of theme
+  - `dark`: Fixed dark appearance regardless of theme
+  - `reset`: Removes variant styling, no variant settings applied

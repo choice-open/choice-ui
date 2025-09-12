@@ -11,6 +11,9 @@ export const NumericInputTv = tcv({
       default: {
         input: "bg-secondary-background placeholder:text-secondary-foreground",
       },
+      light: {
+        input: "bg-gray-100 text-gray-900 placeholder:text-black/50",
+      },
       dark: {
         input: "bg-gray-700 text-white placeholder:text-white/50",
       },
@@ -66,15 +69,16 @@ export const NumericInputTv = tcv({
   compoundVariants: [
     // 默认变体的状态样式
     {
-      variant: ["default", "dark"],
+      variant: ["default", "light", "dark"],
       selected: true,
       class: {
-        container: "before:border-selected-boundary/50",
+        container: ["before:border-selected-boundary/50"],
       },
     },
     {
       variant: "default",
       selected: false,
+      disabled: false,
       class: {
         container: [
           "focus-within:before:border-selected-boundary",
@@ -82,10 +86,22 @@ export const NumericInputTv = tcv({
         ],
       },
     },
-    // dark变体
+    // Themes
+    {
+      variant: "light",
+      selected: false,
+      disabled: false,
+      class: {
+        container: [
+          "focus-within:before:border-selected-boundary",
+          "not-focus-within:hover:before:border-gray-200",
+        ],
+      },
+    },
     {
       variant: "dark",
       selected: false,
+      disabled: false,
       class: {
         container: [
           "focus-within:before:border-selected-boundary",
@@ -98,21 +114,26 @@ export const NumericInputTv = tcv({
       disabled: true,
       variant: "default",
       class: {
-        container: "before:border-default-boundary",
-        input: "disabled:text-disabled-foreground disabled:bg-transparent",
+        input: "disabled:text-disabled-foreground disabled:bg-secondary-background",
+      },
+    },
+    {
+      disabled: true,
+      variant: "light",
+      class: {
+        input: "disabled:bg-gray-100 disabled:text-black/30",
       },
     },
     {
       disabled: true,
       variant: "dark",
       class: {
-        container: "before:border-gray-600",
         input: "disabled:bg-gray-700 disabled:text-white/50",
       },
     },
     {
       focused: true,
-      variant: ["default", "dark"],
+      variant: ["default", "light", "dark"],
       class: {
         container: "before:border-selected-boundary",
       },
@@ -138,6 +159,7 @@ export const NumericInputMenuTriggerTv = tcv({
     },
     variant: {
       default: "",
+      light: "",
       dark: "",
       reset: "",
     },
@@ -151,8 +173,24 @@ export const NumericInputMenuTriggerTv = tcv({
     },
     {
       disabled: false,
+      variant: "light",
+      class: "bg-gray-100 text-black/50",
+    },
+    {
+      disabled: false,
       variant: "dark",
       class: "bg-gray-700 text-white/50",
+    },
+    // Disabled
+    {
+      disabled: true,
+      variant: "default",
+      class: "bg-secondary-background text-disabled-foreground",
+    },
+    {
+      disabled: true,
+      variant: "light",
+      class: "bg-gray-100 text-black/30",
     },
     {
       disabled: true,
@@ -181,6 +219,7 @@ export const NumericInputVariableTv = tcv({
     },
     variant: {
       default: {},
+      light: {},
       dark: {},
       reset: {},
     },
@@ -211,6 +250,18 @@ export const NumericInputVariableTv = tcv({
     },
     {
       disabled: false,
+      variant: "light",
+      class: {
+        root: "bg-gray-100 text-black/50",
+        chip: [
+          "border-gray-200 bg-white text-gray-900 hover:bg-gray-100",
+          "group-focus-within/input:border-selected-boundary",
+          "group-focus-within/input:bg-blue-200",
+        ],
+      },
+    },
+    {
+      disabled: false,
       variant: "dark",
       class: {
         root: "bg-gray-700 text-white/50",
@@ -225,7 +276,16 @@ export const NumericInputVariableTv = tcv({
       disabled: true,
       variant: "default",
       class: {
-        chip: "text-disabled-foreground",
+        root: "bg-secondary-background",
+        chip: "text-disabled-foreground bg-secondary-background",
+      },
+    },
+    {
+      disabled: true,
+      variant: "light",
+      class: {
+        root: "bg-gray-100",
+        chip: "border-gray-200 bg-gray-100 text-black/30",
       },
     },
     {
@@ -263,6 +323,7 @@ export const NumericInputElementTv = tcv({
     },
     variant: {
       default: "",
+      light: "",
       dark: "",
       reset: "",
     },
@@ -290,13 +351,28 @@ export const NumericInputElementTv = tcv({
     },
     {
       disabled: false,
+      variant: "light",
+      class: "bg-gray-100 text-black/50",
+    },
+    {
+      disabled: false,
       variant: "dark",
       class: "bg-gray-700 text-white/50",
     },
     {
       disabled: true,
+      variant: "default",
+      class: "bg-secondary-background text-disabled-foreground",
+    },
+    {
+      disabled: true,
+      variant: "light",
+      class: "bg-gray-100 text-black/30",
+    },
+    {
+      disabled: true,
       variant: "dark",
-      class: "bg-gray-700 text-white/50",
+      class: "bg-gray-700 text-white/30",
     },
   ],
   defaultVariants: {

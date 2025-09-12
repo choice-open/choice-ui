@@ -61,7 +61,7 @@ export interface ContextInputProps {
   // Mentions 配置
   triggers?: MentionTrigger[]
   value?: ContextInputValue
-  variant?: "default" | "dark" | "reset"
+  variant?: "default" | "light" | "dark" | "reset"
 }
 
 // Slate.js 扩展类型

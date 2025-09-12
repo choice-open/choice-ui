@@ -8,7 +8,7 @@ interface LabelProps extends React.LabelHTMLAttributes<HTMLLabelElement | HTMLLe
   description?: string
   disabled?: boolean
   required?: boolean
-  variant?: "default" | "dark"
+  variant?: "default" | "light" | "dark" | "reset"
 }
 
 export const Label = memo(function Label(props: LabelProps) {

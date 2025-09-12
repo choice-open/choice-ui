@@ -33,8 +33,11 @@ export const contextInputTv = tcv({
       default: {
         container: ["placeholder:text-secondary-foreground"],
       },
+      light: {
+        container: ["placeholder:text-black/50"],
+      },
       dark: {
-        container: ["placeholder:text-white/40"],
+        container: ["placeholder:text-white/50"],
       },
       reset: {
         container: "",
@@ -45,10 +48,10 @@ export const contextInputTv = tcv({
     },
     disabled: {
       true: {
-        placeholder: "text-disabled-foreground",
+        placeholder: "",
       },
       false: {
-        placeholder: "text-secondary-foreground",
+        placeholder: "",
       },
     },
   },
@@ -107,7 +110,7 @@ export const contextInputTv = tcv({
       },
     },
     {
-      variant: ["default", "dark"],
+      variant: ["default", "light", "dark"],
       class: {
         container: "border border-solid",
       },
@@ -132,6 +135,30 @@ export const contextInputTv = tcv({
         ],
       },
     },
+    // Placeholder
+    {
+      variant: "default",
+      disabled: false,
+      class: {
+        placeholder: "text-secondary-foreground",
+      },
+    },
+    {
+      variant: "light",
+      disabled: false,
+      class: {
+        placeholder: "text-black/50",
+      },
+    },
+    {
+      variant: "dark",
+      disabled: false,
+      class: {
+        placeholder: "text-white/50",
+      },
+    },
+
+    // Variant
     {
       variant: "default",
       selected: false,
@@ -140,7 +167,16 @@ export const contextInputTv = tcv({
       class: {
         container:
           "hover:not-focus-within:border-default-boundary bg-secondary-background focus-within:bg-default-background",
-        placeholder: "text-secondary-foreground",
+      },
+    },
+    {
+      variant: "light",
+      selected: false,
+      disabled: false,
+      size: "default",
+      class: {
+        container:
+          "bg-gray-100 text-gray-900 focus-within:bg-white hover:not-focus-within:border-gray-200",
       },
     },
     {
@@ -151,11 +187,10 @@ export const contextInputTv = tcv({
       class: {
         container:
           "bg-gray-700 text-white focus-within:bg-gray-900 hover:not-focus-within:border-gray-600",
-        placeholder: "text-white/40",
       },
     },
     {
-      variant: ["dark", "default"],
+      variant: ["light", "dark", "default"],
       selected: false,
       disabled: false,
       size: "default",
@@ -163,18 +198,29 @@ export const contextInputTv = tcv({
         container: "focus-within:border-selected-boundary border-transparent",
       },
     },
+    // Disabled
     {
       variant: "default",
       disabled: true,
       class: {
         container: "text-disabled-foreground border-secondary-background bg-secondary-background",
+        placeholder: "text-disabled-foreground",
+      },
+    },
+    {
+      variant: "light",
+      disabled: true,
+      class: {
+        container: "bg-gray-100 border-gray-100 text-black/50",
+        placeholder: "text-black/30",
       },
     },
     {
       variant: "dark",
       disabled: true,
       class: {
-        container: "bg-gray-700 text-white/40",
+        container: "bg-gray-700 border-gray-700 text-white/50",
+        placeholder: "text-white/30",
       },
     },
   ],

@@ -1,10 +1,11 @@
 import { createContext, useContext } from "react"
 
 export interface TabsContextValue {
+  disabled?: boolean
   id: string
   onChange: (value: string) => void
   value: string
-  variant: "default" | "dark"
+  variant: "default" | "light" | "dark" | "reset"
 }
 
 export const TabsContext = createContext<TabsContextValue | null>(null)

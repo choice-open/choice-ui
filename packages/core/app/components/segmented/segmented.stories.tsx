@@ -2,6 +2,7 @@ import { FieldTypeAttachment, FieldTypeCheckbox, FieldTypeCount } from "@choicef
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import React, { useState } from "react"
 import { Segmented } from "./segmented"
+import { Checkbox } from "../checkbox/checkbox"
 
 const meta = {
   title: "Buttons/Segmented",
@@ -258,35 +259,114 @@ export const WithTooltip: Story = {
   },
 }
 
-export const Dark: Story = {
-  render: function DarkStory() {
+/**
+ * ### Visual Variants
+ * 
+ * Demonstrates different visual variants of the segmented control:
+ * 
+ * - **default**: Follows the page theme dynamically (light/dark mode)
+ * - **light**: Fixed light appearance regardless of theme
+ * - **dark**: Fixed dark appearance regardless of theme
+ * - **reset**: Removes variant styling, no variant settings applied
+ * 
+ * Each variant maintains full functionality while adapting its visual style
+ * to different contexts and themes.
+ */
+export const Variants: Story = {
+  render: function VariantsStory() {
     const [value, setValue] = useState("sun")
+    const [disabled, setDisabled] = useState(false)
     return (
-      <div className="bg-gray-800 p-8">
-        <Segmented
-          value={value}
-          onChange={(value) => setValue(value)}
-          variant="dark"
+      <div className="flex flex-col gap-2">
+        <Checkbox
+          value={disabled}
+          onChange={(value) => setDisabled(value)}
         >
-          <Segmented.Item
-            className="px-2"
-            value="sun"
-          >
-            Sun
-          </Segmented.Item>
-          <Segmented.Item
-            className="px-2"
-            value="moon"
-          >
-            Moon
-          </Segmented.Item>
-          <Segmented.Item
-            className="px-2"
-            value="system"
-          >
-            System
-          </Segmented.Item>
-        </Segmented>
+          Disabled
+        </Checkbox>
+
+        <div className="grid grid-cols-3 overflow-hidden rounded-xl border">
+          <div className="bg-default-background p-8">
+            <Segmented
+              value={value}
+              onChange={(value) => setValue(value)}
+              disabled={disabled}
+            >
+              <Segmented.Item
+                className="px-2"
+                value="sun"
+              >
+                Sun
+              </Segmented.Item>
+              <Segmented.Item
+                className="px-2"
+                value="moon"
+              >
+                Moon
+              </Segmented.Item>
+              <Segmented.Item
+                className="px-2"
+                value="system"
+              >
+                System
+              </Segmented.Item>
+            </Segmented>
+          </div>
+          <div className="bg-white p-8">
+            <Segmented
+              value={value}
+              onChange={(value) => setValue(value)}
+              variant="light"
+              disabled={disabled}
+            >
+              <Segmented.Item
+                className="px-2"
+                value="sun"
+              >
+                Sun
+              </Segmented.Item>
+              <Segmented.Item
+                className="px-2"
+                value="moon"
+              >
+                Moon
+              </Segmented.Item>
+              <Segmented.Item
+                className="px-2"
+                value="system"
+              >
+                System
+              </Segmented.Item>
+            </Segmented>
+          </div>
+          <div className="bg-gray-800 p-8">
+            <Segmented
+              value={value}
+              onChange={(value) => setValue(value)}
+              variant="dark"
+              disabled={disabled}
+            >
+              <Segmented.Item
+                className="px-2"
+                value="sun"
+              >
+                Sun
+              </Segmented.Item>
+              <Segmented.Item
+                className="px-2"
+                value="moon"
+              >
+                Moon
+              </Segmented.Item>
+              <Segmented.Item
+                className="px-2"
+                value="system"
+              >
+                System
+              </Segmented.Item>
+            </Segmented>
+          </div>
+        </div>
       </div>
     )
   },

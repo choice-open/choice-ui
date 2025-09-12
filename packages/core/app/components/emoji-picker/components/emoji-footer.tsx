@@ -4,7 +4,7 @@ import { emojiFooterTv } from "../tv"
 interface EmojiFooterProps {
   hoveredEmoji: EmojiData | null
   selectedEmoji: EmojiData | null
-  variant?: "dark" | "light"
+  variant?: "default" | "dark" | "light"
 }
 
 export function EmojiFooter({ hoveredEmoji, selectedEmoji, variant = "dark" }: EmojiFooterProps) {

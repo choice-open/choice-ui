@@ -14,7 +14,9 @@ export const labelTv = tcv({
     },
     variant: {
       default: {},
+      light: {},
       dark: {},
+      reset: {},
     },
   },
   compoundVariants: [
@@ -23,6 +25,13 @@ export const labelTv = tcv({
       disabled: true,
       class: {
         root: "text-disabled-foreground",
+      },
+    },
+    {
+      variant: "light",
+      disabled: true,
+      class: {
+        root: "text-black/50",
       },
     },
     {
@@ -39,6 +48,15 @@ export const labelTv = tcv({
         root: "text-default-foreground",
         required: "text-accent-foreground",
         description: "text-secondary-foreground",
+      },
+    },
+    {
+      variant: "light",
+      disabled: false,
+      class: {
+        root: "text-gray-900",
+        required: "text-blue-500",
+        description: "text-black/50",
       },
     },
     {

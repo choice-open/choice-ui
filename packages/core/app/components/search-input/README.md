@@ -14,7 +14,7 @@ import { SearchInput } from "@choiceform/design-system"
 - Search icon prefix for clear visual indication
 - Clear button that appears when input has content
 - Internationalization support for labels and tooltips
-- Multiple visual variants (default, dark, reset)
+- Multiple visual variants (default, light, dark, reset)
 - All TextField features: sizes, states, and accessibility
 - Automatic focus management and keyboard navigation
 - Tooltip support on clear button
@@ -43,8 +43,16 @@ import { SearchInput } from "@choiceform/design-system"
 ### Variants
 
 ```tsx
+// Default - follows page theme
 <SearchInput variant="default" value={query} onChange={setQuery} />
+
+// Light - fixed light appearance
+<SearchInput variant="light" value={query} onChange={setQuery} />
+
+// Dark - fixed dark appearance
 <SearchInput variant="dark" value={query} onChange={setQuery} />
+
+// Reset - no variant styling
 <SearchInput variant="reset" value={query} onChange={setQuery} />
 ```
 
@@ -101,15 +109,21 @@ Inherits all props from `TextFieldProps`, including:
 - `value?: string` - Current search value
 - `onChange?: (value: string) => void` - Callback when value changes
 - `placeholder?: string` - Placeholder text (defaults to "Search...")
-- `variant?: "default" | "dark" | "reset"` - Visual style variant
+- `variant?: "default" | "light" | "dark" | "reset"` - Visual style variant
 - `size?: "default" | "large"` - Input size
 - `disabled?: boolean` - Whether the input is disabled
 - All other standard HTML input attributes
 
 - Defaults:
   - `placeholder`: "Search..."
-  - `variant`: "default"
+  - `variant`: "default" (follows page theme)
   - `i18n.clear`: "Clear"
+
+- Variant options:
+  - `default`: Follows the page theme dynamically (light/dark mode)
+  - `light`: Fixed light appearance regardless of theme
+  - `dark`: Fixed dark appearance regardless of theme
+  - `reset`: Removes variant styling, no variant settings applied
 
 - Behavior:
   - Search icon is always visible in the prefix position

@@ -10,7 +10,7 @@ import { Input } from "@choiceform/design-system"
 
 ## Features
 
-- Multiple visual variants for different contexts (default, dark, reset)
+- Multiple visual variants for different contexts (default, light, dark, reset)
 - Two sizes for different density needs
 - Selected state for visual emphasis
 - Editing state tracking with callbacks
@@ -41,9 +41,10 @@ import { Input } from "@choiceform/design-system"
 ### Variants
 
 ```tsx
-<Input variant="default" value={value} onChange={setValue} />
-<Input variant="dark" value={value} onChange={setValue} />
-<Input variant="reset" value={value} onChange={setValue} />
+<Input variant="default" value={value} onChange={setValue} />  // Follows page theme
+<Input variant="light" value={value} onChange={setValue} />    // Fixed light appearance
+<Input variant="dark" value={value} onChange={setValue} />     // Fixed dark appearance
+<Input variant="reset" value={value} onChange={setValue} />    // No variant styling
 ```
 
 ### States
@@ -97,7 +98,7 @@ interface InputProps extends Omit<HTMLProps<HTMLInputElement>, "value" | "onChan
   value?: string
 
   /** Visual style variant of the input */
-  variant?: "default" | "dark" | "reset"
+  variant?: "default" | "light" | "dark" | "reset"
 }
 ```
 
@@ -191,5 +192,7 @@ const [isEditing, setIsEditing] = useState(false)
 
 - The component automatically handles text selection on focus to improve user experience
 - Editing state is properly cleaned up when the component unmounts
+- The `default` variant adapts to the current theme (light/dark mode)
+- The `light` and `dark` variants provide fixed appearances regardless of theme
 - The `reset` variant provides minimal styling for custom implementations
 - Password managers are disabled by default to prevent interference with specialized inputs

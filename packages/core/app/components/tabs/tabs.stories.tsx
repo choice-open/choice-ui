@@ -2,6 +2,7 @@ import { ThemeMoonDark, ThemeSunBright, ThemeSystem } from "@choiceform/icons-re
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import React, { useState } from "react"
 import { Tabs } from "./tabs"
+import { Checkbox } from "../checkbox/checkbox"
 
 const meta: Meta<typeof Tabs> = {
   title: "Navigation/Tabs",
@@ -13,8 +14,13 @@ export default meta
 type Story = StoryObj<typeof Tabs>
 
 /**
- * - This is a controlled component that requires `value` and `onChange` props to control its state.
- * - Use `<Tabs.Item>` for each tab item.
+ * Basic tabs component with text labels.
+ * 
+ * Features:
+ * - Controlled component requiring `value` and `onChange` props
+ * - Use `<Tabs.Item>` for each tab item
+ * - Keyboard navigation with arrow keys
+ * - ARIA attributes for accessibility
  */
 export const Basic: Story = {
   render: function BasicStory() {
@@ -35,8 +41,12 @@ export const Basic: Story = {
 }
 
 /**
- * Since it is a controlled component, there is no separate `defaultValue` property.
- * The default value can be set through the initial state.
+ * Tabs with default selected value.
+ * 
+ * Features:
+ * - Set default value through initial state
+ * - No separate `defaultValue` prop (controlled component)
+ * - The selected tab is highlighted on mount
  */
 export const DefaultValue: Story = {
   render: function DefaultValueStory() {
@@ -57,7 +67,13 @@ export const DefaultValue: Story = {
 }
 
 /**
- * The `disabled` prop is used to disable the tab.
+ * Tabs with disabled state.
+ * 
+ * Features:
+ * - Individual tabs can be disabled
+ * - Entire tab group can be disabled
+ * - Disabled tabs cannot be selected
+ * - Visual feedback for disabled state
  */
 export const Disabled: Story = {
   render: function DisabledStory() {
@@ -94,7 +110,13 @@ export const Disabled: Story = {
 }
 
 /**
- * Icon tabs using the compound component pattern.
+ * Icon-only tabs for compact interfaces.
+ * 
+ * Features:
+ * - Icons as tab content
+ * - Requires `aria-label` for accessibility
+ * - Ideal for theme switchers or view toggles
+ * - Maintains full keyboard navigation
  */
 export const IconTabs: Story = {
   render: function IconTabsStory() {
@@ -128,7 +150,13 @@ export const IconTabs: Story = {
 }
 
 /**
- * Mixed tabs with icons and text.
+ * Tabs with both icons and text labels.
+ * 
+ * Features:
+ * - Combine icons with descriptive text
+ * - Better clarity than icon-only tabs
+ * - Use flexbox for alignment
+ * - Suitable for main navigation
  */
 export const MixedTabs: Story = {
   render: function MixedTabsStory() {
@@ -171,22 +199,65 @@ export const MixedTabs: Story = {
 }
 
 /**
- * Dark variant.
+ * Visual variants of the tabs component.
+ * 
+ * Variants:
+ * - **default**: Follows the page theme dynamically (light/dark mode)
+ * - **light**: Fixed light appearance regardless of theme
+ * - **dark**: Fixed dark appearance regardless of theme
+ * - **reset**: Removes variant styling, no variant settings applied
+ * 
+ * Each variant maintains full functionality while adapting visual style.
  */
-export const DarkVariant: Story = {
-  render: function DarkVariantStory() {
+export const Variants: Story = {
+  render: function VariantsStory() {
     const [selectedTab, setSelectedTab] = useState("tab1")
+    const [disabled, setDisabled] = useState(false)
     return (
-      <div className="rounded-xl bg-gray-900 p-8">
-        <Tabs
-          value={selectedTab}
-          onChange={(value) => setSelectedTab(value)}
-          variant="dark"
+      <div className="flex flex-col gap-2">
+        <Checkbox
+          value={disabled}
+          onChange={(value) => setDisabled(value)}
         >
-          <Tabs.Item value="tab1">Tab 1</Tabs.Item>
-          <Tabs.Item value="tab2">Tab 2</Tabs.Item>
-          <Tabs.Item value="tab3">Tab 3</Tabs.Item>
-        </Tabs>
+          Disabled
+        </Checkbox>
+        <div className="grid grid-cols-3 overflow-hidden rounded-xl border">
+          <div className="bg-default-background p-8">
+            <Tabs
+              value={selectedTab}
+              onChange={(value) => setSelectedTab(value)}
+              disabled={disabled}
+            >
+              <Tabs.Item value="tab1">Tab 1</Tabs.Item>
+              <Tabs.Item value="tab2">Tab 2</Tabs.Item>
+              <Tabs.Item value="tab3">Tab 3</Tabs.Item>
+            </Tabs>
+          </div>
+          <div className="bg-white p-8">
+            <Tabs
+              value={selectedTab}
+              onChange={(value) => setSelectedTab(value)}
+              variant="light"
+              disabled={disabled}
+            >
+              <Tabs.Item value="tab1">Tab 1</Tabs.Item>
+              <Tabs.Item value="tab2">Tab 2</Tabs.Item>
+              <Tabs.Item value="tab3">Tab 3</Tabs.Item>
+            </Tabs>
+          </div>
+          <div className="bg-gray-800 p-8">
+            <Tabs
+              value={selectedTab}
+              onChange={(value) => setSelectedTab(value)}
+              variant="dark"
+              disabled={disabled}
+            >
+              <Tabs.Item value="tab1">Tab 1</Tabs.Item>
+              <Tabs.Item value="tab2">Tab 2</Tabs.Item>
+              <Tabs.Item value="tab3">Tab 3</Tabs.Item>
+            </Tabs>
+          </div>
+        </div>
       </div>
     )
   },

@@ -2,7 +2,7 @@ import { memo } from "react"
 import { emojiEmptyTv } from "../tv"
 
 interface EmojiEmptyProps {
-  variant?: "dark" | "light"
+  variant?: "default" | "dark" | "light"
 }
 
 export const EmojiEmpty = memo(function EmojiEmpty({ variant = "dark" }: EmojiEmptyProps) {

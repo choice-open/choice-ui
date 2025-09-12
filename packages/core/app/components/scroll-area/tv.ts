@@ -24,7 +24,7 @@ export const ScrollTv = tcv({
       },
     },
     variant: {
-      auto: {
+      default: {
         scrollbar: "hover:bg-default-background",
         thumb: "bg-default-foreground/10 hover:bg-default-foreground/20",
       },
@@ -58,7 +58,7 @@ export const ScrollTv = tcv({
     {
       orientation: "vertical",
       hoverBoundary: "hover",
-      variant: "auto",
+      variant: "default",
       class: {
         scrollbar: "hover:border-l-default-boundary",
       },
@@ -66,7 +66,7 @@ export const ScrollTv = tcv({
     {
       orientation: "horizontal",
       hoverBoundary: "hover",
-      variant: "auto",
+      variant: "default",
       class: {
         scrollbar: "hover:border-t-default-boundary",
       },
@@ -149,7 +149,7 @@ export const ScrollTv = tcv({
   defaultVariants: {
     hoverBoundary: "hover",
     orientation: "vertical",
-    variant: "auto",
+    variant: "default",
     scrollbarMode: "default",
   },
 })

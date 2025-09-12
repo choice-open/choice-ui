@@ -7,7 +7,7 @@ interface EmojiItemProps {
   onHover?: (emoji: EmojiData | null) => void
   onSelect: (emoji: EmojiData) => void
   selected?: boolean
-  variant?: "dark" | "light"
+  variant?: "default" | "dark" | "light"
 }
 
 export const EmojiItem = memo(function EmojiItem(props: EmojiItemProps) {

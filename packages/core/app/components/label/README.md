@@ -15,7 +15,7 @@ import { Label } from "@choiceform/design-system"
 - Description text for additional context
 - Required field indicator with visual asterisk
 - Custom action elements (e.g., help buttons, tooltips)
-- Visual variants for different themes (default, dark)
+- Visual variants for different themes (default, light, dark, reset)
 - Disabled state support
 - Automatic typography and spacing
 
@@ -115,23 +115,32 @@ import { QuestionCircle } from "@choiceform/icons-react"
 </fieldset>
 ```
 
-### Dark variant
+### Variants
 
 ```tsx
 import { Input } from "@choiceform/design-system"
-;<div className="bg-gray-800 p-4">
-  <div className="flex flex-col gap-2">
-    <Label
-      htmlFor="dark"
-      variant="dark"
-      description="Dark theme description"
-      required
-    >
-      Dark Mode Label
-    </Label>
-    <Input id="dark" />
-  </div>
+
+// Default - follows page theme
+<Label htmlFor="default" variant="default">
+  Default Variant
+</Label>
+
+// Light - fixed light appearance
+<Label htmlFor="light" variant="light">
+  Light Variant
+</Label>
+
+// Dark - fixed dark appearance
+<div className="bg-gray-800 p-4">
+  <Label htmlFor="dark" variant="dark">
+    Dark Variant
+  </Label>
 </div>
+
+// Reset - no variant styling
+<Label htmlFor="reset" variant="reset">
+  Reset Variant
+</Label>
 ```
 
 ## Props
@@ -160,7 +169,7 @@ interface LabelProps extends React.LabelHTMLAttributes<HTMLLabelElement | HTMLLe
   required?: boolean
 
   /** Visual variant for different themes */
-  variant?: "default" | "dark"
+  variant?: "default" | "light" | "dark" | "reset"
 }
 ```
 
@@ -269,5 +278,7 @@ import { QuestionCircle } from "@choiceform/icons-react"
 - The component automatically handles typography and spacing for consistent form layouts
 - Required indicators use a red asterisk that is announced by screen readers
 - Actions are positioned inline with the label for easy access
-- Dark variant is specifically designed for use on dark backgrounds
+- The `default` variant adapts to the current theme (light/dark mode)
+- The `light` and `dark` variants provide fixed appearances regardless of theme
+- The `reset` variant provides minimal styling for custom implementations
 - When using `as="legend"`, ensure the component is within a `fieldset` element

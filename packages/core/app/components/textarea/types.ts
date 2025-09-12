@@ -18,7 +18,7 @@ export interface TextareaProps
   resize?: "auto" | "handle" | false
   selected?: boolean
   value?: string
-  variant?: "default" | "dark" | "reset"
+  variant?: "default" | "light" | "dark" | "reset"
 }
 
 export interface TextareaContentProps extends Omit<TextareaAutosizeProps, "onChange"> {

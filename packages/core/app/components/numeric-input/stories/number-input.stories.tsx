@@ -16,9 +16,9 @@ import { useEventCallback } from "usehooks-ts"
 import { Dropdown } from "../../dropdown"
 import { IconButton } from "../../icon-button"
 import { Select } from "../../select"
-import { NumericInputMenuTrigger } from "../components"
 import { NumericInput } from "../numeric-input"
 import { NumberResult, NumericInputValue } from "../types"
+import { Checkbox } from "../../checkbox/checkbox"
 
 const meta: Meta<typeof NumericInput> = {
   title: "Forms/NumericInput",
@@ -423,79 +423,138 @@ export const Disabled: Story = {
 }
 
 /**
- * Example showing NumericInput in dark theme variant.
- * The dark theme is designed for use on dark backgrounds with adjusted colors.
- * This example shows various states and configurations in dark mode.
+ * Variants: Demonstrates different visual variants of the numeric input component.
+ * - default: Follows the page theme dynamically (light/dark mode)
+ * - light: Fixed light appearance regardless of theme
+ * - dark: Fixed dark appearance regardless of theme
+ * - reset: Removes variant styling, no variant settings applied
  */
-export const Dark: Story = {
-  render: function DarkStory() {
+export const Variants: Story = {
+  render: function VariantsStory() {
     const [value, setValue] = useState(10)
+    const [disabled, setDisabled] = useState(false)
     return (
-      <div className="flex aspect-square flex-col items-start justify-center gap-4 bg-gray-800 p-8">
-        <NumericInput
-          variant="dark"
-          value={value}
-          onChange={(newValue) => setValue(newValue as number)}
-        />
-        <NumericInput
-          variant="dark"
-          value={value}
-          onChange={(newValue) => setValue(newValue as number)}
+      <div className="flex flex-col gap-2">
+        <Checkbox
+          value={disabled}
+          onChange={(value) => setDisabled(value)}
         >
-          <NumericInput.Prefix>
-            <ColorTypeSolid />
-          </NumericInput.Prefix>
-          <NumericInput.Variable value={10} />
-          <NumericInput.Suffix type="action">
-            <Select
-              disabled
-              placement="bottom-end"
+          Disabled
+        </Checkbox>
+        <div className="grid grid-cols-3 overflow-hidden rounded-xl border">
+          <div className="bg-default-background flex aspect-square flex-col items-start justify-center gap-4 p-8">
+            <NumericInput
+              disabled={disabled}
+              value={value}
+              onChange={(newValue) => setValue(newValue as number)}
+            />
+            <NumericInput
+              disabled={disabled}
+              value={value}
+              onChange={(newValue) => setValue(newValue as number)}
             >
-              <Select.Trigger asChild>
-                <NumericInput.MenuTrigger
-                  aria-label="Open menu"
-                  type="menu"
-                />
-              </Select.Trigger>
-              <Select.Content>
-                <Select.Item value="fixed">
-                  <FixedHeight />
-                  Fixed height
-                </Select.Item>
-              </Select.Content>
-            </Select>
-          </NumericInput.Suffix>
-        </NumericInput>
-        <NumericInput
-          variant="dark"
-          value={value}
-          disabled
-          onChange={(newValue) => setValue(newValue as number)}
-        >
-          <NumericInput.Prefix>
-            <ColorTypeSolid />
-          </NumericInput.Prefix>
-          <NumericInput.Variable value={10} />
-          <NumericInput.Suffix type="action">
-            <Select
-              disabled
-              placement="bottom-end"
+              <NumericInput.Prefix>
+                <ColorTypeSolid />
+              </NumericInput.Prefix>
+              <NumericInput.Variable value={10} />
+              <NumericInput.Suffix type="action">
+                <Select
+                  disabled
+                  placement="bottom-end"
+                >
+                  <Select.Trigger asChild>
+                    <NumericInput.MenuTrigger
+                      aria-label="Open menu"
+                      type="menu"
+                    />
+                  </Select.Trigger>
+                  <Select.Content>
+                    <Select.Item value="fixed">
+                      <FixedHeight />
+                      Fixed height
+                    </Select.Item>
+                  </Select.Content>
+                </Select>
+              </NumericInput.Suffix>
+            </NumericInput>
+          </div>
+          <div className="flex aspect-square flex-col items-start justify-center gap-4 bg-white p-8">
+            <NumericInput
+              disabled={disabled}
+              variant="light"
+              value={value}
+              onChange={(newValue) => setValue(newValue as number)}
+            />
+            <NumericInput
+              disabled={disabled}
+              variant="light"
+              value={value}
+              onChange={(newValue) => setValue(newValue as number)}
             >
-              <Select.Trigger asChild>
-                <NumericInput.MenuTrigger
-                  aria-label="Open menu"
-                  type="menu"
-                />
-              </Select.Trigger>
-              <Select.Content>
-                <Select.Item value="fixed">
-                  <FixedHeight />
-                  Fixed height
-                </Select.Item>
-              </Select.Content>
-            </Select>
-          </NumericInput.Suffix>
-        </NumericInput>
+              <NumericInput.Prefix>
+                <ColorTypeSolid />
+              </NumericInput.Prefix>
+              <NumericInput.Variable value={10} />
+              <NumericInput.Suffix type="action">
+                <Select
+                  disabled
+                  placement="bottom-end"
+                >
+                  <Select.Trigger asChild>
+                    <NumericInput.MenuTrigger
+                      aria-label="Open menu"
+                      type="menu"
+                    />
+                  </Select.Trigger>
+                  <Select.Content>
+                    <Select.Item value="fixed">
+                      <FixedHeight />
+                      Fixed height
+                    </Select.Item>
+                  </Select.Content>
+                </Select>
+              </NumericInput.Suffix>
+            </NumericInput>
+          </div>
+          <div className="flex aspect-square flex-col items-start justify-center gap-4 bg-gray-800 p-8">
+            <NumericInput
+              disabled={disabled}
+              variant="dark"
+              value={value}
+              onChange={(newValue) => setValue(newValue as number)}
+            />
+            <NumericInput
+              disabled={disabled}
+              variant="dark"
+              value={value}
+              onChange={(newValue) => setValue(newValue as number)}
+            >
+              <NumericInput.Prefix>
+                <ColorTypeSolid />
+              </NumericInput.Prefix>
+              <NumericInput.Variable value={10} />
+              <NumericInput.Suffix type="action">
+                <Select
+                  disabled
+                  placement="bottom-end"
+                >
+                  <Select.Trigger asChild>
+                    <NumericInput.MenuTrigger
+                      aria-label="Open menu"
+                      type="menu"
+                    />
+                  </Select.Trigger>
+                  <Select.Content>
+                    <Select.Item value="fixed">
+                      <FixedHeight />
+                      Fixed height
+                    </Select.Item>
+                  </Select.Content>
+                </Select>
+              </NumericInput.Suffix>
+            </NumericInput>
+          </div>
+        </div>
       </div>
     )
   },

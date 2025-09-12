@@ -30,7 +30,7 @@ interface EmojiPickerProps {
   showFrequentlyUsed?: boolean
   showSearch?: boolean
   value?: EmojiData | null
-  variant?: "dark" | "light"
+  variant?: "default" | "dark" | "light"
 }
 
 // 分类配置（带图标）
@@ -138,7 +138,7 @@ export const EmojiPicker = memo(function EmojiPicker({
         {showSearch && (
           <SearchInput
             autoFocus
-            variant={variant === "dark" ? "dark" : "default"}
+            variant={variant}
             placeholder={searchPlaceholder}
             value={searchQuery}
             onChange={(value: string) => setSearchQuery(value)}
@@ -147,7 +147,7 @@ export const EmojiPicker = memo(function EmojiPicker({
 
         {showCategories && (
           <Segmented
-            variant={variant === "dark" ? "dark" : "default"}
+            variant={variant}
             value={searchQuery.trim() ? undefined : currentVisibleCategory}
             onChange={(value: string) => handleCategoryClick(value as EmojiCategory)}
           >

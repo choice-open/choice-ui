@@ -5,6 +5,7 @@ import { Popover } from "../popover"
 import { EmojiPicker } from "./emoji-picker"
 import { EmojiData } from "./hooks"
 import { emojis } from "./utils"
+import { Select } from "../select"
 
 const meta: Meta<typeof EmojiPicker> = {
   title: "Pickers/EmojiPicker",
@@ -20,13 +21,13 @@ export default meta
 type Story = StoryObj<typeof EmojiPicker>
 
 /**
- * Basic: 基本的 Emoji 选择器实现
+ * Basic emoji picker implementation.
  *
- * 功能特性：
- * - 分类浏览和搜索
- * - 常用 emoji 自动记录
- * - 虚拟化滚动性能优化
- * - 支持 dark/light 主题
+ * Features:
+ * - Category browsing and search
+ * - Automatic frequently used emoji tracking
+ * - Virtualized scrolling for performance
+ * - Support for dark/light themes
  */
 export const Basic: Story = {
   render: function BasicStory() {
@@ -37,10 +38,10 @@ export const Basic: Story = {
         <div className="text-center">
           {selectedEmoji ? (
             <div className="text-body-large">
-              选中的 emoji: {selectedEmoji.emoji} ({selectedEmoji.name})
+              Selected emoji: {selectedEmoji.emoji} ({selectedEmoji.name})
             </div>
           ) : (
-            <div className="text-gray-500">请选择一个 emoji</div>
+            <div className="text-gray-500">Please select an emoji</div>
           )}
         </div>
 
@@ -56,29 +57,39 @@ export const Basic: Story = {
 }
 
 /**
- * Light Theme: 浅色主题的 Emoji 选择器
+ * Visual variants of the emoji picker.
+ *
+ * Variants:
+ * - **default**: Follows the page theme dynamically (light/dark mode)
+ * - **light**: Fixed light appearance regardless of theme
+ * - **dark**: Fixed dark appearance regardless of theme
  */
-export const LightTheme: Story = {
-  render: function LightThemeStory() {
+export const Variants: Story = {
+  render: function VariantsStory() {
+    const [variant, setVariant] = useState<"default" | "light" | "dark">("dark")
     const [selectedEmoji, setSelectedEmoji] = useState<EmojiData | null>(null)
 
     return (
       <div className="flex flex-col gap-4">
-        <div className="text-center">
-          {selectedEmoji ? (
-            <div className="text-body-large">
-              选中的 emoji: {selectedEmoji.emoji} ({selectedEmoji.name})
-            </div>
-          ) : (
-            <div className="text-gray-500">请选择一个 emoji</div>
-          )}
-        </div>
+        <Select
+          value={variant}
+          onChange={(value) => setVariant(value as "default" | "light" | "dark")}
+        >
+          <Select.Trigger>
+            <Select.Value>{variant}</Select.Value>
+          </Select.Trigger>
+          <Select.Content>
+            <Select.Item value="default">Default</Select.Item>
+            <Select.Item value="light">Light</Select.Item>
+            <Select.Item value="dark">Dark</Select.Item>
+          </Select.Content>
+        </Select>
 
         <EmojiPicker
           value={selectedEmoji}
           onChange={setSelectedEmoji}
           height={384}
-          variant="light"
+          variant={variant}
         />
       </div>
     )
@@ -86,13 +97,13 @@ export const LightTheme: Story = {
 }
 
 /**
- * Without Frequently Used: 禁用常用 Emoji 功能
+ * Emoji picker without frequently used feature.
  *
- * 功能特性：
- * - 禁用常用 emoji 记录功能
- * - 不显示 Frequently used 分类
- * - 分类导航中不包含 Frequently used 选项
- * - 选择 emoji 时不会记录到本地存储
+ * Features:
+ * - Disabled frequently used emoji tracking
+ * - No "Frequently used" category shown
+ * - Category navigation excludes frequently used option
+ * - Emoji selections are not saved to local storage
  */
 export const WithoutFrequentlyUsed: Story = {
   render: function WithoutFrequentlyUsedStory() {
@@ -101,13 +112,13 @@ export const WithoutFrequentlyUsed: Story = {
     return (
       <div className="flex flex-col gap-4">
         <div className="text-center">
-          <h3 className="text-body-large-strong mb-2">禁用常用 Emoji 功能</h3>
+          <h3 className="text-body-large-strong mb-2">Frequently Used Feature Disabled</h3>
           {selectedEmoji ? (
             <div className="text-body-large">
-              选中的 emoji: {selectedEmoji.emoji} ({selectedEmoji.name})
+              Selected emoji: {selectedEmoji.emoji} ({selectedEmoji.name})
             </div>
           ) : (
-            <div className="text-gray-500">请选择一个 emoji</div>
+            <div className="text-gray-500">Please select an emoji</div>
           )}
         </div>
 
@@ -120,12 +131,12 @@ export const WithoutFrequentlyUsed: Story = {
         />
 
         <div className="text-body-small max-w-md text-center text-gray-500">
-          <p>这个示例展示了禁用常用功能：</p>
+          <p>This example shows disabled frequently used feature:</p>
           <ul className="mt-2 space-y-1 text-left">
-            <li>• 不显示 &ldquo;Frequently used&rdquo; 分类</li>
-            <li>• 分类导航中没有常用 emoji 图标</li>
-            <li>• 选择 emoji 时不会记录到本地存储</li>
-            <li>• 适用于不需要记录用户使用习惯的场景</li>
+            <li>• No &quot;Frequently used&quot; category displayed</li>
+            <li>• Category navigation has no frequently used icon</li>
+            <li>• Emoji selections are not saved to local storage</li>
+            <li>• Suitable for scenarios where user habits tracking is not needed</li>
           </ul>
         </div>
       </div>
@@ -134,13 +145,13 @@ export const WithoutFrequentlyUsed: Story = {
 }
 
 /**
- * Controlled with Popover: 外部受控的 Emoji 选择器，放置在 Popover 中
+ * Controlled emoji picker inside a popover.
  *
- * 功能特性：
- * - 外部状态管理选中的 emoji
- * - Popover 容器提供浮层体验
- * - 点击 emoji 后自动关闭 popover
- * - 显示当前选中的 emoji 在触发按钮上
+ * Features:
+ * - External state management for selected emoji
+ * - Popover container provides floating layer experience
+ * - Auto-closes popover after emoji selection
+ * - Shows current selected emoji in trigger button
  */
 export const ControlledWithPopover: Story = {
   render: function ControlledWithPopoverStory() {
@@ -157,10 +168,10 @@ export const ControlledWithPopover: Story = {
         <div className="text-center">
           {selectedEmoji ? (
             <div className="text-body-large">
-              当前选中: {selectedEmoji.emoji} {selectedEmoji.name}
+              Current selection: {selectedEmoji.emoji} {selectedEmoji.name}
             </div>
           ) : (
-            <div className="text-gray-500">未选择 emoji</div>
+            <div className="text-gray-500">No emoji selected</div>
           )}
         </div>
 
@@ -170,10 +181,10 @@ export const ControlledWithPopover: Story = {
           placement="bottom-start"
         >
           <Popover.Trigger>
-            <Button active={open}>{selectedEmoji?.emoji || "😀"} 选择 Emoji</Button>
+            <Button active={open}>{selectedEmoji?.emoji || "😀"} Select Emoji</Button>
           </Popover.Trigger>
 
-          <Popover.Header title="选择 Emoji" />
+          <Popover.Header title="Select Emoji" />
 
           <Popover.Content className="p-0">
             <EmojiPicker
@@ -190,9 +201,9 @@ export const ControlledWithPopover: Story = {
 }
 
 /**
- * Multiple Controlled: 多个受控的 Emoji 选择器示例
+ * Multiple controlled emoji pickers.
  *
- * 展示如何在同一个页面中使用多个独立的 emoji 选择器
+ * Shows how to use multiple independent emoji pickers on the same page.
  */
 export const MultipleControlled: Story = {
   render: function MultipleControlledStory() {
@@ -204,9 +215,10 @@ export const MultipleControlled: Story = {
     return (
       <div className="flex flex-col items-center gap-6">
         <div className="text-center">
-          <h3 className="text-body-large-strong mb-2">多个 Emoji 选择器</h3>
+          <h3 className="text-body-large-strong mb-2">Multiple Emoji Pickers</h3>
           <p className="text-gray-500">
-            选择器 1: {emoji1?.emoji || "未选择"} | 选择器 2: {emoji2?.emoji || "未选择"}
+            Picker 1: {emoji1?.emoji || "Not selected"} | Picker 2:{" "}
+            {emoji2?.emoji || "Not selected"}
           </p>
         </div>
 
@@ -217,10 +229,10 @@ export const MultipleControlled: Story = {
             placement="bottom-start"
           >
             <Popover.Trigger>
-              <Button active={open1}>{emoji1?.emoji || "😀"} 选择器 1</Button>
+              <Button active={open1}>{emoji1?.emoji || "😀"} Picker 1</Button>
             </Popover.Trigger>
 
-            <Popover.Header title="Emoji 选择器 1" />
+            <Popover.Header title="Emoji Picker 1" />
 
             <Popover.Content className="p-0">
               <EmojiPicker
@@ -241,10 +253,10 @@ export const MultipleControlled: Story = {
             placement="bottom-end"
           >
             <Popover.Trigger>
-              <Button active={open2}>{emoji2?.emoji || "🎉"} 选择器 2</Button>
+              <Button active={open2}>{emoji2?.emoji || "🎉"} Picker 2</Button>
             </Popover.Trigger>
 
-            <Popover.Header title="Emoji 选择器 2" />
+            <Popover.Header title="Emoji Picker 2" />
 
             <Popover.Content className="p-0">
               <EmojiPicker
@@ -265,12 +277,12 @@ export const MultipleControlled: Story = {
 }
 
 /**
- * Draggable Popover: 可拖拽的 Emoji 选择器 Popover
+ * Draggable emoji picker popover.
  *
- * 功能特性：
- * - 用户可以拖拽 popover 位置
- * - 记住位置功能
- * - 更大的选择区域
+ * Features:
+ * - Users can drag the popover position
+ * - Remember position feature
+ * - Larger selection area
  */
 export const DraggablePopover: Story = {
   render: function DraggablePopoverStory() {
@@ -280,13 +292,13 @@ export const DraggablePopover: Story = {
     return (
       <div className="flex flex-col items-center gap-4">
         <div className="text-center">
-          <p className="mb-2 text-gray-500">可拖拽的 Emoji 选择器</p>
+          <p className="mb-2 text-gray-500">Draggable Emoji Picker</p>
           {selectedEmoji ? (
             <div className="text-body-large">
               {selectedEmoji.emoji} {selectedEmoji.name}
             </div>
           ) : (
-            <div className="text-gray-500">未选择 emoji</div>
+            <div className="text-gray-500">No emoji selected</div>
           )}
         </div>
 
@@ -298,10 +310,10 @@ export const DraggablePopover: Story = {
           placement="bottom-start"
         >
           <Popover.Trigger>
-            <Button active={open}>{selectedEmoji?.emoji || "🎯"} 可拖拽选择器</Button>
+            <Button active={open}>{selectedEmoji?.emoji || "🎯"} Draggable Picker</Button>
           </Popover.Trigger>
 
-          <Popover.Header title="拖拽我！选择 Emoji" />
+          <Popover.Header title="Drag me! Select Emoji" />
 
           <Popover.Content className="p-0">
             <EmojiPicker
@@ -322,33 +334,33 @@ export const DraggablePopover: Story = {
 }
 
 /**
- * External Value Control: 外部值控制示例
+ * External value control example.
  *
- * 展示如何通过外部控制来设置和重置 emoji 选择器的值
+ * Shows how to set and reset emoji picker value through external controls.
  */
 export const ExternalValueControl: Story = {
   render: function ExternalValueControlStory() {
     const [open, setOpen] = useState(false)
-    // 默认选择一个 emoji (笑脸) - 使用真实数据
+    // Default select an emoji (smiley face) - using real data
     const [selectedEmoji, setSelectedEmoji] = useState<EmojiData | null>(
       emojis.find((e) => e.emoji === "😀") || null,
     )
     const [recentEmojis, setRecentEmojis] = useState<EmojiData[]>([])
 
-    // 当 emoji 被选择时，记录到最近使用
+    // When emoji is selected, record to recently used
     const handleEmojiSelect = (emoji: EmojiData) => {
       setSelectedEmoji(emoji)
 
-      // 添加到最近使用，避免重复
+      // Add to recently used, avoid duplicates
       setRecentEmojis((prev) => {
         const filtered = prev.filter((e) => e.id !== emoji.id)
-        return [emoji, ...filtered].slice(0, 5) // 只保留最近 5 个
+        return [emoji, ...filtered].slice(0, 5) // Keep only the last 5
       })
 
       setOpen(false)
     }
 
-    // 根据emoji字符查找真实数据
+    // Find real data based on emoji character
     const findEmojiByChar = (emojiChar: string): EmojiData | null => {
       return emojis.find((e) => e.emoji === emojiChar) || null
     }
@@ -356,20 +368,20 @@ export const ExternalValueControl: Story = {
     return (
       <div className="flex flex-col items-center gap-4">
         <div className="text-center">
-          <h3 className="text-body-large-strong mb-2">外部值控制</h3>
+          <h3 className="text-body-large-strong mb-2">External Value Control</h3>
           {selectedEmoji ? (
             <div className="text-body-large">
-              当前选中: {selectedEmoji.emoji} {selectedEmoji.name}
+              Current selection: {selectedEmoji.emoji} {selectedEmoji.name}
             </div>
           ) : (
-            <div className="text-gray-500">未选择 emoji</div>
+            <div className="text-gray-500">No emoji selected</div>
           )}
         </div>
 
         {/* 最近使用的 emoji 快速选择 */}
         {recentEmojis.length > 0 && (
           <div className="text-center">
-            <p className="text-body-small mb-2 text-gray-500">最近使用：</p>
+            <p className="text-body-small mb-2 text-gray-500">Recently used:</p>
             <div className="flex justify-center gap-2">
               {recentEmojis.map((emoji) => (
                 <Button
@@ -387,9 +399,9 @@ export const ExternalValueControl: Story = {
                   setSelectedEmoji(null)
                   setRecentEmojis([])
                 }}
-                title="清除所有"
+                title="Clear all"
               >
-                清除
+                Clear
               </Button>
             </div>
           </div>
@@ -397,7 +409,7 @@ export const ExternalValueControl: Story = {
 
         {/* 预设的一些常用 emoji 用于快速切换 */}
         <div className="text-center">
-          <p className="text-body-small mb-2 text-gray-500">快速选择：</p>
+          <p className="text-body-small mb-2 text-gray-500">Quick select:</p>
           <div className="flex justify-center gap-2">
             {[
               "😀", // Grinning Face
@@ -431,10 +443,10 @@ export const ExternalValueControl: Story = {
           placement="bottom-start"
         >
           <Popover.Trigger>
-            <Button active={open}>{selectedEmoji?.emoji || "🎨"} 打开选择器</Button>
+            <Button active={open}>{selectedEmoji?.emoji || "🎨"} Open Picker</Button>
           </Popover.Trigger>
 
-          <Popover.Header title="Emoji 选择器" />
+          <Popover.Header title="Emoji Picker" />
 
           <Popover.Content className="p-0">
             <EmojiPicker
@@ -448,13 +460,13 @@ export const ExternalValueControl: Story = {
 
         {/* 说明文字 */}
         <div className="text-body-small max-w-md text-center text-gray-500">
-          <p>这个示例展示了外部值控制：</p>
+          <p>This example shows external value control:</p>
           <ul className="mt-2 space-y-1 text-left">
-            <li>• 默认选择了一个 emoji (😀)</li>
-            <li>• 可以通过快速选择按钮切换预设的 emoji</li>
-            <li>• 选择的 emoji 会自动记录到最近使用列表</li>
-            <li>• 外部设置值时，选择器会自动滚动到对应位置</li>
-            <li>• 支持清除当前选择和历史记录</li>
+            <li>• Default selected emoji (😀)</li>
+            <li>• Can switch preset emojis via quick select buttons</li>
+            <li>• Selected emojis are automatically recorded to recently used list</li>
+            <li>• When setting value externally, picker auto-scrolls to position</li>
+            <li>• Supports clearing current selection and history</li>
           </ul>
         </div>
       </div>

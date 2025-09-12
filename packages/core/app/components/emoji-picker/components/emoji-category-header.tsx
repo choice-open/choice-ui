@@ -5,7 +5,7 @@ interface EmojiCategoryHeaderProps {
   "data-index"?: number
   style?: React.CSSProperties
   title: string
-  variant?: "dark" | "light"
+  variant?: "default" | "dark" | "light"
 }
 
 export const EmojiCategoryHeader = forwardRef<HTMLDivElement, EmojiCategoryHeaderProps>(

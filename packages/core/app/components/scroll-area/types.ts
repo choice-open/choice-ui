@@ -7,7 +7,7 @@ export type ScrollbarMode =
   | "large-x"
   | "large-l"
   | "large-r"
-export type ScrollAreaVariant = "auto" | "light" | "dark"
+export type ScrollAreaVariant = "default" | "light" | "dark"
 export type ScrollOrientation = "vertical" | "horizontal" | "both"
 export type HoverBoundary = "none" | "hover"
 

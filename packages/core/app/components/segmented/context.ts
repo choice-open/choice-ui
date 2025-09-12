@@ -1,10 +1,11 @@
 import { createContext, useContext } from "react"
 
 export interface SegmentedContextValue {
-  value?: string
-  onChange: (value: string) => void
+  disabled?: boolean
   groupId: string
-  variant?: "default" | "dark"
+  onChange: (value: string) => void
+  value?: string
+  variant?: "default" | "light" | "dark" | "reset"
 }
 
 export const SegmentedContext = createContext<SegmentedContextValue | null>(null)

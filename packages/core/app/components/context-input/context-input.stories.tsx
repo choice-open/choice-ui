@@ -13,6 +13,7 @@ import { ContextInput } from "./context-input"
 import type { ContextInputValue, MentionItem } from "./types"
 import { Button } from "../button"
 import { Avatar } from "../avatar"
+import { Checkbox } from "../checkbox/checkbox"
 
 const meta: Meta<typeof ContextInput> = {
   title: "Forms/ContextInput",
@@ -212,56 +213,107 @@ export const Disabled: Story = {
 }
 
 /**
- * Dark: Context input with dark variant styling.
- * - Dark background and text colors
- * - Optimized for dark mode interfaces
- * - All mention functionality works normally
+ * Variants: Demonstrates different visual variants of the context input component.
+ * - default: Follows the page theme dynamically (light/dark mode)
+ * - light: Fixed light appearance regardless of theme
+ * - dark: Fixed dark appearance regardless of theme
+ * - reset: Removes variant styling, no Variant settings applied
  *
  * ```tsx
  * <ContextInput
- *   variant="dark"
+ *   variant="default" // Adapts to current theme
  *   value={value}
- *   placeholder="Dark mode input..."
+ *   placeholder="Type @ to mention..."
  *   triggers={triggers}
  *   onChange={setValue}
  * />
  * ```
  */
-export const Dark: Story = {
-  render: function Basic() {
-    const [value, setValue] = useState<ContextInputValue>({ text: "", mentions: [] })
-    const isDark = useDarkMode()
-    const style = isDark ? oneDark : oneLight
-
+export const Variants: Story = {
+  render: function Variants() {
+    const [defaultValue, setDefaultValue] = useState<ContextInputValue>({ text: "", mentions: [] })
+    const [lightValue, setLightValue] = useState<ContextInputValue>({ text: "", mentions: [] })
+    const [darkValue, setDarkValue] = useState<ContextInputValue>({ text: "", mentions: [] })
+    const [disabled, setDisabled] = useState(false)
     return (
-      <div className="w-80">
-        <div className="rounded-xl bg-gray-900 p-8">
-          <ContextInput
-            variant="dark"
-            value={value}
-            placeholder="Type @ to mention someone..."
-            className="max-h-96 w-full"
-            triggers={[
-              {
-                char: "@",
-                onSearch: async (query) => {
-                  return users.filter((user) =>
-                    user.label.toLowerCase().includes(query.toLowerCase()),
-                  )
+      <div className="flex flex-col gap-2">
+        <Checkbox
+          value={disabled}
+          onChange={(value) => setDisabled(value)}
+        >
+          Disabled
+        </Checkbox>
+        <div className="grid w-160 grid-cols-3 overflow-hidden rounded-xl border">
+          <div className="bg-default-background p-8">
+            <ContextInput
+              disabled={disabled}
+              variant="default"
+              value={defaultValue}
+              placeholder="Type @ to mention someone..."
+              className="max-h-96 w-full"
+              triggers={[
+                {
+                  char: "@",
+                  onSearch: async (query) => {
+                    return users.filter((user) =>
+                      user.label.toLowerCase().includes(query.toLowerCase()),
+                    )
+                  },
                 },
-              },
-            ]}
-            onChange={setValue}
-            onMentionSelect={(mention, trigger) => {
-              console.log("Mention selected:", mention, trigger)
-            }}
-          />
+              ]}
+              onChange={setDefaultValue}
+              onMentionSelect={(mention, trigger) => {
+                console.log("Mention selected:", mention, trigger)
+              }}
+            />
+          </div>
+          <div className="bg-white p-8">
+            <ContextInput
+              disabled={disabled}
+              variant="light"
+              value={lightValue}
+              placeholder="Type @ to mention someone..."
+              className="max-h-96 w-full"
+              triggers={[
+                {
+                  char: "@",
+                  onSearch: async (query) => {
+                    return users.filter((user) =>
+                      user.label.toLowerCase().includes(query.toLowerCase()),
+                    )
+                  },
+                },
+              ]}
+              onChange={setLightValue}
+              onMentionSelect={(mention, trigger) => {
+                console.log("Mention selected:", mention, trigger)
+              }}
+            />
+          </div>
+          <div className="bg-gray-800 p-8">
+            <ContextInput
+              disabled={disabled}
+              variant="dark"
+              value={darkValue}
+              placeholder="Type @ to mention someone..."
+              className="max-h-96 w-full"
+              triggers={[
+                {
+                  char: "@",
+                  onSearch: async (query) => {
+                    return users.filter((user) =>
+                      user.label.toLowerCase().includes(query.toLowerCase()),
+                    )
+                  },
+                },
+              ]}
+              onChange={setDarkValue}
+              onMentionSelect={(mention, trigger) => {
+                console.log("Mention selected:", mention, trigger)
+              }}
+            />
+          </div>
         </div>
-
-        <Result
-          value={value}
-          style={style}
-        />
       </div>
     )
   },

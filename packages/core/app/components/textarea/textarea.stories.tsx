@@ -32,6 +32,7 @@ import type { Meta, StoryObj } from "@storybook/react"
 import React, { useState } from "react"
 import { Textarea } from "./index"
 import { Switch } from "../switch"
+import { Checkbox } from "../checkbox/checkbox"
 
 const meta: Meta<typeof Textarea> = {
   title: "Forms/Textarea",
@@ -105,34 +106,60 @@ export const WithValue: Story = {
 }
 
 /**
- * Dark Variant: Textarea styled for dark themes and backgrounds.
+ * Variants: Demonstrates different visual variants of the textarea component.
  *
  * Features:
- * - Dark theme styling with appropriate contrast
- * - Optimized placeholder and text colors
- * - Consistent with dark mode design patterns
+ * - default: Follows the page theme dynamically (light/dark mode)
+ * - light: Fixed light appearance regardless of theme
+ * - dark: Fixed dark appearance regardless of theme
+ * - reset: Removes variant styling, no variant settings applied
  *
  * Usage:
  * ```tsx
  * <Textarea
- *   variant="dark"
- *   placeholder="Dark mode textarea..."
+ *   variant="default" // Adapts to current theme
+ *   placeholder="Enter text..."
  * />
  * ```
  *
  * Best Practices:
- * - Use in dark-themed interfaces or overlays
- * - Ensure sufficient contrast for accessibility
+ * - Use default variant for inputs that adapt to the current theme
+ * - Use light/dark variants when you need fixed appearance
+ * - Use reset variant to remove all variant-specific styling
  */
-export const DarkVariant: Story = {
-  render: function DarkVariant() {
+export const Variants: Story = {
+  render: function Variants() {
+    const [disabled, setDisabled] = useState(false)
     return (
-      <div className="rounded-xl bg-gray-900 p-8">
-        <Textarea
-          variant="dark"
-          placeholder="Dark mode textarea..."
-          className="w-80"
-        />
+      <div className="flex flex-col gap-2">
+        <Checkbox
+          value={disabled}
+          onChange={(value) => setDisabled(value)}
+        >
+          Disabled
+        </Checkbox>
+        <div className="grid grid-cols-3 overflow-hidden rounded-xl border">
+          <div className="bg-default-background p-8">
+            <Textarea
+              disabled={disabled}
+              placeholder="Default variant - follows theme..."
+            />
+          </div>
+          <div className="bg-white p-8">
+            <Textarea
+              disabled={disabled}
+              variant="light"
+              placeholder="Light variant - fixed light..."
+            />
+          </div>
+          <div className="bg-gray-800 p-8">
+            <Textarea
+              disabled={disabled}
+              variant="dark"
+              placeholder="Dark variant - fixed dark..."
+            />
+          </div>
+        </div>
       </div>
     )
   },

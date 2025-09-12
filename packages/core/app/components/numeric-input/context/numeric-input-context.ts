@@ -4,33 +4,26 @@ import { NumericInputValue } from "../types"
 import { NumericChangeDetail } from "../numeric-input"
 
 export interface NumericInputContextValue {
-  variant?: "default" | "dark" | "reset"
-  // 状态
-  value?: NumericInputValue
+  decimal?: number
   defaultValue?: NumericInputValue
   disabled?: boolean
-  readOnly?: boolean
-  selected?: boolean
+  expression?: string
   focused?: boolean
   handlerPressed?: boolean
-
-  // 配置
-  min?: number
+  handlerProps?: Record<string, unknown>
   max?: number
-  step?: number
-  shiftStep?: number
-  decimal?: number
-  expression?: string
-
-  // 事件处理方法
+  min?: number
   onChange?: (value: NumericInputValue, detail: NumericChangeDetail) => void
   onEmpty?: () => void
-  onPressStart?: PressMoveProps["onPressStart"]
-  onPressEnd?: PressMoveProps["onPressEnd"]
   onIsEditingChange?: (isEditing: boolean) => void
-
-  // 处理程序
-  handlerProps?: Record<string, any>
+  onPressEnd?: PressMoveProps["onPressEnd"]
+  onPressStart?: PressMoveProps["onPressStart"]
+  readOnly?: boolean
+  selected?: boolean
+  shiftStep?: number
+  step?: number
+  value?: NumericInputValue
+  variant?: "default" | "light" | "dark" | "reset"
 }
 
 export const NumericInputContext = createContext<NumericInputContextValue | undefined>(undefined)

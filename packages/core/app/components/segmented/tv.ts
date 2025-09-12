@@ -35,9 +35,13 @@ export const segmentedControlTv = tcv({
       default: {
         root: "bg-secondary-background",
       },
+      light: {
+        root: "bg-gray-100",
+      },
       dark: {
         root: "bg-gray-700",
       },
+      reset: {},
     },
     disabled: {
       true: {},
@@ -82,6 +86,46 @@ export const segmentedControlTv = tcv({
       variant: "default",
       class: {
         option: "text-secondary-foreground",
+      },
+    },
+    // Light variant
+    {
+      active: true,
+      variant: "light",
+      class: {
+        option: "border-gray-200 bg-white",
+      },
+    },
+    {
+      active: false,
+      variant: "light",
+      disabled: false,
+      class: {
+        option: "text-black/50",
+      },
+    },
+    {
+      active: true,
+      variant: "light",
+      disabled: false,
+      class: {
+        option: "text-gray-900",
+      },
+    },
+    {
+      disabled: true,
+      active: false,
+      variant: "light",
+      class: {
+        option: "text-black/30",
+      },
+    },
+    {
+      disabled: true,
+      active: true,
+      variant: "light",
+      class: {
+        option: "text-black/50",
       },
     },
     // Dark variant

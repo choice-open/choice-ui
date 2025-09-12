@@ -12,7 +12,7 @@ export interface InputProps
   selected?: boolean
   size?: "default" | "large"
   value?: string
-  variant?: "default" | "dark" | "reset"
+  variant?: "default" | "light" | "dark" | "reset"
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(props, ref) {

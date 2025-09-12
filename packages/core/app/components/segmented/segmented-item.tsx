@@ -28,10 +28,20 @@ export const SegmentedItem = memo(
       ...rest
     } = props
 
-    const { value: selectedValue, onChange, groupId, variant } = useSegmentedContext()
+    const {
+      value: selectedValue,
+      onChange,
+      groupId,
+      variant,
+      disabled: contextDisabled,
+    } = useSegmentedContext()
     const isActive = value === selectedValue
 
-    const styles = segmentedControlTv({ active: isActive, disabled, variant })
+    const styles = segmentedControlTv({
+      active: isActive,
+      disabled: contextDisabled || disabled,
+      variant,
+    })
 
     const optionId = `${groupId}-${value}`
 
@@ -59,12 +69,12 @@ export const SegmentedItem = memo(
         type="radio"
         id={optionId}
         name={groupId}
-        disabled={disabled}
+        disabled={contextDisabled || disabled}
         checked={isActive}
         value={value}
         aria-label={ariaLabelProp}
         aria-checked={isActive}
-        aria-disabled={disabled}
+        aria-disabled={contextDisabled || disabled}
         onChange={handleChange}
       />
     )
@@ -83,7 +93,7 @@ export const SegmentedItem = memo(
         ref={ref}
         htmlFor={optionId}
         className="pointer-events-none relative"
-        aria-disabled={disabled}
+        aria-disabled={contextDisabled || disabled}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         {...rest}

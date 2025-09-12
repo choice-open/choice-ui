@@ -15,7 +15,7 @@ import { EmojiPicker } from "@choiceform/design-system"
 - **Powerful Search** - Search by name, emoji character, or URL-friendly names
 - **Category Navigation** - Quick browse and scroll to specific categories
 - **Frequently Used** - Intelligent tracking of user preferences with localStorage
-- **Theme Support** - Dark and light theme variants
+- **Theme Support** - Multiple variants (default, light, dark) for different contexts
 - **High Performance** - Smooth scrolling for 1700+ emojis
 - **Responsive Layout** - Adaptive grid with customizable columns
 - **Local Data** - No network dependencies, fast loading
@@ -49,21 +49,28 @@ function MyComponent() {
 }
 ```
 
-### With Themes
+### Variants
 
 ```tsx
-// Dark theme (default)
+// Default - follows page theme
 <EmojiPicker
   value={selectedEmoji}
   onChange={setSelectedEmoji}
-  variant="dark"
+  variant="default"
 />
 
-// Light theme
+// Light - fixed light appearance
 <EmojiPicker
   value={selectedEmoji}
   onChange={setSelectedEmoji}
   variant="light"
+/>
+
+// Dark - fixed dark appearance
+<EmojiPicker
+  value={selectedEmoji}
+  onChange={setSelectedEmoji}
+  variant="dark"
 />
 ```
 
@@ -160,7 +167,7 @@ interface EmojiPickerProps {
   showFrequentlyUsed?: boolean
 
   /** Theme variant */
-  variant?: "dark" | "light"
+  variant?: "default" | "light" | "dark"
 
   /** Additional child elements */
   children?: React.ReactNode
@@ -175,6 +182,11 @@ interface EmojiPickerProps {
   - `showSearch`: true
   - `showFrequentlyUsed`: true
   - `variant`: "dark"
+
+- Variant options:
+  - `default`: Follows the page theme dynamically (light/dark mode)
+  - `light`: Fixed light appearance regardless of theme
+  - `dark`: Fixed dark appearance regardless of theme
 
 ## Data Structure
 

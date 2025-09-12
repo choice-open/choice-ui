@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import React, { useState } from "react"
 import { Input } from "./input"
+import { Checkbox } from "../checkbox/checkbox"
 
 const meta: Meta<typeof Input> = {
   title: "Forms/Input",
@@ -152,77 +153,50 @@ export const Placeholder: Story = {
 
 /**
  * Variants: Demonstrates different visual variants of the input component.
- *
  * Features:
- * - Default: Standard styled input with borders and background
- * - Reset: Minimal styling without borders or background
+ * - default: Follows the page theme dynamically (light/dark mode)
+ * - light: Fixed light appearance regardless of theme
+ * - dark: Fixed dark appearance regardless of theme
+ * - reset: Removes variant styling, no Variant settings applied
  *
  * Usage:
- * - Default: Use for most standard form contexts
- * - Reset: Use when you need an input with minimal visual styling
- *   or when integrating with custom containers
+ * - Use default variant for inputs that adapt to the current theme
+ * - Use light/dark variants when you need fixed appearance
+ * - Use reset variant to remove all variant-specific styling
  */
 export const Variants: Story = {
   render: function VariantsStory() {
+    const [disabled, setDisabled] = useState(false)
     return (
-      <>
-        <Input value="Default" />
-        <Input
-          value="Reset"
-          variant="reset"
-        />
-      </>
-    )
-  },
-}
-
-/**
- * Dark: Demonstrates the input component with dark styling for dark backgrounds.
- *
- * Features:
- * - Adjusted color scheme for dark backgrounds
- * - Maintained readability and contrast
- * - Same functionality as standard inputs
- *
- * Usage:
- * - Use in dark UI sections or on colored backgrounds
- * - Ensures proper contrast and visibility in dark environments
- * - Maintains consistent user experience across light and dark modes
- */
-export const Dark: Story = {
-  render: function DarkStory() {
-    return (
-      <div className="flex aspect-square items-center justify-center bg-gray-800 p-8">
-        <Input
-          variant="dark"
-          placeholder="Dark"
-        />
-      </div>
-    )
-  },
-}
-
-/**
- * DarkWithDisabled: Demonstrates the disabled state in dark variant.
- *
- * Features:
- * - Combines dark styling with disabled state
- * - Adjusted visual indicators for disabled state on dark backgrounds
- * - Maintains proper contrast for disabled indication
- *
- * Usage:
- * - Use in dark UI sections when an input needs to be disabled
- * - Ensures consistent disabled state appearance across themes
- */
-export const DarkWithDisabled: Story = {
-  render: function DarkWithDisabledStory() {
-    return (
-      <div className="flex aspect-square items-center justify-center bg-gray-800 p-8">
-        <Input
-          variant="dark"
-          placeholder="Dark"
-          disabled
-        />
+      <div className="flex flex-col gap-2">
+        <Checkbox
+          value={disabled}
+          onChange={(value) => setDisabled(value)}
+        >
+          Disabled
+        </Checkbox>
+        <div className="grid grid-cols-3 overflow-hidden rounded-xl border">
+          <div className="bg-default-background flex aspect-square items-center justify-center p-8">
+            <Input
+              placeholder="Default"
+              disabled={disabled}
+            />
+          </div>
+          <div className="flex aspect-square items-center justify-center bg-white p-8">
+            <Input
+              variant="light"
+              placeholder="Light"
+              disabled={disabled}
+            />
+          </div>
+          <div className="flex aspect-square items-center justify-center bg-gray-800 p-8">
+            <Input
+              variant="dark"
+              placeholder="Dark"
+              disabled={disabled}
+            />
+          </div>
+        </div>
       </div>
     )
   },

@@ -9,10 +9,11 @@ import { segmentedControlTv } from "./tv"
 export interface SegmentedProps extends Omit<HTMLProps<HTMLDivElement>, "onChange"> {
   children?: ReactNode
   className?: string
+  disabled?: boolean
   onChange?: (value: string) => void
   tooltip?: TooltipProps
   value?: string
-  variant?: "default" | "dark"
+  variant?: "default" | "light" | "dark" | "reset"
 }
 
 const SegmentedBase = forwardRef<HTMLDivElement, SegmentedProps>(
@@ -21,6 +22,7 @@ const SegmentedBase = forwardRef<HTMLDivElement, SegmentedProps>(
       value: valueProp,
       onChange,
       variant,
+      disabled,
       className,
       children,
       "aria-label": ariaLabel,
@@ -62,6 +64,7 @@ const SegmentedBase = forwardRef<HTMLDivElement, SegmentedProps>(
           onChange: handleChange,
           groupId: id,
           variant,
+          disabled,
         }}
       >
         <div

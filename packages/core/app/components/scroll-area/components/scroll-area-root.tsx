@@ -35,7 +35,7 @@ export const ScrollAreaRoot = forwardRef<HTMLDivElement, ScrollAreaProps>(
       orientation = "vertical",
       scrollbarMode = "default",
       hoverBoundary = "hover",
-      variant = "auto",
+      variant = "default",
       type = "hover",
       id,
       "aria-label": ariaLabel,

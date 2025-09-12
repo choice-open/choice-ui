@@ -2,7 +2,7 @@ import { tcv } from "~/utils"
 
 export const TextareaTv = tcv({
   slots: {
-    container: "relative rounded-md border border-transparent",
+    container: "relative rounded-md border border-transparent min-w-0",
     textarea: [
       "w-full min-w-0",
       "px-2 py-1",
@@ -27,6 +27,10 @@ export const TextareaTv = tcv({
       default: {
         container: "bg-secondary-background",
         textarea: "text-default-foreground",
+      },
+      light: {
+        container: "bg-gray-100",
+        textarea: "text-gray-900 placeholder:text-black/50",
       },
       dark: {
         container: "bg-gray-700",
@@ -87,6 +91,15 @@ export const TextareaTv = tcv({
       },
     },
     {
+      variant: "light",
+      selected: false,
+      disabled: false,
+      isDragging: false,
+      class: {
+        container: ["hover:not-focus-within:border-gray-200"],
+      },
+    },
+    {
       variant: "dark",
       selected: false,
       disabled: false,
@@ -96,7 +109,7 @@ export const TextareaTv = tcv({
       },
     },
     {
-      variant: ["dark", "default"],
+      variant: ["light", "dark", "default"],
       selected: false,
       disabled: false,
       class: {
@@ -109,6 +122,14 @@ export const TextareaTv = tcv({
       class: {
         container: "border-secondary-background bg-secondary-background",
         textarea: "text-disabled-foreground",
+      },
+    },
+    {
+      variant: "light",
+      disabled: true,
+      class: {
+        container: "bg-gray-100",
+        textarea: "text-black/50",
       },
     },
     {

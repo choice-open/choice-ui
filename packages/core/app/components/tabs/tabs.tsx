@@ -8,9 +8,10 @@ import { tabsTv } from "./tv"
 export interface TabsProps extends Omit<HTMLProps<HTMLDivElement>, "onChange"> {
   children?: ReactNode
   className?: string
+  disabled?: boolean
   onChange?: (value: string) => void
   value: string
-  variant?: "default" | "dark"
+  variant?: "default" | "light" | "dark" | "reset"
 }
 
 interface TabsComponent
@@ -23,6 +24,7 @@ const TabsRoot = forwardRef<HTMLDivElement, TabsProps>(function Tabs(props, ref)
     value: valueProp,
     onChange,
     className,
+    disabled,
     "aria-label": ariaLabel,
     children,
     variant = "default",
@@ -39,6 +41,7 @@ const TabsRoot = forwardRef<HTMLDivElement, TabsProps>(function Tabs(props, ref)
   return (
     <TabsContext.Provider
       value={{
+        disabled,
         value: valueProp,
         onChange: handleChange,
         variant,
@@ -49,6 +52,7 @@ const TabsRoot = forwardRef<HTMLDivElement, TabsProps>(function Tabs(props, ref)
         ref={ref}
         role="tablist"
         aria-orientation="horizontal"
+        aria-disabled={disabled}
         aria-label={ariaLabel || "Tabs"}
         className={tcx(tv.root(), className)}
         {...rest}

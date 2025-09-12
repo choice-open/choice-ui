@@ -17,7 +17,7 @@ import { Segmented } from "@choiceform/design-system"
 - **Disabled Options**: Individual segment disable support with proper accessibility
 - **Tooltip Support**: Built-in tooltip configuration for enhanced UX
 - **Custom Styling**: Flexible styling options for individual segments
-- **Theme Variants**: Light and dark theme support
+- **Theme Variants**: Multiple variants (default, light, dark, reset) for different contexts
 - **Screen Reader Support**: Comprehensive ARIA labeling and descriptions
 
 ## Usage
@@ -206,39 +206,58 @@ function TooltipExample() {
 }
 ```
 
-### Dark Variant
+### Variants
 
 ```tsx
-function DarkExample() {
+function VariantExamples() {
   const [value, setValue] = useState("sun")
 
   return (
-    <div className="bg-gray-800 p-8">
+    <>
+      {/* Default - follows page theme */}
+      <Segmented
+        value={value}
+        onChange={setValue}
+        variant="default"
+      >
+        <Segmented.Item value="sun" className="px-2">Sun</Segmented.Item>
+        <Segmented.Item value="moon" className="px-2">Moon</Segmented.Item>
+        <Segmented.Item value="system" className="px-2">System</Segmented.Item>
+      </Segmented>
+
+      {/* Light - fixed light appearance */}
+      <Segmented
+        value={value}
+        onChange={setValue}
+        variant="light"
+      >
+        <Segmented.Item value="sun" className="px-2">Sun</Segmented.Item>
+        <Segmented.Item value="moon" className="px-2">Moon</Segmented.Item>
+        <Segmented.Item value="system" className="px-2">System</Segmented.Item>
+      </Segmented>
+
+      {/* Dark - fixed dark appearance */}
       <Segmented
         value={value}
         onChange={setValue}
         variant="dark"
       >
-        <Segmented.Item
-          value="sun"
-          className="px-2"
-        >
-          Sun
-        </Segmented.Item>
-        <Segmented.Item
-          value="moon"
-          className="px-2"
-        >
-          Moon
-        </Segmented.Item>
-        <Segmented.Item
-          value="system"
-          className="px-2"
-        >
-          System
-        </Segmented.Item>
+        <Segmented.Item value="sun" className="px-2">Sun</Segmented.Item>
+        <Segmented.Item value="moon" className="px-2">Moon</Segmented.Item>
+        <Segmented.Item value="system" className="px-2">System</Segmented.Item>
       </Segmented>
-    </div>
+
+      {/* Reset - no variant styling */}
+      <Segmented
+        value={value}
+        onChange={setValue}
+        variant="reset"
+      >
+        <Segmented.Item value="sun" className="px-2">Sun</Segmented.Item>
+        <Segmented.Item value="moon" className="px-2">Moon</Segmented.Item>
+        <Segmented.Item value="system" className="px-2">System</Segmented.Item>
+      </Segmented>
+    </>
   )
 }
 ```
@@ -255,6 +274,9 @@ interface SegmentedProps extends Omit<HTMLProps<HTMLDivElement>, "onChange"> {
   /** Additional CSS class names */
   className?: string
 
+  /** Whether the entire segmented control is disabled */
+  disabled?: boolean
+
   /** Callback fired when selection changes */
   onChange?: (value: string) => void
 
@@ -265,7 +287,7 @@ interface SegmentedProps extends Omit<HTMLProps<HTMLDivElement>, "onChange"> {
   value?: string
 
   /** Visual theme variant */
-  variant?: "default" | "dark"
+  variant?: "default" | "light" | "dark" | "reset"
 }
 ```
 
@@ -294,8 +316,14 @@ interface SegmentedItemProps {
 ```
 
 - Defaults:
-  - `variant`: "default"
+  - `variant`: "default" (follows page theme)
   - `disabled`: false
+
+- Variant options:
+  - `default`: Follows the page theme dynamically (light/dark mode)
+  - `light`: Fixed light appearance regardless of theme
+  - `dark`: Fixed dark appearance regardless of theme
+  - `reset`: Removes variant styling, no variant settings applied
 
 ## Styling
 

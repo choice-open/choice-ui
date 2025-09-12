@@ -252,6 +252,8 @@ export function ChatInterfaceExample() {
 | `onKeyDown`       | `function`                           | -                 | Keyboard event handler                                   |
 | `onSubmit`        | `function`                           | -                 | Submit handler (called on Enter)                         |
 | `className`       | `string`                             | -                 | Additional CSS classes                                   |
+| `variant`         | `"default" \| "light" \| "dark" \| "reset"` | `"default"`      | Visual variant of the input                              |
+| `size`            | `"default" \| "large"`               | `"default"`       | Size variant of the input                                |
 
 ### Type Definitions
 
@@ -568,6 +570,18 @@ The component supports extensive customization:
 - Theming through CSS variables
 - Responsive design
 - Dark mode support
+
+### Variants
+
+- **default**: Follows the page theme dynamically (light/dark mode)
+- **light**: Fixed light appearance regardless of theme
+- **dark**: Fixed dark appearance regardless of theme
+- **reset**: Removes variant styling, no variant settings applied
+
+### Size Options
+
+- **default**: Standard size for general use
+- **large**: Increased padding and font size for prominent inputs
 
 ## Best Practices
 

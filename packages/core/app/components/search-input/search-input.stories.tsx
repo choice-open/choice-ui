@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import React, { useState } from "react"
 import { SearchInput } from "./search-input"
+import { Checkbox } from "../checkbox/checkbox"
 
 const meta: Meta<typeof SearchInput> = {
   title: "Forms/SearchInput",
@@ -98,47 +99,50 @@ export const Disabled: Story = {
 }
 
 /**
- * Dark: Demonstrates the SearchInput with dark mode styling.
- *
- * The dark variant is designed for use on dark backgrounds and inverts
- * the color scheme appropriately. This example shows the component
- * in a dark container with proper contrast and visibility.
+ * Variants: Demonstrates different visual variants of the numeric input component.
+ * - default: Follows the page theme dynamically (light/dark mode)
+ * - light: Fixed light appearance regardless of theme
+ * - dark: Fixed dark appearance regardless of theme
+ * - reset: Removes variant styling, no variant settings applied
  */
-export const Dark: Story = {
-  render: function DarkStory() {
+export const Variants: Story = {
+  render: function VariantsStory() {
     const [value, setValue] = useState("")
+    const [disabled, setDisabled] = useState(false)
 
     return (
-      <div className="flex aspect-square items-center justify-center bg-gray-800 p-8">
-        <SearchInput
-          value={value}
-          onChange={setValue}
-          variant="dark"
-        />
-      </div>
-    )
-  },
-}
-
-/**
- * DarkWithDisabled: Shows the SearchInput in dark mode with disabled state.
- *
- * This example demonstrates how the disabled state appears when using
- * the dark variant. The component maintains appropriate visual indication
- * of the disabled state while adapting to the dark background.
- */
-export const DarkWithDisabled: Story = {
-  render: function DarkWithDisabledStory() {
-    const [value, setValue] = useState("")
-
-    return (
-      <div className="flex aspect-square items-center justify-center bg-gray-800 p-8">
-        <SearchInput
-          value={value}
-          onChange={setValue}
-          variant="dark"
-          disabled
-        />
+      <div className="flex flex-col gap-2">
+        <Checkbox
+          value={disabled}
+          onChange={(value) => setDisabled(value)}
+        >
+          Disabled
+        </Checkbox>
+        <div className="grid grid-cols-3 overflow-hidden rounded-xl border">
+          <div className="bg-default-background flex aspect-square items-center justify-center p-8">
+            <SearchInput
+              disabled={disabled}
+              value={value}
+              onChange={setValue}
+            />
+          </div>
+          <div className="flex aspect-square items-center justify-center bg-white p-8">
+            <SearchInput
+              disabled={disabled}
+              value={value}
+              onChange={setValue}
+              variant="light"
+            />
+          </div>
+          <div className="flex aspect-square items-center justify-center bg-gray-800 p-8">
+            <SearchInput
+              disabled={disabled}
+              value={value}
+              onChange={setValue}
+              variant="dark"
+            />
+          </div>
+        </div>
       </div>
     )
   },

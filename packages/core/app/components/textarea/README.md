@@ -10,7 +10,7 @@ import { Textarea } from "@choiceform/design-system"
 
 ## Features
 
-- Multiple visual variants for different contexts (default, dark, reset)
+- Multiple visual variants for different contexts (default, light, dark, reset)
 - Three resize modes: auto-resize, manual handle resize, and fixed size
 - Integrated scroll area for content that exceeds height limits
 - Row-based size constraints (minRows, maxRows)
@@ -72,8 +72,16 @@ import { Textarea } from "@choiceform/design-system"
 ### Variants
 
 ```tsx
+// Default - follows page theme
 <Textarea variant="default" value={value} onChange={setValue} />
+
+// Light - fixed light appearance
+<Textarea variant="light" value={value} onChange={setValue} />
+
+// Dark - fixed dark appearance
 <Textarea variant="dark" value={value} onChange={setValue} />
+
+// Reset - no variant styling
 <Textarea variant="reset" value={value} onChange={setValue} />
 ```
 
@@ -122,17 +130,23 @@ interface TextareaProps
   value?: string
 
   /** Visual style variant of the textarea */
-  variant?: "default" | "dark" | "reset"
+  variant?: "default" | "light" | "dark" | "reset"
 }
 ```
 
 - Defaults:
-  - `variant`: "default"
+  - `variant`: "default" (follows page theme)
   - `resize`: "auto"
   - `minRows`: 3
   - `selected`: `false`
   - `spellCheck`: `false`
   - `autoComplete`: "off"
+
+- Variant options:
+  - `default`: Follows the page theme dynamically (light/dark mode)
+  - `light`: Fixed light appearance regardless of theme
+  - `dark`: Fixed dark appearance regardless of theme
+  - `reset`: Removes variant styling, no variant settings applied
 
 - Behavior:
   - Automatically selects all text on focus

@@ -195,6 +195,9 @@ interface TabsProps extends Omit<HTMLProps<HTMLDivElement>, "onChange"> {
   /** Additional CSS classes */
   className?: string
 
+  /** Whether the entire tabs component is disabled */
+  disabled?: boolean
+
   /** Tab selection change handler */
   onChange?: (value: string) => void
 
@@ -202,7 +205,7 @@ interface TabsProps extends Omit<HTMLProps<HTMLDivElement>, "onChange"> {
   value: string
 
   /** Visual variant */
-  variant?: "default" | "dark"
+  variant?: "default" | "light" | "dark" | "reset"
 }
 ```
 

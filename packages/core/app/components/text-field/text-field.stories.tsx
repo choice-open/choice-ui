@@ -1,8 +1,9 @@
-import { Search, ArrowRight, ChevronDownSmall } from "@choiceform/icons-react"
+import { ArrowRight, Search } from "@choiceform/icons-react"
 import { faker } from "@faker-js/faker"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import React, { useState } from "react"
 import { Badge } from "../badge"
+import { Checkbox } from "../checkbox/checkbox"
 import { Select } from "../select"
 import { TextField } from "./text-field"
 
@@ -15,12 +16,21 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+/**
+ * Basic text field without any additional features.
+ * Demonstrates the simplest usage of the TextField component.
+ */
 export const Basic: Story = {
   render: function BasicStory() {
     return <TextField placeholder="Enter text" />
   },
 }
 
+/**
+ * Text field with a prefix icon.
+ * Shows how to add icons or other elements before the input area.
+ * The prefix changes color on hover and focus for better user feedback.
+ */
 export const WithPrefix: Story = {
   render: function WithPrefixStory() {
     return (
@@ -33,6 +43,11 @@ export const WithPrefix: Story = {
   },
 }
 
+/**
+ * Text field with a suffix element.
+ * Demonstrates adding badges, buttons, or other elements after the input.
+ * Useful for status indicators or action buttons.
+ */
 export const WithSuffix: Story = {
   render: function WithSuffixStory() {
     return (
@@ -45,6 +60,11 @@ export const WithSuffix: Story = {
   },
 }
 
+/**
+ * Text field with both prefix and suffix elements.
+ * Combines prefix icons and suffix badges for rich input experiences.
+ * Commonly used for search fields with filters or status indicators.
+ */
 export const WithPrefixAndSuffix: Story = {
   render: function WithPrefixAndSuffixStory() {
     return (
@@ -60,6 +80,11 @@ export const WithPrefixAndSuffix: Story = {
   },
 }
 
+/**
+ * Text field with a label.
+ * Shows proper form labeling for accessibility and usability.
+ * Labels help users understand the expected input.
+ */
 export const WithLabel: Story = {
   render: function WithLabelStory() {
     return (
@@ -70,6 +95,11 @@ export const WithLabel: Story = {
   },
 }
 
+/**
+ * Text field with a description.
+ * Provides additional context or help text below the input.
+ * Useful for explaining format requirements or providing examples.
+ */
 export const WithDescription: Story = {
   render: function WithDescriptionStory() {
     return (
@@ -80,6 +110,11 @@ export const WithDescription: Story = {
   },
 }
 
+/**
+ * Large size variant of the text field.
+ * Demonstrates the larger size option for improved visibility.
+ * Use for prominent inputs or when more padding is needed.
+ */
 export const Size: Story = {
   render: function SizeStory() {
     return (
@@ -91,6 +126,11 @@ export const Size: Story = {
   },
 }
 
+/**
+ * Disabled text field with label and description.
+ * Shows how the component appears when interaction is prevented.
+ * All child elements inherit the disabled state automatically.
+ */
 export const Disabled: Story = {
   render: function DisabledStory() {
     return (
@@ -105,6 +145,11 @@ export const Disabled: Story = {
   },
 }
 
+/**
+ * Read-only text field.
+ * Allows viewing but not editing the value.
+ * Useful for displaying non-editable information in form contexts.
+ */
 export const ReadOnly: Story = {
   render: function ReadOnlyStory() {
     return (
@@ -116,39 +161,65 @@ export const ReadOnly: Story = {
   },
 }
 
-export const Dark: Story = {
-  render: function DarkStory() {
+/**
+ * Variants: Demonstrates different visual variants of the text field component.
+ * - default: Follows the page theme dynamically (light/dark mode)
+ * - light: Fixed light appearance regardless of theme
+ * - dark: Fixed dark appearance regardless of theme
+ * - reset: Removes variant styling, no variant settings applied
+ */
+export const Variants: Story = {
+  render: function VariantsStory() {
+    const [disabled, setDisabled] = useState(false)
     return (
-      <div className="flex aspect-square items-center justify-center bg-gray-800 p-8">
-        <TextField
-          variant="dark"
-          placeholder="Enter text"
+      <div className="flex flex-col gap-2">
+        <Checkbox
+          value={disabled}
+          onChange={(value) => setDisabled(value)}
         >
-          <TextField.Label description="This is a description">Label</TextField.Label>
-          <TextField.Description>Description</TextField.Description>
-        </TextField>
+          Disabled
+        </Checkbox>
+        <div className="grid grid-cols-3 overflow-hidden rounded-xl border">
+          <div className="bg-default-background flex aspect-square items-center justify-center p-8">
+            <TextField
+              disabled={disabled}
+              placeholder="Enter text"
+            >
+              <TextField.Label description="This is a description">Label</TextField.Label>
+              <TextField.Description>Description</TextField.Description>
+            </TextField>
+          </div>
+          <div className="flex aspect-square items-center justify-center bg-white p-8">
+            <TextField
+              disabled={disabled}
+              variant="light"
+              placeholder="Enter text"
+            >
+              <TextField.Label description="This is a description">Label</TextField.Label>
+              <TextField.Description>Description</TextField.Description>
+            </TextField>
+          </div>
+          <div className="flex aspect-square items-center justify-center bg-gray-800 p-8">
+            <TextField
+              disabled={disabled}
+              variant="dark"
+              placeholder="Enter text"
+            >
+              <TextField.Label description="This is a description">Label</TextField.Label>
+              <TextField.Description>Description</TextField.Description>
+            </TextField>
+          </div>
+        </div>
       </div>
     )
   },
 }
 
-export const DarkWithDisabled: Story = {
-  render: function DarkWithDisabledStory() {
-    return (
-      <div className="flex aspect-square items-center justify-center bg-gray-800 p-8">
-        <TextField
-          variant="dark"
-          placeholder="Enter text"
-          disabled
-        >
-          <TextField.Label>Label</TextField.Label>
-          <TextField.Description>Description</TextField.Description>
-        </TextField>
-      </div>
-    )
-  },
-}
-
+/**
+ * Controlled text field with value display.
+ * Shows two-way data binding with React state.
+ * The current value is displayed below the input for demonstration.
+ */
 export const Controlled: Story = {
   render: function ControlledStory() {
     const [value, setValue] = useState("")

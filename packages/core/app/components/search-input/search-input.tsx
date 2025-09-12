@@ -51,6 +51,7 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>((props
             variant="ghost"
             tooltip={{ content: i18n.clear }}
             onClick={handleClear}
+            disabled={disabled}
           >
             <RemoveSmall />
           </IconButton>

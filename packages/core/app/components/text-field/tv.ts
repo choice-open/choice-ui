@@ -10,9 +10,9 @@ export const TextFieldTv = tcv({
       "before:border-transparent",
       "fields__text-field",
     ],
-    input: ["[grid-area:input]"],
-    prefix: ["[grid-area:prefix]"],
-    suffix: ["[grid-area:suffix]"],
+    input: "[grid-area:input]",
+    prefix: "[grid-area:prefix]",
+    suffix: "[grid-area:suffix]",
     description: [
       "text-body-medium mt-1",
       "px-0.5",
@@ -23,6 +23,7 @@ export const TextFieldTv = tcv({
   variants: {
     variant: {
       default: {},
+      light: {},
       dark: {},
       reset: {},
     },
@@ -71,6 +72,16 @@ export const TextFieldTv = tcv({
       disabled: false,
       class: {
         root: ["bg-secondary-background", "hover:not-focus-within:before:border-default-boundary"],
+        input: "placeholder:text-secondary-foreground",
+      },
+    },
+    {
+      variant: "light",
+      disabled: false,
+      class: {
+        root: ["bg-gray-100 text-gray-900", "hover:not-focus-within:before:border-gray-200"],
+        description: "text-black/50",
+        input: "placeholder:text-black/50",
       },
     },
     {
@@ -78,15 +89,36 @@ export const TextFieldTv = tcv({
       disabled: false,
       class: {
         root: ["bg-gray-700 text-white", "hover:not-focus-within:before:border-gray-600"],
-        description: "text-white/40",
+        description: "text-white/50",
+        input: "placeholder:text-white/50",
+      },
+    },
+    // Disabled
+    {
+      variant: "default",
+      disabled: true,
+      class: {
+        root: "bg-secondary-background text-disabled-foreground",
+        description: "text-disabled-foreground",
+        input: "placeholder:text-disabled-foreground",
+      },
+    },
+    {
+      variant: "light",
+      disabled: true,
+      class: {
+        root: "bg-gray-100 text-black/50",
+        description: "text-black/50",
+        input: "placeholder:text-black/30",
       },
     },
     {
       variant: "dark",
       disabled: true,
       class: {
-        root: "bg-gray-700 text-white/40",
-        description: "text-white/40",
+        root: "bg-gray-700 text-white/50",
+        description: "text-white/50",
+        input: "placeholder:text-white/30",
       },
     },
   ],

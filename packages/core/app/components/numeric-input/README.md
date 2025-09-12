@@ -18,7 +18,7 @@ import { NumericInput } from "@choiceform/design-system"
 - **Rich Composition** - Prefix and suffix elements with dropdown menus and actions
 - **Step Controls** - Configurable step increments with modifier key support
 - **Validation** - Built-in min/max constraints and decimal precision
-- **Theme Support** - Dark mode variant for different backgrounds
+- **Theme Support** - Multiple variants (default, light, dark, reset) for different contexts
 
 ## Usage
 
@@ -225,18 +225,36 @@ const [variableValue, setVariableValue] = useState(10)
 </NumericInput>
 ```
 
-### Dark Theme
+### Variants
 
 ```tsx
+// Default - follows page theme
+<NumericInput
+  variant="default"
+  value={value}
+  onChange={setValue}
+/>
+
+// Light - fixed light appearance
+<NumericInput
+  variant="light"
+  value={value}
+  onChange={setValue}
+/>
+
+// Dark - fixed dark appearance
 <NumericInput
   variant="dark"
   value={value}
   onChange={setValue}
->
-  <NumericInput.Prefix>
-    <ColorTypeSolid />
-  </NumericInput.Prefix>
-</NumericInput>
+/>
+
+// Reset - no variant styling
+<NumericInput
+  variant="reset"
+  value={value}
+  onChange={setValue}
+/>
 ```
 
 ## Props
@@ -286,7 +304,7 @@ interface NumericInputProps {
   focused?: boolean
 
   /** Visual theme variant */
-  variant?: "default" | "dark"
+  variant?: "default" | "light" | "dark" | "reset"
 
   /** Tooltip configuration */
   tooltip?: {
@@ -354,7 +372,11 @@ interface MenuTriggerProps {
 
 - Uses Tailwind CSS with `tailwind-variants` for consistent theming
 - Customize using the `className` prop on individual sub-components
-- Dark theme automatically adjusts colors for dark backgrounds
+- Variants support:
+  - `default`: Follows the page theme dynamically (light/dark mode)
+  - `light`: Fixed light appearance regardless of theme
+  - `dark`: Fixed dark appearance regardless of theme
+  - `reset`: Removes variant styling, no variant settings applied
 - Disabled state provides appropriate visual feedback
 
 ## Keyboard Navigation

@@ -12,6 +12,15 @@ export const emojiTv = tcv({
   },
   variants: {
     variant: {
+      default: {
+        container: "bg-default-background text-default-foreground",
+        header: "border-default-boundary text-default-foreground",
+        categoryHeader: "text-secondary-foreground",
+        footer: "border-default-boundary",
+        emojiPreviewEmpty: "border-default-boundary",
+        emojiName: "text-default-foreground",
+        emojiCode: "text-secondary-foreground",
+      },
       dark: {
         container: "bg-menu-background text-white",
         header: "border-menu-boundary text-default-foreground",
@@ -22,11 +31,11 @@ export const emojiTv = tcv({
         emojiCode: "text-white/60",
       },
       light: {
-        container: "bg-white",
-        header: "border-default-boundary",
-        categoryHeader: "text-secondary-foreground",
-        footer: "border-default-boundary",
-        emojiPreviewEmpty: "border-default-boundary",
+        container: "bg-white text-gray-900",
+        header: "border-gray-200",
+        categoryHeader: "text-gray-500",
+        footer: "border-gray-200",
+        emojiPreviewEmpty: "border-gray-200",
         emojiName: "text-foreground",
         emojiCode: "text-secondary-foreground",
       },
@@ -41,8 +50,9 @@ export const emojiItemTv = tcv({
   base: "flex size-8 items-center justify-center rounded-md border border-transparent text-[1.25rem]",
   variants: {
     variant: {
-      dark: {},
+      default: {},
       light: {},
+      dark: {},
     },
     selected: {
       true: {},
@@ -51,24 +61,36 @@ export const emojiItemTv = tcv({
   },
   compoundVariants: [
     {
+      variant: "default",
+      selected: true,
+      class: "bg-selected-background",
+    },
+    {
+      variant: "default",
+      selected: false,
+      class: "hover:bg-secondary-background",
+    },
+
+    {
+      variant: "light",
+      selected: true,
+      class: "bg-blue-200",
+    },
+    {
+      variant: "light",
+      selected: false,
+      class: "hover:bg-black/10",
+    },
+
+    {
       variant: "dark",
       selected: true,
-      class: "border-white/20 bg-white/10",
+      class: "bg-blue-pale-700",
     },
     {
       variant: "dark",
       selected: false,
       class: "hover:bg-white/10",
-    },
-    {
-      variant: "light",
-      selected: true,
-      class: "border-selected-boundary bg-selected-background",
-    },
-    {
-      variant: "light",
-      selected: false,
-      class: "hover:bg-secondary-background",
     },
   ],
   defaultVariants: {
@@ -84,21 +106,27 @@ export const emojiFooterTv = tcv({
     emojiPreviewEmpty: "flex size-6 rounded-full border border-dashed",
     emojiInfo: "flex flex-col gap-0",
     emojiName: "leading-tight font-strong",
-    emojiCode: "text-body-small leading-tight opacity-60",
+    emojiCode: "text-body-small leading-tight",
   },
   variants: {
     variant: {
+      default: {
+        footer: "border-default-boundary",
+        emojiPreviewEmpty: "border-default-boundary",
+        emojiName: "text-default-foreground",
+        emojiCode: "text-secondary-foreground",
+      },
+      light: {
+        footer: "border-gray-200",
+        emojiPreviewEmpty: "border-gray-200",
+        emojiName: "text-gray-900",
+        emojiCode: "text-black/50",
+      },
       dark: {
         footer: "border-menu-boundary",
         emojiPreviewEmpty: "border-white/20",
         emojiName: "text-white",
-        emojiCode: "text-white/60",
-      },
-      light: {
-        footer: "border-default-boundary",
-        emojiPreviewEmpty: "border-default-boundary",
-        emojiName: "text-foreground",
-        emojiCode: "text-secondary-foreground",
+        emojiCode: "text-white/50",
       },
     },
   },
@@ -115,13 +143,19 @@ export const emojiEmptyTv = tcv({
   },
   variants: {
     variant: {
+      default: {
+        title: "text-default-foreground",
+        description: "text-secondary-foreground",
+      },
+
+      light: {
+        title: "text-gray-900",
+        description: "text-black/50",
+      },
+
       dark: {
         title: "text-white",
         description: "text-white/50",
-      },
-      light: {
-        title: "text-default-foreground",
-        description: "text-secondary-foreground",
       },
     },
   },

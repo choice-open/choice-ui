@@ -6,6 +6,7 @@ export const InputTv = tcv({
   variants: {
     variant: {
       default: ["bg-secondary-background", "placeholder:text-secondary-foreground"],
+      light: ["bg-gray-100 text-gray-900", "placeholder:text-black/50"],
       dark: ["bg-gray-700 text-white", "placeholder:text-white/40"],
       reset: "",
     },
@@ -28,7 +29,7 @@ export const InputTv = tcv({
   },
   compoundVariants: [
     {
-      variant: ["default", "dark"],
+      variant: ["default", "light", "dark"],
       class: "border border-solid border-transparent",
     },
     {
@@ -48,13 +49,19 @@ export const InputTv = tcv({
       class: "hover:not-focus-within:border-default-boundary",
     },
     {
+      variant: "light",
+      selected: false,
+      disabled: false,
+      class: ["hover:not-focus-within:border-gray-200"],
+    },
+    {
       variant: "dark",
       selected: false,
       disabled: false,
       class: ["hover:not-focus-within:border-gray-600"],
     },
     {
-      variant: ["dark", "default"],
+      variant: ["default", "light", "dark"],
       selected: false,
       disabled: false,
       class: "focus-within:border-selected-boundary",
@@ -62,7 +69,12 @@ export const InputTv = tcv({
     {
       variant: "default",
       disabled: true,
-      class: "text-disabled-foreground border-secondary-background bg-secondary-background",
+      class: "bg-secondary-background text-disabled-foreground",
+    },
+    {
+      variant: "light",
+      disabled: true,
+      class: "bg-gray-100 text-black/30",
     },
     {
       variant: "dark",

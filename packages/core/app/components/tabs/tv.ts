@@ -15,7 +15,9 @@ export const tabsTv = tcv({
   variants: {
     variant: {
       default: {},
+      light: {},
       dark: {},
+      reset: {},
     },
     active: {
       true: {
@@ -59,6 +61,36 @@ export const tabsTv = tcv({
         tab: "text-secondary-foreground",
       },
     },
+    // Light
+    {
+      variant: "light",
+      active: false,
+      class: {
+        tab: "text-black/50",
+      },
+    },
+    {
+      variant: "light",
+      active: true,
+      class: {
+        tab: "bg-gray-100 font-strong text-gray-900",
+      },
+    },
+    {
+      variant: "light",
+      disabled: false,
+      class: {
+        tab: "hover:bg-gray-100 hover:text-gray-900",
+      },
+    },
+    {
+      variant: "light",
+      disabled: true,
+      class: {
+        tab: "text-black/50",
+      },
+    },
+    // Dark
     {
       variant: "dark",
       active: false,
