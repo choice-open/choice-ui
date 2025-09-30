@@ -66,6 +66,8 @@ export function useDrag({ draggable, floatingRef, rememberPosition = false }: Us
   const initialPositionRef = useRef<Position | null>(null)
   const dragOriginRef = useRef({ x: 0, y: 0 })
   const contentRef = useRef<HTMLDivElement>(null)
+  const rafIdRef = useRef<number | null>(null)
+  const pendingRef = useRef(false)
 
   // 开始拖拽
   const handleDragStart = useEventCallback((e: React.MouseEvent) => {
@@ -113,15 +115,19 @@ export function useDrag({ draggable, floatingRef, rememberPosition = false }: Us
       // 计算新位置
       const x = e.clientX - dragOriginRef.current.x
       const y = e.clientY - dragOriginRef.current.y
+      positionRef.current = { x, y }
 
-      const newPosition = { x, y }
-      // 更新ref中存储的位置
-      positionRef.current = newPosition
+      // 使用 rAF 合并同一帧内的多次 mousemove 更新
+      if (pendingRef.current) return
+      pendingRef.current = true
 
-      setState((prev) => ({
-        ...prev,
-        position: newPosition,
-      }))
+      rafIdRef.current = requestAnimationFrame(() => {
+        pendingRef.current = false
+        setState((prev) => ({
+          ...prev,
+          position: positionRef.current,
+        }))
+      })
     },
     [draggable, state.isDragging, floatingRef],
   )
@@ -129,6 +135,13 @@ export function useDrag({ draggable, floatingRef, rememberPosition = false }: Us
   // 结束拖拽
   const handleDragEnd = useCallback(() => {
     if (!draggable) return
+
+    // 结束时取消未执行的 rAF
+    if (rafIdRef.current != null) {
+      cancelAnimationFrame(rafIdRef.current)
+      rafIdRef.current = null
+      pendingRef.current = false
+    }
 
     if (floatingRef.current && state.position) {
       const dialogRect = floatingRef.current.getBoundingClientRect()
@@ -198,6 +211,17 @@ export function useDrag({ draggable, floatingRef, rememberPosition = false }: Us
       resetPosition()
     }
   }, [rememberPosition, resetPosition])
+
+  // 组件卸载时清理 rAF
+  useEffect(() => {
+    return () => {
+      if (rafIdRef.current != null) {
+        cancelAnimationFrame(rafIdRef.current)
+        rafIdRef.current = null
+      }
+      pendingRef.current = false
+    }
+  }, [])
 
   return {
     state,

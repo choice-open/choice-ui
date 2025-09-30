@@ -57,6 +57,8 @@ export function useDrag(elementRef: React.RefObject<HTMLElement>, options: UseDr
   const initialPositionRef = useRef<Position | null>(null)
   const dragOriginRef = useRef({ x: 0, y: 0 })
   const isInitializedRef = useRef(false)
+  const rafIdRef = useRef<number | null>(null)
+  const pendingRef = useRef(false)
 
   // Initialize position when element is mounted
   useEffect(() => {
@@ -120,18 +122,28 @@ export function useDrag(elementRef: React.RefObject<HTMLElement>, options: UseDr
 
       const x = e.clientX - dragOriginRef.current.x
       const y = e.clientY - dragOriginRef.current.y
+      positionRef.current = { x, y }
 
-      const newPosition = { x, y }
-      // 更新ref中存储的位置
-      positionRef.current = newPosition
+      if (pendingRef.current) return
+      pendingRef.current = true
 
-      setState((prev) => ({ ...prev, position: newPosition }))
+      rafIdRef.current = requestAnimationFrame(() => {
+        pendingRef.current = false
+        setState((prev) => ({ ...prev, position: positionRef.current }))
+      })
     },
     [enabled, state.isDragging],
   )
 
   const handleDragEnd = useCallback(() => {
     if (!enabled) return
+
+    // 结束拖拽前清理未执行的 rAF
+    if (rafIdRef.current !== null) {
+      cancelAnimationFrame(rafIdRef.current)
+      rafIdRef.current = null
+      pendingRef.current = false
+    }
 
     if (elementRef.current && positionRef.current) {
       const dialogRect = elementRef.current.getBoundingClientRect()
@@ -189,6 +201,17 @@ export function useDrag(elementRef: React.RefObject<HTMLElement>, options: UseDr
       resetPosition()
     }
   }, [rememberPosition, resetPosition])
+
+  // 卸载时清理 rAF
+  useEffect(() => {
+    return () => {
+      if (rafIdRef.current !== null) {
+        cancelAnimationFrame(rafIdRef.current)
+        rafIdRef.current = null
+      }
+      pendingRef.current = false
+    }
+  }, [])
 
   useEffect(() => {
     if (enabled && state.isDragging) {
