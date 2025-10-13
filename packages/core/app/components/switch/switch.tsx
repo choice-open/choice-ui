@@ -30,26 +30,29 @@ export interface SwitchProps
 interface SwitchStyle extends React.CSSProperties {
   "--switch-height": string
   "--switch-width": string
+  "--thumb-height": string
   "--thumb-margin": string
-  "--thumb-size": string
   "--thumb-translate": string
+  "--thumb-width": string
 }
 
 const switch_sizes = {
   small: {
     style: {
       "--switch-height": "12px",
-      "--thumb-size": "8px",
-      "--thumb-margin": "1px",
-      "--switch-width": "20px",
+      "--thumb-height": "9px",
+      "--thumb-width": "14px",
+      "--thumb-margin": "0.5px",
+      "--switch-width": "26px",
     },
   },
   medium: {
     style: {
       "--switch-height": "16px",
-      "--thumb-size": "12px",
-      "--thumb-margin": "1px",
-      "--switch-width": "28px",
+      "--thumb-height": "13px",
+      "--thumb-width": "21px",
+      "--thumb-margin": "0.5px",
+      "--switch-width": "36px",
     },
   },
 } as const
@@ -76,7 +79,8 @@ const SwitchBase = forwardRef<HTMLInputElement, SwitchProps>(function Switch(pro
   const styles = switchTv({ size, variant, disabled, checked: value, focused })
 
   const style = {
-    "--thumb-translate": "calc(var(--switch-width) - var(--thumb-size) - var(--thumb-margin) * 4)",
+    "--thumb-translate":
+      "calc(var(--switch-width) - var(--thumb-width) - var(--thumb-margin) * 4 - 1px)",
     ...switch_sizes[size].style,
   } as SwitchStyle
 
@@ -128,7 +132,7 @@ const SwitchBase = forwardRef<HTMLInputElement, SwitchProps>(function Switch(pro
       >
         <motion.div
           className={styles.thumb()}
-          initial={{ x: 0 }}
+          initial={false}
           animate={{ x: value ? "var(--thumb-translate)" : 0 }}
           transition={{ duration: 0.1 }}
           aria-hidden="true"

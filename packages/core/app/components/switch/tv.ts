@@ -2,9 +2,9 @@ import { tcv } from "~/utils"
 
 export const switchTv = tcv({
   slots: {
-    root: ["relative flex items-center gap-2", "select-none"],
+    root: ["relative flex items-center gap-2 flex-shrink-0", "select-none"],
     track: [
-      "relative",
+      "relative flex-shrink-0",
       "rounded-full",
       "border border-solid",
       "h-(--switch-height) w-(--switch-width)",
@@ -12,7 +12,7 @@ export const switchTv = tcv({
     thumb: [
       "absolute",
       "rounded-full",
-      "h-(--thumb-size) w-(--thumb-size)",
+      "h-(--thumb-height) w-(--thumb-width)",
       "top-(--thumb-margin) left-(--thumb-margin)",
     ],
     input: [
