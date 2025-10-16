@@ -1,11 +1,11 @@
 # Range
 
-A customizable slider component that allows users to select numeric values within a specified range, with support for step intervals, default value indicators, and responsive sizing.
+A customizable slider component family that allows users to select numeric values within a specified range. Includes both single-value (`Range`) and dual-thumb range selection (`RangeTuple`) variants, with support for step intervals, default value indicators, and responsive sizing.
 
 ## Import
 
 ```tsx
-import { Range } from "@choiceform/design-system"
+import { Range, RangeTuple } from "@choiceform/design-system"
 ```
 
 ## Features
@@ -401,3 +401,366 @@ const [value, setValue] = useState(75)
 - Negative ranges show different visual styling for values below zero
 - Loading states and validation can be handled in the `onChange` callback
 - The component is optimized for performance with proper memoization of expensive calculations
+
+---
+
+# RangeTuple
+
+A dual-thumb range slider component that allows users to select a range of values (minimum and maximum) within a specified range. Perfect for filtering, selecting intervals, or defining bounds.
+
+## Features
+
+- Dual independent thumbs for min and max value selection
+- Visual highlight of the selected range between thumbs
+- All features from the single Range component:
+  - Customizable minimum and maximum bounds
+  - Optional step intervals with visual tick marks
+  - Default value indicators with snap effect
+  - Configurable track and thumb sizes
+  - Support for negative value ranges
+  - Disabled state support
+  - Controlled usage patterns
+  - Automatic and fixed width sizing options
+  - Smooth drag interaction with pointer capture
+  - Keyboard navigation support (arrow keys for both thumbs)
+  - Proper accessibility with ARIA attributes
+- Smart thumb selection: clicking the track moves the nearest thumb
+- Thumbs change color when at default positions
+- Proper handling of thumb ordering (min cannot exceed max)
+
+## Usage
+
+### Basic
+
+```tsx
+import { useState } from "react"
+
+const [value, setValue] = useState<[number, number]>([25, 75])
+
+<RangeTuple
+  value={value}
+  onChange={setValue}
+/>
+```
+
+### With step marks
+
+```tsx
+const [value, setValue] = useState<[number, number]>([20, 80])
+
+<RangeTuple
+  value={value}
+  onChange={setValue}
+  min={0}
+  max={100}
+  step={10}
+/>
+```
+
+### With default value indicators
+
+```tsx
+const [value, setValue] = useState<[number, number]>([10, 90])
+
+<RangeTuple
+  value={value}
+  onChange={setValue}
+  min={0}
+  max={100}
+  defaultValue={[25, 75]}
+/>
+```
+
+### Negative range
+
+```tsx
+const [value, setValue] = useState<[number, number]>([-50, 50])
+
+<RangeTuple
+  value={value}
+  onChange={setValue}
+  min={-100}
+  max={100}
+  defaultValue={[0, 0]}
+/>
+```
+
+### Disabled
+
+```tsx
+const [value, setValue] = useState<[number, number]>([30, 70])
+
+<RangeTuple
+  value={value}
+  onChange={setValue}
+  min={0}
+  max={100}
+  disabled
+/>
+```
+
+### Custom sizing
+
+```tsx
+const [value, setValue] = useState<[number, number]>([20, 80])
+
+<RangeTuple
+  value={value}
+  onChange={setValue}
+  min={0}
+  max={100}
+  trackSize={{
+    width: 200,
+    height: 10,
+  }}
+  thumbSize={10}
+/>
+```
+
+### In a popover
+
+```tsx
+import { Popover, Button } from "@choiceform/design-system"
+
+const [value, setValue] = useState<[number, number]>([25, 75])
+
+<Popover draggable>
+  <Popover.Trigger>
+    <Button>Open Range Filter</Button>
+  </Popover.Trigger>
+  <Popover.Header title="Select Range" />
+  <Popover.Content className="grid w-64 grid-cols-[180px_auto] gap-2 p-3">
+    <RangeTuple
+      className="flex-1"
+      value={value}
+      onChange={setValue}
+      min={0}
+      max={100}
+      defaultValue={[25, 75]}
+      trackSize={{
+        width: 180,
+        height: 16,
+      }}
+    />
+    <div className="text-body-medium w-14 flex-1 text-right">
+      {value[0]}-{value[1]}%
+    </div>
+  </Popover.Content>
+</Popover>
+```
+
+## Props
+
+```ts
+interface RangeTupleProps {
+  /** Additional CSS class names */
+  className?: string
+
+  /** Custom styling for positive and negative value connections */
+  connectsClassName?: {
+    negative?: string
+    positive?: string
+  }
+
+  /** Default value indicator positions (not initial values) */
+  defaultValue?: [number, number]
+
+  /** Whether the range is disabled */
+  disabled?: boolean
+
+  /** Maximum value */
+  max?: number
+
+  /** Minimum value */
+  min?: number
+
+  /** Callback fired when value changes during drag */
+  onChange?: (value: [number, number]) => void
+
+  /** Callback fired when drag ends */
+  onChangeEnd?: () => void
+
+  /** Callback fired when drag starts */
+  onChangeStart?: () => void
+
+  /** Step interval for discrete values */
+  step?: number
+
+  /** Size of the thumbs/handles */
+  thumbSize?: number
+
+  /** Track dimensions */
+  trackSize?: {
+    height?: number
+    width?: number | "auto"
+  }
+
+  /** Current value tuple [min, max] */
+  value?: [number, number]
+}
+```
+
+- Defaults:
+  - `min`: 0
+  - `max`: 100
+  - `step`: 1
+  - `disabled`: false
+  - `connectsClassName`: `{ positive: "bg-accent-background", negative: "bg-accent-background" }`
+  - `trackSize`: `{ width: 256, height: 16 }`
+  - `thumbSize`: 14
+
+- Accessibility:
+  - Keyboard navigation with arrow keys for both thumbs
+  - Shift+arrow for 10x step movement
+  - Focus management for both thumbs
+  - Visible focus states
+  - Proper ARIA attributes for screen readers
+  - Touch-friendly interaction for both thumbs
+
+## Styling
+
+- This component uses the same Tailwind CSS variants as `Range` via `tailwind-variants` in `tv.ts`.
+- Customize using the `className` prop and `connectsClassName` for the highlighted range area.
+- Slots available in `tv.ts`: `container`, `connect`, `thumb`, `dotContainer`, `dot`, `input`.
+- Thumbs automatically change visual styling when at default value positions.
+
+## Best practices
+
+- Use for selecting a range or interval (e.g., price range, date range, time slots)
+- Display the current range values for better usability (e.g., "25 - 75" or "$25 - $75")
+- Use `defaultValue` to indicate recommended or typical ranges
+- Specify explicit width for consistent appearance, or use "auto" for responsive layouts
+- Provide appropriate min, max, and step values for your use case
+- Consider using step marks for discrete intervals
+- Provide `onChangeStart` and `onChangeEnd` for expensive operations like API calls
+- Ensure the selected range is visually distinct from unselected areas
+- Consider showing the range span (e.g., "Range: 50 units") when useful
+
+## Examples
+
+### Price range filter
+
+```tsx
+const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000])
+
+<div className="space-y-2">
+  <div className="flex justify-between">
+    <label>Price Range</label>
+    <span className="text-body-small">${priceRange[0]} - ${priceRange[1]}</span>
+  </div>
+  <RangeTuple
+    value={priceRange}
+    onChange={setPriceRange}
+    min={0}
+    max={2000}
+    step={50}
+  />
+</div>
+```
+
+### Time slot selection
+
+```tsx
+const [timeSlot, setTimeSlot] = useState<[number, number]>([9, 17])
+
+<div className="space-y-2">
+  <label>Working Hours: {timeSlot[0]}:00 - {timeSlot[1]}:00</label>
+  <RangeTuple
+    value={timeSlot}
+    onChange={setTimeSlot}
+    min={0}
+    max={24}
+    step={1}
+    defaultValue={[9, 17]}
+  />
+</div>
+```
+
+### Age range filter
+
+```tsx
+const [ageRange, setAgeRange] = useState<[number, number]>([18, 65])
+
+<div className="space-y-2">
+  <label>Age Range: {ageRange[0]} - {ageRange[1]} years</label>
+  <RangeTuple
+    value={ageRange}
+    onChange={setAgeRange}
+    min={0}
+    max={100}
+    step={5}
+  />
+</div>
+```
+
+### Temperature comfort zone
+
+```tsx
+const [comfortZone, setComfortZone] = useState<[number, number]>([18, 24])
+
+<div className="space-y-2">
+  <label>Comfort Zone: {comfortZone[0]}°C - {comfortZone[1]}°C</label>
+  <RangeTuple
+    value={comfortZone}
+    onChange={setComfortZone}
+    min={-10}
+    max={40}
+    defaultValue={[18, 24]}
+    connectsClassName={{
+      positive: "bg-green-400"
+    }}
+  />
+</div>
+```
+
+### Date range (days)
+
+```tsx
+const [dayRange, setDayRange] = useState<[number, number]>([1, 30])
+
+<div className="space-y-2">
+  <label>Select Days: Day {dayRange[0]} to Day {dayRange[1]}</label>
+  <RangeTuple
+    value={dayRange}
+    onChange={setDayRange}
+    min={1}
+    max={365}
+    step={1}
+  />
+  <span className="text-body-small text-secondary-text">
+    Duration: {dayRange[1] - dayRange[0] + 1} days
+  </span>
+</div>
+```
+
+### Percentage range with display
+
+```tsx
+const [percentRange, setPercentRange] = useState<[number, number]>([25, 75])
+
+<div className="flex items-center gap-4">
+  <RangeTuple
+    value={percentRange}
+    onChange={setPercentRange}
+    min={0}
+    max={100}
+    step={5}
+    defaultValue={[0, 100]}
+  />
+  <div className="text-body-medium w-24 text-right">
+    {percentRange[0]}% - {percentRange[1]}%
+  </div>
+</div>
+```
+
+## RangeTuple Notes
+
+- The value is always a tuple `[min, max]` where `min <= max`
+- Clicking the track automatically selects and moves the nearest thumb
+- When dragging, thumbs cannot pass each other - they stop at the other thumb's position
+- With `defaultValue` tuple, both thumbs show visual indicators when at default positions
+- Step behavior applies to both thumbs independently
+- Both thumbs can be controlled via keyboard navigation when focused
+- The highlighted area between thumbs can be styled via `connectsClassName.positive`
+- For negative ranges, the component intelligently handles the visual styling
+- The component automatically normalizes the tuple to ensure min <= max

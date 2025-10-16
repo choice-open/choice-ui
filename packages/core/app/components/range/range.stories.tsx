@@ -3,6 +3,7 @@ import React, { useState } from "react"
 import { Button } from "../button"
 import { Popover } from "../popover"
 import { Range } from "./range"
+import { RangeTuple } from "./range-tuple"
 import { NumericInput } from "../numeric-input"
 
 const meta: Meta<typeof Range> = {
@@ -351,6 +352,299 @@ export const AutoWidth: Story = {
         >
           <NumericInput.Prefix className="w-2 rounded-l-none" />
         </NumericInput>
+      </div>
+    )
+  },
+}
+
+/**
+ * BasicTuple: Demonstrates the simplest RangeTuple implementation for selecting a range.
+ *
+ * Features:
+ * - Dual thumbs for selecting min and max values
+ * - Controlled component with tuple value [min, max]
+ * - Highlighted area between thumbs
+ * - Independent thumb dragging
+ *
+ * This example shows a minimal RangeTuple implementation for selecting a range
+ * of values between two endpoints. Both thumbs can be dragged independently.
+ */
+export const BasicTuple: Story = {
+  render: function BasicTupleStory() {
+    const [value, setValue] = useState<[number, number]>([25, 75])
+
+    return (
+      <div className="flex items-center gap-4">
+        <RangeTuple
+          value={value}
+          onChange={setValue}
+        />
+        <div className="text-body-medium w-20 text-right">
+          {value[0]} - {value[1]}
+        </div>
+      </div>
+    )
+  },
+}
+
+/**
+ * TupleWithStep: Demonstrates RangeTuple with discrete steps and tick marks.
+ *
+ * Features:
+ * - Visual tick marks for each step
+ * - Dual thumbs snap to step values
+ * - Range display showing selected interval
+ * - Dots highlight within the selected range
+ *
+ * Use stepped tuple ranges when:
+ * - Selecting a range with specific intervals (like time slots)
+ * - Users need visual feedback for available options
+ * - Precision between specific values is required
+ */
+export const TupleWithStep: Story = {
+  render: function TupleWithStepStory() {
+    const [value, setValue] = useState<[number, number]>([20, 80])
+
+    return (
+      <div className="flex items-center gap-4">
+        <RangeTuple
+          value={value}
+          onChange={setValue}
+          min={0}
+          max={100}
+          step={10}
+        />
+        <div className="text-body-medium w-20 text-right">
+          {value[0]} - {value[1]}%
+        </div>
+      </div>
+    )
+  },
+}
+
+/**
+ * TupleWithDefaultValue: Demonstrates RangeTuple with default value indicators.
+ *
+ * Features:
+ * - Visual indicators for recommended default range
+ * - Snap effect when dragging near default values
+ * - Helps users identify standard ranges
+ * - Thumbs change color when at default positions
+ *
+ * Use defaultValue tuple when:
+ * - There's a recommended range to highlight
+ * - Users should be aware of standard ranges
+ * - Providing guidance for typical selections
+ */
+export const TupleWithDefaultValue: Story = {
+  render: function TupleWithDefaultValueStory() {
+    const [value, setValue] = useState<[number, number]>([10, 90])
+
+    return (
+      <div className="flex items-center gap-4">
+        <RangeTuple
+          value={value}
+          onChange={setValue}
+          min={0}
+          max={100}
+          defaultValue={[25, 75]}
+        />
+        <div className="text-body-medium w-20 text-right">
+          {value[0]} - {value[1]}%
+        </div>
+      </div>
+    )
+  },
+}
+
+/**
+ * TupleNegativeRange: Demonstrates RangeTuple with negative min/max values.
+ *
+ * Features:
+ * - Support for negative value ranges
+ * - Proper handling of ranges crossing zero
+ * - Default value at zero point
+ * - Symmetrical range selection
+ *
+ * Useful for:
+ * - Temperature ranges
+ * - Profit/loss intervals
+ * - Any measurement that includes negative values
+ */
+export const TupleNegativeRange: Story = {
+  render: function TupleNegativeRangeStory() {
+    const [value, setValue] = useState<[number, number]>([-50, 50])
+
+    return (
+      <div className="flex items-center gap-4">
+        <RangeTuple
+          value={value}
+          onChange={setValue}
+          min={-100}
+          max={100}
+          defaultValue={[0, 0]}
+        />
+        <div className="text-body-medium w-20 text-right">
+          {value[0]} - {value[1]}
+        </div>
+      </div>
+    )
+  },
+}
+
+/**
+ * TupleDisabled: Demonstrates the RangeTuple component in a disabled state.
+ *
+ * Features:
+ * - Visual indication that the control cannot be interacted with
+ * - Prevents user interaction while maintaining current range
+ * - Appropriate styling to show unavailable state
+ *
+ * Use disabled RangeTuple when:
+ * - The range setting is not applicable in the current context
+ * - Permissions don't allow adjusting this range
+ * - The control should show values but not allow changes
+ */
+export const TupleDisabled: Story = {
+  render: function TupleDisabledStory() {
+    const [value, setValue] = useState<[number, number]>([30, 70])
+
+    return (
+      <div className="flex items-center gap-4">
+        <RangeTuple
+          value={value}
+          onChange={setValue}
+          min={0}
+          max={100}
+          disabled
+        />
+        <div className="text-body-medium w-20 text-right">
+          {value[0]} - {value[1]}%
+        </div>
+      </div>
+    )
+  },
+}
+
+/**
+ * TupleCustomSize: Demonstrates configuring the RangeTuple component dimensions.
+ *
+ * Features:
+ * - Custom track width and height
+ * - Custom thumb size for both handles
+ * - Proportional adjustments to all visual elements
+ *
+ * Use custom sizing when:
+ * - Fitting into space-constrained layouts
+ * - Creating more compact or larger range controls
+ * - Matching specific design requirements
+ */
+export const TupleCustomSize: Story = {
+  render: function TupleCustomSizeStory() {
+    const [value, setValue] = useState<[number, number]>([20, 80])
+
+    return (
+      <div className="flex items-center gap-4">
+        <RangeTuple
+          value={value}
+          onChange={setValue}
+          min={0}
+          max={100}
+          trackSize={{
+            width: 200,
+            height: 10,
+          }}
+          thumbSize={10}
+        />
+        <div className="text-body-medium w-20 text-right">
+          {value[0]} - {value[1]}%
+        </div>
+      </div>
+    )
+  },
+}
+
+/**
+ * TupleInPopover: Demonstrates RangeTuple inside a draggable Popover component.
+ *
+ * Features:
+ * - Integration with Popover for contextual range selection
+ * - Properly sized for compact display
+ * - Range value display alongside the slider
+ * - Draggable container with proper interaction handling
+ *
+ * This pattern is useful for:
+ * - Filter panels that require range selection
+ * - Property inspectors with range constraints
+ * - Settings that should be adjustable without navigating away
+ */
+export const TupleInPopover: Story = {
+  render: function TupleInPopoverStory() {
+    const [value, setValue] = useState<[number, number]>([25, 75])
+
+    return (
+      <Popover draggable>
+        <Popover.Trigger>
+          <Button>Open Range Filter</Button>
+        </Popover.Trigger>
+        <Popover.Header title="Select Range" />
+        <Popover.Content className="grid w-64 grid-cols-[180px_auto] gap-2 p-3">
+          <RangeTuple
+            className="flex-1"
+            value={value}
+            onChange={setValue}
+            min={0}
+            max={100}
+            defaultValue={[25, 75]}
+            trackSize={{
+              width: 180,
+              height: 16,
+            }}
+          />
+          <div className="text-body-medium w-14 flex-1 text-right">
+            {value[0]}-{value[1]}%
+          </div>
+        </Popover.Content>
+      </Popover>
+    )
+  },
+}
+
+/**
+ * TupleSentimentNeutralRange: Demonstrates RangeTuple for sentiment analysis neutral range.
+ *
+ * Features:
+ * - Range from -1 to 1 representing sentiment values
+ * - Default neutral range of [-0.2, 0.2]
+ * - Symmetrical range around zero
+ * - Decimal value display with precision
+ *
+ * Use this pattern for:
+ * - Sentiment analysis configuration
+ * - Defining neutral zones in bipolar scales
+ * - Setting thresholds for classification systems
+ * - Any measurement requiring a neutral range around zero
+ */
+export const TupleSentimentNeutralRange: Story = {
+  render: function TupleSentimentNeutralRangeStory() {
+    const [value, setValue] = useState<[number, number]>([-0.2, 0.2])
+
+    return (
+      <div className="flex items-center gap-4">
+        <RangeTuple
+          value={value}
+          step={0.0001}
+          onChange={(value) => {
+            console.log("value", value)
+            setValue(value)
+          }}
+          min={-1}
+          max={1}
+          defaultValue={[-0.23333, 0.2]}
+        />
+        <div className="text-body-medium w-28 text-right">
+          {value[0]} - {value[1]}
+        </div>
       </div>
     )
   },

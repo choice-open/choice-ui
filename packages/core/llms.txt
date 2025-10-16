@@ -27,6 +27,7 @@ The library provides a comprehensive set of components with rich interactivity a
 - [NumericInput](https://ui.choiceform.app/components/numeric-input/README.md): A specialized input for numeric values with increment/decrement controls
 - [Radio](https://ui.choiceform.app/components/radio/README.md): Radio button component for single selection from multiple options
 - [Range](https://ui.choiceform.app/components/range/README.md): A slider component for selecting values within a range
+- [RangeTuple](https://ui.choiceform.app/components/range/README.md#rangetuple): A dual-thumb slider for selecting a range of values with min/max bounds
 - [SearchInput](https://ui.choiceform.app/components/search-input/README.md): An enhanced input component optimized for search functionality
 - [Segmented](https://ui.choiceform.app/components/segmented/README.md): A segmented control for switching between different views or values
 - [Select](https://ui.choiceform.app/components/select/README.md): A dropdown selection component with search and multi-select capabilities
