@@ -6,6 +6,11 @@ import { TextField, type TextFieldProps } from "../text-field"
 import { searchInputTv } from "./tv"
 
 export interface SearchInputProps extends TextFieldProps {
+  /**
+   * Whether to show the clear button when there is a value
+   * @default true
+   */
+  clearable?: boolean
   i18n?: {
     clear: string
     placeholder: string
@@ -19,6 +24,7 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>((props
     onChange,
     variant = "default",
     disabled,
+    clearable = true,
     i18n = {
       clear: "Clear",
     },
@@ -44,7 +50,7 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>((props
       <TextField.Prefix className={style.icon()}>
         <Search />
       </TextField.Prefix>
-      {value && (
+      {value && clearable && (
         <TextField.Suffix>
           <IconButton
             className={style.action()}

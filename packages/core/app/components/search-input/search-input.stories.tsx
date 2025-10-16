@@ -15,11 +15,11 @@ type Story = StoryObj<typeof SearchInput>
 
 /**
  * `SearchInput` is a specialized input component designed for search functionality with built-in
- * search icon and clear button.
+ * search icon and optional clear button.
  *
  * Features:
  * - Search icon prefix for visual identification
- * - Clear button that appears when text is entered
+ * - Optional clear button that appears when text is entered
  * - Support for different sizes and variants
  * - Built on top of the core TextField component
  * - Dark mode support
@@ -31,6 +31,7 @@ type Story = StoryObj<typeof SearchInput>
  * - Handle the onChange callback to process search queries
  * - Consider debouncing search requests for performance
  * - Place in navigation bars, toolbars, or filter sections
+ * - Use `clearable={false}` to hide the clear button when not needed
  *
  * Accessibility:
  * - Includes proper ARIA labels for the search and clear functions
@@ -95,6 +96,30 @@ export const Size: Story = {
 export const Disabled: Story = {
   render: function DisabledStory() {
     return <SearchInput disabled />
+  },
+}
+
+/**
+ * NotClearable: Demonstrates SearchInput without the clear button.
+ *
+ * Setting `clearable={false}` hides the clear button even when there is text.
+ * This is useful when:
+ * - You want a simpler UI without the clear action
+ * - The search is meant to be persistent
+ * - You're implementing custom clearing logic elsewhere
+ * - The use case doesn't require quick clearing
+ */
+export const NotClearable: Story = {
+  render: function NotClearableStory() {
+    const [value, setValue] = useState("Search text without clear button")
+
+    return (
+      <SearchInput
+        value={value}
+        onChange={setValue}
+        clearable={false}
+      />
+    )
   },
 }
 
