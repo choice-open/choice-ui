@@ -1154,6 +1154,52 @@ export const CloseOnEscape: Story = {
 }
 
 /**
+ * EventPropagation: Verifies that ESC key events do not propagate to window.
+ * Press ESC outside popover to increment counter, then press ESC inside popover
+ * to close it without incrementing the counter.
+ */
+export const EventPropagation: Story = {
+  render: function EventPropagationStory() {
+    const [open, setOpen] = useState(false)
+    const [escCount, setEscCount] = useState(0)
+
+    React.useEffect(() => {
+      const handleEscape = (e: KeyboardEvent) => {
+        if (e.key === "Escape") {
+          setEscCount((prev) => prev + 1)
+        }
+      }
+
+      window.addEventListener("keydown", handleEscape)
+      return () => window.removeEventListener("keydown", handleEscape)
+    }, [])
+
+    return (
+      <div className="flex flex-col gap-4">
+        <p>
+          Window ESC count: <strong>{escCount}</strong>
+        </p>
+        <p className="text-secondary-foreground text-body-small">
+          Press ESC to increment. Open popover and press ESC - counter should NOT change.
+        </p>
+
+        <Popover
+          open={open}
+          onOpenChange={setOpen}
+        >
+          <Popover.Trigger>
+            <Button>Open Popover</Button>
+          </Popover.Trigger>
+          <Popover.Content className="w-72 p-3">
+            Press ESC to close. The window counter should not increment.
+          </Popover.Content>
+        </Popover>
+      </div>
+    )
+  },
+}
+
+/**
  * MatchTriggerWidth: Demonstrates the matchTriggerWidth prop functionality.
  * By default, popovers will not match the width of the trigger. This story shows
  * two popovers - one with matchTriggerWidth enabled and one with it disabled.

@@ -601,3 +601,48 @@ export const CloseOnEscape: Story = {
     )
   },
 }
+
+/**
+ * EventPropagation: Verifies that ESC key events do not propagate to window.
+ * Press ESC outside dialog to increment counter, then press ESC inside dialog
+ * to close it without incrementing the counter.
+ */
+export const EventPropagation: Story = {
+  render: function EventPropagationStory() {
+    const [open, setOpen] = useState(false)
+    const [escCount, setEscCount] = useState(0)
+
+    React.useEffect(() => {
+      const handleEscape = (e: KeyboardEvent) => {
+        if (e.key === "Escape") {
+          setEscCount((prev) => prev + 1)
+        }
+      }
+
+      window.addEventListener("keydown", handleEscape)
+      return () => window.removeEventListener("keydown", handleEscape)
+    }, [])
+
+    return (
+      <div className="flex flex-col gap-4">
+        <p>
+          Window ESC count: <strong>{escCount}</strong>
+        </p>
+        <p className="text-secondary-foreground text-body-small">
+          Press ESC to increment. Open dialog and press ESC - counter should NOT change.
+        </p>
+        <Button onClick={() => setOpen(true)}>Open Dialog</Button>
+
+        <Dialog
+          open={open}
+          onOpenChange={setOpen}
+        >
+          <Dialog.Header title="ESC Event Test" />
+          <Dialog.Content className="w-96 p-4">
+            Press ESC to close. The window counter should not increment.
+          </Dialog.Content>
+        </Dialog>
+      </div>
+    )
+  },
+}

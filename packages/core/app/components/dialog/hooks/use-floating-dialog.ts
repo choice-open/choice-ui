@@ -147,7 +147,7 @@ export function useFloatingDialog({
   const click = useClick(context)
   const dismiss = useDismiss(context, {
     outsidePress,
-    escapeKey: true,
+    escapeKey: closeOnEscape,
   })
   const role = useRole(context)
 
@@ -244,14 +244,19 @@ export function useFloatingDialog({
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && innerOpen && closeOnEscape) {
-        handleClose()
+      if (e.key === "Escape") {
+        e.stopPropagation()
+        e.preventDefault()
+
+        if (closeOnEscape) {
+          handleClose()
+        }
       }
     }
 
-    document.addEventListener("keydown", handleEscape)
-    return () => document.removeEventListener("keydown", handleEscape)
-  }, [innerOpen, handleClose, closeOnEscape])
+    window.addEventListener("keydown", handleEscape, { capture: true })
+    return () => window.removeEventListener("keydown", handleEscape, { capture: true })
+  }, [closeOnEscape, handleClose])
 
   return {
     refs,

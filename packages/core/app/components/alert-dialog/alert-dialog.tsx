@@ -45,14 +45,15 @@ export const AlertDialog = memo(function AlertDialog(props: AlertDialogProps) {
 
   // 处理键盘事件
   useEffect(() => {
-    if (!isOpen || !config) return
-
     const handleKeyDown = (event: KeyboardEvent) => {
+      if (!isOpen || !config) return
+
       // ESC 键关闭对话框
       if (event.key === "Escape") {
+        event.stopImmediatePropagation()
+        event.preventDefault()
         const shouldClose = config.closeOnEscape !== false
         if (shouldClose) {
-          event.preventDefault()
           _handleAction({ type: "HIDE", payload: { value: false } })
         }
       }
@@ -69,8 +70,8 @@ export const AlertDialog = memo(function AlertDialog(props: AlertDialogProps) {
       }
     }
 
-    document.addEventListener("keydown", handleKeyDown)
-    return () => document.removeEventListener("keydown", handleKeyDown)
+    window.addEventListener("keydown", handleKeyDown, { capture: true })
+    return () => window.removeEventListener("keydown", handleKeyDown, { capture: true })
   }, [isOpen, config, type, _handleAction])
 
   // 处理背景点击

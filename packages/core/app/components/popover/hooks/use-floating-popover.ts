@@ -231,6 +231,22 @@ export function useFloatingPopover({
     }
   }, [innerOpen, context])
 
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.stopPropagation()
+        e.preventDefault()
+
+        if (closeOnEscape) {
+          handleClose()
+        }
+      }
+    }
+
+    window.addEventListener("keydown", handleEscape, { capture: true })
+    return () => window.removeEventListener("keydown", handleEscape, { capture: true })
+  }, [closeOnEscape, handleClose])
+
   const handleTriggerRef = useCallback(
     (triggerRef: React.RefObject<HTMLElement>) => {
       // 只有在触发器实际变化时才更新引用

@@ -762,3 +762,53 @@ export const FullFeatured: Story = {
     )
   },
 }
+
+/**
+ * EventPropagation: Verifies that ESC key events do not propagate to window.
+ * Press ESC outside alert dialog to increment counter, then press ESC inside
+ * alert dialog to close it without incrementing the counter.
+ */
+export const EventPropagation: Story = {
+  render: function EventPropagationStory() {
+    const EventPropagationExample = () => {
+      const { alert } = useAlertDialog()
+      const [escCount, setEscCount] = React.useState(0)
+
+      React.useEffect(() => {
+        const handleEscape = (e: KeyboardEvent) => {
+          if (e.key === "Escape") {
+            setEscCount((prev) => prev + 1)
+          }
+        }
+
+        window.addEventListener("keydown", handleEscape)
+        return () => window.removeEventListener("keydown", handleEscape)
+      }, [])
+
+      const showAlert = async () => {
+        await alert({
+          title: "ESC Event Test",
+          description: "Press ESC to close. The window counter should not increment.",
+        })
+      }
+
+      return (
+        <div className="flex flex-col gap-4">
+          <p>
+            Window ESC count: <strong>{escCount}</strong>
+          </p>
+          <p className="text-secondary-foreground text-body-small">
+            Press ESC to increment. Open alert and press ESC - counter should NOT change.
+          </p>
+          <Button onClick={showAlert}>Open Alert</Button>
+        </div>
+      )
+    }
+
+    return (
+      <AlertDialogProvider>
+        <EventPropagationExample />
+      </AlertDialogProvider>
+    )
+  },
+}
