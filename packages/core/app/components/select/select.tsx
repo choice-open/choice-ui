@@ -56,6 +56,7 @@ const PORTAL_ROOT_ID = "floating-menu-root"
 export interface SelectProps {
   children?: React.ReactNode
   className?: string
+  closeOnEscape?: boolean
   disabled?: boolean
   focusManagerProps?: Partial<FloatingFocusManagerProps>
   matchTriggerWidth?: boolean
@@ -90,6 +91,7 @@ interface SelectComponentType
 const SelectComponent = memo(function SelectComponent(props: SelectProps) {
   const {
     className,
+    closeOnEscape = true,
     matchTriggerWidth = false,
     value,
     onChange,
@@ -317,8 +319,7 @@ const SelectComponent = memo(function SelectComponent(props: SelectProps) {
   })
 
   const dismiss = useDismiss(floating.context, {
-    bubbles: true,
-    escapeKey: true,
+    escapeKey: closeOnEscape,
   })
 
   const role = useRole(floating.context, { role: "listbox" })

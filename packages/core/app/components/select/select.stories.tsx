@@ -910,3 +910,171 @@ export const Large: Story = {
     )
   },
 }
+
+/**
+ * Demonstrates closeOnEscape functionality with interactive toggle.
+ *
+ * When closeOnEscape is set to false, pressing ESC key will not close the select menu.
+ * This is useful when the select is nested in other components that also handle ESC key,
+ * and you want to prevent the ESC event from bubbling up.
+ */
+export const CloseOnEscapeToggle: Story = {
+  render: function CloseOnEscapeToggleStory() {
+    const [value, setValue] = useState<string>("option-2")
+    const [closeOnEscape, setCloseOnEscape] = useState(true)
+
+    return (
+      <div
+        style={{ display: "flex", flexDirection: "column", gap: "20px", alignItems: "flex-start" }}
+      >
+        <label style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+          <input
+            type="checkbox"
+            checked={closeOnEscape}
+            onChange={(e) => setCloseOnEscape(e.target.checked)}
+          />
+          <span>Enable close on ESC key</span>
+        </label>
+
+        <Select
+          value={value}
+          onChange={setValue}
+          closeOnEscape={closeOnEscape}
+        >
+          <Select.Trigger>
+            <Select.Value>{value || "Select an option..."}</Select.Value>
+          </Select.Trigger>
+          <Select.Content>
+            {Array.from({ length: 5 }, (_, i) => (
+              <Select.Item
+                key={i}
+                value={`option-${i + 1}`}
+              >
+                <Select.Value>Option {i + 1}</Select.Value>
+              </Select.Item>
+            ))}
+          </Select.Content>
+        </Select>
+
+        <div style={{ fontSize: "14px", color: "#666", maxWidth: "400px" }}>
+          {closeOnEscape
+            ? "✅ Try opening the select and pressing ESC - it will close the menu."
+            : "❌ With this option disabled, pressing ESC will not close the select menu."}
+        </div>
+      </div>
+    )
+  },
+}
+
+/**
+ * Example with ESC key disabled.
+ *
+ * Pressing ESC key will NOT close the select menu.
+ * This is useful in modal dialogs or nested overlays where you want to prevent
+ * ESC from closing the select and instead let it close the parent container.
+ */
+export const DisableCloseOnEscape: Story = {
+  render: function DisableCloseOnEscapeStory() {
+    const [value, setValue] = useState<string>("option-2")
+
+    return (
+      <div
+        style={{ display: "flex", flexDirection: "column", gap: "20px", alignItems: "flex-start" }}
+      >
+        <Select
+          value={value}
+          onChange={setValue}
+          closeOnEscape={false}
+        >
+          <Select.Trigger>
+            <Select.Value>{value || "Select an option..."}</Select.Value>
+          </Select.Trigger>
+          <Select.Content>
+            {Array.from({ length: 5 }, (_, i) => (
+              <Select.Item
+                key={i}
+                value={`option-${i + 1}`}
+              >
+                <Select.Value>Option {i + 1}</Select.Value>
+              </Select.Item>
+            ))}
+          </Select.Content>
+        </Select>
+
+        <div
+          style={{
+            padding: "12px 16px",
+            backgroundColor: "#fff3cd",
+            border: "1px solid #ffc107",
+            borderRadius: "4px",
+            fontSize: "14px",
+            maxWidth: "400px",
+          }}
+        >
+          <strong>⚠️ Note:</strong> Pressing ESC key will NOT close this select menu. Click outside
+          or select an option to close it.
+        </div>
+      </div>
+    )
+  },
+}
+
+/**
+ * EventPropagation: Verifies that ESC key events do not propagate to window when closeOnEscape is true.
+ *
+ * This story demonstrates that when the select menu is open and you press ESC:
+ * - The select menu will close
+ * - The ESC event will NOT propagate to the window
+ * - The window ESC counter will NOT increment
+ *
+ * Press ESC outside the select to increment the counter, then open the select and press ESC again.
+ * The counter should not change when pressing ESC inside the select menu.
+ */
+export const EventPropagation: Story = {
+  render: function EventPropagationStory() {
+    const [value, setValue] = useState<string>("option-2")
+    const [escCount, setEscCount] = useState(0)
+
+    React.useEffect(() => {
+      const handleEscape = (e: KeyboardEvent) => {
+        if (e.key === "Escape") {
+          setEscCount((prev) => prev + 1)
+        }
+      }
+
+      window.addEventListener("keydown", handleEscape)
+      return () => window.removeEventListener("keydown", handleEscape)
+    }, [])
+
+    return (
+      <div className="flex flex-col gap-4">
+        <p>
+          Window ESC count: <strong>{escCount}</strong>
+        </p>
+        <p className="text-secondary-foreground text-body-small">
+          Press ESC to increment. Open popover and press ESC - counter should NOT change.
+        </p>
+
+        <Select
+          value={value}
+          onChange={setValue}
+          closeOnEscape={true}
+        >
+          <Select.Trigger>
+            <Select.Value>{value || "Select an option..."}</Select.Value>
+          </Select.Trigger>
+          <Select.Content>
+            {Array.from({ length: 5 }, (_, i) => (
+              <Select.Item
+                key={i}
+                value={`option-${i + 1}`}
+              >
+                <Select.Value>Option {i + 1}</Select.Value>
+              </Select.Item>
+            ))}
+          </Select.Content>
+        </Select>
+      </div>
+    )
+  },
+}
