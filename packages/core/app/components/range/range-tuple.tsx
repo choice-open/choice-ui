@@ -24,7 +24,7 @@ export interface RangeTupleProps {
   max?: number
   min?: number
   onChange?: (value: [number, number]) => void
-  onChangeEnd?: () => void
+  onChangeEnd?: (value: [number, number]) => void
   onChangeStart?: () => void
   step?: number
   thumbSize?: number
@@ -283,7 +283,39 @@ export const RangeTuple = forwardRef<HTMLDivElement, RangeTupleProps>(
           updatePosition(e.clientX, thumbIndex, true)
           isDragging.current = null
 
-          onChangeEnd?.()
+          // 获取最终值并传递给 onChangeEnd
+          const rect = sliderRef.current?.getBoundingClientRect()
+          if (rect) {
+            const newPosition = clamp((e.clientX - rect.left) / rect.width, 0, 1)
+            const newValue = Math.round(positionToValue(newPosition) / step) * step
+            let clampedValue = clamp(newValue, min, max)
+
+            // Snap to default value if close
+            if (normalizedDefaultValue && step === 1) {
+              const snapThreshold = (max - min) * 0.05
+              for (const defVal of normalizedDefaultValue) {
+                const distanceToDefault = Math.abs(clampedValue - defVal)
+                if (distanceToDefault <= snapThreshold) {
+                  clampedValue = defVal
+                  break
+                }
+              }
+            }
+
+            const finalTuple: [number, number] = [...currentValue] as [number, number]
+            finalTuple[thumbIndex] = clampedValue
+
+            // Ensure min <= max
+            if (finalTuple[0] > finalTuple[1]) {
+              if (thumbIndex === 0) {
+                finalTuple[0] = finalTuple[1]
+              } else {
+                finalTuple[1] = finalTuple[0]
+              }
+            }
+
+            onChangeEnd?.(finalTuple)
+          }
 
           window.removeEventListener("pointermove", handleMove)
           window.removeEventListener("pointerup", handleUp)
@@ -294,7 +326,18 @@ export const RangeTuple = forwardRef<HTMLDivElement, RangeTupleProps>(
         window.addEventListener("pointerup", handleUp)
         window.addEventListener("pointercancel", handleUp)
       },
-      [disabled, onChangeEnd, onChangeStart, updatePosition],
+      [
+        disabled,
+        onChangeEnd,
+        onChangeStart,
+        updatePosition,
+        positionToValue,
+        step,
+        min,
+        max,
+        normalizedDefaultValue,
+        currentValue,
+      ],
     )
 
     const handleSliderPointerDown = useCallback(
