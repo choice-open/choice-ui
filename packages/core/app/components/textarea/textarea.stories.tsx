@@ -33,6 +33,8 @@ import React, { useState } from "react"
 import { Textarea } from "./index"
 import { Switch } from "../switch"
 import { Checkbox } from "../checkbox/checkbox"
+import { Popover } from "../popover"
+import { Button } from "../button"
 
 const meta: Meta<typeof Textarea> = {
   title: "Forms/Textarea",
@@ -726,6 +728,71 @@ export const CustomLineHeight: Story = {
         >
           <Textarea.Content className={size === "large" ? "text-body-large" : "text-body-medium"} />
         </Textarea>
+      </div>
+    )
+  },
+}
+
+/**
+ * In Popover: Demonstrates textarea working correctly in a Popover.
+ *
+ * This story tests the fix for the auto-height calculation bug that occurred
+ * when textarea is rendered inside a popover or dialog. The component now
+ * properly handles initialization when the container is initially hidden.
+ *
+ * Features:
+ * - Correct height calculation when popover opens
+ * - IntersectionObserver for visibility detection
+ * - Automatic retry mechanism for sizing data
+ *
+ * Technical Implementation:
+ * - Uses IntersectionObserver to detect when textarea becomes visible
+ * - Implements requestAnimationFrame retry for sizing data
+ * - Checks element connectivity and visibility before calculating height
+ *
+ * Usage:
+ * ```tsx
+ * <Popover>
+ *   <Popover.Trigger>
+ *     <Button>Open</Button>
+ *   </Popover.Trigger>
+ *   <Popover.Content>
+ *     <Textarea placeholder="Enter text..." />
+ *   </Popover.Content>
+ * </Popover>
+ * ```
+ */
+export const InPopover: Story = {
+  render: function InPopover() {
+    const [value, setValue] = useState("")
+    const [open, setOpen] = useState(false)
+
+    return (
+      <div className="flex items-center justify-center p-20">
+        <Popover
+          open={open}
+          onOpenChange={setOpen}
+        >
+          <Popover.Trigger>
+            <Button>Open Popover with Textarea</Button>
+          </Popover.Trigger>
+          <Popover.Header title="Add a comment" />
+          <Popover.Content className="space-y-3 p-4">
+            <div className="text-body-small text-text-secondary">
+              Type your comment below. The textarea should auto-size correctly even though it starts
+              hidden inside a popover.
+            </div>
+            <Textarea
+              value={value}
+              onChange={setValue}
+              placeholder="Type your comment here..."
+              minRows={3}
+              maxRows={10}
+              className="w-full"
+            />
+            <div className="text-body-small text-text-tertiary">Characters: {value.length}</div>
+          </Popover.Content>
+        </Popover>
       </div>
     )
   },

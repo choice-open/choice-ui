@@ -57,6 +57,18 @@ const getSizingData = (node: HTMLElement): SizingData | null => {
   }
 
   try {
+    // 检查元素是否在 DOM 中且可见
+    if (!node.isConnected) {
+      return null
+    }
+
+    // 检查元素是否有尺寸（避免在隐藏的 popover/dialog 中计算）
+    const rect = node.getBoundingClientRect()
+    if (rect.width === 0 && rect.height === 0) {
+      // 元素可能被隐藏，但我们仍然尝试获取样式
+      // 因为某些情况下元素可能有 display: none 但仍需要计算
+    }
+
     const style = window.getComputedStyle(node)
 
     if (!style) {

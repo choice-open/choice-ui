@@ -109,6 +109,30 @@ export const TextareaAutosize = forwardRef<HTMLTextAreaElement, TextareaAutosize
         const nodeSizingData = getSizingData(node)
 
         if (!nodeSizingData) {
+          // 如果获取不到 sizing data，可能是元素还未完全渲染
+          // 在下一帧重试
+          requestAnimationFrame(() => {
+            const retryData = getSizingData(node)
+            if (!retryData) return
+
+            if (cacheMeasurements) {
+              measurementsCacheRef.current = retryData
+              lastValueRef.current = currentValue
+            }
+
+            const [height, rowHeight] = calculateNodeHeight(
+              retryData,
+              currentValue,
+              normalizedMinRows,
+              normalizedMaxRows,
+            )
+
+            if (heightRef.current !== height) {
+              heightRef.current = height
+              node.style.setProperty("height", `${height}px`, "important")
+              onHeightChange(height, { rowHeight })
+            }
+          })
           return
         }
 
@@ -169,6 +193,35 @@ export const TextareaAutosize = forwardRef<HTMLTextAreaElement, TextareaAutosize
     useFormResetListener(libRef, formResetCallback)
     useWindowResizeListener(resizeTextarea)
     useFontsLoadedListener(resizeTextarea)
+
+    // 监听元素可见性变化（用于 popover/dialog 场景）
+    React.useEffect(() => {
+      const node = libRef.current
+      if (!node || !isBrowser || typeof IntersectionObserver === "undefined") {
+        return
+      }
+
+      // 使用 IntersectionObserver 监听元素何时变为可见
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              // 元素变为可见时，延迟一帧再计算，确保布局已完成
+              requestAnimationFrame(() => {
+                resizeTextarea()
+              })
+            }
+          })
+        },
+        { threshold: 0 },
+      )
+
+      observer.observe(node)
+
+      return () => {
+        observer.disconnect()
+      }
+    }, [resizeTextarea])
 
     // When style changes, trigger resize to recalculate with new line height / padding
     React.useEffect(() => {
