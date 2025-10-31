@@ -211,7 +211,7 @@ const ContextMenuComponent = memo(function ContextMenuComponent(props: ContextMe
   const hover = useHover(context, {
     enabled: isNested,
     delay: { open: 75 },
-    handleClose: safePolygon({ blockPointerEvents: true, buffer: 1 }),
+    handleClose: safePolygon({ blockPointerEvents: true, requireIntent: false, buffer: 10 }),
   })
 
   const click = useClick(context, {

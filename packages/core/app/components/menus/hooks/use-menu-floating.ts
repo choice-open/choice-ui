@@ -195,7 +195,7 @@ export function useMenuFloating(config: MenuFloatingConfig): MenuFloatingResult 
   const hover = useHover(floating.context, {
     enabled: type === "dropdown" && isNested,
     delay: { open: 75 },
-    handleClose: safePolygon({ blockPointerEvents: true, buffer: 1 }),
+    handleClose: safePolygon({ blockPointerEvents: true, requireIntent: false, buffer: 10 }),
   })
 
   // 配置 click

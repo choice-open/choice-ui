@@ -255,7 +255,7 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
   const hover = useHover(context, {
     enabled: isNested && !isCoordinateMode,
     delay: { open: 75 },
-    handleClose: safePolygon({ blockPointerEvents: true, buffer: 1 }),
+    handleClose: safePolygon({ blockPointerEvents: true, requireIntent: false, buffer: 10 }),
   })
 
   const click = useClick(context, {

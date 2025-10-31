@@ -142,7 +142,7 @@ export function useFloatingPopover({
 
   const hover = useHover(context, {
     enabled: interactions === "hover",
-    handleClose: safePolygon({ blockPointerEvents: true, buffer: 1 }),
+    handleClose: safePolygon({ blockPointerEvents: true, requireIntent: false, buffer: 10 }),
     mouseOnly: true,
     restMs: 150,
   })
