@@ -1,6 +1,6 @@
 export * from "./use-drag-drop"
 export * from "./use-expansion"
 export * from "./use-has-horizontal-scroll"
-export * from "./use-keyboard-navigation"
+export * from "./use-modifier-keys"
 export * from "./use-renaming"
 export * from "./use-selection"

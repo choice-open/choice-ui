@@ -2,40 +2,134 @@ import { Element, ToolbarFrame } from "@choiceform/icons-react"
 import { observable } from "@legendapp/state"
 import { observer } from "@legendapp/state/react"
 import type { Meta, StoryObj } from "@storybook/react-vite"
-import React, { useState } from "react"
+import React, { useCallback, useState } from "react"
 import { Splitter } from "../splitter"
 import { TreeList } from "./tree-list"
 import { DropPosition, TreeNodeData, TreeNodeType } from "./types"
 
-// 生成随机ID
-const generateId = () => Math.random().toString(36).substring(2, 10)
+// 生成示例数据（带可预测的ID结构，便于调试）
+const generateDemoTreeData = (): TreeNodeData[] => {
+  return [
+    {
+      id: "1",
+      name: "Folder 1",
+      isFolder: true,
+      children: [
+        {
+          id: "1-1",
+          name: "Folder 1 / Item 1",
+          children: [],
+        },
+        {
+          id: "1-2",
+          name: "Folder 1 / Item 2",
+          children: [],
+        },
+        {
+          id: "1-3",
+          name: "Folder 1 / Item 3",
+          children: [],
+        },
+      ],
+    },
+    {
+      id: "2",
+      name: "Folder 2",
+      isFolder: true,
+      children: [
+        {
+          id: "2-1",
+          name: "Folder 2 / Group 1",
+          isFolder: true,
+          children: [
+            {
+              id: "2-1-1",
+              name: "Folder 2 / Group 1 / Item 1",
+              children: [
+                {
+                  id: "2-1-1-1",
+                  name: "Folder 2 / Group 1 / Item 1 / Detail 1",
+                  children: [],
+                },
+                {
+                  id: "2-1-1-2",
+                  name: "Folder 2 / Group 1 / Item 1 / Detail 2",
+                  children: [],
+                },
+              ],
+            },
+            {
+              id: "2-1-2",
+              name: "Folder 2 / Group 1 / Item 2",
+              children: [
+                {
+                  id: "2-1-2-1",
+                  name: "Folder 2 / Group 1 / Item 2 / Detail 1",
+                  children: [],
+                },
+              ],
+            },
+          ],
+        },
+        {
+          id: "2-2",
+          name: "Folder 2 / Group 2",
+          isFolder: true,
+          children: [
+            {
+              id: "2-2-1",
+              name: "Folder 2 / Group 2 / Item 1",
+              children: [],
+            },
+            {
+              id: "2-2-2",
+              name: "Folder 2 / Group 2 / Item 2",
+              children: [
+                {
+                  id: "2-2-2-1",
+                  name: "Folder 2 / Group 2 / Item 2 / Detail 1",
+                  children: [],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      id: "3",
+      name: "Folder 3",
+      isFolder: true,
+      children: [],
+    },
+  ]
+}
 
-// 大型测试数据（10000+ 节点）
-const generateLargeTestData = (): TreeNodeData[] => {
+// 创建测试数据
+const demoTreeData = generateDemoTreeData()
+console.log("🤖 ~ demoTreeData:", demoTreeData)
+
+const generateLargeTestData = (rootCount = 500, childrenPerRoot = 20): TreeNodeData[] => {
   const result: TreeNodeData[] = []
 
-  // 创建500个顶级节点
-  for (let i = 0; i < 500; i++) {
-    const id = generateId()
-    const name = `Folder ${i + 1}`
+  for (let i = 0; i < rootCount; i++) {
+    const rootId = `${i + 1}`
+    const rootName = `Folder ${i + 1}`
 
     const children: TreeNodeData[] = []
-
-    // 每个顶级节点有20个子节点
-    for (let j = 0; j < 20; j++) {
-      const childId = generateId()
-      const childName = `${name}/Item ${j + 1}`
-
+    for (let j = 0; j < childrenPerRoot; j++) {
+      const childId = `${rootId}-${j + 1}`
       children.push({
         id: childId,
-        name: childName,
+        name: `${rootName} / Item ${j + 1}`,
         children: [],
       })
     }
 
     result.push({
-      id,
-      name,
+      id: rootId,
+      name: rootName,
+      isFolder: true,
       children,
     })
   }
@@ -43,8 +137,16 @@ const generateLargeTestData = (): TreeNodeData[] => {
   return result
 }
 
-// 创建测试数据
-const largeTestData = generateLargeTestData()
+const performanceTestData = generateLargeTestData()
+
+const countTreeNodes = (nodes: TreeNodeData[]): number => {
+  return nodes.reduce((total, node) => {
+    const childCount = node.children ? countTreeNodes(node.children) : 0
+    return total + 1 + childCount
+  }, 0)
+}
+
+const performanceTotalNodes = countTreeNodes(performanceTestData)
 
 const meta: Meta<typeof TreeList> = {
   title: "Components/TreeList",
@@ -57,23 +159,52 @@ type Story = StoryObj<typeof TreeList>
 
 // 使用LegendApp状态
 const treeState = observable({
-  data: largeTestData, // 使用大型数据集以展示虚拟滚动
+  data: demoTreeData, // 使用演示数据集展示全量交互
   selectedNodes: [] as TreeNodeType[],
   expandedNodes: [] as TreeNodeType[],
   useVirtualScroll: true, // 默认启用虚拟滚动
 })
 
 // 综合示例组件：包含所有功能
+const findNodePath = (
+  nodes: TreeNodeData[],
+  targetId: string,
+  path: TreeNodeData[] = [],
+): TreeNodeData[] | null => {
+  for (const node of nodes) {
+    const currentPath = [...path, node]
+    if (node.id === targetId) {
+      return currentPath
+    }
+    if (node.children?.length) {
+      const result = findNodePath(node.children, targetId, currentPath)
+      if (result) {
+        return result
+      }
+    }
+  }
+  return null
+}
+
 const ComprehensiveTreeList = observer(() => {
   // 处理节点重命名
   const handleNodeRename = (node: TreeNodeType, newName: string) => {
+    const trimmedName = newName.trim()
+    const currentData = treeState.data.get()
+    const path = findNodePath(currentData, node.id)
+    const currentNode = path?.[path.length - 1]
+
+    if (!trimmedName || !currentNode || currentNode.name === trimmedName) {
+      return
+    }
+
     // 递归更新节点
     const updateNodeName = (nodes: TreeNodeData[]): TreeNodeData[] => {
       return nodes.map((n) => {
         if (n.id === node.id) {
           return {
             ...n,
-            name: newName,
+            name: trimmedName,
           }
         }
 
@@ -88,7 +219,7 @@ const ComprehensiveTreeList = observer(() => {
       })
     }
 
-    treeState.data.set(updateNodeName(treeState.data.get()))
+    treeState.data.set(updateNodeName(currentData))
   }
 
   // 处理节点拖放
@@ -100,6 +231,12 @@ const ComprehensiveTreeList = observer(() => {
     try {
       // 实际处理拖放逻辑
       const currentData = treeState.data.get()
+      const sourceIds = new Set(sourceNodes.map((n) => n.id))
+
+      // 当目标节点包含在源节点中时，说明拖拽回了原位，直接跳过
+      if (sourceIds.has(targetNode.id)) {
+        return
+      }
       console.log(
         "处理拖放操作：",
         sourceNodes.map((n) => n.id),
@@ -180,7 +317,7 @@ const ComprehensiveTreeList = observer(() => {
       ): TreeNodeData[] => {
         // 创建深拷贝以避免修改原始数据
         const result = JSON.parse(JSON.stringify(nodes)) as TreeNodeData[]
-        let current: TreeNodeData[] | TreeNodeData | { [key: string]: any } = result
+        let current: TreeNodeData[] | TreeNodeData | undefined = result
 
         // 导航到要删除节点的父级
         for (let i = 0; i < path.length - 1; i++) {
@@ -188,10 +325,7 @@ const ComprehensiveTreeList = observer(() => {
           if (Array.isArray(current)) {
             current = typeof segment === "number" ? current[segment] : current
           } else if (current && typeof current === "object") {
-            current =
-              segment === "children" && (current as TreeNodeData).children
-                ? (current as TreeNodeData).children
-                : current[segment as string]
+            current = segment === "children" && current.children ? current.children : undefined
           }
         }
 
@@ -237,7 +371,7 @@ const ComprehensiveTreeList = observer(() => {
           }
         } else {
           // 在节点前/后插入
-          let current: TreeNodeData[] | TreeNodeData | { [key: string]: any } = result
+          let current: TreeNodeData[] | TreeNodeData | undefined = result
 
           // 导航到要插入节点的父级
           for (let i = 0; i < path.length - 1; i++) {
@@ -245,10 +379,7 @@ const ComprehensiveTreeList = observer(() => {
             if (Array.isArray(current)) {
               current = typeof segment === "number" ? current[segment] : current
             } else if (current && typeof current === "object") {
-              current =
-                segment === "children" && (current as TreeNodeData).children
-                  ? (current as TreeNodeData).children
-                  : current[segment as string]
+              current = segment === "children" && current.children ? current.children : undefined
             }
           }
 
@@ -271,7 +402,9 @@ const ComprehensiveTreeList = observer(() => {
       // ======关键改进：首先检查循环引用问题======
       if (position === "inside") {
         // 检查源节点中是否有文件夹节点
-        const folderNodes = sourceNodes.filter((node) => node.children && node.children.length > 0)
+        const folderNodes = sourceNodes.filter(
+          (node) => Boolean(node.children && node.children.length > 0) || Boolean(node.isFolder),
+        )
 
         for (const sourceNode of folderNodes) {
           // 检查目标是否是该文件夹的子节点
@@ -360,6 +493,7 @@ const ComprehensiveTreeList = observer(() => {
 
     setSelectedNodeIds(new Set(ids))
     treeState.selectedNodes.set(nodes)
+    setExternalSelectionInfo(null)
   }
 
   // 处理节点展开/折叠
@@ -375,6 +509,150 @@ const ComprehensiveTreeList = observer(() => {
 
   const [containerWidth, setContainerWidth] = useState(0)
   const [selectedNodeIds, setSelectedNodeIds] = useState<Set<string>>(new Set())
+  const [lastHoveredNode, setLastHoveredNode] = useState<{
+    isHovered: boolean
+    node: TreeNodeType
+    path: string[]
+  } | null>(null)
+  const [externalSelectionInfo, setExternalSelectionInfo] = useState<{
+    id: string
+    name: string
+    path: string[]
+  } | null>(null)
+
+  const handleNodeHover = useCallback(
+    (node: TreeNodeType, isHovered: boolean, event: React.MouseEvent) => {
+      const snapshot = treeState.data.get()
+      const path = findNodePath(snapshot, node.id)
+      const pathNames = path?.map((item) => item.name) ?? []
+      setLastHoveredNode(isHovered ? { node, isHovered, path: pathNames } : null)
+    },
+    [],
+  )
+
+  const triggerHover = useCallback(() => {
+    const dataSnapshot = treeState.data.get()
+    const targetId = dataSnapshot[0]?.id
+    if (!targetId) {
+      return
+    }
+    const target = document.querySelector<HTMLElement>(`[data-node-id="${targetId}"]`)
+    if (!target) {
+      return
+    }
+
+    const enterEvent = new MouseEvent("mouseenter", {
+      bubbles: true,
+      cancelable: true,
+      view: window,
+    })
+    target.dispatchEvent(enterEvent)
+
+    window.setTimeout(() => {
+      const leaveEvent = new MouseEvent("mouseleave", {
+        bubbles: true,
+        cancelable: true,
+        view: window,
+      })
+      target.dispatchEvent(leaveEvent)
+    }, 1200)
+  }, [])
+
+  const selectNestedNodeExternally = useCallback(() => {
+    const snapshot = treeState.data.get()
+    const firstFolder = snapshot[0]
+    const nested = firstFolder?.children?.[0]
+    if (!nested) {
+      return
+    }
+
+    const path = findNodePath(snapshot, nested.id)?.map((node) => node.name) ?? []
+    setSelectedNodeIds(new Set([nested.id]))
+    setExternalSelectionInfo({
+      id: nested.id,
+      name: nested.name,
+      path,
+    })
+  }, [])
+
+  const selectSpecificNodeExternally = useCallback(() => {
+    const snapshot = treeState.data.get()
+    const path = findNodePath(snapshot, "2-1-1")
+    if (!path) {
+      console.warn("[TreeList Story] Target node 2-1-1 not found for external selection")
+      return
+    }
+
+    const targetNode = path[path.length - 1]
+    setSelectedNodeIds(new Set([targetNode.id]))
+    setExternalSelectionInfo({
+      id: targetNode.id,
+      name: targetNode.name,
+      path: path.map((node) => node.name),
+    })
+  }, [])
+
+  const triggerRenameForNodeOneTwo = useCallback(() => {
+    if (typeof window === "undefined") {
+      return
+    }
+
+    const ensureExpanded = (nodeId: string) => {
+      const container = document.querySelector<HTMLElement>(`[data-node-id="${nodeId}"]`)
+      if (!container) {
+        console.warn(`[TreeList Story] Node ${nodeId} not found while expanding`)
+        return false
+      }
+
+      if (container.dataset.isExpanded === "true") {
+        return true
+      }
+
+      const toggleButton = container.querySelector<HTMLButtonElement>("button")
+      if (!toggleButton) {
+        console.warn(`[TreeList Story] Expand toggle not found for node ${nodeId}`)
+        return false
+      }
+
+      const mouseDownEvent = new MouseEvent("mousedown", {
+        bubbles: true,
+        cancelable: true,
+        view: window,
+      })
+      toggleButton.dispatchEvent(mouseDownEvent)
+      return true
+    }
+
+    const triggerRename = () => {
+      const targetContainer = document.querySelector<HTMLElement>(`[data-node-id="1-2"]`)
+      if (!targetContainer) {
+        console.warn("[TreeList Story] Target node 1-2 not found for rename trigger")
+        return
+      }
+
+      const renameTrigger = targetContainer.querySelector<HTMLElement>("span.whitespace-pre")
+      if (!renameTrigger) {
+        console.warn("[TreeList Story] Rename trigger element not found for node 1-2")
+        return
+      }
+
+      const dblClickEvent = new MouseEvent("dblclick", {
+        bubbles: true,
+        cancelable: true,
+        view: window,
+      })
+      renameTrigger.dispatchEvent(dblClickEvent)
+    }
+
+    const expanded = ensureExpanded("1")
+    if (!expanded) {
+      return
+    }
+
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(triggerRename)
+    })
+  }, [])
 
   return (
     <Splitter
@@ -395,19 +673,65 @@ const ComprehensiveTreeList = observer(() => {
           onNodeDrop={handleNodeDrop}
           onNodeSelect={handleNodeSelect}
           onNodeExpand={handleNodeExpand}
+          onNodeHover={handleNodeHover}
           onNodeContextMenu={(node, event) => {
             event.preventDefault()
-
-            // 这里可以实现自定义上下文菜单
             alert(`节点: ${node.name} 的上下文菜单已触发`)
           }}
           renderIcon={(node) => (
-            <>{node.children && node.children.length > 0 ? <ToolbarFrame /> : <Element />}</>
+            <>
+              {Boolean(node.children && node.children.length > 0) || Boolean(node.isFolder) ? (
+                <ToolbarFrame />
+              ) : (
+                <Element />
+              )}
+            </>
           )}
         />
       </Splitter.Pane>
       <Splitter.Pane minSize={320}>
-        <div className="bg-light-50 flex h-screen min-h-0 w-full flex-1 flex-col"></div>
+        <div className="bg-light-50 flex h-screen min-h-0 w-full flex-1 flex-col">
+          <div className="flex flex-col gap-3 p-6">
+            <button
+              type="button"
+              className="border-default-border bg-default-background text-body-small text-default-foreground self-start rounded border px-3 py-2 font-medium shadow-sm hover:bg-gray-100"
+              onClick={selectNestedNodeExternally}
+            >
+              Select nested node externally
+            </button>
+            <button
+              type="button"
+              className="border-default-border bg-default-background text-body-small text-default-foreground self-start rounded border px-3 py-2 font-medium shadow-sm hover:bg-gray-100"
+              onClick={selectSpecificNodeExternally}
+            >
+              Select node 2-1-1 externally
+            </button>
+            <button
+              type="button"
+              className="border-default-border bg-default-background text-body-small text-default-foreground self-start rounded border px-3 py-2 font-medium shadow-sm hover:bg-gray-100"
+              onClick={triggerRenameForNodeOneTwo}
+            >
+              Rename node 1-2 externally
+            </button>
+            <div className="border-default-border bg-default-background text-body-small text-secondary-foreground rounded border p-3">
+              <div className="text-default-foreground font-medium">Last hover</div>
+              {lastHoveredNode ? (
+                <div className="mt-1 space-y-1">
+                  <div>ID: {lastHoveredNode.node.id}</div>
+                  <div>Name: {lastHoveredNode.node.name}</div>
+                  <div>Status: {lastHoveredNode.isHovered ? "hovered" : "idle"}</div>
+                  <div className="truncate">
+                    Path: {lastHoveredNode.path.length > 0 ? lastHoveredNode.path.join(" / ") : "—"}
+                  </div>
+                </div>
+              ) : (
+                <div className="text-body-small text-tertiary-foreground mt-1">
+                  Waiting for hover…
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
       </Splitter.Pane>
     </Splitter>
   )
@@ -416,4 +740,84 @@ const ComprehensiveTreeList = observer(() => {
 // 导出单一综合示例
 export const Comprehensive: Story = {
   render: () => <ComprehensiveTreeList />,
+}
+
+const LargeDatasetTreeList = () => {
+  const [containerWidth, setContainerWidth] = useState(0)
+  const [virtualScroll, setVirtualScroll] = useState(true)
+  const [selectedNodeIds, setSelectedNodeIds] = useState<Set<string>>(() => new Set())
+
+  const handleNodeSelect = useCallback((nodes: TreeNodeType[]) => {
+    const ids = nodes.map((node) => node.id)
+    setSelectedNodeIds(new Set(ids))
+  }, [])
+
+  const handleResetSelection = useCallback(() => {
+    setSelectedNodeIds(new Set())
+  }, [])
+
+  return (
+    <Splitter
+      defaultSizes={[360, 320]}
+      className="absolute! inset-0"
+      onChange={(sizes) => {
+        setContainerWidth(sizes[0])
+      }}
+    >
+      <Splitter.Pane minSize={320}>
+        <TreeList
+          className="h-full w-full"
+          containerWidth={containerWidth || 360}
+          data={performanceTestData}
+          selectedNodeIds={selectedNodeIds}
+          virtualScroll={virtualScroll}
+          allowDrag={false}
+          allowDrop={false}
+          onNodeSelect={handleNodeSelect}
+          renderIcon={(node) =>
+            node.children && node.children.length > 0 ? <ToolbarFrame /> : <Element />
+          }
+        />
+      </Splitter.Pane>
+      <Splitter.Pane minSize={280}>
+        <div className="bg-light-50 flex h-screen min-h-0 w-full flex-1 flex-col">
+          <div className="flex flex-col gap-3 p-6">
+            <button
+              type="button"
+              className="border-default-border bg-default-background text-body-small text-default-foreground self-start rounded border px-3 py-2 font-medium shadow-sm hover:bg-gray-100"
+              onClick={() => setVirtualScroll((prev) => !prev)}
+            >
+              {virtualScroll ? "Disable virtual scroll" : "Enable virtual scroll"}
+            </button>
+            <button
+              type="button"
+              className="border-default-border bg-default-background text-body-small text-default-foreground self-start rounded border px-3 py-2 font-medium shadow-sm hover:bg-gray-100"
+              onClick={handleResetSelection}
+            >
+              Clear selection
+            </button>
+            <div className="border-default-border bg-default-background text-body-small text-secondary-foreground rounded border p-3">
+              <div className="text-default-foreground font-medium">Performance metrics</div>
+              <div className="mt-2 space-y-2">
+                <div>Total root nodes: {performanceTestData.length}</div>
+                <div>Total nodes: {performanceTotalNodes}</div>
+                <div>Virtual scroll: {virtualScroll ? "enabled" : "disabled"}</div>
+                <div>Selected nodes: {selectedNodeIds.size}</div>
+              </div>
+            </div>
+            <div className="text-body-small text-tertiary-foreground mt-2">
+              Toggle virtual scrolling to compare rendering behaviour with a 10k node dataset.
+            </div>
+          </div>
+        </div>
+      </Splitter.Pane>
+    </Splitter>
+  )
+}
+
+/**
+ * Performance benchmark story rendering a large dataset to evaluate virtual scrolling.
+ */
+export const LargeDataset: Story = {
+  render: () => <LargeDatasetTreeList />,
 }

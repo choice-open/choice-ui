@@ -8,26 +8,6 @@ export interface UseDragDropProps {
   onNodeDrop?: (nodes: TreeNodeType[], targetNode: TreeNodeType, position: DropPosition) => void
 }
 
-// Function to create a drag overlay element
-const createDragOverlay = (text: string) => {
-  const overlay = document.createElement("div")
-  overlay.style.position = "fixed"
-  overlay.style.pointerEvents = "none"
-  overlay.style.zIndex = "9999"
-  overlay.style.background = "rgba(0, 0, 0, 0.7)"
-  overlay.style.color = "white"
-  overlay.style.padding = "4px 8px"
-  overlay.style.borderRadius = "4px"
-  overlay.style.fontSize = "12px"
-  overlay.style.maxWidth = "200px"
-  overlay.style.whiteSpace = "nowrap"
-  overlay.style.overflow = "hidden"
-  overlay.style.textOverflow = "ellipsis"
-  overlay.textContent = text
-  document.body.appendChild(overlay)
-  return overlay
-}
-
 export function useDragDrop({ allowDrag, allowDrop, nodeHeight, onNodeDrop }: UseDragDropProps) {
   // 拖拽状态
   const [dragState, setDragState] = useState<DragState>({
@@ -58,8 +38,6 @@ export function useDragDrop({ allowDrag, allowDrop, nodeHeight, onNodeDrop }: Us
   const autoScrollIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
   // 存储全局拖拽事件处理函数的引用
   const handleGlobalDragOverRef = useRef<(event: DragEvent) => void>()
-  // Ref for drag overlay element
-  const dragOverlayRef = useRef<HTMLDivElement | null>(null)
   // Ref for transparent drag image
   const dragImageRef = useRef<HTMLImageElement | null>(null)
 
@@ -150,12 +128,6 @@ export function useDragDrop({ allowDrag, allowDrop, nodeHeight, onNodeDrop }: Us
           setAutoScrolling({ active: false, direction: null })
         }
       }
-
-      // 更新自定义拖拽覆盖层位置
-      if (dragOverlayRef.current) {
-        dragOverlayRef.current.style.left = `${event.clientX + 10}px`
-        dragOverlayRef.current.style.top = `${event.clientY + 10}px`
-      }
     },
     [dragState.isDragging, autoScrolling, nodeHeight],
   )
@@ -179,12 +151,6 @@ export function useDragDrop({ allowDrag, allowDrop, nodeHeight, onNodeDrop }: Us
 
       // 设置拖拽数据，用于跨组件拖拽识别
       event.dataTransfer.setData("application/json", JSON.stringify(nodes.map((n) => n.id)))
-
-      // 创建自定义拖拽覆盖层
-      const text = nodes.length > 1 ? `${nodes.length} items` : nodes[0]?.name || "Untitled Item"
-
-      const overlay = createDragOverlay(text)
-      dragOverlayRef.current = overlay
 
       // 使用透明图像作为拖拽预览，替代默认的浏览器预览
       if (dragImageRef.current) {
@@ -226,10 +192,10 @@ export function useDragDrop({ allowDrag, allowDrop, nodeHeight, onNodeDrop }: Us
       const relY = e.clientY - rect.top
       const height = rect.height
 
-      // 严格判断是否是文件夹（必须有子项）
-      const isFolderWithChildren = Boolean(
-        node.children && Array.isArray(node.children) && node.children.length > 0,
-      )
+      // 严格判断是否是文件夹（允许没有子项但标记为文件夹）
+      const isFolderWithChildren =
+        Boolean(node.children && Array.isArray(node.children) && node.children.length > 0) ||
+        Boolean(node.isFolder)
 
       // 判断文件夹是否已展开
       const isFolderExpanded = isFolderWithChildren && node.state.isExpanded
@@ -276,11 +242,15 @@ export function useDragDrop({ allowDrag, allowDrop, nodeHeight, onNodeDrop }: Us
       // 提前检查是否试图将文件夹拖拽到其子孙节点中
       // 只要有一个拖拽节点是文件夹且目标节点是其子孙，就完全阻止显示拖拽提示
       const hasInvalidDrag = dragState.dragNodes.some((dragNode) => {
-        // 只检查文件夹节点
-        if (dragNode.children && Array.isArray(dragNode.children) && dragNode.children.length > 0) {
-          // 检查目标节点是否是拖拽节点的子孙节点
+        const dragNodeIsFolder =
+          Boolean(
+            dragNode.children && Array.isArray(dragNode.children) && dragNode.children.length > 0,
+          ) || Boolean(dragNode.isFolder)
+
+        if (dragNodeIsFolder) {
           return isTargetDescendantOfSource(node, dragNode)
         }
+
         return false
       })
 
@@ -295,9 +265,9 @@ export function useDragDrop({ allowDrag, allowDrop, nodeHeight, onNodeDrop }: Us
 
       // 如果是拖拽到inside，并且是未展开的文件夹，添加自动展开逻辑
       if (dropPosition === "inside") {
-        const isFolderWithChildren = Boolean(
-          node.children && Array.isArray(node.children) && node.children.length > 0,
-        )
+        const isFolderWithChildren =
+          Boolean(node.children && Array.isArray(node.children) && node.children.length > 0) ||
+          Boolean(node.isFolder)
 
         if (isFolderWithChildren && !node.state.isExpanded) {
           const currentTime = Date.now()
@@ -366,13 +336,10 @@ export function useDragDrop({ allowDrag, allowDrop, nodeHeight, onNodeDrop }: Us
       if (position === "inside") {
         // 对每个拖拽节点进行检查
         for (const dragNode of dragState.dragNodes) {
-          // 只有文件夹才需要此检查
-          if (dragNode.children && dragNode.children.length > 0) {
-            // 如果目标节点是拖拽节点的子孙，不允许放置
-            if (isTargetDescendantOfSource(targetNode, dragNode)) {
-              console.warn("无法将文件夹拖拽到其子孙节点中")
-              return // 拒绝这个操作
-            }
+          const dragNodeIsFolder =
+            Boolean(dragNode.children && dragNode.children.length > 0) || Boolean(dragNode.isFolder)
+          if (dragNodeIsFolder && isTargetDescendantOfSource(targetNode, dragNode)) {
+            return
           }
         }
       }
@@ -411,12 +378,6 @@ export function useDragDrop({ allowDrag, allowDrop, nodeHeight, onNodeDrop }: Us
     // 重置跟踪变量
     lastHoveredNode.current = null
     isAutoScrolling.current = false
-
-    // 移除自定义拖拽覆盖层
-    if (dragOverlayRef.current) {
-      dragOverlayRef.current.remove()
-      dragOverlayRef.current = null
-    }
 
     // 停止自动滚动
     if (autoScrollIntervalRef.current) {
@@ -474,12 +435,6 @@ export function useDragDrop({ allowDrag, allowDrop, nodeHeight, onNodeDrop }: Us
         clearInterval(autoScrollIntervalRef.current)
       }
       document.removeEventListener("dragover", handleGlobalDragOverRef.current!)
-
-      // 移除自定义拖拽覆盖层
-      if (dragOverlayRef.current) {
-        dragOverlayRef.current.remove()
-        dragOverlayRef.current = null
-      }
     }
   }, [])
 

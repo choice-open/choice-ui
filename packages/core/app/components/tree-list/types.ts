@@ -6,6 +6,7 @@ export interface TreeNodeData {
   // 父节点ID，用于判断节点的父子关系
   children?: TreeNodeData[]
   id: string
+  isFolder?: boolean
   name: string
   parentId?: string // 允许额外属性，但使用更明确的类型
 }
@@ -34,6 +35,7 @@ export interface TreeListProps {
   allowDrag?: boolean
 
   allowDrop?: boolean
+  allowMultiSelect?: boolean
   className?: string
   containerWidth?: number
   // 数据
@@ -54,19 +56,16 @@ export interface TreeListProps {
   ) => void
 
   onNodeExpand?: (node: TreeNodeType, expanded: boolean) => void
-
+  onNodeHover?: (node: TreeNodeType, isHovered: boolean, event: React.MouseEvent) => void
   onNodeRename?: (node: TreeNodeType, newName: string) => void
-  // 事件处理
   onNodeSelect?: (nodes: TreeNodeType[], event?: React.MouseEvent | React.KeyboardEvent) => void
-  renderActions?: (node: TreeNodeType) => ReactNode
 
+  renderActions?: (node: TreeNodeType) => ReactNode
   renderIcon?: (node: TreeNodeType) => ReactNode
-  // 自定义渲染
   renderNode?: (node: TreeNodeType) => ReactNode
+
   selectedNodeIds: Set<string>
-  selectionMode?: "single" | "multiple"
   style?: React.CSSProperties
-  // 功能标志
   virtualScroll?: boolean
 }
 
@@ -94,10 +93,9 @@ export interface TreeNodeProps {
   onDragStart?: (node: TreeNodeType, event: React.DragEvent) => void
   onDrop?: (node: TreeNodeType, event: React.DragEvent) => void
   onExpand?: (node: TreeNodeType) => void
+  onHover?: (node: TreeNodeType, isHovered: boolean, event: React.MouseEvent) => void
   onMeasure?: (width: number) => void
   onRename?: (node: TreeNodeType, newName: string) => void
-  // 表示是否按下了Command/Control键
-  // 事件处理
   onSelect?: (node: TreeNodeType, event: React.MouseEvent | React.KeyboardEvent) => void
   renderActions?: (node: TreeNodeType) => ReactNode
   renderIcon?: (node: TreeNodeType) => ReactNode
@@ -142,8 +140,6 @@ export interface TreeListContext {
 
   handleContextMenu: (node: TreeNodeType, event: React.MouseEvent) => void
   handleDrop: (targetNode: TreeNodeType, position: DropPosition) => void
-  handleKeyDown: (event: React.KeyboardEvent) => void
-  keyboardState: KeyboardNavigationState
   // 方法
   selectNode: (node: TreeNodeType, multiple?: boolean, range?: boolean) => void
   selectedNodes: TreeNodeType[]

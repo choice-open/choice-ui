@@ -2,21 +2,15 @@ import { useVirtualizer } from "@tanstack/react-virtual"
 import React, { createContext, useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { ScrollArea } from "~/components"
 import { tcx } from "~/utils"
-import { TreeNode } from "./components"
-import {
-  useDragDrop,
-  useExpansion,
-  useKeyboardNavigation,
-  useRenaming,
-  useSelection,
-} from "./hooks"
-import { DropPosition, TreeListContext, TreeListProps, TreeNodeType } from "./types"
-import { flattenTree } from "./utilities/tree-utils"
+import { TreeNodeWrapper } from "./components"
+import { useDragDrop, useExpansion, useModifierKeys, useRenaming, useSelection } from "./hooks"
+import { TreeListContext, TreeListProps, TreeNodeType } from "./types"
+import { flattenTree, findNodePathById } from "./utils/tree"
 
 // 创建上下文
 const TreeContext = createContext<TreeListContext | null>(null)
 
-// 自定义Hook获取上下文
+// 自定义 Hook 获取上下文
 export const useTreeContext = () => {
   const context = React.useContext(TreeContext)
   if (!context) {
@@ -37,10 +31,9 @@ export const TreeList = (props: TreeListProps) => {
     containerWidth,
     virtualScroll = true,
     nodeHeight = DEFAULT_NODE_HEIGHT,
-    selectionMode = "multiple",
+    allowMultiSelect = true,
     allowDrag = true,
     allowDrop = true,
-    keyboardNavigation = true,
     renderNode,
     renderIcon,
     renderActions,
@@ -49,6 +42,7 @@ export const TreeList = (props: TreeListProps) => {
     onNodeRename,
     onNodeContextMenu,
     onNodeDrop,
+    onNodeHover,
     onMouseDown,
   } = props
 
@@ -70,10 +64,10 @@ export const TreeList = (props: TreeListProps) => {
 
   const selectedNodes = initialFlattenedNodes.filter((node) => selectedNodeIds.has(node.id))
 
-  const { keyboardState, setKeyboardState, selectNode, selectAllVisibleItems } = useSelection({
+  const { selectNode } = useSelection({
+    allowMultiSelect,
     selectedNodeIds,
     flattenedNodes: initialFlattenedNodes,
-    selectionMode,
     onNodeSelect,
   })
 
@@ -131,21 +125,7 @@ export const TreeList = (props: TreeListProps) => {
     }
   }, [expandNode, flattenedNodes])
 
-  const { containerRef, handleKeyDown, isCommandKeyPressed } = useKeyboardNavigation({
-    data: flattenedNodes,
-    flattenedNodes,
-    expandedNodeIds,
-    selectedNodeIds,
-    keyboardState,
-    setKeyboardState,
-    setExpandedNodeIds,
-    selectAllVisibleItems,
-    keyboardNavigation,
-    selectionMode,
-    onNodeSelect,
-    onNodeExpand,
-    startRename,
-  })
+  const { isCommandKeyPressed, isShiftKeyPressed } = useModifierKeys()
 
   // 处理右键菜单
   const handleContextMenu = useCallback(
@@ -194,6 +174,31 @@ export const TreeList = (props: TreeListProps) => {
     })
   }, [flattenedNodes, dragState, selectedNodeIds])
 
+  useEffect(() => {
+    if (selectedNodeIds.size === 0) {
+      return
+    }
+
+    setExpandedNodeIds((prev) => {
+      const next = new Set(prev)
+      let changed = false
+
+      selectedNodeIds.forEach((nodeId) => {
+        const path = findNodePathById(data, nodeId)
+        if (!path) return
+        // expand all ancestors (exclude the node itself)
+        path.slice(0, -1).forEach((ancestorId) => {
+          if (!next.has(ancestorId)) {
+            next.add(ancestorId)
+            changed = true
+          }
+        })
+      })
+
+      return changed ? next : prev
+    })
+  }, [selectedNodeIds, data, setExpandedNodeIds])
+
   // 获取可见节点（用于虚拟列表）
   const visibleNodes = useMemo(() => {
     return nodesWithDragState.filter((node) => node.state.isVisible)
@@ -224,239 +229,74 @@ export const TreeList = (props: TreeListProps) => {
     setMaxNodeWidth(currentMax)
   }, [])
 
+  // 检查是否有水平滚动
+  const hasHorizontalScroll =
+    listRef.current && listRef.current.scrollWidth > listRef.current.clientWidth
+
   // 渲染节点
   const renderTreeNode = useCallback(
     (node: TreeNodeType) => {
-      // 判断是否是父文件夹的最后一个子项
-      const isLastInParent = (() => {
-        if (!node.parentId) return false
-
-        // 查找同级节点
-        const siblings = flattenedNodes.filter(
-          (n) => n.parentId === node.parentId && n.state.level === node.state.level,
-        )
-
-        // 如果是同级节点中索引最大的，则为最后一个
-        return siblings.length > 0 && siblings[siblings.length - 1].id === node.id
-      })()
-
-      // 计算节点在选择组中的位置状态
-      const getSelectionPosition = () => {
-        // 如果没有选择，或者当前节点没有选择，不需要计算
-        if (selectedNodes.length <= 1 || !node.state.isSelected) {
-          return {
-            isFirstSelected: false,
-            isMiddleSelected: false,
-            isLastSelected: false,
-          }
-        }
-
-        // 获取所有可见的已选择节点的索引，并按索引排序
-        const selectedIndices = visibleNodes
-          .map((n, index) => (n.state.isSelected ? index : -1))
-          .filter((index) => index !== -1)
-          .sort((a, b) => a - b)
-
-        // 当前节点在visibleNodes中的索引
-        const currentNodeIndex = visibleNodes.findIndex((n) => n.id === node.id)
-
-        // 查找当前节点在selectedIndices中的位置
-        const positionInSelection = selectedIndices.indexOf(currentNodeIndex)
-
-        // 检查当前选择是否是连续的组
-        // 寻找当前节点所在的连续组
-        let startOfGroup = positionInSelection
-        let endOfGroup = positionInSelection
-
-        // 向前查找连续索引
-        while (
-          startOfGroup > 0 &&
-          selectedIndices[startOfGroup - 1] === selectedIndices[startOfGroup] - 1
-        ) {
-          startOfGroup--
-        }
-
-        // 向后查找连续索引
-        while (
-          endOfGroup < selectedIndices.length - 1 &&
-          selectedIndices[endOfGroup + 1] === selectedIndices[endOfGroup] + 1
-        ) {
-          endOfGroup++
-        }
-
-        // 如果连续组的长度大于1，并且当前节点在这个组内
-        const inConsecutiveGroup = endOfGroup - startOfGroup >= 1
-
-        // 判断节点在连续组中的位置
-        const isFirstInGroup = inConsecutiveGroup && positionInSelection === startOfGroup
-        const isLastInGroup = inConsecutiveGroup && positionInSelection === endOfGroup
-
-        return {
-          isFirstSelected: isFirstInGroup,
-          isMiddleSelected: inConsecutiveGroup && !isFirstInGroup && !isLastInGroup,
-          isLastSelected: isLastInGroup,
-        }
-      }
-
-      const { isFirstSelected, isMiddleSelected, isLastSelected } = getSelectionPosition()
-
-      const hasHorizontalScroll =
-        listRef.current && listRef.current.scrollWidth > listRef.current.clientWidth
-
-      // 判断是否处于多选模式（选中的节点数大于1）
-      const isMultiSelectionActive = selectedNodes.length > 1
-
-      // 检查目标节点是否是拖拽节点的子孙
-      const isInvalidDropTarget =
-        dragState.isDragging &&
-        dragState.dragNodes.some((dragNode) => {
-          // 只检查文件夹节点
-          if (dragNode.children && dragNode.children.length > 0) {
-            // 检查是否存在祖先-后代关系
-            let current: TreeNodeType | undefined = node
-
-            // 如果节点本身是拖拽节点，不是无效目标
-            if (current.id === dragNode.id) return false
-
-            // 检查父节点链
-            while (current && current.parentId) {
-              if (current.parentId === dragNode.id) {
-                return true // 找到了祖先关系，是无效目标
-              }
-              // 获取父节点
-              current = flattenedNodes.find((n) => n.id === current?.parentId)
-              if (!current) break
-            }
-          }
-          return false
-        })
-
-      return renderNode ? (
-        renderNode(node)
-      ) : (
-        <TreeNode
+      return (
+        <TreeNodeWrapper
           key={node.id}
           node={node}
-          containerWidth={containerWidth}
+          flattenedNodes={flattenedNodes}
+          visibleNodes={visibleNodes}
+          selectedNodes={selectedNodes}
+          containerWidth={containerWidth ?? 0}
+          isCommandKeyPressed={isCommandKeyPressed}
+          isDragging={dragState.isDragging}
+          dragNodes={dragState.dragNodes}
+          hasHorizontalScroll={!!hasHorizontalScroll}
+          listRef={listRef}
+          renderNode={renderNode}
           renderIcon={renderIcon}
           renderActions={renderActions}
-          isLastInParent={isLastInParent}
-          isFirstSelected={isFirstSelected}
-          isMiddleSelected={isMiddleSelected}
-          isLastSelected={isLastSelected}
-          hasHorizontalScroll={!!hasHorizontalScroll}
-          isMultiSelectionActive={isMultiSelectionActive}
-          isCommandKeyPressed={isCommandKeyPressed}
           onSelect={(node, event) =>
-            selectNode(node, event?.ctrlKey || event?.metaKey, event?.shiftKey, event)
-          }
-          onExpand={expandNode}
-          onDragStart={(_node, event) =>
-            startDrag(
-              selectedNodes.length > 0 && node.state.isSelected ? selectedNodes : [node],
+            selectNode(
+              node,
+              allowMultiSelect && (isCommandKeyPressed || event?.metaKey || event?.ctrlKey),
+              isShiftKeyPressed || event?.shiftKey,
               event,
             )
           }
-          onDragOver={(node, event) => {
-            // 如果目标节点是拖拽文件夹的子节点，完全阻止操作
-            if (isInvalidDropTarget) {
-              event.stopPropagation()
-              event.preventDefault()
-              return
-            }
-            handleDragOver(node, event)
-          }}
+          onExpand={expandNode}
+          onDragStart={startDrag}
+          onDragOver={handleDragOver}
           onDragEnd={handleDragEnd}
-          onDrop={(node, event) => {
-            // 如果目标节点是拖拽文件夹的子节点，完全阻止操作
-            if (isInvalidDropTarget) {
-              event.stopPropagation()
-              event.preventDefault()
-              return
-            }
-
-            // 使用与handleDragOver相同的逻辑计算放置位置
-            const targetElement = event.currentTarget as HTMLElement
-            const rect = targetElement.getBoundingClientRect()
-            const relY = event.clientY - rect.top
-            const height = rect.height
-
-            // 严格判断是否是文件夹（必须有子项）
-            const isFolderWithChildren = Boolean(
-              node.children && Array.isArray(node.children) && node.children.length > 0,
-            )
-
-            // 判断文件夹是否已展开
-            const isFolderExpanded = isFolderWithChildren && node.state.isExpanded
-
-            // 默认放置位置
-            let position: DropPosition = "after"
-
-            // 放置位置逻辑
-            if (isFolderExpanded) {
-              // 对于已展开的文件夹：
-              // - 上部区域允许before放置
-              // - 中部和下部区域强制为inside
-              if (relY < height * 0.25) {
-                position = "before" // 在文件夹上方放置仍然允许
-              } else {
-                position = "inside" // 中部和下部区域强制为inside
-                // 确保文件夹在放置时已展开
-                if (!node.state.isExpanded) {
-                  expandNode(node, true)
-                }
-              }
-            } else if (isFolderWithChildren) {
-              // 未展开的文件夹根据鼠标位置决定放置位置
-              if (relY < height * 0.25) {
-                position = "before"
-              } else if (relY > height * 0.75) {
-                position = "after"
-              } else {
-                position = "inside"
-                // 确保文件夹在放置时已展开
-                if (!node.state.isExpanded) {
-                  expandNode(node, true)
-                }
-              }
-            } else {
-              // 普通项目只能放在前面或后面
-              if (relY < height * 0.5) {
-                position = "before"
-              } else {
-                position = "after"
-              }
-            }
-
-            handleDrop(node, position)
-          }}
+          onDrop={handleDrop}
           onRename={endRename}
           onContextMenu={handleContextMenu}
           onMeasure={(width) => measureNodeWidth(node.id, width)}
+          onHover={onNodeHover}
         />
       )
     },
     [
-      listRef,
-      selectedNodes,
-      dragState.isDragging,
-      dragState.dragNodes,
-      renderNode,
-      containerWidth,
-      renderIcon,
-      renderActions,
-      isCommandKeyPressed,
-      expandNode,
-      handleDragEnd,
-      endRename,
-      handleContextMenu,
       flattenedNodes,
       visibleNodes,
+      selectedNodes,
+      containerWidth,
+      isCommandKeyPressed,
+      dragState.isDragging,
+      dragState.dragNodes,
+      hasHorizontalScroll,
+      listRef,
+      renderNode,
+      renderIcon,
+      renderActions,
       selectNode,
+      expandNode,
       startDrag,
       handleDragOver,
+      handleDragEnd,
       handleDrop,
+      endRename,
+      handleContextMenu,
+      onNodeHover,
       measureNodeWidth,
+      allowMultiSelect,
+      isShiftKeyPressed,
     ],
   )
 
@@ -467,7 +307,6 @@ export const TreeList = (props: TreeListProps) => {
       selectedNodes,
       expandedNodeIds,
       dragState,
-      keyboardState,
       selectNode,
       expandNode,
       startDrag,
@@ -475,14 +314,12 @@ export const TreeList = (props: TreeListProps) => {
       handleContextMenu,
       startRename,
       endRename,
-      handleKeyDown,
     }),
     [
       nodesWithDragState,
       selectedNodes,
       expandedNodeIds,
       dragState,
-      keyboardState,
       selectNode,
       expandNode,
       startDrag,
@@ -490,14 +327,12 @@ export const TreeList = (props: TreeListProps) => {
       handleContextMenu,
       startRename,
       endRename,
-      handleKeyDown,
     ],
   )
 
   return (
     <TreeContext.Provider value={contextValue}>
       <div
-        ref={containerRef}
         onMouseDown={() => {
           onMouseDown?.()
         }}
@@ -517,10 +352,8 @@ export const TreeList = (props: TreeListProps) => {
           } as React.CSSProperties
         }
         onContextMenu={(e) => {
-          // 如果点击背景，可能会创建新节点
           if (e.target === e.currentTarget) {
             e.preventDefault()
-            // 这里可以添加创建新节点的逻辑或者调用上下文菜单
           }
         }}
       >

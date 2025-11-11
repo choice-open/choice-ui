@@ -1,75 +1,25 @@
-import { useCallback, useState } from "react"
+import { useCallback } from "react"
 import { TreeNodeType } from "../types"
-import { getNodesInRange } from "../utilities/tree-utils"
+import { getNodesInRange } from "../utils/tree"
 
 export interface UseSelectionProps {
+  allowMultiSelect: boolean
   flattenedNodes: TreeNodeType[]
   onNodeSelect?: (
     selectedNodes: TreeNodeType[],
     event?: React.MouseEvent | React.KeyboardEvent,
   ) => void
   selectedNodeIds: Set<string>
-  selectionMode: "single" | "multiple"
 }
 
 export function useSelection({
+  allowMultiSelect,
   flattenedNodes,
   selectedNodeIds,
-  selectionMode,
   onNodeSelect,
 }: UseSelectionProps) {
-  // 选择状态
+  const lastSelectedNodeId = selectedNodeIds.size > 0 ? Array.from(selectedNodeIds)[0] : null
 
-  const [keyboardState, setKeyboardState] = useState({
-    focusedNodeId: null as string | null,
-    lastSelectedNodeId: null as string | null,
-  })
-
-  // 辅助函数：选择所有可见项目
-  const selectAllVisibleItems = useCallback(() => {
-    const allVisibleItems = new Set<string>()
-
-    // 递归函数，收集所有可见的子项（但跳过已展开的文件夹）
-    const collectVisibleItems = (node: TreeNodeType) => {
-      // 跳过根节点
-      if (node.state.level === 0) return
-
-      const isFolder = node.children && node.children.length > 0
-      const isExpanded = node.state.isExpanded
-
-      // 如果是文件夹且已展开，不选择文件夹本身，但要处理其子项
-      if (isFolder && isExpanded) {
-        // 不添加已展开的文件夹，但要递归处理其子项
-        if (node.children) {
-          node.children.forEach((child) => {
-            // 查找子项在扁平化列表中的完整节点引用
-            const childNode = flattenedNodes.find((n) => n.id === child.id)
-            if (childNode && childNode.state.isVisible) {
-              collectVisibleItems(childNode)
-            }
-          })
-        }
-      } else if (node.state.isVisible) {
-        // 如果是普通项目或未展开的文件夹，直接添加
-        allVisibleItems.add(node.id)
-      }
-    }
-
-    // 遍历所有一级节点开始收集
-    flattenedNodes.forEach((node) => {
-      if (node.state.level === 1 && node.state.isVisible) {
-        collectVisibleItems(node)
-      }
-    })
-
-    // 更新选择状态
-    if (allVisibleItems.size > 0) {
-      const newSelectionNodes = flattenedNodes.filter((node) => allVisibleItems.has(node.id))
-      onNodeSelect?.(newSelectionNodes)
-    }
-  }, [flattenedNodes, onNodeSelect])
-
-  // 处理节点选择
   const selectNode = useCallback(
     (
       node: TreeNodeType,
@@ -77,40 +27,32 @@ export function useSelection({
       range = false,
       _event?: React.MouseEvent | React.KeyboardEvent,
     ) => {
-      const newSelection = new Set(selectedNodeIds)
+      let newSelection = new Set(selectedNodeIds)
 
-      // 检查是否有父子冲突的约束条件
       const checkParentChildConstraint = (nodeId: string, selection: Set<string>) => {
-        // 查找当前节点
         const currentNode = flattenedNodes.find((n) => n.id === nodeId)
         if (!currentNode) return false
 
-        // 1. 检查父级是否已选中 - 如果选中了当前节点的任何父级，则不允许选择
         let parent = currentNode.parentId
         while (parent) {
           if (selection.has(parent)) {
-            return false // 父节点已选中，不允许再选择子节点
+            return false
           }
-          // 向上寻找更高级的父节点
           const parentNode = flattenedNodes.find((n) => n.id === parent)
           parent = parentNode?.parentId
         }
 
-        // 2. 检查子级 - 如果当前节点有子项且子项已经选中，则不允许选择当前节点
         if (currentNode.children && currentNode.children.length > 0) {
-          // 递归检查所有子项
           const hasSelectedChild = (childrenIds: string[]) => {
             for (const childId of childrenIds) {
               if (selection.has(childId)) return true
 
-              // 递归检查更深层的子项
               const fullChild = flattenedNodes.find((n) => n.id === childId)
               if (
                 fullChild?.children &&
                 Array.isArray(fullChild.children) &&
                 fullChild.children.length > 0
               ) {
-                // 创建子ID数组
                 const subChildrenIds = fullChild.children.map((c) =>
                   typeof c === "string" ? c : c.id,
                 )
@@ -120,13 +62,12 @@ export function useSelection({
             return false
           }
 
-          // 获取子节点ID
           const childrenIds = currentNode.children.map((child) =>
             typeof child === "string" ? child : child.id,
           )
 
           if (hasSelectedChild(childrenIds)) {
-            return false // 子节点已选中，不允许再选择父节点
+            return false
           }
         }
 
@@ -142,7 +83,7 @@ export function useSelection({
         const folderNodes = new Map<string, TreeNodeType>() // 使用Map存储节点ID到节点的映射
         rangeIds.forEach((id) => {
           const node = flattenedNodes.find((n) => n.id === id)
-          if (node && node.children && node.children.length > 0) {
+          if (node && ((node.children && node.children.length > 0) || node?.isFolder)) {
             folderNodes.set(id, node)
           }
         })
@@ -231,7 +172,7 @@ export function useSelection({
             }
 
             // 检查子冲突（如果是文件夹）
-            if (canAdd && node.children && node.children.length > 0) {
+            if (canAdd && ((node.children && node.children.length > 0) || node.isFolder)) {
               const descendants = descendantsMap.get(id) || new Set<string>()
               descendants.forEach((descId) => {
                 if (finalSelection.has(descId)) {
@@ -250,18 +191,17 @@ export function useSelection({
         return finalSelection
       }
 
-      if (selectionMode === "single" || (!multiple && !range)) {
-        // 单选模式
+      if (!allowMultiSelect || (!multiple && !range)) {
         newSelection.clear()
         newSelection.add(node.id)
-      } else if (range && keyboardState.lastSelectedNodeId) {
-        // 范围选择 (Shift+Click)
-        const rangeIds = getNodesInRange(flattenedNodes, keyboardState.lastSelectedNodeId, node.id)
+      } else if (range && lastSelectedNodeId) {
+        // 范围选择
+        const rangeIds = getNodesInRange(flattenedNodes, lastSelectedNodeId, node.id)
 
         // 使用专门为范围选择设计的处理函数
-        return processRangeSelection(rangeIds)
+        newSelection = processRangeSelection(rangeIds)
       } else if (multiple) {
-        // 多选模式 (Ctrl/Cmd+Click)
+        // 多选模式
         if (newSelection.has(node.id)) {
           newSelection.delete(node.id)
         } else {
@@ -276,29 +216,14 @@ export function useSelection({
         newSelection.add(node.id)
       }
 
-      setKeyboardState((prev) => ({
-        ...prev,
-        focusedNodeId: node.id,
-        lastSelectedNodeId: node.id,
-      }))
-
       const newSelectionNodes = flattenedNodes.filter((node) => newSelection.has(node.id))
       onNodeSelect?.(newSelectionNodes)
     },
-    [
-      flattenedNodes,
-      keyboardState.lastSelectedNodeId,
-      onNodeSelect,
-      selectedNodeIds,
-      selectionMode,
-    ],
+    [allowMultiSelect, flattenedNodes, lastSelectedNodeId, onNodeSelect, selectedNodeIds],
   )
 
   return {
     selectedNodeIds,
-    keyboardState,
-    setKeyboardState,
     selectNode,
-    selectAllVisibleItems,
   }
 }

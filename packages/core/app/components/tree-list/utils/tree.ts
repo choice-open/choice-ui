@@ -178,6 +178,31 @@ export function getDescendantIds(flattenedNodes: TreeNodeType[], nodeId: string)
 }
 
 /**
+ * 查找指定节点的完整路径（返回节点ID数组）
+ */
+export function findNodePathById(
+  nodes: TreeNodeData[],
+  targetId: string,
+  path: string[] = [],
+): string[] | null {
+  for (const node of nodes) {
+    const currentPath = [...path, node.id]
+    if (node.id === targetId) {
+      return currentPath
+    }
+
+    if (node.children && node.children.length > 0) {
+      const result = findNodePathById(node.children, targetId, currentPath)
+      if (result) {
+        return result
+      }
+    }
+  }
+
+  return null
+}
+
+/**
  * 修改节点显示名称
  */
 export function renameNode(nodes: TreeNodeData[], nodeId: string, newName: string): TreeNodeData[] {

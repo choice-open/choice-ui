@@ -1,10 +1,22 @@
-import { forwardRef, useEffect, useMemo, useRef, useState } from "react"
+import {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type MouseEvent,
+} from "react"
 import { useNodeWidth } from "../hooks/use-node-width"
 import { TreeNodeProps } from "../types"
 import { DropIndicator } from "./drop-indicator"
+import { TreeNodeRenameInput } from "./tree-node-rename-input"
 import { tcx } from "~/utils"
 import { ChevronRightSmall } from "@choiceform/icons-react"
 import { ChevronDownSmall } from "@choiceform/icons-react"
+
+const AUTO_EXPAND_DELAY = 350
+
 export const TreeNode = forwardRef<HTMLDivElement, TreeNodeProps>((props, ref) => {
   const {
     containerWidth,
@@ -21,6 +33,7 @@ export const TreeNode = forwardRef<HTMLDivElement, TreeNodeProps>((props, ref) =
     onDrop,
     onRename,
     onContextMenu,
+    onHover,
     isLastInParent,
     isFirstSelected,
     isLastSelected,
@@ -34,13 +47,14 @@ export const TreeNode = forwardRef<HTMLDivElement, TreeNodeProps>((props, ref) =
   const [isRenaming, setIsRenaming] = useState(false)
   const [renameValue, setRenameValue] = useState(node.name)
   const [isHovered, setIsHovered] = useState(false)
-  const inputRef = useRef<HTMLInputElement>(null)
   const nodeRef = useRef<HTMLDivElement | null>(null)
+  const expandHoverTimeoutRef = useRef<number | null>(null)
 
   const {
     id,
     name,
     children,
+    isFolder,
     state: {
       isExpanded,
       isSelected,
@@ -75,28 +89,19 @@ export const TreeNode = forwardRef<HTMLDivElement, TreeNodeProps>((props, ref) =
     },
   })
 
-  // 处理重命名开始时自动聚焦输入框
   useEffect(() => {
-    if (isRenaming && inputRef.current) {
-      // 获取指定的滚动容器 - tree-list__scroll-container
-      const scrollContainer = document.querySelector(".tree-list__scroll-container") as HTMLElement
-
-      // 保存当前滚动位置
-      const scrollLeft = scrollContainer?.scrollLeft || 0
-
-      // 聚焦输入框
-      inputRef.current.focus()
-      inputRef.current.select()
-
-      // 使用 requestAnimationFrame 确保在下一帧渲染时恢复滚动位置
-      requestAnimationFrame(() => {
-        // 恢复滚动位置
-        if (scrollContainer && scrollContainer.scrollLeft !== scrollLeft) {
-          scrollContainer.scrollLeft = scrollLeft
-        }
-      })
+    if (!isRenaming) {
+      setRenameValue(name)
     }
-  }, [isRenaming])
+  }, [isRenaming, name])
+
+  const hasChildren = Array.isArray(children) && children.length > 0
+
+  // 严格判断是否是文件夹（允许没有子项但标记为文件夹，用于拖拽等能力）
+  const isFolderWithChildren = hasChildren || Boolean(isFolder)
+
+  // 控制折叠按钮的展示：仅当存在子节点时显示
+  const shouldRenderToggle = hasChildren
 
   // 节点点击
   const handleClick = (e: React.MouseEvent) => {
@@ -109,6 +114,39 @@ export const TreeNode = forwardRef<HTMLDivElement, TreeNodeProps>((props, ref) =
     e.stopPropagation()
     onExpand?.(node)
   }
+
+  const clearExpandHoverTimeout = useCallback(() => {
+    if (expandHoverTimeoutRef.current !== null) {
+      window.clearTimeout(expandHoverTimeoutRef.current)
+      expandHoverTimeoutRef.current = null
+    }
+  }, [])
+
+  const scheduleExpandOnDragHover = useCallback(() => {
+    const isNodeBeingDragged = isDragging
+    if (
+      !isFolderWithChildren ||
+      isExpanded ||
+      isNodeBeingDragged ||
+      expandHoverTimeoutRef.current !== null
+    ) {
+      return
+    }
+
+    expandHoverTimeoutRef.current = window.setTimeout(() => {
+      expandHoverTimeoutRef.current = null
+      document.dispatchEvent(
+        new CustomEvent("folder-expand", {
+          detail: { nodeId: id },
+        }),
+      )
+    }, AUTO_EXPAND_DELAY)
+  }, [id, isExpanded, isFolderWithChildren, isDragging])
+
+  useEffect(() => () => clearExpandHoverTimeout(), [clearExpandHoverTimeout])
+
+  // 判断是否是父节点中的最后一个子项
+  const isLastItemInFolder = isLastInParent ?? false
 
   // 拖拽开始
   const handleDragStart = (e: React.DragEvent) => {
@@ -133,6 +171,7 @@ export const TreeNode = forwardRef<HTMLDivElement, TreeNodeProps>((props, ref) =
   // 拖拽结束
   const handleDragEnd = (e: React.DragEvent) => {
     e.stopPropagation()
+    clearExpandHoverTimeout()
 
     // 移除拖拽中的样式
     if (nodeRef.current) {
@@ -146,6 +185,7 @@ export const TreeNode = forwardRef<HTMLDivElement, TreeNodeProps>((props, ref) =
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault()
     e.stopPropagation()
+    clearExpandHoverTimeout()
     onDrop?.(node, e)
   }
 
@@ -156,37 +196,8 @@ export const TreeNode = forwardRef<HTMLDivElement, TreeNodeProps>((props, ref) =
     onContextMenu?.(node, e)
   }
 
-  // 重命名完成
-  const handleRenamingComplete = () => {
-    if (renameValue.trim() !== "" && renameValue !== name) {
-      onRename?.(node, renameValue)
-    }
-    setIsRenaming(false)
-
-    // 重命名完成后主动触发一次测量
-    setTimeout(() => {
-      triggerMeasure()
-    }, 0)
-  }
-
-  // 重命名键盘事件
-  const handleRenameKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      handleRenamingComplete()
-    } else if (e.key === "Escape") {
-      setRenameValue(name)
-      setIsRenaming(false)
-    }
-  }
-
   // 计算节点缩进
   const indentSize = level * 24 // 每层缩进24px
-
-  // 严格判断是否是文件夹（必须有子项）
-  const isFolderWithChildren = Boolean(children && Array.isArray(children) && children.length > 0)
-
-  // 判断是否是父节点中的最后一个子项
-  const isLastItemInFolder = isLastInParent ?? false
 
   // 计算选中状态的样式类
   const getSelectionStyle = useMemo(() => {
@@ -224,14 +235,24 @@ export const TreeNode = forwardRef<HTMLDivElement, TreeNodeProps>((props, ref) =
   // 3. 其他情况下使用onMouseDown（响应更快）
   const useClickEvent = isMultiSelectionActive && !isCommandKeyPressed
 
+  const handleMouseEnter = (e: MouseEvent<HTMLDivElement>) => {
+    setIsHovered(true)
+    onHover?.(node, true, e)
+  }
+
+  const handleMouseLeave = (e: MouseEvent<HTMLDivElement>) => {
+    setIsHovered(false)
+    onHover?.(node, false, e)
+  }
+
   return (
     <div
       className={tcx(
         "relative",
-        "after:-z-1 after:absolute after:left-3 after:right-2",
-        "before:-z-1 before:absolute before:inset-y-0 before:left-3 before:right-2",
+        "after:absolute after:right-2 after:left-3 after:-z-1",
+        "before:absolute before:inset-y-0 before:right-2 before:left-3 before:-z-1",
         getSelectionStyle,
-        isParentSelected && !isSelected && "before:bg-blue-50 hover:after:bg-blue-200",
+        isParentSelected && !isSelected && "after:bg-blue-50 hover:after:bg-blue-200",
         isLastItemInFolder && "before:rounded-b-sm",
         hasHorizontalScroll && "before:right-0 after:right-0",
       )}
@@ -275,7 +296,7 @@ export const TreeNode = forwardRef<HTMLDivElement, TreeNodeProps>((props, ref) =
         }}
         className={tcx(
           "pl-[var(--indent-size)]",
-          "flex h-8 cursor-default select-none items-center",
+          "flex h-8 cursor-default items-center select-none",
           className,
         )}
         style={
@@ -300,11 +321,14 @@ export const TreeNode = forwardRef<HTMLDivElement, TreeNodeProps>((props, ref) =
         onDragOver={handleDragOver}
         onDragEnd={handleDragEnd}
         onDrop={handleDrop}
+        onDragLeave={() => {
+          clearExpandHoverTimeout()
+        }}
         onClick={useClickEvent ? handleClick : undefined}
         onMouseDown={useClickEvent ? undefined : handleClick}
         onContextMenu={handleContextMenu}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
       >
         <DropIndicator
           dropPosition={dropPosition}
@@ -315,10 +339,25 @@ export const TreeNode = forwardRef<HTMLDivElement, TreeNodeProps>((props, ref) =
         />
 
         {/* 展开/折叠图标 */}
-        {children && children.length > 0 ? (
+        {shouldRenderToggle ? (
           <button
             className="invisible flex h-8 w-4 flex-none items-center justify-center group-hover/tree-list:visible"
             onMouseDown={handleExpandClick}
+            onDragEnter={(event) => {
+              event.preventDefault()
+              event.stopPropagation()
+              scheduleExpandOnDragHover()
+            }}
+            onDragOver={(event) => {
+              event.preventDefault()
+              event.stopPropagation()
+              scheduleExpandOnDragHover()
+            }}
+            onDragLeave={(event) => {
+              event.preventDefault()
+              event.stopPropagation()
+              clearExpandHoverTimeout()
+            }}
           >
             {isExpanded ? (
               <ChevronDownSmall className="text-secondary-foreground" />
@@ -343,46 +382,17 @@ export const TreeNode = forwardRef<HTMLDivElement, TreeNodeProps>((props, ref) =
         )}
 
         {/* 节点名称/重命名输入框 */}
-        <>
-          {isRenaming ? (
-            <input
-              ref={inputRef}
-              className={tcx(
-                "border-selected-boundary text-field -mr-1 h-6 w-[calc(100%+0.5rem)] rounded border bg-white px-[calc(0.5rem-1px)]",
-              )}
-              value={renameValue}
-              onChange={(e) => setRenameValue(e.target.value)}
-              onBlur={handleRenamingComplete}
-              onKeyDown={handleRenameKeyDown}
-              onClick={(e) => e.stopPropagation()}
-            />
-          ) : (
-            <>
-              <span
-                onDoubleClick={() => setIsRenaming(true)}
-                className="flex-shrink-1 flex w-full items-center justify-between truncate whitespace-pre px-2 text-left"
-              >
-                <div
-                  className="text-body-medium invisible absolute pr-2"
-                  title={name}
-                >
-                  {name}
-                </div>
-                <div
-                  ref={contentRef}
-                  className={tcx(
-                    "text-body-medium max-w-fit flex-1 group-hover/tree-node:truncate",
-                    isSelected && "text-default-foreground",
-                  )}
-                  title={name}
-                >
-                  {name}
-                </div>
-              </span>
-              <div className="flex h-8 w-0 shrink-0 items-center group-hover/tree-node:w-12" />
-            </>
-          )}
-        </>
+        <TreeNodeRenameInput
+          name={name}
+          isRenaming={isRenaming}
+          renameValue={renameValue}
+          isSelected={isSelected}
+          contentRef={contentRef}
+          onRenamingChange={setIsRenaming}
+          onRenameValueChange={setRenameValue}
+          onRename={(newName) => onRename?.(node, newName)}
+          triggerMeasure={triggerMeasure}
+        />
       </div>
     </div>
   )
