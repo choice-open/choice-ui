@@ -35,7 +35,9 @@ export interface MentionTrigger {
 }
 
 export interface ContextInputProps {
+  afterChildren?: React.ReactNode
   autoFocus?: boolean
+  beforeChildren?: React.ReactNode
   children?: React.ReactNode
   className?: string
   // 自定义 Mention 组件
