@@ -1,4 +1,4 @@
-import { ReactNode } from "react"
+import type { MouseEvent as ReactMouseEvent, ReactNode } from "react"
 
 // 核心树节点数据结构
 export interface TreeNodeData {
@@ -64,6 +64,7 @@ export interface TreeListProps {
   renderIcon?: (node: TreeNodeType) => ReactNode
   renderNode?: (node: TreeNodeType) => ReactNode
 
+  onNodeIconDoubleClick?: (node: TreeNodeType, event: ReactMouseEvent) => void
   selectedNodeIds: Set<string>
   style?: React.CSSProperties
   virtualScroll?: boolean
@@ -97,6 +98,7 @@ export interface TreeNodeProps {
   onMeasure?: (width: number) => void
   onRename?: (node: TreeNodeType, newName: string) => void
   onSelect?: (node: TreeNodeType, event: React.MouseEvent | React.KeyboardEvent) => void
+  onIconDoubleClick?: (node: TreeNodeType, event: ReactMouseEvent) => void
   renderActions?: (node: TreeNodeType) => ReactNode
   renderIcon?: (node: TreeNodeType) => ReactNode
   size?: number

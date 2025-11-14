@@ -2,7 +2,8 @@ import { Element, ToolbarFrame } from "@choiceform/icons-react"
 import { observable } from "@legendapp/state"
 import { observer } from "@legendapp/state/react"
 import type { Meta, StoryObj } from "@storybook/react-vite"
-import React, { useCallback, useState } from "react"
+import React, { useCallback, useRef, useState } from "react"
+import { ContextMenu } from "../context-menu"
 import { Splitter } from "../splitter"
 import { TreeList } from "./tree-list"
 import { DropPosition, TreeNodeData, TreeNodeType } from "./types"
@@ -487,6 +488,8 @@ const ComprehensiveTreeList = observer(() => {
     }
   }
 
+  const contextMenuTriggerRef = useRef<HTMLDivElement>(null)
+
   // 处理节点选择
   const handleNodeSelect = (nodes: TreeNodeType[]) => {
     const ids = nodes.map((node) => node.id)
@@ -519,6 +522,8 @@ const ComprehensiveTreeList = observer(() => {
     name: string
     path: string[]
   } | null>(null)
+  const [lastActionLog, setLastActionLog] = useState<string>("No node actions triggered yet")
+  const [contextMenuNode, setContextMenuNode] = useState<TreeNodeType | null>(null)
 
   const handleNodeHover = useCallback(
     (node: TreeNodeType, isHovered: boolean, event: React.MouseEvent) => {
@@ -530,6 +535,87 @@ const ComprehensiveTreeList = observer(() => {
     [],
   )
 
+  const renderNodeActions = useCallback(
+    (node: TreeNodeType) => (
+      <div className="flex items-center gap-1">
+        <button
+          type="button"
+          title="Favorite node"
+          className="text-body-tiny text-secondary-foreground hover:text-default-foreground border-default-border bg-default-background rounded border px-2 py-0.5"
+          onClick={(event) => {
+            event.stopPropagation()
+            event.preventDefault()
+            setLastActionLog(`Favorited ${node.name}`)
+          }}
+        >
+          Star
+        </button>
+        <button
+          type="button"
+          title="Log node info"
+          className="text-body-tiny text-secondary-foreground hover:text-default-foreground border-default-border bg-default-background rounded border px-2 py-0.5"
+          onClick={(event) => {
+            event.stopPropagation()
+            event.preventDefault()
+            console.info("[TreeList Story] Inspect node", node)
+            setLastActionLog(`Inspected ${node.name}`)
+          }}
+        >
+          Info
+        </button>
+      </div>
+    ),
+    [setLastActionLog],
+  )
+
+  const handleIconDoubleClick = useCallback((node?: TreeNodeType) => {
+    console.log("[TreeList Story] Icon double clicked:")
+  }, [])
+
+  const handleNodeContextMenu = useCallback(
+    (node: TreeNodeType, event: React.MouseEvent) => {
+      setContextMenuNode(node)
+
+      if (typeof window === "undefined") {
+        return
+      }
+
+      const triggerElement = contextMenuTriggerRef.current
+      if (!triggerElement) {
+        return
+      }
+
+      const { clientX, clientY, screenX, screenY } = event.nativeEvent
+
+      window.requestAnimationFrame(() => {
+        const syntheticEvent = new MouseEvent("contextmenu", {
+          bubbles: true,
+          cancelable: true,
+          view: window,
+          clientX,
+          clientY,
+          screenX,
+          screenY,
+        })
+
+        triggerElement.dispatchEvent(syntheticEvent)
+      })
+    },
+    [contextMenuTriggerRef],
+  )
+
+  const handleContextMenuAction = useCallback(
+    (action: string) => {
+      if (!contextMenuNode) {
+        return
+      }
+
+      const actionLabel = `${action} ${contextMenuNode.name}`
+      setLastActionLog(actionLabel)
+      console.info(`[TreeList Story] ${actionLabel}`, contextMenuNode)
+    },
+    [contextMenuNode],
+  )
   const triggerHover = useCallback(() => {
     const dataSnapshot = treeState.data.get()
     const targetId = dataSnapshot[0]?.id
@@ -556,23 +642,6 @@ const ComprehensiveTreeList = observer(() => {
       })
       target.dispatchEvent(leaveEvent)
     }, 1200)
-  }, [])
-
-  const selectNestedNodeExternally = useCallback(() => {
-    const snapshot = treeState.data.get()
-    const firstFolder = snapshot[0]
-    const nested = firstFolder?.children?.[0]
-    if (!nested) {
-      return
-    }
-
-    const path = findNodePath(snapshot, nested.id)?.map((node) => node.name) ?? []
-    setSelectedNodeIds(new Set([nested.id]))
-    setExternalSelectionInfo({
-      id: nested.id,
-      name: nested.name,
-      path,
-    })
   }, [])
 
   const selectSpecificNodeExternally = useCallback(() => {
@@ -663,42 +732,65 @@ const ComprehensiveTreeList = observer(() => {
       }}
     >
       <Splitter.Pane minSize={240}>
-        <TreeList
-          selectedNodeIds={selectedNodeIds}
-          className="h-full w-full"
-          containerWidth={containerWidth}
-          data={treeState.data.get()}
-          virtualScroll={treeState.useVirtualScroll.get()}
-          onNodeRename={handleNodeRename}
-          onNodeDrop={handleNodeDrop}
-          onNodeSelect={handleNodeSelect}
-          onNodeExpand={handleNodeExpand}
-          onNodeHover={handleNodeHover}
-          onNodeContextMenu={(node, event) => {
-            event.preventDefault()
-            alert(`节点: ${node.name} 的上下文菜单已触发`)
-          }}
-          renderIcon={(node) => (
-            <>
-              {Boolean(node.children && node.children.length > 0) || Boolean(node.isFolder) ? (
-                <ToolbarFrame />
-              ) : (
-                <Element />
-              )}
-            </>
-          )}
-        />
+        <div className="relative h-full w-full">
+          <TreeList
+            selectedNodeIds={selectedNodeIds}
+            className="h-full w-full"
+            containerWidth={containerWidth}
+            data={treeState.data.get()}
+            virtualScroll={treeState.useVirtualScroll.get()}
+            onNodeRename={handleNodeRename}
+            onNodeDrop={handleNodeDrop}
+            onNodeSelect={handleNodeSelect}
+            onNodeExpand={handleNodeExpand}
+            onNodeHover={handleNodeHover}
+            onNodeIconDoubleClick={handleIconDoubleClick}
+            renderActions={renderNodeActions}
+            onNodeContextMenu={handleNodeContextMenu}
+            renderIcon={(node) => (
+              <>
+                {Boolean(node.children && node.children.length > 0) || Boolean(node.isFolder) ? (
+                  <ToolbarFrame />
+                ) : (
+                  <Element />
+                )}
+              </>
+            )}
+          />
+
+          <div
+            ref={contextMenuTriggerRef}
+            className="hidden"
+          />
+
+          <ContextMenu triggerRef={contextMenuTriggerRef}>
+            <ContextMenu.Content className="min-w-[220px]">
+              <ContextMenu.Label>
+                {contextMenuNode ? `Actions for ${contextMenuNode.name}` : "Node actions"}
+              </ContextMenu.Label>
+              <ContextMenu.Item onClick={() => handleContextMenuAction("Rename")}>
+                <ContextMenu.Value>Rename</ContextMenu.Value>
+              </ContextMenu.Item>
+              <ContextMenu.Item onClick={() => handleContextMenuAction("Duplicate")}>
+                <ContextMenu.Value>Duplicate</ContextMenu.Value>
+              </ContextMenu.Item>
+              <ContextMenu.Item onClick={() => handleContextMenuAction("Add child under")}>
+                <ContextMenu.Value>Add child</ContextMenu.Value>
+              </ContextMenu.Item>
+              <ContextMenu.Divider />
+              <ContextMenu.Item
+                variant="danger"
+                onClick={() => handleContextMenuAction("Delete")}
+              >
+                <ContextMenu.Value>Delete</ContextMenu.Value>
+              </ContextMenu.Item>
+            </ContextMenu.Content>
+          </ContextMenu>
+        </div>
       </Splitter.Pane>
       <Splitter.Pane minSize={320}>
         <div className="bg-light-50 flex h-screen min-h-0 w-full flex-1 flex-col">
           <div className="flex flex-col gap-3 p-6">
-            <button
-              type="button"
-              className="border-default-border bg-default-background text-body-small text-default-foreground self-start rounded border px-3 py-2 font-medium shadow-sm hover:bg-gray-100"
-              onClick={selectNestedNodeExternally}
-            >
-              Select nested node externally
-            </button>
             <button
               type="button"
               className="border-default-border bg-default-background text-body-small text-default-foreground self-start rounded border px-3 py-2 font-medium shadow-sm hover:bg-gray-100"
@@ -729,6 +821,37 @@ const ComprehensiveTreeList = observer(() => {
                   Waiting for hover…
                 </div>
               )}
+            </div>
+            <div className="border-default-border bg-default-background text-body-small text-secondary-foreground rounded border p-3">
+              <div className="text-default-foreground font-medium">Recent node action</div>
+              <div className="text-default-foreground mt-1">{lastActionLog}</div>
+              <div className="text-body-small text-tertiary-foreground mt-1">
+                Trigger any tail action button to update this log.
+              </div>
+            </div>
+            <div
+              className="border-default-border bg-default-background text-body-small text-secondary-foreground cursor-pointer rounded border p-3 select-none hover:bg-gray-50"
+              onDoubleClick={() => {
+                const selected = treeState.selectedNodes.get()
+                const targetNode = selected[0]
+
+                if (!targetNode) {
+                  console.warn(
+                    "[TreeList Story] Please select a node before double clicking the demo area.",
+                  )
+                  return
+                }
+
+                handleIconDoubleClick(targetNode)
+              }}
+            >
+              <div className="text-default-foreground font-medium">Manual icon double click</div>
+              <div
+                className="text-body-small text-default-foreground mt-1"
+                onDoubleClick={() => handleIconDoubleClick()}
+              >
+                Double click
+              </div>
             </div>
           </div>
         </div>

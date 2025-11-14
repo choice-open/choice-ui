@@ -19,6 +19,7 @@ interface TreeNodeWrapperProps {
   onDrop: (node: TreeNodeType, position: DropPosition) => void
   onExpand: (node: TreeNodeType, expanded: boolean) => void
   onHover?: (node: TreeNodeType, isHovered: boolean, event: React.MouseEvent) => void
+  onIconDoubleClick?: (node: TreeNodeType, event: React.MouseEvent) => void
   onMeasure: (width: number) => void
   onRename: (node: TreeNodeType, newName: string) => void
   onSelect: (node: TreeNodeType, event?: React.MouseEvent | React.KeyboardEvent) => void
@@ -53,6 +54,7 @@ const TreeNodeWrapperComponent = (props: TreeNodeWrapperProps) => {
     onMeasure,
     onRename,
     onSelect,
+    onIconDoubleClick,
     renderNode,
     renderIcon,
     renderActions,
@@ -203,6 +205,7 @@ const TreeNodeWrapperComponent = (props: TreeNodeWrapperProps) => {
       containerWidth={containerWidth}
       renderIcon={renderIcon}
       renderActions={renderActions}
+      onIconDoubleClick={onIconDoubleClick}
       isLastInParent={isLastChild}
       isFirstSelected={selectionPosition.isFirstSelected}
       isMiddleSelected={selectionPosition.isMiddleSelected}
@@ -239,7 +242,8 @@ export const TreeNodeWrapper = memo(TreeNodeWrapperComponent, (prevProps, nextPr
     prevProps.renderNode === nextProps.renderNode &&
     prevProps.renderIcon === nextProps.renderIcon &&
     prevProps.renderActions === nextProps.renderActions &&
-    prevProps.onHover === nextProps.onHover
+    prevProps.onHover === nextProps.onHover &&
+    prevProps.onIconDoubleClick === nextProps.onIconDoubleClick
   )
 })
 

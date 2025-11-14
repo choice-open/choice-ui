@@ -34,6 +34,7 @@ export const TreeNode = forwardRef<HTMLDivElement, TreeNodeProps>((props, ref) =
     onRename,
     onContextMenu,
     onHover,
+    onIconDoubleClick,
     isLastInParent,
     isFirstSelected,
     isLastSelected,
@@ -265,10 +266,11 @@ export const TreeNode = forwardRef<HTMLDivElement, TreeNodeProps>((props, ref) =
           "pointer-events-none absolute inset-0 flex items-center justify-end gap-1 px-2",
           isRenaming ? "opacity-0" : isHovered ? "opacity-100" : "opacity-0",
         )}
+        aria-hidden={isRenaming}
       >
         <div
           className={tcx(
-            "sticky right-3 flex h-6 items-center gap-2",
+            "pointer-events-auto sticky right-3 flex h-6 items-center gap-2",
             isParentSelected && !isSelected
               ? "bg-blue-200"
               : isSelected
@@ -279,6 +281,7 @@ export const TreeNode = forwardRef<HTMLDivElement, TreeNodeProps>((props, ref) =
           )}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
+          onMouseDown={(event) => event.stopPropagation()}
         >
           {renderActions && renderActions(node)}
         </div>
@@ -376,6 +379,10 @@ export const TreeNode = forwardRef<HTMLDivElement, TreeNodeProps>((props, ref) =
               "flex h-4 w-4 flex-none items-center justify-center",
               isSelected ? "text-default-foreground" : "text-secondary-foreground",
             )}
+            onDoubleClick={(event) => {
+              event.stopPropagation()
+              onIconDoubleClick?.(node, event)
+            }}
           >
             {renderIcon(node)}
           </div>

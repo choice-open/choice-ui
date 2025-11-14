@@ -42,6 +42,7 @@ export const TreeList = (props: TreeListProps) => {
     onNodeRename,
     onNodeContextMenu,
     onNodeDrop,
+    onNodeIconDoubleClick,
     onNodeHover,
     onMouseDown,
   } = props
@@ -268,6 +269,7 @@ export const TreeList = (props: TreeListProps) => {
           onRename={endRename}
           onContextMenu={handleContextMenu}
           onMeasure={(width) => measureNodeWidth(node.id, width)}
+          onIconDoubleClick={onNodeIconDoubleClick}
           onHover={onNodeHover}
         />
       )
@@ -297,6 +299,7 @@ export const TreeList = (props: TreeListProps) => {
       measureNodeWidth,
       allowMultiSelect,
       isShiftKeyPressed,
+      onNodeIconDoubleClick,
     ],
   )
 

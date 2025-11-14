@@ -1,6 +1,6 @@
 {
   "name": "@choiceform/design-system",
-  "version": "1.2.64",
+  "version": "1.2.65",
   "description": "A modern React UI component library - Figma-inspired design system with comprehensive documentation",
   "sideEffects": false,
   "type": "module",
