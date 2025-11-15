@@ -20,6 +20,7 @@ export interface NotificationsProps extends Omit<ToasterProps, "id"> {
   icon?: React.ReactNode
   id: string | number
   text?: string
+  toasterId?: string
 }
 
 const ToastBase = (props: NotificationsProps) => {

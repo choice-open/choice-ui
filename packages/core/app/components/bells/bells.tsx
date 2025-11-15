@@ -16,6 +16,7 @@ export interface BellsProps extends Omit<ToasterProps, "id"> {
   onClose?: (id: string | number) => void
   progress?: boolean
   text?: string
+  toasterId?: string
   variant?: "default" | "accent" | "success" | "warning" | "danger" | "assistive" | "reset"
 }
 
