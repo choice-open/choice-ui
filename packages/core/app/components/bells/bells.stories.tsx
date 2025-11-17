@@ -1,7 +1,7 @@
 import { LayoutWallpaper } from "@choiceform/icons-react"
 import type { StoryObj } from "@storybook/react-vite"
 import React, { useEffect, useState } from "react"
-import { toast as sonnerToast, Toaster } from "sonner"
+import { toast as sonnerToast, toast, Toaster } from "sonner"
 import { tcx } from "../../utils"
 import { Button } from "../button"
 import { Chip } from "../chip"
@@ -63,7 +63,8 @@ export const Basic: Story = {
   render: function BasicStory() {
     return (
       <div className="flex gap-2 capitalize">
-        <Toaster position="bottom-center" />
+        <Toaster />
+
         <Button
           variant="secondary"
           onClick={() => {
@@ -78,6 +79,9 @@ export const Basic: Story = {
           variant="secondary"
           onClick={() => {
             bells({
+              toastOptions: {
+                toasterId: "bells-toaster",
+              },
               html: "Successfully <b class='text-red-500'>duplicated</b> project to <em class='text-blue-500'>My New Project</em>! 🎉",
               icon: <LayoutWallpaper />,
             })
@@ -242,7 +246,7 @@ export const UseEffect: Story = {
 
     return (
       <div className="flex flex-col gap-4">
-        <Toaster position="bottom-center" />
+        <Toaster />
 
         <div className="flex gap-2">
           <Button
@@ -290,6 +294,140 @@ export const UseEffect: Story = {
 }
 
 /**
+ * Multiple Toasters: Demonstrates using multiple Toaster instances with different IDs and positions.
+ * - Shows how to configure multiple Toasters for different use cases
+ * - Demonstrates targeting specific Toasters using toasterId
+ * - Useful for scenarios where you need separate notification areas (e.g., page-level vs component-level)
+ * - Each Toaster can have different positions, styles, and configurations
+ */
+export const MultipleToasters: Story = {
+  render: function MultipleToastersStory() {
+    return (
+      <div className="flex flex-col gap-4">
+        <Toaster id="bells-main" />
+        <Toaster
+          id="bells-secondary"
+          offset={{ bottom: "128px" }}
+        />
+
+        <div className="flex flex-col gap-2">
+          <h3 className="text-body-large-strong">Main Toaster</h3>
+          <div className="flex gap-2">
+            <Button
+              variant="secondary"
+              onClick={() => {
+                bells({
+                  toasterId: "bells-main",
+                  text: "This bell appears in the main toaster at bottom-center.",
+                })
+              }}
+            >
+              Main Toaster
+            </Button>
+            <Button
+              variant="secondary"
+              onClick={() => {
+                bells({
+                  toasterId: "bells-main",
+                  icon: <LayoutWallpaper />,
+                  text: "Bell with icon and close button",
+                  onClose: (id) => {
+                    sonnerToast.dismiss(id)
+                  },
+                })
+              }}
+            >
+              With Close
+            </Button>
+            <Button
+              variant="secondary"
+              onClick={() => {
+                bells({
+                  toasterId: "bells-main",
+                  variant: "success",
+                  icon: "✅",
+                  text: "Success bell in main toaster",
+                  progress: true,
+                })
+              }}
+            >
+              With Progress
+            </Button>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <h3 className="text-body-large-strong">Secondary Toaster</h3>
+          <div className="flex gap-2">
+            <Button
+              variant="secondary"
+              onClick={() => {
+                bells({
+                  toasterId: "bells-secondary",
+                  icon: <LayoutWallpaper />,
+                  text: "This bell appears in the secondary toaster at top-center.",
+                })
+              }}
+            >
+              Secondary Toaster
+            </Button>
+            <Button
+              variant="secondary"
+              onClick={() => {
+                bells({
+                  toasterId: "bells-secondary",
+                  variant: "danger",
+                  icon: "⚠️",
+                  html: "Danger bell with <strong>HTML</strong> content",
+                  onClose: (id) => {
+                    sonnerToast.dismiss(id)
+                  },
+                })
+              }}
+            >
+              Danger Variant
+            </Button>
+            <Button
+              variant="secondary"
+              onClick={() => {
+                bells({
+                  toasterId: "bells-secondary",
+                  variant: "accent",
+                  icon: <LayoutWallpaper />,
+                  text: "Bell with action button",
+                  action: (id) => (
+                    <Chip
+                      size="medium"
+                      className="border-menu-boundary flex-none bg-transparent hover:bg-white/5"
+                      onClick={() => {
+                        sonnerToast.dismiss(id)
+                      }}
+                    >
+                      Action
+                    </Chip>
+                  ),
+                })
+              }}
+            >
+              With Action
+            </Button>
+          </div>
+        </div>
+
+        <div className="text-secondary-foreground text-body-small">
+          <p className="font-strong">Usage:</p>
+          <p>
+            Multiple Toasters allow you to separate bells by context or priority. Each Toaster can
+            have its own position, offset, and configuration. Use the <code>toasterId</code> prop to
+            target a specific Toaster when calling <code>bells()</code>.
+          </p>
+        </div>
+      </div>
+    )
+  },
+}
+
+/**
  * Color: Demonstrates the different color variants for the Bells component.
  * - Shows how to use semantic variants: accent, danger, success, warning, assistive.
  * - Each button triggers a bell with a different color and an associated action.
@@ -322,7 +460,7 @@ export const Color: Story = {
 
     return (
       <div className="flex gap-2 capitalize">
-        <Toaster position="bottom-center" />
+        <Toaster />
         {colors.map((color) => (
           <Button
             key={color.color}

@@ -1,8 +1,10 @@
-import { useMemo } from "react"
-import { toast as sonnerToast, ToasterProps } from "sonner"
+import { memo, useMemo } from "react"
+import { ExternalToast, toast as sonnerToast, ToasterProps } from "sonner"
+import { useEventCallback } from "usehooks-ts"
+import { tcx } from "~/utils"
 import { NotificationsTv } from "./tv"
 
-interface NotificationsProps extends Omit<ToasterProps, "id"> {
+export interface NotificationsProps extends Omit<ToasterProps, "id"> {
   actions?: (id: string | number) => {
     action?: {
       content: React.ReactNode
@@ -18,14 +20,15 @@ interface NotificationsProps extends Omit<ToasterProps, "id"> {
   icon?: React.ReactNode
   id: string | number
   text?: string
+  toasterId?: string
 }
 
-const Toast = (props: NotificationsProps) => {
+const ToastBase = (props: NotificationsProps) => {
   const { className, icon, text, html, actions, id } = props
 
-  const styles = NotificationsTv({ actions: !!actions, icon: !!icon })
+  const tv = NotificationsTv({ actions: !!actions, icon: !!icon })
 
-  // 🔧 缓存 actions 结果，避免重复调用
+  // 缓存 actions 结果，避免重复调用
   const actionButtons = useMemo(() => {
     if (!actions) return null
     return actions(id)
@@ -36,23 +39,29 @@ const Toast = (props: NotificationsProps) => {
     console.warn("Notifications: Either 'text' or 'html' prop is required")
   }
 
+  const handleActionClick = useEventCallback(() => {
+    actionButtons?.action?.onClick()
+  })
+
+  const handleDismissClick = useEventCallback(() => {
+    actionButtons?.dismiss?.onClick()
+  })
+
   return (
-    <div className={styles.root({ className })}>
-      <div className={styles.content()}>
-        {icon && <div className={styles.icon()}>{icon}</div>}
-        <div className={styles.text()}>
+    <div className={tcx(tv.root(), className)}>
+      <div className={tv.content()}>
+        {icon && <div className={tv.icon()}>{icon}</div>}
+        <div className={tv.text()}>
           {html ? <span dangerouslySetInnerHTML={{ __html: html }} /> : text}
         </div>
       </div>
 
       {actionButtons && (
-        <div className={styles.actions()}>
+        <div className={tv.actions()}>
           {actionButtons.action && (
             <button
-              className={styles.button()}
-              onClick={() => {
-                actionButtons.action?.onClick()
-              }}
+              className={tv.button()}
+              onClick={handleActionClick}
             >
               {actionButtons.action.content}
             </button>
@@ -60,10 +69,8 @@ const Toast = (props: NotificationsProps) => {
 
           {actionButtons.dismiss && (
             <button
-              className={styles.button()}
-              onClick={() => {
-                actionButtons.dismiss?.onClick()
-              }}
+              className={tv.button()}
+              onClick={handleDismissClick}
             >
               {actionButtons.dismiss.content}
             </button>
@@ -74,11 +81,27 @@ const Toast = (props: NotificationsProps) => {
   )
 }
 
+export const Toast = memo(ToastBase)
+
+Toast.displayName = "Toast"
+
 export function notifications(toast: Omit<NotificationsProps, "id">) {
-  return sonnerToast.custom((id) => (
-    <Toast
-      id={id}
-      {...toast}
-    />
-  ))
+  const { icon, text, html, actions, className, ...sonnerOptions } = toast
+
+  return sonnerToast.custom(
+    (id) => (
+      <Toast
+        id={id}
+        className={className}
+        icon={icon}
+        text={text}
+        html={html}
+        actions={actions}
+      />
+    ),
+    {
+      position: toast.position || "bottom-right",
+      ...sonnerOptions,
+    } as ExternalToast,
+  )
 }

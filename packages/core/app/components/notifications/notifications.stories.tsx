@@ -77,7 +77,7 @@ export const Basic: Story = {
     const [open, setOpen] = useState(false)
     return (
       <div className="flex gap-4">
-        <Toaster position="bottom-right" />
+        <Toaster />
 
         <Dialog
           open={open}
@@ -193,6 +193,160 @@ export const Basic: Story = {
 }
 
 /**
+ * Multiple Toasters: Demonstrates using multiple Toaster instances with different IDs and positions.
+ * - Shows how to configure multiple Toasters for different use cases
+ * - Demonstrates targeting specific Toasters using toasterId
+ * - Useful for scenarios where you need separate notification areas (e.g., page-level vs component-level)
+ * - Each Toaster can have different positions, styles, and configurations
+ */
+export const MultipleToasters: Story = {
+  render: function MultipleToastersStory() {
+    return (
+      <div className="flex flex-col gap-4">
+        <Toaster id="notifications-main" />
+        <Toaster
+          id="notifications-secondary"
+          offset={{ bottom: "128px" }}
+        />
+        <Toaster
+          id="notifications-sidebar"
+          offset={{ right: "128px" }}
+        />
+
+        <div className="flex flex-col gap-2">
+          <h3 className="text-body-large-strong">Main Toaster</h3>
+          <div className="flex gap-2">
+            <Button
+              variant="secondary"
+              onClick={() => {
+                notifications({
+                  toasterId: "notifications-main",
+                  icon: <LayoutWallpaper />,
+                  text: "This notification appears in the main toaster at bottom-right.",
+                })
+              }}
+            >
+              Main Toaster
+            </Button>
+            <Button
+              variant="secondary"
+              onClick={() => {
+                notifications({
+                  toasterId: "notifications-main",
+                  icon: "✅",
+                  text: "Success notification in main toaster",
+                  actions: (id) => ({
+                    action: {
+                      content: "View",
+                      onClick: () => {
+                        sonnerToast.dismiss(id)
+                      },
+                    },
+                  }),
+                })
+              }}
+            >
+              With Action
+            </Button>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <h3 className="text-body-large-strong">Secondary Toaster</h3>
+          <div className="flex gap-2">
+            <Button
+              variant="secondary"
+              onClick={() => {
+                notifications({
+                  toasterId: "notifications-secondary",
+                  icon: <LayoutWallpaper />,
+                  text: "This notification appears in the secondary toaster at top-right.",
+                })
+              }}
+            >
+              Secondary Toaster
+            </Button>
+            <Button
+              variant="secondary"
+              onClick={() => {
+                notifications({
+                  toasterId: "notifications-secondary",
+                  html: "HTML content in <strong>secondary</strong> toaster",
+                  actions: (id) => ({
+                    dismiss: {
+                      content: "Dismiss",
+                      onClick: () => {
+                        sonnerToast.dismiss(id)
+                      },
+                    },
+                  }),
+                })
+              }}
+            >
+              With Dismiss
+            </Button>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <h3 className="text-body-large-strong">Sidebar Toaster</h3>
+          <div className="flex gap-2">
+            <Button
+              variant="secondary"
+              onClick={() => {
+                notifications({
+                  toasterId: "notifications-sidebar",
+                  icon: "📢",
+                  text: "Sidebar notification for component-specific messages.",
+                })
+              }}
+            >
+              Sidebar Toaster
+            </Button>
+            <Button
+              variant="secondary"
+              onClick={() => {
+                notifications({
+                  toasterId: "notifications-sidebar",
+                  icon: <LayoutWallpaper />,
+                  text: "Notification with both action and dismiss buttons",
+                  actions: (id) => ({
+                    action: {
+                      content: "Action",
+                      onClick: () => {
+                        sonnerToast.dismiss(id)
+                      },
+                    },
+                    dismiss: {
+                      content: "Dismiss",
+                      onClick: () => {
+                        sonnerToast.dismiss(id)
+                      },
+                    },
+                  }),
+                })
+              }}
+            >
+              Full Actions
+            </Button>
+          </div>
+        </div>
+
+        <div className="text-secondary-foreground text-body-small">
+          <p className="font-strong">Usage:</p>
+          <p>
+            Multiple Toasters allow you to separate notifications by context or priority. Each
+            Toaster can have its own position, offset, and configuration. Use the{" "}
+            <code>toasterId</code> prop to target a specific Toaster when calling{" "}
+            <code>notifications()</code>.
+          </p>
+        </div>
+      </div>
+    )
+  },
+}
+
+/**
  * UseEffect: Demonstrates using notifications within useEffect for programmatic triggers.
  * - Tests notifications triggered by component state changes
  * - Shows proper action handling and state management in effects
@@ -254,7 +408,7 @@ export const UseEffect: Story = {
 
     return (
       <div className="flex flex-col gap-4">
-        <Toaster position="bottom-right" />
+        <Toaster />
 
         <div className="flex gap-2">
           <Button

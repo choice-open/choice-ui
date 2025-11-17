@@ -1,7 +1,7 @@
 import { Remove } from "@choiceform/icons-react"
 import { motion, useAnimationControls } from "framer-motion"
-import { memo, useCallback, useEffect, useRef, useState } from "react"
-import { toast as sonnerToast, ToasterProps } from "sonner"
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { ExternalToast, toast as sonnerToast, ToasterProps } from "sonner"
 import { useEventCallback } from "usehooks-ts"
 import { tcx } from "~/utils"
 import { IconButton } from "../icon-button"
@@ -10,21 +10,13 @@ import { BellsTv } from "./tv"
 export interface BellsProps extends Omit<ToasterProps, "id"> {
   action?: (id: string | number) => React.ReactNode
   className?: string
-  classNames?: {
-    button?: string
-    close?: string
-    content?: string
-    icon?: string
-    progress?: string
-    root?: string
-    text?: string
-  }
   html?: string
   icon?: React.ReactNode
   id: string | number
   onClose?: (id: string | number) => void
   progress?: boolean
   text?: string
+  toasterId?: string
   variant?: "default" | "accent" | "success" | "warning" | "danger" | "assistive" | "reset"
 }
 
@@ -43,7 +35,6 @@ CloseButton.displayName = "CloseButton"
 const BellBase = (props: BellsProps) => {
   const {
     className,
-    classNames,
     icon,
     text,
     html,
@@ -62,7 +53,7 @@ const BellBase = (props: BellsProps) => {
   const pauseTimeRef = useRef<number>(0)
   const totalPausedTimeRef = useRef<number>(0)
 
-  const styles = BellsTv({ action: !!action, close: !!onClose, variant })
+  const tv = BellsTv({ action: !!action, close: !!onClose, variant })
 
   // 验证至少有 text 或 html 其中一个
   if (!text && !html) {
@@ -131,7 +122,7 @@ const BellBase = (props: BellsProps) => {
   })
 
   // 缓存 action 结果，避免每次渲染都重新创建
-  const actionElement = useCallback(() => {
+  const actionElement = useMemo(() => {
     if (!action) return null
     return action(id)
   }, [action, id])
@@ -160,7 +151,7 @@ const BellBase = (props: BellsProps) => {
 
   return (
     <div
-      className={tcx(styles.root(), classNames?.root, className)}
+      className={tcx(tv.root(), className)}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -168,23 +159,23 @@ const BellBase = (props: BellsProps) => {
         <motion.div
           initial={{ x: "-100%" }}
           animate={controls}
-          className={tcx(styles.progress(), classNames?.progress)}
+          className={tv.progress()}
         />
       )}
-      <div className={tcx(styles.content(), classNames?.content)}>
-        {icon && <div className={tcx(styles.icon(), classNames?.icon)}>{icon}</div>}
+      <div className={tv.content()}>
+        {icon && <div className={tv.icon()}>{icon}</div>}
 
-        <div className={tcx(styles.text(), classNames?.text)}>
+        <div className={tv.text()}>
           {html ? <span dangerouslySetInnerHTML={{ __html: html }} /> : text}
         </div>
 
-        {actionElement()}
+        {actionElement}
       </div>
 
       {onClose && (
-        <div className={tcx(styles.close(), classNames?.close)}>
+        <div className={tv.close()}>
           <CloseButton
-            className={tcx(styles.button(), classNames?.button)}
+            className={tv.button()}
             onClick={handleCloseClick}
           />
         </div>
@@ -196,24 +187,27 @@ const BellBase = (props: BellsProps) => {
 export const Bell = memo(BellBase)
 
 export function bells(bell: Omit<BellsProps, "id">) {
+  const { icon, text, html, action, onClose, progress, variant, className, ...sonnerOptions } = bell
+
   return sonnerToast.custom(
     (id) => (
       <Bell
         id={id}
-        className={bell.className}
-        classNames={bell.classNames}
-        icon={bell.icon}
-        text={bell.text}
-        html={bell.html}
-        action={bell.action}
-        onClose={bell.onClose}
-        progress={bell.progress}
+        className={className}
+        icon={icon}
+        text={text}
+        html={html}
+        action={action}
+        onClose={onClose}
+        progress={progress}
         duration={bell.duration}
-        variant={bell.variant}
+        variant={variant}
       />
     ),
     {
       duration: bell.duration === Infinity ? Infinity : undefined,
-    },
+      position: bell.position || "bottom-center",
+      ...sonnerOptions,
+    } as ExternalToast,
   )
 }
