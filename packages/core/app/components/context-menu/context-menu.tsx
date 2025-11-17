@@ -192,12 +192,12 @@ const ContextMenuComponent = memo(function ContextMenuComponent(props: ContextMe
         padding: 4,
         apply(args) {
           const { elements, availableHeight } = args
-          // 在坐标模式下，clientHeight 初始可能为 0，应使用 availableHeight
-          // 在非坐标模式下，使用 clientHeight 和 availableHeight 中的较小值
-          const maxHeight =
-            elements.floating.clientHeight > 0
-              ? Math.min(elements.floating.clientHeight, availableHeight)
-              : availableHeight
+          // 使用 scrollHeight 获取内容的实际高度，而不是 clientHeight
+          // scrollHeight 会随着内容变化自动更新，而 clientHeight 可能被 maxHeight 限制
+          const contentHeight = scrollRef.current?.scrollHeight || elements.floating.scrollHeight
+
+          // 根据内容实际高度和可用空间计算合适的高度
+          const maxHeight = Math.min(contentHeight, availableHeight)
 
           Object.assign(elements.floating.style, {
             maxHeight: `${maxHeight}px`,
