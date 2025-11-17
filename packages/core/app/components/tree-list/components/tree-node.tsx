@@ -1,21 +1,11 @@
-import {
-  forwardRef,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-  type MouseEvent,
-} from "react"
+import { forwardRef, useEffect, useMemo, useRef, useState, type MouseEvent } from "react"
 import { useNodeWidth } from "../hooks/use-node-width"
 import { TreeNodeProps } from "../types"
 import { DropIndicator } from "./drop-indicator"
 import { TreeNodeRenameInput } from "./tree-node-rename-input"
 import { tcx } from "~/utils"
-import { ChevronRightSmall } from "@choiceform/icons-react"
-import { ChevronDownSmall } from "@choiceform/icons-react"
-
-const AUTO_EXPAND_DELAY = 350
+import { TreeNodeIcon } from "./tree-node-icon"
+import { TreeNodeToggle, type TreeNodeToggleHandle } from "./tree-node-toggle"
 
 export const TreeNode = forwardRef<HTMLDivElement, TreeNodeProps>((props, ref) => {
   const {
@@ -49,7 +39,7 @@ export const TreeNode = forwardRef<HTMLDivElement, TreeNodeProps>((props, ref) =
   const [renameValue, setRenameValue] = useState(node.name)
   const [isHovered, setIsHovered] = useState(false)
   const nodeRef = useRef<HTMLDivElement | null>(null)
-  const expandHoverTimeoutRef = useRef<number | null>(null)
+  const toggleRef = useRef<TreeNodeToggleHandle | null>(null)
 
   const {
     id,
@@ -116,35 +106,9 @@ export const TreeNode = forwardRef<HTMLDivElement, TreeNodeProps>((props, ref) =
     onExpand?.(node)
   }
 
-  const clearExpandHoverTimeout = useCallback(() => {
-    if (expandHoverTimeoutRef.current !== null) {
-      window.clearTimeout(expandHoverTimeoutRef.current)
-      expandHoverTimeoutRef.current = null
-    }
-  }, [])
-
-  const scheduleExpandOnDragHover = useCallback(() => {
-    const isNodeBeingDragged = isDragging
-    if (
-      !isFolderWithChildren ||
-      isExpanded ||
-      isNodeBeingDragged ||
-      expandHoverTimeoutRef.current !== null
-    ) {
-      return
-    }
-
-    expandHoverTimeoutRef.current = window.setTimeout(() => {
-      expandHoverTimeoutRef.current = null
-      document.dispatchEvent(
-        new CustomEvent("folder-expand", {
-          detail: { nodeId: id },
-        }),
-      )
-    }, AUTO_EXPAND_DELAY)
-  }, [id, isExpanded, isFolderWithChildren, isDragging])
-
-  useEffect(() => () => clearExpandHoverTimeout(), [clearExpandHoverTimeout])
+  const clearExpandHoverTimeout = () => {
+    toggleRef.current?.clearTimeout()
+  }
 
   // 判断是否是父节点中的最后一个子项
   const isLastItemInFolder = isLastInParent ?? false
@@ -341,54 +305,23 @@ export const TreeNode = forwardRef<HTMLDivElement, TreeNodeProps>((props, ref) =
           isExpanded={isExpanded}
         />
 
-        {/* 展开/折叠图标 */}
-        {shouldRenderToggle ? (
-          <button
-            className="invisible flex h-8 w-4 flex-none items-center justify-center group-hover/tree-list:visible"
-            onMouseDown={handleExpandClick}
-            onDragEnter={(event) => {
-              event.preventDefault()
-              event.stopPropagation()
-              scheduleExpandOnDragHover()
-            }}
-            onDragOver={(event) => {
-              event.preventDefault()
-              event.stopPropagation()
-              scheduleExpandOnDragHover()
-            }}
-            onDragLeave={(event) => {
-              event.preventDefault()
-              event.stopPropagation()
-              clearExpandHoverTimeout()
-            }}
-          >
-            {isExpanded ? (
-              <ChevronDownSmall className="text-secondary-foreground" />
-            ) : (
-              <ChevronRightSmall className="text-secondary-foreground" />
-            )}
-          </button>
-        ) : (
-          <div className="h-8 w-4 flex-none" />
-        )}
+        <TreeNodeToggle
+          ref={toggleRef}
+          isDragging={isDragging}
+          isExpanded={isExpanded}
+          isFolderWithChildren={isFolderWithChildren}
+          nodeId={id}
+          onExpandClick={handleExpandClick}
+          shouldRenderToggle={shouldRenderToggle}
+        />
 
-        {/* 节点图标 */}
-        {renderIcon && (
-          <div
-            className={tcx(
-              "flex h-4 w-4 flex-none items-center justify-center",
-              isSelected ? "text-default-foreground" : "text-secondary-foreground",
-            )}
-            onDoubleClick={(event) => {
-              event.stopPropagation()
-              onIconDoubleClick?.(node, event)
-            }}
-          >
-            {renderIcon(node)}
-          </div>
-        )}
+        <TreeNodeIcon
+          node={node}
+          isSelected={isSelected}
+          renderIcon={renderIcon}
+          onIconDoubleClick={onIconDoubleClick}
+        />
 
-        {/* 节点名称/重命名输入框 */}
         <TreeNodeRenameInput
           name={name}
           isRenaming={isRenaming}
