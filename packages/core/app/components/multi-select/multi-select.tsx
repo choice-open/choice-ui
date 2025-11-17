@@ -45,7 +45,9 @@ import {
   MenuDivider,
   MenuScrollArrow,
   MenuValue,
+  useMenuBaseRefs,
   useMenuScroll,
+  useMenuScrollHeight,
   type MenuContextItemProps,
 } from "../menus"
 import { Slot } from "../slot"
@@ -173,11 +175,13 @@ const MultiSelectComponent = memo(
     // 创建只包含可选择items的数组（不包含divider和label）
     const selectableOptions = useMemo(() => filterSelectableOptions(options), [options])
 
-    // References
-    const scrollRef = useRef<HTMLDivElement>(null)
-    const listRef = useRef<Array<HTMLElement | null>>([])
-    const listContentRef = useRef<Array<string | null>>([])
-    const selectTimeoutRef = useRef<ReturnType<typeof setTimeout>>()
+    // References - 使用统一的 refs 管理
+    const {
+      scrollRef,
+      elementsRef: listRef,
+      labelsRef: listContentRef,
+      selectTimeoutRef,
+    } = useMenuBaseRefs()
     const allowSelectRef = useRef(false)
 
     // 状态管理
@@ -225,10 +229,15 @@ const MultiSelectComponent = memo(
           padding: 4,
           apply(args) {
             const { elements, availableHeight, rects } = args
-            const maxHeight = Math.min(elements.floating.clientHeight, availableHeight)
+            // 在初始渲染时，clientHeight 可能为 0，应使用 availableHeight
+            // 在正常情况下，使用 clientHeight 和 availableHeight 中的较小值
+            const maxHeight =
+              elements.floating.clientHeight > 0
+                ? Math.min(elements.floating.clientHeight, availableHeight)
+                : availableHeight
+
             Object.assign(elements.floating.style, {
               maxHeight: `${maxHeight}px`,
-              height: `${maxHeight}px`,
               display: "flex",
               flexDirection: "column",
             })
@@ -245,7 +254,7 @@ const MultiSelectComponent = memo(
           },
         }),
       ],
-      [matchTriggerWidth],
+      [matchTriggerWidth, scrollRef],
     )
 
     const { refs, floatingStyles, context, isPositioned } = useFloating({
@@ -305,7 +314,7 @@ const MultiSelectComponent = memo(
       } else {
         allowSelectRef.current = false
       }
-    }, [isControlledOpen])
+    }, [isControlledOpen, selectTimeoutRef])
 
     // 使用共享的滚动逻辑
     const { handleArrowScroll, handleArrowHide, scrollProps } = useMenuScroll({
@@ -372,24 +381,11 @@ const MultiSelectComponent = memo(
     }, [tree, isControlledOpen, nodeId, parentId])
 
     // 确保滚动容器正确设置高度
-    // 这个 useEffect 作为 size middleware 的补充，确保在 DOM 完全更新后样式正确应用
-    useEffect(() => {
-      if (!isControlledOpen || !isPositioned) return
-
-      // 使用 requestAnimationFrame 确保 DOM 已更新，避免与 size middleware 的时序冲突
-      const rafId = requestAnimationFrame(() => {
-        if (scrollRef.current) {
-          const parent = scrollRef.current.parentElement
-          // 只在父元素已设置高度时才应用样式，避免不必要的 DOM 操作
-          if (parent?.style.height) {
-            scrollRef.current.style.height = "100%"
-            scrollRef.current.style.maxHeight = "100%"
-          }
-        }
-      })
-
-      return () => cancelAnimationFrame(rafId)
-    }, [isControlledOpen, isPositioned])
+    useMenuScrollHeight({
+      isControlledOpen,
+      isPositioned,
+      scrollRef,
+    })
 
     // 处理焦点状态
     const [hasFocusInside, setHasFocusInside] = useState(false)

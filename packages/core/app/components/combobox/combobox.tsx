@@ -24,12 +24,10 @@ import {
 import React, {
   Children,
   cloneElement,
-  forwardRef,
   isValidElement,
   memo,
   useEffect,
   useId,
-  useImperativeHandle,
   useLayoutEffect,
   useMemo,
   useRef,
@@ -47,7 +45,9 @@ import {
   MenuInput,
   MenuScrollArrow,
   MenuValue,
+  useMenuBaseRefs,
   useMenuScroll,
+  useMenuScrollHeight,
 } from "../menus"
 import { ComboboxTrigger } from "./combobox-trigger"
 
@@ -108,11 +108,8 @@ const ComboboxComponent = memo(function ComboboxComponent(props: ComboboxProps) 
     },
   } = props
 
-  // References
-  const scrollRef = useRef<HTMLDivElement>(null)
-  const selectTimeoutRef = useRef<ReturnType<typeof setTimeout>>()
-  const elementsRef = useRef<Array<HTMLButtonElement | null>>([])
-  const labelsRef = useRef<Array<string | null>>([])
+  // References - 使用统一的 refs 管理
+  const { scrollRef, elementsRef, labelsRef, selectTimeoutRef } = useMenuBaseRefs()
   const inputRef = useRef<HTMLInputElement>(null)
 
   // 状态管理
@@ -226,10 +223,47 @@ const ComboboxComponent = memo(function ComboboxComponent(props: ComboboxProps) 
   // 使用 ref 避免重复设置虚拟位置
   const lastPositionRef = useRef<{ x: number; y: number } | null>(null)
 
-  // Floating UI 配置
+  // Floating UI 配置 - 使用 useMemo 缓存 middleware 数组，避免每次渲染都创建新数组
+  const middleware = useMemo(
+    () => [
+      offset({ mainAxis: DEFAULT_OFFSET, alignmentAxis: 0 }),
+      flip(),
+      shift(),
+      size({
+        padding: 4,
+        apply(args) {
+          const { elements, availableHeight, rects } = args
+          // 在坐标模式下，clientHeight 初始可能为 0，应使用 availableHeight
+          // 在非坐标模式下，使用 clientHeight 和 availableHeight 中的较小值
+          const maxHeight =
+            elements.floating.clientHeight > 0
+              ? Math.min(elements.floating.clientHeight, availableHeight)
+              : availableHeight
+
+          Object.assign(elements.floating.style, {
+            maxHeight: `${maxHeight}px`,
+            display: "flex",
+            flexDirection: "column",
+          })
+
+          // 确保滚动容器能够正确继承高度并滚动
+          if (scrollRef.current) {
+            scrollRef.current.style.height = "100%"
+            scrollRef.current.style.maxHeight = "100%"
+          }
+
+          // 只在非坐标模式且需要匹配trigger宽度时设置宽度
+          if (!isCoordinateMode && matchTriggerWidth && rects.reference.width > 0) {
+            elements.floating.style.width = `${rects.reference.width}px`
+          }
+        },
+      }),
+    ],
+    [isCoordinateMode, matchTriggerWidth, scrollRef],
+  )
+
   const { context, refs, floatingStyles, isPositioned } = useFloating({
     nodeId,
-
     open: isControlledOpen,
     onOpenChange: (newOpen, event, reason) => {
       if (controlledOpen === undefined) {
@@ -248,31 +282,7 @@ const ComboboxComponent = memo(function ComboboxComponent(props: ComboboxProps) 
       }
     },
     placement,
-    middleware: [
-      offset({ mainAxis: DEFAULT_OFFSET, alignmentAxis: 0 }),
-      flip(),
-      shift(),
-      size({
-        padding: 4,
-        apply(args) {
-          const { elements, availableHeight, rects } = args
-
-          if (!isCoordinateMode && rects.reference.width > 0) {
-            Object.assign(elements.floating.style, {
-              height: `${Math.min(elements.floating.clientHeight, availableHeight)}px`,
-            })
-            // 只在非坐标模式且需要匹配trigger宽度时设置宽度
-            if (matchTriggerWidth) {
-              elements.floating.style.width = `${rects.reference.width}px`
-            }
-          } else {
-            Object.assign(elements.floating.style, {
-              maxHeight: `${availableHeight}px`,
-            })
-          }
-        },
-      }),
-    ],
+    middleware,
     whileElementsMounted: autoUpdate,
   })
 
@@ -322,7 +332,7 @@ const ComboboxComponent = memo(function ComboboxComponent(props: ComboboxProps) 
 
       return () => clearTimeout(timer)
     }
-  }, [isCoordinateMode, isControlledOpen, autoSelection, activeIndex, elementsRef.current.length])
+  }, [isCoordinateMode, isControlledOpen, autoSelection, activeIndex, elementsRef])
 
   // 坐标模式下，当过滤结果变化时重新自动选择第一项
   useEffect(() => {
@@ -331,7 +341,14 @@ const ComboboxComponent = memo(function ComboboxComponent(props: ComboboxProps) 
         setActiveIndex(0)
       }
     }
-  }, [isCoordinateMode, isControlledOpen, autoSelection, activeIndex, elementsRef.current.length])
+  }, [isCoordinateMode, isControlledOpen, autoSelection, activeIndex, elementsRef])
+
+  // 确保滚动容器正确设置高度
+  useMenuScrollHeight({
+    isControlledOpen,
+    isPositioned,
+    scrollRef,
+  })
 
   // 使用共享的滚动逻辑
   const { handleArrowScroll, handleArrowHide, scrollProps } = useMenuScroll({
