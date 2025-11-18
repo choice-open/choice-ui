@@ -168,12 +168,15 @@ export function TreeNodeRenameInput(props: TreeNodeRenameInputProps) {
   const handleInputKeyDown = useCallback(
     (event: KeyboardEvent<HTMLInputElement>) => {
       event.stopPropagation()
-      event.preventDefault()
 
       if (event.key === "Enter") {
+        // 只在处理 Enter 键时阻止默认行为
+        event.preventDefault()
         finalizeRename()
         inputRef.current?.blur()
       } else if (event.key === "Escape") {
+        // 只在处理 Escape 键时阻止默认行为
+        event.preventDefault()
         cancelRename()
       }
     },

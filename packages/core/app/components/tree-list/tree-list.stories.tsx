@@ -199,6 +199,10 @@ const ComprehensiveTreeList = observer(() => {
   const handleNodeRename = (node: TreeNodeType, newName: string) => {
     // 如果节点不可编辑，阻止重命名
     if (node.isEditable === false) {
+      console.log("[TreeList] 节点重命名被阻止：节点不可编辑", {
+        nodeId: node.id,
+        nodeName: node.name,
+      })
       return
     }
 
@@ -208,8 +212,29 @@ const ComprehensiveTreeList = observer(() => {
     const currentNode = path?.[path.length - 1]
 
     if (!trimmedName || !currentNode || currentNode.name === trimmedName) {
+      if (!trimmedName) {
+        console.log("[TreeList] 节点重命名被跳过：新名称为空", {
+          nodeId: node.id,
+          oldName: currentNode?.name,
+        })
+      } else if (currentNode && currentNode.name === trimmedName) {
+        console.log("[TreeList] 节点重命名被跳过：名称未改变", {
+          nodeId: node.id,
+          name: trimmedName,
+        })
+      }
       return
     }
+
+    // 打印重命名信息，方便使用者了解逻辑
+    const pathNames = path?.map((n) => n.name) ?? []
+    console.log("[TreeList] 节点重命名", {
+      nodeId: node.id,
+      oldName: currentNode.name,
+      newName: trimmedName,
+      path: pathNames.length > 0 ? pathNames.join(" / ") : "根节点",
+      fullPath: pathNames,
+    })
 
     // 递归更新节点
     const updateNodeName = (nodes: TreeNodeData[]): TreeNodeData[] => {
@@ -628,6 +653,7 @@ const ComprehensiveTreeList = observer(() => {
     },
     [contextMenuNode],
   )
+
   const triggerHover = useCallback(() => {
     const dataSnapshot = treeState.data.get()
     const targetId = dataSnapshot[0]?.id
