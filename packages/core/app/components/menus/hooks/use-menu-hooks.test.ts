@@ -72,7 +72,8 @@ describe("Menu Hooks", () => {
     expect(typeof result.current.handleArrowScroll).toBe("function")
     expect(typeof result.current.handleArrowHide).toBe("function")
     expect(typeof result.current.handleScroll).toBe("function")
-    expect(typeof result.current.getScrollProps).toBe("function")
+    expect(result.current.scrollProps).toBeDefined()
+    expect(typeof result.current.scrollProps.onScroll).toBe("function")
   })
 
   it("should create useMenuChildren hook", () => {

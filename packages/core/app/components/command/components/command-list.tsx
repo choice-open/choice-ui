@@ -11,7 +11,7 @@ export interface CommandListProps extends ScrollAreaProps {
 }
 
 export const CommandList = forwardRef<HTMLDivElement, CommandListProps>((props, forwardedRef) => {
-  const { children, className, label = "Suggestions", ...rest } = props
+  const { children, className, label = "Suggestions", hoverBoundary = "none", ...rest } = props
   const ref = useRef<HTMLDivElement | null>(null)
   const height = useRef<HTMLDivElement | null>(null)
   const selectedItemId = useCommandState((state) => state.selectedItemId)
@@ -39,7 +39,11 @@ export const CommandList = forwardRef<HTMLDivElement, CommandListProps>((props, 
   const tv = commandListTv()
 
   return (
-    <ScrollArea {...rest}>
+    <ScrollArea
+      variant={context.variant}
+      hoverBoundary={hoverBoundary}
+      {...rest}
+    >
       <ScrollArea.Viewport
         ref={(el) => {
           ref.current = el

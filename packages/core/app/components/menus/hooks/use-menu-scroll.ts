@@ -1,4 +1,4 @@
-import { useCallback } from "react"
+import { useMemo } from "react"
 import { useEventCallback } from "usehooks-ts"
 import { flushSync } from "react-dom"
 
@@ -32,16 +32,16 @@ export interface MenuScrollConfig {
 }
 
 export interface MenuScrollResult {
-  /** 获取滚动相关的属性 */
-  getScrollProps: () => {
-    onScroll: (event: React.UIEvent) => void
-  }
   /** 箭头隐藏处理器 */
   handleArrowHide: () => void
   /** 箭头滚动处理器 */
   handleArrowScroll: (amount: number) => void
   /** 滚动事件处理器 */
   handleScroll: (event: React.UIEvent) => void
+  /** 滚动相关的属性对象（已缓存，避免每次渲染都创建新对象） */
+  scrollProps: {
+    onScroll: (event: React.UIEvent) => void
+  }
 }
 
 export function useMenuScroll(config: MenuScrollConfig): MenuScrollResult {
@@ -96,8 +96,9 @@ export function useMenuScroll(config: MenuScrollConfig): MenuScrollResult {
     flushSync(() => setScrollTop(target.scrollTop))
   })
 
-  // 获取滚动相关的属性 - 使用 useCallback 而不是 useEventCallback
-  const getScrollProps = useCallback(
+  // 缓存滚动属性对象，避免每次渲染都创建新对象
+  // 使用 useMemo 确保 handleScroll 引用变化时才重新创建
+  const scrollProps = useMemo(
     () => ({
       onScroll: handleScroll,
     }),
@@ -108,6 +109,6 @@ export function useMenuScroll(config: MenuScrollConfig): MenuScrollResult {
     handleArrowScroll,
     handleArrowHide,
     handleScroll,
-    getScrollProps,
+    scrollProps,
   }
 }

@@ -879,3 +879,97 @@ export const NestedContextMenuInPopover: Story = {
     )
   },
 }
+
+/**
+ * NestedSubmenuWithLongList: Tests scrolling functionality in nested submenus.
+ *
+ * This story specifically tests the fix for nested menu scrolling:
+ * - First level menu with many items
+ * - Nested submenu with a long list that exceeds screen height
+ * - Verifies scroll arrows appear correctly
+ * - Verifies scrolling works properly in nested menus
+ * - Tests height constraints are properly applied
+ *
+ * Expected behavior:
+ * - Nested submenu should show scroll arrows when content exceeds available height
+ * - Users should be able to scroll through all items in the nested menu
+ * - Menu should not overflow beyond screen boundaries
+ * - Scroll arrows should appear/disappear based on scroll position
+ *
+ * This story validates the fix for nested menu scrolling issues.
+ */
+export const NestedSubmenuWithLongList: Story = {
+  render: function NestedSubmenuWithLongListStory() {
+    // Generate a long list of items for testing scrolling
+    const longListItems = Array.from({ length: 30 }, (_, i) => ({
+      id: `item-${i + 1}`,
+      label: `Menu Item ${i + 1}`,
+    }))
+
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <ContextMenu>
+          <ContextMenu.Trigger>
+            <div className="bg-secondary-background rounded-xl border border-dashed p-8 text-center">
+              Right click for menu with long nested submenu
+              <br />
+              <span className="text-body-small text-gray-500">
+                Hover over "Long List" to see scrolling submenu
+              </span>
+            </div>
+          </ContextMenu.Trigger>
+          <ContextMenu.Content>
+            <ContextMenu.Item>
+              <ContextMenu.Value>Cut</ContextMenu.Value>
+            </ContextMenu.Item>
+            <ContextMenu.Item>
+              <ContextMenu.Value>Copy</ContextMenu.Value>
+            </ContextMenu.Item>
+            <ContextMenu.Item>
+              <ContextMenu.Value>Paste</ContextMenu.Value>
+            </ContextMenu.Item>
+            <ContextMenu.Divider />
+
+            {/* Nested submenu with long list - this should scroll */}
+            <ContextMenu>
+              <ContextMenu.SubTrigger>
+                <ContextMenu.Value>Long List</ContextMenu.Value>
+              </ContextMenu.SubTrigger>
+              <ContextMenu.Content>
+                <ContextMenu.Label>Scrollable Items</ContextMenu.Label>
+                {longListItems.map((item) => (
+                  <ContextMenu.Item key={item.id}>
+                    <ContextMenu.Value>{item.label}</ContextMenu.Value>
+                  </ContextMenu.Item>
+                ))}
+              </ContextMenu.Content>
+            </ContextMenu>
+
+            {/* Another nested submenu with long list for comparison */}
+            <ContextMenu>
+              <ContextMenu.SubTrigger>
+                <ContextMenu.Value>Another Long List</ContextMenu.Value>
+              </ContextMenu.SubTrigger>
+              <ContextMenu.Content>
+                <ContextMenu.Label>Another Scrollable List</ContextMenu.Label>
+                {longListItems.slice(0, 25).map((item) => (
+                  <ContextMenu.Item key={item.id}>
+                    <ContextMenu.Value>{item.label}</ContextMenu.Value>
+                  </ContextMenu.Item>
+                ))}
+              </ContextMenu.Content>
+            </ContextMenu>
+
+            <ContextMenu.Divider />
+            <ContextMenu.Item>
+              <ContextMenu.Value>Properties</ContextMenu.Value>
+            </ContextMenu.Item>
+            <ContextMenu.Item variant="danger">
+              <ContextMenu.Value>Delete</ContextMenu.Value>
+            </ContextMenu.Item>
+          </ContextMenu.Content>
+        </ContextMenu>
+      </div>
+    )
+  },
+}

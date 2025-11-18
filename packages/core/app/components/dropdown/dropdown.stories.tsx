@@ -1325,3 +1325,91 @@ export const NestedMenuClickTest: Story = {
     )
   },
 }
+
+/**
+ * NestedSubmenuWithLongList: Tests scrolling functionality in nested submenus.
+ *
+ * This story specifically tests the fix for nested menu scrolling:
+ * - First level menu with many items
+ * - Nested submenu with a long list that exceeds screen height
+ * - Verifies scroll arrows appear correctly
+ * - Verifies scrolling works properly in nested menus
+ * - Tests height constraints are properly applied
+ *
+ * Expected behavior:
+ * - Nested submenu should show scroll arrows when content exceeds available height
+ * - Users should be able to scroll through all items in the nested menu
+ * - Menu should not overflow beyond screen boundaries
+ * - Scroll arrows should appear/disappear based on scroll position
+ *
+ * This story validates the fix for nested menu scrolling issues.
+ */
+export const NestedSubmenuWithLongList: Story = {
+  render: function NestedSubmenuWithLongListStory() {
+    // Generate a long list of items for testing scrolling
+    const longListItems = Array.from({ length: 30 }, (_, i) => ({
+      id: `item-${i + 1}`,
+      label: `Menu Item ${i + 1}`,
+    }))
+
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <Dropdown>
+          <Dropdown.Trigger>
+            <Dropdown.Value>Menu with long nested submenu</Dropdown.Value>
+          </Dropdown.Trigger>
+          <Dropdown.Content>
+            <Dropdown.Item>
+              <Dropdown.Value>Cut</Dropdown.Value>
+            </Dropdown.Item>
+            <Dropdown.Item>
+              <Dropdown.Value>Copy</Dropdown.Value>
+            </Dropdown.Item>
+            <Dropdown.Item>
+              <Dropdown.Value>Paste</Dropdown.Value>
+            </Dropdown.Item>
+            <Dropdown.Divider />
+
+            {/* Nested submenu with long list - this should scroll */}
+            <Dropdown>
+              <Dropdown.SubTrigger>
+                <Dropdown.Value>Long List</Dropdown.Value>
+              </Dropdown.SubTrigger>
+              <Dropdown.Content>
+                <Dropdown.Label>Scrollable Items</Dropdown.Label>
+                {longListItems.map((item) => (
+                  <Dropdown.Item key={item.id}>
+                    <Dropdown.Value>{item.label}</Dropdown.Value>
+                  </Dropdown.Item>
+                ))}
+              </Dropdown.Content>
+            </Dropdown>
+
+            {/* Another nested submenu with long list for comparison */}
+            <Dropdown>
+              <Dropdown.SubTrigger>
+                <Dropdown.Value>Another Long List</Dropdown.Value>
+              </Dropdown.SubTrigger>
+              <Dropdown.Content>
+                <Dropdown.Label>Another Scrollable List</Dropdown.Label>
+                {longListItems.slice(0, 25).map((item) => (
+                  <Dropdown.Item key={item.id}>
+                    <Dropdown.Value>{item.label}</Dropdown.Value>
+                  </Dropdown.Item>
+                ))}
+              </Dropdown.Content>
+            </Dropdown>
+
+            <Dropdown.Divider />
+            <Dropdown.Item>
+              <Dropdown.Value>Properties</Dropdown.Value>
+            </Dropdown.Item>
+            <Dropdown.Item variant="danger">
+              <Dropdown.Value>Delete</Dropdown.Value>
+            </Dropdown.Item>
+          </Dropdown.Content>
+        </Dropdown>
+      </div>
+    )
+  },
+}

@@ -377,7 +377,7 @@ const SelectComponent = memo(function SelectComponent(props: SelectProps) {
   }, [isControlledOpen])
 
   // 使用共享的滚动逻辑
-  const { handleArrowScroll, handleArrowHide, getScrollProps } = useMenuScroll({
+  const { handleArrowScroll, handleArrowHide, scrollProps } = useMenuScroll({
     scrollRef: refs.scroll,
     selectTimeoutRef: refs.selectTimeout,
     scrollTop,
@@ -581,7 +581,7 @@ const SelectComponent = memo(function SelectComponent(props: SelectProps) {
                       ref: refs.scroll,
                       matchTriggerWidth,
                       ...getFloatingProps({
-                        ...getScrollProps(),
+                        ...scrollProps,
                         onContextMenu(e: React.MouseEvent) {
                           e.preventDefault()
                         },

@@ -14,12 +14,9 @@ import {
   useClick,
   useDismiss,
   useFloating,
-  useFloatingNodeId,
   useFloatingParentNodeId,
-  useFloatingTree,
   useHover,
   useInteractions,
-  useListItem,
   useListNavigation,
   useRole,
   useTypeahead,
@@ -29,7 +26,6 @@ import {
 import React, {
   Children,
   cloneElement,
-  forwardRef,
   isValidElement,
   memo,
   useContext,
@@ -54,7 +50,10 @@ import {
   MenuSearch,
   MenuTrigger,
   MenuValue,
+  useMenuBaseRefs,
   useMenuScroll,
+  useMenuScrollHeight,
+  useMenuTree,
 } from "../menus"
 import { Slot } from "../slot"
 import { tcx } from "~/utils"
@@ -128,11 +127,8 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
     },
   } = props
 
-  // References
-  const scrollRef = useRef<HTMLDivElement>(null)
-  const selectTimeoutRef = useRef<ReturnType<typeof setTimeout>>()
-  const elementsRef = useRef<Array<HTMLButtonElement | null>>([])
-  const labelsRef = useRef<Array<string | null>>([])
+  // References - 使用统一的 refs 管理
+  const { scrollRef, elementsRef, labelsRef, selectTimeoutRef } = useMenuBaseRefs()
 
   // 状态管理
   const [isOpen, setIsOpen] = useState(false)
@@ -158,18 +154,20 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
 
   // 上下文和 hooks
   const parent = useContext(MenuContext)
-  const tree = useFloatingTree()
-  const nodeId = useFloatingNodeId()
-  const parentId = useFloatingParentNodeId()
-  const item = useListItem()
-  const isNested = !disabledNested && parentId != null
 
-  // 处理开关状态变化
+  // 处理开关状态变化（需要在 useMenuTree 之前定义）
   const handleOpenChange = useEventCallback((newOpen: boolean) => {
     if (!isCoordinateMode && controlledOpen === undefined) {
       setIsOpen(newOpen)
     }
     onOpenChange?.(newOpen)
+  })
+
+  // 使用统一的 tree 管理
+  const { nodeId, item, isNested } = useMenuTree({
+    disabledNested,
+    handleOpenChange,
+    isControlledOpen,
   })
 
   // 虚拟定位函数 - 用于坐标模式
@@ -194,23 +192,33 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
   // 使用 ref 避免重复设置虚拟位置
   const lastPositionRef = useRef<{ x: number; y: number } | null>(null)
 
-  // Floating UI 配置  的定位策略
-  const { refs, floatingStyles, context, isPositioned } = useFloating({
-    nodeId,
-    open: isControlledOpen,
-    onOpenChange: handleOpenChange,
-    placement: isNested ? "right-start" : placement,
-    middleware: [
+  // Floating UI 配置 - 使用 useMemo 缓存 middleware 数组，避免每次渲染都创建新数组
+  const middleware = useMemo(
+    () => [
       offset({ mainAxis: isNested ? 10 : offsetDistance, alignmentAxis: isNested ? -4 : 0 }),
       flip(),
       shift(),
       size({
         padding: 4,
         apply({ elements, availableHeight, rects }) {
-          // 只在需要时设置最大高度，避免超出窗口边界
+          // 使用 scrollHeight 获取内容的实际高度，而不是 clientHeight
+          // scrollHeight 会随着内容变化自动更新，而 clientHeight 可能被 maxHeight 限制
+          const contentHeight = scrollRef.current?.scrollHeight || elements.floating.scrollHeight
+
+          // 根据内容实际高度和可用空间计算合适的高度
+          const maxHeight = Math.min(contentHeight, availableHeight)
+
           Object.assign(elements.floating.style, {
-            maxHeight: `${availableHeight}px`,
+            maxHeight: `${maxHeight}px`,
+            display: "flex",
+            flexDirection: "column",
           })
+
+          // 确保 MenusBase (通过 scrollRef) 能够正确继承高度并滚动
+          if (scrollRef.current) {
+            scrollRef.current.style.height = "100%"
+            scrollRef.current.style.maxHeight = "100%"
+          }
 
           // 如果需要匹配触发器宽度
           if (matchTriggerWidth) {
@@ -219,6 +227,15 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
         },
       }),
     ],
+    [isNested, offsetDistance, matchTriggerWidth, scrollRef],
+  )
+
+  const { refs, floatingStyles, context, isPositioned } = useFloating({
+    nodeId,
+    open: isControlledOpen,
+    onOpenChange: handleOpenChange,
+    placement: isNested ? "right-start" : placement,
+    middleware,
     whileElementsMounted: autoUpdate,
   })
 
@@ -295,38 +312,17 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
     typeahead,
   ])
 
-  // Tree 事件处理
-  useEffect(() => {
-    if (!tree) return
+  // Tree 事件处理已由 useMenuTree 统一管理
 
-    const handleTreeClick = () => {
-      handleOpenChange(false)
-    }
-
-    const onSubMenuOpen = (event: { nodeId: string; parentId: string }) => {
-      if (event.nodeId !== nodeId && event.parentId === parentId) {
-        handleOpenChange(false)
-      }
-    }
-
-    tree.events.on("click", handleTreeClick)
-    tree.events.on("menuopen", onSubMenuOpen)
-
-    return () => {
-      tree.events.off("click", handleTreeClick)
-      tree.events.off("menuopen", onSubMenuOpen)
-    }
-  }, [tree, nodeId, parentId, handleOpenChange])
-
-  // 发送菜单打开事件
-  useEffect(() => {
-    if (isControlledOpen && tree) {
-      tree.events.emit("menuopen", { parentId, nodeId })
-    }
-  }, [tree, isControlledOpen, nodeId, parentId])
+  // 确保滚动容器正确设置高度
+  useMenuScrollHeight({
+    isControlledOpen,
+    isPositioned,
+    scrollRef,
+  })
 
   // 使用共享的滚动逻辑
-  const { handleArrowScroll, handleArrowHide, getScrollProps } = useMenuScroll({
+  const { handleArrowScroll, handleArrowHide, scrollProps } = useMenuScroll({
     scrollRef,
     selectTimeoutRef,
     scrollTop,
@@ -487,7 +483,7 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
                       cloneElement(contentElement, {
                         ref: scrollRef,
                         matchTriggerWidth: matchTriggerWidth,
-                        ...getScrollProps(),
+                        ...scrollProps,
                       })}
                   </MenuContext.Provider>
 
