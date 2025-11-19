@@ -58,14 +58,15 @@ export interface TreeListProps {
 
   onNodeExpand?: (node: TreeNodeType, expanded: boolean) => void
   onNodeHover?: (node: TreeNodeType, isHovered: boolean, event: React.MouseEvent) => void
+  onNodeIconDoubleClick?: (node: TreeNodeType, event: ReactMouseEvent) => void
   onNodeRename?: (node: TreeNodeType, newName: string) => void
-  onNodeSelect?: (nodes: TreeNodeType[], event?: React.MouseEvent | React.KeyboardEvent) => void
 
+  onNodeSelect?: (nodes: TreeNodeType[], event?: React.MouseEvent | React.KeyboardEvent) => void
   renderActions?: (node: TreeNodeType) => ReactNode
   renderIcon?: (node: TreeNodeType) => ReactNode
-  renderNode?: (node: TreeNodeType) => ReactNode
+  renderLabel?: (node: TreeNodeType) => ReactNode
 
-  onNodeIconDoubleClick?: (node: TreeNodeType, event: ReactMouseEvent) => void
+  renderNode?: (node: TreeNodeType) => ReactNode
   selectedNodeIds: Set<string>
   style?: React.CSSProperties
   virtualScroll?: boolean
@@ -96,12 +97,13 @@ export interface TreeNodeProps {
   onDrop?: (node: TreeNodeType, event: React.DragEvent) => void
   onExpand?: (node: TreeNodeType) => void
   onHover?: (node: TreeNodeType, isHovered: boolean, event: React.MouseEvent) => void
+  onIconDoubleClick?: (node: TreeNodeType, event: ReactMouseEvent) => void
   onMeasure?: (width: number) => void
   onRename?: (node: TreeNodeType, newName: string) => void
   onSelect?: (node: TreeNodeType, event: React.MouseEvent | React.KeyboardEvent) => void
-  onIconDoubleClick?: (node: TreeNodeType, event: ReactMouseEvent) => void
   renderActions?: (node: TreeNodeType) => ReactNode
   renderIcon?: (node: TreeNodeType) => ReactNode
+  renderLabel?: (node: TreeNodeType) => ReactNode
   size?: number
   start?: number
   style?: React.CSSProperties // 用于测量节点宽度

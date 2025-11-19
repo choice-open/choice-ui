@@ -572,6 +572,15 @@ const ComprehensiveTreeList = observer(() => {
     [],
   )
 
+  const renderNodeLabel = useCallback(
+    (node: TreeNodeType) => (
+      <span className="text-body-tiny text-secondary-foreground">
+        {node.isFolder ? "📁" : "📄"} {node.name}
+      </span>
+    ),
+    [],
+  )
+
   const renderNodeActions = useCallback(
     (node: TreeNodeType) => (
       <div className="flex items-center gap-1">
@@ -783,6 +792,7 @@ const ComprehensiveTreeList = observer(() => {
             onNodeExpand={handleNodeExpand}
             onNodeHover={handleNodeHover}
             onNodeIconDoubleClick={handleIconDoubleClick}
+            renderLabel={renderNodeLabel}
             renderActions={renderNodeActions}
             onNodeContextMenu={handleNodeContextMenu}
             renderIcon={(node) => (

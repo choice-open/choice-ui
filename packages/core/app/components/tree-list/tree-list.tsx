@@ -37,6 +37,7 @@ export const TreeList = (props: TreeListProps) => {
     renderNode,
     renderIcon,
     renderActions,
+    renderLabel,
     onNodeSelect,
     onNodeExpand,
     onNodeRename,
@@ -253,6 +254,7 @@ export const TreeList = (props: TreeListProps) => {
           renderNode={renderNode}
           renderIcon={renderIcon}
           renderActions={renderActions}
+          renderLabel={renderLabel}
           onSelect={(node, event) =>
             selectNode(
               node,
@@ -287,6 +289,7 @@ export const TreeList = (props: TreeListProps) => {
       renderNode,
       renderIcon,
       renderActions,
+      renderLabel,
       selectNode,
       expandNode,
       startDrag,

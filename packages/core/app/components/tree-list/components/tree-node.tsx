@@ -15,6 +15,7 @@ export const TreeNode = forwardRef<HTMLDivElement, TreeNodeProps>((props, ref) =
     className,
     renderIcon,
     renderActions,
+    renderLabel,
     onSelect,
     onExpand,
     onDragStart,
@@ -207,14 +208,24 @@ export const TreeNode = forwardRef<HTMLDivElement, TreeNodeProps>((props, ref) =
   // 3. 其他情况下使用onMouseDown（响应更快）
   const useClickEvent = isMultiSelectionActive && !isCommandKeyPressed
 
-  const handleMouseEnter = (e: MouseEvent<HTMLDivElement>) => {
-    setIsHovered(true)
-    onHover?.(node, true, e)
+  // Handle mouse enter/leave on the outer container to cover the entire node area
+  const handleOuterMouseEnter = (e: MouseEvent<HTMLDivElement>) => {
+    if (!isHovered) {
+      setIsHovered(true)
+      onHover?.(node, true, e)
+    }
   }
 
-  const handleMouseLeave = (e: MouseEvent<HTMLDivElement>) => {
-    setIsHovered(false)
-    onHover?.(node, false, e)
+  const handleOuterMouseLeave = (e: MouseEvent<HTMLDivElement>) => {
+    // Check if we're moving to a child element within the node
+    const relatedTarget = e.relatedTarget as Node | null
+    const currentTarget = e.currentTarget as Node
+
+    // If relatedTarget is null or not within the current target, we're truly leaving
+    if (!relatedTarget || !currentTarget.contains(relatedTarget)) {
+      setIsHovered(false)
+      onHover?.(node, false, e)
+    }
   }
 
   return (
@@ -231,32 +242,60 @@ export const TreeNode = forwardRef<HTMLDivElement, TreeNodeProps>((props, ref) =
       data-is-selection={isSelected ? "selected" : "unselected"}
       data-is-parent-selected={isParentSelected && !isSelected}
       data-is-last-in-group={isLastItemInFolder}
+      onMouseEnter={handleOuterMouseEnter}
+      onMouseLeave={handleOuterMouseLeave}
     >
-      <div
-        className={tcx(
-          "pointer-events-none absolute inset-0 flex items-center justify-end gap-1 px-2",
-          isRenaming ? "opacity-0" : isHovered ? "opacity-100" : "opacity-0",
-        )}
-        aria-hidden={isRenaming}
-      >
+      {/* Label: 显示在非 hover 状态 */}
+      {renderLabel && (
         <div
           className={tcx(
-            "pointer-events-auto sticky right-3 flex h-6 items-center gap-2",
-            isParentSelected && !isSelected
-              ? "bg-blue-200"
-              : isSelected
-                ? "bg-blue-100"
-                : isHovered
-                  ? "bg-gray-100"
-                  : "bg-default-background",
+            "pointer-events-none absolute inset-0 flex items-center justify-end gap-1 px-2",
+            isRenaming ? "opacity-0" : isHovered ? "opacity-0" : "opacity-100",
           )}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-          onMouseDown={(event) => event.stopPropagation()}
+          aria-hidden={isRenaming || isHovered}
         >
-          {renderActions && renderActions(node)}
+          <div
+            className={tcx(
+              "pointer-events-auto sticky right-3 flex h-6 items-center gap-2",
+              isParentSelected && !isSelected
+                ? "bg-blue-200"
+                : isSelected
+                  ? "bg-blue-100"
+                  : "bg-default-background",
+            )}
+            onMouseDown={(event) => event.stopPropagation()}
+          >
+            {renderLabel(node)}
+          </div>
         </div>
-      </div>
+      )}
+
+      {/* Actions: 显示在 hover 状态 */}
+      {renderActions && (
+        <div
+          className={tcx(
+            "pointer-events-none absolute inset-0 flex items-center justify-end gap-1 px-2",
+            isRenaming ? "opacity-0" : isHovered ? "opacity-100" : "opacity-0",
+          )}
+          aria-hidden={isRenaming || !isHovered}
+        >
+          <div
+            className={tcx(
+              "pointer-events-auto sticky right-3 flex h-6 items-center gap-2",
+              isParentSelected && !isSelected
+                ? "bg-blue-200"
+                : isSelected
+                  ? "bg-blue-100"
+                  : isHovered
+                    ? "bg-gray-100"
+                    : "bg-default-background",
+            )}
+            onMouseDown={(event) => event.stopPropagation()}
+          >
+            {renderActions(node)}
+          </div>
+        </div>
+      )}
 
       <div
         ref={(el) => {
@@ -301,8 +340,6 @@ export const TreeNode = forwardRef<HTMLDivElement, TreeNodeProps>((props, ref) =
         onClick={useClickEvent ? handleClick : undefined}
         onMouseDown={useClickEvent ? undefined : handleClick}
         onContextMenu={handleContextMenu}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
       >
         <DropIndicator
           dropPosition={dropPosition}

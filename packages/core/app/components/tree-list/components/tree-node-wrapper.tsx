@@ -25,6 +25,7 @@ interface TreeNodeWrapperProps {
   onSelect: (node: TreeNodeType, event?: React.MouseEvent | React.KeyboardEvent) => void
   renderActions?: (node: TreeNodeType) => React.ReactNode
   renderIcon?: (node: TreeNodeType) => React.ReactNode
+  renderLabel?: (node: TreeNodeType) => React.ReactNode
   renderNode?: (node: TreeNodeType) => React.ReactNode
   selectedNodes: TreeNodeType[]
   visibleNodes: TreeNodeType[]
@@ -58,6 +59,7 @@ const TreeNodeWrapperComponent = (props: TreeNodeWrapperProps) => {
     renderNode,
     renderIcon,
     renderActions,
+    renderLabel,
     selectedNodes,
     visibleNodes,
   } = props
@@ -243,6 +245,7 @@ const TreeNodeWrapperComponent = (props: TreeNodeWrapperProps) => {
       containerWidth={containerWidth}
       renderIcon={renderIcon}
       renderActions={renderActions}
+      renderLabel={renderLabel}
       onIconDoubleClick={onIconDoubleClick}
       isLastInParent={isLastChild}
       isFirstSelected={selectionPosition.isFirstSelected}
@@ -280,6 +283,7 @@ export const TreeNodeWrapper = memo(TreeNodeWrapperComponent, (prevProps, nextPr
     prevProps.renderNode === nextProps.renderNode &&
     prevProps.renderIcon === nextProps.renderIcon &&
     prevProps.renderActions === nextProps.renderActions &&
+    prevProps.renderLabel === nextProps.renderLabel &&
     prevProps.onHover === nextProps.onHover &&
     prevProps.onIconDoubleClick === nextProps.onIconDoubleClick
   )
