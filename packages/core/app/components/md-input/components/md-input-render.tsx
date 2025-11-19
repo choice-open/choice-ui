@@ -6,12 +6,14 @@ import { tcx } from "~/utils"
 
 export interface MdInputRenderProps {
   className?: string
+  contentRef?: React.RefObject<HTMLDivElement>
+  scrollRef?: React.RefObject<HTMLDivElement>
   withScrollArea?: boolean
 }
 
 export const MdInputRender = memo(
   forwardRef<HTMLDivElement, MdInputRenderProps>((props, ref) => {
-    const { className, withScrollArea = true } = props
+    const { className, withScrollArea = true, contentRef, scrollRef } = props
     const {
       value,
       activeTab,
@@ -40,6 +42,8 @@ export const MdInputRender = memo(
         allowedPrefixes={allowedPrefixes}
         theme={theme}
         withScrollArea={withScrollArea}
+        contentRef={contentRef}
+        scrollRef={scrollRef}
       />
     )
   }),

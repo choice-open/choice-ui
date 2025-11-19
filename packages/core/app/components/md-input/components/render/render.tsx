@@ -10,8 +10,10 @@ interface RenderProps {
   allowedPrefixes?: string[]
   className?: string
   content: string
+  contentRef?: React.RefObject<HTMLDivElement>
   mentionItems?: MentionItemProps[]
   mentionRenderComponent?: React.ComponentType<MentionRenderProps>
+  scrollRef?: React.RefObject<HTMLDivElement>
   theme?: "light" | "dark"
   withScrollArea?: boolean
 }
@@ -28,6 +30,8 @@ export const Render = memo(
       allowedPrefixes,
       theme = "light",
       withScrollArea = true,
+      contentRef,
+      scrollRef,
     } = props
     const components = useMemo(
       () => createMarkdownComponents(tv, mentionRenderComponent, mentionItems, theme),
@@ -46,8 +50,8 @@ export const Render = memo(
 
     return withScrollArea ? (
       <ScrollArea className={className}>
-        <ScrollArea.Viewport>
-          <ScrollArea.Content>
+        <ScrollArea.Viewport ref={scrollRef}>
+          <ScrollArea.Content ref={contentRef}>
             <div
               ref={ref}
               className={tv.root()}
