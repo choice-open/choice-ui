@@ -27,6 +27,7 @@ const MdInputRoot = memo(
       mentionRenderComponent,
       allowedPrefixes,
       children,
+      customColor,
       ...rest
     } = props
 
@@ -151,6 +152,16 @@ const MdInputRoot = memo(
         <div
           ref={ref}
           className={tcx(tv.root(), className)}
+          style={
+            {
+              "--default-background-color": customColor?.defaultBackground,
+              "--default-boundary-color": customColor?.defaultBoundary,
+              "--default-foreground-color": customColor?.defaultForeground,
+              "--secondary-background-color": customColor?.secondaryBackground,
+              "--secondary-foreground-color": customColor?.secondaryForeground,
+              "--code-background-color": customColor?.codeBackground,
+            } as React.CSSProperties
+          }
           {...rest}
         >
           {children}

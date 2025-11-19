@@ -53,7 +53,7 @@ export const mdTv = tcv({
 
 export const CodeBlockTv = tcv({
   slots: {
-    root: "bg-default-background group relative overflow-hidden rounded-lg border",
+    root: "md-code-block group",
     content: "flex w-fit flex-col overflow-clip",
     code: "text-message-code w-fit min-w-full bg-transparent font-mono [&>pre]:!bg-transparent [&>pre]:px-4 [&>pre]:py-4",
   },

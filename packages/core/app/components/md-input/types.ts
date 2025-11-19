@@ -23,6 +23,14 @@ export interface MdInputProps
   extends Omit<HTMLAttributes<HTMLDivElement>, "onChange" | "children"> {
   allowedPrefixes?: string[]
   children: React.ReactNode
+  customColor?: {
+    codeBackground?: string
+    defaultBackground?: string
+    defaultBoundary?: string
+    defaultForeground?: string
+    secondaryBackground?: string
+    secondaryForeground?: string
+  }
   disabled?: boolean
   mentionItems?: MentionItemProps[]
   mentionOnSelect?: (item: MentionItemProps, query: string) => string

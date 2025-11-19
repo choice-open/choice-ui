@@ -24,6 +24,8 @@ export const CodeBlock = memo(function CodeBlock(props: CodeBlockProps) {
   const cacheKey = useMemo(() => getCacheKey(code, language, theme), [code, language, theme])
 
   useEffect(() => {
+    let cancelled = false
+
     const cached = highlightCache.get(cacheKey)
     if (cached) {
       setHighlightedHtml(cached)
@@ -33,8 +35,10 @@ export const CodeBlock = memo(function CodeBlock(props: CodeBlockProps) {
     async function highlight() {
       if (!code) {
         const html = "<pre><code></code></pre>"
-        setHighlightedHtml(html)
-        highlightCache.set(cacheKey, html)
+        if (!cancelled) {
+          setHighlightedHtml(html)
+          highlightCache.set(cacheKey, html)
+        }
         return
       }
 
@@ -43,20 +47,28 @@ export const CodeBlock = memo(function CodeBlock(props: CodeBlockProps) {
           lang: language,
           theme: theme === "light" ? "github-light" : "github-dark",
         })
-        setHighlightedHtml(html)
-        highlightCache.set(cacheKey, html)
+        if (!cancelled) {
+          setHighlightedHtml(html)
+          highlightCache.set(cacheKey, html)
 
-        if (highlightCache.size > 100) {
-          const firstKey = highlightCache.keys().next().value
-          if (firstKey) highlightCache.delete(firstKey)
+          if (highlightCache.size > 100) {
+            const firstKey = highlightCache.keys().next().value
+            if (firstKey) highlightCache.delete(firstKey)
+          }
         }
       } catch {
         const html = `<pre><code>${code}</code></pre>`
-        setHighlightedHtml(html)
-        highlightCache.set(cacheKey, html)
+        if (!cancelled) {
+          setHighlightedHtml(html)
+          highlightCache.set(cacheKey, html)
+        }
       }
     }
     highlight()
+
+    return () => {
+      cancelled = true
+    }
   }, [code, language, theme, cacheKey])
 
   const tv = CodeBlockTv()

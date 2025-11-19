@@ -525,9 +525,16 @@ MIT License - see [LICENSE](LICENSE) file for details.
 **Note**: This example demonstrates all GitHub Flavored Markdown features supported by the component.`)
 
     const isDarkMode = useDarkMode()
+    const customColor = {
+      defaultBackground: isDarkMode ? "var(--color-pink-pale-700)" : "var(--color-pink-300)",
+      defaultBoundary: isDarkMode ? "var(--color-pink-pale-500)" : "var(--color-pink-400)",
+      secondaryBackground: isDarkMode ? "var(--color-pink-pale-600)" : "var(--color-pink-200)",
+      secondaryForeground: isDarkMode ? "var(--color-pink-pale-900)" : "var(--color-pink-pale-500)",
+      codeBackground: "var(--color-default-background)",
+    }
     return (
       <MdInput
-        key={isDarkMode ? "dark" : "light"}
+        customColor={customColor}
         theme={isDarkMode ? "dark" : "light"}
         value={value}
         onChange={setValue}

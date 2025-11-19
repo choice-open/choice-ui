@@ -612,6 +612,7 @@
   /* Markdown Component Styles */
   .md {
     @apply text-message;
+    background-color: var(--default-background-color, var(--color-default-background));
   }
 
   .md > *:first-child {
@@ -698,7 +699,9 @@
 
   /* Blockquotes */
   .md-blockquote {
-    @apply bg-secondary-background text-secondary-foreground mt-4 mb-4 rounded-lg px-4 py-3 not-italic;
+    @apply mt-4 mb-4 rounded-lg px-4 py-3 not-italic;
+    background-color: var(--secondary-background-color, var(--color-secondary-background));
+    color: var(--secondary-foreground-color, var(--color-secondary-foreground));
   }
 
   .md-blockquote:first-child {
@@ -724,6 +727,7 @@
   /* Horizontal rules */
   .md-hr {
     @apply my-8 border-t;
+    border-color: var(--default-boundary-color, var(--color-default-boundary));
   }
 
   /* Links */
@@ -732,6 +736,13 @@
   }
 
   /* Code */
+
+  .md-code-block {
+    @apply relative overflow-hidden rounded-lg border;
+    border-color: var(--default-boundary-color, var(--color-default-boundary));
+    background-color: var(--code-background-color, var(--color-default-background));
+  }
+
   .md-code {
     @apply bg-tertiary-background text-message-code rounded-md px-1 py-0.5;
     font-family:
@@ -757,14 +768,17 @@
   }
 
   .md-th {
-    @apply border-default-boundary bg-secondary-background font-strong border border-b-0 text-left align-middle;
+    @apply font-strong border border-b-0 text-left align-middle;
+    border-color: var(--default-boundary-color, var(--color-default-boundary));
+    background-color: var(--secondary-background-color, var(--color-secondary-background));
     /* Match SCSS: $spacing-md $spacing-lg = 0.5em 0.75em */
     padding: 0.5em 0.75em;
     line-height: calc(1.25 / 0.875);
   }
 
   .md-td {
-    @apply border-default-boundary border text-left align-middle;
+    @apply border text-left align-middle;
+    border-color: var(--default-boundary-color, var(--color-default-boundary));
     /* Match SCSS: $spacing-md $spacing-lg = 0.5em 0.75em */
     padding: 0.5em 0.75em;
     line-height: calc(1.25 / 0.875);
