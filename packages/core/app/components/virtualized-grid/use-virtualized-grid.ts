@@ -29,7 +29,9 @@ export function useContainerData(
   const windowScroll =
     externalRef && externalRef.current ? elementScrollPosition : windowScrollPosition
   const elementWindowOffset = useElementWindowOffset(actualRef)
-  const elementSize = useElementSize(containerRef || actualRef)
+  // Always use internalRef (actual grid container) for elementSize calculation
+  // containerRef may have different width (e.g., with padding) and should not be used for column width calculation
+  const elementSize = useElementSize(internalRef)
 
   return useMemo(() => {
     return {

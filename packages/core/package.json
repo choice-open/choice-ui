@@ -1,6 +1,6 @@
 {
   "name": "@choiceform/design-system",
-  "version": "1.2.89",
+  "version": "1.2.90",
   "description": "A modern React UI component library - Figma-inspired design system with comprehensive documentation",
   "sideEffects": false,
   "type": "module",
@@ -43,8 +43,7 @@
     "test:coverage": "jest --coverage",
     "test:generate-output": "jest --json --outputFile=.jest-test-results.json || true",
     "test:generate-watch": "jest --json --outputFile=.jest-test-results.json --watch",
-    "prestorybook": "pnpm run test:generate-output",
-    "publish": "npm publish"
+    "prestorybook": "pnpm run test:generate-output"
   },
   "dependencies": {
     "@choiceform/icons-react": "^1.3.8",
