@@ -23,6 +23,7 @@ export interface RadioGroupContextType {
   value: string
   onChange: (value: string) => void
   disabled?: boolean
+  readonly?: boolean
   variant?: "default" | "accent" | "outline"
 }
 

@@ -26,6 +26,7 @@ export interface RangeProps {
   onChange?: (value: number) => void
   onChangeEnd?: () => void
   onChangeStart?: () => void
+  readonly?: boolean
   step?: number
   thumbSize?: number
   trackSize?: {
@@ -46,6 +47,7 @@ export const Range = forwardRef<HTMLDivElement, RangeProps>(function Range(props
     max = 100,
     step = 1,
     disabled = false,
+    readonly = false,
     className,
     connectsClassName = {
       positive: "bg-accent-background",
@@ -160,6 +162,8 @@ export const Range = forwardRef<HTMLDivElement, RangeProps>(function Range(props
   }, [defaultValue, step, valueToPosition])
 
   const updatePosition = useEventCallback((clientX: number, isEnd?: boolean) => {
+    if (readonly) return
+
     const rect = sliderRef.current?.getBoundingClientRect()
     if (!rect) return
 
@@ -194,7 +198,7 @@ export const Range = forwardRef<HTMLDivElement, RangeProps>(function Range(props
 
   const handlePointerDown = useCallback(
     (e: React.PointerEvent) => {
-      if (disabled) return
+      if (disabled || readonly) return
       e.preventDefault()
       e.stopPropagation()
 
@@ -236,19 +240,19 @@ export const Range = forwardRef<HTMLDivElement, RangeProps>(function Range(props
       window.addEventListener("pointerup", handleUp)
       window.addEventListener("pointercancel", handleUp)
     },
-    [disabled, onChangeEnd, onChangeStart, updatePosition],
+    [disabled, readonly, onChangeEnd, onChangeStart, updatePosition],
   )
 
   const handleSliderPointerDown = useCallback(
     (e: React.PointerEvent) => {
-      if (disabled || e.target === thumbRef.current) return
+      if (disabled || readonly || e.target === thumbRef.current) return
       handlePointerDown(e)
     },
-    [disabled, handlePointerDown],
+    [disabled, readonly, handlePointerDown],
   )
 
   const handleKeyDown = useEventCallback((e: React.KeyboardEvent) => {
-    if (disabled) return
+    if (disabled || readonly) return
 
     const stepValue = e.shiftKey ? step * 10 : step
     let newValue = currentValue
@@ -410,7 +414,7 @@ export const Range = forwardRef<HTMLDivElement, RangeProps>(function Range(props
           type="text"
           onKeyDown={handleKeyDown}
           className={styles.input()}
-          tabIndex={disabled ? -1 : 0}
+          tabIndex={disabled || readonly ? -1 : 0}
           readOnly
         />
       </div>

@@ -1413,3 +1413,61 @@ export const NestedSubmenuWithLongList: Story = {
     )
   },
 }
+
+/**
+ * Dropdown component in readonly state.
+ *
+ * In readonly mode:
+ * - The menu can be opened and closed normally
+ * - Clicking on menu items will not execute their onClick handlers
+ * - Useful for displaying menu options without allowing actions
+ */
+export const Readonly: Story = {
+  render: function ReadonlyStory() {
+    const [clickCount, setClickCount] = useState(0)
+    const [isOpen, setIsOpen] = useState(false)
+
+    const handleClick = () => {
+      setClickCount((prev) => prev + 1)
+    }
+
+    return (
+      <div className="flex flex-col gap-4">
+        <div className="rounded-xl border bg-stone-50 p-4">
+          <div className="text-body-small-strong mb-2 text-stone-700">Click Count:</div>
+          <div className="text-body-small font-mono text-stone-600">{clickCount}</div>
+        </div>
+
+        <Dropdown
+          readonly
+          open={isOpen}
+          onOpenChange={setIsOpen}
+        >
+          <Dropdown.Trigger>
+            <Dropdown.Value>Click to open menu (readonly mode)</Dropdown.Value>
+          </Dropdown.Trigger>
+          <Dropdown.Content>
+            <Dropdown.Item onClick={handleClick}>
+              <Dropdown.Value>New File</Dropdown.Value>
+            </Dropdown.Item>
+            <Dropdown.Item onClick={handleClick}>
+              <Dropdown.Value>Open File</Dropdown.Value>
+            </Dropdown.Item>
+            <Dropdown.Item onClick={handleClick}>
+              <Dropdown.Value>Save</Dropdown.Value>
+            </Dropdown.Item>
+            <Dropdown.Divider />
+            <Dropdown.Item onClick={handleClick}>
+              <Dropdown.Value>Exit</Dropdown.Value>
+            </Dropdown.Item>
+          </Dropdown.Content>
+        </Dropdown>
+
+        <div className="text-body-small text-stone-600">
+          💡 Try clicking on menu items - the click count should not change. The menu can still be
+          opened and closed normally.
+        </div>
+      </div>
+    )
+  },
+}

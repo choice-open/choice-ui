@@ -1090,3 +1090,63 @@ export const CustomChip: Story = {
     )
   },
 }
+
+/**
+ * MultiSelect component in readonly state.
+ *
+ * In readonly mode:
+ * - The menu can be opened and closed normally
+ * - Clicking on options will not change the current selection
+ * - The menu will remain open after clicking an option
+ * - Chip remove buttons are disabled and cannot remove chips
+ * - Backspace key cannot remove chips
+ * - Useful for displaying options without allowing changes
+ */
+export const Readonly: Story = {
+  render: function ReadonlyStory() {
+    const [values, setValues] = useState<string[]>(["apple", "banana"])
+    const [changeCount, setChangeCount] = useState(0)
+
+    const handleChange = (newValues: string[]) => {
+      setValues(newValues)
+      setChangeCount((prev) => prev + 1)
+    }
+
+    return (
+      <div className="flex flex-col gap-4">
+        <div className="rounded-xl border bg-stone-50 p-4">
+          <div className="text-body-small-strong mb-2 text-stone-700">Current Selection:</div>
+          <div className="text-body-small font-mono text-stone-600">
+            {values.length > 0 ? values.join(", ") : "None"}
+          </div>
+          <div className="text-body-small-strong mt-2 text-stone-700">Change Count:</div>
+          <div className="text-body-small font-mono text-stone-600">{changeCount}</div>
+        </div>
+
+        <MultiSelect
+          readonly
+          values={values}
+          onChange={handleChange}
+        >
+          <MultiSelect.Trigger placeholder="Select fruits...">
+            {values.length > 0 ? `${values.length} selected` : "Select fruits..."}
+          </MultiSelect.Trigger>
+          <MultiSelect.Content>
+            <MultiSelect.Item value="apple">Apple</MultiSelect.Item>
+            <MultiSelect.Item value="banana">Banana</MultiSelect.Item>
+            <MultiSelect.Item value="orange">Orange</MultiSelect.Item>
+            <MultiSelect.Item value="grape">Grape</MultiSelect.Item>
+            <MultiSelect.Item value="strawberry">Strawberry</MultiSelect.Item>
+            <MultiSelect.Item value="kiwi">Kiwi</MultiSelect.Item>
+          </MultiSelect.Content>
+        </MultiSelect>
+
+        <div className="text-body-small text-stone-600">
+          💡 Try clicking on different options - the selection should not change and the change count
+          should remain at 0. The menu can still be opened and closed normally. Also try clicking the
+          remove button on chips or pressing Backspace - chips should not be removable in readonly mode.
+        </div>
+      </div>
+    )
+  },
+}

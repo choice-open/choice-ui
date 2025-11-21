@@ -124,7 +124,7 @@ export const Variants: Story = {
         <div className="grid grid-cols-[auto_1fr] items-center gap-4">
           {Object.values(State).map((state) => (
             <Fragment key={state}>
-              <span className="capitalize text-fuchsia-500">{state}</span>
+              <span className="text-fuchsia-500 capitalize">{state}</span>
               <ToggleButton
                 variant={variant}
                 value={controlled}
@@ -162,6 +162,66 @@ export const Tooltip: Story = {
       >
         {controlled ? <FieldTypeCheckbox /> : <FieldAdd />}
       </ToggleButton>
+    )
+  },
+}
+
+/**
+ * ToggleButton component in readonly state.
+ *
+ * In readonly mode:
+ * - The toggle button does not respond to click or change events
+ * - The value cannot be changed
+ * - Useful for displaying toggle state without allowing changes
+ */
+export const Readonly: Story = {
+  render: function ReadonlyStory() {
+    const [value, setValue] = useState(false)
+    const [changeCount, setChangeCount] = useState(0)
+
+    const handleChange = (newValue: boolean) => {
+      setValue(newValue)
+      setChangeCount((prev) => prev + 1)
+    }
+
+    return (
+      <div className="flex flex-col gap-4">
+        <div className="rounded-xl border bg-stone-50 p-4">
+          <div className="text-body-small-strong mb-2 text-stone-700">Current Value:</div>
+          <div className="text-body-small font-mono text-stone-600">{value ? "true" : "false"}</div>
+          <div className="text-body-small-strong mt-2 text-stone-700">Change Count:</div>
+          <div className="text-body-small font-mono text-stone-600">{changeCount}</div>
+        </div>
+
+        <div className="flex flex-wrap gap-4">
+          <ToggleButton
+            readonly
+            value={value}
+            onChange={handleChange}
+          >
+            {value ? <FieldTypeCheckbox /> : <FieldAdd />}
+          </ToggleButton>
+          <ToggleButton
+            readonly
+            value={!value}
+            onChange={handleChange}
+            variant="secondary"
+          >
+            {!value ? <FieldTypeCheckbox /> : <FieldAdd />}
+          </ToggleButton>
+          <ToggleButton
+            value={value}
+            onChange={handleChange}
+          >
+            {value ? <FieldTypeCheckbox /> : <FieldAdd />}
+          </ToggleButton>
+        </div>
+
+        <div className="text-body-small text-stone-600">
+          💡 Try clicking on the readonly toggle buttons - the value should not change and the
+          change count should remain at 0. Only the normal button will change the value.
+        </div>
+      </div>
     )
   },
 }

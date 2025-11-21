@@ -262,3 +262,58 @@ export const Variants: Story = {
     )
   },
 }
+
+/**
+ * Tabs component in readonly state.
+ *
+ * In readonly mode:
+ * - Tabs do not respond to click or keyboard events
+ * - The selected tab cannot be changed
+ * - Useful for displaying tabs without allowing changes
+ */
+export const Readonly: Story = {
+  render: function ReadonlyStory() {
+    const [value, setValue] = useState<string>("tab1")
+    const [changeCount, setChangeCount] = useState(0)
+
+    const handleChange = (newValue: string) => {
+      setValue(newValue)
+      setChangeCount((prev) => prev + 1)
+    }
+
+    return (
+      <div className="flex flex-col gap-4">
+        <div className="rounded-xl border bg-stone-50 p-4">
+          <div className="text-body-small-strong mb-2 text-stone-700">Current Value:</div>
+          <div className="text-body-small font-mono text-stone-600">{value}</div>
+          <div className="text-body-small-strong mt-2 text-stone-700">Change Count:</div>
+          <div className="text-body-small font-mono text-stone-600">{changeCount}</div>
+        </div>
+
+        <Tabs
+          readonly
+          value={value}
+          onChange={handleChange}
+        >
+          <Tabs.Item value="tab1">Tab 1</Tabs.Item>
+          <Tabs.Item value="tab2">Tab 2</Tabs.Item>
+          <Tabs.Item value="tab3">Tab 3</Tabs.Item>
+        </Tabs>
+
+        <Tabs
+          value={value}
+          onChange={handleChange}
+        >
+          <Tabs.Item value="tab1">Tab 1</Tabs.Item>
+          <Tabs.Item value="tab2">Tab 2</Tabs.Item>
+          <Tabs.Item value="tab3">Tab 3</Tabs.Item>
+        </Tabs>
+
+        <div className="text-body-small text-stone-600">
+          💡 Try clicking on the readonly tabs - the value should not change and the change count
+          should remain at 0. Only the normal tabs will change the value.
+        </div>
+      </div>
+    )
+  },
+}

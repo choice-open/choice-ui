@@ -838,3 +838,66 @@ export const MentionsWithSlate: Story = {
     )
   },
 }
+
+/**
+ * Combobox component in readonly state.
+ *
+ * In readonly mode:
+ * - The input field is read-only and cannot be edited
+ * - Clicking on menu items will not change the value
+ * - The menu can still be opened and closed normally
+ * - Useful for displaying a value without allowing changes
+ */
+export const Readonly: Story = {
+  render: function ReadonlyStory() {
+    const [value, setValue] = useState<string>("apple")
+    const [changeCount, setChangeCount] = useState(0)
+
+    const handleChange = (newValue: string) => {
+      setValue(newValue)
+      setChangeCount((prev) => prev + 1)
+    }
+
+    const options = [
+      { value: "apple", label: "Apple" },
+      { value: "banana", label: "Banana" },
+      { value: "orange", label: "Orange" },
+      { value: "grape", label: "Grape" },
+      { value: "strawberry", label: "Strawberry" },
+    ]
+
+    return (
+      <div className="flex flex-col gap-4">
+        <div className="rounded-xl border bg-stone-50 p-4">
+          <div className="text-body-small-strong mb-2 text-stone-700">Current Value:</div>
+          <div className="text-body-small font-mono text-stone-600">{value}</div>
+          <div className="text-body-small-strong mt-2 text-stone-700">Change Count:</div>
+          <div className="text-body-small font-mono text-stone-600">{changeCount}</div>
+        </div>
+
+        <Combobox
+          readonly
+          value={value}
+          onChange={handleChange}
+        >
+          <Combobox.Trigger placeholder="Select a fruit..." />
+          <Combobox.Content>
+            {options.map((option) => (
+              <Combobox.Item
+                key={option.value}
+                value={option.value}
+              >
+                <Combobox.Value>{option.label}</Combobox.Value>
+              </Combobox.Item>
+            ))}
+          </Combobox.Content>
+        </Combobox>
+
+        <div className="text-body-small text-stone-600">
+          💡 Try typing in the input, clicking on menu items, or using the clear button - the value
+          should not change and the change count should remain at 0. The input field is read-only.
+        </div>
+      </div>
+    )
+  },
+}

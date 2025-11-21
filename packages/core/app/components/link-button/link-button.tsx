@@ -7,6 +7,7 @@ interface BaseLinkButtonProps {
   children?: React.ReactNode
   className?: string
   disabled?: boolean
+  readonly?: boolean
   variant?: "default" | "subtle"
 }
 
@@ -47,7 +48,15 @@ const linkButtonTv = tcv({
 
 export const LinkButton = forwardRef<HTMLAnchorElement | HTMLButtonElement, LinkButtonProps>(
   function LinkButton(props, ref) {
-    const { children, className, disabled = false, variant = "default", ...rest } = props
+    const {
+      children,
+      className,
+      disabled = false,
+      readonly = false,
+      variant = "default",
+      onClick,
+      ...rest
+    } = props
 
     const styles = linkButtonTv({ variant, disabled })
 
@@ -65,15 +74,21 @@ export const LinkButton = forwardRef<HTMLAnchorElement | HTMLButtonElement, Link
         : rel
       const safeTarget = isExternal && !target ? "_blank" : target
 
+      // 在 readonly 模式下阻止 onClick 事件
+      const handleClick = readonly
+        ? undefined
+        : (onClick as React.MouseEventHandler<HTMLAnchorElement> | undefined)
+
       return (
         <a
           ref={ref as React.ForwardedRef<HTMLAnchorElement>}
-          href={disabled ? undefined : href}
+          href={disabled || readonly ? undefined : href}
           target={safeTarget}
           rel={safeRel}
           className={tcx(styles, className)}
-          aria-disabled={disabled}
-          tabIndex={disabled ? -1 : undefined}
+          aria-disabled={disabled || readonly}
+          tabIndex={disabled || readonly ? -1 : undefined}
+          onClick={handleClick}
           {...anchorProps}
         >
           {children}
@@ -83,13 +98,18 @@ export const LinkButton = forwardRef<HTMLAnchorElement | HTMLButtonElement, Link
 
     // 否则渲染为按钮
     const buttonProps = rest as React.ButtonHTMLAttributes<HTMLButtonElement>
+    // 在 readonly 模式下阻止 onClick 事件
+    const handleClick = readonly
+      ? undefined
+      : (onClick as React.MouseEventHandler<HTMLButtonElement> | undefined)
 
     return (
       <button
         ref={ref as React.ForwardedRef<HTMLButtonElement>}
         type="button"
-        disabled={disabled}
+        disabled={disabled || readonly}
         className={tcx(styles, className)}
+        onClick={handleClick}
         {...buttonProps}
       >
         {children}

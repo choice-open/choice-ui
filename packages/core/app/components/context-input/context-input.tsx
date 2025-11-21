@@ -30,6 +30,7 @@ const ContextInputBase = forwardRef<HTMLDivElement, ContextInputProps>(function 
     value,
     placeholder = "Type someone...",
     disabled = false,
+    readonly = false,
     maxLength,
     autoFocus = false,
     className,
@@ -103,7 +104,7 @@ const ContextInputBase = forwardRef<HTMLDivElement, ContextInputProps>(function 
   // Context input 状态管理
   const { slateValue, handleChange } = useContextInput({
     value,
-    onChange,
+    onChange: readonly ? undefined : onChange,
     editor,
     autoFocus,
   })
@@ -163,6 +164,7 @@ const ContextInputBase = forwardRef<HTMLDivElement, ContextInputProps>(function 
           slateValue={slateValue}
           placeholder={placeholder}
           disabled={disabled}
+          readonly={readonly}
           maxLength={maxLength}
           autoFocus={autoFocus}
           variant={variant}

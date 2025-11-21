@@ -36,6 +36,7 @@ export interface ChipsInputProps
   onChange?: (value: string[]) => void
   onRemove?: (value: string) => void
   placeholder?: string
+  readonly?: boolean
   renderChip?: (props: RenderChipProps) => ReactNode
   size?: "default" | "large"
   value?: string[]
@@ -51,6 +52,7 @@ export const ChipsInput = forwardRef<HTMLDivElement, ChipsInputProps>((props, re
     onRemove,
     placeholder,
     disabled,
+    readonly = false,
     size,
     onKeyDown,
     onClick,
@@ -75,6 +77,8 @@ export const ChipsInput = forwardRef<HTMLDivElement, ChipsInputProps>((props, re
 
   const addChip = useCallback(
     (chipToAdd: string) => {
+      if (readonly) return
+      
       const trimmedChip = chipToAdd.trim()
       if (trimmedChip && (allowDuplicates || !chips.includes(trimmedChip))) {
         const newChips = [...chips, trimmedChip]
@@ -83,11 +87,13 @@ export const ChipsInput = forwardRef<HTMLDivElement, ChipsInputProps>((props, re
         setInputValue("")
       }
     },
-    [chips, setChips, onAdd, allowDuplicates],
+    [chips, setChips, onAdd, allowDuplicates, readonly],
   )
 
   const removeChip = useCallback(
     (indexToRemove: number) => {
+      if (readonly) return
+      
       const chipToRemove = chips[indexToRemove]
       const newChips = chips.filter((_chip: string, index: number) => index !== indexToRemove)
       setChips(newChips)
@@ -95,12 +101,14 @@ export const ChipsInput = forwardRef<HTMLDivElement, ChipsInputProps>((props, re
         onRemove?.(chipToRemove)
       }
     },
-    [chips, setChips, onRemove],
+    [chips, setChips, onRemove, readonly],
   )
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent<HTMLDivElement | HTMLInputElement>) => {
       onKeyDown?.(e as KeyboardEvent<HTMLDivElement>)
+
+      if (readonly) return
 
       if (selectedChipIndex !== null && (e.key === "Backspace" || e.key === "Delete")) {
         e.preventDefault()
@@ -123,7 +131,7 @@ export const ChipsInput = forwardRef<HTMLDivElement, ChipsInputProps>((props, re
         }
       }
     },
-    [onKeyDown, selectedChipIndex, chips, removeChip, addChip, isComposing],
+    [onKeyDown, selectedChipIndex, chips, removeChip, addChip, isComposing, readonly],
   )
 
   const handleContainerClick = useEventCallback((e: React.MouseEvent<HTMLDivElement>) => {
@@ -140,16 +148,18 @@ export const ChipsInput = forwardRef<HTMLDivElement, ChipsInputProps>((props, re
   })
 
   const handleInputBlur = useEventCallback((e: FocusEvent<HTMLInputElement>) => {
-    // When input loses focus, if there's content, convert it to a chip
-    const trimmedValue = inputValue.trim()
-    if (trimmedValue) {
-      // Check if it's a duplicate when allowDuplicates is false
-      if (!allowDuplicates && chips.includes(trimmedValue)) {
-        // If it's a duplicate, just clear the input without adding
-        setInputValue("")
-      } else {
-        // Add the chip (this will also clear the input if successful)
-        addChip(inputValue)
+    if (!readonly) {
+      // When input loses focus, if there's content, convert it to a chip
+      const trimmedValue = inputValue.trim()
+      if (trimmedValue) {
+        // Check if it's a duplicate when allowDuplicates is false
+        if (!allowDuplicates && chips.includes(trimmedValue)) {
+          // If it's a duplicate, just clear the input without adding
+          setInputValue("")
+        } else {
+          // Add the chip (this will also clear the input if successful)
+          addChip(inputValue)
+        }
       }
     }
     props.onBlur?.(e)
@@ -166,6 +176,7 @@ export const ChipsInput = forwardRef<HTMLDivElement, ChipsInputProps>((props, re
   })
 
   const handleChipRemoveClick = useEventCallback((index: number) => {
+    if (readonly) return
     removeChip(index)
   })
 
@@ -220,7 +231,7 @@ export const ChipsInput = forwardRef<HTMLDivElement, ChipsInputProps>((props, re
             key={`${chip}-${index}`}
             selected={isSelected}
             onClick={() => handleChipClick(index)}
-            onRemove={() => handleChipRemoveClick(index)}
+            onRemove={readonly ? undefined : () => handleChipRemoveClick(index)}
             size={size === "large" ? "medium" : "default"}
             disabled={disabled}
             className={tcx(tv.chip())}
@@ -234,14 +245,19 @@ export const ChipsInput = forwardRef<HTMLDivElement, ChipsInputProps>((props, re
         id={id}
         ref={inputRef}
         className={tcx(tv.input())}
-        disabled={disabled}
-        onChange={(e) => setInputValue(e.target.value)}
+        disabled={disabled || readonly}
+        onChange={(e) => {
+          if (!readonly) {
+            setInputValue(e.target.value)
+          }
+        }}
         onCompositionEnd={() => setIsComposing(false)}
         onCompositionStart={() => setIsComposing(true)}
         onFocus={handleInputFocus}
         onBlur={handleInputBlur}
         placeholder={chips.length === 0 ? placeholder : ""}
         value={inputValue}
+        readOnly={readonly}
         style={{
           width: inputWidth,
         }}

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite"
-import React from "react"
+import React, { useState } from "react"
 import { Settings } from "@choiceform/icons-react"
 import { LinkButton } from "./link-button"
 
@@ -280,4 +280,52 @@ export const RealWorldExamples: Story = {
       </div>
     </div>
   ),
+}
+
+/**
+ * LinkButton component in readonly state.
+ *
+ * In readonly mode:
+ * - Link buttons do not respond to click events
+ * - Links will not navigate (href is removed)
+ * - Useful for displaying link buttons without allowing interactions
+ */
+export const Readonly: Story = {
+  render: function ReadonlyStory() {
+    const [clickCount, setClickCount] = useState(0)
+
+    return (
+      <div className="flex flex-col gap-4">
+        <div className="rounded-xl border bg-stone-50 p-4">
+          <div className="text-body-small-strong mb-2 text-stone-700">Click Count:</div>
+          <div className="text-body-small font-mono text-stone-600">{clickCount}</div>
+        </div>
+
+        <div className="flex flex-wrap gap-4">
+          <LinkButton
+            readonly
+            href="https://example.com"
+            onClick={() => setClickCount((prev) => prev + 1)}
+          >
+            Readonly Link
+          </LinkButton>
+          <LinkButton
+            readonly
+            variant="subtle"
+            onClick={() => setClickCount((prev) => prev + 1)}
+          >
+            Readonly Button
+          </LinkButton>
+          <LinkButton onClick={() => setClickCount((prev) => prev + 1)}>
+            Normal Link (for comparison)
+          </LinkButton>
+        </div>
+
+        <div className="text-body-small text-stone-600">
+          💡 Try clicking on the readonly link buttons - the click count should not change and links
+          will not navigate. Only the normal button will increment the count.
+        </div>
+      </div>
+    )
+  },
 }

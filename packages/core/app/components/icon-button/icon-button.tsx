@@ -13,6 +13,7 @@ export interface IconButtonProps extends Omit<HTMLProps<HTMLButtonElement>, "siz
   disabled?: boolean
   focused?: boolean
   loading?: boolean
+  readonly?: boolean
   size?: "default" | "large" | "reset"
   tooltip?: TooltipProps
   variant?: "default" | "secondary" | "solid" | "highlight" | "ghost" | "dark" | "reset"
@@ -24,6 +25,7 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
       className,
       children,
       disabled,
+      readonly = false,
       active,
       loading,
       focused,
@@ -31,6 +33,7 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
       size = "default",
       tooltip,
       asChild,
+      onClick,
       ...rest
     } = props
 
@@ -45,6 +48,9 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
       size,
     })
 
+    // 在 readonly 模式下阻止 onClick 事件
+    const handleClick = readonly ? undefined : onClick
+
     const button = (
       <Button
         {...rest}
@@ -52,6 +58,7 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
         type={(rest.type as "button" | "submit" | "reset" | undefined) || "button"}
         className={tcx(style.button(), className)}
         disabled={disabled || loading}
+        onClick={handleClick}
       >
         {loading ? <LoaderCircle className="animate-spin" /> : children}
       </Button>

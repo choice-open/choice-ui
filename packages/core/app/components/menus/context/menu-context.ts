@@ -10,6 +10,7 @@ export interface MenuContextType {
   close: () => void
   getItemProps: <T extends React.HTMLProps<HTMLElement>>(userProps?: T) => Record<string, unknown>
   isOpen: boolean
+  readonly?: boolean
   selection: boolean
   setActiveIndex: (index: number | null) => void
   setHasFocusInside: (value: boolean) => void

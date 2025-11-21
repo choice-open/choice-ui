@@ -79,6 +79,7 @@ export interface MultiSelectProps {
   placeholder?: string
   placement?: Placement
   portalId?: string
+  readonly?: boolean
   renderChip?: (props: {
     disabled?: boolean
     displayValue: string
@@ -134,6 +135,7 @@ const MultiSelectComponent = memo(
       disabled = false,
       portalId = PORTAL_ROOT_ID,
       placement = "bottom-start",
+      readonly = false,
       children,
       size: sizeProp = "default",
       variant = "default",
@@ -328,23 +330,32 @@ const MultiSelectComponent = memo(
     })
 
     // 选择逻辑
-    const { handleSelect: baseHandleSelect, handleRemove } = useMultiSelectSelection({
-      values,
-      onChange,
-      selectableOptions,
-      maxSelection,
-      minSelection,
-      closeOnSelect,
-      i18n,
-      setValidationMessage,
-      handleOpenChange,
-    })
+    const { handleSelect: baseHandleSelect, handleRemove: baseHandleRemove } =
+      useMultiSelectSelection({
+        values,
+        onChange,
+        selectableOptions,
+        maxSelection,
+        minSelection,
+        closeOnSelect,
+        i18n,
+        setValidationMessage,
+        handleOpenChange,
+      })
 
     // 处理选择 - 添加允许选择的检查
     const handleSelect = useEventCallback((index: number) => {
+      if (readonly) return
+
       if (allowSelectRef.current) {
         baseHandleSelect(index)
       }
+    })
+
+    // 处理移除 - 添加 readonly 检查
+    const handleRemove = useEventCallback((value: string) => {
+      if (readonly) return
+      baseHandleRemove(value)
     })
 
     // Tree 事件处理
@@ -399,9 +410,10 @@ const MultiSelectComponent = memo(
         setHasFocusInside,
         isOpen: isControlledOpen,
         selection: true,
+        readonly,
         close: () => handleOpenChange(false),
       }),
-      [activeIndex, setActiveIndex, getItemProps, isControlledOpen, handleOpenChange],
+      [activeIndex, setActiveIndex, getItemProps, isControlledOpen, readonly, handleOpenChange],
     )
 
     // 注册列表项
@@ -492,6 +504,7 @@ const MultiSelectComponent = memo(
         onRemove: handleRemove,
         size: sizeProp,
         disabled,
+        readonly,
         open: isControlledOpen,
         getDisplayValue,
         maxChips,
@@ -506,6 +519,7 @@ const MultiSelectComponent = memo(
       handleRemove,
       sizeProp,
       disabled,
+      readonly,
       isControlledOpen,
       getDisplayValue,
       maxChips,

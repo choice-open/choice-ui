@@ -25,6 +25,7 @@ export const TimeCalendar = memo(function TimeCalendar(props: TimeCalendarProps)
     step = 15,
     className,
     children,
+    readonly = false,
     ...rest
   } = props
 
@@ -322,6 +323,7 @@ export const TimeCalendar = memo(function TimeCalendar(props: TimeCalendarProps)
 
   // Handle time selection
   const handleTimeSelect = useEventCallback((timeValue: string) => {
+    if (readonly) return
     // 标记为内部操作，避免触发自动滚动
     isInternalOperationRef.current = true
 

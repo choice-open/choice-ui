@@ -12,6 +12,7 @@ export interface RadioGroupProps extends Omit<HTMLProps<HTMLDivElement>, "value"
     label: string
     value: string
   }[]
+  readonly?: boolean
   value: string
   variant?: "default" | "accent" | "outline"
 }
@@ -24,10 +25,12 @@ type RadioGroupItemProps = Omit<RadioProps, "value" | "onChange"> & {
 const RadioGroupItem = memo(
   forwardRef<HTMLInputElement, RadioGroupItemProps>(function RadioGroupItem(props, ref) {
     const { value, children, className, disabled, ...rest } = props
-    const { name, value: selectedValue, onChange, variant } = useRadioGroupContext()
+    const { name, value: selectedValue, onChange, variant, readonly: contextReadonly } =
+      useRadioGroupContext()
     const isChecked = selectedValue === value
 
     const handleChange = useEventCallback(() => {
+      if (contextReadonly) return
       onChange(value)
     })
 
@@ -36,6 +39,7 @@ const RadioGroupItem = memo(
         name={name}
         value={isChecked}
         disabled={disabled}
+        readonly={contextReadonly}
         variant={variant}
         onChange={handleChange}
         className={className}
@@ -57,21 +61,28 @@ const RadioGroupBase = forwardRef<HTMLDivElement, RadioGroupProps>(function Radi
     value,
     onChange,
     disabled,
+    readonly = false,
     variant = "default",
     children,
     ...rest
   } = props
   const id = useId()
 
+  const handleChange = useEventCallback((newValue: string) => {
+    if (readonly) return
+    onChange(newValue)
+  })
+
   const contextValue = useMemo(
     () => ({
       name: id,
       value,
-      onChange,
+      onChange: handleChange,
       disabled,
+      readonly,
       variant,
     }),
-    [id, value, onChange, disabled, variant],
+    [id, value, handleChange, disabled, readonly, variant],
   )
 
   // 渲染基于选项的单选按钮

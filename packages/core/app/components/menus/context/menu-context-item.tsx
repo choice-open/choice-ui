@@ -63,6 +63,12 @@ export const MenuContextItem = memo(
       // 处理点击事件
       const handleClick = useEventCallback((event: React.MouseEvent<HTMLButtonElement>) => {
         event.stopPropagation()
+        
+        // 如果是 readonly 模式，阻止 onClick 执行
+        if (menu.readonly) {
+          return
+        }
+        
         onClick?.(event)
 
         // 使用 startTransition 优化性能，避免 setTimeout

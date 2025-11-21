@@ -119,6 +119,8 @@ export interface BaseTimeProps {
   minTime?: Date
   /** 时间变化回调 */
   onChange?: (time: Date | null) => void
+  /** 是否只读（禁用选择但不改变样式） */
+  readonly?: boolean
   /** 当前选中的时间 */
   value?: Date | null
 }
@@ -346,6 +348,8 @@ export interface BaseCalendarProps {
   onChange?: (value: CalendarValue) => void
   /** 月份变更回调 */
   onMonthChange?: (month: Date) => void
+  /** 是否只读（禁用选择但不改变样式） */
+  readonly?: boolean
   /** 选择模式，如果未指定，会根据 value 类型自动推断 */
   selectionMode?: SelectionMode
   /** 是否显示非当前月份的日期 */
@@ -465,6 +469,8 @@ export interface BaseQuarterProps {
   minYear?: number
   /** 季度选择变化回调 */
   onChange?: (quarter: Quarter | null) => void
+  /** 是否只读（禁用选择但不改变样式） */
+  readonly?: boolean
   /** 显示的年份 */
   startYear?: number
   /** 当前选中的季度 */
@@ -512,6 +518,8 @@ export interface BaseYearProps {
   minYear?: Date
   /** 年份选择变化回调 */
   onChange?: (year: Date | null) => void
+  /** 是否只读（禁用选择但不改变样式） */
+  readonly?: boolean
   /** 显示年份范围的起始年份，默认为当前年份-10 */
   startYear?: Date
   /** 当前选中的年份 */

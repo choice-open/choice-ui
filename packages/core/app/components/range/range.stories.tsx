@@ -649,3 +649,54 @@ export const TupleSentimentNeutralRange: Story = {
     )
   },
 }
+
+/**
+ * Range component in readonly state.
+ *
+ * In readonly mode:
+ * - The range slider does not respond to pointer or keyboard events
+ * - The value cannot be changed
+ * - Useful for displaying range value without allowing changes
+ */
+export const Readonly: Story = {
+  render: function ReadonlyStory() {
+    const [value, setValue] = useState(50)
+    const [changeCount, setChangeCount] = useState(0)
+
+    const handleChange = (newValue: number) => {
+      setValue(newValue)
+      setChangeCount((prev) => prev + 1)
+    }
+
+    return (
+      <div className="flex flex-col gap-4">
+        <div className="rounded-xl border bg-stone-50 p-4">
+          <div className="text-body-small-strong mb-2 text-stone-700">Current Value:</div>
+          <div className="text-body-small font-mono text-stone-600">{value}</div>
+          <div className="text-body-small-strong mt-2 text-stone-700">Change Count:</div>
+          <div className="text-body-small font-mono text-stone-600">{changeCount}</div>
+        </div>
+
+        <Range
+          readonly
+          value={value}
+          onChange={handleChange}
+          min={0}
+          max={100}
+        />
+
+        <Range
+          value={value}
+          onChange={handleChange}
+          min={0}
+          max={100}
+        />
+
+        <div className="text-body-small text-stone-600">
+          💡 Try dragging the readonly range slider or using arrow keys - the value should not change
+          and the change count should remain at 0. Only the normal slider will change the value.
+        </div>
+      </div>
+    )
+  },
+}

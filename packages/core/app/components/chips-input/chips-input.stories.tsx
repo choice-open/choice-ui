@@ -190,3 +190,51 @@ export const CustomRenderChip: Story = {
     )
   },
 }
+
+/**
+ * ChipsInput component in readonly state.
+ *
+ * In readonly mode:
+ * - The input field is disabled and read-only
+ * - Chips cannot be added (Enter key, blur event)
+ * - Chips cannot be removed (remove button, Backspace/Delete keys)
+ * - Useful for displaying chips without allowing changes
+ */
+export const Readonly: Story = {
+  render: function ReadonlyStory() {
+    const [chips, setChips] = useState<string[]>(["apple", "banana", "orange"])
+    const [changeCount, setChangeCount] = useState(0)
+
+    const handleChange = (newChips: string[]) => {
+      setChips(newChips)
+      setChangeCount((prev) => prev + 1)
+    }
+
+    return (
+      <div className="flex flex-col gap-4">
+        <div className="rounded-xl border bg-stone-50 p-4">
+          <div className="text-body-small-strong mb-2 text-stone-700">Current Chips:</div>
+          <div className="text-body-small font-mono text-stone-600">
+            {chips.length > 0 ? chips.join(", ") : "None"}
+          </div>
+          <div className="text-body-small-strong mt-2 text-stone-700">Change Count:</div>
+          <div className="text-body-small font-mono text-stone-600">{changeCount}</div>
+        </div>
+
+        <ChipsInput
+          readonly
+          value={chips}
+          onChange={handleChange}
+          placeholder="Add tags..."
+          className="w-80"
+        />
+
+        <div className="text-body-small text-stone-600">
+          💡 Try typing and pressing Enter, clicking chip remove buttons, or pressing Backspace/Delete
+          - chips should not change and the change count should remain at 0. The input field is
+          read-only.
+        </div>
+      </div>
+    )
+  },
+}

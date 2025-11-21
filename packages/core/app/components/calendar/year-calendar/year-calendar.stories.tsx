@@ -183,3 +183,50 @@ export const CustomStartYear: Story = {
   },
   render: (args) => <YearPickerDemo {...args} />,
 }
+
+/**
+ * ReadOnly: Demonstrates the YearCalendar component in readonly mode.
+ * - Prevents value changes while allowing focus and navigation
+ * - Maintains normal visual appearance (unlike disabled)
+ * - Useful for displaying non-editable year information
+ */
+export const ReadOnly: Story = {
+  render: function ReadOnlyStory() {
+    const [value, setValue] = useState<Date | null>(new Date(2024, 0, 1))
+    const [changeCount, setChangeCount] = useState(0)
+
+    const handleChange = (newValue: Date | null) => {
+      setValue(newValue)
+      setChangeCount((prev) => prev + 1)
+    }
+
+    return (
+      <div className="flex flex-col gap-4">
+        <div className="rounded-xl border bg-stone-50 p-4">
+          <div className="text-body-small-strong mb-2 text-stone-700">Current Value:</div>
+          <div className="text-body-small font-mono text-stone-600">
+            {value ? value.getFullYear().toString() : "null"}
+          </div>
+          <div className="text-body-small-strong mt-2 text-stone-700">Change Count:</div>
+          <div className="text-body-small font-mono text-stone-600">{changeCount}</div>
+        </div>
+        <div className="grid grid-cols-2 gap-4">
+          <YearCalendar
+            readonly
+            value={value}
+            onChange={handleChange}
+            currentYear={currentYear}
+          />
+          <YearCalendar
+            value={value}
+            onChange={handleChange}
+            currentYear={currentYear}
+          />
+        </div>
+        <div className="text-body-small text-stone-600">
+          💡 Try clicking years on the readonly calendar - the value should not change and the change count should remain at 0. Only the normal calendar will change the value.
+        </div>
+      </div>
+    )
+  },
+}

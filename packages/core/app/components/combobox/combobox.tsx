@@ -71,6 +71,7 @@ export interface ComboboxProps {
   placement?: Placement
   portalId?: string
   position?: { x: number; y: number } | null
+  readonly?: boolean
   trigger?: "input" | "coordinate" // 新增：明确指定触发器类型
   value?: string
 }
@@ -100,6 +101,7 @@ const ComboboxComponent = memo(function ComboboxComponent(props: ComboboxProps) 
     onBlur,
     onOpenChange,
     position,
+    readonly = false,
     trigger = "input", // 默认为输入模式
     value: controlledValue = "",
     focusManagerProps = {
@@ -145,6 +147,8 @@ const ComboboxComponent = memo(function ComboboxComponent(props: ComboboxProps) 
 
   // 内部状态更新逻辑
   const updateInputState = useEventCallback((value: string, triggerCallback = true) => {
+    if (readonly) return
+    
     setInputValue(value)
     const activeIndex = autoSelection ? 0 : null
 
@@ -184,6 +188,7 @@ const ComboboxComponent = memo(function ComboboxComponent(props: ComboboxProps) 
 
   // DOM 事件处理器
   const handleInputChange = useEventCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    if (readonly) return
     const value = event.target.value
     handleValueChange(value)
   })
@@ -459,10 +464,11 @@ const ComboboxComponent = memo(function ComboboxComponent(props: ComboboxProps) 
       getItemProps,
       setHasFocusInside: () => {},
       isOpen: isControlledOpen,
+      readonly,
       selection: false,
       close: handleClose,
     }),
-    [activeIndex, getItemProps, handleClose, isControlledOpen],
+    [activeIndex, getItemProps, handleClose, isControlledOpen, readonly],
   )
 
   return (
@@ -490,6 +496,7 @@ const ComboboxComponent = memo(function ComboboxComponent(props: ComboboxProps) 
               active: isControlledOpen,
               onBlur,
               disabled,
+              readonly,
               onClick: handleTriggerClick,
             })}
         </div>

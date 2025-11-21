@@ -403,3 +403,58 @@ export const GroupWithDisabledOptions: Story = {
     )
   },
 }
+
+/**
+ * RadioGroup component in readonly state.
+ *
+ * In readonly mode:
+ * - Radio buttons do not respond to click or keyboard events
+ * - The selected value cannot be changed
+ * - Useful for displaying radio selection without allowing changes
+ */
+export const Readonly: Story = {
+  render: function ReadonlyStory() {
+    const [value, setValue] = useState<string>("option1")
+    const [changeCount, setChangeCount] = useState(0)
+
+    const handleChange = (newValue: string) => {
+      setValue(newValue)
+      setChangeCount((prev) => prev + 1)
+    }
+
+    return (
+      <div className="flex flex-col gap-4">
+        <div className="rounded-xl border bg-stone-50 p-4">
+          <div className="text-body-small-strong mb-2 text-stone-700">Current Value:</div>
+          <div className="text-body-small font-mono text-stone-600">{value}</div>
+          <div className="text-body-small-strong mt-2 text-stone-700">Change Count:</div>
+          <div className="text-body-small font-mono text-stone-600">{changeCount}</div>
+        </div>
+
+        <RadioGroup
+          readonly
+          value={value}
+          onChange={handleChange}
+        >
+          <RadioGroup.Item value="option1">Option 1</RadioGroup.Item>
+          <RadioGroup.Item value="option2">Option 2</RadioGroup.Item>
+          <RadioGroup.Item value="option3">Option 3</RadioGroup.Item>
+        </RadioGroup>
+
+        <RadioGroup
+          value={value}
+          onChange={handleChange}
+        >
+          <RadioGroup.Item value="option1">Option 1</RadioGroup.Item>
+          <RadioGroup.Item value="option2">Option 2</RadioGroup.Item>
+          <RadioGroup.Item value="option3">Option 3</RadioGroup.Item>
+        </RadioGroup>
+
+        <div className="text-body-small text-stone-600">
+          💡 Try clicking on the readonly radio buttons - the value should not change and the change
+          count should remain at 0. Only the normal radio group will change the value.
+        </div>
+      </div>
+    )
+  },
+}

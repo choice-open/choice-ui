@@ -11,6 +11,7 @@ export interface SegmentedProps extends Omit<HTMLProps<HTMLDivElement>, "onChang
   className?: string
   disabled?: boolean
   onChange?: (value: string) => void
+  readonly?: boolean
   tooltip?: TooltipProps
   value?: string
   variant?: "default" | "light" | "dark" | "reset"
@@ -23,6 +24,7 @@ const SegmentedBase = forwardRef<HTMLDivElement, SegmentedProps>(
       onChange,
       variant,
       disabled,
+      readonly = false,
       className,
       children,
       "aria-label": ariaLabel,
@@ -35,6 +37,7 @@ const SegmentedBase = forwardRef<HTMLDivElement, SegmentedProps>(
     const descriptionId = useId()
 
     const handleChange = useEventCallback((value: string) => {
+      if (readonly) return
       onChange?.(value)
     })
 
@@ -65,6 +68,7 @@ const SegmentedBase = forwardRef<HTMLDivElement, SegmentedProps>(
           groupId: id,
           variant,
           disabled,
+          readonly,
         }}
       >
         <div

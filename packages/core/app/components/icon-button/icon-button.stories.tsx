@@ -250,3 +250,49 @@ export const AsChild: Story = {
     </IconButton>
   ),
 }
+
+/**
+ * IconButton component in readonly state.
+ *
+ * In readonly mode:
+ * - The button does not respond to click events
+ * - Useful for displaying icon buttons without allowing interactions
+ */
+export const Readonly: Story = {
+  render: function ReadonlyStory() {
+    const [clickCount, setClickCount] = useState(0)
+
+    return (
+      <div className="flex flex-col gap-4">
+        <div className="rounded-xl border bg-stone-50 p-4">
+          <div className="text-body-small-strong mb-2 text-stone-700">Click Count:</div>
+          <div className="text-body-small font-mono text-stone-600">{clickCount}</div>
+        </div>
+
+        <div className="flex flex-wrap gap-4">
+          <IconButton
+            readonly
+            onClick={() => setClickCount((prev) => prev + 1)}
+          >
+            <FieldTypeAttachment />
+          </IconButton>
+          <IconButton
+            readonly
+            variant="secondary"
+            onClick={() => setClickCount((prev) => prev + 1)}
+          >
+            <FieldTypeCheckbox />
+          </IconButton>
+          <IconButton onClick={() => setClickCount((prev) => prev + 1)}>
+            <FieldTypeCount />
+          </IconButton>
+        </div>
+
+        <div className="text-body-small text-stone-600">
+          💡 Try clicking on the readonly icon buttons - the click count should not change. Only the
+          normal button will increment the count.
+        </div>
+      </div>
+    )
+  },
+}

@@ -68,6 +68,7 @@ export interface ContextMenuProps extends HTMLProps<HTMLDivElement> {
   open?: boolean
   placement?: Placement
   portalId?: string
+  readonly?: boolean
   selection?: boolean
   triggerRef?: React.RefObject<HTMLElement>
 }
@@ -133,6 +134,7 @@ const ContextMenuComponent = memo(function ContextMenuComponent(props: ContextMe
     offset: offsetDistance = DEFAULT_OFFSET,
     placement = "bottom-start",
     portalId = PORTAL_ROOT_ID,
+    readonly = false,
     selection = false,
     open: controlledOpen,
     onOpenChange,
@@ -432,10 +434,11 @@ const ContextMenuComponent = memo(function ContextMenuComponent(props: ContextMe
       getItemProps,
       setHasFocusInside,
       isOpen: isControlledOpen,
+      readonly,
       selection,
       close: handleClose,
     }),
-    [activeIndex, getItemProps, handleClose, isControlledOpen, selection],
+    [activeIndex, getItemProps, handleClose, isControlledOpen, readonly, selection],
   )
 
   // 创建 ContextMenu 上下文值

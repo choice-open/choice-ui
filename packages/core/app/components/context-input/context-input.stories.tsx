@@ -213,6 +213,109 @@ export const Disabled: Story = {
 }
 
 /**
+ * ReadOnly: Demonstrates the ContextInput component in readonly mode.
+ * - Prevents value changes while allowing focus and selection
+ * - Maintains normal visual appearance (unlike disabled)
+ * - Useful for displaying non-editable context input information
+ */
+export const ReadOnly: Story = {
+  render: function ReadOnlyStory() {
+    const [value, setValue] = useState<ContextInputValue>({
+      text: "Hello @alice and @bob!",
+      mentions: [
+        {
+          item: { id: "1", label: "alice", type: "user" },
+          startIndex: 6,
+          endIndex: 12,
+          text: "alice",
+        },
+        {
+          item: { id: "2", label: "bob", type: "user" },
+          startIndex: 17,
+          endIndex: 21,
+          text: "bob",
+        },
+      ],
+    })
+    const [changeCount, setChangeCount] = useState(0)
+    const isDark = useDarkMode()
+    const style = isDark ? oneDark : oneLight
+
+    const handleChange = (newValue: ContextInputValue) => {
+      setValue(newValue)
+      setChangeCount((prev) => prev + 1)
+    }
+
+    return (
+      <div className="flex flex-col gap-4">
+        <div className="rounded-xl border bg-stone-50 p-4">
+          <div className="text-body-small-strong mb-2 text-stone-700">Current Value:</div>
+          <div className="text-body-small font-mono text-stone-600">{value.text || "(empty)"}</div>
+          <div className="text-body-small-strong mt-2 text-stone-700">Mentions Count:</div>
+          <div className="text-body-small font-mono text-stone-600">{value.mentions.length}</div>
+          <div className="text-body-small-strong mt-2 text-stone-700">Change Count:</div>
+          <div className="text-body-small font-mono text-stone-600">{changeCount}</div>
+        </div>
+        <div className="w-full max-w-md">
+          <ContextInput
+            readonly
+            value={value}
+            placeholder="Type @ to mention someone..."
+            className="max-h-96 w-80"
+            triggers={[
+              {
+                char: "@",
+                onSearch: async (query) => {
+                  return users.filter((user) =>
+                    user.label.toLowerCase().includes(query.toLowerCase()),
+                  )
+                },
+              },
+            ]}
+            onChange={handleChange}
+            onMentionSelect={(mention, trigger) => {
+              console.log("Mention selected:", mention, trigger)
+            }}
+          />
+          <Result
+            value={value}
+            style={style}
+          />
+        </div>
+        <div className="w-full max-w-md">
+          <ContextInput
+            value={value}
+            placeholder="Type @ to mention someone..."
+            className="max-h-96 w-80"
+            triggers={[
+              {
+                char: "@",
+                onSearch: async (query) => {
+                  return users.filter((user) =>
+                    user.label.toLowerCase().includes(query.toLowerCase()),
+                  )
+                },
+              },
+            ]}
+            onChange={handleChange}
+            onMentionSelect={(mention, trigger) => {
+              console.log("Mention selected:", mention, trigger)
+            }}
+          />
+          <Result
+            value={value}
+            style={style}
+          />
+        </div>
+        <div className="text-body-small text-stone-600">
+          💡 Try editing the readonly context input - the value should not change and the change count should remain at 0. Only the normal input will change the value.
+        </div>
+      </div>
+    )
+  },
+}
+
+/**
  * Variants: Demonstrates different visual variants of the context input component.
  * - default: Follows the page theme dynamically (light/dark mode)
  * - light: Fixed light appearance regardless of theme

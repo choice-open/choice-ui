@@ -4,6 +4,7 @@ export interface SegmentedContextValue {
   disabled?: boolean
   groupId: string
   onChange: (value: string) => void
+  readonly?: boolean
   value?: string
   variant?: "default" | "light" | "dark" | "reset"
 }

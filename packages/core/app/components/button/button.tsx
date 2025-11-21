@@ -23,6 +23,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
     variant = "primary",
     size = "default",
     disabled,
+    readonly = false,
     active,
     focused,
     loading,
@@ -30,6 +31,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
     children,
     tooltip,
     "aria-label": ariaLabel,
+    onClick,
     ...rest
   } = props
 
@@ -60,12 +62,16 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
     return props["aria-label"]
   }, [children, props])
 
+  // 在 readonly 模式下阻止 onClick 事件
+  const handleClick = readonly ? undefined : onClick
+
   const button = (
     <Button
       {...rest}
       ref={ref}
       type={(rest.type as "button" | "submit" | "reset" | undefined) || "button"}
       disabled={disabled || loading}
+      onClick={handleClick}
       className={tcx(style.button(), className)}
       data-multi-element={isMultiElement(content)}
       aria-disabled={disabled || loading}

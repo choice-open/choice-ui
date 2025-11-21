@@ -1078,3 +1078,60 @@ export const EventPropagation: Story = {
     )
   },
 }
+
+/**
+ * Select component in readonly state.
+ *
+ * In readonly mode:
+ * - The menu can be opened and closed normally
+ * - Clicking on options will not change the current selection
+ * - The menu will remain open after clicking an option
+ * - Useful for displaying options without allowing changes
+ */
+export const Readonly: Story = {
+  render: function ReadonlyStory() {
+    const [value, setValue] = useState<string>("option-2")
+    const [changeCount, setChangeCount] = useState(0)
+
+    const handleChange = (newValue: string) => {
+      setValue(newValue)
+      setChangeCount((prev) => prev + 1)
+    }
+
+    return (
+      <div className="flex flex-col gap-4">
+        <div className="rounded-xl border bg-stone-50 p-4">
+          <div className="text-body-small-strong mb-2 text-stone-700">Current Selection:</div>
+          <div className="text-body-small font-mono text-stone-600">{value}</div>
+          <div className="text-body-small-strong mt-2 text-stone-700">Change Count:</div>
+          <div className="text-body-small font-mono text-stone-600">{changeCount}</div>
+        </div>
+
+        <Select
+          readonly
+          value={value}
+          onChange={handleChange}
+        >
+          <Select.Trigger>
+            <Select.Value>{value || "Select an option..."}</Select.Value>
+          </Select.Trigger>
+          <Select.Content>
+            {Array.from({ length: 5 }, (_, i) => (
+              <Select.Item
+                key={i}
+                value={`option-${i + 1}`}
+              >
+                <Select.Value>Option {i + 1}</Select.Value>
+              </Select.Item>
+            ))}
+          </Select.Content>
+        </Select>
+
+        <div className="text-body-small text-stone-600">
+          💡 Try clicking on different options - the selection should not change and the change count
+          should remain at 0. The menu can still be opened and closed normally.
+        </div>
+      </div>
+    )
+  },
+}

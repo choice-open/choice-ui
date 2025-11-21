@@ -12,6 +12,7 @@ export interface MultiSelectTriggerProps extends Omit<HTMLProps<HTMLDivElement>,
   onRemove?: (value: string) => void
   open?: boolean
   placeholder?: string
+  readonly?: boolean
   renderChip?: (props: {
     disabled?: boolean
     displayValue: string
@@ -36,6 +37,7 @@ export const MultiSelectTrigger = memo(
       maxChips = 32,
       onRemove,
       placeholder = "Select options",
+      readonly = false,
       renderChip,
       size = "default",
       suffixElement = <ChevronDownSmall />,
@@ -79,6 +81,8 @@ export const MultiSelectTrigger = memo(
 
     const handleKeyDown = useCallback(
       (e: React.KeyboardEvent<HTMLDivElement>) => {
+        if (readonly) return
+
         if (e.key === "Backspace" && values.length > 0) {
           const lastValue = values[values.length - 1]
           if (lastValue) {
@@ -86,7 +90,7 @@ export const MultiSelectTrigger = memo(
           }
         }
       },
-      [values, onRemove],
+      [values, onRemove, readonly],
     )
 
     const renderChips = useMemo(() => {
@@ -97,7 +101,7 @@ export const MultiSelectTrigger = memo(
           {displayValues.map((value, index) => {
             const chipDisabled = !!valueDisabledMap[value] || disabled
             const handleRemove =
-              !chipDisabled && onRemove
+              !chipDisabled && !readonly && onRemove
                 ? (e: React.MouseEvent<HTMLButtonElement>) => {
                     e.stopPropagation()
                     onRemove(value)
@@ -155,6 +159,7 @@ export const MultiSelectTrigger = memo(
       remainingCount,
       size,
       disabled,
+      readonly,
       onRemove,
       getDisplayValue,
       style,

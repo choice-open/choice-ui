@@ -10,6 +10,7 @@ export interface TabsProps extends Omit<HTMLProps<HTMLDivElement>, "onChange"> {
   className?: string
   disabled?: boolean
   onChange?: (value: string) => void
+  readonly?: boolean
   value: string
   variant?: "default" | "light" | "dark" | "reset"
 }
@@ -25,6 +26,7 @@ const TabsRoot = forwardRef<HTMLDivElement, TabsProps>(function Tabs(props, ref)
     onChange,
     className,
     disabled,
+    readonly = false,
     "aria-label": ariaLabel,
     children,
     variant = "default",
@@ -33,6 +35,7 @@ const TabsRoot = forwardRef<HTMLDivElement, TabsProps>(function Tabs(props, ref)
   const id = useId()
 
   const handleChange = useEventCallback((newValue: string) => {
+    if (readonly) return
     onChange?.(newValue)
   })
 
@@ -42,6 +45,7 @@ const TabsRoot = forwardRef<HTMLDivElement, TabsProps>(function Tabs(props, ref)
     <TabsContext.Provider
       value={{
         disabled,
+        readonly,
         value: valueProp,
         onChange: handleChange,
         variant,

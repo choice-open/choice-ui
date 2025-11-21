@@ -188,3 +188,52 @@ export const Uncontrolled: Story = {
   },
   render: (args) => <UncontrolledDemo {...args} />,
 }
+
+/**
+ * ReadOnly: Demonstrates the TimeCalendar component in readonly mode.
+ * - Prevents value changes while allowing focus and scrolling
+ * - Maintains normal visual appearance (unlike disabled)
+ * - Useful for displaying non-editable time information
+ */
+export const ReadOnly: Story = {
+  render: function ReadOnlyStory() {
+    const [value, setValue] = useState<Date | null>(new Date(2024, 0, 1, 14, 30))
+    const [changeCount, setChangeCount] = useState(0)
+
+    const handleChange = (newValue: Date | null) => {
+      setValue(newValue)
+      setChangeCount((prev) => prev + 1)
+    }
+
+    return (
+      <div className="flex flex-col gap-4">
+        <div className="rounded-xl border bg-stone-50 p-4">
+          <div className="text-body-small-strong mb-2 text-stone-700">Current Value:</div>
+          <div className="text-body-small font-mono text-stone-600">
+            {value ? value.toLocaleTimeString() : "null"}
+          </div>
+          <div className="text-body-small-strong mt-2 text-stone-700">Change Count:</div>
+          <div className="text-body-small font-mono text-stone-600">{changeCount}</div>
+        </div>
+        <div className="grid grid-cols-2 gap-4">
+          <TimeCalendar
+            readonly
+            value={value}
+            onChange={handleChange}
+            format="HH:mm"
+            step={15}
+          />
+          <TimeCalendar
+            value={value}
+            onChange={handleChange}
+            format="HH:mm"
+            step={15}
+          />
+        </div>
+        <div className="text-body-small text-stone-600">
+          💡 Try clicking time options on the readonly calendar - the value should not change and the change count should remain at 0. Only the normal calendar will change the value.
+        </div>
+      </div>
+    )
+  },
+}

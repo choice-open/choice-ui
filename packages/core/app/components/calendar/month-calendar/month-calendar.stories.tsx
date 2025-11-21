@@ -605,3 +605,52 @@ const UnifiedInterfaceExample = () => {
 export const UnifiedInterface: StoryObj<typeof MonthCalendar> = {
   render: () => <UnifiedInterfaceExample />,
 }
+
+/**
+ * ReadOnly: Demonstrates the MonthCalendar component in readonly mode.
+ * - Prevents value changes while allowing focus and navigation
+ * - Maintains normal visual appearance (unlike disabled)
+ * - Useful for displaying non-editable calendar information
+ */
+export const ReadOnly: Story = {
+  render: function ReadOnlyStory() {
+    const [value, setValue] = useState<CalendarValue>(new Date())
+    const [changeCount, setChangeCount] = useState(0)
+
+    const handleChange = (newValue: CalendarValue) => {
+      setValue(newValue)
+      setChangeCount((prev) => prev + 1)
+    }
+
+    return (
+      <div className="flex flex-col gap-4">
+        <div className="rounded-xl border bg-stone-50 p-4">
+          <div className="text-body-small-strong mb-2 text-stone-700">Current Value:</div>
+          <div className="text-body-small font-mono text-stone-600">
+            {value instanceof Date ? value.toLocaleDateString() : "null"}
+          </div>
+          <div className="text-body-small-strong mt-2 text-stone-700">Change Count:</div>
+          <div className="text-body-small font-mono text-stone-600">{changeCount}</div>
+        </div>
+        <div className="grid grid-cols-2 gap-4">
+          <MonthCalendar
+            readonly
+            value={value}
+            onChange={handleChange}
+            selectionMode="single"
+            className="w-50 rounded-xl border"
+          />
+          <MonthCalendar
+            value={value}
+            onChange={handleChange}
+            selectionMode="single"
+            className="w-50 rounded-xl border"
+          />
+        </div>
+        <div className="text-body-small text-stone-600">
+          💡 Try clicking dates on the readonly calendar - the value should not change and the change count should remain at 0. Only the normal calendar will change the value.
+        </div>
+      </div>
+    )
+  },
+}

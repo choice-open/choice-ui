@@ -65,6 +65,7 @@ export const ComboboxTrigger = forwardRef<HTMLInputElement, ComboboxTriggerProps
     })
 
     const handleClear = useEventCallback(() => {
+      if (readOnly) return
       onChange?.("")
     })
 

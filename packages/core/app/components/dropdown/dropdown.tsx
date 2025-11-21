@@ -78,6 +78,7 @@ export interface DropdownProps {
   placement?: Placement
   portalId?: string
   position?: { x: number; y: number } | null
+  readonly?: boolean
   selection?: boolean
 }
 
@@ -116,6 +117,7 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
     placement = "bottom-start",
     portalId = PORTAL_ROOT_ID,
     position,
+    readonly = false,
     selection = false,
     matchTriggerWidth = false,
     open: controlledOpen,
@@ -413,10 +415,11 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
       getItemProps,
       setHasFocusInside,
       isOpen: isControlledOpen,
+      readonly,
       selection,
       close: handleClose,
     }),
-    [activeIndex, getItemProps, handleClose, isControlledOpen, selection],
+    [activeIndex, getItemProps, handleClose, isControlledOpen, readonly, selection],
   )
 
   return (

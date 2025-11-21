@@ -207,3 +207,52 @@ export const AsChild: Story = {
 export const Tooltip: Story = {
   render: () => <Button tooltip={{ content: "Tooltip" }}>Button</Button>,
 }
+
+/**
+ * Button component in readonly state.
+ *
+ * In readonly mode:
+ * - The button does not respond to click events
+ * - Mouse and touch events are blocked
+ * - Useful for displaying buttons without allowing interactions
+ */
+export const Readonly: Story = {
+  render: function ReadonlyStory() {
+    const [clickCount, setClickCount] = useState(0)
+
+    return (
+      <div className="flex flex-col gap-4">
+        <div className="rounded-xl border bg-stone-50 p-4">
+          <div className="text-body-small-strong mb-2 text-stone-700">Click Count:</div>
+          <div className="text-body-small font-mono text-stone-600">{clickCount}</div>
+        </div>
+
+        <div className="flex flex-wrap gap-4">
+          <Button
+            readonly
+            onClick={() => setClickCount((prev) => prev + 1)}
+          >
+            Readonly Button
+          </Button>
+          <Button
+            readonly
+            variant="secondary"
+            onClick={() => setClickCount((prev) => prev + 1)}
+          >
+            Readonly Secondary
+          </Button>
+          <Button
+            onClick={() => setClickCount((prev) => prev + 1)}
+          >
+            Normal Button (for comparison)
+          </Button>
+        </div>
+
+        <div className="text-body-small text-stone-600">
+          💡 Try clicking on the readonly buttons - the click count should not change. Only the
+          normal button will increment the count.
+        </div>
+      </div>
+    )
+  },
+}

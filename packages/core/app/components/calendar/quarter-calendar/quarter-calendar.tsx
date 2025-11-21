@@ -33,6 +33,7 @@ export const QuarterCalendar = forwardRef<HTMLDivElement, QuarterCalendarProps>(
     maxYear,
     disabledQuarters = [],
     disabled = false,
+    readonly = false,
     startYear: propStartYear,
     locale = enUS,
     variant = "default",
@@ -117,6 +118,7 @@ export const QuarterCalendar = forwardRef<HTMLDivElement, QuarterCalendarProps>(
 
   // 事件处理器
   const handleQuarterSelect = useEventCallback((quarter: Quarter) => {
+    if (readonly) return
     if (disabled) return
 
     const quarterItem = quarters.find((q) => isQuarterEqual(q.quarter, quarter))

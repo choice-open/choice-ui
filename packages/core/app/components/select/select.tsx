@@ -65,6 +65,7 @@ export interface SelectProps {
   open?: boolean
   placement?: "bottom-start" | "bottom-end"
   portalId?: string
+  readonly?: boolean
   size?: "default" | "large"
   value?: string | null
 }
@@ -100,6 +101,7 @@ const SelectComponent = memo(function SelectComponent(props: SelectProps) {
     disabled = false,
     portalId = PORTAL_ROOT_ID,
     placement = "bottom-start",
+    readonly = false,
     children,
     size: sizeProp = "default",
     focusManagerProps = {
@@ -390,6 +392,8 @@ const SelectComponent = memo(function SelectComponent(props: SelectProps) {
 
   // 处理选择
   const handleSelect = useEventCallback((index: number) => {
+    if (readonly) return
+
     if (refs.allowSelect.current) {
       setSelectedIndex(index)
       handleOpenChange(false)
@@ -417,10 +421,11 @@ const SelectComponent = memo(function SelectComponent(props: SelectProps) {
       getItemProps,
       setHasFocusInside,
       isOpen: isControlledOpen,
+      readonly,
       selection: true, // Select always has selection
       close: () => handleOpenChange(false),
     }),
-    [activeIndex, setActiveIndex, getItemProps, isControlledOpen, handleOpenChange],
+    [activeIndex, setActiveIndex, getItemProps, isControlledOpen, readonly, handleOpenChange],
   )
 
   // 注册列表项

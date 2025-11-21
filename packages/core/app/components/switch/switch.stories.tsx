@@ -273,3 +273,62 @@ export const WithTooltip: Story = {
     )
   },
 }
+
+/**
+ * Switch component in readonly state.
+ *
+ * In readonly mode:
+ * - The switch does not respond to click or change events
+ * - The value cannot be changed
+ * - Useful for displaying switch state without allowing changes
+ */
+export const Readonly: Story = {
+  render: function ReadonlyStory() {
+    const [value, setValue] = useState(false)
+    const [changeCount, setChangeCount] = useState(0)
+
+    const handleChange = (newValue: boolean) => {
+      setValue(newValue)
+      setChangeCount((prev) => prev + 1)
+    }
+
+    return (
+      <div className="flex flex-col gap-4">
+        <div className="rounded-xl border bg-stone-50 p-4">
+          <div className="text-body-small-strong mb-2 text-stone-700">Current Value:</div>
+          <div className="text-body-small font-mono text-stone-600">{value ? "true" : "false"}</div>
+          <div className="text-body-small-strong mt-2 text-stone-700">Change Count:</div>
+          <div className="text-body-small font-mono text-stone-600">{changeCount}</div>
+        </div>
+
+        <div className="flex flex-wrap gap-4">
+          <Switch
+            readonly
+            value={value}
+            onChange={handleChange}
+          >
+            Readonly Switch
+          </Switch>
+          <Switch
+            readonly
+            value={!value}
+            onChange={handleChange}
+          >
+            Readonly Switch (on)
+          </Switch>
+          <Switch
+            value={value}
+            onChange={handleChange}
+          >
+            Normal Switch (for comparison)
+          </Switch>
+        </div>
+
+        <div className="text-body-small text-stone-600">
+          💡 Try clicking on the readonly switches - the value should not change and the change count
+          should remain at 0. Only the normal switch will change the value.
+        </div>
+      </div>
+    )
+  },
+}

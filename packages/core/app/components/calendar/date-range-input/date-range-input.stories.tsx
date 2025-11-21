@@ -501,3 +501,72 @@ export const DisabledStates: Story = {
     </div>
   ),
 }
+
+/**
+ * ReadOnly: Demonstrates the DateRangeInput component in readonly mode.
+ * - Prevents value changes while allowing focus and selection
+ * - Maintains normal visual appearance (unlike disabled)
+ * - Useful for displaying non-editable date range information
+ */
+export const ReadOnly: Story = {
+  render: function ReadOnlyStory() {
+    const [startValue, setStartValue] = useState<Date | null>(new Date())
+    const [endValue, setEndValue] = useState<Date | null>(addDays(new Date(), 7))
+    const [changeCount, setChangeCount] = useState(0)
+
+    const handleStartChange = (newValue: Date | null) => {
+      setStartValue(newValue)
+      setChangeCount((prev) => prev + 1)
+    }
+
+    const handleEndChange = (newValue: Date | null) => {
+      setEndValue(newValue)
+      setChangeCount((prev) => prev + 1)
+    }
+
+    return (
+      <div className="flex flex-col gap-4">
+        <div className="rounded-xl border bg-stone-50 p-4">
+          <div className="text-body-small-strong mb-2 text-stone-700">Current Start:</div>
+          <div className="text-body-small font-mono text-stone-600">
+            {startValue ? startValue.toLocaleDateString() : "null"}
+          </div>
+          <div className="text-body-small-strong mt-2 text-stone-700">Current End:</div>
+          <div className="text-body-small font-mono text-stone-600">
+            {endValue ? endValue.toLocaleDateString() : "null"}
+          </div>
+          <div className="text-body-small-strong mt-2 text-stone-700">Change Count:</div>
+          <div className="text-body-small font-mono text-stone-600">{changeCount}</div>
+        </div>
+        <Panel.Row
+          type="two-input-two-icon"
+          className="px-0"
+        >
+          <DateRangeInput
+            readOnly
+            startValue={startValue}
+            endValue={endValue}
+            onStartChange={handleStartChange}
+            onEndChange={handleEndChange}
+            locale={enUS}
+          />
+        </Panel.Row>
+        <Panel.Row
+          type="two-input-two-icon"
+          className="px-0"
+        >
+          <DateRangeInput
+            startValue={startValue}
+            endValue={endValue}
+            onStartChange={handleStartChange}
+            onEndChange={handleEndChange}
+            locale={enUS}
+          />
+        </Panel.Row>
+        <div className="text-body-small text-stone-600">
+          💡 Try changing the readonly date range input - the values should not change and the change count should remain at 0. Only the normal input will change the values.
+        </div>
+      </div>
+    )
+  },
+}

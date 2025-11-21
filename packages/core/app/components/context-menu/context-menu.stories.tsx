@@ -973,3 +973,56 @@ export const NestedSubmenuWithLongList: Story = {
     )
   },
 }
+
+/**
+ * ContextMenu component in readonly state.
+ *
+ * In readonly mode:
+ * - The menu can be opened and closed normally
+ * - Clicking on menu items will not execute their onClick handlers
+ * - Useful for displaying menu options without allowing actions
+ */
+export const Readonly: Story = {
+  render: function ReadonlyStory() {
+    const [clickCount, setClickCount] = useState(0)
+
+    const handleClick = () => {
+      setClickCount((prev) => prev + 1)
+    }
+
+    return (
+      <div className="flex flex-col gap-4">
+        <div className="rounded-xl border bg-stone-50 p-4">
+          <div className="text-body-small-strong mb-2 text-stone-700">Click Count:</div>
+          <div className="text-body-small font-mono text-stone-600">{clickCount}</div>
+        </div>
+
+        <ContextMenu readonly>
+          <ContextMenu.Trigger className="rounded-lg border p-8">
+            Right-click here (readonly mode)
+          </ContextMenu.Trigger>
+          <ContextMenu.Content>
+            <ContextMenu.Item onClick={handleClick}>
+              <ContextMenu.Value>Copy</ContextMenu.Value>
+            </ContextMenu.Item>
+            <ContextMenu.Item onClick={handleClick}>
+              <ContextMenu.Value>Cut</ContextMenu.Value>
+            </ContextMenu.Item>
+            <ContextMenu.Item onClick={handleClick}>
+              <ContextMenu.Value>Paste</ContextMenu.Value>
+            </ContextMenu.Item>
+            <ContextMenu.Divider />
+            <ContextMenu.Item onClick={handleClick}>
+              <ContextMenu.Value>Delete</ContextMenu.Value>
+            </ContextMenu.Item>
+          </ContextMenu.Content>
+        </ContextMenu>
+
+        <div className="text-body-small text-stone-600">
+          💡 Right-click and try clicking on menu items - the click count should not change. The menu
+          can still be opened and closed normally.
+        </div>
+      </div>
+    )
+  },
+}

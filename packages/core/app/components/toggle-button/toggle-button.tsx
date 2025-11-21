@@ -12,6 +12,7 @@ interface ToggleButtonProps
   event?: "click" | "mousedown"
   focused?: boolean
   onChange?: (value: boolean) => void
+  readonly?: boolean
   size?: "default" | "large"
   tooltip?: TooltipProps
   value: boolean
@@ -26,6 +27,7 @@ export const ToggleButton = forwardRef<HTMLInputElement, ToggleButtonProps>(
       size = "default",
       children,
       disabled,
+      readonly = false,
       active,
       focused,
       value,
@@ -67,12 +69,14 @@ export const ToggleButton = forwardRef<HTMLInputElement, ToggleButtonProps>(
           tabIndex={0}
           type="checkbox"
           checked={value}
-          disabled={disabled}
+          disabled={disabled || readonly}
           onChange={(e) => {
-            onChange?.(e.target.checked)
+            if (!readonly) {
+              onChange?.(e.target.checked)
+            }
           }}
           aria-checked={value}
-          aria-disabled={disabled}
+          aria-disabled={disabled || readonly}
           aria-label={ariaLabel || (typeof children === "string" ? children : undefined)}
           aria-describedby={ariaDescribedby || (children ? descriptionId : undefined)}
           {...rest}
@@ -83,6 +87,8 @@ export const ToggleButton = forwardRef<HTMLInputElement, ToggleButtonProps>(
           id={descriptionId}
           className={styles.label()}
           onMouseDown={(e) => {
+            if (readonly) return
+
             if (event === "mousedown") {
               e.preventDefault()
               onMouseDown?.(e as unknown as React.MouseEvent<HTMLInputElement>)

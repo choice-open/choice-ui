@@ -17,6 +17,7 @@ interface SlateEditorProps
     ContextInputProps,
     | "placeholder"
     | "disabled"
+    | "readonly"
     | "autoFocus"
     | "variant"
     | "renderMention"
@@ -48,6 +49,7 @@ const SlateEditorComponent = React.forwardRef<HTMLDivElement, SlateEditorProps>(
       slateValue,
       placeholder = "Type someone...",
       disabled = false,
+      readonly = false,
       autoFocus = false,
       variant = "default",
       renderMention,
@@ -139,7 +141,7 @@ const SlateEditorComponent = React.forwardRef<HTMLDivElement, SlateEditorProps>(
                 className={tv.editor()}
                 placeholder={placeholder}
                 renderPlaceholder={renderPlaceholder}
-                readOnly={disabled}
+                readOnly={disabled || readonly}
                 autoFocus={autoFocus}
                 renderElement={renderElement}
                 renderLeaf={renderLeaf}
@@ -168,6 +170,7 @@ export const SlateEditor = React.memo(SlateEditorComponent, (prevProps, nextProp
     prevProps.slateValue === nextProps.slateValue &&
     prevProps.placeholder === nextProps.placeholder &&
     prevProps.disabled === nextProps.disabled &&
+    prevProps.readonly === nextProps.readonly &&
     prevProps.autoFocus === nextProps.autoFocus &&
     prevProps.variant === nextProps.variant &&
     prevProps.renderMention === nextProps.renderMention &&
