@@ -251,11 +251,11 @@ export const Selection: Story = {
  */
 export const NestedSelection: Story = {
   render: function NestedSelectionStory() {
-    const [mainSelected, setMainSelected] = useState<string | null>(null)
-    const [subSelected, setSubSelected] = useState<string | null>(null)
+    // 使用统一的状态管理所有选项，确保互斥
+    const [selected, setSelected] = useState<string | null>(null)
 
     return (
-      <Dropdown>
+      <Dropdown selection={true}>
         <Dropdown.Trigger>
           <Dropdown.Value>Multi-Level Selection</Dropdown.Value>
         </Dropdown.Trigger>
@@ -264,15 +264,18 @@ export const NestedSelection: Story = {
           {["Main 1", "Main 2"].map((option) => (
             <Dropdown.Item
               key={option}
-              selected={mainSelected === option}
-              onClick={() => setMainSelected(option)}
+              selected={selected === option}
+              onPointerUp={() => setSelected(option)}
             >
               <Dropdown.Value>{option}</Dropdown.Value>
             </Dropdown.Item>
           ))}
           <Dropdown.Divider />
           <Dropdown selection={true}>
-            <Dropdown.SubTrigger>
+            <Dropdown.SubTrigger
+              selected={selected === "Sub Options"}
+              onPointerUp={() => setSelected("Sub Options")}
+            >
               <Dropdown.Value>Sub Options</Dropdown.Value>
             </Dropdown.SubTrigger>
             <Dropdown.Content>
@@ -280,8 +283,8 @@ export const NestedSelection: Story = {
               {["Sub A", "Sub B", "Sub C"].map((option) => (
                 <Dropdown.Item
                   key={option}
-                  selected={subSelected === option}
-                  onClick={() => setSubSelected(option)}
+                  selected={selected === option}
+                  onClick={() => setSelected(option)}
                 >
                   <Dropdown.Value>{option}</Dropdown.Value>
                 </Dropdown.Item>
