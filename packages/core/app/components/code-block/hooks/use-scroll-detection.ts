@@ -19,12 +19,19 @@ export function useScrollDetection({
 
   useEffect(() => {
     const checkScrollNeeded = () => {
-      if (scrollRef.current && contentRef.current) {
+      if (!scrollRef.current || !contentRef.current) {
+        setNeedsScroll(false)
+        return
+      }
+
+      try {
         const viewport = scrollRef.current
         const content = contentRef.current
         // Check if content height exceeds viewport height
         const hasScroll = content.scrollHeight > viewport.clientHeight
         setNeedsScroll(hasScroll)
+      } catch (error) {
+        setNeedsScroll(false)
       }
     }
 
@@ -35,15 +42,18 @@ export function useScrollDetection({
     window.addEventListener("resize", checkScrollNeeded)
 
     // Use ResizeObserver to detect content changes
-    const resizeObserver = new ResizeObserver(checkScrollNeeded)
-    if (contentRef.current) {
-      resizeObserver.observe(contentRef.current)
+    let resizeObserver: ResizeObserver | null = null
+    if (typeof ResizeObserver !== "undefined") {
+      resizeObserver = new ResizeObserver(checkScrollNeeded)
+      if (contentRef.current) {
+        resizeObserver.observe(contentRef.current)
+      }
     }
 
     return () => {
       clearTimeout(timeoutId)
       window.removeEventListener("resize", checkScrollNeeded)
-      resizeObserver.disconnect()
+      resizeObserver?.disconnect()
     }
   }, [scrollRef, contentRef, isExpanded, codeExpanded, children])
 

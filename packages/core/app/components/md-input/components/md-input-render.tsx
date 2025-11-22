@@ -34,6 +34,7 @@ export const MdInputRender = memo(
               {...rest}
               content={value}
               mentionItems={mentionItems}
+              className="p-4"
             />
           </ScrollArea.Content>
         </ScrollArea.Viewport>

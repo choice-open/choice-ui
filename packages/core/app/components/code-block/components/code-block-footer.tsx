@@ -1,6 +1,6 @@
 import { ChevronDownSmall, ChevronUpSmall } from "@choiceform/icons-react"
 import { memo } from "react"
-import { tcv } from "@choiceform/design-system"
+import { tcv } from "~/utils"
 import type { CodeBlockFooterProps } from "../types"
 
 const codeBlockFooterTv = tcv({

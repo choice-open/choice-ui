@@ -1,5 +1,5 @@
-import { ScrollArea, tcx } from "@choiceform/design-system"
-import { tcv } from "@choiceform/design-system"
+import { ScrollArea } from "~/components"
+import { tcv, tcx } from "~/utils"
 import type { CodeBlockContentProps } from "../types"
 import { CodeBlockCode } from "./code-block-code"
 
@@ -14,10 +14,16 @@ export function CodeBlockContent(props: CodeBlockContentProps) {
   const { code, className, codeBlock, withScrollArea = true } = props
 
   if (!codeBlock) return null
+
   const { language, isExpanded, codeExpanded, scrollRef, contentRef, lineCount, lineThreshold } =
     codeBlock
 
   if (!isExpanded) {
+    return null
+  }
+
+  // Ensure code is a string
+  if (typeof code !== "string") {
     return null
   }
 

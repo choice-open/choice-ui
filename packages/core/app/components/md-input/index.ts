@@ -1,5 +1,5 @@
 export { MdInput } from "./md-input"
-export type * from "./types"
+export * from "./types"
 export * from "./components"
 export * from "./hooks"
 export * from "./context"

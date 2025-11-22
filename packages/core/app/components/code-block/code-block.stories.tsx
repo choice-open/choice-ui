@@ -40,7 +40,7 @@ import {
   Sparkles
 } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
-import { tcx } from "@choiceform/design-system"
+import { tcx } from "~/utils"
 
 interface CodeEditorProps {
   initialCode?: string

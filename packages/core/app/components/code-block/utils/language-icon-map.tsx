@@ -404,20 +404,28 @@ const defaultIcon = (
 
 // Get icon for a given language
 export function getLanguageIcon(language: string): ReactNode {
-  // Normalize language to lowercase
-  const normalizedLang = language.toLowerCase().trim()
-
-  // Check if there's a direct match
-  const iconKey = languageIconMap[normalizedLang]
-  if (iconKey && iconKey !== "default") {
-    return icons[iconKey]
+  if (!language || typeof language !== "string") {
+    return defaultIcon
   }
 
-  // Check for partial matches (e.g., "typescript" in "typescriptreact")
-  for (const [key, value] of Object.entries(languageIconMap)) {
-    if (normalizedLang.includes(key) && value !== "default") {
-      return icons[value as keyof typeof icons]
+  try {
+    // Normalize language to lowercase
+    const normalizedLang = language.toLowerCase().trim()
+
+    // Check if there's a direct match
+    const iconKey = languageIconMap[normalizedLang]
+    if (iconKey && iconKey !== "default" && iconKey in icons) {
+      return icons[iconKey]
     }
+
+    // Check for partial matches (e.g., "typescript" in "typescriptreact")
+    for (const [key, value] of Object.entries(languageIconMap)) {
+      if (normalizedLang.includes(key) && value !== "default" && value in icons) {
+        return icons[value as keyof typeof icons]
+      }
+    }
+  } catch {
+    // Fallback on any error
   }
 
   // Default icon
@@ -426,24 +434,31 @@ export function getLanguageIcon(language: string): ReactNode {
 
 // Get icon from filename extension
 export function getIconFromFilename(filename: string): ReactNode | null {
-  if (!filename) return null
+  if (!filename || typeof filename !== "string") return null
 
-  const parts = filename.split(".")
-  if (parts.length < 2) return null
+  try {
+    const parts = filename.split(".")
+    if (parts.length < 2) return null
 
-  // Check for compound extensions like .d.ts
-  if (parts.length >= 3 && parts[parts.length - 2] === "d" && parts[parts.length - 1] === "ts") {
-    const iconKey = languageIconMap["d.ts"]
-    if (iconKey && iconKey !== "default") {
+    // Check for compound extensions like .d.ts
+    if (parts.length >= 3 && parts[parts.length - 2] === "d" && parts[parts.length - 1] === "ts") {
+      const iconKey = languageIconMap["d.ts"]
+      if (iconKey && iconKey !== "default" && iconKey in icons) {
+        return icons[iconKey]
+      }
+      return null
+    }
+
+    const extension = parts[parts.length - 1]?.toLowerCase()
+    if (!extension) return null
+
+    const iconKey = languageIconMap[extension]
+    if (iconKey && iconKey !== "default" && iconKey in icons) {
       return icons[iconKey]
     }
-    return null
+  } catch {
+    // Fallback on any error
   }
 
-  const extension = parts[parts.length - 1].toLowerCase()
-  const iconKey = languageIconMap[extension]
-  if (iconKey && iconKey !== "default") {
-    return icons[iconKey]
-  }
   return null
 }

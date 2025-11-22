@@ -1,6 +1,6 @@
-import { tcv } from "@choiceform/design-system"
 import { memo, useEffect, useMemo, useState } from "react"
 import { codeToHtml } from "shiki"
+import { tcv } from "~/utils"
 import { useTheme } from "../hooks"
 import type { CodeBlockCodeProps } from "../types"
 
@@ -20,7 +20,14 @@ export const CodeBlockCode = memo(function CodeBlockCode(props: CodeBlockCodePro
   const theme = useTheme()
   const [highlightedHtml, setHighlightedHtml] = useState<string | null>(null)
 
-  const cacheKey = useMemo(() => getCacheKey(code, language, theme), [code, language, theme])
+  // Ensure code is a string
+  const safeCode = typeof code === "string" ? code : String(code || "")
+  const safeLanguage = typeof language === "string" && language ? language : "tsx"
+
+  const cacheKey = useMemo(
+    () => getCacheKey(safeCode, safeLanguage, theme),
+    [safeCode, safeLanguage, theme],
+  )
 
   useEffect(() => {
     let cancelled = false
@@ -32,7 +39,7 @@ export const CodeBlockCode = memo(function CodeBlockCode(props: CodeBlockCodePro
     }
 
     async function highlight() {
-      if (!code) {
+      if (!safeCode) {
         const html = "<pre><code></code></pre>"
         if (!cancelled) {
           setHighlightedHtml(html)
@@ -42,8 +49,8 @@ export const CodeBlockCode = memo(function CodeBlockCode(props: CodeBlockCodePro
       }
 
       try {
-        const html = await codeToHtml(code, {
-          lang: language,
+        const html = await codeToHtml(safeCode, {
+          lang: safeLanguage,
           theme: theme === "light" ? "github-light" : "github-dark",
         })
         if (!cancelled) {
@@ -56,7 +63,12 @@ export const CodeBlockCode = memo(function CodeBlockCode(props: CodeBlockCodePro
           }
         }
       } catch {
-        const html = `<pre><code>${code}</code></pre>`
+        // Escape HTML to prevent injection
+        const escapedCode = safeCode
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+        const html = `<pre><code>${escapedCode}</code></pre>`
         if (!cancelled) {
           setHighlightedHtml(html)
           highlightCache.set(cacheKey, html)
@@ -68,7 +80,7 @@ export const CodeBlockCode = memo(function CodeBlockCode(props: CodeBlockCodePro
     return () => {
       cancelled = true
     }
-  }, [code, language, theme, cacheKey])
+  }, [safeCode, safeLanguage, theme, cacheKey])
 
   const classNames = codeBlockCodeTv({ className })
 
@@ -85,7 +97,7 @@ export const CodeBlockCode = memo(function CodeBlockCode(props: CodeBlockCodePro
       {...rest}
     >
       <pre>
-        <code>{code}</code>
+        <code>{safeCode}</code>
       </pre>
     </div>
   )

@@ -1,10 +1,10 @@
+import { Check } from "@choiceform/icons-react"
 import { Children, memo } from "react"
 import { Components } from "react-markdown"
-import { CodeBlock } from "~/components/code-block"
+import { CodeBlock, ScrollArea } from "~/components"
 import { mdRenderTv } from "../tv"
 import type { MentionRenderProps } from "../types"
 import { extractLanguage, processMentionsInChildren } from "../utils"
-import { Check } from "@choiceform/icons-react"
 
 interface MentionItemProps {
   [key: string]: unknown
@@ -108,7 +108,7 @@ export const createMarkdownComponents = (
       return (
         <CodeBlock
           language={language}
-          className={tv.code()}
+          className={tv.codeBlock()}
         >
           <CodeBlock.Content code={children as string} />
         </CodeBlock>
@@ -120,9 +120,16 @@ export const createMarkdownComponents = (
     },
 
     table: ({ children }) => (
-      <div className={tv.tableWrapper()}>
-        <table className={tv.table()}>{children}</table>
-      </div>
+      <ScrollArea
+        orientation="horizontal"
+        className={tv.tableWrapper()}
+      >
+        <ScrollArea.Viewport>
+          <ScrollArea.Content className="w-full min-w-0">
+            <table className={tv.table()}>{children}</table>
+          </ScrollArea.Content>
+        </ScrollArea.Viewport>
+      </ScrollArea>
     ),
     thead: ({ children }) => <thead className={tv.thead()}>{children}</thead>,
     tbody: ({ children }) => <tbody className={tv.tbody()}>{children}</tbody>,

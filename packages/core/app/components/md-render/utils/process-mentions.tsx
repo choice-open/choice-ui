@@ -1,5 +1,11 @@
 import { Fragment } from "react"
-import type { MentionItemProps, MentionRenderProps } from "../types"
+import type { MentionRenderProps } from "../types"
+
+interface MentionItemProps {
+  [key: string]: unknown
+  id: string
+  label: string
+}
 
 export function processMentionsInText(
   text: string,

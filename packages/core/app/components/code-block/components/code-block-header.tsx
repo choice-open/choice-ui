@@ -1,6 +1,7 @@
-import { IconButton, tcv } from "@choiceform/design-system"
 import { CircleCirclehecirclek, ClipboardSmall, Enlarge, FileCode } from "@choiceform/icons-react"
 import React, { memo } from "react"
+import { IconButton } from "~/components/icon-button"
+import { tcv } from "~/utils"
 import type { CodeBlockHeaderProps } from "../types"
 import { getDefaultFilenameForLanguage, getIconFromFilename, getLanguageIcon } from "../utils"
 
@@ -41,26 +42,36 @@ export const CodeBlockHeader = memo(function CodeBlockHeader(props: CodeBlockHea
   if (!codeBlock) return null
 
   const {
-    language,
+    language = "code",
     filename,
-    lineCount,
-    isExpanded,
-    copied,
-    expandable,
+    lineCount = 0,
+    isExpanded = true,
+    copied = false,
+    expandable = true,
     handleExpand,
     handleCopy,
   } = codeBlock
+
+  // Guard against missing handlers
+  if (!handleExpand || !handleCopy) {
+    return null
+  }
 
   const tv = codeBlockHeaderTv({ isExpanded })
 
   // Determine which icon to use
   let icon = null as React.ReactNode
-  if (filename) {
-    const filenameIcon = getIconFromFilename(filename)
-    if (filenameIcon) icon = filenameIcon
-  }
-  if (!icon) {
-    icon = getLanguageIcon(language)
+  try {
+    if (filename && typeof filename === "string") {
+      const filenameIcon = getIconFromFilename(filename)
+      if (filenameIcon) icon = filenameIcon
+    }
+    if (!icon && language) {
+      icon = getLanguageIcon(language)
+    }
+  } catch {
+    // Fallback to default icon
+    icon = null
   }
 
   const copyTooltipContent = copied ? i18n.copied : i18n.copy

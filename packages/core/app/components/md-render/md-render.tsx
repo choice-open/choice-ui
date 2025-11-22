@@ -4,8 +4,6 @@ import { createMarkdownComponents, MarkdownBlock } from "./components"
 import { mdRenderTv } from "./tv"
 import type { MdRenderProps } from "./types"
 
-const tv = mdRenderTv()
-
 export const MdRender = memo(
   forwardRef<HTMLDivElement, MdRenderProps>(function MdRender(props, ref) {
     const {
@@ -16,10 +14,13 @@ export const MdRender = memo(
       allowedPrefixes,
       customColor,
       size = "default",
+      variant = "default",
     } = props
+    const tv = mdRenderTv({ size, variant })
+
     const components = useMemo(
       () => createMarkdownComponents(tv, mentionRenderComponent, mentionItems),
-      [mentionRenderComponent, mentionItems],
+      [tv, mentionRenderComponent, mentionItems],
     )
 
     const style = useMemo(() => {
@@ -29,13 +30,14 @@ export const MdRender = memo(
         "--default-foreground-color": customColor?.defaultForeground,
         "--secondary-background-color": customColor?.secondaryBackground,
         "--secondary-foreground-color": customColor?.secondaryForeground,
+        "--code-background-color": customColor?.codeBackground,
       } as React.CSSProperties
     }, [customColor])
 
     return (
       <div
         ref={ref}
-        className={tcx(tv.root({ size }), className)}
+        className={tcx(tv.root(), className)}
         style={style}
       >
         <MarkdownBlock

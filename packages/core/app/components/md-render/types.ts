@@ -19,6 +19,7 @@ export interface MdRenderProps {
   mentionItems?: MentionItemProps[]
   mentionRenderComponent?: React.ComponentType<MentionRenderProps>
   size?: "small" | "default" | "large"
+  variant?: "github" | "default"
 }
 
 export interface UseMentionsOptions {

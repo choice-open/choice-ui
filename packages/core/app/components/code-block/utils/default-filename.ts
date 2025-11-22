@@ -1,7 +1,12 @@
 export function getDefaultFilenameForLanguage(language: string): string {
-  const lang = language.trim().toLowerCase()
+  if (!language || typeof language !== "string") {
+    return "file.txt"
+  }
 
-  switch (lang) {
+  try {
+    const lang = language.trim().toLowerCase()
+
+    switch (lang) {
     case "tsx":
       return "component.tsx"
     case "jsx":
@@ -61,6 +66,9 @@ export function getDefaultFilenameForLanguage(language: string): string {
       return "file.txt"
     default:
       return "file.txt"
+    }
+  } catch {
+    return "file.txt"
   }
 }
 

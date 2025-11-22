@@ -10,10 +10,10 @@ import {
   ParagraphStrikethrough,
   ParagraphUnderline,
 } from "@choiceform/icons-react"
-import type { ToolbarAction } from "./components/toolbar"
-import type { MentionRenderProps } from "./types"
+import type { MentionRenderProps } from "../md-render/types"
 import { Avatar } from "../avatar"
 import { Tooltip } from "../tooltip"
+import { ToolbarAction } from "./types"
 
 const meta: Meta<typeof MdInput> = {
   title: "Forms/MdInput",
@@ -530,7 +530,7 @@ MIT License - see [LICENSE](LICENSE) file for details.
       defaultBoundary: isDarkMode ? "var(--color-pink-pale-500)" : "var(--color-pink-400)",
       secondaryBackground: isDarkMode ? "var(--color-pink-pale-600)" : "var(--color-pink-200)",
       secondaryForeground: isDarkMode ? "var(--color-pink-pale-900)" : "var(--color-pink-pale-500)",
-      codeBackground: "var(--color-default-background)",
+      codeBackground: isDarkMode ? "var(--color-pink-pale-800)" : "var(--color-pink-100)",
     }
     return (
       <MdInput

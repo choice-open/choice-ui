@@ -35,8 +35,13 @@ export const extractTextWithMentions = (nodes: Descendant[]) => {
     }
   }
 
-  for (const node of nodes) {
-    processNode(node)
+  // Process each node (paragraph) and add newlines between them
+  for (let i = 0; i < nodes.length; i++) {
+    processNode(nodes[i])
+    // Add newline after each paragraph except the last one
+    if (i < nodes.length - 1) {
+      text += "\n"
+    }
   }
 
   return { text, mentionsData }

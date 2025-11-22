@@ -161,10 +161,11 @@ export const CustomColor: Story = {
       defaultBoundary: isDarkMode ? "var(--color-pink-pale-500)" : "var(--color-pink-400)",
       secondaryBackground: isDarkMode ? "var(--color-pink-pale-600)" : "var(--color-pink-200)",
       secondaryForeground: isDarkMode ? "var(--color-pink-pale-900)" : "var(--color-pink-pale-500)",
-      codeBackground: "var(--color-default-background)",
+      codeBackground: isDarkMode ? "var(--color-pink-pale-800)" : "var(--color-pink-100)",
     }
     return (
       <MdRender
+        className="p-4"
         content={GitHubFlavoredMarkdownContent}
         customColor={customColor}
       />
@@ -1431,5 +1432,33 @@ For security, you can restrict which URLs are allowed:
 ---
 
 **That's it!** You're now ready to use the markdown renderer in your application.`,
+  },
+}
+
+/**
+ * Github Variant: Shows the github variant of the markdown renderer.
+ */
+
+export const GithubVariant: Story = {
+  render: function GithubVariantRender() {
+    return (
+      <div className="grid grid-cols-2 gap-6 p-6">
+        <div className="w-full rounded-xl border bg-white p-4 dark:bg-gray-900">
+          <h3 className="text-body-small font-strong mb-4 text-gray-500 uppercase">Default</h3>
+          <MdRender
+            content={sizingContent}
+            variant="default"
+          />
+        </div>
+
+        <div className="w-full rounded-xl border bg-white p-4 dark:bg-gray-900">
+          <h3 className="text-body-small font-strong mb-4 text-gray-500 uppercase">Github</h3>
+          <MdRender
+            content={sizingContent}
+            variant="github"
+          />
+        </div>
+      </div>
+    )
   },
 }
