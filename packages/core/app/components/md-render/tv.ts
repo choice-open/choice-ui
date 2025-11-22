@@ -30,6 +30,7 @@ export const mdRenderTv = tcv({
     del: "md-del",
     img: "md-img",
     checkbox: "md-checkbox",
+    checkboxIcon: "size-4 rounded-md bg-tertiary-background",
   },
   variants: {
     size: {

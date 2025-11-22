@@ -4,6 +4,7 @@ import { CodeBlock } from "~/components/code-block"
 import { mdRenderTv } from "../tv"
 import type { MentionRenderProps } from "../types"
 import { extractLanguage, processMentionsInChildren } from "../utils"
+import { Check } from "@choiceform/icons-react"
 
 interface MentionItemProps {
   [key: string]: unknown
@@ -17,37 +18,11 @@ const CheckboxIcon = memo(function CheckboxIcon({ checked = false }: { checked?:
   return (
     <div className={tv.checkbox()}>
       {checked ? (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          viewBox="0 0 16 16"
-        >
-          <g fill="currentColor">
-            <path d="M7,11c-.256,0-.512-.098-.707-.293l-2-2c-.391-.391-.391-1.023,0-1.414s1.023-.391,1.414,0l1.293,1.293,3.293-3.293c.391-.391,1.023-.391,1.414,0s.391,1.023,0,1.414l-4,4c-.195,.195-.451,.293-.707,.293Z" />
-            <rect
-              width="16"
-              height="16"
-              fillOpacity="0.2"
-              rx="4"
-            />
-          </g>
-        </svg>
+        <div className={tv.checkboxIcon()}>
+          <Check />
+        </div>
       ) : (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          viewBox="0 0 16 16"
-        >
-          <rect
-            width="16"
-            height="16"
-            fillOpacity="0.1"
-            fill="currentColor"
-            rx="4"
-          />
-        </svg>
+        <div className={tv.checkboxIcon()} />
       )}
     </div>
   )
