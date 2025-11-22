@@ -25,15 +25,12 @@ export const ScrollTv = tcv({
     },
     variant: {
       default: {
-        scrollbar: "hover:bg-default-background",
         thumb: "bg-default-foreground/10 hover:bg-default-foreground/20",
       },
       light: {
-        scrollbar: "hover:bg-white",
         thumb: "bg-black/10 hover:bg-black/20",
       },
       dark: {
-        scrollbar: "hover:bg-menu-background",
         thumb: "bg-white/20 hover:bg-white/30",
       },
     },
@@ -143,6 +140,27 @@ export const ScrollTv = tcv({
       scrollbarMode: "large-r",
       class: {
         scrollbar: "py-0.5 pr-2",
+      },
+    },
+    {
+      hoverBoundary: "hover",
+      variant: "default",
+      class: {
+        scrollbar: "hover:bg-default-background",
+      },
+    },
+    {
+      hoverBoundary: "hover",
+      variant: "light",
+      class: {
+        scrollbar: "hover:bg-white",
+      },
+    },
+    {
+      hoverBoundary: "hover",
+      variant: "dark",
+      class: {
+        scrollbar: "hover:bg-menu-background",
       },
     },
   ],
