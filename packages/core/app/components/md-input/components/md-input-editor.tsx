@@ -4,9 +4,9 @@ import { mergeRefs, tcx } from "~/utils"
 import type { TextareaProps } from "../../textarea"
 import { Textarea } from "../../textarea"
 import { useMdInputContext } from "../context"
-import { useMarkdownShortcuts, useMarkdownMentions } from "../hooks"
+import { useMarkdownMentions, useMarkdownShortcuts } from "../hooks"
 import { mdInputTv } from "../tv"
-import type { MentionState } from "../context"
+import type { MentionState } from "../types"
 
 export interface MdInputEditorProps extends Omit<TextareaProps, "value" | "onChange"> {
   className?: string

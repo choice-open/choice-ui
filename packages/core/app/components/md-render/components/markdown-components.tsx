@@ -1,13 +1,19 @@
 import { Children, memo } from "react"
 import { Components } from "react-markdown"
-import type { MentionItemProps } from "../../types"
-import type { MentionRenderProps } from "../../types"
-import { extractLanguage, processMentionsInChildren } from "../../utils"
-import { CodeBlock } from "./code-block"
-import { mdTv } from "./tv"
+import { CodeBlock } from "~/components/code-block"
+import { mdRenderTv } from "../tv"
+import type { MentionRenderProps } from "../types"
+import { extractLanguage, processMentionsInChildren } from "../utils"
+
+interface MentionItemProps {
+  [key: string]: unknown
+  id: string
+  label: string
+}
 
 const CheckboxIcon = memo(function CheckboxIcon({ checked = false }: { checked?: boolean }) {
-  const tv = mdTv()
+  const tv = mdRenderTv()
+
   return (
     <div className={tv.checkbox()}>
       {checked ? (
@@ -48,10 +54,9 @@ const CheckboxIcon = memo(function CheckboxIcon({ checked = false }: { checked?:
 })
 
 export const createMarkdownComponents = (
-  tv: ReturnType<typeof mdTv>,
+  tv: ReturnType<typeof mdRenderTv>,
   MentionComponent?: React.ComponentType<MentionRenderProps>,
   mentionItems?: MentionItemProps[],
-  theme?: "light" | "dark",
 ): Partial<Components> => {
   const hasMentionSupport = !!MentionComponent
 
@@ -127,10 +132,11 @@ export const createMarkdownComponents = (
 
       return (
         <CodeBlock
-          code={children as string}
           language={language}
-          theme={theme}
-        />
+          className={tv.code()}
+        >
+          <CodeBlock.Content code={children as string} />
+        </CodeBlock>
       )
     },
 

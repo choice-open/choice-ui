@@ -2,7 +2,7 @@ import { IconButton, tcv } from "@choiceform/design-system"
 import { CircleCirclehecirclek, ClipboardSmall, Enlarge, FileCode } from "@choiceform/icons-react"
 import React, { memo } from "react"
 import type { CodeBlockHeaderProps } from "../types"
-import { getIconFromFilename, getLanguageIcon } from "../utils"
+import { getDefaultFilenameForLanguage, getIconFromFilename, getLanguageIcon } from "../utils"
 
 const codeBlockHeaderTv = tcv({
   slots: {
@@ -70,7 +70,11 @@ export const CodeBlockHeader = memo(function CodeBlockHeader(props: CodeBlockHea
     <div className={tv.header({ className })}>
       <div className={tv.title()}>
         {icon ? <span className="size-4 flex-shrink-0">{icon}</span> : <FileCode />}
-        {filename && <span className={tv.filename()}>{filename}</span>}
+        {filename ? (
+          <span className={tv.filename()}>{filename}</span>
+        ) : (
+          <span className={tv.filename()}>{getDefaultFilenameForLanguage(language)}</span>
+        )}
         {showLineCount && lineCount > 0 && (
           <span className={tv.lineCount()}>{`+ ${lineCount}`}</span>
         )}

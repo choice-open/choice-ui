@@ -5,7 +5,7 @@ import { useTheme } from "../hooks"
 import type { CodeBlockCodeProps } from "../types"
 
 const codeBlockCodeTv = tcv({
-  base: "text-message-code w-fit min-w-full bg-transparent font-mono [&>pre]:!bg-transparent [&>pre]:px-0 [&>pre]:py-0",
+  base: "text-message-code w-fit min-w-full font-mono [&>pre]:!bg-transparent [&>pre]:px-0 [&>pre]:py-0",
 })
 
 const highlightCache = new Map<string, string>()

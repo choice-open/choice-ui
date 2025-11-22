@@ -626,6 +626,19 @@ export const LanguageIcons: Story = {
   },
 }
 
+export const DefaultFilename: Story = {
+  render: function DefaultFilenameRender() {
+    return (
+      <div className="max-w-3xl">
+        <CodeBlock language="tsx">
+          <CodeBlock.Header />
+          <CodeBlock.Content code={tsxCode} />
+        </CodeBlock>
+      </div>
+    )
+  },
+}
+
 /**
  * Shows how the lineThreshold property controls when footer appears.
  * Footer with expand controls only shows when code exceeds the threshold.

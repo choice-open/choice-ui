@@ -59,11 +59,10 @@ export interface ContextInputProps {
   onMentionSelect?: (mention: MentionItem, trigger: string) => void
 
   placeholder?: string
+  readonly?: boolean
   // 渲染自定义
   renderMention?: (mention: MentionMatch) => React.ReactNode
   renderSuggestion?: (item: MentionItem, isSelected: boolean) => React.ReactNode
-  /** 是否只读（禁用编辑但不改变样式） */
-  readonly?: boolean
   size?: "default" | "large"
 
   suggestionListClassName?: string

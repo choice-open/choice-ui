@@ -79,6 +79,7 @@ The library provides a comprehensive set of components with rich interactivity a
 - [Avatar](https://ui.choiceform.app/components/avatar/README.md): User avatar component with image and fallback support
 - [Badge](https://ui.choiceform.app/components/badge/README.md): Small status indicators and labels
 - [Bells](https://ui.choiceform.app/components/bells/README.md): Notification bell component with badge support
+- [CodeBlock](https://ui.choiceform.app/components/code-block/README.md): Syntax-highlighted code display with copy, expand/collapse, and multi-language support powered by Shiki
 - [Hint](https://ui.choiceform.app/components/hint/README.md): Inline help text and guidance component
 - [Label](https://ui.choiceform.app/components/label/README.md): Form label component with required indicator
 - [Notifications](https://ui.choiceform.app/components/notifications/README.md): Toast notification system with stacking support
@@ -86,12 +87,14 @@ The library provides a comprehensive set of components with rich interactivity a
 - [Progress](https://ui.choiceform.app/components/progress/README.md): Progress bar and circular progress indicators
 - [Spinner](https://ui.choiceform.app/components/spinner/README.md): Loading spinner animations
 
+
 ### Advanced Components
 
 - [BezierCurveEditor](https://ui.choiceform.app/components/bezier-curve-editor/README.md): Interactive bezier curve editor for animations
 - [CodeEditor](https://ui.choiceform.app/components/code-editor/README.md): Syntax-highlighted code editor with language support
 - [ContextInput](https://ui.choiceform.app/components/context-input/README.md): Context-aware input with suggestions
 - [MdInput](https://ui.choiceform.app/components/md-input/README.md): Production-ready markdown editor with GFM support, syntax highlighting, @mention autocomplete, and compound component pattern
+- [MdRender](https://ui.choiceform.app/components/md-render/README.md): Markdown renderer with GFM support, Shiki-powered syntax highlighting, and customizable mention rendering
 - [Form](https://ui.choiceform.app/components/form/README.md): Advanced form management with validation
 - [List](https://ui.choiceform.app/components/list/README.md): Flexible list component with selection and keyboard navigation
 - [Menus](https://ui.choiceform.app/components/menus/README.md): Menu system with submenus and keyboard navigation

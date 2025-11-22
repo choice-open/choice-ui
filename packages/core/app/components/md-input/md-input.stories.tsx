@@ -534,8 +534,6 @@ MIT License - see [LICENSE](LICENSE) file for details.
     }
     return (
       <MdInput
-        customColor={customColor}
-        theme={isDarkMode ? "dark" : "light"}
         value={value}
         onChange={setValue}
       >
@@ -548,7 +546,7 @@ MIT License - see [LICENSE](LICENSE) file for details.
             minRows={48}
             maxRows={72}
           />
-          <MdInput.Render />
+          <MdInput.Render customColor={customColor} />
         </MdInput.Container>
       </MdInput>
     )
@@ -955,7 +953,6 @@ export const CustomMentionRendering: Story = {
         value={value}
         onChange={setValue}
         mentionItems={mentionItems}
-        mentionRenderComponent={CustomMention}
       >
         <MdInput.Header>
           <MdInput.Tabs />
@@ -963,7 +960,7 @@ export const CustomMentionRendering: Story = {
         </MdInput.Header>
         <MdInput.Container>
           <MdInput.Editor />
-          <MdInput.Render />
+          <MdInput.Render mentionRenderComponent={CustomMention} />
         </MdInput.Container>
       </MdInput>
     )
@@ -1003,7 +1000,6 @@ export const MentionRenderingInVariousFormats: Story = {
         value={value}
         onChange={setValue}
         mentionItems={mentionItems}
-        mentionRenderComponent={CustomMention}
       >
         <MdInput.Header>
           <MdInput.Tabs />
@@ -1011,7 +1007,7 @@ export const MentionRenderingInVariousFormats: Story = {
         </MdInput.Header>
         <MdInput.Container>
           <MdInput.Editor />
-          <MdInput.Render />
+          <MdInput.Render mentionRenderComponent={CustomMention} />
         </MdInput.Container>
       </MdInput>
     )
@@ -1070,8 +1066,6 @@ export const MentionWithAllowedDomains: Story = {
         value={value}
         onChange={setValue}
         mentionItems={mentionItems}
-        mentionRenderComponent={CustomMention}
-        allowedPrefixes={["https://api.dicebear.com"]}
       >
         <MdInput.Header>
           <MdInput.Tabs />
@@ -1079,6 +1073,272 @@ export const MentionWithAllowedDomains: Story = {
         </MdInput.Header>
         <MdInput.Container>
           <MdInput.Editor />
+          <MdInput.Render
+            mentionRenderComponent={CustomMention}
+            allowedPrefixes={["https://api.dicebear.com"]}
+          />
+        </MdInput.Container>
+      </MdInput>
+    )
+  },
+}
+
+/**
+ * Code Display: Comprehensive demonstration of inline code and code blocks with syntax highlighting.
+ * - Shows inline code with backticks.
+ * - Demonstrates multi-line code blocks with language-specific syntax highlighting.
+ * - Supports JavaScript, TypeScript, Python, JSON, HTML, CSS, Bash, and more.
+ * - Code blocks powered by Shiki with automatic theme detection.
+ * - Includes copy-to-clipboard functionality.
+ * - Useful for technical documentation, tutorials, and API references.
+ */
+export const CodeDisplay: Story = {
+  render: function CodeDisplay() {
+    const [value, setValue] = useState(`# Code Examples
+
+## Inline Code
+
+Use backticks for inline code: \`const greeting = "Hello World"\`
+
+You can also use inline code in sentences, like \`Array.map()\` or \`useState()\`.
+
+## Code Blocks
+
+### JavaScript
+
+\`\`\`javascript
+function fibonacci(n) {
+  if (n <= 1) return n;
+  return fibonacci(n - 1) + fibonacci(n - 2);
+}
+
+console.log(fibonacci(10)); // 55
+\`\`\`
+
+### TypeScript
+
+\`\`\`typescript
+interface User {
+  id: number;
+  name: string;
+  email: string;
+  createdAt: Date;
+}
+
+function createUser(data: Omit<User, 'id' | 'createdAt'>): User {
+  return {
+    ...data,
+    id: Date.now(),
+    createdAt: new Date(),
+  };
+}
+
+const user = createUser({
+  name: "John Doe",
+  email: "john@example.com"
+});
+\`\`\`
+
+### React Component (TSX)
+
+\`\`\`tsx
+import React, { useState } from 'react';
+import { Button } from '@choiceform/design-system';
+
+export function Counter() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div className="flex items-center gap-4">
+      <Button onClick={() => setCount(count - 1)}>-</Button>
+      <span className="text-xl font-bold">{count}</span>
+      <Button onClick={() => setCount(count + 1)}>+</Button>
+    </div>
+  );
+}
+\`\`\`
+
+### Python
+
+\`\`\`python
+def quicksort(arr):
+    if len(arr) <= 1:
+        return arr
+    pivot = arr[len(arr) // 2]
+    left = [x for x in arr if x < pivot]
+    middle = [x for x in arr if x == pivot]
+    right = [x for x in arr if x > pivot]
+    return quicksort(left) + middle + quicksort(right)
+
+numbers = [3, 6, 8, 10, 1, 2, 1]
+print(quicksort(numbers))
+\`\`\`
+
+### JSON
+
+\`\`\`json
+{
+  "name": "@choiceform/design-system",
+  "version": "1.0.3",
+  "description": "Figma-inspired UI component library",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  }
+}
+\`\`\`
+
+### HTML
+
+\`\`\`html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My App</title>
+</head>
+<body>
+  <div id="root"></div>
+  <script src="/main.js"></script>
+</body>
+</html>
+\`\`\`
+
+### CSS
+
+\`\`\`css
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.button {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.button:hover {
+  transform: translateY(-2px);
+}
+\`\`\`
+
+### Bash/Shell
+
+\`\`\`bash
+#!/bin/bash
+
+# Install dependencies
+pnpm install
+
+# Start development server
+pnpm dev
+
+# Build for production
+pnpm build
+
+# Run tests
+pnpm test
+\`\`\`
+
+### SQL
+
+\`\`\`sql
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  email VARCHAR(255) UNIQUE NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO users (name, email) 
+VALUES ('John Doe', 'john@example.com');
+
+SELECT * FROM users WHERE email LIKE '%@example.com';
+\`\`\`
+
+### Diff
+
+\`\`\`diff
+  function calculate(a, b) {
+-   return a + b
++   return a * b
+  }
+
+- const result = calculate(2, 3) // 5
++ const result = calculate(2, 3) // 6
+\`\`\`
+
+## Code with Comments
+
+\`\`\`javascript
+// This is a comment
+const API_URL = 'https://api.example.com';
+
+/**
+ * Fetches user data from the API
+ * @param {string} userId - The user ID to fetch
+ * @returns {Promise<User>} The user data
+ */
+async function fetchUser(userId) {
+  const response = await fetch(\`\${API_URL}/users/\${userId}\`);
+  return response.json();
+}
+
+// Call the function
+fetchUser('123').then(user => console.log(user));
+\`\`\`
+
+## Mixed Content
+
+You can mix inline code \`like this\` with regular text, and also include code blocks:
+
+\`\`\`typescript
+// Example of a utility function
+export function formatDate(date: Date): string {
+  return date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+}
+\`\`\`
+
+And continue with more text after the code block.
+
+---
+
+**Note**: All code blocks support syntax highlighting and copy-to-clipboard functionality!`)
+
+    return (
+      <MdInput
+        value={value}
+        onChange={setValue}
+      >
+        <MdInput.Header>
+          <MdInput.Tabs />
+          <MdInput.Toolbar />
+        </MdInput.Header>
+        <MdInput.Container>
+          <MdInput.Editor
+            placeholder="Write code examples..."
+            minRows={24}
+            maxRows={48}
+          />
           <MdInput.Render />
         </MdInput.Container>
       </MdInput>

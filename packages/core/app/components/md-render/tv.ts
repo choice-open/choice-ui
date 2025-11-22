@@ -1,6 +1,6 @@
 import { tcv } from "~/utils"
 
-export const mdTv = tcv({
+export const mdRenderTv = tcv({
   slots: {
     root: "md max-w-none p-2",
     paragraph: "md-p",
@@ -32,10 +32,13 @@ export const mdTv = tcv({
     checkbox: "md-checkbox",
   },
   variants: {
-    mode: {
+    size: {
       default: {},
-      compact: {
+      small: {
         root: "md-compact",
+      },
+      large: {
+        root: "md-large",
       },
     },
     hasCheckbox: {
@@ -46,15 +49,7 @@ export const mdTv = tcv({
     },
   },
   defaultVariants: {
-    mode: "default",
+    size: "default",
     hasCheckbox: false,
-  },
-})
-
-export const CodeBlockTv = tcv({
-  slots: {
-    root: "md-code-block group",
-    content: "flex w-fit flex-col overflow-clip",
-    code: "text-message-code w-fit min-w-full bg-transparent font-mono [&>pre]:!bg-transparent [&>pre]:px-4 [&>pre]:py-4",
   },
 })

@@ -8,10 +8,10 @@ import { MdInputHeader } from "./components/md-input-header"
 import { MdInputRender } from "./components/md-input-render"
 import { MdInputTabs } from "./components/md-input-tabs"
 import { Toolbar } from "./components/toolbar"
-import { MdInputContext, type MdInputContextValue } from "./context"
+import { MdInputContext } from "./context"
 import { useMarkdownFormatting } from "./hooks"
 import { mdInputTv } from "./tv"
-import type { MdInputProps } from "./types"
+import type { MdInputProps, MdInputContextValue } from "./types"
 
 const MdInputRoot = memo(
   forwardRef<HTMLDivElement, MdInputProps>(function MdInput(props, ref) {
@@ -21,13 +21,9 @@ const MdInputRoot = memo(
       className,
       disabled,
       readOnly,
-      theme = "light",
       mentionItems,
       mentionOnSelect,
-      mentionRenderComponent,
-      allowedPrefixes,
       children,
-      customColor,
       ...rest
     } = props
 
@@ -117,13 +113,10 @@ const MdInputRoot = memo(
         handleToolbarAction,
         disabled,
         readOnly,
-        theme,
         mentionItems,
         mentionOnSelect,
-        mentionRenderComponent,
         mentionState,
         setMentionState,
-        allowedPrefixes,
       }),
       [
         activeTab,
@@ -136,12 +129,9 @@ const MdInputRoot = memo(
         handleToolbarAction,
         disabled,
         readOnly,
-        theme,
         mentionItems,
         mentionOnSelect,
-        mentionRenderComponent,
         mentionState,
-        allowedPrefixes,
       ],
     )
 
@@ -152,16 +142,6 @@ const MdInputRoot = memo(
         <div
           ref={ref}
           className={tcx(tv.root(), className)}
-          style={
-            {
-              "--default-background-color": customColor?.defaultBackground,
-              "--default-boundary-color": customColor?.defaultBoundary,
-              "--default-foreground-color": customColor?.defaultForeground,
-              "--secondary-background-color": customColor?.secondaryBackground,
-              "--secondary-foreground-color": customColor?.secondaryForeground,
-              "--code-background-color": customColor?.codeBackground,
-            } as React.CSSProperties
-          }
           {...rest}
         >
           {children}

@@ -1,30 +1,20 @@
 import { forwardRef, memo } from "react"
-import { Render } from "./render"
+import { MdRender, ScrollArea, type MdRenderProps } from "~/components"
+import { tcx } from "~/utils"
 import { useMdInputContext } from "../context"
 import { mdInputTv } from "../tv"
-import { tcx } from "~/utils"
 
-export interface MdInputRenderProps {
+export interface MdInputRenderProps extends Omit<MdRenderProps, "content"> {
   className?: string
   contentRef?: React.RefObject<HTMLDivElement>
   scrollRef?: React.RefObject<HTMLDivElement>
-  withScrollArea?: boolean
 }
 
 export const MdInputRender = memo(
   forwardRef<HTMLDivElement, MdInputRenderProps>((props, ref) => {
-    const { className, withScrollArea = true, contentRef, scrollRef } = props
-    const {
-      value,
-      activeTab,
-      disabled,
-      readOnly,
-      mentionRenderComponent,
-      mentionItems,
-      allowedPrefixes,
-      theme,
-      hasTabs,
-    } = useMdInputContext()
+    const { className, contentRef, scrollRef, ...rest } = props
+    const { value, activeTab, disabled, readOnly, mentionItems, hasTabs } = useMdInputContext()
+
     const tv = mdInputTv({ disabled, readOnly, hasTabs })
 
     // 如果有 Tabs，根据 activeTab 判断可见性；如果没有 Tabs，始终可见
@@ -33,18 +23,21 @@ export const MdInputRender = memo(
     }
 
     return (
-      <Render
-        ref={ref}
-        content={value}
-        className={tcx(tv.render(), className)}
-        mentionRenderComponent={mentionRenderComponent}
-        mentionItems={mentionItems}
-        allowedPrefixes={allowedPrefixes}
-        theme={theme}
-        withScrollArea={withScrollArea}
-        contentRef={contentRef}
-        scrollRef={scrollRef}
-      />
+      <ScrollArea className={tcx(tv.render(), className)}>
+        <ScrollArea.Viewport ref={scrollRef}>
+          <ScrollArea.Content
+            ref={contentRef}
+            className="w-full min-w-0"
+          >
+            <MdRender
+              ref={ref}
+              {...rest}
+              content={value}
+              mentionItems={mentionItems}
+            />
+          </ScrollArea.Content>
+        </ScrollArea.Viewport>
+      </ScrollArea>
     )
   }),
 )

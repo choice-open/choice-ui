@@ -1,4 +1,22 @@
 @layer components {
+  .skeleton {
+    transition: all 0.2s ease-in-out !important;
+    outline: none !important;
+    box-shadow: none !important;
+    border-color: transparent !important;
+    border-radius: var(--radius-md);
+    background-color: var(--color-secondary-background) !important;
+    resize: none !important;
+    pointer-events: none !important;
+    color: transparent !important;
+    &::placeholder,
+    &:placeholder-shown {
+      color: transparent !important;
+    }
+    & * {
+      visibility: hidden !important;
+    }
+  }
   .allotment-module_splitView__L-yRc {
     position: relative;
     width: 100%;
@@ -517,30 +535,6 @@
       transform: translateX(100%) scaleX(1);
     }
   }
-
-  @keyframes skeleton-pulse {
-    0% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.4;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
-
-  @keyframes skeleton-wave {
-    0% {
-      transform: translateX(-100%);
-    }
-    50% {
-      transform: translateX(100%);
-    }
-    100% {
-      transform: translateX(100%);
-    }
-  }
 }
 
 @theme {
@@ -571,8 +565,6 @@
   --animate-spinner-bounce-right: spinner-bounce-right 0.5s infinite alternate ease;
   --animate-indeterminate-bar: indeterminate-bar 1.5s cubic-bezier(0.65, 0.815, 0.735, 0.395)
     infinite normal none running;
-  --animate-skeleton-pulse: skeleton-pulse 2s ease-in-out 0.5s infinite;
-  --animate-skeleton-wave: skeleton-wave 2s linear 0.5s infinite;
 }
 
 @theme {
@@ -612,7 +604,7 @@
   /* Markdown Component Styles */
   .md {
     @apply text-message;
-    background-color: var(--default-background-color, var(--color-default-background));
+    background-color: var(--default-background-color, transparent);
   }
 
   .md > *:first-child {
@@ -745,7 +737,10 @@
 
   .md-code {
     @apply text-message-code rounded-md px-1 py-0.5;
-    background-color: var(--secondary-background-color, var(--color-secondary-background));
+    background-color: var(
+      --secondary-background-color,
+      var(--color-secondary-background)
+    ) !important;
     font-family:
       ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
   }
@@ -1050,6 +1045,123 @@
 
   .md-compact .katex-display {
     @apply my-3;
+  }
+
+  /* Large mode - Enhanced readability for documentation and long-form content */
+  .md-large {
+    @apply text-[1rem];
+  }
+
+  .md-large .md-h1 {
+    @apply mt-10 mb-5 text-[2rem];
+    letter-spacing: -0.02em;
+  }
+
+  .md-large .md-h2 {
+    @apply mt-8 mb-4 text-[1.5rem];
+    letter-spacing: -0.01em;
+  }
+
+  .md-large .md-h3 {
+    @apply mt-6 mb-3 text-[1.25rem];
+  }
+
+  .md-large .md-h4 {
+    @apply mt-5 mb-2.5 text-[1.125rem];
+  }
+
+  .md-large .md-h5 {
+    @apply mt-4 mb-2.5 text-[1rem];
+  }
+
+  .md-large .md-h6 {
+    @apply mt-4 mb-2 text-[0.875rem];
+  }
+
+  .md-large .md-h1:first-child,
+  .md-large .md-h2:first-child,
+  .md-large .md-h3:first-child,
+  .md-large .md-h4:first-child,
+  .md-large .md-h5:first-child,
+  .md-large .md-h6:first-child {
+    @apply mt-0;
+  }
+
+  .md-large .md-p {
+    @apply mb-4;
+  }
+
+  .md-large .md-ul,
+  .md-large .md-ol {
+    @apply mt-4 mb-5;
+  }
+
+  .md-large .md-li {
+    @apply mb-2;
+  }
+
+  .md-large .md-blockquote {
+    @apply my-5 px-5 py-4;
+  }
+
+  .md-large .md-hr {
+    @apply my-10;
+  }
+
+  /* Large mode spacing adjustments */
+  .md-large .md-p + .md-p {
+    @apply mt-4;
+  }
+
+  .md-large .md-p + .md-ul,
+  .md-large .md-p + .md-ol {
+    @apply mt-4;
+  }
+
+  .md-large .md-ul + .md-p,
+  .md-large .md-ol + .md-p {
+    @apply mt-4;
+  }
+
+  .md-large .md-p + .md-blockquote {
+    @apply mt-5;
+  }
+
+  .md-large .md-blockquote + .md-p {
+    @apply mt-5;
+  }
+
+  .md-large .md-p + .md-pre {
+    @apply mt-5;
+  }
+
+  .md-large .md-pre + .md-p {
+    @apply mt-5;
+  }
+
+  .md-large .md-p + .md-table-wrapper {
+    @apply mt-5;
+  }
+
+  .md-large .md-table-wrapper + .md-p {
+    @apply mt-5;
+  }
+
+  .md-large .md-p + .md-img {
+    @apply mt-5;
+  }
+
+  .md-large .md-img + .md-p {
+    @apply mt-5;
+  }
+
+  /* Large mode math */
+  .md-large .katex {
+    font-size: 1.15em;
+  }
+
+  .md-large .katex-display {
+    @apply my-5;
   }
 
   .response-container {

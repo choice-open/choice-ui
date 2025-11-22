@@ -9,7 +9,7 @@ import {
   ParagraphListTodo,
   ParagraphQuote,
 } from "@choiceform/icons-react"
-import type { ToolbarAction } from "./types"
+import type { ToolbarAction } from "../../types"
 
 export const DEFAULT_TOOLBAR_GROUPS: ToolbarAction[][] = [
   [

@@ -4,7 +4,7 @@ import { tcx } from "~/utils"
 import { ToolbarButton } from "./toolbar-button"
 import { DEFAULT_TOOLBAR_GROUPS } from "./default-actions"
 import { toolbarTv } from "./tv"
-import type { ToolbarProps } from "./types"
+import type { ToolbarProps } from "../../types"
 import { MdInputContext } from "../../context"
 
 export const Toolbar = memo(

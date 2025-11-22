@@ -1,6 +1,11 @@
 import { memo } from "react"
 import { Combobox } from "../../../combobox"
-import type { MentionItemProps } from "../../types"
+
+interface MentionItemProps {
+  [key: string]: unknown
+  id: string
+  label: string
+}
 
 export interface MdInputMentionProps {
   filteredItems: MentionItemProps[]
