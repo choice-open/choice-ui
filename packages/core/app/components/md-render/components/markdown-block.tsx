@@ -60,12 +60,6 @@ export const MarkdownBlock = memo(
     )
   },
   function propsAreEqual(prevProps, nextProps) {
-    return (
-      prevProps.content === nextProps.content &&
-      prevProps.components === nextProps.components &&
-      prevProps.allowedLinkPrefixes === nextProps.allowedLinkPrefixes &&
-      prevProps.allowedImagePrefixes === nextProps.allowedImagePrefixes &&
-      prevProps.defaultOrigin === nextProps.defaultOrigin
-    )
+    return prevProps.content === nextProps.content
   },
 )

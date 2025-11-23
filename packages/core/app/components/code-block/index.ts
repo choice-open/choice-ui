@@ -1,11 +1,12 @@
 import { CodeBlock as CodeBlockRoot } from "./code-block"
-import { CodeBlockHeader, CodeBlockFooter, CodeBlockContent } from "./components"
+import { CodeBlockHeader, CodeBlockFooter, CodeBlockContent, CodeBlockCode } from "./components"
 
 // Create compound component
 export const CodeBlock = Object.assign(CodeBlockRoot, {
   Header: CodeBlockHeader,
   Footer: CodeBlockFooter,
   Content: CodeBlockContent,
+  Code: CodeBlockCode,
 })
 
 // Export individual components for backward compatibility
@@ -29,3 +30,5 @@ export type {
   UseCodeBlockReturn,
   UseScrollDetectionOptions,
 } from "./types"
+
+export { getDefaultFilenameForLanguage } from "./utils"

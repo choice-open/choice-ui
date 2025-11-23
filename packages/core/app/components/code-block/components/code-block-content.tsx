@@ -32,35 +32,38 @@ export function CodeBlockContent(props: CodeBlockContentProps) {
   // 根据 lineThreshold 决定是否需要限制高度
   const shouldLimitHeight = lineCount > lineThreshold && !codeExpanded
 
-  return withScrollArea ? (
-    <ScrollArea
-      orientation="both"
-      className={tcx(tv.code(), className)}
-      hoverBoundary="none"
-    >
-      <ScrollArea.Viewport
-        ref={scrollRef}
-        style={{
-          maxHeight: shouldLimitHeight ? `${lineThreshold * 14 + 32}px` : "none",
-        }}
-      >
-        <ScrollArea.Content
-          ref={contentRef}
-          className={tv.content()}
+  return (
+    <div className={tcx(tv.code(), className)}>
+      {withScrollArea ? (
+        <ScrollArea
+          orientation="both"
+          hoverBoundary="none"
         >
+          <ScrollArea.Viewport
+            ref={scrollRef}
+            style={{
+              maxHeight: shouldLimitHeight ? `${lineThreshold * 14 + 32}px` : "none",
+            }}
+          >
+            <ScrollArea.Content
+              ref={contentRef}
+              className={tv.content()}
+            >
+              <CodeBlockCode
+                code={code}
+                language={language}
+              />
+            </ScrollArea.Content>
+          </ScrollArea.Viewport>
+        </ScrollArea>
+      ) : (
+        <div className={tv.content()}>
           <CodeBlockCode
             code={code}
             language={language}
           />
-        </ScrollArea.Content>
-      </ScrollArea.Viewport>
-    </ScrollArea>
-  ) : (
-    <div className={tcx(tv.content(), className)}>
-      <CodeBlockCode
-        code={code}
-        language={language}
-      />
+        </div>
+      )}
     </div>
   )
 }

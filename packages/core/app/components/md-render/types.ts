@@ -1,3 +1,5 @@
+import { Components } from "react-markdown"
+
 interface MentionItemProps {
   [key: string]: unknown
   id: string
@@ -7,6 +9,7 @@ interface MentionItemProps {
 export interface MdRenderProps {
   allowedPrefixes?: string[]
   className?: string
+  components?: Partial<Components>
   content: string
   customColor?: {
     codeBackground?: string
@@ -16,6 +19,7 @@ export interface MdRenderProps {
     secondaryBackground?: string
     secondaryForeground?: string
   }
+  id?: string
   mentionItems?: MentionItemProps[]
   mentionRenderComponent?: React.ComponentType<MentionRenderProps>
   size?: "small" | "default" | "large"

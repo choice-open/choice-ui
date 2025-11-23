@@ -106,11 +106,11 @@ export const createMarkdownComponents = (
       const language = extractLanguage(className)
 
       return (
-        <CodeBlock
-          language={language}
-          className={tv.codeBlock()}
-        >
-          <CodeBlock.Content code={children as string} />
+        <CodeBlock className={tv.codeBlock()}>
+          <CodeBlock.Code
+            code={children as string}
+            language={language}
+          />
         </CodeBlock>
       )
     },

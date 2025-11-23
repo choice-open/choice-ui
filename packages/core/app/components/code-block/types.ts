@@ -62,6 +62,7 @@ export interface CodeBlockFooterProps extends CodeBlockInjectedProps {
 export interface CodeBlockContentProps extends CodeBlockInjectedProps {
   className?: string
   code: string
+  language?: string
   withScrollArea?: boolean
 }
 
