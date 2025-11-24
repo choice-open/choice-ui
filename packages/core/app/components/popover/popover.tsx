@@ -43,6 +43,12 @@ export interface PopoverProps {
   placement?: Placement
   portalId?: string
   rememberPosition?: boolean
+  /**
+   * Portal root element. When specified, the popover will be rendered into this element.
+   * This is useful for detached windows - pass the detached window's document.body.
+   * If not specified, will auto-detect from triggerRef's ownerDocument.
+   */
+  root?: HTMLElement | null
   triggerRef?: React.RefObject<HTMLElement>
 }
 
@@ -70,6 +76,7 @@ export const DragPopover = memo(function DragPopover({
   },
   outsidePressIgnore,
   portalId = PORTAL_ROOT_ID,
+  root,
   autoSize = true,
   rememberPosition = false,
   maxWidth,
@@ -221,7 +228,10 @@ export const DragPopover = memo(function DragPopover({
           {...focusManagerProps}
           context={floating.context}
         >
-          <FloatingPortal id={portalId}>
+          <FloatingPortal
+            id={portalId}
+            root={root}
+          >
             {floating.innerOpen && (
               <Modal
                 ref={handleFloatingRef}

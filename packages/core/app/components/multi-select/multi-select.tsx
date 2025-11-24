@@ -87,6 +87,7 @@ export interface MultiSelectProps {
     onRemove?: (e: React.MouseEvent<HTMLButtonElement>) => void
     value: string
   }) => React.ReactNode
+  root?: HTMLElement | null
   showValidationMessage?: boolean
   size?: "default" | "large"
   values?: string[]
@@ -143,6 +144,7 @@ const MultiSelectComponent = memo(
         returnFocus: false,
         modal: true,
       },
+      root,
     } = props
 
     // 提取子元素
@@ -556,7 +558,10 @@ const MultiSelectComponent = memo(
           {enhancedTriggerElement}
         </Slot>
 
-        <FloatingPortal id={portalId}>
+        <FloatingPortal
+          id={portalId}
+          root={root}
+        >
           {isControlledOpen && (
             <FloatingOverlay
               lockScroll={!touch}

@@ -1,4 +1,4 @@
-import { Add, Delete, ImageRemove, InfoSquare, LoaderCircle, Reload } from "@choiceform/icons-react"
+import { Add, Delete, ImageRemove, LoaderCircle } from "@choiceform/icons-react"
 import { forwardRef, HTMLProps, useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { tcx } from "~/utils"
 import { Dropdown } from "../dropdown"

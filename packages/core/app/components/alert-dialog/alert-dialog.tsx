@@ -26,10 +26,11 @@ export interface AlertDialogProps {
   outsidePress?: boolean
   overlay?: boolean
   portalId?: string
+  root?: HTMLElement | null
 }
 
 export const AlertDialog = memo(function AlertDialog(props: AlertDialogProps) {
-  const { className, outsidePress, overlay = false, portalId = PORTAL_ROOT_ID } = props
+  const { className, outsidePress, overlay = false, portalId = PORTAL_ROOT_ID, root } = props
   const { state, _handleAction } = useAlertDialogContext()
   const { isOpen, type, config } = state
 
@@ -217,7 +218,10 @@ export const AlertDialog = memo(function AlertDialog(props: AlertDialogProps) {
   )
 
   return (
-    <FloatingPortal id={portalId}>
+    <FloatingPortal
+      id={portalId}
+      root={root}
+    >
       {overlay ? (
         <>
           <Modal.Backdrop

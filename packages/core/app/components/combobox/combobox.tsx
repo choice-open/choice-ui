@@ -72,7 +72,9 @@ export interface ComboboxProps {
   portalId?: string
   position?: { x: number; y: number } | null
   readonly?: boolean
-  trigger?: "input" | "coordinate" // 新增：明确指定触发器类型
+  root?: HTMLElement | null
+  trigger?: "input" | "coordinate"
+  // 新增：明确指定触发器类型
   value?: string
 }
 
@@ -108,6 +110,7 @@ const ComboboxComponent = memo(function ComboboxComponent(props: ComboboxProps) 
       returnFocus: true,
       modal: false,
     },
+    root,
   } = props
 
   // References - 使用统一的 refs 管理
@@ -148,7 +151,7 @@ const ComboboxComponent = memo(function ComboboxComponent(props: ComboboxProps) 
   // 内部状态更新逻辑
   const updateInputState = useEventCallback((value: string, triggerCallback = true) => {
     if (readonly) return
-    
+
     setInputValue(value)
     const activeIndex = autoSelection ? 0 : null
 
@@ -507,7 +510,10 @@ const ComboboxComponent = memo(function ComboboxComponent(props: ComboboxProps) 
         elementsRef={elementsRef}
         labelsRef={labelsRef}
       >
-        <FloatingPortal id={portalId}>
+        <FloatingPortal
+          id={portalId}
+          root={root}
+        >
           {isControlledOpen && (
             <FloatingOverlay
               lockScroll={!touch}

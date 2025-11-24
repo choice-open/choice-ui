@@ -69,6 +69,7 @@ export interface ContextMenuProps extends HTMLProps<HTMLDivElement> {
   placement?: Placement
   portalId?: string
   readonly?: boolean
+  root?: HTMLElement | null
   selection?: boolean
   triggerRef?: React.RefObject<HTMLElement>
 }
@@ -143,6 +144,7 @@ const ContextMenuComponent = memo(function ContextMenuComponent(props: ContextMe
       returnFocus: false,
       modal: false,
     },
+    root,
     ...rest
   } = props
 
@@ -480,7 +482,10 @@ const ContextMenuComponent = memo(function ContextMenuComponent(props: ContextMe
           elementsRef={elementsRef}
           labelsRef={labelsRef}
         >
-          <FloatingPortal id={portalId}>
+          <FloatingPortal
+            id={portalId}
+            root={root}
+          >
             {isControlledOpen && (
               <FloatingOverlay
                 lockScroll={!touch}

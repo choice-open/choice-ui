@@ -23,12 +23,14 @@ interface MentionMenuProps {
   onSelect: (mention: MentionItem, index: number) => void
   position: MentionMenuPosition | null
   renderSuggestion?: (item: MentionItem, isSelected: boolean) => React.ReactNode
+  root?: HTMLElement | null
   suggestions: MentionItem[]
 }
 
 export const MentionMenu = memo(
   forwardRef<MentionMenuRef, MentionMenuProps>(function MentionMenu(props, ref) {
-    const { isOpen, loading, position, onSelect, renderSuggestion, suggestions, onClose } = props
+    const { isOpen, loading, position, onSelect, renderSuggestion, suggestions, onClose, root } =
+      props
 
     const tv = contextInputTv()
 
@@ -87,6 +89,7 @@ export const MentionMenu = memo(
         autoSelection={true}
         value=""
         onChange={() => {}} // 不需要处理值变化
+        root={root}
       >
         {suggestions.length > 0 && (
           <Combobox.Content>

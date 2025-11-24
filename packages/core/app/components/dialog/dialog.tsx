@@ -55,6 +55,7 @@ export interface DialogProps {
     height?: boolean
     width?: boolean
   }
+  root?: HTMLElement | null
   transitionStylesProps?: UseTransitionStylesProps
 }
 
@@ -81,6 +82,7 @@ const DialogComponent = memo(function DialogComponent({
   rememberSize = false,
   focusManagerProps = { initialFocus: 1 },
   transitionStylesProps,
+  root,
 }: DialogProps) {
   const dialogRef = useRef<HTMLDivElement | null>(null)
   const contentRef = useRef<HTMLDivElement>(null)
@@ -239,7 +241,10 @@ const DialogComponent = memo(function DialogComponent({
       {triggerContent}
 
       {floating.innerOpen && floating.isMounted && (
-        <FloatingPortal id={PORTAL_ROOT_ID}>
+        <FloatingPortal
+          id={PORTAL_ROOT_ID}
+          root={root}
+        >
           <FloatingOverlay
             lockScroll
             className={tcx(style.overlay())}

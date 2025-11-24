@@ -66,6 +66,7 @@ export interface SelectProps {
   placement?: "bottom-start" | "bottom-end"
   portalId?: string
   readonly?: boolean
+  root?: HTMLElement | null
   size?: "default" | "large"
   value?: string | null
 }
@@ -108,6 +109,7 @@ const SelectComponent = memo(function SelectComponent(props: SelectProps) {
       returnFocus: false,
       modal: true,
     },
+    root,
   } = props
 
   // 提取子元素 - 从原来的 Select 复制逻辑
@@ -559,7 +561,10 @@ const SelectComponent = memo(function SelectComponent(props: SelectProps) {
         {enhancedTriggerElement}
       </Slot>
 
-      <FloatingPortal id={portalId}>
+      <FloatingPortal
+        id={portalId}
+        root={root}
+      >
         {isControlledOpen && (
           <FloatingOverlay
             lockScroll={!touch}

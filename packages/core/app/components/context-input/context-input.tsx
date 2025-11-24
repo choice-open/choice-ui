@@ -53,6 +53,7 @@ const ContextInputBase = forwardRef<HTMLDivElement, ContextInputProps>(function 
     minHeight = 80,
     afterElement,
     beforeElement,
+    root,
     ...props
   },
   ref,

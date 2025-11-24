@@ -48,7 +48,6 @@ export interface ContextInputProps {
   mentionClassName?: string
   mentionPrefix?: string
   minHeight?: number
-
   // 事件回调
   onBlur?: () => void
   onChange?: (value: ContextInputValue) => void
@@ -57,12 +56,13 @@ export interface ContextInputProps {
   onFocus?: () => void
   onKeyDown?: (event: React.KeyboardEvent) => void
   onMentionSelect?: (mention: MentionItem, trigger: string) => void
-
   placeholder?: string
+
   readonly?: boolean
   // 渲染自定义
   renderMention?: (mention: MentionMatch) => React.ReactNode
   renderSuggestion?: (item: MentionItem, isSelected: boolean) => React.ReactNode
+  root?: HTMLElement | null
   size?: "default" | "large"
 
   suggestionListClassName?: string

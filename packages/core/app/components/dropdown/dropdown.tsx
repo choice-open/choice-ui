@@ -79,6 +79,7 @@ export interface DropdownProps {
   portalId?: string
   position?: { x: number; y: number } | null
   readonly?: boolean
+  root?: HTMLElement | null
   selection?: boolean
 }
 
@@ -127,6 +128,7 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
       modal: position ? false : true,
       ...(position && { disabled: true }), // 坐标模式下禁用焦点管理
     },
+    root,
   } = props
 
   // References - 使用统一的 refs 管理
@@ -455,7 +457,10 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
         elementsRef={elementsRef}
         labelsRef={labelsRef}
       >
-        <FloatingPortal id={portalId}>
+        <FloatingPortal
+          id={portalId}
+          root={root}
+        >
           {isControlledOpen && (
             <FloatingOverlay
               lockScroll={!touch}

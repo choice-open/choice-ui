@@ -4,7 +4,7 @@ export const avatarTv = tcv({
   slots: {
     root: ["rounded-full", "relative flex shrink-0 items-center justify-center align-middle"],
     image: [
-      "overflow-hidden rounded-full",
+      "overflow-hidden rounded-inherit",
       "absolute inset-0 h-full w-full",
       "pointer-events-none object-cover",
     ],
