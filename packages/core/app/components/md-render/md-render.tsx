@@ -7,7 +7,7 @@ import {
   useId,
   useMemo,
 } from "react"
-import { Components } from "react-markdown"
+import type { Components } from "react-markdown"
 import { tcx } from "~/utils"
 import { CodeBlock, getDefaultFilenameForLanguage } from "../code-block"
 import { createMarkdownComponents, MarkdownBlock } from "./components"

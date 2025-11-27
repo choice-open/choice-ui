@@ -1,26 +1,8 @@
-import hardenReactMarkdownImport from "harden-react-markdown"
-import { ComponentType, memo } from "react"
-import ReactMarkdown, { Components, Options } from "react-markdown"
+import { ComponentType, memo, useEffect, useState } from "react"
+import type { Components, Options } from "react-markdown"
 import remarkBreaks from "remark-breaks"
 import remarkGfm from "remark-gfm"
 import remarkMath from "remark-math"
-
-const hardenReactMarkdown =
-  (
-    hardenReactMarkdownImport as unknown as ComponentType<Options> & {
-      default: typeof hardenReactMarkdownImport
-    }
-  ).default || hardenReactMarkdownImport
-
-const HardenedMarkdown = hardenReactMarkdown(
-  ReactMarkdown as unknown as ComponentType<Options>,
-) as ComponentType<
-  Options & {
-    allowedImagePrefixes?: string[]
-    allowedLinkPrefixes?: string[]
-    defaultOrigin?: string
-  }
->
 
 type HardenReactMarkdownProps = Options & {
   allowedImagePrefixes?: string[]
@@ -33,6 +15,14 @@ interface MarkdownBlockProps extends Omit<HardenReactMarkdownProps, "children"> 
   content: string
 }
 
+type HardenedMarkdownComponent = ComponentType<
+  Options & {
+    allowedImagePrefixes?: string[]
+    allowedLinkPrefixes?: string[]
+    defaultOrigin?: string
+  }
+>
+
 export const MarkdownBlock = memo(
   function MarkdownBlock(props: MarkdownBlockProps) {
     const {
@@ -43,6 +33,52 @@ export const MarkdownBlock = memo(
       defaultOrigin = typeof window !== "undefined" ? window.location.origin : "http://localhost",
       ...rest
     } = props
+
+    const [HardenedMarkdown, setHardenedMarkdown] = useState<HardenedMarkdownComponent | null>(null)
+
+    useEffect(() => {
+      let isMounted = true
+
+      async function loadMarkdown() {
+        try {
+          const [hardenReactMarkdownModule, reactMarkdownModule] = await Promise.all([
+            import("harden-react-markdown"),
+            import("react-markdown"),
+          ])
+
+          if (!isMounted) return
+
+          const hardenReactMarkdownImport = hardenReactMarkdownModule.default
+          const ReactMarkdown = reactMarkdownModule.default
+
+          const hardenReactMarkdown =
+            (
+              hardenReactMarkdownImport as unknown as ComponentType<Options> & {
+                default: typeof hardenReactMarkdownImport
+              }
+            ).default || hardenReactMarkdownImport
+
+          const HardenedMarkdownComponent = hardenReactMarkdown(
+            ReactMarkdown as unknown as ComponentType<Options>,
+          ) as HardenedMarkdownComponent
+
+          setHardenedMarkdown(() => HardenedMarkdownComponent)
+        } catch {
+          // Failed to load markdown libraries, component will render null
+        }
+      }
+
+      loadMarkdown()
+
+      return () => {
+        isMounted = false
+      }
+    }, [])
+
+    if (!HardenedMarkdown) {
+      // SSR 或加载中时显示原始文本作为占位
+      return <div className="whitespace-pre-wrap">{content}</div>
+    }
 
     return (
       <HardenedMarkdown

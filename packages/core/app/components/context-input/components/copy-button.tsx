@@ -29,6 +29,10 @@ const CopyButtonComponent = function CopyButton({
       const textContent = convertSlateToText(editor.children)
 
       // 复制到剪贴板
+      if (typeof navigator === "undefined" || !navigator.clipboard) {
+        console.warn("Clipboard API not available")
+        return
+      }
       await navigator.clipboard.writeText(textContent)
 
       // 设置成功状态

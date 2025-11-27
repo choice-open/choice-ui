@@ -31,12 +31,13 @@ import React, {
   useContext,
   useEffect,
   useId,
-  useLayoutEffect,
   useMemo,
   useRef,
   useState,
 } from "react"
 import { useEventCallback } from "usehooks-ts"
+import { useIsomorphicLayoutEffect } from "~/hooks"
+import { isBrowser, getDocument } from "~/utils"
 import {
   MenuButton,
   MenuContext,
@@ -191,7 +192,7 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
           bottom: pos.y,
         }
       },
-      contextElement: document.body,
+      contextElement: getDocument()?.body,
     })
   })
 
@@ -246,7 +247,7 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
   })
 
   // 同步设置虚拟位置 - 坐标模式下使用
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (
       position &&
       isCoordinateMode &&

@@ -1,8 +1,9 @@
 import { ChevronDownSmall, ChevronUpSmall } from "@choiceform/icons-react"
-import { useLayoutEffect, useRef, useState } from "react"
+import { useRef, useState } from "react"
 import { flushSync } from "react-dom"
 import { MenuScrollArrowTv } from "../tv"
-import { tcx } from "~/utils/tcx"
+import { useIsomorphicLayoutEffect } from "~/hooks"
+import { tcx } from "~/utils"
 
 const SCROLL_ARROW_PADDING = 16
 
@@ -50,7 +51,7 @@ export const MenuScrollArrow = function MenuScrollArrow(props: MenuScrollArrowPr
   const lastScrollHeightRef = useRef<number>(0)
 
   // 保持 ref 与最新值同步
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     isPositionedRef.current = isPositioned
     dirRef.current = dir
   }, [isPositioned, dir])
@@ -58,7 +59,7 @@ export const MenuScrollArrow = function MenuScrollArrow(props: MenuScrollArrowPr
   const styles = MenuScrollArrowTv({ dir, visible: show })
 
   // 初始化时检查
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (isPositioned && scrollRef.current) {
       lastScrollHeightRef.current = scrollRef.current.scrollHeight
       requestAnimationFrame(() => {
@@ -69,7 +70,7 @@ export const MenuScrollArrow = function MenuScrollArrow(props: MenuScrollArrowPr
 
   // 使用 ResizeObserver 监听内容高度变化（如 filter 后 item 减少）
   // 使用 RAF 防抖优化，避免频繁更新和 flushSync
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (!isPositioned || !scrollRef.current) {
       return
     }
@@ -110,7 +111,7 @@ export const MenuScrollArrow = function MenuScrollArrow(props: MenuScrollArrowPr
     }
   }, [isPositioned, scrollRef, dir])
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (!show && statusRef.current === "active") {
       onHide?.()
     }
@@ -168,7 +169,7 @@ export const MenuScrollArrow = function MenuScrollArrow(props: MenuScrollArrowPr
   }
 
   // 组件卸载时清理所有动画帧
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     return () => {
       if (frameRef.current !== -1) {
         cancelAnimationFrame(frameRef.current)

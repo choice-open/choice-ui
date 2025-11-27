@@ -31,16 +31,18 @@ const HEADER_HEIGHT = 40 // header高度
 function adjustPosition(
   position: Position,
   dialogRect: DOMRect,
-  viewportWidth = window.innerWidth,
-  viewportHeight = window.innerHeight,
+  viewportWidth?: number,
+  viewportHeight?: number,
 ): Position {
+  const vw = viewportWidth ?? (typeof window !== "undefined" ? window.innerWidth : 0)
+  const vh = viewportHeight ?? (typeof window !== "undefined" ? window.innerHeight : 0)
   // 确保至少 25% 的窗口宽度在可视范围内
   const minVisibleWidth = dialogRect.width * MIN_VISIBLE_RATIO
-  const maxLeft = viewportWidth - minVisibleWidth
+  const maxLeft = vw - minVisibleWidth
   const minLeft = minVisibleWidth - dialogRect.width
 
   // 确保 header 始终在可视范围内
-  const maxTop = viewportHeight - HEADER_HEIGHT
+  const maxTop = vh - HEADER_HEIGHT
   const minTop = 0
 
   return {

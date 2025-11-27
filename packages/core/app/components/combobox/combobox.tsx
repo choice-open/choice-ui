@@ -28,13 +28,13 @@ import React, {
   memo,
   useEffect,
   useId,
-  useLayoutEffect,
   useMemo,
   useRef,
   useState,
 } from "react"
 import { useEventCallback } from "usehooks-ts"
-import { tcx } from "~/utils"
+import { useIsomorphicLayoutEffect } from "~/hooks"
+import { tcx, getDocument } from "~/utils"
 import {
   MenuButton,
   MenuContext,
@@ -226,7 +226,7 @@ const ComboboxComponent = memo(function ComboboxComponent(props: ComboboxProps) 
           bottom: pos.y,
         }
       },
-      contextElement: document.body,
+      contextElement: getDocument()?.body,
     })
   })
 
@@ -316,7 +316,7 @@ const ComboboxComponent = memo(function ComboboxComponent(props: ComboboxProps) 
   ])
 
   // 同步设置虚拟位置 - 坐标模式下使用
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (position && isCoordinateMode) {
       // 只要有position就设置虚拟定位，不管是否open
       if (

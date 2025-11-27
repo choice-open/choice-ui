@@ -5,9 +5,11 @@ export function calculateInitialPosition(
   dialogWidth: number,
   dialogHeight: number,
   positionPadding: number,
-  viewportWidth = window.innerWidth,
-  viewportHeight = window.innerHeight,
+  viewportWidth?: number,
+  viewportHeight?: number,
 ): { x: number; y: number } {
+  const vw = viewportWidth ?? (typeof window !== "undefined" ? window.innerWidth : 0)
+  const vh = viewportHeight ?? (typeof window !== "undefined" ? window.innerHeight : 0)
   const padding = positionPadding // 边距
 
   // 计算水平位置
@@ -15,9 +17,9 @@ export function calculateInitialPosition(
   if (preset.includes("left")) {
     x = padding
   } else if (preset.includes("right")) {
-    x = viewportWidth - dialogWidth - padding
+    x = vw - dialogWidth - padding
   } else if (preset.includes("center") || preset === "center") {
-    x = (viewportWidth - dialogWidth) / 2
+    x = (vw - dialogWidth) / 2
   }
 
   // 计算垂直位置
@@ -25,9 +27,9 @@ export function calculateInitialPosition(
   if (preset.includes("top")) {
     y = padding
   } else if (preset.includes("bottom")) {
-    y = viewportHeight - dialogHeight - padding
+    y = vh - dialogHeight - padding
   } else if (preset.includes("center") || preset === "center") {
-    y = (viewportHeight - dialogHeight) / 2
+    y = (vh - dialogHeight) / 2
   }
 
   return { x, y }

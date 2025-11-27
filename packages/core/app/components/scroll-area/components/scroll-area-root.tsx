@@ -1,4 +1,4 @@
-import { createContext, forwardRef, useContext, useMemo, useState } from "react"
+import { createContext, forwardRef, useContext, useId, useMemo, useState } from "react"
 import { tcx } from "~/utils"
 import { useScrollStateAndVisibility } from "../hooks"
 import { ScrollTv } from "../tv"
@@ -20,11 +20,6 @@ export function useScrollAreaContext() {
     throw new Error("ScrollArea compound components must be used within ScrollArea")
   }
   return context
-}
-
-// 生成唯一ID的辅助函数
-function generateId(prefix: string) {
-  return `${prefix}-${Math.random().toString(36).substr(2, 9)}`
 }
 
 export const ScrollAreaRoot = forwardRef<HTMLDivElement, ScrollAreaProps>(
@@ -51,11 +46,12 @@ export const ScrollAreaRoot = forwardRef<HTMLDivElement, ScrollAreaProps>(
     const [thumbX, setThumbX] = useState<HTMLDivElement | null>(null)
     const [thumbY, setThumbY] = useState<HTMLDivElement | null>(null)
 
-    // 生成唯一ID
-    const rootId = useMemo(() => id || generateId("scroll-area"), [id])
-    const viewportId = useMemo(() => generateId("scroll-viewport"), [])
-    const scrollbarXId = useMemo(() => generateId("scroll-x"), [])
-    const scrollbarYId = useMemo(() => generateId("scroll-y"), [])
+    // 使用 React useId 生成 SSR 安全的唯一 ID
+    const reactId = useId()
+    const rootId = id || `scroll-area${reactId}`
+    const viewportId = `scroll-viewport${reactId}`
+    const scrollbarXId = `scroll-x${reactId}`
+    const scrollbarYId = `scroll-y${reactId}`
 
     const { scrollState, isHovering, isScrolling, handleMouseEnter, handleMouseLeave } =
       useScrollStateAndVisibility(viewport)

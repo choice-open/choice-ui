@@ -7,9 +7,9 @@ import React, {
   useMemo,
   useRef,
   useState,
-  useLayoutEffect,
 } from "react"
 import { useEventCallback } from "usehooks-ts"
+import { useIsomorphicLayoutEffect } from "~/hooks"
 import { mergeRefs, tcx } from "~/utils"
 import { rangeTv } from "./tv"
 
@@ -141,7 +141,7 @@ export const RangeTuple = forwardRef<HTMLDivElement, RangeTupleProps>(
       return trackSize?.width
     }, [trackSize?.width, actualTrackWidth])
 
-    useLayoutEffect(() => {
+    useIsomorphicLayoutEffect(() => {
       if (trackSize?.width === "auto" && sliderRef.current) {
         const updateWidth = () => {
           if (sliderRef.current) {

@@ -34,13 +34,16 @@ const MAX_SIZE_RATIO = 0.9
 function adjustSize(
   size: Size,
   minWidth = 200,
-  maxWidth = window.innerWidth * MAX_SIZE_RATIO,
+  maxWidth?: number,
   minHeight = 100,
-  maxHeight = window.innerHeight * MAX_SIZE_RATIO,
+  maxHeight?: number,
 ): Size {
+  const mw = maxWidth ?? (typeof window !== "undefined" ? window.innerWidth * MAX_SIZE_RATIO : 800)
+  const mh =
+    maxHeight ?? (typeof window !== "undefined" ? window.innerHeight * MAX_SIZE_RATIO : 600)
   return {
-    width: Math.min(Math.max(size.width, minWidth), maxWidth),
-    height: Math.min(Math.max(size.height, minHeight), maxHeight),
+    width: Math.min(Math.max(size.width, minWidth), mw),
+    height: Math.min(Math.max(size.height, minHeight), mh),
   }
 }
 

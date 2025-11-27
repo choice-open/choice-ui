@@ -1,6 +1,6 @@
 import { Check } from "@choiceform/icons-react"
 import { Children, memo } from "react"
-import { Components } from "react-markdown"
+import type { Components } from "react-markdown"
 import { CodeBlock, ScrollArea } from "~/components"
 import { mdRenderTv } from "../tv"
 import type { MentionRenderProps } from "../types"

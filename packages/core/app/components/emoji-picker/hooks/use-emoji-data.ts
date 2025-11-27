@@ -1,4 +1,5 @@
 import { useMemo, useState, useEffect } from "react"
+import { isBrowser } from "~/utils"
 import { emojis } from "../utils"
 
 export interface EmojiData {
@@ -62,6 +63,7 @@ export function getEmojiCategory(id: number): EmojiCategory {
 }
 
 function getFrequentlyUsedEmojis(): EmojiData[] {
+  if (!isBrowser) return []
   try {
     const stored = localStorage.getItem(STORAGE_KEY)
     if (!stored) return []
@@ -73,6 +75,7 @@ function getFrequentlyUsedEmojis(): EmojiData[] {
 }
 
 function saveFrequentlyUsedEmoji(emojiId: number) {
+  if (!isBrowser) return
   try {
     const stored = localStorage.getItem(STORAGE_KEY)
     let ids: number[] = stored ? JSON.parse(stored) : []

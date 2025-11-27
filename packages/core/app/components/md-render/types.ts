@@ -1,4 +1,4 @@
-import { Components } from "react-markdown"
+import type { Components } from "react-markdown"
 
 interface MentionItemProps {
   [key: string]: unknown

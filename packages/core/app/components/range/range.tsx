@@ -7,9 +7,9 @@ import React, {
   useMemo,
   useRef,
   useState,
-  useLayoutEffect,
 } from "react"
 import { useEventCallback } from "usehooks-ts"
+import { useIsomorphicLayoutEffect } from "~/hooks"
 import { mergeRefs, tcx } from "~/utils"
 import { rangeTv } from "./tv"
 
@@ -102,8 +102,8 @@ export const Range = forwardRef<HTMLDivElement, RangeProps>(function Range(props
     return trackSize?.width
   }, [trackSize?.width, actualTrackWidth])
 
-  // 🔥 使用 useLayoutEffect 在 DOM 更新后获取实际尺寸
-  useLayoutEffect(() => {
+  // 🔥 使用 useIsomorphicLayoutEffect 在 DOM 更新后获取实际尺寸
+  useIsomorphicLayoutEffect(() => {
     if (trackSize?.width === "auto" && sliderRef.current) {
       const updateWidth = () => {
         if (sliderRef.current) {

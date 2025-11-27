@@ -1,11 +1,14 @@
 import { RefObject, useEffect, useRef, useState } from "react"
 import type { CellProps, ConstRef, ElementScroll, ElementSize, RenderDataProps } from "./types"
 
+const isBrowser = typeof window !== "undefined"
+
 function isSameElementSize(a: ElementSize, b: ElementSize) {
   return a.width === b.width && a.height === b.height
 }
 
 function getWindowSize(): ElementSize {
+  if (!isBrowser) return { width: 0, height: 0 }
   return {
     width: window.innerWidth,
     height: window.innerHeight,
@@ -25,6 +28,7 @@ function isSameElementScroll(a: ElementScroll, b: ElementScroll) {
 }
 
 function getWindowScroll(): ElementScroll {
+  if (!isBrowser) return { x: 0, y: 0 }
   return {
     x: window.scrollX,
     y: window.scrollY,
@@ -32,6 +36,7 @@ function getWindowScroll(): ElementScroll {
 }
 
 function getElementOffset(element: Element) {
+  if (!isBrowser) return 0
   return window.scrollY + element.getBoundingClientRect().top
 }
 
