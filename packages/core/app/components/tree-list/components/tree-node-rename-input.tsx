@@ -41,6 +41,7 @@ export interface TreeNodeRenameInputProps {
 
   /**
    * 重命名完成后触发，返回新的名称
+   * 如果启用 showFullPathOnRename，newName 将包含完整路径
    */
   onRename?: (newName: string) => void
 
@@ -155,19 +156,20 @@ export function TreeNodeRenameInput(props: TreeNodeRenameInputProps) {
 
     hasCommittedRef.current = true
 
-    let trimmedValue = renameValue.trim()
+    const trimmedValue = renameValue.trim()
+    let newName = trimmedValue
 
-    // 如果启用完整路径显示，只提取最后一部分作为新名称
-    if (showFullPathOnRename && fullPath.length > 0) {
-      // 从完整路径中提取最后一部分（节点名称）
-      // 如果用户修改了路径，尝试从修改后的值中提取最后一部分
-      const parts = trimmedValue.split("/")
-      trimmedValue = parts[parts.length - 1] || trimmedValue
+    // 如果启用完整路径显示，newName 应该是用户输入的完整路径（包括可能被修改的父节点名称）
+    // 如果未启用，newName 就是节点名称
+    if (!showFullPathOnRename) {
+      // 未启用完整路径显示时，只使用节点名称
+      newName = trimmedValue
     }
+    // 启用完整路径显示时，newName 已经是完整路径（trimmedValue）
 
-    if (trimmedValue !== "" && trimmedValue !== name) {
-      onRename?.(trimmedValue)
-    } else if (trimmedValue === "") {
+    if (newName !== "" && newName !== name) {
+      onRename?.(newName)
+    } else if (newName === "") {
       onRenameValueChange(name)
     }
 
@@ -189,7 +191,6 @@ export function TreeNodeRenameInput(props: TreeNodeRenameInputProps) {
     triggerMeasure,
     onRenamingChange,
     showFullPathOnRename,
-    fullPath,
   ])
 
   const cancelRename = useCallback(() => {

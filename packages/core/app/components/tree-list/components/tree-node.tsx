@@ -98,6 +98,9 @@ export const TreeNode = forwardRef<HTMLDivElement, TreeNodeProps>((props, ref) =
   // 控制折叠按钮的展示：仅当存在子节点时显示
   const shouldRenderToggle = hasChildren
 
+  // hover 时是否需要隐藏标签（仅当存在 actions）
+  const shouldHideLabelOnHover = Boolean(renderActions)
+
   // 节点点击
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation()
@@ -247,14 +250,18 @@ export const TreeNode = forwardRef<HTMLDivElement, TreeNodeProps>((props, ref) =
       onMouseEnter={handleOuterMouseEnter}
       onMouseLeave={handleOuterMouseLeave}
     >
-      {/* Label: 显示在非 hover 状态 */}
+      {/* Label: 仅在存在 actions 时 hover 隐藏 */}
       {renderLabel && (
         <div
           className={tcx(
             "pointer-events-none absolute inset-0 flex items-center justify-end gap-1 px-2",
-            isRenaming ? "opacity-0" : isHovered ? "opacity-0" : "opacity-100",
+            isRenaming
+              ? "opacity-0"
+              : shouldHideLabelOnHover && isHovered
+                ? "opacity-0"
+                : "opacity-100",
           )}
-          aria-hidden={isRenaming || isHovered}
+          aria-hidden={isRenaming || (shouldHideLabelOnHover && isHovered)}
         >
           <div
             className={tcx(

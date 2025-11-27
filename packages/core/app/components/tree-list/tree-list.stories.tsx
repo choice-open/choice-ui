@@ -156,6 +156,32 @@ const countTreeNodes = (nodes: TreeNodeData[]): number => {
 
 const performanceTotalNodes = countTreeNodes(performanceTestData)
 
+const labelVisibilityData: TreeNodeData[] = [
+  {
+    id: "suite",
+    name: "Design suite",
+    isFolder: true,
+    children: [
+      {
+        id: "suite-research",
+        name: "Research docs",
+        children: [],
+      },
+      {
+        id: "suite-wireframes",
+        name: "Wireframes",
+        children: [],
+      },
+    ],
+  },
+  {
+    id: "notes",
+    name: "Personal notes",
+    isFolder: false,
+    children: [],
+  },
+]
+
 const meta: Meta<typeof TreeList> = {
   title: "Components/TreeList",
   component: TreeList,
@@ -234,6 +260,8 @@ const ComprehensiveTreeList = observer(() => {
       newName: trimmedName,
       path: pathNames.length > 0 ? pathNames.join(" / ") : "根节点",
       fullPath: pathNames,
+      // 如果 newName 包含 "/"，说明是完整路径（showFullPathOnRename 为 true）
+      isFullPath: trimmedName.includes("/"),
     })
 
     // 递归更新节点
@@ -1021,6 +1049,98 @@ const ComprehensiveTreeList = observer(() => {
 // 导出单一综合示例
 export const Comprehensive: Story = {
   render: () => <ComprehensiveTreeList />,
+}
+
+const LabelVisibilityDemo = () => {
+  const [withActionsSelection, setWithActionsSelection] = useState<Set<string>>(() => new Set())
+  const [plainSelection, setPlainSelection] = useState<Set<string>>(() => new Set())
+  const containerWidth = 320
+
+  const renderLabel = useCallback(
+    (node: TreeNodeType) => (
+      <span className="text-body-small text-default-foreground font-medium">{node.name}</span>
+    ),
+    [],
+  )
+
+  const renderIcon = useCallback(
+    (node: TreeNodeType) =>
+      node.children && node.children.length > 0 ? <ToolbarFrame /> : <Element />,
+    [],
+  )
+
+  const renderActions = useCallback(
+    (node: TreeNodeType) => (
+      <button
+        type="button"
+        className="text-body-tiny text-secondary-foreground hover:text-default-foreground border-default-border rounded border px-2 py-0.5"
+        onClick={(event) => {
+          event.stopPropagation()
+          event.preventDefault()
+          console.info("[TreeList Story] Tail action clicked", node.name)
+        }}
+      >
+        Quick view
+      </button>
+    ),
+    [],
+  )
+
+  const handleSelectionChange = useCallback(
+    (nodes: TreeNodeType[], setter: (ids: Set<string>) => void) => {
+      setter(new Set(nodes.map((node) => node.id)))
+    },
+    [],
+  )
+
+  return (
+    <div className="flex flex-col gap-6 lg:flex-row">
+      <div className="border-default-border bg-default-background rounded border p-4 shadow-sm">
+        <div className="text-body-small text-secondary-foreground mb-3">
+          Hovering nodes with actions hides the floating label and reveals the buttons.
+        </div>
+        <div className="w-[320px]">
+          <TreeList
+            data={labelVisibilityData}
+            containerWidth={containerWidth}
+            selectedNodeIds={withActionsSelection}
+            onNodeSelect={(nodes) => handleSelectionChange(nodes, setWithActionsSelection)}
+            renderLabel={renderLabel}
+            renderActions={renderActions}
+            renderIcon={renderIcon}
+            allowDrag={false}
+            allowDrop={false}
+            virtualScroll={false}
+          />
+        </div>
+      </div>
+      <div className="border-default-border bg-default-background rounded border p-4 shadow-sm">
+        <div className="text-body-small text-secondary-foreground mb-3">
+          Without tail actions the label remains visible even while hovering.
+        </div>
+        <div className="w-[320px]">
+          <TreeList
+            data={labelVisibilityData}
+            containerWidth={containerWidth}
+            selectedNodeIds={plainSelection}
+            onNodeSelect={(nodes) => handleSelectionChange(nodes, setPlainSelection)}
+            renderLabel={renderLabel}
+            renderIcon={renderIcon}
+            allowDrag={false}
+            allowDrop={false}
+            virtualScroll={false}
+          />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+/**
+ * Simple side-by-side comparison showing label visibility with and without tail actions.
+ */
+export const LabelVisibility: Story = {
+  render: () => <LabelVisibilityDemo />,
 }
 
 const LargeDatasetTreeList = () => {
