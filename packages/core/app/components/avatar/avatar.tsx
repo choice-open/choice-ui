@@ -11,7 +11,7 @@ export interface AvatarProps extends Omit<HTMLProps<HTMLDivElement>, "size" | "a
   color?: string
   name?: string
   photo?: string
-  size?: "small" | "medium" | "large"
+  size?: "small" | "medium" | "large" | number
   states?: "default" | "dash" | "design" | "spotlight"
 }
 
@@ -31,7 +31,14 @@ export const Avatar = memo(
     const [isLoading, setIsLoading] = useState(!!photo)
     const [imageLoadedError, setImageLoadedError] = useState(false)
 
-    const styles = avatarTv({ size, states, isLoading })
+    const isNumericSize = typeof size === "number"
+    const tvSize: "small" | "medium" | "large" = isNumericSize ? "medium" : (size ?? "medium")
+
+    const styles = avatarTv({
+      size: tvSize,
+      states,
+      isLoading,
+    })
 
     const fallback = useMemo(() => {
       return photo && !imageLoadedError ? (
@@ -65,12 +72,19 @@ export const Avatar = memo(
 
     const Component = as ?? "div"
 
+    const sizeStyle = isNumericSize
+      ? {
+          width: `${size}px`,
+          height: `${size}px`,
+        }
+      : {}
+
     return (
       <Component
         ref={ref}
         tabIndex={-1}
         className={tcx(styles.root(), className)}
-        style={{ backgroundColor: color, color: textColor }}
+        style={{ backgroundColor: color, color: textColor, ...sizeStyle }}
         {...rest}
       >
         {children ?? fallback}

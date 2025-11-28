@@ -93,33 +93,60 @@ export const Photo: Story = {
 
 /**
  * Sizes: Demonstrates the different size options for the Avatar component.
- * - Shows how to use the size prop: "small", "medium", and "large".
+ * - Shows how to use the size prop: "small", "medium", "large", and custom numeric values.
  * - Useful for adapting Avatar to different UI contexts (e.g., lists, profile pages, dashboards).
  * - Each avatar is given a unique color and labeled with its size.
+ * - Numeric sizes allow for precise control over avatar dimensions.
  */
 export const Sizes: Story = {
   render: function SizesStory() {
-    enum Sizes {
-      Large = "large",
-      Medium = "medium",
-      Small = "small",
-    }
+    const presetSizes = [
+      { size: "small" as const, label: "small" },
+      { size: "medium" as const, label: "medium" },
+      { size: "large" as const, label: "large" },
+    ]
+
+    const numericSizes = [20, 32, 48, 64]
 
     return (
-      <div className="grid grid-cols-4 gap-4">
-        {Object.values(Sizes).map((size) => (
-          <div
-            className="flex flex-col items-center gap-2"
-            key={size}
-          >
-            <Avatar
-              name={size}
-              size={size}
-              color={faker.color.rgb()}
-            />
-            <p>{size}</p>
+      <div className="space-y-8">
+        <div>
+          <h3 className="mb-4 text-sm font-medium text-gray-700">Preset Sizes</h3>
+          <div className="grid grid-cols-3 gap-4">
+            {presetSizes.map((item) => (
+              <div
+                className="flex flex-col items-center gap-2"
+                key={item.label}
+              >
+                <Avatar
+                  name={item.label}
+                  size={item.size}
+                  color={faker.color.rgb()}
+                />
+                <p className="text-sm">{item.label}</p>
+              </div>
+            ))}
           </div>
-        ))}
+        </div>
+
+        <div>
+          <h3 className="mb-4 text-sm font-medium text-gray-700">Numeric Sizes</h3>
+          <div className="grid grid-cols-4 gap-4">
+            {numericSizes.map((size) => (
+              <div
+                className="flex flex-col items-center gap-2"
+                key={size}
+              >
+                <Avatar
+                  name={`${size}px`}
+                  size={size}
+                  color={faker.color.rgb()}
+                />
+                <p className="text-sm">{size}px</p>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     )
   },

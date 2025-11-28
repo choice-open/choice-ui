@@ -1,4 +1,4 @@
-import { memo, useEffect, useMemo, useRef } from "react"
+import { memo, useMemo } from "react"
 
 const SIZE_MAP = {
   small: 16,
@@ -8,48 +8,35 @@ const SIZE_MAP = {
 
 interface InitialLetterProps {
   letter: string
-  size?: "small" | "medium" | "large"
+  size?: "small" | "medium" | "large" | number
 }
 
 export const InitialLetter = memo(function InitialLetter({
   letter,
   size = "medium",
 }: InitialLetterProps) {
-  const canvasRef = useRef<HTMLCanvasElement>(null)
-  const canvasSize = useMemo(() => SIZE_MAP[size] * 2, [size])
+  const avatarSize = useMemo(() => {
+    if (typeof size === "number") {
+      return size
+    }
+    return SIZE_MAP[size]
+  }, [size])
 
-  useEffect(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
+  const fontSize = useMemo(() => {
+    return Math.round(avatarSize * 0.5)
+  }, [avatarSize])
 
-    const ctx = canvas.getContext("2d")
-    if (!ctx) return
-
-    canvas.width = canvasSize
-    canvas.height = canvasSize
-
-    ctx.clearRect(0, 0, canvasSize, canvasSize)
-
-    const fontSize = canvasSize * 0.5
-    ctx.font = `${fontSize}px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`
-    ctx.textAlign = "center"
-    ctx.textBaseline = "middle"
-    ctx.fillStyle = "currentColor"
-
-    const upperLetter = letter.toUpperCase()
-    ctx.fillText(upperLetter, canvasSize / 2, canvasSize / 2)
-  }, [letter, canvasSize])
+  const upperLetter = useMemo(() => letter.toUpperCase(), [letter])
 
   return (
-    <canvas
-      ref={canvasRef}
-      width={canvasSize}
-      height={canvasSize}
-      className="relative h-full w-full"
+    <span
+      className="flex h-full w-full items-center justify-center uppercase select-none"
       style={{
-        width: "100%",
-        height: "100%",
+        fontSize: `${fontSize}px`,
+        lineHeight: 1,
       }}
-    />
+    >
+      {upperLetter}
+    </span>
   )
 })
