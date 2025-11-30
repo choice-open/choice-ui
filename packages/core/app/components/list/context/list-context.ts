@@ -56,6 +56,7 @@ interface StructureContextValue {
   registerItem: (id: string, parentId?: string) => void
   unregisterItem: (id: string) => void
   itemsMap: Map<string, { parentId?: string }>
+  interactive?: boolean
   shouldShowReferenceLine?: boolean
   variant?: "default" | "primary"
   size?: "default" | "large"

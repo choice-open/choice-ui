@@ -8,6 +8,7 @@ import {
 
 interface ListProviderProps {
   children: ReactNode
+  interactive?: boolean
   selection?: boolean
   shouldShowReferenceLine?: boolean
   size?: "default" | "large"
@@ -81,6 +82,7 @@ function structureReducer(
 
 export function ListProvider({
   children,
+  interactive = true,
   shouldShowReferenceLine,
   selection,
   variant = "default",
@@ -149,11 +151,12 @@ export function ListProvider({
       registerItem,
       unregisterItem,
       itemsMap,
+      interactive,
       shouldShowReferenceLine,
       variant,
       size,
     }),
-    [registerItem, unregisterItem, itemsMap, shouldShowReferenceLine, variant, size],
+    [registerItem, unregisterItem, itemsMap, interactive, shouldShowReferenceLine, variant, size],
   )
 
   // 使用嵌套Provider模式，允许组件选择性地订阅最小所需Context

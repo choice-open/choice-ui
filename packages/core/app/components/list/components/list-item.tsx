@@ -33,7 +33,7 @@ export interface ListItemProps extends React.HTMLAttributes<HTMLElement> {
 export const ListItem = memo(
   forwardRef<HTMLElement, ListItemProps>((props, ref) => {
     const {
-      as: As = "button",
+      as: providedAs,
       children,
       className,
       active,
@@ -54,7 +54,16 @@ export const ListItem = memo(
     const id = providedId || internalId
 
     // 获取Context中的值
-    const { registerItem, unregisterItem, variant, size } = useStructureContext()
+    const {
+      registerItem,
+      unregisterItem,
+      interactive = true,
+      variant,
+      size,
+    } = useStructureContext()
+
+    // 如果禁用交互，默认使用 div，否则使用 button
+    const As = providedAs ?? (interactive ? "button" : "div")
     const { activeItem, setActiveItem } = useActiveItemContext()
     const { isSelected, toggleSelection, selection } = useSelectionContext()
     const { level } = useLevelContext()
@@ -80,17 +89,17 @@ export const ListItem = memo(
     const hasValidShortcut = shortcut && (shortcut.modifier || shortcut.keys)
 
     const handleMouseEnter = (e: React.MouseEvent<HTMLElement>) => {
-      if (!disabled) {
+      if (!disabled && interactive) {
         setActiveItem(id)
-        onMouseEnter?.(e)
       }
+      onMouseEnter?.(e)
     }
 
     const handleMouseLeave = (e: React.MouseEvent<HTMLElement>) => {
-      if (!disabled) {
+      if (!disabled && interactive) {
         setActiveItem(null)
-        onMouseLeave?.(e)
       }
+      onMouseLeave?.(e)
     }
 
     const handleClick = (e: React.MouseEvent<HTMLElement>) => {
@@ -105,6 +114,9 @@ export const ListItem = memo(
     // 只在 button 元素上设置 type 属性
     const buttonProps = As === "button" ? { type: "button" as const } : {}
 
+    // 非交互模式下，tabIndex 应该始终为 -1
+    const tabIndex = interactive ? (activeItem === id ? 0 : -1) : -1
+
     return (
       <As
         {...rest}
@@ -113,8 +125,8 @@ export const ListItem = memo(
         id={id}
         role="listitem"
         className={tcx(styles.root(), className)}
-        tabIndex={activeItem === id ? 0 : -1}
-        disabled={disabled}
+        tabIndex={tabIndex}
+        disabled={interactive ? disabled : undefined}
         aria-disabled={disabled}
         aria-selected={selected || isSelected(id)}
         data-active={activeItem === id || active}

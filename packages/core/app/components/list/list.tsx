@@ -12,6 +12,7 @@ import { MenuValue } from "../menus"
 
 interface ListProps extends Omit<HTMLProps<HTMLDivElement>, "size"> {
   children: React.ReactNode
+  interactive?: boolean
   selection?: boolean
   shouldShowReferenceLine?: boolean
   size?: "default" | "large"
@@ -29,10 +30,11 @@ interface ListComponentProps
 }
 
 export const ListBase = forwardRef<HTMLDivElement, ListProps>((props, ref) => {
-  const { children, className, shouldShowReferenceLine, selection, variant, size, ...rest } = props
+  const { children, className, interactive = true, shouldShowReferenceLine, selection, variant, size, ...rest } = props
 
   return (
     <ListProvider
+      interactive={interactive}
       shouldShowReferenceLine={shouldShowReferenceLine}
       selection={selection}
       variant={variant}

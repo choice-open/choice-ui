@@ -771,3 +771,64 @@ export const WithAsProp: Story = {
     </div>
   ),
 }
+
+/**
+ * NonInteractive: Demonstrates a non-interactive list for display purposes only.
+ * - When `interactive={false}`, list items use `div` as default element instead of `button`.
+ * - Hover effects and active states are disabled.
+ * - Useful for read-only lists, documentation, or static content display.
+ */
+export const NonInteractive: Story = {
+  render: (args) => (
+    <div className="flex flex-col gap-8">
+      <div className="space-y-2">
+        <h3 className="text-body-large-strong">Interactive List (Default)</h3>
+        <p className="text-body-small text-secondary-foreground">
+          Hover over items to see active state. Items use button elements by default.
+        </p>
+        <List {...args}>
+          <List.Content>
+            <List.Item prefixElement={<FieldTypeCheckbox />}>
+              <List.Value>Home</List.Value>
+            </List.Item>
+            <List.Item prefixElement={<FieldTypeSingleSelect />}>
+              <List.Value>Documents</List.Value>
+            </List.Item>
+            <List.Item prefixElement={<FieldTypeAttachment />}>
+              <List.Value>Settings</List.Value>
+            </List.Item>
+          </List.Content>
+        </List>
+      </div>
+
+      <div className="space-y-2">
+        <h3 className="text-body-large-strong">Non-Interactive List</h3>
+        <p className="text-body-small text-secondary-foreground">
+          Hover effects disabled. Items use div elements by default. No active state on hover.
+        </p>
+        <List
+          {...args}
+          interactive={false}
+        >
+          <List.Content>
+            <List.Item prefixElement={<FieldTypeCheckbox />}>
+              <List.Value>Home</List.Value>
+            </List.Item>
+            <List.Item prefixElement={<FieldTypeSingleSelect />}>
+              <List.Value>Documents</List.Value>
+            </List.Item>
+            <List.Item prefixElement={<FieldTypeAttachment />}>
+              <List.Value>Settings</List.Value>
+            </List.Item>
+            <List.Item prefixElement={<FieldTypeLongText />}>
+              <List.Value>Read-only Item</List.Value>
+            </List.Item>
+            <List.Item prefixElement={<FieldTypeDate />}>
+              <List.Value>Static Content</List.Value>
+            </List.Item>
+          </List.Content>
+        </List>
+      </div>
+    </div>
+  ),
+}
