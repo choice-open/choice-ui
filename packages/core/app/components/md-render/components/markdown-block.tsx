@@ -23,13 +23,16 @@ type HardenedMarkdownComponent = ComponentType<
   }
 >
 
+export const MD_BLOCK_DEFAULT_ALLOWED_IMAGE_PREFIXES = ["https://", "http://", "data:image/"]
+export const MD_BLOCK_DEFAULT_ALLOWED_LINK_PREFIXES = ["https://", "http://", "mailto:", "#"]
+
 export const MarkdownBlock = memo(
   function MarkdownBlock(props: MarkdownBlockProps) {
     const {
       content,
       components,
-      allowedLinkPrefixes = ["https://", "http://", "#", "mailto:"],
-      allowedImagePrefixes = ["https://", "http://", "data:image/"],
+      allowedLinkPrefixes = MD_BLOCK_DEFAULT_ALLOWED_LINK_PREFIXES,
+      allowedImagePrefixes = MD_BLOCK_DEFAULT_ALLOWED_IMAGE_PREFIXES,
       defaultOrigin = typeof window !== "undefined" ? window.location.origin : "http://localhost",
       ...rest
     } = props
