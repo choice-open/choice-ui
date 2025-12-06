@@ -1,4 +1,4 @@
-import { createContext, forwardRef, useContext, useId, useMemo, useState } from "react"
+import { forwardRef, useId, useMemo, useState } from "react"
 import { tcx } from "~/utils"
 import { useScrollStateAndVisibility } from "../hooks"
 import { ScrollTv } from "../tv"
@@ -8,19 +8,10 @@ import type {
   ScrollAreaRenderProp,
   ScrollPosition,
 } from "../types"
+import { ScrollAreaContext } from "../context/scroll-area-context"
 import { ScrollAreaCorner } from "./scroll-area-corner"
 import { ScrollAreaScrollbar } from "./scroll-area-scrollbar"
 import { ScrollAreaThumb } from "./scroll-area-thumb"
-
-const ScrollAreaContext = createContext<ScrollAreaContextType | null>(null)
-
-export function useScrollAreaContext() {
-  const context = useContext(ScrollAreaContext)
-  if (!context) {
-    throw new Error("ScrollArea compound components must be used within ScrollArea")
-  }
-  return context
-}
 
 export const ScrollAreaRoot = forwardRef<HTMLDivElement, ScrollAreaProps>(
   (

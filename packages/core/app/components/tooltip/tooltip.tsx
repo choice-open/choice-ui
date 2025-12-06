@@ -1,21 +1,10 @@
 import type { Placement } from "@floating-ui/react"
-import { createContext, ReactNode, useContext } from "react"
+import { ReactNode } from "react"
 import { Kbd, type KbdKey } from "../kbd"
 import { TooltipContent } from "./components/tooltip-content"
 import { TooltipTrigger } from "./components/tooltip-trigger"
+import { TooltipContext, PORTAL_ROOT_ID } from "./context/tooltip-context"
 import { useTooltip } from "./hooks/use-tooltip"
-
-const TooltipContext = createContext<ReturnType<typeof useTooltip> | null>(null)
-
-export function useTooltipState() {
-  const context = useContext(TooltipContext)
-  if (context == null) {
-    throw new Error("Tooltip components must be wrapped in <Tooltip />")
-  }
-  return context
-}
-
-const PORTAL_ROOT_ID = "floating-tooltip-root"
 
 export interface TooltipProps {
   children?: React.ReactNode

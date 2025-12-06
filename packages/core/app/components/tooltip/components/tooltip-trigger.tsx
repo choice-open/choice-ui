@@ -1,7 +1,7 @@
 import { useMergeRefs } from "@floating-ui/react"
 import { forwardRef, HTMLProps, Ref } from "react"
 import { Slot } from "../../slot"
-import { useTooltipState } from "../tooltip"
+import { useTooltipState } from "../context/tooltip-context"
 
 export const TooltipTrigger = forwardRef<HTMLElement, HTMLProps<HTMLElement>>(
   function TooltipTrigger({ children, ...props }, propRef) {

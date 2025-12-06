@@ -7,7 +7,7 @@ import {
 } from "@floating-ui/react"
 import { forwardRef, HTMLProps, useMemo } from "react"
 import { tcx } from "~/utils"
-import { useTooltipState } from "../tooltip"
+import { useTooltipState } from "../context/tooltip-context"
 import { tooltipContentVariants } from "../tv"
 import { TooltipArrow } from "./tooltip-arrow"
 

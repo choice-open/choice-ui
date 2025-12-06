@@ -1,6 +1,6 @@
 import { useEventCallback } from "usehooks-ts"
 import { PointerEvent, PointerEventHandler, useCallback, useRef, useState } from "react"
-import { Point } from "./bezier-curve-editor"
+import { Point } from "./types"
 
 export function useHandleState(
   moveHandle: (start: Point, coordinates: Point) => void,

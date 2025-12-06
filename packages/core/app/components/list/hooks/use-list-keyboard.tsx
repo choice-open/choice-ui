@@ -81,10 +81,7 @@ export function useListKeyboard() {
           }
           break
 
-        case "Enter":
-        case " ":
-          e.preventDefault()
-          toggleSelection(activeItem)
+          // 移除 Enter 和 Space 的处理，交由 Item 自行处理
           break
 
         case "ArrowRight":
@@ -93,7 +90,7 @@ export function useListKeyboard() {
           toggleSubList(activeItem)
           break
 
-        case "ArrowLeft":
+        case "ArrowLeft": {
           e.preventDefault()
           const item = itemsMap.get(activeItem)
           if (item?.parentId) {
@@ -101,6 +98,7 @@ export function useListKeyboard() {
             setActiveItem(item.parentId)
           }
           break
+        }
 
         case "Home":
           e.preventDefault()

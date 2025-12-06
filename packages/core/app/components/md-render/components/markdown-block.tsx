@@ -3,7 +3,10 @@ import type { Components, Options } from "react-markdown"
 import remarkBreaks from "remark-breaks"
 import remarkGfm from "remark-gfm"
 import remarkMath from "remark-math"
-import { MD_BLOCK_DEFAULT_ALLOWED_IMAGE_PREFIXES, MD_BLOCK_DEFAULT_ALLOWED_LINK_PREFIXES } from ".."
+import {
+  MD_BLOCK_DEFAULT_ALLOWED_IMAGE_PREFIXES,
+  MD_BLOCK_DEFAULT_ALLOWED_LINK_PREFIXES,
+} from "../constants"
 
 type HardenReactMarkdownProps = Options & {
   allowedImagePrefixes?: string[]

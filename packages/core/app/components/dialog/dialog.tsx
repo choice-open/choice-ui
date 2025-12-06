@@ -19,17 +19,7 @@ import { dragDialogTv } from "./tv"
 
 const PORTAL_ROOT_ID = "floating-modal-root"
 
-export type DialogPosition =
-  | "left-top"
-  | "center-top"
-  | "right-top"
-  | "left-center"
-  | "center"
-  | "right-center"
-  | "left-bottom"
-  | "center-bottom"
-  | "right-bottom"
-
+import type { DialogPosition } from "./types"
 export interface DialogProps {
   afterOpenChange?: (isOpen: boolean) => void
   children?: React.ReactNode

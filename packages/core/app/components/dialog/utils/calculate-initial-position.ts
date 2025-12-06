@@ -1,4 +1,4 @@
-import { DialogPosition } from "../dialog"
+import { DialogPosition } from "../types"
 
 export function calculateInitialPosition(
   preset: DialogPosition,

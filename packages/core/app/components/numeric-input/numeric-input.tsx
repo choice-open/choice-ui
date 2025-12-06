@@ -22,10 +22,7 @@ import {
 import { NumericInputContext, NumericInputContextValue } from "./context"
 import { useNumericInput } from "./hooks"
 import { NumericInputTv } from "./tv"
-import { NumericInputValue } from "./types"
-import { dealWithNumericInputValue } from "./utils"
-
-export type NumericChangeDetail = ReturnType<typeof dealWithNumericInputValue>
+import { NumericInputValue, NumericChangeDetail } from "./types"
 
 export interface NumericInputProps
   extends NumericInputContextValue,

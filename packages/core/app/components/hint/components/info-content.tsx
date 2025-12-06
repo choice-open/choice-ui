@@ -1,7 +1,7 @@
 import { FloatingPortal, useMergeRefs, useTransitionStyles } from "@floating-ui/react"
 import { forwardRef, HTMLProps, ReactNode, useMemo } from "react"
 import { tcx } from "~/utils"
-import { useHintState } from "../hint"
+import { useHintState } from "../context/hint-context"
 import { hintVariants } from "../tv"
 
 interface HintContentProps extends HTMLProps<HTMLDivElement> {

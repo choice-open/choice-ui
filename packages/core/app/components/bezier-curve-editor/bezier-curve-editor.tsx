@@ -6,15 +6,10 @@ import {
 } from "./components"
 import { useHandleState } from "./hooks"
 import { BezierCurveEditorTv } from "./tv"
-import type { BezierCurveExpandedValueType, BezierCurveValueType } from "./types"
+import type { BezierCurveExpandedValueType, BezierCurveValueType, Point } from "./types"
 import { bezierCurveParamsFromSizeAndValue } from "./utils"
 import { tcx } from "~/utils"
 import { useEventCallback } from "usehooks-ts"
-
-export interface Point {
-  x: number
-  y: number
-}
 
 interface BezierCurveEditorBaseProps {
   className?: string

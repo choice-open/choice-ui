@@ -1,5 +1,6 @@
 import { ChevronDownSmall, ChevronRightSmall } from "@choiceform/icons-react"
 import { forwardRef, memo, ReactNode, useEffect, useId, useRef } from "react"
+import { mergeRefs } from "~/utils/merge-refs"
 import { tcx } from "~/utils"
 import {
   useActiveItemContext,
@@ -56,6 +57,8 @@ export const ListSubTrigger = memo(
     const { toggleSubList, isSubListExpanded } = useExpandContext()
     const { level } = useLevelContext()
 
+    const internalRef = useRef<HTMLButtonElement>(null)
+    const mergedRef = mergeRefs(ref, internalRef)
     const isOpen = isSubListExpanded(id)
 
     const defaultSuffixElement = isOpen ? <ChevronDownSmall /> : <ChevronRightSmall />
@@ -65,6 +68,13 @@ export const ListSubTrigger = memo(
       registerItem(id, parentId)
       return () => unregisterItem(id)
     }, [id, parentId])
+
+    // Focus management: If this item is active and interactive, focus it.
+    useEffect(() => {
+      if (activeItem === id && !disabled) {
+        internalRef.current?.focus()
+      }
+    }, [activeItem, id, disabled, isOpen])
 
     // 处理默认打开状态
     useEffect(() => {
@@ -96,7 +106,6 @@ export const ListSubTrigger = memo(
 
     const handleMouseLeave = useEventCallback((e: React.MouseEvent<HTMLButtonElement>) => {
       if (!disabled) {
-        setActiveItem(null)
         onMouseLeave?.(e)
       }
     })
@@ -113,7 +122,7 @@ export const ListSubTrigger = memo(
     return (
       <button
         {...rest}
-        ref={ref}
+        ref={mergedRef}
         id={id}
         type="button"
         role="button"

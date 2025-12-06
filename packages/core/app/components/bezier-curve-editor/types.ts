@@ -10,3 +10,8 @@ export type BezierCurveExpandedValueType = [
   number,
 ]
 export type BezierCurveType = "in" | "out" | "inOut" | "unknown"
+
+export interface Point {
+  x: number
+  y: number
+}

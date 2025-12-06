@@ -1,5 +1,11 @@
 import { ComponentType } from "react"
-import { MentionProps } from "./components"
+import { RenderElementProps } from "slate-react"
+
+export interface MentionProps extends RenderElementProps {
+  mentionPrefix?: string
+  renderMention?: (mention: MentionMatch) => React.ReactNode
+  variant?: "default" | "light" | "dark" | "reset"
+}
 
 export interface MentionItem {
   description?: string

@@ -43,6 +43,7 @@
     "test:coverage": "jest --coverage",
     "test:generate-output": "jest --json --outputFile=.jest-test-results.json || true",
     "test:generate-watch": "jest --json --outputFile=.jest-test-results.json --watch",
+    "madge": "npx madge --circular --extensions ts app/",
     "prestorybook": "pnpm run test:generate-output"
   },
   "dependencies": {

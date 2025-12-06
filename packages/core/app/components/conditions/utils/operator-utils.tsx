@@ -1,19 +1,18 @@
 import React from "react"
 import { Select } from "../../select"
+import { ArrayLengthInput } from "../components/condition-items/array-length-input"
+import { BooleanInput } from "../components/condition-items/boolean-input"
 import {
-  ArrayLengthInput,
-  BooleanInput,
   ConditionDateInput,
   ConditionDateRangeInput,
-  MultiSelectInput,
-  NumberInput,
-  NumberRangeInput,
-  RegexInput,
-  SelectInput,
-  TagInput,
-  TextInput,
-  UserInput,
-} from "../components"
+} from "../components/condition-items/date-input"
+import { MultiSelectInput } from "../components/condition-items/multi-select-input"
+import { NumberInput, NumberRangeInput } from "../components/condition-items/number-input"
+import { RegexInput } from "../components/condition-items/regex-input"
+import { SelectInput } from "../components/condition-items/select-input"
+import { TagInput } from "../components/condition-items/tag-input"
+import { TextInput } from "../components/condition-items/text-input"
+import { UserInput } from "../components/condition-items/user-input"
 import { ComparisonOperator, ConditionsFieldType, type Condition, type Field } from "../types"
 import { OPERATOR_CONFIGS } from "./constants"
 

@@ -1,7 +1,6 @@
 import { createContext, useContext } from "react"
 import { PressMoveProps } from "~/hooks"
-import { NumericInputValue } from "../types"
-import { NumericChangeDetail } from "../numeric-input"
+import { NumericInputValue, NumericChangeDetail } from "../types"
 
 export interface NumericInputContextValue {
   decimal?: number

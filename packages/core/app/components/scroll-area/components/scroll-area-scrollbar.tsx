@@ -4,7 +4,7 @@ import { useHasOverflow, useScrollbarShouldShow } from "../hooks"
 import { ScrollTv } from "../tv"
 import type { ScrollbarProps } from "../types"
 import { getScrollbarPositionStyle, handleScrollbarTrackClick } from "../utils"
-import { useScrollAreaContext } from "./scroll-area-root"
+import { useScrollAreaContext } from "../context/scroll-area-context"
 
 export const ScrollAreaScrollbar = forwardRef<HTMLDivElement, ScrollbarProps>(
   ({ className, orientation = "vertical", ...props }, ref) => {

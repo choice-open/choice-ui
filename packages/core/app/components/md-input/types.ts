@@ -1,5 +1,5 @@
 import type { HTMLAttributes } from "react"
-import { useMarkdownFormatting } from "./hooks"
+import { useMarkdownFormatting } from "./hooks/use-markdown-formatting"
 
 export interface MentionItemProps {
   [key: string]: unknown

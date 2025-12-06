@@ -1,23 +1,18 @@
 import { InfoCircle } from "@choiceform/icons-react"
 import { createContext, ReactNode, useContext } from "react"
 import { HintContent, HintTrigger } from "./components"
-import { useHint } from "./hooks"
 
 type HintPlacement = "left-start" | "right-start"
 
-const HintContext = createContext<ReturnType<typeof useHint> | null>(null)
+import { HintContext } from "./context/hint-context"
+import { useHint } from "./hooks"
 
 const PORTAL_ROOT_ID = "floating-tooltip-root"
 
-export function useHintState() {
-  const context = useContext(HintContext)
-  if (context == null) {
-    throw new Error("Hint components must be wrapped in <Hint />")
-  }
-  return context
-}
+// Re-export useHintState for backward compatibility if needed, or just let components import from context
+export { useHintState } from "./context/hint-context"
 
-interface HintProps {
+export interface HintProps {
   children?: ReactNode
   className?: string
   content: ReactNode

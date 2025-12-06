@@ -11,7 +11,7 @@ import {
 } from "@floating-ui/react"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useMergedValue } from "~/hooks"
-import { DialogPosition } from "../dialog"
+import { DialogPosition } from "../types"
 import { calculateInitialPosition } from "../utils"
 
 interface UseFloatingDialogParams {

@@ -1,5 +1,5 @@
 import { memo, useContext } from "react"
-import { MenuLabel, MenuLabelProps } from ".."
+import { MenuLabel, MenuLabelProps } from "../components/menu-label"
 import { MenuContext } from "./menu-context"
 
 export const MenuContextLabel = memo(function MenuContextLabel(props: MenuLabelProps) {

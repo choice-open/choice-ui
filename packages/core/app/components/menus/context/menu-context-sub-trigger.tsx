@@ -11,7 +11,7 @@ import {
   useRef,
 } from "react"
 import { useEventCallback } from "usehooks-ts"
-import { MenuItem, MenuItemProps } from ".."
+import { MenuItem, MenuItemProps } from "../components/menu-item"
 import { MenuContext } from "./menu-context"
 
 export const MenuContextSubTrigger = memo(

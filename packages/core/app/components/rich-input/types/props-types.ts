@@ -243,10 +243,3 @@ export interface RichInputContextValue {
   value: Descendant[]
   viewportRef: React.RefObject<HTMLDivElement>
 }
-
-// Component types
-export interface RichInputComponent
-  extends React.ForwardRefExoticComponent<RichInputProps & React.RefAttributes<HTMLDivElement>> {
-  Editable: typeof import("../components/rich-input-editable-component").RichInputEditableComponent
-  Viewport: typeof import("../components/rich-input-viewport").RichInputViewport
-}

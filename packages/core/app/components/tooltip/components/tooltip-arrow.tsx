@@ -1,7 +1,7 @@
 import { useMergeRefs } from "@floating-ui/react"
 import { forwardRef, useMemo } from "react"
 import { tcx } from "~/utils"
-import { useTooltipState } from "../tooltip"
+import { useTooltipState } from "../context/tooltip-context"
 import { tooltipContentVariants } from "../tv"
 
 interface TooltipArrowProps {

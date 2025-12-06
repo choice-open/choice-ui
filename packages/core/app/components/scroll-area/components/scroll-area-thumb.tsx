@@ -3,7 +3,7 @@ import { tcx } from "~/utils"
 import { useThumbDrag, useThumbStyle } from "../hooks"
 import { ScrollTv } from "../tv"
 import type { ThumbProps } from "../types"
-import { useScrollAreaContext } from "./scroll-area-root"
+import { useScrollAreaContext } from "../context/scroll-area-context"
 
 export const ScrollAreaThumb = forwardRef<HTMLDivElement, ThumbProps>(
   ({ className, orientation = "vertical", ...props }, ref) => {

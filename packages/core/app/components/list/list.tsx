@@ -5,7 +5,7 @@ import { ListDivider } from "./components/list-divider"
 import { ListItem } from "./components/list-item"
 import { ListLabel } from "./components/list-label"
 import { ListSubTrigger } from "./components/list-sub-trigger"
-import { ListProvider } from "./context"
+import { ListProvider, useActiveItemContext } from "./context"
 import { useListKeyboard } from "./hooks"
 import { ListTv } from "./tv"
 import { MenuValue } from "../menus"
@@ -30,7 +30,16 @@ interface ListComponentProps
 }
 
 export const ListBase = forwardRef<HTMLDivElement, ListProps>((props, ref) => {
-  const { children, className, interactive = true, shouldShowReferenceLine, selection, variant, size, ...rest } = props
+  const {
+    children,
+    className,
+    interactive = true,
+    shouldShowReferenceLine,
+    selection,
+    variant,
+    size,
+    ...rest
+  } = props
 
   return (
     <ListProvider
@@ -54,6 +63,7 @@ export const ListBase = forwardRef<HTMLDivElement, ListProps>((props, ref) => {
 const ListRoot = forwardRef<HTMLDivElement, ListProps>((props, ref) => {
   const { children, className, ...rest } = props
   const handleKeyDown = useListKeyboard()
+  const { setActiveItem } = useActiveItemContext()
 
   const styles = ListTv()
 
@@ -63,6 +73,7 @@ const ListRoot = forwardRef<HTMLDivElement, ListProps>((props, ref) => {
       role="list"
       tabIndex={0}
       onKeyDown={handleKeyDown}
+      onMouseLeave={() => setActiveItem(null)}
       {...rest}
       className={tcx(styles, className)}
     >
@@ -70,6 +81,8 @@ const ListRoot = forwardRef<HTMLDivElement, ListProps>((props, ref) => {
     </div>
   )
 })
+
+ListRoot.displayName = "ListRoot"
 
 ListBase.displayName = "List"
 

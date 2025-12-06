@@ -1,16 +1,14 @@
 import React, { forwardRef, HTMLProps, Children, isValidElement, Fragment } from "react"
 import { tcx } from "~/utils"
-import {
-  MenuButton,
-  MenuCheckbox,
-  MenuDivider,
-  MenuInput,
-  MenuItem,
-  MenuLabel,
-  MenuSearch,
-  MenuSearchEmpty,
-  MenuValue,
-} from "./components"
+import { MenuButton } from "./components/menu-button"
+import { MenuCheckbox } from "./components/menu-checkbox"
+import { MenuDivider } from "./components/menu-divider"
+import { MenuInput } from "./components/menu-input"
+import { MenuItem } from "./components/menu-item"
+import { MenuLabel } from "./components/menu-label"
+import { MenuSearch } from "./components/menu-search"
+import { MenuSearchEmpty } from "./components/menu-search"
+import { MenuValue } from "./components/menu-value"
 import { MenusTv } from "./tv"
 
 interface MenusProps extends HTMLProps<HTMLDivElement> {

@@ -2,7 +2,7 @@ import React, { forwardRef, useMemo } from "react"
 import { tcx } from "~/utils"
 import { ScrollTv } from "../tv"
 import { shouldShowCorner } from "../utils"
-import { useScrollAreaContext } from "./scroll-area-root"
+import { useScrollAreaContext } from "../context/scroll-area-context"
 
 export const ScrollAreaCorner = forwardRef<HTMLDivElement, React.ComponentPropsWithoutRef<"div">>(
   ({ className, ...props }, ref) => {

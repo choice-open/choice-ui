@@ -19,3 +19,4 @@ export interface DealWithNumericValueOptions {
   min?: number
   decimal?: number
 }
+export type NumericChangeDetail = NumberResult

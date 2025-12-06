@@ -1,13 +1,7 @@
 import React, { useMemo } from "react"
 import { RenderElementProps, useFocused, useSelected } from "slate-react"
-import type { ContextInputProps, ContextMentionElement, MentionMatch } from "../types"
+import type { ContextInputProps, ContextMentionElement, MentionMatch, MentionProps } from "../types"
 import { mentionElementTv } from "./tv"
-
-export interface MentionProps extends RenderElementProps {
-  mentionPrefix?: string
-  renderMention?: ContextInputProps["renderMention"]
-  variant?: ContextInputProps["variant"]
-}
 
 /**
  * 默认的 Mention 组件

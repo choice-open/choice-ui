@@ -1,5 +1,5 @@
 import { useMergeRefs } from "@floating-ui/react"
-import { forwardRef, useCallback, useRef } from "react"
+import React, { forwardRef, useCallback, useRef } from "react"
 import { Descendant } from "slate"
 import { ReactEditor } from "slate-react"
 import { useHover, useIntersectionObserver } from "usehooks-ts"
@@ -22,9 +22,15 @@ import {
   useSelectionEvents,
 } from "./hooks"
 import { richInputTv } from "./tv"
-import type { RichInputComponent, RichInputProps } from "./types"
+import type { RichInputProps } from "./types"
 import { defaultI18n } from "./types"
 import { charactersOptions, paragraphOptions } from "./utils"
+
+export interface RichInputComponent
+  extends React.ForwardRefExoticComponent<RichInputProps & React.RefAttributes<HTMLDivElement>> {
+  Editable: typeof import("./components/rich-input-editable-component").RichInputEditableComponent
+  Viewport: typeof import("./components/rich-input-viewport").RichInputViewport
+}
 
 /**
  * RichInput 基础组件 - 支持复合组件模式
@@ -244,4 +250,3 @@ RichInput.Viewport = RichInputViewport
 RichInput.Editable = RichInputEditableComponent
 
 export { RichInput }
-export type { RichInputComponent }

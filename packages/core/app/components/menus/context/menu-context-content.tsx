@@ -1,5 +1,5 @@
 import { forwardRef, HTMLProps } from "react"
-import { MenusBase } from ".."
+import { MenusBase } from "../menus"
 
 interface MenuContextContentProps extends HTMLProps<HTMLDivElement> {
   children: React.ReactNode
