@@ -1,0 +1,51 @@
+{
+  "name": "@choiceform/code-block",
+  "version": "0.0.1",
+  "description": "Code Block component for Choiceform Design System",
+  "sideEffects": false,
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./src/index.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsup",
+    "build:watch": "tsup --watch",
+    "clean": "rimraf dist"
+  },
+  "dependencies": {
+    "@choiceform/design-shared": "workspace:*",
+    "@choiceform/icon-button": "workspace:*",
+    "@choiceform/icons-react": "^1.3.8",
+    "@choiceform/scroll-area": "workspace:*",
+    "shiki": "^3.19.0",
+    "use-stick-to-bottom": "^1.1.1",
+    "usehooks-ts": "^3.1.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "rimraf": "^6.0.1",
+    "tsup": "^8.5.0",
+    "typescript": "^5.5.3"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  }
+}

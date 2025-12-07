@@ -1,4 +1,2 @@
 packages:
-  - packages/*
-  - packages/prompt-kit/client
-  - packages/prompt-kit/server
+  - "packages/**/**"

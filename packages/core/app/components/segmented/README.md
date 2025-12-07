@@ -220,9 +220,24 @@ function VariantExamples() {
         onChange={setValue}
         variant="default"
       >
-        <Segmented.Item value="sun" className="px-2">Sun</Segmented.Item>
-        <Segmented.Item value="moon" className="px-2">Moon</Segmented.Item>
-        <Segmented.Item value="system" className="px-2">System</Segmented.Item>
+        <Segmented.Item
+          value="sun"
+          className="px-2"
+        >
+          Sun
+        </Segmented.Item>
+        <Segmented.Item
+          value="moon"
+          className="px-2"
+        >
+          Moon
+        </Segmented.Item>
+        <Segmented.Item
+          value="system"
+          className="px-2"
+        >
+          System
+        </Segmented.Item>
       </Segmented>
 
       {/* Light - fixed light appearance */}
@@ -231,9 +246,24 @@ function VariantExamples() {
         onChange={setValue}
         variant="light"
       >
-        <Segmented.Item value="sun" className="px-2">Sun</Segmented.Item>
-        <Segmented.Item value="moon" className="px-2">Moon</Segmented.Item>
-        <Segmented.Item value="system" className="px-2">System</Segmented.Item>
+        <Segmented.Item
+          value="sun"
+          className="px-2"
+        >
+          Sun
+        </Segmented.Item>
+        <Segmented.Item
+          value="moon"
+          className="px-2"
+        >
+          Moon
+        </Segmented.Item>
+        <Segmented.Item
+          value="system"
+          className="px-2"
+        >
+          System
+        </Segmented.Item>
       </Segmented>
 
       {/* Dark - fixed dark appearance */}
@@ -242,9 +272,24 @@ function VariantExamples() {
         onChange={setValue}
         variant="dark"
       >
-        <Segmented.Item value="sun" className="px-2">Sun</Segmented.Item>
-        <Segmented.Item value="moon" className="px-2">Moon</Segmented.Item>
-        <Segmented.Item value="system" className="px-2">System</Segmented.Item>
+        <Segmented.Item
+          value="sun"
+          className="px-2"
+        >
+          Sun
+        </Segmented.Item>
+        <Segmented.Item
+          value="moon"
+          className="px-2"
+        >
+          Moon
+        </Segmented.Item>
+        <Segmented.Item
+          value="system"
+          className="px-2"
+        >
+          System
+        </Segmented.Item>
       </Segmented>
 
       {/* Reset - no variant styling */}
@@ -253,9 +298,24 @@ function VariantExamples() {
         onChange={setValue}
         variant="reset"
       >
-        <Segmented.Item value="sun" className="px-2">Sun</Segmented.Item>
-        <Segmented.Item value="moon" className="px-2">Moon</Segmented.Item>
-        <Segmented.Item value="system" className="px-2">System</Segmented.Item>
+        <Segmented.Item
+          value="sun"
+          className="px-2"
+        >
+          Sun
+        </Segmented.Item>
+        <Segmented.Item
+          value="moon"
+          className="px-2"
+        >
+          Moon
+        </Segmented.Item>
+        <Segmented.Item
+          value="system"
+          className="px-2"
+        >
+          System
+        </Segmented.Item>
       </Segmented>
     </>
   )

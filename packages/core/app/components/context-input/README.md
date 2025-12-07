@@ -239,21 +239,21 @@ export function ChatInterfaceExample() {
 
 ### ContextInput Props
 
-| Prop              | Type                                 | Default           | Description                                              |
-| ----------------- | ------------------------------------ | ----------------- | -------------------------------------------------------- |
-| `value`           | `ContextInputValue`                  | -                 | **Required.** Current input value with text and mentions |
-| `onChange`        | `(value: ContextInputValue) => void` | -                 | **Required.** Callback when value changes                |
-| `mentions`        | `MentionItem[]`                      | `[]`              | Available items for mentions                             |
-| `placeholder`     | `string`                             | -                 | Placeholder text                                         |
-| `mentionTriggers` | `Record<string, string>`             | `{ "@": "user" }` | Trigger characters mapped to mention types               |
-| `disabled`        | `boolean`                            | `false`           | Whether the input is disabled                            |
-| `autoFocus`       | `boolean`                            | `false`           | Whether to auto-focus on mount                           |
-| `maxLength`       | `number`                             | -                 | Maximum text length                                      |
-| `onKeyDown`       | `function`                           | -                 | Keyboard event handler                                   |
-| `onSubmit`        | `function`                           | -                 | Submit handler (called on Enter)                         |
-| `className`       | `string`                             | -                 | Additional CSS classes                                   |
-| `variant`         | `"default" \| "light" \| "dark" \| "reset"` | `"default"`      | Visual variant of the input                              |
-| `size`            | `"default" \| "large"`               | `"default"`       | Size variant of the input                                |
+| Prop              | Type                                        | Default           | Description                                              |
+| ----------------- | ------------------------------------------- | ----------------- | -------------------------------------------------------- |
+| `value`           | `ContextInputValue`                         | -                 | **Required.** Current input value with text and mentions |
+| `onChange`        | `(value: ContextInputValue) => void`        | -                 | **Required.** Callback when value changes                |
+| `mentions`        | `MentionItem[]`                             | `[]`              | Available items for mentions                             |
+| `placeholder`     | `string`                                    | -                 | Placeholder text                                         |
+| `mentionTriggers` | `Record<string, string>`                    | `{ "@": "user" }` | Trigger characters mapped to mention types               |
+| `disabled`        | `boolean`                                   | `false`           | Whether the input is disabled                            |
+| `autoFocus`       | `boolean`                                   | `false`           | Whether to auto-focus on mount                           |
+| `maxLength`       | `number`                                    | -                 | Maximum text length                                      |
+| `onKeyDown`       | `function`                                  | -                 | Keyboard event handler                                   |
+| `onSubmit`        | `function`                                  | -                 | Submit handler (called on Enter)                         |
+| `className`       | `string`                                    | -                 | Additional CSS classes                                   |
+| `variant`         | `"default" \| "light" \| "dark" \| "reset"` | `"default"`       | Visual variant of the input                              |
+| `size`            | `"default" \| "large"`                      | `"default"`       | Size variant of the input                                |
 
 ### Type Definitions
 

@@ -3,7 +3,7 @@ import "@testing-library/jest-dom"
 import userEvent from "@testing-library/user-event"
 import React from "react"
 import { describe, expect, it, vi } from "vitest"
-import { Pagination } from "../pagination"
+import { Pagination } from "../src/pagination"
 
 describe("Pagination", () => {
   describe("Pagination Root", () => {

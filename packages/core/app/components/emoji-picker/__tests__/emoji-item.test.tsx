@@ -1,14 +1,16 @@
 import React from "react"
 import { render, screen, fireEvent } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
-import "@testing-library/jest-dom"
-import { EmojiItem } from "../components/emoji-item"
-import type { EmojiData } from "../hooks"
+import { describe, it, expect, beforeEach, vi, type Mock } from "vitest"
+import "@testing-library/jest-dom/vitest"
+import { EmojiItem } from "../src/components/emoji-item"
+import type { EmojiData } from "../src/hooks"
 
 // Mock the TV styles
-jest.mock("../tv", () => ({
-  emojiItemTv: jest.fn(
-    ({ variant, selected }) => `emoji-item ${variant} ${selected ? "selected" : ""}`,
+vi.mock("../src/tv", () => ({
+  emojiItemTv: vi.fn(
+    ({ variant, selected }: { variant: string; selected: boolean }) =>
+      `emoji-item ${variant} ${selected ? "selected" : ""}`,
   ),
 }))
 
@@ -21,23 +23,23 @@ const mockEmoji: EmojiData = {
 }
 
 describe("EmojiItem", () => {
-  let mockOnSelect: jest.Mock
-  let mockOnHover: jest.Mock
+  let mockOnSelect: Mock
+  let mockOnHover: Mock
   let defaultProps: {
     emoji: EmojiData
-    onHover: jest.Mock
-    onSelect: jest.Mock
+    onHover: Mock
+    onSelect: Mock
   }
 
   beforeEach(() => {
-    mockOnSelect = jest.fn()
-    mockOnHover = jest.fn()
+    mockOnSelect = vi.fn()
+    mockOnHover = vi.fn()
     defaultProps = {
       emoji: mockEmoji,
       onSelect: mockOnSelect,
       onHover: mockOnHover,
     }
-    jest.clearAllMocks()
+    vi.clearAllMocks()
   })
 
   it("renders emoji correctly", () => {
@@ -88,7 +90,7 @@ describe("EmojiItem", () => {
     render(
       <EmojiItem
         emoji={mockEmoji}
-        onSelect={jest.fn()}
+        onSelect={vi.fn()}
       />,
     )
 

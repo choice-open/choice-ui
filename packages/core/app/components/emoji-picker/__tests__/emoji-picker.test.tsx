@@ -1,14 +1,15 @@
 import React from "react"
 import { render, screen, fireEvent, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
-import "@testing-library/jest-dom"
-import { EmojiPicker } from "../emoji-picker"
-import type { EmojiData } from "../hooks"
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest"
+import "@testing-library/jest-dom/vitest"
+import { EmojiPicker } from "../src/emoji-picker"
+import type { EmojiData } from "../src/hooks"
 
 // Mock external dependencies
-jest.mock("../hooks", () => {
+vi.mock("../src/hooks", () => {
   return {
-    useEmojiData: jest.fn(() => ({
+    useEmojiData: vi.fn(() => ({
       searchResults: [],
       categorizedData: [
         {
@@ -31,11 +32,11 @@ jest.mock("../hooks", () => {
       ],
       categoryIndexMap: new Map([["smileys_people", 0]]),
       frequentlyUsed: [],
-      addToFrequentlyUsed: jest.fn(),
-      findEmojiPosition: jest.fn(() => ({ itemIndex: 0, emojiIndex: 0 })),
-      findEmojiByChar: jest.fn(() => null),
+      addToFrequentlyUsed: vi.fn(),
+      findEmojiPosition: vi.fn(() => ({ itemIndex: 0, emojiIndex: 0 })),
+      findEmojiByChar: vi.fn(() => null),
     })),
-    useEmojiScroll: jest.fn(() => ({
+    useEmojiScroll: vi.fn(() => ({
       scrollRef: { current: null },
       virtualizer: {
         getVirtualItems: () => [
@@ -46,18 +47,18 @@ jest.mock("../hooks", () => {
             size: 40,
           },
         ],
-        measureElement: jest.fn(),
+        measureElement: vi.fn(),
       },
       currentVisibleCategory: "smileys_people",
       contentStyle: { height: "100px" },
-      scrollToCategory: jest.fn(),
-      markInternalUpdate: jest.fn(),
+      scrollToCategory: vi.fn(),
+      markInternalUpdate: vi.fn(),
       PADDING: 10,
     })),
   }
 })
 
-jest.mock("@choiceform/icons-react", () => ({
+vi.mock("@choiceform/icons-react", () => ({
   EmojiActivity: () => <div data-testid="activity-icon">Activity</div>,
   EmojiAnimalsNature: () => <div data-testid="animals-icon">Animals</div>,
   EmojiFlags: () => <div data-testid="flags-icon">Flags</div>,
@@ -69,7 +70,7 @@ jest.mock("@choiceform/icons-react", () => ({
   EmojiTravelPlaces: () => <div data-testid="travel-icon">Travel</div>,
 }))
 
-jest.mock("../components", () => ({
+vi.mock("../src/components", () => ({
   EmojiCategoryHeader: ({ title }: { title: string }) => (
     <div data-testid="category-header">{title}</div>
   ),
@@ -108,13 +109,13 @@ jest.mock("../components", () => ({
   ),
 }))
 
-jest.mock("../../scroll", () => ({
-  Scroll: ({ children, className }: { children: React.ReactNode; className?: string }) => (
+vi.mock("@choiceform/scroll-area", () => ({
+  ScrollArea: ({ children, className }: { children: React.ReactNode; className?: string }) => (
     <div className={className}>{children}</div>
   ),
 }))
 
-jest.mock("../../search-input", () => ({
+vi.mock("@choiceform/search-input", () => ({
   SearchInput: ({
     value,
     onChange,
@@ -133,7 +134,7 @@ jest.mock("../../search-input", () => ({
   ),
 }))
 
-jest.mock("../../segmented", () => ({
+vi.mock("@choiceform/segmented", () => ({
   Segmented: ({
     children,
     value,
@@ -173,16 +174,16 @@ const mockEmojis: EmojiData[] = [
 
 describe("EmojiPicker", () => {
   const defaultProps = {
-    onChange: jest.fn(),
+    onChange: vi.fn(),
     value: null,
   }
 
   beforeEach(() => {
-    jest.clearAllMocks()
+    vi.clearAllMocks()
   })
 
   afterEach(() => {
-    jest.resetAllMocks()
+    vi.resetAllMocks()
   })
 
   it("renders correctly with default props", () => {
@@ -297,7 +298,7 @@ describe("EmojiPicker", () => {
   })
 
   it("calls onChange when emoji is selected", async () => {
-    const onChange = jest.fn()
+    const onChange = vi.fn()
     render(
       <EmojiPicker
         {...defaultProps}

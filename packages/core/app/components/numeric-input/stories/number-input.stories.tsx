@@ -1,3 +1,6 @@
+import { Checkbox } from "@choiceform/checkbox"
+import { Dropdown } from "@choiceform/dropdown"
+import { IconButton } from "@choiceform/icon-button"
 import {
   ChevronDownSmall,
   ColorTypeSolid,
@@ -10,15 +13,12 @@ import {
   Relative,
   Variable,
 } from "@choiceform/icons-react"
+import { NumericInput } from "@choiceform/numeric-input"
+import { Select } from "@choiceform/select"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import React, { useState } from "react"
 import { useEventCallback } from "usehooks-ts"
-import { Dropdown } from "../../dropdown"
-import { IconButton } from "../../icon-button"
-import { Select } from "../../select"
-import { NumericInput } from "../numeric-input"
-import { NumberResult, NumericInputValue } from "../types"
-import { Checkbox } from "../../checkbox/checkbox"
+import type { NumberResult, NumericInputValue } from "../src/types"
 
 const meta: Meta<typeof NumericInput> = {
   title: "Forms/NumericInput",

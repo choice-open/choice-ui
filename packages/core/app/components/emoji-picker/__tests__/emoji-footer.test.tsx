@@ -1,11 +1,13 @@
 import React from "react"
 import { render, screen } from "@testing-library/react"
-import { EmojiFooter } from "../components/emoji-footer"
-import type { EmojiData } from "../hooks"
+import { describe, it, expect, vi } from "vitest"
+import "@testing-library/jest-dom/vitest"
+import { EmojiFooter } from "../src/components/emoji-footer"
+import type { EmojiData } from "../src/hooks"
 
 // Mock the TV styles
-jest.mock("../tv", () => ({
-  emojiFooterTv: jest.fn(() => ({
+vi.mock("../src/tv", () => ({
+  emojiFooterTv: vi.fn(() => ({
     footer: () => "footer-class",
     emojiPreview: () => "emoji-preview-class",
     emojiPreviewEmpty: () => "emoji-preview-empty-class",

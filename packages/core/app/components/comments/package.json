@@ -1,0 +1,68 @@
+{
+  "name": "@choiceform/comments",
+  "version": "0.0.1",
+  "description": "Comments component for Choiceform Design System",
+  "sideEffects": false,
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./src/index.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsup",
+    "build:watch": "tsup --watch",
+    "clean": "rimraf dist"
+  },
+  "dependencies": {
+    "@choiceform/avatar": "workspace:*",
+    "@choiceform/button": "workspace:*",
+    "@choiceform/design-shared": "workspace:*",
+    "@choiceform/dialog": "workspace:*",
+    "@choiceform/dropdown": "workspace:*",
+    "@choiceform/emoji-picker": "workspace:*",
+    "@choiceform/icon-button": "workspace:*",
+    "@choiceform/icons-react": "^1.3.8",
+    "@choiceform/menus": "workspace:*",
+    "@choiceform/picture-preview": "workspace:*",
+    "@choiceform/popover": "workspace:*",
+    "@choiceform/scroll-area": "workspace:*",
+    "@choiceform/tooltip": "workspace:*",
+    "@date-fns/tz": "^1.2.0",
+    "@floating-ui/react": "0.27.15",
+    "@legendapp/state": "v3.0.0-beta.26",
+    "date-fns": "^4.1.0",
+    "is-hotkey": "^0.2.0",
+    "nanoid": "^5.1.6",
+    "slate": "^0.120.0",
+    "slate-history": "^0.113.1",
+    "slate-react": "^0.120.0",
+    "usehooks-ts": "^3.1.0"
+  },
+  "devDependencies": {
+    "@choiceform/modal": "workspace:*",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "rimraf": "^6.0.1",
+    "tsup": "^8.5.0",
+    "typescript": "^5.5.3"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  }
+}

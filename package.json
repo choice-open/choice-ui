@@ -3,8 +3,8 @@
   "version": "0.1.8",
   "private": true,
   "scripts": {
-    "dev": "pnpm --filter=\"./packages/**\" --parallel run dev",
-    "build": "pnpm --filter=\"./packages/**\" run build",
+    "dev": "turbo dev",
+    "build": "turbo build",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,md}\"",
     "code:dev": "pnpm --filter=\"@choiceform/code-editor-react\" run dev",
     "code:build": "pnpm --filter=\"@choiceform/code-editor-react\" run build",
@@ -13,6 +13,7 @@
     "code:lint:fix": "eslint packages/code-editor/app/**/*.{ts,tsx} --ext .ts,.tsx --fix",
     "core:dev": "pnpm --filter=\"@choiceform/design-system\" run dev",
     "core:build": "pnpm --filter=\"@choiceform/design-system\" run build",
+    "components:build": "pnpm --filter=\"./packages/core/app/components/**\" run build",
     "core:storybook": "pnpm --filter=\"@choiceform/design-system\" run storybook",
     "core:lint": "eslint packages/core/app/**/*.{ts,tsx} --ext .ts,.tsx",
     "core:lint:fix": "eslint packages/core/app/**/*.{ts,tsx} --ext .ts,.tsx --fix",
@@ -56,9 +57,14 @@
     "test:calendar": "vitest run packages/calendar",
     "test:text-editor": "vitest run packages/text-editor",
     "clean": "pnpm --filter=\"./packages/**\" run clean",
-    "preinstall": "npx only-allow pnpm"
+    "preinstall": "npx only-allow pnpm",
+    "changeset": "changeset",
+    "version": "changeset version",
+    "release": "pnpm build && changeset publish"
   },
   "devDependencies": {
+    "@changesets/changelog-github": "^0.5.0",
+    "@changesets/cli": "^2.29.4",
     "@typescript-eslint/eslint-plugin": "^8.37.0",
     "@vitest/ui": "^3.2.4",
     "eslint": "^8.57.1",
@@ -66,6 +72,7 @@
     "prettier": "^3.6.2",
     "prettier-plugin-css-order": "^2.1.2",
     "prettier-plugin-tailwindcss": "^0.6.14",
+    "turbo": "^2.6.3",
     "vitest": "^3.1.2"
   },
   "engines": {

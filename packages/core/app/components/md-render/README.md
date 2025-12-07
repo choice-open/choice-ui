@@ -43,7 +43,7 @@ This is **bold text** and *italic text*.
 
 ```tsx
 // Small size (13px base) - for compact UIs
-<MdRender 
+<MdRender
   content={markdown}
   size="small"
 />
@@ -52,7 +52,7 @@ This is **bold text** and *italic text*.
 <MdRender content={markdown} />
 
 // Large size (16px base) - for documentation
-<MdRender 
+<MdRender
   content={markdown}
   size="large"
 />
@@ -61,7 +61,7 @@ This is **bold text** and *italic text*.
 ### With Custom Styling
 
 ```tsx
-<MdRender 
+<MdRender
   content={markdown}
   className="my-custom-class"
 />
@@ -71,14 +71,14 @@ This is **bold text** and *italic text*.
 
 ### Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `content` | `string` | **required** | Markdown content to render |
-| `size` | `"small"` \| `"default"` \| `"large"` | `"default"` | Typography size mode |
-| `mentionItems` | `MentionItemProps[]` | `undefined` | Array of mentionable items |
-| `mentionRenderComponent` | `React.ComponentType<MentionRenderProps>` | `undefined` | Custom mention renderer component |
-| `allowedPrefixes` | `string[]` | `undefined` | Allowed URL prefixes for links and images |
-| `className` | `string` | `undefined` | Additional CSS classes |
+| Prop                     | Type                                      | Default      | Description                               |
+| ------------------------ | ----------------------------------------- | ------------ | ----------------------------------------- |
+| `content`                | `string`                                  | **required** | Markdown content to render                |
+| `size`                   | `"small"` \| `"default"` \| `"large"`     | `"default"`  | Typography size mode                      |
+| `mentionItems`           | `MentionItemProps[]`                      | `undefined`  | Array of mentionable items                |
+| `mentionRenderComponent` | `React.ComponentType<MentionRenderProps>` | `undefined`  | Custom mention renderer component         |
+| `allowedPrefixes`        | `string[]`                                | `undefined`  | Allowed URL prefixes for links and images |
+| `className`              | `string`                                  | `undefined`  | Additional CSS classes                    |
 
 ### Type Definitions
 
@@ -86,7 +86,7 @@ This is **bold text** and *italic text*.
 interface MentionItemProps {
   id: string
   label: string
-  [key: string]: unknown  // Additional custom properties
+  [key: string]: unknown // Additional custom properties
 }
 
 interface MentionRenderProps {
@@ -101,8 +101,8 @@ interface MentionRenderProps {
 
 ```markdown
 **Bold text**
-*Italic text*
-***Bold and italic***
+_Italic text_
+**_Bold and italic_**
 ~~Strikethrough~~
 `Inline code`
 ```
@@ -111,10 +111,15 @@ interface MentionRenderProps {
 
 ```markdown
 # H1
+
 ## H2
+
 ### H3
+
 #### H4
+
 ##### H5
+
 ###### H6
 ```
 
@@ -151,7 +156,7 @@ interface MentionRenderProps {
 ````markdown
 ```javascript
 function hello() {
-  console.log("Hello, World!");
+  console.log("Hello, World!")
 }
 ```
 ````
@@ -162,19 +167,20 @@ Supported languages include: JavaScript, TypeScript, Python, JSON, HTML, CSS, Ba
 
 ```markdown
 | Header 1 | Header 2 | Header 3 |
-|----------|:--------:|---------:|
-| Left     | Center   | Right    |
-| Aligned  | Aligned  | Aligned  |
+| -------- | :------: | -------: |
+| Left     |  Center  |    Right |
+| Aligned  | Aligned  |  Aligned |
 ```
 
 ### Blockquotes
 
 ```markdown
 > This is a blockquote
-> 
+>
 > With multiple lines
 
 > Nested blockquotes
+>
 > > Are also supported
 ```
 
@@ -192,8 +198,10 @@ Supported languages include: JavaScript, TypeScript, Python, JSON, HTML, CSS, Ba
 
 ```markdown
 ---
-***
-___
+
+---
+
+---
 ```
 
 ## Sizing Modes
@@ -205,16 +213,21 @@ The component supports three sizing modes optimized for different use cases:
 Ideal for space-constrained interfaces:
 
 ```tsx
-<MdRender content={markdown} size="small" />
+<MdRender
+  content={markdown}
+  size="small"
+/>
 ```
 
 **Use cases:**
+
 - Sidebar panels
 - Compact widgets
 - Mobile interfaces
 - Quick previews
 
 **Characteristics:**
+
 - Base font: 13px
 - H1: 20.8px (1.6em)
 - Reduced spacing (80% of default)
@@ -229,12 +242,14 @@ Standard mode for most content:
 ```
 
 **Use cases:**
+
 - Chat messages
 - Comments
 - General content
 - UI components
 
 **Characteristics:**
+
 - Base font: 14px
 - H1: 26.24px (1.875em)
 - Standard spacing
@@ -245,16 +260,21 @@ Standard mode for most content:
 Enhanced readability for long-form content:
 
 ```tsx
-<MdRender content={markdown} size="large" />
+<MdRender
+  content={markdown}
+  size="large"
+/>
 ```
 
 **Use cases:**
+
 - Documentation pages
 - Blog articles
 - Technical guides
 - Reading-focused content
 
 **Characteristics:**
+
 - Base font: 16px
 - H1: 32px (2em)
 - Increased spacing (125% of default)
@@ -269,27 +289,31 @@ import { MdRender } from "@choiceform/design-system"
 import { Avatar } from "@choiceform/design-system"
 
 const mentionItems = [
-  { 
-    id: "1", 
+  {
+    id: "1",
     label: "John Doe",
     email: "john@example.com",
-    avatar: "https://example.com/avatar.jpg"
-  }
+    avatar: "https://example.com/avatar.jpg",
+  },
 ]
 
 const CustomMention = ({ mention, mentionItems }: MentionRenderProps) => {
-  const user = mentionItems?.find(item => item.label === mention)
-  
+  const user = mentionItems?.find((item) => item.label === mention)
+
   if (!user) {
     return <span>@{mention}</span>
   }
-  
+
   return (
-    <a 
+    <a
       href={`mailto:${user.email}`}
       className="inline-flex items-center gap-1"
     >
-      <Avatar photo={user.avatar} name={user.label} size="small" />
+      <Avatar
+        photo={user.avatar}
+        name={user.label}
+        size="small"
+      />
       {mention}
     </a>
   )
@@ -297,7 +321,7 @@ const CustomMention = ({ mention, mentionItems }: MentionRenderProps) => {
 
 function App() {
   const content = "Hey @John Doe, check this out!"
-  
+
   return (
     <MdRender
       content={content}
@@ -315,11 +339,7 @@ For security, you can whitelist allowed URL prefixes for links and images:
 ```tsx
 <MdRender
   content={markdown}
-  allowedPrefixes={[
-    "https://example.com",
-    "https://cdn.example.com",
-    "https://api.dicebear.com"
-  ]}
+  allowedPrefixes={["https://example.com", "https://cdn.example.com", "https://api.dicebear.com"]}
 />
 ```
 
@@ -332,15 +352,19 @@ import { MdRender } from "@choiceform/design-system"
 import { Avatar, Tooltip } from "@choiceform/design-system"
 
 const CustomMention = ({ mention, mentionItems }: MentionRenderProps) => {
-  const user = mentionItems?.find(item => item.label === mention)
-  
+  const user = mentionItems?.find((item) => item.label === mention)
+
   if (!user) return <span>@{mention}</span>
-  
+
   return (
     <Tooltip
       content={
         <div className="flex items-center gap-2">
-          <Avatar photo={user.avatar} name={user.label} size="large" />
+          <Avatar
+            photo={user.avatar}
+            name={user.label}
+            size="large"
+          />
           <div>
             <div className="font-bold">{user.label}</div>
             <div className="text-sm">{user.email}</div>
@@ -349,7 +373,11 @@ const CustomMention = ({ mention, mentionItems }: MentionRenderProps) => {
       }
     >
       <a href={`mailto:${user.email}`}>
-        <Avatar photo={user.avatar} name={user.label} size="small" />
+        <Avatar
+          photo={user.avatar}
+          name={user.label}
+          size="small"
+        />
         {mention}
       </a>
     </Tooltip>
@@ -389,7 +417,7 @@ const client = new Client({
 `
 
 // Use large size for better readability
-<MdRender 
+<MdRender
   content={documentation}
   size="large"
 />
@@ -413,7 +441,7 @@ const tasks = `# Sprint Tasks
 `
 
 // Use default size for task lists
-<MdRender 
+<MdRender
   content={tasks}
   mentionItems={teamMembers}
   mentionRenderComponent={CustomMention}
@@ -448,7 +476,7 @@ newFeature.init();
 `
 
 // Use large size for blog articles
-<MdRender 
+<MdRender
   content={blogPost}
   size="large"
 />
@@ -460,27 +488,30 @@ The component offers three distinct sizing modes, each optimized for specific us
 
 ### Size Mode Comparison
 
-| Mode | Base Size | H1 Size | H2 Size | Spacing | Use Case |
-|------|-----------|---------|---------|---------|----------|
-| `small` | 13px | 20.8px | 17.6px | 80% | Compact UIs, sidebars |
-| `default` | 14px | 26.24px | 20.8px | 100% | General content, messages |
-| `large` | 16px | 32px | 24px | 125% | Documentation, articles |
+| Mode      | Base Size | H1 Size | H2 Size | Spacing | Use Case                  |
+| --------- | --------- | ------- | ------- | ------- | ------------------------- |
+| `small`   | 13px      | 20.8px  | 17.6px  | 80%     | Compact UIs, sidebars     |
+| `default` | 14px      | 26.24px | 20.8px  | 100%    | General content, messages |
+| `large`   | 16px      | 32px    | 24px    | 125%    | Documentation, articles   |
 
 ### When to Use Each Size
 
 **Small (`size="small"`)**
+
 - Compact panels and sidebars
 - Mobile interfaces with limited space
 - Quick preview windows
 - Widget displays
 
 **Default (no size prop or `size="default"`)**
+
 - Chat messages and comments
 - General UI content
 - Form descriptions
 - Tooltips and hints
 
 **Large (`size="large"`)**
+
 - Technical documentation
 - Blog articles and long-form content
 - Knowledge base articles
@@ -518,7 +549,7 @@ The component uses Tailwind CSS classes through tailwind-variants. You can custo
 ### Custom Styling Example
 
 ```tsx
-<MdRender 
+<MdRender
   content={markdown}
   size="large"
   className="custom-class"
@@ -555,7 +586,7 @@ The component follows accessibility best practices:
 
 - ✅ Semantic HTML elements (h1-h6, ul, ol, table, etc.)
 - ✅ Proper heading hierarchy
-- ✅ Accessible links with target="_blank" and rel="noopener noreferrer"
+- ✅ Accessible links with target="\_blank" and rel="noopener noreferrer"
 - ✅ Alt text support for images
 - ✅ Keyboard navigation for interactive elements
 - ✅ Screen reader friendly table markup
@@ -595,9 +626,12 @@ import { MdInput } from "@choiceform/design-system"
 
 function Editor() {
   const [value, setValue] = useState("")
-  
+
   return (
-    <MdInput value={value} onChange={setValue}>
+    <MdInput
+      value={value}
+      onChange={setValue}
+    >
       <MdInput.Header>
         <MdInput.Tabs />
         <MdInput.Toolbar />
@@ -657,4 +691,3 @@ When adding new markdown features:
 ## License
 
 Part of the ChoiceForm Design System.
-

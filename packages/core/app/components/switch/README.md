@@ -211,7 +211,7 @@ return (
               key={variant}
               className="space-y-2"
             >
-              <h4 className="text-body-small-strong capitalize text-pink-500">{variant}</h4>
+              <h4 className="text-body-small-strong text-pink-500 capitalize">{variant}</h4>
 
               <div className="space-y-2">
                 {states.map((state) => (

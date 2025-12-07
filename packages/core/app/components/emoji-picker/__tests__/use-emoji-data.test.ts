@@ -1,12 +1,14 @@
 import { renderHook, act } from "@testing-library/react"
-import { useEmojiData, getEmojiCategory, type EmojiData } from "../hooks/use-emoji-data"
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest"
+import "@testing-library/jest-dom/vitest"
+import { useEmojiData, getEmojiCategory, type EmojiData } from "../src/hooks/use-emoji-data"
 
 // Mock localStorage
 const localStorageMock = {
-  getItem: jest.fn(),
-  setItem: jest.fn(),
-  removeItem: jest.fn(),
-  clear: jest.fn(),
+  getItem: vi.fn(),
+  setItem: vi.fn(),
+  removeItem: vi.fn(),
+  clear: vi.fn(),
 }
 Object.defineProperty(window, "localStorage", {
   value: localStorageMock,
@@ -44,7 +46,7 @@ const mockEmojis: EmojiData[] = [
   },
 ]
 
-jest.mock("../utils", () => ({
+vi.mock("../src/utils", () => ({
   emojis: mockEmojis,
 }))
 
@@ -56,12 +58,12 @@ describe("useEmojiData", () => {
   }
 
   beforeEach(() => {
-    jest.clearAllMocks()
+    vi.clearAllMocks()
     localStorageMock.getItem.mockReturnValue(null)
   })
 
   afterEach(() => {
-    jest.resetAllMocks()
+    vi.resetAllMocks()
   })
 
   it("should initialize with empty search results when no search query", () => {

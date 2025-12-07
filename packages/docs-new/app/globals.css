@@ -1,0 +1,18 @@
+@import "tailwindcss";
+
+@import "@choiceform/design-tokens/tokens.css";
+@import "@choiceform/design-tokens/preflight.css";
+@import "@choiceform/design-tokens/tailwind.css";
+
+@import "@choiceform/design-system/styles/components.css";
+@import "@choiceform/design-system/styles/markdown.css";
+
+@source "../node_modules/@choiceform/design-system";
+
+
+
+body {
+  background-color: var(--color-default-background);
+  color: var(--color-default-foreground);
+}
+

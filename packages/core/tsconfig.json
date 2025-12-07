@@ -20,9 +20,23 @@
     "target": "ES2022",
     "types": ["vite/client"],
     "paths": {
-      "~/*": ["./app/*"]
+      "~/*": ["./app/*"],
+      "@choiceform/design-shared": ["../shared/src/index.ts"]
     }
   },
   "include": ["app/**/*.ts", "app/**/*.tsx"],
-  "exclude": ["node_modules", "dist", "**/*.stories.tsx", "**/*.test.tsx"]
+  "exclude": [
+    "node_modules",
+    "dist",
+    "**/*.stories.tsx",
+    "**/*.test.tsx",
+    "**/stories",
+    "**/__tests__",
+    "**/.turbo"
+  ],
+  "watchOptions": {
+    "watchFile": "useFsEvents",
+    "watchDirectory": "useFsEvents",
+    "excludeDirectories": ["**/node_modules", "**/dist", "**/.turbo", "**/stories", "**/__tests__"]
+  }
 }

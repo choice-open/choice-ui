@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import React, { useRef, useState } from "react"
-import { useNumericInput } from "../hooks/use-numeric-input"
+import { useNumericInput } from "../src/hooks/use-numeric-input"
 
 const meta: Meta = {
   title: "Forms/useNumericInput",
