@@ -63,6 +63,7 @@
     "compile": "npm run build",
     "clean": "rm -rf output/* dist/*",
     "dev": "npm run build:tokens && npm run terrazzo:watch",
+    "cli": "node bin/cli.js",
     "test": "vitest run",
     "test:run": "vitest run",
     "test:vitest": "vitest",
@@ -73,13 +74,18 @@
     "prepublishOnly": "npm run build && npm run test",
     "stats": "node -e \"console.log('📊 Design token stats:'); const fs = require('fs'); const files = fs.readdirSync('./output').filter(f => f.endsWith('.json')); let total = 0; files.forEach(f => { const data = JSON.parse(fs.readFileSync('./output/' + f)); const count = JSON.stringify(data).split('$type').length - 1; total += count; console.log(`📄 ${f}: ${count} tokens`); }); console.log(`📋 Total: ${total} tokens`);\""
   },
+  "bin": {
+    "design-tokens-cli": "./bin/cli.js"
+  },
   "dependencies": {
     "@terrazzo/cli": "^0.10.2",
     "@terrazzo/plugin-css": "^0.10.2",
     "@terrazzo/plugin-js": "^0.10.1",
     "@terrazzo/plugin-sass": "^0.10.1",
     "@terrazzo/plugin-tailwind": "^0.3.2",
-    "@terrazzo/plugin-vanilla-extract": "^0.2.1"
+    "@terrazzo/plugin-vanilla-extract": "^0.2.1",
+    "commander": "^12.0.0",
+    "inquirer": "^12.0.0"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
@@ -89,6 +95,7 @@
     "vitest": "^2.1.9"
   },
   "files": [
+    "bin/",
     "scripts/",
     "config/",
     "src/",

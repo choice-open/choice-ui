@@ -1,0 +1,132 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Choice UI Theme Configuration",
+  "description": "Configuration schema for Choice UI custom themes",
+  "type": "object",
+  "required": ["meta", "baseColors", "semanticConfig"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": ["version", "themeName", "createdAt"],
+      "properties": {
+        "version": { "type": "string" },
+        "themeName": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "baseColors": {
+      "type": "object",
+      "required": ["light", "dark", "pale"],
+      "properties": {
+        "light": { "$ref": "#/definitions/colorPalette" },
+        "dark": { "$ref": "#/definitions/colorPalette" },
+        "pale": { "$ref": "#/definitions/colorPalette" }
+      }
+    },
+    "semanticConfig": {
+      "type": "object",
+      "required": ["light", "dark", "extended"],
+      "description": "Semantic mappings. 'extended' contains shared/absolute definitions like gray scale and white/black.",
+      "properties": {
+        "light": { "$ref": "#/definitions/semanticMapping" },
+        "dark": { "$ref": "#/definitions/semanticMapping" },
+        "extended": { "$ref": "#/definitions/extendedSemanticMapping" }
+      }
+    }
+  },
+  "definitions": {
+    "colorPalette": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-zA-Z]+-[0-9]+$": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 255
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "semanticMapping": {
+      "type": "object",
+      "properties": {
+        "text-default": { "type": "string" },
+        "text-secondary": { "type": "string" },
+        "text-disabled": { "type": "string" },
+        "text-tertiary": { "type": "string" },
+        "text-accent": { "type": "string" },
+        "text-success": { "type": "string" },
+        "text-warning": { "type": "string" },
+        "text-danger": { "type": "string" },
+        "text-assistive": { "type": "string" },
+        "text-component": { "type": "string" },
+        "text-inverse": { "type": "string" },
+        "background-default": { "type": "string" },
+        "background-secondary": { "type": "string" },
+        "background-tertiary": { "type": "string" },
+        "background-selected": { "type": "string" },
+        "background-hover": { "type": "string" },
+        "background-disabled": { "type": "string" },
+        "background-inverse": { "type": "string" },
+        "icon-default": { "type": ["string", "array"] },
+        "icon-secondary": { "type": ["string", "array"] },
+        "icon-tertiary": { "type": ["string", "array"] },
+        "icon-disabled": { "type": ["string", "array"] },
+        "border-default": { "type": "string" },
+        "border-strong": { "type": "string" },
+        "border-selected-strong": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "extendedSemanticMapping": {
+      "type": "object",
+      "properties": {
+        "white": { "type": "array" },
+        "black": { "type": "array" },
+        "gray-50": { "type": "array" },
+        "gray-100": { "type": "array" },
+        "gray-200": { "type": "array" },
+        "gray-300": { "type": "array" },
+        "gray-400": { "type": "array" },
+        "gray-500": { "type": "array" },
+        "gray-600": { "type": "array" },
+        "gray-700": { "type": "array" },
+        "gray-800": { "type": "array" },
+        "gray-900": { "type": "array" },
+        "gray-950": { "type": "array" },
+
+        "text-on-accent": { "type": "string" },
+        "text-on-accent-secondary": { "type": "string" },
+        "text-on-accent-tertiary": { "type": "string" },
+        "background-accent": { "type": "string" },
+        "background-accent-hover": { "type": "string" },
+        "background-accent-secondary": { "type": "string" },
+        "background-success": { "type": "string" },
+        "background-success-hover": { "type": "string" },
+        "background-success-secondary": { "type": "string" },
+        "background-warning": { "type": "string" },
+        "background-warning-hover": { "type": "string" },
+        "background-warning-secondary": { "type": "string" },
+        "background-danger": { "type": "string" },
+        "background-danger-hover": { "type": "string" },
+        "background-danger-secondary": { "type": "string" },
+        "background-assistive": { "type": "string" },
+        "background-assistive-hover": { "type": "string" },
+        "background-assistive-secondary": { "type": "string" },
+        "background-component": { "type": "string" },
+        "background-component-hover": { "type": "string" },
+        "background-component-secondary": { "type": "string" },
+        "background-menu": { "type": "string" },
+        "background-toolbar": { "type": "string" },
+        "border-selected": { "type": "string" },
+        "border-menu": { "type": "string" },
+        "border-toolbar": { "type": "string" }
+      },
+      "additionalProperties": false
+    }
+  }
+}
