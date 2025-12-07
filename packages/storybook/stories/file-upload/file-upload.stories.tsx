@@ -178,7 +178,10 @@ export const WithProgress: Story = {
           }
           onSuccess(file);
         } catch (error) {
-          onError(file, error);
+          onError(
+            file,
+            error instanceof Error ? error : new Error(String(error))
+          );
         }
       }
     };

@@ -655,7 +655,6 @@ export const WithAsProp: Story = {
           <List.Content>
             <List.Item
               as="a"
-              href="#"
               onClick={(e) => {
                 e.preventDefault();
                 console.log("Link clicked");
@@ -675,7 +674,6 @@ export const WithAsProp: Story = {
           <List.Content>
             <List.Item
               as="a"
-              href="#"
               active
               prefixElement={<FieldTypeLongText />}
               suffixElement={<FieldTypeSingleSelect />}
@@ -700,11 +698,7 @@ export const WithAsProp: Story = {
             <List.Item>
               <List.Value>Default Button Item</List.Value>
             </List.Item>
-            <List.Item
-              as="a"
-              href="#home"
-              prefixElement={<FieldTypeCheckbox />}
-            >
+            <List.Item as="a" prefixElement={<FieldTypeCheckbox />}>
               <List.Value>Link Item</List.Value>
             </List.Item>
             <List.Item as="div">
@@ -712,7 +706,6 @@ export const WithAsProp: Story = {
             </List.Item>
             <List.Item
               as="a"
-              href="#settings"
               prefixElement={<FieldTypeAttachment />}
               shortcut={{ modifier: "command", keys: "S" }}
             >

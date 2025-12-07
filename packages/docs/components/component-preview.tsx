@@ -24,10 +24,7 @@ export function ComponentPreview({
   const hasCode = typeof code === "string" && code.trim().length > 0
 
   return (
-    <div
-      className={tcx("group relative my-4 w-full", className)}
-      {...props}
-    >
+    <div className={tcx("group relative my-4 w-full", className)}>
       {hasCode ? (
         <Tabs
           value={tab}

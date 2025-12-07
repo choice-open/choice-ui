@@ -86,7 +86,7 @@ export const OnlyPreview: Story = {
 
         <p>Without ScrollArea</p>
         <MdInput value={value}>
-          <MdInput.Render withScrollArea={false} className="p-4" />
+          <MdInput.Render className="p-4" />
         </MdInput>
       </div>
     );
@@ -494,7 +494,7 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 **Note**: This example demonstrates all GitHub Flavored Markdown features supported by the component.`);
 
-    const isDarkMode = useDarkMode();
+    const isDarkMode = true;
     const customColor = {
       defaultBackground: isDarkMode
         ? "var(--color-pink-pale-700)"

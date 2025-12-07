@@ -1,6 +1,6 @@
 import { type Locale } from "date-fns"
 import { enUS } from "date-fns/locale"
-import type { DateFormat } from "../../types"
+import type { DateDataFormat } from "../../types"
 import { defaultLocaleMap } from "../constants"
 
 // 获取语言环境
@@ -10,7 +10,7 @@ export function getLocale(localeKey?: string): Locale {
 }
 
 // 格式自动识别
-export function detectDateFormat(input: string): DateFormat {
+export function detectDateFormat(input: string): DateDataFormat {
   if (input.includes("年") && input.includes("月") && input.includes("日")) {
     return "yyyy年MM月dd日"
   }

@@ -4,6 +4,7 @@ import {
   createDateFormatter,
   formatSimpleDate,
   formatTime,
+  SupportedLanguage,
 } from "..";
 
 describe("formatRelativeTime", () => {
@@ -16,9 +17,11 @@ describe("formatRelativeTime", () => {
 
   describe("Parameter validation", () => {
     it("should handle invalid dates", () => {
-      expect(formatRelativeTime(null as any)).toBe("Invalid Date");
+      expect(formatRelativeTime(null as unknown as Date)).toBe("Invalid Date");
       expect(formatRelativeTime(new Date("invalid"))).toBe("Invalid Date");
-      expect(formatRelativeTime(undefined as any)).toBe("Invalid Date");
+      expect(formatRelativeTime(undefined as unknown as Date)).toBe(
+        "Invalid Date"
+      );
     });
   });
 
@@ -45,7 +48,7 @@ describe("formatRelativeTime", () => {
   describe("Days threshold behavior", () => {
     it("should use relative time within threshold", () => {
       const threeDaysAgo = new Date(
-        mockNow.getTime() - 3 * 24 * 60 * 60 * 1000,
+        mockNow.getTime() - 3 * 24 * 60 * 60 * 1000
       );
       const result = formatRelativeTime(threeDaysAgo, {
         daysThreshold: 7,
@@ -193,7 +196,7 @@ describe("formatRelativeTime", () => {
       ["de", "vor 2 Stunden"],
     ])("should format %s correctly", (language, expected) => {
       const result = formatRelativeTime(testDate, {
-        language: language as any,
+        language: language as unknown as SupportedLanguage,
       });
       expect(result).toBe(expected);
     });

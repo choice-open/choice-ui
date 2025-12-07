@@ -1,4 +1,4 @@
-import type { CalendarValue, DateFormat } from "@choiceform/design-system";
+import type { CalendarValue, DateDataFormat } from "@choiceform/design-system";
 import {
   DateInput,
   DateRangeInput,
@@ -308,7 +308,7 @@ const VariableLengthFormatsComponent = ({
   placeholder,
   locale,
 }: {
-  format: DateFormat;
+  format: DateDataFormat;
   locale: string;
   onChange: (date: Date | null) => void;
   placeholder: string;

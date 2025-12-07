@@ -1,5 +1,5 @@
+import { tcx } from "@choiceform/design-system";
 import type { Meta, StoryObj } from "@storybook/react";
-import { tcx } from "./tcx";
 
 const meta = {
   title: "Utils/tcx (twMerge)",

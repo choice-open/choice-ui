@@ -1,6 +1,6 @@
 import { format, isValid, parse, setHours, setMinutes, startOfDay, type Locale } from "date-fns"
 import { enUS } from "date-fns/locale"
-import type { Time, TimeFormat, TimeInputValue, TimeParserOptions } from "../types"
+import type { Time, TimeDataFormat, TimeInputValue, TimeParserOptions } from "../types"
 import { commonTimeFormats } from "./constants"
 import { resolveLocale } from "./locale"
 
@@ -58,7 +58,7 @@ export function normalizeTimeValue(value: Date | null | undefined): string | nul
 }
 
 // 智能解析时间
-export function smartParseTime(input: string, options: TimeParserOptions): TimeInputValue {
+export function smartParseTimeValue(input: string, options: TimeParserOptions): TimeInputValue {
   const { format: timeFormat, locale, strict } = options
   const dateFnsLocale = resolveLocale(locale)
 
@@ -136,7 +136,7 @@ export function smartParseTime(input: string, options: TimeParserOptions): TimeI
 // 宽松的时间解析
 export function tryRelaxedTimeParsing(
   input: string,
-  targetFormat: TimeFormat,
+  targetFormat: TimeDataFormat,
   locale: Locale | string,
 ): string | null {
   const trimmedInput = input.trim()
@@ -269,7 +269,7 @@ export function tryRelaxedTimeParsing(
 }
 
 // 创建时间对象
-export function createTime(hour: number, minute: number): Time {
+export function createTimeValue(hour: number, minute: number): Time {
   return { hour: Math.max(0, Math.min(23, hour)), minute: Math.max(0, Math.min(59, minute)) }
 }
 
@@ -288,9 +288,9 @@ export function dateToTime(date: Date): Time {
 }
 
 // 格式化时间显示
-export function formatTime(
+export function formatTimeValue(
   time: Time,
-  timeFormat: TimeFormat = "24h",
+  timeFormat: TimeDataFormat = "24h",
   locale: Locale = enUS,
 ): string {
   const date = timeToDate(time)
@@ -303,9 +303,9 @@ export function formatTime(
 }
 
 // 格式化小时显示
-export function formatHour(
+export function formatHourValue(
   hour: number,
-  timeFormat: TimeFormat = "24h",
+  timeFormat: TimeDataFormat = "24h",
   locale: Locale = enUS,
 ): string {
   const date = setHours(startOfDay(new Date()), hour)
@@ -318,14 +318,14 @@ export function formatHour(
 }
 
 // 格式化分钟显示
-export function formatMinute(minute: number): string {
+export function formatMinuteValue(minute: number): string {
   return minute.toString().padStart(2, "0")
 }
 
 // 生成小时选项列表（双列模式）
 export function generateHourOptions(
   hourStep: number = 1,
-  timeFormat: TimeFormat = "24h",
+  timeFormat: TimeDataFormat = "24h",
   locale: Locale = enUS,
 ): Array<{ label: string; value: number }> {
   const options: Array<{ label: string; value: number }> = []
@@ -333,7 +333,7 @@ export function generateHourOptions(
   for (let hour = 0; hour < 24; hour += hourStep) {
     options.push({
       value: hour,
-      label: formatHour(hour, timeFormat, locale),
+      label: formatHourValue(hour, timeFormat, locale),
     })
   }
 
@@ -349,7 +349,7 @@ export function generateMinuteOptions(
   for (let minute = 0; minute < 60; minute += minuteStep) {
     options.push({
       value: minute,
-      label: formatMinute(minute),
+      label: formatMinuteValue(minute),
     })
   }
 
@@ -373,10 +373,10 @@ export function findClosestValidTime(
   // 找到最接近的有效小时
   const closestHour = Math.round(time.hour / hourStep) * hourStep
 
-  return createTime(closestHour, closestMinute % 60)
+  return createTimeValue(closestHour, closestMinute % 60)
 }
 
-export const generateTimeOptions = (format: TimeFormat, step: number = 15) => {
+export const generateTimeOptions = (format: TimeDataFormat, step: number = 15) => {
   const options: Array<{ label: string; value: string }> = []
   const totalMinutes = 24 * 60
 

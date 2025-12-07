@@ -40,11 +40,11 @@ export default {
 } as Meta<typeof RichInput>;
 
 const Template = () => {
-  const initialValue = [
+  const initialValue: Descendant[] = [
     {
       type: "paragraph",
       children: [{ text: "A line of text in a paragraph." }],
-    },
+    } as CustomElement,
   ];
   const [value, setValue] = useState<Descendant[]>(initialValue);
   return (
@@ -68,7 +68,7 @@ export const Standard: StoryObj<typeof RichInput> = {
  */
 export const MinHeight: StoryObj<typeof RichInput> = {
   render: function MinHeightTemplate() {
-    const initialValue = [
+    const initialValue: Descendant[] = [
       {
         type: "paragraph",
         children: [
@@ -76,7 +76,7 @@ export const MinHeight: StoryObj<typeof RichInput> = {
             text: "This editor has a minimum height of 200px and uses ScrollArea for scrolling.",
           },
         ],
-      },
+      } as CustomElement,
     ];
     const [value, setValue] = useState<Descendant[]>(initialValue);
     return (
@@ -96,7 +96,7 @@ export const MinHeight: StoryObj<typeof RichInput> = {
  */
 export const WithI18n: StoryObj<typeof RichInput> = {
   render: function I18nTemplate() {
-    const initialValue = [
+    const initialValue: Descendant[] = [
       {
         type: "paragraph",
         children: [
@@ -104,7 +104,7 @@ export const WithI18n: StoryObj<typeof RichInput> = {
             text: "This editor demonstrates i18n support. Try adding a link to see localized text.",
           },
         ],
-      },
+      } as CustomElement,
     ];
     const [value, setValue] = useState<Descendant[]>(initialValue);
 
@@ -321,7 +321,12 @@ export const ControlledValue: StoryObj<typeof RichInput> = {
         if (element.children) {
           element.children.forEach((child) => {
             const text = child as CustomText;
-            if (text.bold || text.italic || text.underlined || text.link) {
+            if (
+              text.bold ||
+              text.italic ||
+              text.underline ||
+              text.strikethrough
+            ) {
               count++;
             }
           });
@@ -448,7 +453,7 @@ export const ControlledValue: StoryObj<typeof RichInput> = {
         </div>
 
         <CodeBlock language="tsx">
-          <CodeBlock.Content code={value} />
+          <CodeBlock.Content code={JSON.stringify(value, null, 2)} />
         </CodeBlock>
 
         <div className="bg-secondary-background rounded-xl p-4">

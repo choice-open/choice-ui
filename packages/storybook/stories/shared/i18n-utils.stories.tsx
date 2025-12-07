@@ -1,6 +1,6 @@
+import { useI18n } from "@choiceform/design-system";
 import type { Meta, StoryObj } from "@storybook/react";
-import React, { useState } from "react";
-import { useI18n } from "./i18n-utils";
+import { useState } from "react";
 
 // Demo component showing how easy it is to use the universal i18n system
 const I18nDemoComponent = ({

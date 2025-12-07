@@ -1,5 +1,5 @@
 import { format } from "date-fns"
-import type { DateFormat } from "../../types"
+import type { DateDataFormat } from "../../types"
 import { parseDate } from "./parsers"
 
 // 预测结果类型
@@ -20,7 +20,7 @@ export interface PredictionResult {
  */
 export function getEnhancedPrediction(
   input: string,
-  targetFormat: DateFormat = "yyyy-MM-dd",
+  targetFormat: DateDataFormat = "yyyy-MM-dd",
 ): PredictionResult | null {
   if (!input.trim()) return null
 
@@ -193,7 +193,7 @@ function determineType(input: string): PredictionResult["type"] {
  */
 export function getPredictionInfo(
   input: string,
-  targetFormat: DateFormat,
+  targetFormat: DateDataFormat,
 ): {
   description: string
   prediction: string

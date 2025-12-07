@@ -9,7 +9,7 @@ import { addMinutes, format, setHours, setMinutes, startOfDay } from "date-fns"
 import React, { useCallback, useEffect, useRef, useState } from "react"
 import { useEventCallback } from "usehooks-ts"
 import type { BaseTimeProps, StepProps, TimeInteractionProps } from "../types"
-import { resolveLocale, smartParseTime } from "../utils"
+import { resolveLocale, smartParseTimeValue } from "../utils"
 
 interface UseTimeInputProps extends BaseTimeProps, StepProps, TimeInteractionProps {
   onPressEnd?: PressMoveProps["onPressEnd"]
@@ -198,7 +198,7 @@ export function useTimeInput(props: UseTimeInputProps) {
     const startTime = enableProfiling ? Date.now() : 0
 
     // 使用智能时间解析
-    const result = smartParseTime(text, {
+    const result = smartParseTimeValue(text, {
       format: timeFormat,
       locale: propLocale,
       strict: false,

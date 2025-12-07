@@ -1,2 +1,5 @@
 export * from "./format-date";
-export type { SupportedLanguage } from "./format-date.types";
+export type {
+  SupportedLanguage,
+  FormatRelativeTimeOptions,
+} from "./format-date.types";

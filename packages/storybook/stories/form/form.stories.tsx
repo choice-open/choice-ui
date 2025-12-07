@@ -373,12 +373,13 @@ export const WithSchemaValidation: Story = {
           `Name must be at least ${NAME_MIN_LENGTH} characters`
         )
         .refine((value) => value.length > 0, "Name is required"),
-      email: z.email("Please enter a valid email address"),
+      email: z.string().email("Please enter a valid email address"),
       age: z
         .number()
         .min(AGE_MIN_VALUE, `Must be at least ${AGE_MIN_VALUE} years old`)
         .max(AGE_MAX_VALUE, `Age must be less than ${AGE_MAX_VALUE}`),
       website: z
+        .string()
         .url("Please enter a valid website")
         .optional()
         .or(z.literal("")),

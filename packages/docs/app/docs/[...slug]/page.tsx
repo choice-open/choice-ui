@@ -179,7 +179,7 @@ export default function DocsCatchAllPage({ params }: { params: Promise<{ slug?: 
                   code={code}
                   language="tsx"
                 >
-                  {content ?? (
+                  {(content as React.ReactNode) ?? (
                     <span className="text-muted-foreground text-sm">该 story 暂无可渲染内容。</span>
                   )}
                 </ComponentPreview>

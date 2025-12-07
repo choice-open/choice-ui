@@ -29,7 +29,7 @@
  *
  * @see https://date-fns.org/v2.29.3/docs/format
  */
-export type DateFormat = string
+export type DateDataFormat = string
 
 /**
  * 时间格式字符串
@@ -50,7 +50,7 @@ export type DateFormat = string
  *
  * @see https://date-fns.org/v2.29.3/docs/format
  */
-export type TimeFormat = string
+export type TimeDataFormat = string
 
 // ====== 时间相关的基础类型 ======
 
@@ -92,7 +92,7 @@ export interface TimeInputValue {
  */
 export interface TimeParserOptions {
   /** 时间格式 */
-  format: TimeFormat
+  format: TimeDataFormat
   /** 语言区域 - 支持 Locale 对象或字符串（如 "zh-CN", "en-US"） */
   locale?: Locale | string
   /** 严格模式 */
@@ -110,7 +110,7 @@ export interface BaseTimeProps {
   /** 是否禁用 */
   disabled?: boolean
   /** 时间格式，支持所有 date-fns 格式字符串 */
-  format?: TimeFormat
+  format?: TimeDataFormat
   /** 语言区域 - 支持 Locale 对象或字符串（如 "zh-CN", "en-US"） */
   locale?: Locale | string
   /** 最大时间 */
@@ -232,7 +232,7 @@ export interface DateParserOptions {
   /** 是否启用智能修正 */
   enableSmartCorrection?: boolean
   /** 日期格式 */
-  format: DateFormat
+  format: DateDataFormat
   /** 语言区域 - 支持 Locale 对象或字符串（如 "zh-CN", "en-US"） */
   locale?: Locale | string
   /** 最大日期 */
@@ -288,7 +288,7 @@ export interface BaseDateProps {
   /** 是否禁用 */
   disabled?: boolean
   /** 日期格式，支持所有 date-fns 格式字符串 */
-  format?: DateFormat
+  format?: DateDataFormat
   /** 语言区域 - 支持 Locale 对象或字符串（如 "zh-CN", "en-US"） */
   locale?: Locale | string
   /** 最大日期 */

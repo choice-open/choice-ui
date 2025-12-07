@@ -5,11 +5,11 @@ import {
   createDateFormatter,
   formatSimpleDate,
   formatTime,
-} from "./format-date";
+} from "@choiceform/design-system";
 import type {
   FormatRelativeTimeOptions,
   SupportedLanguage,
-} from "./format-date.types";
+} from "@choiceform/design-system";
 
 // Mock component to demonstrate the formatting utilities
 const DateFormattingDemo = ({

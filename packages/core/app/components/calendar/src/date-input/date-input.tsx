@@ -6,7 +6,7 @@ import { isThisYear } from "date-fns"
 import { enUS } from "date-fns/locale"
 import React, { forwardRef, useEffect, useMemo, useState } from "react"
 import { useDateInput } from "../hooks/use-date-input"
-import type { DateFormat } from "../types"
+import type { DateDataFormat } from "../types"
 import { getEnhancedPrediction, resolveLocale, type PredictionResult } from "../utils"
 
 interface DateInputProps extends Omit<TextFieldProps, "value" | "onChange" | "format"> {
@@ -39,7 +39,7 @@ interface DateInputProps extends Omit<TextFieldProps, "value" | "onChange" | "fo
    * @default false
    */
   enableProfiling?: boolean
-  format?: DateFormat
+  format?: DateDataFormat
   locale?: Locale | string
   maxDate?: Date
   minDate?: Date

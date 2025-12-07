@@ -1,7 +1,7 @@
 import { format, isValid, parse, type Locale } from "date-fns"
 import { enUS } from "date-fns/locale"
 import type { DateInputValue, DateParserOptions } from "../../types"
-import type { DateFormat } from "../../types"
+import type { DateDataFormat } from "../../types"
 import { commonDateFormats } from "../constants"
 import { resolveLocale } from "../locale"
 import { parseEnglishDate } from "./english-dates"
@@ -34,7 +34,7 @@ export interface ParseOptions {
   /** 是否启用智能修正 */
   enableSmartCorrection?: boolean
   /** 目标格式 */
-  format?: DateFormat
+  format?: DateDataFormat
   /** 语言环境 */
   locale?: Locale
   /** 是否严格模式 */
@@ -195,7 +195,7 @@ export function parseDate(
  */
 function formatResult(
   date: Date,
-  dateFormat: DateFormat,
+  dateFormat: DateDataFormat,
   locale: Locale,
   detailed: boolean,
   detailedResult: DateInputValue,
@@ -222,7 +222,11 @@ function formatResult(
  * - 无效日期修正（如 0431 → 0430）
  * - 格式适配（根据目标格式调整解析逻辑）
  */
-function parseNumericInput(input: string, targetFormat: DateFormat, locale: Locale): Date | null {
+function parseNumericInput(
+  input: string,
+  targetFormat: DateDataFormat,
+  locale: Locale,
+): Date | null {
   // 只处理真正的纯数字输入 - 原始输入必须完全是数字
   if (!/^\d+$/.test(input.trim())) {
     return null
@@ -557,7 +561,7 @@ function tryGenericNumericParsing(digitOnly: string, length: number, now: Date):
  */
 export function getPredictionInfo(
   input: string,
-  targetFormat: DateFormat,
+  targetFormat: DateDataFormat,
 ): {
   description: string
   prediction: string
@@ -742,7 +746,7 @@ export function getPredictionInfo(
 }
 
 // 向后兼容的导出 - 保持旧接口可用
-export const tryRelaxedParsing = (input: string, format: DateFormat, locale?: Locale) =>
+export const tryRelaxedParsing = (input: string, format: DateDataFormat, locale?: Locale) =>
   parseDate(input, { format, locale, enableSmartCorrection: true })
 
 export const smartParseDate = (input: string, options: DateParserOptions): DateInputValue =>
@@ -909,7 +913,7 @@ function generateWeekdayNames(locale: Locale): string[] {
  */
 function parseInvalidFormattedDate(
   input: string,
-  targetFormat: DateFormat,
+  targetFormat: DateDataFormat,
   locale: Locale,
 ): Date | null {
   // 定义常见格式的解析模式

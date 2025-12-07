@@ -5,7 +5,7 @@ import { formatDistanceStrict, type Locale } from "date-fns"
 import { enUS } from "date-fns/locale"
 import { useMemo } from "react"
 import { DateInput } from "../date-input"
-import type { DateFormat } from "../types"
+import type { DateDataFormat } from "../types"
 import { resolveLocale } from "../utils"
 
 interface DateRangeInputProps
@@ -14,7 +14,7 @@ interface DateRangeInputProps
   endPlaceholder?: string
   endSuffixElement?: React.ReactNode
   endValue?: Date | null
-  format?: DateFormat
+  format?: DateDataFormat
   locale?: Locale | string
   maxDate?: Date
   minDate?: Date
@@ -118,7 +118,7 @@ export const DateRangeInput = (props: DateRangeInputProps) => {
       />
       <span
         className={tcx(
-          "col-span-3 col-start-5 row-start-2 select-none truncate",
+          "col-span-3 col-start-5 row-start-2 truncate select-none",
           rest.variant === "dark" ? "text-gray-400" : "text-secondary-foreground",
         )}
         data-testid="range-length"

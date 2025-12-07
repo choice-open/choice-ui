@@ -5,7 +5,7 @@ import { Locale, differenceInMinutes } from "date-fns"
 import { enUS } from "date-fns/locale"
 import { useMemo } from "react"
 import { TimeInput } from "../time-input"
-import type { TimeFormat } from "../types"
+import type { TimeDataFormat } from "../types"
 import { resolveLocale } from "../utils"
 
 interface TimeRangeInputProps
@@ -14,7 +14,7 @@ interface TimeRangeInputProps
   endPlaceholder?: string
   endSuffixElement?: React.ReactNode
   endValue?: Date | null
-  format?: TimeFormat
+  format?: TimeDataFormat
   locale?: Locale | string
   maxTime?: Date
   minTime?: Date
@@ -173,7 +173,7 @@ export const TimeRangeInput = (props: TimeRangeInputProps) => {
       />
       <span
         className={tcx(
-          "col-span-3 col-start-5 row-start-2 select-none truncate",
+          "col-span-3 col-start-5 row-start-2 truncate select-none",
           rest.variant === "dark" ? "text-gray-400" : "text-secondary-foreground",
         )}
       >
