@@ -4,9 +4,31 @@ import tsconfigPaths from "vite-tsconfig-paths"
 import fs from "fs"
 import path from "path"
 
+const createWorkspaceAliases = (baseDir: string): Record<string, string> => {
+  const aliases: Record<string, string> = {}
+  if (!fs.existsSync(baseDir)) return aliases
+
+  for (const entry of fs.readdirSync(baseDir)) {
+    const pkgDir = path.join(baseDir, entry)
+    const pkgJsonPath = path.join(pkgDir, "package.json")
+    if (!fs.existsSync(pkgJsonPath)) continue
+
+    const pkg = JSON.parse(fs.readFileSync(pkgJsonPath, "utf-8")) as { name?: string }
+    if (pkg.name) {
+      aliases[pkg.name] = path.join(pkgDir, "src")
+    }
+  }
+
+  return aliases
+}
+
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "")
   process.env = { ...process.env, ...env }
+  const componentAliases = createWorkspaceAliases(path.resolve(__dirname, "app/components"))
+  const hookAliases = createWorkspaceAliases(path.resolve(__dirname, "app/hooks"))
+  const utilAliases = createWorkspaceAliases(path.resolve(__dirname, "app/utils"))
+
   return {
     plugins: [
       tsconfigPaths(),
@@ -122,6 +144,9 @@ export default defineConfig(({ mode }) => {
     resolve: {
       alias: {
         "@storybook/addons": "@storybook/manager-api",
+        ...componentAliases,
+        ...hookAliases,
+        ...utilAliases,
         "~": path.resolve(__dirname, "./app"),
       },
       extensions: [".mjs", ".js", ".ts", ".jsx", ".tsx", ".json"],

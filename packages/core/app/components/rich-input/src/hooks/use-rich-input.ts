@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Descendant, Editor, Transforms } from "slate"
 import { ReactEditor } from "slate-react"
 import { useEventCallback } from "usehooks-ts"
-import type { UseRichInputProps } from "../types"
+import type { UseRichInputProps, CustomEditor } from "../types"
 
 /**
  * Rich Input 受控组件逻辑处理
@@ -34,19 +34,19 @@ export const useRichInput = ({
 
     if (needsUpdate) {
       // 使用官方推荐的重置方法
-      Editor.withoutNormalizing(editor, () => {
+      Editor.withoutNormalizing(editor as CustomEditor, () => {
         // 直接替换 editor.children
         editor.children = value
 
         // 根据 autoMoveToEnd 决定光标位置
         if (autoMoveToEnd) {
           // 将光标移动到最后
-          const endPoint = Editor.end(editor, [])
-          Transforms.select(editor, endPoint)
+          const endPoint = Editor.end(editor as CustomEditor, [])
+          Transforms.select(editor as CustomEditor, endPoint)
         }
 
         // 触发变化事件以更新视图
-        editor.onChange()
+        ;(editor as CustomEditor).onChange()
       })
 
       // 如果开启了 autoFocus，在更新后重新聚焦

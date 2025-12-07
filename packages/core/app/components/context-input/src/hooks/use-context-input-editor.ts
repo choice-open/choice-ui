@@ -1,11 +1,11 @@
 import { createContext, useContext } from "react"
-import type { ReactEditor } from "slate-react"
+import type { ContextEditor } from "../types/editor"
 
 // 创建编辑器上下文
-export const ContextInputEditorContext = createContext<ReactEditor | null>(null)
+export const ContextInputEditorContext = createContext<ContextEditor | null>(null)
 
 // 使用编辑器的 hook
-export const useContextInputEditor = (): ReactEditor => {
+export const useContextInputEditor = (): ContextEditor => {
   const editor = useContext(ContextInputEditorContext)
   if (!editor) {
     throw new Error("useContextInputEditor must be used within a ContextInputEditorProvider")

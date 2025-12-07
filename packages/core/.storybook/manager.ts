@@ -1,4 +1,4 @@
-import { addons } from "@storybook/manager-api"
+import { addons } from "storybook/internal/manager-api"
 import { defaultConfig, type TagBadgeParameters } from "storybook-addon-tag-badges"
 
 const CSS_TO_HIDE_TEST_SECTION_FROM_SIDEBAR = `

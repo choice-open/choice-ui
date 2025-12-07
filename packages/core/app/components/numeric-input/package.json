@@ -35,10 +35,6 @@
     "usehooks-ts": "^3.1.0"
   },
   "devDependencies": {
-    "@choiceform/checkbox": "workspace:*",
-    "@choiceform/dropdown": "workspace:*",
-    "@choiceform/numeric-input": "workspace:*",
-    "@choiceform/select": "workspace:*",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",

@@ -30,10 +30,6 @@
     "@choiceform/design-shared": "workspace:*"
   },
   "devDependencies": {
-    "@choiceform/button": "workspace:*",
-    "@choiceform/modal": "workspace:*",
-    "@choiceform/popover": "workspace:*",
-    "@choiceform/tooltip": "workspace:*",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",

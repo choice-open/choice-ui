@@ -71,8 +71,8 @@ export const withMaxLength =
     }
 
     // 拦截 fragment 插入
-    customEditor.insertFragment = (fragment: Descendant[]) => {
-      const fragmentText = fragment.map((n: Descendant) => Node.string(n)).join("")
+    customEditor.insertFragment = (fragment: Node[]) => {
+      const fragmentText = fragment.map((value: Node) => Node.string(value)).join("")
       const currentLength = getCurrentLength()
       const newLength = currentLength + fragmentText.length
 

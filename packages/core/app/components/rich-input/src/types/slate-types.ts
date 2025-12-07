@@ -1,4 +1,5 @@
 import { BaseElement, BaseText, Editor } from "slate"
+import { HistoryEditor } from "slate-history"
 import { ReactEditor } from "slate-react"
 
 export interface CustomText extends BaseText {
@@ -29,7 +30,7 @@ export interface CustomElement extends BaseElement {
   type: string
 }
 
-export type CustomEditor = ReactEditor & Editor
+export type CustomEditor = ReactEditor & HistoryEditor & Editor
 
 export type ElementType =
   | "paragraph"

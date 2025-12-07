@@ -3,6 +3,7 @@ import { Editor, Node, Point, Range, Transforms } from "slate"
 import { ReactEditor } from "slate-react"
 import type { MentionItem, MentionTrigger } from "../types"
 import { insertWithSmartSpacing } from "../utils"
+import type { ContextEditor } from "../types/editor"
 
 export interface MentionSearchState {
   index: number
@@ -15,7 +16,7 @@ export interface MentionSearchState {
 }
 
 export interface UseMentionsProps {
-  editor: ReactEditor
+  editor: ContextEditor
   maxSuggestions?: number
   mentionPrefix?: string
   onMentionSelect?: (mention: MentionItem, trigger: string) => void

@@ -1,10 +1,11 @@
 import { useMemo } from "react"
 import { createEditor } from "slate"
 import { withHistory } from "slate-history"
-import { type ReactEditor, withReact } from "slate-react"
+import { withReact } from "slate-react"
 import { withMaxLength, withMentions } from "../extensions"
+import type { ContextEditor } from "../types/editor"
 
-export const useSlateEditor = (maxLength?: number): ReactEditor => {
+export const useSlateEditor = (maxLength?: number): ContextEditor => {
   const editor = useMemo(() => {
     let editor = createEditor()
     editor = withReact(editor)
@@ -19,5 +20,5 @@ export const useSlateEditor = (maxLength?: number): ReactEditor => {
     return editor
   }, [maxLength])
 
-  return editor as ReactEditor
+  return editor as ContextEditor
 }

@@ -171,7 +171,7 @@ export interface UseEditorEffectsProps {
 export interface UseRichInputProps {
   autoFocus?: boolean
   autoMoveToEnd?: boolean
-  editor?: ReactEditor
+  editor?: CustomEditor
   onChange?: (value: Descendant[]) => void
   value: Descendant[]
 }

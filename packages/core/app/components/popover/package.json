@@ -34,13 +34,6 @@
     "usehooks-ts": "^3.1.0"
   },
   "devDependencies": {
-    "@choiceform/button": "workspace:*",
-    "@choiceform/dropdown": "workspace:*",
-    "@choiceform/input": "workspace:*",
-    "@choiceform/numeric-input": "workspace:*",
-    "@choiceform/scroll-area": "workspace:*",
-    "@choiceform/select": "workspace:*",
-    "@choiceform/tabs": "workspace:*",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "react": "^18.3.1",

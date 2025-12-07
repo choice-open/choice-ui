@@ -37,12 +37,6 @@
     "framer-motion": "^11"
   },
   "devDependencies": {
-    "@choiceform/avatar": "workspace:*",
-    "@choiceform/button": "workspace:*",
-    "@choiceform/link-button": "workspace:*",
-    "@choiceform/search-input": "workspace:*",
-    "@choiceform/tabs": "workspace:*",
-    "@choiceform/text-field": "workspace:*",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "react": "^18.3.1",

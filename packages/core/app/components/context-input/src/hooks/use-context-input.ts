@@ -4,10 +4,11 @@ import { Descendant, Editor, Transforms } from "slate"
 import { ReactEditor } from "slate-react"
 import type { ContextInputValue, MentionMatch } from "../types"
 import { extractMentionContext, extractTextWithMentions, parseTextWithMentions } from "../utils"
+import type { ContextEditor } from "../types/editor"
 
 interface UseContextInputProps {
   autoFocus?: boolean
-  editor?: ReactEditor
+  editor?: ContextEditor
   onChange?: (value: ContextInputValue) => void
   value?: ContextInputValue
 }

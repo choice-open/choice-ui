@@ -1,9 +1,9 @@
 import { AlertDialogProvider, TooltipProvider } from "@choiceform/design-system"
-import "@choiceform/storybook-config/global.css"
-import { sharedParameters } from "@choiceform/storybook-config/preview"
 import { Preview } from "@storybook/react-vite"
 import React from "react"
 import "../app/tailwind.css"
+import "./global.css"
+import { sharedParameters } from "./shared-parameters"
 
 const preview: Preview = {
   decorators: [
