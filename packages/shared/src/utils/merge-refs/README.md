@@ -5,7 +5,7 @@ A utility for combining multiple React refs into a single ref callback, enabling
 ## Import
 
 ```typescript
-import { mergeRefs, assignRef } from "@choiceform/design-system/utils"
+import { mergeRefs, assignRef } from "@choiceform/design-system/utils";
 ```
 
 ## Usage
@@ -40,7 +40,9 @@ const callbackRef = (node) => {
 ### mergeRefs
 
 ```typescript
-function mergeRefs<T>(...refs: (ReactRef<T> | undefined)[]): (node: T | null) => void
+function mergeRefs<T>(
+  ...refs: (ReactRef<T> | undefined)[]
+): (node: T | null) => void;
 ```
 
 #### Parameters
@@ -54,7 +56,7 @@ A callback ref function that assigns the node to all provided refs.
 ### assignRef
 
 ```typescript
-function assignRef<T>(ref: ReactRef<T> | undefined, value: T | null): void
+function assignRef<T>(ref: ReactRef<T> | undefined, value: T | null): void;
 ```
 
 #### Parameters
@@ -65,7 +67,10 @@ function assignRef<T>(ref: ReactRef<T> | undefined, value: T | null): void
 ## Types
 
 ```typescript
-type ReactRef<T> = React.RefObject<T> | React.MutableRefObject<T> | React.Ref<T>
+type ReactRef<T> =
+  | React.RefObject<T>
+  | React.MutableRefObject<T>
+  | React.Ref<T>;
 ```
 
 ## Features
@@ -244,9 +249,9 @@ The `assignRef` function will throw an error with a descriptive message if you t
 
 ```typescript
 try {
-  assignRef(invalidRef, element)
+  assignRef(invalidRef, element);
 } catch (error) {
-  console.error(error.message)
+  console.error(error.message);
   // "Cannot assign value '[object HTMLDivElement]' to ref '...'"
 }
 ```

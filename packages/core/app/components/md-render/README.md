@@ -198,7 +198,6 @@ Supported languages include: JavaScript, TypeScript, Python, JSON, HTML, CSS, Ba
 
 ```markdown
 ---
-
 ---
 
 ---

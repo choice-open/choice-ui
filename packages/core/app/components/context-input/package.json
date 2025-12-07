@@ -39,11 +39,6 @@
     "usehooks-ts": "^3.1.0"
   },
   "devDependencies": {
-    "@choiceform/alert-dialog": "workspace:*",
-    "@choiceform/avatar": "workspace:*",
-    "@choiceform/button": "workspace:*",
-    "@choiceform/checkbox": "workspace:*",
-    "@choiceform/code-block": "workspace:*",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "react": "^18.3.1",

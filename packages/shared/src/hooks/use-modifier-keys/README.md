@@ -5,7 +5,7 @@ A React hook for tracking the state of keyboard modifier keys (Shift, Ctrl, Meta
 ## Import
 
 ```typescript
-import { useModifierKeys } from "@choiceform/design-system/hooks"
+import { useModifierKeys } from "@choiceform/design-system/hooks";
 ```
 
 ## Usage
@@ -50,12 +50,12 @@ const { shiftPressed } = useModifierKeys(disabled)
 ### useModifierKeys
 
 ```typescript
-function useModifierKeys(disabled?: boolean): ModifierKeyState
+function useModifierKeys(disabled?: boolean): ModifierKeyState;
 
 interface ModifierKeyState {
-  shiftPressed: boolean // Shift key state
-  metaPressed: boolean // Meta (Cmd) or Alt key state
-  ctrlPressed: boolean // Ctrl key state
+  shiftPressed: boolean; // Shift key state
+  metaPressed: boolean; // Meta (Cmd) or Alt key state
+  ctrlPressed: boolean; // Ctrl key state
 }
 ```
 

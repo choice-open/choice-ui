@@ -1,21 +1,23 @@
-import type { Meta, StoryObj } from "@storybook/react"
-import { tcx } from "./tcx"
+import type { Meta, StoryObj } from "@storybook/react";
+import { tcx } from "./tcx";
 
 const meta = {
   title: "Utils/tcx (twMerge)",
   parameters: {
     layout: "centered",
   },
-} satisfies Meta
+} satisfies Meta;
 
-export default meta
-type Story = StoryObj<typeof meta>
+export default meta;
+type Story = StoryObj<typeof meta>;
 
 const TestComponent = ({ className }: { className: string }) => (
   <div className={className}>
-    <pre className="rounded bg-gray-100 p-2 text-xs dark:bg-gray-800">{className}</pre>
+    <pre className="rounded bg-gray-100 p-2 text-xs dark:bg-gray-800">
+      {className}
+    </pre>
   </div>
-)
+);
 
 export const BasicMerging: Story = {
   render: () => {
@@ -47,7 +49,10 @@ export const BasicMerging: Story = {
       },
       {
         title: "Complex merge with multiple utilities",
-        input: ["bg-white p-4 text-sm text-gray-600", "bg-gray-100 px-6 text-lg text-gray-900"],
+        input: [
+          "bg-white p-4 text-sm text-gray-600",
+          "bg-gray-100 px-6 text-lg text-gray-900",
+        ],
         expected: "bg-gray-100 p-4 px-6 text-lg text-gray-900",
       },
       {
@@ -57,17 +62,21 @@ export const BasicMerging: Story = {
       },
       {
         title: "Boolean conditions",
-        input: ["base-class", true && "active-class", false && "inactive-class"],
+        input: [
+          "base-class",
+          true && "active-class",
+          false && "inactive-class",
+        ],
         expected: "base-class active-class",
       },
-    ]
+    ];
 
     return (
       <div className="min-w-[600px] space-y-6">
         <h2 className="text-heading-medium font-bold">tcx twMerge Tests</h2>
         {testCases.map((testCase, index) => {
-          const result = tcx(...testCase.input)
-          const isCorrect = result === testCase.expected
+          const result = tcx(...testCase.input);
+          const isCorrect = result === testCase.expected;
 
           return (
             <div
@@ -93,7 +102,13 @@ export const BasicMerging: Story = {
                   <code className="rounded bg-gray-100 px-2 py-0.5 text-xs dark:bg-gray-800">
                     {result}
                   </code>
-                  <span className={isCorrect ? "text-xs text-green-600" : "text-xs text-red-600"}>
+                  <span
+                    className={
+                      isCorrect
+                        ? "text-xs text-green-600"
+                        : "text-xs text-red-600"
+                    }
+                  >
                     {isCorrect ? "✓ PASS" : "✗ FAIL"}
                   </span>
                 </div>
@@ -103,12 +118,12 @@ export const BasicMerging: Story = {
                 <TestComponent className={result} />
               </div>
             </div>
-          )
+          );
         })}
       </div>
-    )
+    );
   },
-}
+};
 
 export const CustomTypographyTokens: Story = {
   render: () => {
@@ -136,19 +151,18 @@ export const CustomTypographyTokens: Story = {
           ["text-heading-large text-gray-900", "text-green-500"],
         ],
       },
-    ]
+    ];
 
     return (
       <div className="min-w-[600px] space-y-8">
-        <h2 className="text-heading-medium font-bold">Custom Typography Token Tests</h2>
+        <h2 className="text-heading-medium font-bold">
+          Custom Typography Token Tests
+        </h2>
         {typographyTests.map((group, groupIndex) => (
-          <div
-            key={groupIndex}
-            className="space-y-4"
-          >
+          <div key={groupIndex} className="space-y-4">
             <h3 className="text-body-large-strong">{group.title}</h3>
             {group.tests.map((test, testIndex) => {
-              const result = tcx(...test)
+              const result = tcx(...test);
               return (
                 <div
                   key={testIndex}
@@ -172,14 +186,14 @@ export const CustomTypographyTokens: Story = {
                     <div className={result}>Sample Text</div>
                   </div>
                 </div>
-              )
+              );
             })}
           </div>
         ))}
       </div>
-    )
+    );
   },
-}
+};
 
 export const InteractivePlayground: Story = {
   render: () => {
@@ -192,21 +206,23 @@ export const InteractivePlayground: Story = {
       "rounded-lg rounded-xl border border-2",
       "w-full max-w-md min-w-0",
       "hover:bg-gray-100 hover:bg-gray-200",
-    ]
+    ];
 
     return (
       <div className="min-w-[600px] space-y-6">
-        <h2 className="text-heading-medium font-bold">Interactive Playground</h2>
+        <h2 className="text-heading-medium font-bold">
+          Interactive Playground
+        </h2>
         <div className="border-border-neutral rounded-lg border p-4">
           <p className="text-body-small text-text-secondary mb-4">
             Click on examples to see how tcx merges Tailwind classes
           </p>
           <div className="grid gap-3">
             {examples.map((example, index) => {
-              const classes = example.split(" ")
-              const firstHalf = classes.slice(0, Math.ceil(classes.length / 2))
-              const secondHalf = classes.slice(Math.ceil(classes.length / 2))
-              const result = tcx(firstHalf.join(" "), secondHalf.join(" "))
+              const classes = example.split(" ");
+              const firstHalf = classes.slice(0, Math.ceil(classes.length / 2));
+              const secondHalf = classes.slice(Math.ceil(classes.length / 2));
+              const result = tcx(firstHalf.join(" "), secondHalf.join(" "));
 
               return (
                 <div
@@ -227,14 +243,14 @@ export const InteractivePlayground: Story = {
                     </span>
                   </div>
                 </div>
-              )
+              );
             })}
           </div>
         </div>
       </div>
-    )
+    );
   },
-}
+};
 
 export const EdgeCases: Story = {
   render: () => {
@@ -269,14 +285,14 @@ export const EdgeCases: Story = {
         input: ["dark:bg-gray-800", "dark:bg-gray-900"],
         expected: "dark:bg-gray-900",
       },
-    ]
+    ];
 
     return (
       <div className="min-w-[600px] space-y-6">
         <h2 className="text-heading-medium font-bold">Edge Cases</h2>
         {edgeCases.map((testCase, index) => {
-          const result = tcx(...testCase.input)
-          const isCorrect = result === testCase.expected
+          const result = tcx(...testCase.input);
+          const isCorrect = result === testCase.expected;
 
           return (
             <div
@@ -302,15 +318,21 @@ export const EdgeCases: Story = {
                   <code className="rounded bg-gray-100 px-2 py-0.5 text-xs dark:bg-gray-800">
                     {result}
                   </code>
-                  <span className={isCorrect ? "text-xs text-green-600" : "text-xs text-red-600"}>
+                  <span
+                    className={
+                      isCorrect
+                        ? "text-xs text-green-600"
+                        : "text-xs text-red-600"
+                    }
+                  >
                     {isCorrect ? "✓ PASS" : "✗ FAIL"}
                   </span>
                 </div>
               </div>
             </div>
-          )
+          );
         })}
       </div>
-    )
+    );
   },
-}
+};

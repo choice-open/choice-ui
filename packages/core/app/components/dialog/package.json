@@ -34,18 +34,6 @@
     "usehooks-ts": "^3.1.0"
   },
   "devDependencies": {
-    "@choiceform/button": "workspace:*",
-    "@choiceform/checkbox": "workspace:*",
-    "@choiceform/dropdown": "workspace:*",
-    "@choiceform/icons-react": "^1.3.8",
-    "@choiceform/input": "workspace:*",
-    "@choiceform/numeric-input": "workspace:*",
-    "@choiceform/popover": "workspace:*",
-    "@choiceform/scroll-area": "workspace:*",
-    "@choiceform/select": "workspace:*",
-    "@testing-library/jest-dom": "^6.6.3",
-    "@testing-library/react": "^16.3.0",
-    "@testing-library/user-event": "^14.6.1",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "react": "^18.3.1",

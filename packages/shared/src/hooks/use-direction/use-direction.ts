@@ -1,13 +1,13 @@
-import { createContext, useContext } from "react"
+import { createContext, useContext } from "react";
 
-type Direction = "ltr" | "rtl"
+type Direction = "ltr" | "rtl";
 
 /**
  * 文本方向上下文
  *
  * 用于在组件树中传递文本方向信息（从左到右或从右到左）
  */
-export const DirectionContext = createContext<Direction | undefined>(undefined)
+export const DirectionContext = createContext<Direction | undefined>(undefined);
 
 /**
  * 获取文本方向的 Hook
@@ -32,6 +32,6 @@ export const DirectionContext = createContext<Direction | undefined>(undefined)
  * ```
  */
 export function useDirection(dirProp?: Direction): Direction {
-  const contextDir = useContext(DirectionContext)
-  return dirProp ?? contextDir ?? "ltr"
+  const contextDir = useContext(DirectionContext);
+  return dirProp ?? contextDir ?? "ltr";
 }

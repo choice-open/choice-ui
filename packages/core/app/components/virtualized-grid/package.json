@@ -37,10 +37,7 @@
     "react-dom": "^18.3.1",
     "rimraf": "^6.0.1",
     "tsup": "^8.5.0",
-    "typescript": "^5.5.3",
-    "@choiceform/badge": "workspace:*",
-    "@choiceform/input": "workspace:*",
-    "@choiceform/scroll-area": "workspace:*"
+    "typescript": "^5.5.3"
   },
   "peerDependencies": {
     "react": ">=18.0.0",

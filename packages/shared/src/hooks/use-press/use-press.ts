@@ -3,38 +3,45 @@ import {
   useState,
   PointerEvent as ReactPointerEvent,
   KeyboardEvent as ReactKeyboardEvent,
-} from "react"
+} from "react";
 
-type PressEvent = ReactPointerEvent<HTMLElement> | ReactKeyboardEvent<HTMLElement>
+type PressEvent =
+  | ReactPointerEvent<HTMLElement>
+  | ReactKeyboardEvent<HTMLElement>;
 
 export type PressProps = {
-  disabled?: boolean
-  onPress?: (event: PressEvent) => void
-  onPressEnd?: (event: PressEvent) => void
-  onPressStart?: (event: PressEvent) => void
-}
+  disabled?: boolean;
+  onPress?: (event: PressEvent) => void;
+  onPressEnd?: (event: PressEvent) => void;
+  onPressStart?: (event: PressEvent) => void;
+};
 
-export function usePress({ disabled, onPress, onPressStart, onPressEnd }: PressProps) {
-  const [isPressed, setPressed] = useState(false)
+export function usePress({
+  disabled,
+  onPress,
+  onPressStart,
+  onPressEnd,
+}: PressProps) {
+  const [isPressed, setPressed] = useState(false);
 
   const createHandlePointerDown = useCallback(
     (event: ReactPointerEvent<HTMLElement>) => {
       if (!disabled) {
-        setPressed(true)
-        onPressStart?.(event)
+        setPressed(true);
+        onPressStart?.(event);
         document.addEventListener(
           "pointerup",
           () => {
-            setPressed(false)
-            onPress?.(event)
-            onPressEnd?.(event)
+            setPressed(false);
+            onPress?.(event);
+            onPressEnd?.(event);
           },
           { once: true },
-        )
+        );
       }
     },
     [disabled, onPress, onPressEnd, onPressStart],
-  )
+  );
 
   const createHandleKeyDown = useCallback(
     (event: ReactKeyboardEvent<HTMLElement>) => {
@@ -44,12 +51,12 @@ export function usePress({ disabled, onPress, onPressStart, onPressEnd }: PressP
         isPressed === false &&
         !disabled
       ) {
-        setPressed(true)
-        onPressStart?.(event)
+        setPressed(true);
+        onPressStart?.(event);
       }
     },
     [disabled, isPressed, onPressStart],
-  )
+  );
 
   const createHandleKeyUp = useCallback(
     (event: ReactKeyboardEvent<HTMLElement>) => {
@@ -60,13 +67,13 @@ export function usePress({ disabled, onPress, onPressStart, onPressEnd }: PressP
         (event.key === " " || event.key === "Enter") &&
         !disabled
       ) {
-        setPressed(false)
-        onPress?.(event)
-        onPressEnd?.(event)
+        setPressed(false);
+        onPress?.(event);
+        onPressEnd?.(event);
       }
     },
     [disabled, onPress, onPressEnd],
-  )
+  );
 
   return {
     isPressed,
@@ -75,5 +82,5 @@ export function usePress({ disabled, onPress, onPressStart, onPressEnd }: PressP
       onKeyDown: createHandleKeyDown,
       onKeyUp: createHandleKeyUp,
     },
-  }
+  };
 }

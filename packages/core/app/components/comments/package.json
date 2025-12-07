@@ -52,7 +52,6 @@
     "usehooks-ts": "^3.1.0"
   },
   "devDependencies": {
-    "@choiceform/modal": "workspace:*",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "react": "^18.3.1",

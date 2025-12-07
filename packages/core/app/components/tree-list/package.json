@@ -35,14 +35,11 @@
   "devDependencies": {
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
-    "@legendapp/state": "v3.0.0-beta.26",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "rimraf": "^6.0.1",
     "tsup": "^8.5.0",
-    "typescript": "^5.5.3",
-    "@choiceform/context-menu": "workspace:*",
-    "@choiceform/splitter": "workspace:*"
+    "typescript": "^5.5.3"
   },
   "peerDependencies": {
     "react": ">=18.0.0",

@@ -42,10 +42,10 @@ export const MyComponent = ({ i18n: userI18n, ...props }) => {
 **用途**：纯函数版本，适用于非React环境或自定义缓存场景
 
 ```typescript
-import { mergeI18nConfig } from "~/utils"
+import { mergeI18nConfig } from "~/utils";
 
 // 合并结果（每次调用都重新计算）
-const mergedConfig = mergeI18nConfig(defaultConfig, userConfig)
+const mergedConfig = mergeI18nConfig(defaultConfig, userConfig);
 ```
 
 ### 3. `getI18nText<T>` - 安全获取嵌套文本
@@ -53,7 +53,7 @@ const mergedConfig = mergeI18nConfig(defaultConfig, userConfig)
 **用途**：从嵌套的 i18n 对象中安全获取文本，支持点号路径
 
 ```typescript
-import { getI18nText } from "~/utils"
+import { getI18nText } from "~/utils";
 
 const i18n = {
   form: {
@@ -62,14 +62,14 @@ const i18n = {
       email: "Please enter a valid email",
     },
   },
-}
+};
 
 // 使用点号路径获取
-const errorText = getI18nText(i18n, "form.validation.required")
+const errorText = getI18nText(i18n, "form.validation.required");
 // 结果：'This field is required'
 
 // 路径不存在时使用fallback
-const missingText = getI18nText(i18n, "form.unknown.path", "默认文字")
+const missingText = getI18nText(i18n, "form.unknown.path", "默认文字");
 // 结果：'默认文字'
 ```
 
@@ -81,13 +81,13 @@ const missingText = getI18nText(i18n, "form.unknown.path", "默认文字")
 // 组件特定的 i18n 配置接口
 interface MyComponentI18n {
   buttons?: {
-    submit?: string
-    reset?: string
-  }
+    submit?: string;
+    reset?: string;
+  };
   messages?: {
-    loading?: string
-    success?: string
-  }
+    loading?: string;
+    success?: string;
+  };
 }
 
 // 默认配置
@@ -100,7 +100,7 @@ const defaultI18n: Required<MyComponentI18n> = {
     loading: "Loading...",
     success: "Success!",
   },
-}
+};
 ```
 
 ### 2. 🚀 直接使用通用Hook（推荐）

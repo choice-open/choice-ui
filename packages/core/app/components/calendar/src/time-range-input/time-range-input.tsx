@@ -173,7 +173,7 @@ export const TimeRangeInput = (props: TimeRangeInputProps) => {
       />
       <span
         className={tcx(
-          "col-span-3 col-start-5 row-start-2 truncate select-none",
+          "col-span-3 col-start-5 row-start-2 select-none truncate",
           rest.variant === "dark" ? "text-gray-400" : "text-secondary-foreground",
         )}
       >

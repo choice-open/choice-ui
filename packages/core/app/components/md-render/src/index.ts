@@ -1,3 +1,3 @@
 export { MdRender } from "./md-render"
-export type { MdRenderProps } from "./types"
+export type { MdRenderProps, MentionRenderProps } from "./types"
 export * from "./constants"

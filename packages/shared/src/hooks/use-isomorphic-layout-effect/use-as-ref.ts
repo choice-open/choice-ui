@@ -1,5 +1,5 @@
-import { useRef } from "react"
-import { useIsomorphicLayoutEffect } from "./use-isomorphic-layout-effect"
+import { useRef } from "react";
+import { useIsomorphicLayoutEffect } from "./use-isomorphic-layout-effect";
 
 /**
  * 创建一个始终保持最新值的稳定引用
@@ -25,9 +25,9 @@ import { useIsomorphicLayoutEffect } from "./use-isomorphic-layout-effect"
  * ```
  */
 export function useAsRef<T>(data: T) {
-  const ref = useRef<T>(data)
+  const ref = useRef<T>(data);
   useIsomorphicLayoutEffect(() => {
-    ref.current = data
-  })
-  return ref
+    ref.current = data;
+  });
+  return ref;
 }

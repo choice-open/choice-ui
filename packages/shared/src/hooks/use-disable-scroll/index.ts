@@ -1,1 +1,1 @@
-export * from "./use-disable-scroll"
+export * from "./use-disable-scroll";

@@ -5,32 +5,32 @@ A comprehensive date formatting utility with internationalization support and in
 ## Import
 
 ```typescript
-import { formatRelativeTime } from "@choiceform/design-system/utils"
+import { formatRelativeTime } from "@choiceform/design-system/utils";
 ```
 
 ## Usage
 
 ```typescript
 // Basic usage
-formatRelativeTime(new Date()) // "a few seconds ago"
-formatRelativeTime(yesterday) // "Yesterday"
-formatRelativeTime(lastWeek) // "5 days ago"
+formatRelativeTime(new Date()); // "a few seconds ago"
+formatRelativeTime(yesterday); // "Yesterday"
+formatRelativeTime(lastWeek); // "5 days ago"
 
 // With Chinese locale
-formatRelativeTime(new Date(), { language: "cn" }) // "几秒前"
-formatRelativeTime(yesterday, { language: "cn" }) // "昨天"
+formatRelativeTime(new Date(), { language: "cn" }); // "几秒前"
+formatRelativeTime(yesterday, { language: "cn" }); // "昨天"
 
 // Show specific time
 formatRelativeTime(new Date(), {
   showSpecificTime: true,
   language: "en",
-}) // "Today at 2:30 PM"
+}); // "Today at 2:30 PM"
 
 // Custom thresholds
 formatRelativeTime(oldDate, {
   daysThreshold: 30, // Show relative time up to 30 days
   yearThreshold: 2, // Show year for dates older than 2 years
-})
+});
 ```
 
 ## API
@@ -38,7 +38,10 @@ formatRelativeTime(oldDate, {
 ### formatRelativeTime
 
 ```typescript
-function formatRelativeTime(date: Date, options?: FormatRelativeTimeOptions): string
+function formatRelativeTime(
+  date: Date,
+  options?: FormatRelativeTimeOptions,
+): string;
 ```
 
 #### Parameters
@@ -50,11 +53,11 @@ function formatRelativeTime(date: Date, options?: FormatRelativeTimeOptions): st
 
 ```typescript
 interface FormatRelativeTimeOptions {
-  language?: "en" | "cn" // Language for formatting (default: "en")
-  showSpecificTime?: boolean // Show time for today/yesterday (default: false)
-  daysThreshold?: number // Days before showing date format (default: 7)
-  yearThreshold?: number // Years before showing year (default: 1)
-  customLocale?: Locale // Custom date-fns locale object
+  language?: "en" | "cn"; // Language for formatting (default: "en")
+  showSpecificTime?: boolean; // Show time for today/yesterday (default: false)
+  daysThreshold?: number; // Days before showing date format (default: 7)
+  yearThreshold?: number; // Years before showing year (default: 1)
+  customLocale?: Locale; // Custom date-fns locale object
 }
 ```
 
@@ -187,12 +190,12 @@ The utility includes built-in language configurations:
 You can provide custom date-fns locales:
 
 ```typescript
-import { fr } from "date-fns/locale"
+import { fr } from "date-fns/locale";
 
 formatRelativeTime(date, {
   customLocale: fr,
   language: "en", // Fallback for relative terms
-})
+});
 ```
 
 ## Notes

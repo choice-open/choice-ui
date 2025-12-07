@@ -44,22 +44,13 @@
     "@choiceform/textarea": "workspace:*"
   },
   "devDependencies": {
-    "@choiceform/code-block": "workspace:*",
-    "@tanstack/react-query": "^5.90.12",
-    "@tanstack/react-store": "^0.8.0",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "rimraf": "^6.0.1",
     "tsup": "^8.5.0",
-    "typescript": "^5.5.3",
-    "zod": "^4.1.13",
-    "@choiceform/badge": "workspace:*",
-    "@choiceform/icon-button": "workspace:*",
-    "@choiceform/icons-react": "^1.3.8",
-    "@choiceform/link-button": "workspace:*",
-    "@choiceform/tabs": "workspace:*"
+    "typescript": "^5.5.3"
   },
   "peerDependencies": {
     "react": ">=18.0.0",

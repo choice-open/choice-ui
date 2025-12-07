@@ -1,5 +1,21 @@
-import { enUS, zhCN, ja, ko, es, fr, de, ptBR, ru, ar, type Locale } from "date-fns/locale"
-import type { LanguageConfig, SupportedLanguage, TranslationConfig } from "./format-date.types"
+import {
+  enUS,
+  zhCN,
+  ja,
+  ko,
+  es,
+  fr,
+  de,
+  ptBR,
+  ru,
+  ar,
+  type Locale,
+} from "date-fns/locale";
+import type {
+  LanguageConfig,
+  SupportedLanguage,
+  TranslationConfig,
+} from "./format-date.types";
 
 const translations: Record<SupportedLanguage, TranslationConfig> = {
   en: {
@@ -102,7 +118,7 @@ const translations: Record<SupportedLanguage, TranslationConfig> = {
       },
     },
   },
-}
+};
 
 const localeMap: Record<SupportedLanguage, Locale> = {
   ar,
@@ -115,12 +131,14 @@ const localeMap: Record<SupportedLanguage, Locale> = {
   ko,
   pt: ptBR,
   ru,
-}
+};
 
-export function getLanguageConfig(language: SupportedLanguage = "en"): LanguageConfig {
+export function getLanguageConfig(
+  language: SupportedLanguage = "en",
+): LanguageConfig {
   return {
     language,
     locale: localeMap[language] || localeMap.en,
     t: translations[language] || translations.en,
-  }
+  };
 }

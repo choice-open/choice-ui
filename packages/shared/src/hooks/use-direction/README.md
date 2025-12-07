@@ -5,7 +5,10 @@ A React hook for managing text direction (LTR/RTL) in internationalized applicat
 ## Import
 
 ```typescript
-import { useDirection, DirectionContext } from "@choiceform/design-system/hooks"
+import {
+  useDirection,
+  DirectionContext,
+} from "@choiceform/design-system/hooks";
 ```
 
 ## Usage
@@ -30,9 +33,9 @@ const direction = useDirection("rtl")  // Returns "rtl"
 ### useDirection
 
 ```typescript
-function useDirection(dirProp?: Direction): Direction
+function useDirection(dirProp?: Direction): Direction;
 
-type Direction = "ltr" | "rtl"
+type Direction = "ltr" | "rtl";
 ```
 
 #### Parameters
@@ -50,7 +53,7 @@ The resolved text direction following this priority:
 ### DirectionContext
 
 ```typescript
-const DirectionContext = React.createContext<Direction | undefined>(undefined)
+const DirectionContext = React.createContext<Direction | undefined>(undefined);
 ```
 
 A React context for providing direction values to child components.
@@ -247,7 +250,7 @@ function Component() {
 
 ```typescript
 const useStyles = () => {
-  const direction = useDirection()
+  const direction = useDirection();
 
   return {
     container: {
@@ -256,8 +259,8 @@ const useStyles = () => {
       paddingInlineStart: "1rem",
       paddingInlineEnd: "1rem",
     },
-  }
-}
+  };
+};
 ```
 
 ## Notes

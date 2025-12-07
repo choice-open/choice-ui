@@ -1,7 +1,7 @@
-import cx from "classnames"
-import { extendTailwindMerge } from "tailwind-merge"
-import type { TV as TVType } from "tailwind-variants"
-import { createTV } from "tailwind-variants"
+import cx from "classnames";
+import { extendTailwindMerge } from "tailwind-merge";
+import type { TV as TVType } from "tailwind-variants";
+import { createTV } from "tailwind-variants";
 
 const twMergeConfig = {
   extend: {
@@ -25,24 +25,24 @@ const twMergeConfig = {
       ],
     },
   },
-}
+};
 
 // classnames and tailwind-merge
 const twm = extendTailwindMerge({
   ...twMergeConfig,
-})
+});
 
 export const tcx = (...args: cx.ArgumentArray) => {
-  return twm(cx(args))
-}
+  return twm(cx(args));
+};
 
 // Create a properly typed wrapper
 const tv = createTV({
   twMergeConfig,
-})
+});
 
 // Export with explicit type to help TypeScript
-export const tcv: TVType = tv as TVType
+export const tcv: TVType = tv as TVType;
 
 // Re-export types
-export type { TV, TVReturnType, VariantProps } from "tailwind-variants"
+export type { TV, TVReturnType, VariantProps } from "tailwind-variants";

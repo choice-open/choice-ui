@@ -1,1 +1,1 @@
-export * from "./tcx"
+export * from "./tcx";

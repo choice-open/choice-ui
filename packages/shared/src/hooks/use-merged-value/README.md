@@ -5,7 +5,7 @@ A React hook that seamlessly handles both controlled and uncontrolled component 
 ## Import
 
 ```typescript
-import { useMergedValue } from "@choiceform/design-system/hooks"
+import { useMergedValue } from "@choiceform/design-system/hooks";
 ```
 
 ## Usage
@@ -46,15 +46,15 @@ function Input({ value, defaultValue, onChange }) {
 ```typescript
 function useMergedValue<T>(
   options: Options<T>,
-): [T, (value: SetStateAction<T>, forceTrigger?: boolean) => void]
+): [T, (value: SetStateAction<T>, forceTrigger?: boolean) => void];
 
 interface Options<T> {
-  value?: T // Controlled value
-  defaultValue?: T // Initial value for uncontrolled mode
-  defaultStateValue?: T | (() => T) // Fallback default value
-  onChange?: (value: T) => void // Change handler
-  onUnchange?: () => void // Called when setting same value
-  allowEmpty?: boolean // Allow undefined values without warning
+  value?: T; // Controlled value
+  defaultValue?: T; // Initial value for uncontrolled mode
+  defaultStateValue?: T | (() => T); // Fallback default value
+  onChange?: (value: T) => void; // Change handler
+  onUnchange?: () => void; // Called when setting same value
+  allowEmpty?: boolean; // Allow undefined values without warning
 }
 ```
 

@@ -1,0 +1,24 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@import "@choiceform/design-tokens/tokens.css";
+@import "@choiceform/design-tokens/preflight.css";
+@import "@choiceform/design-tokens/tailwind.css";
+
+@import "@choiceform/design-system/styles/components.css";
+@import "@choiceform/design-system/styles/markdown.css";
+
+@source "../node_modules/@choiceform/design-system";
+
+@layer base {
+  body {
+    background-color: var(--color-default-background);
+    color: var(--color-default-foreground);
+  }
+}
+
+@layer components {
+  .story-container {
+    @apply prose prose-sm dark:prose-invert prose-pre:bg-transparent prose-pre:p-0 prose-pre:m-0 mx-auto max-w-2xl p-4;
+  }
+}

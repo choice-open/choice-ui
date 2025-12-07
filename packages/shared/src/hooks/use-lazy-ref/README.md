@@ -5,26 +5,26 @@ A React hook for lazy initialization of expensive objects that persist across re
 ## Import
 
 ```typescript
-import { useLazyRef } from "@choiceform/design-system/hooks"
+import { useLazyRef } from "@choiceform/design-system/hooks";
 ```
 
 ## Usage
 
 ```typescript
 // Basic usage - create expensive object only once
-const mapRef = useLazyRef(() => new Map())
-const cacheRef = useLazyRef(() => new WeakMap())
+const mapRef = useLazyRef(() => new Map());
+const cacheRef = useLazyRef(() => new WeakMap());
 
 // With complex initialization
 const serviceRef = useLazyRef(() => {
-  const service = new ExpensiveService()
-  service.initialize()
-  return service
-})
+  const service = new ExpensiveService();
+  service.initialize();
+  return service;
+});
 
 // Access the value
-mapRef.current.set("key", "value")
-const value = mapRef.current.get("key")
+mapRef.current.set("key", "value");
+const value = mapRef.current.get("key");
 ```
 
 ## API
@@ -32,7 +32,7 @@ const value = mapRef.current.get("key")
 ### useLazyRef
 
 ```typescript
-function useLazyRef<T>(fn: () => T): MutableRefObject<T>
+function useLazyRef<T>(fn: () => T): MutableRefObject<T>;
 ```
 
 #### Parameters
@@ -313,23 +313,23 @@ function CanvasComponent() {
 
 ```typescript
 // useState - triggers re-render on updates
-const [map] = useState(() => new Map())
+const [map] = useState(() => new Map());
 
 // useLazyRef - no re-renders
-const mapRef = useLazyRef(() => new Map())
+const mapRef = useLazyRef(() => new Map());
 ```
 
 ### vs useRef with manual init
 
 ```typescript
 // Manual check needed
-const ref = useRef<Map<string, any> | null>(null)
+const ref = useRef<Map<string, any> | null>(null);
 if (!ref.current) {
-  ref.current = new Map()
+  ref.current = new Map();
 }
 
 // Automatic with useLazyRef
-const ref = useLazyRef(() => new Map())
+const ref = useLazyRef(() => new Map());
 ```
 
 ## Best Practices

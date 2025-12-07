@@ -5,14 +5,14 @@ A utility function that combines classnames with Tailwind CSS class merging for 
 ## Import
 
 ```typescript
-import { tcx } from "@choiceform/design-system/utils"
+import { tcx } from "@choiceform/design-system/utils";
 ```
 
 ## Usage
 
 ```typescript
 // Basic usage
-tcx("px-4 py-2", "bg-blue-500")
+tcx("px-4 py-2", "bg-blue-500");
 // Result: "px-4 py-2 bg-blue-500"
 
 // Conditional classes
@@ -21,23 +21,30 @@ tcx(
   isPrimary && "btn-primary",
   isLarge && "text-body-large",
   disabled && "cursor-not-allowed opacity-50",
-)
+);
 
 // Overriding Tailwind classes
-tcx("px-4", "px-8") // Result: "px-8" (tailwind-merge handles conflicts)
+tcx("px-4", "px-8"); // Result: "px-8" (tailwind-merge handles conflicts)
 
 // Object syntax
 tcx({
   "bg-blue-500": isPrimary,
   "bg-gray-500": !isPrimary,
   "text-white": true,
-})
+});
 
 // Array syntax
-tcx(["btn", "btn-primary"], ["text-body-large-strong"])
+tcx(["btn", "btn-primary"], ["text-body-large-strong"]);
 
 // Mixed syntax
-tcx("base-class", ["array", "of", "classes"], { conditional: isActive }, undefined, null, false)
+tcx(
+  "base-class",
+  ["array", "of", "classes"],
+  { conditional: isActive },
+  undefined,
+  null,
+  false,
+);
 ```
 
 ## API
@@ -45,7 +52,7 @@ tcx("base-class", ["array", "of", "classes"], { conditional: isActive }, undefin
 ### tcx
 
 ```typescript
-function tcx(...args: cx.ArgumentArray): string
+function tcx(...args: cx.ArgumentArray): string;
 ```
 
 #### Parameters
@@ -265,13 +272,16 @@ className={isPrimary ? "bg-blue-500 hover:bg-blue-600" : "bg-gray-500 hover:bg-g
 
 ```typescript
 // Automatic conflict resolution
-tcx("px-4", "px-8") // Only px-8 is applied
+tcx("px-4", "px-8"); // Only px-8 is applied
 
 // Clean conditional syntax
-tcx("btn", isPrimary && "btn-primary", isLarge && "text-body-large")
+tcx("btn", isPrimary && "btn-primary", isLarge && "text-body-large");
 
 // Smart merging
-tcx("bg-gray-500 hover:bg-gray-600", isPrimary && "bg-blue-500 hover:bg-blue-600")
+tcx(
+  "bg-gray-500 hover:bg-gray-600",
+  isPrimary && "bg-blue-500 hover:bg-blue-600",
+);
 ```
 
 ## Best Practices

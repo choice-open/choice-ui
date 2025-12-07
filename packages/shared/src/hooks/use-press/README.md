@@ -5,7 +5,7 @@ React hooks for handling press interactions with unified mouse, touch, and keybo
 ## Import
 
 ```typescript
-import { usePress, usePressMove } from "@choiceform/design-system/hooks"
+import { usePress, usePressMove } from "@choiceform/design-system/hooks";
 ```
 
 ## Usage
@@ -50,47 +50,49 @@ function Slider({ onChange }) {
 ### usePress
 
 ```typescript
-function usePress(props: PressProps): UsePressResult
+function usePress(props: PressProps): UsePressResult;
 
 interface PressProps {
-  disabled?: boolean
-  onPress?: (event: PressEvent) => void
-  onPressStart?: (event: PressEvent) => void
-  onPressEnd?: (event: PressEvent) => void
+  disabled?: boolean;
+  onPress?: (event: PressEvent) => void;
+  onPressStart?: (event: PressEvent) => void;
+  onPressEnd?: (event: PressEvent) => void;
 }
 
 interface UsePressResult {
-  isPressed: boolean
+  isPressed: boolean;
   pressProps: {
-    onPointerDown: (e: React.PointerEvent<HTMLElement>) => void
-    onKeyDown: (e: React.KeyboardEvent<HTMLElement>) => void
-    onKeyUp: (e: React.KeyboardEvent<HTMLElement>) => void
-  }
+    onPointerDown: (e: React.PointerEvent<HTMLElement>) => void;
+    onKeyDown: (e: React.KeyboardEvent<HTMLElement>) => void;
+    onKeyUp: (e: React.KeyboardEvent<HTMLElement>) => void;
+  };
 }
 
-type PressEvent = React.PointerEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>
+type PressEvent =
+  | React.PointerEvent<HTMLElement>
+  | React.KeyboardEvent<HTMLElement>;
 ```
 
 ### usePressMove
 
 ```typescript
-function usePressMove(props: PressMoveProps): PressMoveResult
+function usePressMove(props: PressMoveProps): PressMoveResult;
 
 interface PressMoveProps extends PressProps {
-  onPressMove?: (e: PointerEvent) => void
-  onPressMoveLeft?: (delta: number) => void
-  onPressMoveRight?: (delta: number) => void
-  onPressMoveTop?: (delta: number) => void
-  onPressMoveBottom?: (delta: number) => void
+  onPressMove?: (e: PointerEvent) => void;
+  onPressMoveLeft?: (delta: number) => void;
+  onPressMoveRight?: (delta: number) => void;
+  onPressMoveTop?: (delta: number) => void;
+  onPressMoveBottom?: (delta: number) => void;
 }
 
 interface PressMoveResult {
-  isPressed: boolean
+  isPressed: boolean;
   pressMoveProps: {
-    onPointerDown: (e: React.PointerEvent<HTMLElement>) => void
-    ref: (el: HTMLElement | null) => void
-    style?: React.CSSProperties
-  }
+    onPointerDown: (e: React.PointerEvent<HTMLElement>) => void;
+    ref: (el: HTMLElement | null) => void;
+    style?: React.CSSProperties;
+  };
 }
 ```
 

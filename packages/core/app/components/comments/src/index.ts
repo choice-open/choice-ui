@@ -1,1 +1,5 @@
 export * from "./comments"
+export * from "./comment-input"
+export * from "./comment-item"
+export * from "./state/comments-state"
+export * from "./types"

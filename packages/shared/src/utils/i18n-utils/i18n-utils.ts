@@ -1,4 +1,4 @@
-import { useMemo } from "react"
+import { useMemo } from "react";
 
 /**
  * 通用 i18n 工具系统
@@ -12,14 +12,14 @@ export const mergeI18nConfig = <T extends Record<string, unknown>>(
   defaultConfig: T,
   userConfig?: Partial<T>,
 ): T => {
-  if (!userConfig) return defaultConfig
+  if (!userConfig) return defaultConfig;
 
-  const result = { ...defaultConfig }
+  const result = { ...defaultConfig };
 
   for (const key in userConfig) {
     if (Object.prototype.hasOwnProperty.call(userConfig, key)) {
-      const userValue = userConfig[key]
-      const defaultValue = defaultConfig[key]
+      const userValue = userConfig[key];
+      const defaultValue = defaultConfig[key];
 
       // 检查是否需要递归合并
       if (
@@ -34,16 +34,16 @@ export const mergeI18nConfig = <T extends Record<string, unknown>>(
         result[key] = mergeI18nConfig(
           defaultValue as Record<string, unknown>,
           userValue as Partial<Record<string, unknown>>,
-        ) as T[Extract<keyof T, string>]
+        ) as T[Extract<keyof T, string>];
       } else if (userValue !== undefined) {
         // 直接覆盖基础类型
-        result[key] = userValue as T[Extract<keyof T, string>]
+        result[key] = userValue as T[Extract<keyof T, string>];
       }
     }
   }
 
-  return result
-}
+  return result;
+};
 
 /**
  * 通用的 i18n Hook，自动缓存合并结果
@@ -56,8 +56,11 @@ export const useI18n = <T extends Record<string, unknown>>(
   defaultConfig: T,
   userConfig?: Partial<T>,
 ): T => {
-  return useMemo(() => mergeI18nConfig(defaultConfig, userConfig), [defaultConfig, userConfig])
-}
+  return useMemo(
+    () => mergeI18nConfig(defaultConfig, userConfig),
+    [defaultConfig, userConfig],
+  );
+};
 
 /**
  * 从嵌套对象中安全获取值，支持点号路径
@@ -68,16 +71,16 @@ export const getI18nText = <T extends Record<string, unknown>>(
   path: string,
   fallback = "",
 ): string => {
-  const keys = path.split(".")
-  let current: unknown = i18n
+  const keys = path.split(".");
+  let current: unknown = i18n;
 
   for (const key of keys) {
     if (current && typeof current === "object" && key in current) {
-      current = (current as Record<string, unknown>)[key]
+      current = (current as Record<string, unknown>)[key];
     } else {
-      return fallback
+      return fallback;
     }
   }
 
-  return typeof current === "string" ? current : fallback
-}
+  return typeof current === "string" ? current : fallback;
+};

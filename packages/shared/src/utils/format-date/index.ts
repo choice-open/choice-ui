@@ -1,2 +1,2 @@
-export * from "./format-date"
-export type { SupportedLanguage } from "./format-date.types"
+export * from "./format-date";
+export type { SupportedLanguage } from "./format-date.types";

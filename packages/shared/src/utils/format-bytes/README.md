@@ -5,22 +5,22 @@ A utility function for converting byte values into human-readable file size stri
 ## Import
 
 ```typescript
-import { formatBytes } from "@choiceform/design-system/utils"
+import { formatBytes } from "@choiceform/design-system/utils";
 ```
 
 ## Usage
 
 ```typescript
 // Basic usage
-formatBytes(1024) // "1 KB"
-formatBytes(1048576) // "1 MB"
-formatBytes(1073741824) // "1 GB"
+formatBytes(1024); // "1 KB"
+formatBytes(1048576); // "1 MB"
+formatBytes(1073741824); // "1 GB"
 
 // Edge cases
-formatBytes(0) // "0 B"
-formatBytes(512) // "512 B"
-formatBytes(1536) // "1.5 KB"
-formatBytes(10485760) // "10.0 MB"
+formatBytes(0); // "0 B"
+formatBytes(512); // "512 B"
+formatBytes(1536); // "1.5 KB"
+formatBytes(10485760); // "10.0 MB"
 ```
 
 ## API
@@ -28,7 +28,7 @@ formatBytes(10485760) // "10.0 MB"
 ### formatBytes
 
 ```typescript
-function formatBytes(bytes: number): string
+function formatBytes(bytes: number): string;
 ```
 
 #### Parameters

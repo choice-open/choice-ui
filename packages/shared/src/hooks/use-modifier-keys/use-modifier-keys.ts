@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react"
+import { useState, useCallback, useEffect } from "react";
 
 /**
  * 处理键盘修饰键状态的钩子
@@ -6,46 +6,46 @@ import { useState, useCallback, useEffect } from "react"
  * @returns 修饰键状态
  */
 export function useModifierKeys(disabled: boolean = false) {
-  const [shiftPressed, setShiftPressed] = useState(false)
-  const [metaPressed, setMetaPressed] = useState(false)
-  const [ctrlPressed, setCtrlPressed] = useState(false)
+  const [shiftPressed, setShiftPressed] = useState(false);
+  const [metaPressed, setMetaPressed] = useState(false);
+  const [ctrlPressed, setCtrlPressed] = useState(false);
 
   // 使用更可靠的方法检测修饰键状态
   const updateModifierStates = useCallback((e: KeyboardEvent | MouseEvent) => {
-    setShiftPressed(e.shiftKey)
-    setMetaPressed(e.metaKey || e.altKey)
-    setCtrlPressed(e.ctrlKey)
-  }, [])
+    setShiftPressed(e.shiftKey);
+    setMetaPressed(e.metaKey || e.altKey);
+    setCtrlPressed(e.ctrlKey);
+  }, []);
 
   // 处理键盘事件
   const onKeyDown = useCallback(
     (e: KeyboardEvent) => {
-      updateModifierStates(e)
+      updateModifierStates(e);
     },
     [updateModifierStates],
-  )
+  );
 
   const onKeyUp = useCallback(
     (e: KeyboardEvent) => {
-      updateModifierStates(e)
+      updateModifierStates(e);
     },
     [updateModifierStates],
-  )
+  );
 
   // 处理鼠标事件，确保在点击时也能更新状态
   const onMouseDown = useCallback(
     (e: MouseEvent) => {
-      updateModifierStates(e)
+      updateModifierStates(e);
     },
     [updateModifierStates],
-  )
+  );
 
   const onMouseUp = useCallback(
     (e: MouseEvent) => {
-      updateModifierStates(e)
+      updateModifierStates(e);
     },
     [updateModifierStates],
-  )
+  );
 
   // 处理焦点事件，确保在焦点变化时也能更新状态
   const onFocus = useCallback(
@@ -58,40 +58,40 @@ export function useModifierKeys(disabled: boolean = false) {
           metaKey: false,
           ctrlKey: false,
           altKey: false,
-        })
-        updateModifierStates(virtualEvent)
+        });
+        updateModifierStates(virtualEvent);
       }
     },
     [updateModifierStates],
-  )
+  );
 
   // 处理窗口失去焦点事件，重置所有修饰键状态
   const onBlur = useCallback(() => {
-    setShiftPressed(false)
-    setMetaPressed(false)
-    setCtrlPressed(false)
-  }, [])
+    setShiftPressed(false);
+    setMetaPressed(false);
+    setCtrlPressed(false);
+  }, []);
 
   useEffect(() => {
-    if (disabled) return
+    if (disabled) return;
 
     // 使用 window 而不是 document.body，确保能捕获所有事件
-    window.addEventListener("keydown", onKeyDown, true)
-    window.addEventListener("keyup", onKeyUp, true)
-    window.addEventListener("mousedown", onMouseDown, true)
-    window.addEventListener("mouseup", onMouseUp, true)
-    window.addEventListener("focus", onFocus, true)
-    window.addEventListener("blur", onBlur, true)
+    window.addEventListener("keydown", onKeyDown, true);
+    window.addEventListener("keyup", onKeyUp, true);
+    window.addEventListener("mousedown", onMouseDown, true);
+    window.addEventListener("mouseup", onMouseUp, true);
+    window.addEventListener("focus", onFocus, true);
+    window.addEventListener("blur", onBlur, true);
 
     return () => {
-      window.removeEventListener("keydown", onKeyDown, true)
-      window.removeEventListener("keyup", onKeyUp, true)
-      window.removeEventListener("mousedown", onMouseDown, true)
-      window.removeEventListener("mouseup", onMouseUp, true)
-      window.removeEventListener("focus", onFocus, true)
-      window.removeEventListener("blur", onBlur, true)
-    }
-  }, [disabled, onKeyDown, onKeyUp, onMouseDown, onMouseUp, onFocus, onBlur])
+      window.removeEventListener("keydown", onKeyDown, true);
+      window.removeEventListener("keyup", onKeyUp, true);
+      window.removeEventListener("mousedown", onMouseDown, true);
+      window.removeEventListener("mouseup", onMouseUp, true);
+      window.removeEventListener("focus", onFocus, true);
+      window.removeEventListener("blur", onBlur, true);
+    };
+  }, [disabled, onKeyDown, onKeyUp, onMouseDown, onMouseUp, onFocus, onBlur]);
 
-  return { shiftPressed, metaPressed, ctrlPressed }
+  return { shiftPressed, metaPressed, ctrlPressed };
 }

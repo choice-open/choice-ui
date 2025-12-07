@@ -38,19 +38,7 @@
     "react-dom": "^18.3.1",
     "rimraf": "^6.0.1",
     "tsup": "^8.5.0",
-    "typescript": "^5.5.3",
-    "@choiceform/button": "workspace:*",
-    "@choiceform/checkbox": "workspace:*",
-    "@choiceform/dropdown": "workspace:*",
-    "@choiceform/icon-button": "workspace:*",
-    "@choiceform/input": "workspace:*",
-    "@choiceform/numeric-input": "workspace:*",
-    "@choiceform/popover": "workspace:*",
-    "@choiceform/scroll-area": "workspace:*",
-    "@choiceform/segmented": "workspace:*",
-    "@choiceform/select": "workspace:*",
-    "@choiceform/splitter": "workspace:*",
-    "@choiceform/switch": "workspace:*"
+    "typescript": "^5.5.3"
   },
   "peerDependencies": {
     "react": ">=18.0.0",

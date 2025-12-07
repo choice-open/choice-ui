@@ -6,9 +6,9 @@ import {
   isThisWeek,
   isToday,
   isYesterday,
-} from "date-fns"
-import { getLanguageConfig } from "./format-date.i18n"
-import type { FormatRelativeTimeOptions } from "./format-date.types"
+} from "date-fns";
+import { getLanguageConfig } from "./format-date.i18n";
+import type { FormatRelativeTimeOptions } from "./format-date.types";
 
 /**
  * Formats a date into a human-readable relative time string with internationalization support
@@ -38,80 +38,88 @@ import type { FormatRelativeTimeOptions } from "./format-date.types"
  * })
  * ```
  */
-export const formatRelativeTime = (date: Date, options: FormatRelativeTimeOptions = {}): string => {
+export const formatRelativeTime = (
+  date: Date,
+  options: FormatRelativeTimeOptions = {},
+): string => {
   // Parameter validation
   if (!date || isNaN(date.getTime())) {
-    console.warn("formatRelativeTime: Invalid date provided")
-    return "Invalid Date"
+    console.warn("formatRelativeTime: Invalid date provided");
+    return "Invalid Date";
   }
 
   try {
     // Timezone handling
-    const referenceTime = options.timezone?.referenceTime || new Date()
+    const referenceTime = options.timezone?.referenceTime || new Date();
     const now = options.timezone?.useUTC
-      ? new Date(referenceTime.getTime() + referenceTime.getTimezoneOffset() * 60000)
-      : referenceTime
+      ? new Date(
+          referenceTime.getTime() + referenceTime.getTimezoneOffset() * 60000,
+        )
+      : referenceTime;
 
     const targetDate = options.timezone?.useUTC
       ? new Date(date.getTime() + date.getTimezoneOffset() * 60000)
-      : date
+      : date;
 
-    const daysThreshold = options.daysThreshold ?? 7
-    const yearThreshold = options.yearThreshold ?? 1
-    const daysDiff = Math.abs(differenceInDays(now, targetDate))
+    const daysThreshold = options.daysThreshold ?? 7;
+    const yearThreshold = options.yearThreshold ?? 1;
+    const daysDiff = Math.abs(differenceInDays(now, targetDate));
 
     // Get language configuration (cached for performance)
-    const { language, locale, t } = getLanguageConfig(options.language)
+    const { language, locale, t } = getLanguageConfig(options.language);
 
     // If showing specific time format
     if (options.showSpecificTime) {
-      const timeFormat = format(targetDate, "HH:mm", { locale })
+      const timeFormat = format(targetDate, "HH:mm", { locale });
 
       if (isToday(targetDate)) {
-        return t.common.relativeTime.today({ time: timeFormat })
+        return t.common.relativeTime.today({ time: timeFormat });
       }
 
       if (isYesterday(targetDate)) {
-        return t.common.relativeTime.yesterday({ time: timeFormat })
+        return t.common.relativeTime.yesterday({ time: timeFormat });
       }
 
       if (isThisWeek(targetDate)) {
-        const dayName = format(targetDate, "EEEE", { locale })
-        return t.common.relativeTime.weekdayAt({ time: timeFormat, weekday: dayName })
+        const dayName = format(targetDate, "EEEE", { locale });
+        return t.common.relativeTime.weekdayAt({
+          time: timeFormat,
+          weekday: dayName,
+        });
       }
 
       // Beyond this week, show specific date and time
-      const dateStr = format(targetDate, "MMM d", { locale })
-      return t.common.relativeTime.dateAt({ date: dateStr, time: timeFormat })
+      const dateStr = format(targetDate, "MMM d", { locale });
+      return t.common.relativeTime.dateAt({ date: dateStr, time: timeFormat });
     }
 
     // Original relative time logic
     // Beyond specified days, show different formats based on year difference
     if (daysDiff > daysThreshold) {
-      const yearsDiff = Math.abs(differenceInYears(now, targetDate))
+      const yearsDiff = Math.abs(differenceInYears(now, targetDate));
 
       if (yearsDiff >= yearThreshold) {
         // Beyond year threshold, show full date
-        const customFullDateFormat = options.customFormat?.fullDate
+        const customFullDateFormat = options.customFormat?.fullDate;
         if (customFullDateFormat) {
-          return format(targetDate, customFullDateFormat, { locale })
+          return format(targetDate, customFullDateFormat, { locale });
         }
-        return format(targetDate, "yyyy/MM/dd", { locale })
+        return format(targetDate, "yyyy/MM/dd", { locale });
       } else {
         // Beyond days threshold but within year threshold, show month and day
-        const customMonthDayFormat = options.customFormat?.monthDay
+        const customMonthDayFormat = options.customFormat?.monthDay;
         if (customMonthDayFormat) {
-          return format(targetDate, customMonthDayFormat, { locale })
+          return format(targetDate, customMonthDayFormat, { locale });
         }
 
         if (options.forceNumericFormat) {
-          return format(targetDate, "MM/dd", { locale })
+          return format(targetDate, "MM/dd", { locale });
         }
 
         if (language === "cn") {
-          return format(targetDate, "M月d日", { locale })
+          return format(targetDate, "M月d日", { locale });
         } else {
-          return format(targetDate, "MMMM d", { locale })
+          return format(targetDate, "MMMM d", { locale });
         }
       }
     }
@@ -120,12 +128,12 @@ export const formatRelativeTime = (date: Date, options: FormatRelativeTimeOption
     return formatDistanceToNow(targetDate, {
       addSuffix: true,
       locale,
-    })
+    });
   } catch (error) {
-    console.error("formatRelativeTime: Error formatting date", error)
-    return "Format Error"
+    console.error("formatRelativeTime: Error formatting date", error);
+    return "Format Error";
   }
-}
+};
 
 /**
  * Creates a date formatter with default configuration
@@ -145,11 +153,13 @@ export const formatRelativeTime = (date: Date, options: FormatRelativeTimeOption
  * formatter(new Date(), { language: "en" }) // Overrides language
  * ```
  */
-export const createDateFormatter = (defaultOptions: FormatRelativeTimeOptions = {}) => {
+export const createDateFormatter = (
+  defaultOptions: FormatRelativeTimeOptions = {},
+) => {
   return (date: Date, options: FormatRelativeTimeOptions = {}) => {
-    return formatRelativeTime(date, { ...defaultOptions, ...options })
-  }
-}
+    return formatRelativeTime(date, { ...defaultOptions, ...options });
+  };
+};
 
 /**
  * Formats a date to a simple readable format
@@ -169,21 +179,21 @@ export const formatSimpleDate = (
   options: Pick<FormatRelativeTimeOptions, "language" | "customFormat"> = {},
 ): string => {
   if (!date || isNaN(date.getTime())) {
-    return "Invalid Date"
+    return "Invalid Date";
   }
 
-  const { language, locale } = getLanguageConfig(options.language)
+  const { language, locale } = getLanguageConfig(options.language);
 
   if (options.customFormat?.fullDate) {
-    return format(date, options.customFormat.fullDate, { locale })
+    return format(date, options.customFormat.fullDate, { locale });
   }
 
   if (language === "cn") {
-    return format(date, "yyyy年M月d日", { locale })
+    return format(date, "yyyy年M月d日", { locale });
   }
 
-  return format(date, "MMM d, yyyy", { locale })
-}
+  return format(date, "MMM d, yyyy", { locale });
+};
 
 /**
  * Formats time only from a date
@@ -203,18 +213,18 @@ export const formatTime = (
   options: Pick<FormatRelativeTimeOptions, "language" | "customFormat"> = {},
 ): string => {
   if (!date || isNaN(date.getTime())) {
-    return "Invalid Time"
+    return "Invalid Time";
   }
 
-  const { language, locale } = getLanguageConfig(options.language)
+  const { language, locale } = getLanguageConfig(options.language);
 
   if (options.customFormat?.time) {
-    return format(date, options.customFormat.time, { locale })
+    return format(date, options.customFormat.time, { locale });
   }
 
   if (language === "cn") {
-    return format(date, "HH:mm", { locale })
+    return format(date, "HH:mm", { locale });
   }
 
-  return format(date, "h:mm a", { locale })
-}
+  return format(date, "h:mm a", { locale });
+};

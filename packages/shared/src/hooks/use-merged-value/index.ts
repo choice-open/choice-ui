@@ -1,1 +1,1 @@
-export * from "./use-merged-value"
+export * from "./use-merged-value";

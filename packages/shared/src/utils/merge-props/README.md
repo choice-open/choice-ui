@@ -5,7 +5,7 @@ A utility function for intelligently merging multiple props objects with special
 ## Import
 
 ```typescript
-import { mergeProps } from "@choiceform/design-system/utils"
+import { mergeProps } from "@choiceform/design-system/utils";
 ```
 
 ## Usage
@@ -43,7 +43,9 @@ const props = mergeProps(
 ### mergeProps
 
 ```typescript
-function mergeProps<T extends PropsArg[]>(...args: T): UnionToIntersection<TupleTypes<T>>
+function mergeProps<T extends PropsArg[]>(
+  ...args: T
+): UnionToIntersection<TupleTypes<T>>;
 ```
 
 #### Parameters
@@ -86,11 +88,15 @@ const props = mergeProps(
 Both `className` and `class` props are merged:
 
 ```typescript
-const props = mergeProps({ className: "btn" }, { className: "btn-primary" }, { className: "large" })
+const props = mergeProps(
+  { className: "btn" },
+  { className: "btn-primary" },
+  { className: "large" },
+);
 // Result: { className: "btn btn-primary large" }
 
 // Also works with 'class' prop
-const props2 = mergeProps({ class: "base" }, { class: "modifier" })
+const props2 = mergeProps({ class: "base" }, { class: "modifier" });
 // Result: { class: "base modifier" }
 ```
 
@@ -99,11 +105,11 @@ const props2 = mergeProps({ class: "base" }, { class: "modifier" })
 Multiple IDs are combined with space separation:
 
 ```typescript
-const props = mergeProps({ id: "user-button" }, { id: "submit-button" })
+const props = mergeProps({ id: "user-button" }, { id: "submit-button" });
 // Result: { id: "user-button submit-button" }
 
 // Duplicate IDs are not repeated
-const props2 = mergeProps({ id: "btn" }, { id: "btn" })
+const props2 = mergeProps({ id: "btn" }, { id: "btn" });
 // Result: { id: "btn" }
 ```
 

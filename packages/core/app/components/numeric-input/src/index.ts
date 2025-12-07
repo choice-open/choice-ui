@@ -1,4 +1,5 @@
-export * from "./numeric-input"
 export * from "./components"
+export * from "./hooks"
+export * from "./numeric-input"
 
-export type { NumericInputValue } from "./types"
+export type { NumberResult, NumericInputValue } from "./types"

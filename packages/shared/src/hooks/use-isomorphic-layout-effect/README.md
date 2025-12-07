@@ -5,7 +5,10 @@ SSR-safe layout effect hook and a utility hook for maintaining fresh references 
 ## Import
 
 ```typescript
-import { useIsomorphicLayoutEffect, useAsRef } from "@choiceform/design-system/hooks"
+import {
+  useIsomorphicLayoutEffect,
+  useAsRef,
+} from "@choiceform/design-system/hooks";
 ```
 
 ## Usage
@@ -15,17 +18,17 @@ import { useIsomorphicLayoutEffect, useAsRef } from "@choiceform/design-system/h
 useIsomorphicLayoutEffect(() => {
   // Runs synchronously after DOM updates in browser
   // Falls back to useEffect on server
-  const height = element.offsetHeight
-  setHeight(height)
-}, [])
+  const height = element.offsetHeight;
+  setHeight(height);
+}, []);
 
 // useAsRef - Always fresh reference
 function Component({ onClick }) {
-  const onClickRef = useAsRef(onClick)
+  const onClickRef = useAsRef(onClick);
 
   const handler = useCallback(() => {
-    onClickRef.current() // Always calls latest onClick
-  }, []) // No dependency on onClick needed
+    onClickRef.current(); // Always calls latest onClick
+  }, []); // No dependency on onClick needed
 }
 ```
 
@@ -34,7 +37,7 @@ function Component({ onClick }) {
 ### useIsomorphicLayoutEffect
 
 ```typescript
-const useIsomorphicLayoutEffect: typeof useLayoutEffect | typeof useEffect
+const useIsomorphicLayoutEffect: typeof useLayoutEffect | typeof useEffect;
 ```
 
 A hook that uses `useLayoutEffect` in browser environments and `useEffect` in SSR environments.
@@ -49,7 +52,7 @@ Same as React's `useLayoutEffect`:
 ### useAsRef
 
 ```typescript
-function useAsRef<T>(data: T): React.MutableRefObject<T>
+function useAsRef<T>(data: T): React.MutableRefObject<T>;
 ```
 
 Creates a ref that always contains the latest value without causing re-renders.
@@ -182,19 +185,19 @@ function DebouncedInput({ onSearch, delay = 300 }) {
 
 ```typescript
 function PollingComponent({ onData, interval = 1000 }) {
-  const onDataRef = useAsRef(onData)
+  const onDataRef = useAsRef(onData);
 
   useEffect(() => {
     const timer = setInterval(() => {
       fetch("/api/data")
         .then((res) => res.json())
         .then((data) => {
-          onDataRef.current(data) // Always calls latest onData
-        })
-    }, interval)
+          onDataRef.current(data); // Always calls latest onData
+        });
+    }, interval);
 
-    return () => clearInterval(timer)
-  }, [interval]) // No dependency on onData!
+    return () => clearInterval(timer);
+  }, [interval]); // No dependency on onData!
 }
 ```
 
@@ -202,20 +205,20 @@ function PollingComponent({ onData, interval = 1000 }) {
 
 ```typescript
 function WebSocketComponent({ onMessage, url }) {
-  const onMessageRef = useAsRef(onMessage)
-  const ws = useRef<WebSocket>()
+  const onMessageRef = useAsRef(onMessage);
+  const ws = useRef<WebSocket>();
 
   useEffect(() => {
-    ws.current = new WebSocket(url)
+    ws.current = new WebSocket(url);
 
     ws.current.onmessage = (event) => {
-      onMessageRef.current(event.data) // Always fresh handler
-    }
+      onMessageRef.current(event.data); // Always fresh handler
+    };
 
     return () => {
-      ws.current?.close()
-    }
-  }, [url]) // Only reconnect when URL changes
+      ws.current?.close();
+    };
+  }, [url]); // Only reconnect when URL changes
 }
 ```
 
