@@ -17,7 +17,10 @@
     }
   },
   "exports": [
-    "IconButton"
+    "IconButton",
+    "IconButtonGroup",
+    "type IconButtonProps",
+    "type IconButtonGroupProps"
   ],
   "props": [
     {
@@ -99,42 +102,42 @@
       "name": "Basic",
       "exportName": "Basic",
       "description": "`IconButton` is a button component specifically designed for displaying icons with proper\naccessibility and interaction states.\n\nFeatures:\n- Multiple visual variants for different contexts\n- Support for all button states (active, focused, loading, disabled)\n- Size options for different UI densities\n- Built-in tooltip support\n- Can be rendered as other elements via `asChild`\n- Group capability via IconButtonGroup for related actions\n\nUsage Guidelines:\n- Use for actions where an icon clearly communicates the purpose\n- Provide tooltip text for clarity (especially for less common icons)\n- Group related actions using IconButtonGroup\n- Choose variants that fit your visual hierarchy\n\nAccessibility:\n- Maintains focus states for keyboard navigation\n- Supports ARIA attributes for screen readers\n- Tooltip provides additional context for icon meaning\nBasic: Demonstrates the default IconButton component with an icon.\n\nThis minimal example shows how to create a simple icon button with the default styling.",
-      "source": "import { Component } from \"@choice-ui/icon-button\"\n\nexport default function App() {\n  return (\n    <IconButton>\n      <FieldTypeButton />\n    </IconButton>\n  );\n}"
+      "source": "import { IconButton } from \"@choice-ui/icon-button\"\n\nexport default function App() {\n  return (\n    <IconButton>\n      <FieldTypeButton />\n    </IconButton>\n  );\n}"
     },
     {
       "id": "buttons-iconbutton--variants",
       "name": "Variants",
       "exportName": "Variants",
       "description": "Variants: Demonstrates all visual variants, sizes, and states of the IconButton component.\n\nFeatures:\n- Interactive controls to switch between variants and sizes\n- Displays all possible states (rest, active, focused, loading, disabled)\n- Shows consistent styling across all combinations\n\nVariants:\n- `default`: Standard styling with hover and active states\n- `secondary`: Subdued styling for less prominent actions\n- `solid`: Filled background for primary or important actions\n- `highlight`: Visually distinctive for drawing attention\n\nSizes:\n- `default`: Standard size for most interfaces\n- `large`: Larger size for touch targets or emphasis",
-      "source": "import { Component } from \"@choice-ui/icon-button\"\n\nexport default function App() {\n  return (\n    <div\n      className={tcx(\n        \"flex flex-col items-start gap-4 rounded-xl p-4\",\n        variant === Variant.Dark && \"bg-gray-800\"\n      )}\n    >\n      <div className=\"flex gap-4\">\n        <Select\n          value={variant}\n          onChange={(value) => setVariant(value as Variant)}\n        >\n          <Select.Trigger>{variant}</Select.Trigger>\n          <Select.Content>\n            {Object.values(Variant).map((variant) => (\n              <Select.Item key={variant} value={variant}>\n                {variant}\n              </Select.Item>\n            ))}\n          </Select.Content>\n        </Select>\n        <Select value={size} onChange={(value) => setSize(value as Size)}>\n          <Select.Trigger>{size}</Select.Trigger>\n          <Select.Content>\n            {Object.values(Size).map((size) => (\n              <Select.Item key={size} value={size}>\n                {size}\n              </Select.Item>\n            ))}\n          </Select.Content>\n        </Select>\n      </div>\n\n      <div className=\"grid grid-cols-[auto_1fr] items-center gap-4\">\n        {Object.values(State).map((state) => (\n          <Fragment key={state}>\n            <span className=\"text-pink-500 capitalize\">{state}</span>\n            <IconButton\n              variant={variant}\n              size={size}\n              active={state === State.Active}\n              disabled={state === State.Disabled}\n              loading={state === State.Loading}\n              focused={state === State.Focused}\n            >\n              <FieldTypeRating />\n            </IconButton>\n          </Fragment>\n        ))}\n      </div>\n    </div>\n  );\n}"
+      "source": "import { IconButton } from \"@choice-ui/icon-button\"\n\nexport default function App() {\n  return (\n    <div\n      className={tcx(\n        \"flex flex-col items-start gap-4 rounded-xl p-4\",\n        variant === Variant.Dark && \"bg-gray-800\"\n      )}\n    >\n      <div className=\"flex gap-4\">\n        <Select\n          value={variant}\n          onChange={(value) => setVariant(value as Variant)}\n        >\n          <Select.Trigger>{variant}</Select.Trigger>\n          <Select.Content>\n            {Object.values(Variant).map((variant) => (\n              <Select.Item key={variant} value={variant}>\n                {variant}\n              </Select.Item>\n            ))}\n          </Select.Content>\n        </Select>\n        <Select value={size} onChange={(value) => setSize(value as Size)}>\n          <Select.Trigger>{size}</Select.Trigger>\n          <Select.Content>\n            {Object.values(Size).map((size) => (\n              <Select.Item key={size} value={size}>\n                {size}\n              </Select.Item>\n            ))}\n          </Select.Content>\n        </Select>\n      </div>\n\n      <div className=\"grid grid-cols-[auto_1fr] items-center gap-4\">\n        {Object.values(State).map((state) => (\n          <Fragment key={state}>\n            <span className=\"text-pink-500 capitalize\">{state}</span>\n            <IconButton\n              variant={variant}\n              size={size}\n              active={state === State.Active}\n              disabled={state === State.Disabled}\n              loading={state === State.Loading}\n              focused={state === State.Focused}\n            >\n              <FieldTypeRating />\n            </IconButton>\n          </Fragment>\n        ))}\n      </div>\n    </div>\n  );\n}"
     },
     {
       "id": "buttons-iconbutton--tooltip",
       "name": "Tooltip",
       "exportName": "Tooltip",
       "description": "Tooltip: Demonstrates adding descriptive tooltips to IconButtons.\n\nFeatures:\n- Helpful text appears on hover/focus\n- Improves accessibility and usability\n- Clarifies the button's purpose when icons alone may be ambiguous\n\nBest Practices:\n- Use concise, clear tooltip text\n- Describe the action, not the icon\n- Consider tooltip placement based on button position",
-      "source": "import { Component } from \"@choice-ui/icon-button\"\n\nexport default function App() {\n  return (\n    <IconButton tooltip={{ content: \"Tooltip\" }}>\n      <FieldTypeDate />\n    </IconButton>\n  );\n}"
+      "source": "import { IconButton } from \"@choice-ui/icon-button\"\n\nexport default function App() {\n  return (\n    <IconButton tooltip={{ content: \"Tooltip\" }}>\n      <FieldTypeDate />\n    </IconButton>\n  );\n}"
     },
     {
       "id": "buttons-iconbutton--group",
       "name": "Group",
       "exportName": "Group",
       "description": "Group: Demonstrates grouping related IconButtons together.\n\nFeatures:\n- Visual grouping of related actions\n- Consistent styling across grouped buttons\n- Proper spacing and borders between buttons\n- Ability to set a common variant for all buttons in the group\n\nBest Practices:\n- Group functionally related actions\n- Maintain a logical order (e.g., create, edit, delete)\n- Use consistent icons within a UI\n- Consider adding tooltips to each button in the group",
-      "source": "import { Component } from \"@choice-ui/icon-button\"\n\nexport default function App() {\n  return (\n    <IconButtonGroup variant=\"solid\">\n      <IconButton>\n        <FieldTypeButton />\n      </IconButton>\n      <IconButton>\n        <FieldTypeCount />\n      </IconButton>\n      <IconButton>\n        <FieldTypeCheckbox />\n      </IconButton>\n    </IconButtonGroup>\n  );\n}"
+      "source": "import { IconButton, IconButtonGroup } from \"@choice-ui/icon-button\"\n\nexport default function App() {\n  return (\n    <IconButtonGroup variant=\"solid\">\n      <IconButton>\n        <FieldTypeButton />\n      </IconButton>\n      <IconButton>\n        <FieldTypeCount />\n      </IconButton>\n      <IconButton>\n        <FieldTypeCheckbox />\n      </IconButton>\n    </IconButtonGroup>\n  );\n}"
     },
     {
       "id": "buttons-iconbutton--as-child",
       "name": "As Child",
       "exportName": "AsChild",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/icon-button\"\n\nexport default function App() {\n  return (\n    <IconButton asChild>\n      <a href=\"#\">\n        <FieldTypeAttachment />\n      </a>\n    </IconButton>\n  );\n}"
+      "source": "import { IconButton } from \"@choice-ui/icon-button\"\n\nexport default function App() {\n  return (\n    <IconButton asChild>\n      <a href=\"#\">\n        <FieldTypeAttachment />\n      </a>\n    </IconButton>\n  );\n}"
     },
     {
       "id": "buttons-iconbutton--readonly",
       "name": "Readonly",
       "exportName": "Readonly",
       "description": "IconButton component in readOnly state.\n\nIn readOnly mode:\n- The button does not respond to click events\n- Useful for displaying icon buttons without allowing interactions",
-      "source": "import { Component } from \"@choice-ui/icon-button\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <div className=\"rounded-xl border bg-stone-50 p-4\">\n        <div className=\"text-body-small-strong mb-2 text-stone-700\">\n          Click Count:\n        </div>\n        <div className=\"text-body-small font-mono text-stone-600\">\n          {clickCount}\n        </div>\n      </div>\n\n      <div className=\"flex flex-wrap gap-4\">\n        <IconButton\n          readOnly\n          onClick={() => setClickCount((prev) => prev + 1)}\n        >\n          <FieldTypeAttachment />\n        </IconButton>\n        <IconButton\n          readOnly\n          variant=\"secondary\"\n          onClick={() => setClickCount((prev) => prev + 1)}\n        >\n          <FieldTypeCheckbox />\n        </IconButton>\n        <IconButton onClick={() => setClickCount((prev) => prev + 1)}>\n          <FieldTypeCount />\n        </IconButton>\n      </div>\n\n      <div className=\"text-body-small text-stone-600\">\n        💡 Try clicking on the readonly icon buttons - the click count should\n        not change. Only the normal button will increment the count.\n      </div>\n    </div>\n  );\n}"
+      "source": "import { IconButton } from \"@choice-ui/icon-button\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <div className=\"rounded-xl border bg-stone-50 p-4\">\n        <div className=\"text-body-small-strong mb-2 text-stone-700\">\n          Click Count:\n        </div>\n        <div className=\"text-body-small font-mono text-stone-600\">\n          {clickCount}\n        </div>\n      </div>\n\n      <div className=\"flex flex-wrap gap-4\">\n        <IconButton\n          readOnly\n          onClick={() => setClickCount((prev) => prev + 1)}\n        >\n          <FieldTypeAttachment />\n        </IconButton>\n        <IconButton\n          readOnly\n          variant=\"secondary\"\n          onClick={() => setClickCount((prev) => prev + 1)}\n        >\n          <FieldTypeCheckbox />\n        </IconButton>\n        <IconButton onClick={() => setClickCount((prev) => prev + 1)}>\n          <FieldTypeCount />\n        </IconButton>\n      </div>\n\n      <div className=\"text-body-small text-stone-600\">\n        💡 Try clicking on the readonly icon buttons - the click count should\n        not change. Only the normal button will increment the count.\n      </div>\n    </div>\n  );\n}"
     }
   ]
 }

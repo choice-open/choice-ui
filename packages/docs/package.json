@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "concurrently -n docs,next -c blue,green \"tsx scripts/generate-from-stories/index.ts --watch\" \"next dev\"",
+    "dev": "concurrently --kill-others -n docs,next -c blue,green \"tsx scripts/generate-from-stories/index.ts --watch\" \"next dev\"",
     "build": "tsx scripts/generate-from-stories/index.ts && next build",
     "start": "next start",
     "lint": "eslint",

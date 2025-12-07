@@ -16,6 +16,7 @@
     }
   },
   "exports": [
+    "type ChipProps",
     "Chip"
   ],
   "props": [
@@ -111,21 +112,21 @@
       "name": "Selected",
       "exportName": "Selected",
       "description": "Selected: Demonstrates a selectable Chip.\n- Click to toggle selection state.\n- Useful for filter chips or multi-select scenarios.",
-      "source": "import { Component } from \"@choice-ui/chip\"\n\nexport default function App() {\n  return (\n    <Chip selected={selected} onClick={() => setSelected(!selected)}>\n      Chip\n    </Chip>\n  );\n}"
+      "source": "import { Chip } from \"@choice-ui/chip\"\n\nexport default function App() {\n  return (\n    <Chip selected={selected} onClick={() => setSelected(!selected)}>\n      Chip\n    </Chip>\n  );\n}"
     },
     {
       "id": "feedback-chip--on-remove",
       "name": "On Remove",
       "exportName": "OnRemove",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/chip\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-wrap gap-2\">\n      {chips.map((chip) => (\n        <Chip\n          key={chip}\n          selected={selected.includes(chip)}\n          onClick={() => {\n            setSelected(\n              selected.includes(chip)\n                ? selected.filter((c) => c !== chip)\n                : [...selected, chip]\n            );\n          }}\n          onRemove={() => {\n            setChips(chips.filter((c) => c !== chip));\n          }}\n        >\n          {chip}\n        </Chip>\n      ))}\n    </div>\n  );\n}"
+      "source": "import { Chip } from \"@choice-ui/chip\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-wrap gap-2\">\n      {chips.map((chip) => (\n        <Chip\n          key={chip}\n          selected={selected.includes(chip)}\n          onClick={() => {\n            setSelected(\n              selected.includes(chip)\n                ? selected.filter((c) => c !== chip)\n                : [...selected, chip]\n            );\n          }}\n          onRemove={() => {\n            setChips(chips.filter((c) => c !== chip));\n          }}\n        >\n          {chip}\n        </Chip>\n      ))}\n    </div>\n  );\n}"
     },
     {
       "id": "feedback-chip--prefix",
       "name": "Prefix",
       "exportName": "Prefix",
       "description": "Prefix: Demonstrates a Chip with a prefix element (e.g., icon, color dot).\n- Use for status indicators, avatars, or icons before the label.",
-      "source": "import { Component } from \"@choice-ui/chip\"\n\nexport default function App() {\n  return (\n    <Chip prefixElement={<div className=\"h-2 w-2 rounded-full bg-red-500\" />}>\n      Chip\n    </Chip>\n  );\n}"
+      "source": "import { Chip } from \"@choice-ui/chip\"\n\nexport default function App() {\n  return (\n    <Chip prefixElement={<div className=\"h-2 w-2 rounded-full bg-red-500\" />}>\n      Chip\n    </Chip>\n  );\n}"
     },
     {
       "id": "feedback-chip--suffix",

@@ -22,7 +22,59 @@
     }
   },
   "exports": [
-    "Menus"
+    "MenuButton",
+    "MenuCheckbox",
+    "MenuDivider",
+    "type MenuItemProps",
+    "MenuItem",
+    "type MenuLabelProps",
+    "MenuLabel",
+    "MenuScrollArrow",
+    "MenuSearch",
+    "MenuSearchEmpty",
+    "type MenuTriggerProps",
+    "MenuTrigger",
+    "MenuInput",
+    "type MenuValueProps",
+    "MenuValue",
+    "MenusBase",
+    "Menus",
+    "useMenuState",
+    "useMenuRefs",
+    "useMenuTouch",
+    "useMenuScroll",
+    "useMenuChildren",
+    "useMenuFloating",
+    "useMenuTree",
+    "useMenuScrollHeight",
+    "useMenuBaseRefs",
+    "useMenuSelection",
+    "type MenuStateConfig",
+    "type MenuStateResult",
+    "type MenuRefsConfig",
+    "type MenuRefsResult",
+    "type MenuTouchConfig",
+    "type MenuTouchResult",
+    "type MenuScrollConfig",
+    "type MenuScrollResult",
+    "type MenuChildrenConfig",
+    "type MenuChildrenResult",
+    "type MenuFloatingConfig",
+    "type MenuFloatingResult",
+    "type MenuTreeConfig",
+    "type MenuTreeResult",
+    "type MenuSelectionConfig",
+    "type MenuSelectionResult",
+    "type MenuScrollHeightConfig",
+    "type MenuBaseRefsResult",
+    "type MenuContextType",
+    "MenuContext",
+    "useMenu",
+    "type MenuContextItemProps",
+    "MenuContextItem",
+    "MenuContextContent",
+    "MenuContextLabel",
+    "MenuContextSubTrigger"
   ],
   "props": [
     {
@@ -50,63 +102,63 @@
       "name": "Basic",
       "exportName": "Basic",
       "description": "`MenuItem` is a flexible component for rendering individual options within menu structures.\n\nFeatures:\n- Active (hover/focus) state visual feedback\n- Support for prefix and suffix elements\n- Selection indicators\n- Keyboard shortcut display\n- Custom content rendering\n- Flexible layout with proper alignment\n\nUsage Guidelines:\n- Use consistent patterns for selection indicators\n- Provide clear hover/active states for user feedback\n- Add keyboard shortcuts for frequently used actions\n- Use prefix/suffix elements for additional context\n- Ensure text properly truncates for long content\n\nAccessibility:\n- Active states for keyboard navigation\n- Proper ARIA attributes for menu item roles\n- Selection indicators visible to screen readers\n- Clear visual hierarchy for all states\nBasic: Demonstrates the simplest usage of MenuItem.\n\nFeatures:\n- Clean, minimal appearance\n- Active state on hover/focus\n- Standard padding and alignment\n\nThis example provides the foundation for all other MenuItem variations.",
-      "source": "import { Component } from \"@choice-ui/menus\"\n\nexport default function App() {\n  return (\n    <Menus>\n      <Menus.Item\n        active={activeIndex === 0}\n        onMouseEnter={() => setActiveIndex(0)}\n        onMouseLeave={() => setActiveIndex(null)}\n      >\n        <span>Item</span>\n      </Menus.Item>\n    </Menus>\n  );\n}"
+      "source": "import { Menus } from \"@choice-ui/menus\"\n\nexport default function App() {\n  return (\n    <Menus>\n      <Menus.Item\n        active={activeIndex === 0}\n        onMouseEnter={() => setActiveIndex(0)}\n        onMouseLeave={() => setActiveIndex(null)}\n      >\n        <span>Item</span>\n      </Menus.Item>\n    </Menus>\n  );\n}"
     },
     {
       "id": "collections-menuitem--with-prefix-story",
       "name": "With Prefix Story",
       "exportName": "WithPrefixStory",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/menus\"\n\nexport default function App() {\n  return (\n    <Menus>\n      {Options.map((option, index) => (\n        <Menus.Item\n          key={option.label}\n          active={activeIndex === index}\n          onMouseEnter={() => setActiveIndex(index)}\n          onMouseLeave={() => setActiveIndex(null)}\n          prefixElement={option.icon}\n        >\n          <span className=\"flex-1 truncate\">{option.label}</span>\n        </Menus.Item>\n      ))}\n    </Menus>\n  );\n}"
+      "source": "import { Menus } from \"@choice-ui/menus\"\n\nexport default function App() {\n  return (\n    <Menus>\n      {Options.map((option, index) => (\n        <Menus.Item\n          key={option.label}\n          active={activeIndex === index}\n          onMouseEnter={() => setActiveIndex(index)}\n          onMouseLeave={() => setActiveIndex(null)}\n          prefixElement={option.icon}\n        >\n          <span className=\"flex-1 truncate\">{option.label}</span>\n        </Menus.Item>\n      ))}\n    </Menus>\n  );\n}"
     },
     {
       "id": "collections-menuitem--with-suffix-story",
       "name": "With Suffix Story",
       "exportName": "WithSuffixStory",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/menus\"\n\nexport default function App() {\n  return (\n    <Menus>\n      {Array.from({ length: 4 }).map((_, index) => (\n        <Menus.Item\n          key={index}\n          active={activeIndex === index}\n          onMouseEnter={() => setActiveIndex(index)}\n          onMouseLeave={() => setActiveIndex(null)}\n          suffixElement={<ChevronRightSmall />}\n        >\n          <span className=\"flex-1 truncate\">Item</span>\n        </Menus.Item>\n      ))}\n    </Menus>\n  );\n}"
+      "source": "import { Menus } from \"@choice-ui/menus\"\n\nexport default function App() {\n  return (\n    <Menus>\n      {Array.from({ length: 4 }).map((_, index) => (\n        <Menus.Item\n          key={index}\n          active={activeIndex === index}\n          onMouseEnter={() => setActiveIndex(index)}\n          onMouseLeave={() => setActiveIndex(null)}\n          suffixElement={<ChevronRightSmall />}\n        >\n          <span className=\"flex-1 truncate\">Item</span>\n        </Menus.Item>\n      ))}\n    </Menus>\n  );\n}"
     },
     {
       "id": "collections-menuitem--with-shortcut-story",
       "name": "With Shortcut Story",
       "exportName": "WithShortcutStory",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/menus\"\n\nexport default function App() {\n  return (\n    <Menus>\n      {Options.map((option, index) => (\n        <Menus.Item\n          key={option.label}\n          active={activeIndex === index}\n          onMouseEnter={() => setActiveIndex(index)}\n          onMouseLeave={() => setActiveIndex(null)}\n          shortcut={option.shortcut as { keys: ReactNode; modifier: KbdKey }}\n        >\n          <span className=\"flex-1 truncate\">{option.label}</span>\n        </Menus.Item>\n      ))}\n    </Menus>\n  );\n}"
+      "source": "import { Menus } from \"@choice-ui/menus\"\n\nexport default function App() {\n  return (\n    <Menus>\n      {Options.map((option, index) => (\n        <Menus.Item\n          key={option.label}\n          active={activeIndex === index}\n          onMouseEnter={() => setActiveIndex(index)}\n          onMouseLeave={() => setActiveIndex(null)}\n          shortcut={option.shortcut as { keys: ReactNode; modifier: KbdKey }}\n        >\n          <span className=\"flex-1 truncate\">{option.label}</span>\n        </Menus.Item>\n      ))}\n    </Menus>\n  );\n}"
     },
     {
       "id": "collections-menuitem--with-selection-icon-story",
       "name": "With Selection Icon Story",
       "exportName": "WithSelectionIconStory",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/menus\"\n\nexport default function App() {\n  return (\n    <Menus>\n      {Array.from({ length: 4 }).map((_, index) => (\n        <Menus.Item\n          key={index}\n          active={activeIndex === index}\n          onMouseEnter={() => setActiveIndex(index)}\n          onMouseLeave={() => setActiveIndex(null)}\n          prefixElement={selectedIndex === index ? <Check /> : <></>}\n          onMouseDown={() => setSelectedIndex(index)}\n        >\n          <span className=\"flex-1 truncate\">Item</span>\n        </Menus.Item>\n      ))}\n    </Menus>\n  );\n}"
+      "source": "import { Menus } from \"@choice-ui/menus\"\n\nexport default function App() {\n  return (\n    <Menus>\n      {Array.from({ length: 4 }).map((_, index) => (\n        <Menus.Item\n          key={index}\n          active={activeIndex === index}\n          onMouseEnter={() => setActiveIndex(index)}\n          onMouseLeave={() => setActiveIndex(null)}\n          prefixElement={selectedIndex === index ? <Check /> : <></>}\n          onMouseDown={() => setSelectedIndex(index)}\n        >\n          <span className=\"flex-1 truncate\">Item</span>\n        </Menus.Item>\n      ))}\n    </Menus>\n  );\n}"
     },
     {
       "id": "collections-menuitem--with-right-selection-icon-story",
       "name": "With Right Selection Icon Story",
       "exportName": "WithRightSelectionIconStory",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/menus\"\n\nexport default function App() {\n  return (\n    <Menus>\n      {Array.from({ length: 4 }).map((_, index) => (\n        <Menus.Item\n          key={index}\n          active={activeIndex === index}\n          onMouseEnter={() => setActiveIndex(index)}\n          onMouseLeave={() => setActiveIndex(null)}\n          suffixElement={\n            <Menus.Checkbox\n              active={activeIndex === index}\n              selected={selectedIndex.includes(index)}\n            />\n          }\n          onMouseDown={() =>\n            setSelectedIndex((prev) =>\n              prev.includes(index)\n                ? prev.filter((i) => i !== index)\n                : [...prev, index]\n            )\n          }\n        >\n          <span className=\"flex-1 truncate\">Item</span>\n        </Menus.Item>\n      ))}\n    </Menus>\n  );\n}"
+      "source": "import { Menus } from \"@choice-ui/menus\"\n\nexport default function App() {\n  return (\n    <Menus>\n      {Array.from({ length: 4 }).map((_, index) => (\n        <Menus.Item\n          key={index}\n          active={activeIndex === index}\n          onMouseEnter={() => setActiveIndex(index)}\n          onMouseLeave={() => setActiveIndex(null)}\n          suffixElement={\n            <Menus.Checkbox\n              active={activeIndex === index}\n              selected={selectedIndex.includes(index)}\n            />\n          }\n          onMouseDown={() =>\n            setSelectedIndex((prev) =>\n              prev.includes(index)\n                ? prev.filter((i) => i !== index)\n                : [...prev, index]\n            )\n          }\n        >\n          <span className=\"flex-1 truncate\">Item</span>\n        </Menus.Item>\n      ))}\n    </Menus>\n  );\n}"
     },
     {
       "id": "collections-menuitem--with-avatar-story",
       "name": "With Avatar Story",
       "exportName": "WithAvatarStory",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/menus\"\n\nexport default function App() {\n  return (\n    <Menus>\n      {Options.map((option, index) => (\n        <Menus.Item\n          key={option.name}\n          active={activeIndex === index}\n          onMouseEnter={() => setActiveIndex(index)}\n          onMouseLeave={() => setActiveIndex(null)}\n        >\n          <Avatar\n            size=\"small\"\n            color={option.color}\n            photo={option.picture}\n            name={option.name}\n          />\n          <span className=\"flex-1 truncate\">{option.name}</span>\n        </Menus.Item>\n      ))}\n    </Menus>\n  );\n}"
+      "source": "import { Menus } from \"@choice-ui/menus\"\n\nexport default function App() {\n  return (\n    <Menus>\n      {Options.map((option, index) => (\n        <Menus.Item\n          key={option.name}\n          active={activeIndex === index}\n          onMouseEnter={() => setActiveIndex(index)}\n          onMouseLeave={() => setActiveIndex(null)}\n        >\n          <Avatar\n            size=\"small\"\n            color={option.color}\n            photo={option.picture}\n            name={option.name}\n          />\n          <span className=\"flex-1 truncate\">{option.name}</span>\n        </Menus.Item>\n      ))}\n    </Menus>\n  );\n}"
     },
     {
       "id": "collections-menuitem--with-badge-story",
       "name": "With Badge Story",
       "exportName": "WithBadgeStory",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/menus\"\n\nexport default function App() {\n  return (\n    <Menus>\n      {Options.map((option, index) => (\n        <Menus.Item\n          key={index}\n          active={activeIndex === index}\n          onMouseEnter={() => setActiveIndex(index)}\n          onMouseLeave={() => setActiveIndex(null)}\n          onMouseDown={() =>\n            setSelectedIndex((prev) =>\n              prev.includes(index)\n                ? prev.filter((i) => i !== index)\n                : [...prev, index]\n            )\n          }\n          prefixElement={selectedIndex.includes(index) ? <Check /> : <></>}\n          suffixElement={\n            <div\n              className={tcx(\n                \"mr-1 ml-2 flex items-center justify-center rounded-md border px-1\",\n                activeIndex === index && \"bg-menu-background\",\n                selectedIndex.includes(index) && activeIndex !== index\n                  ? \"border-white/20\"\n                  : \"border-transparent\"\n              )}\n            >\n              Badge\n            </div>\n          }\n        >\n          <span className=\"flex-1 truncate\">{option.label}</span>\n        </Menus.Item>\n      ))}\n    </Menus>\n  );\n}"
+      "source": "import { Menus } from \"@choice-ui/menus\"\n\nexport default function App() {\n  return (\n    <Menus>\n      {Options.map((option, index) => (\n        <Menus.Item\n          key={index}\n          active={activeIndex === index}\n          onMouseEnter={() => setActiveIndex(index)}\n          onMouseLeave={() => setActiveIndex(null)}\n          onMouseDown={() =>\n            setSelectedIndex((prev) =>\n              prev.includes(index)\n                ? prev.filter((i) => i !== index)\n                : [...prev, index]\n            )\n          }\n          prefixElement={selectedIndex.includes(index) ? <Check /> : <></>}\n          suffixElement={\n            <div\n              className={tcx(\n                \"mr-1 ml-2 flex items-center justify-center rounded-md border px-1\",\n                activeIndex === index && \"bg-menu-background\",\n                selectedIndex.includes(index) && activeIndex !== index\n                  ? \"border-white/20\"\n                  : \"border-transparent\"\n              )}\n            >\n              Badge\n            </div>\n          }\n        >\n          <span className=\"flex-1 truncate\">{option.label}</span>\n        </Menus.Item>\n      ))}\n    </Menus>\n  );\n}"
     },
     {
       "id": "collections-menuitem--variant",
       "name": "Variant",
       "exportName": "Variant",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/menus\"\n\nexport default function App() {\n  return (\n    <Menus>\n      <Menus.Item\n        variant=\"highlight\"\n        active={activeIndex === 0}\n        onMouseEnter={() => setActiveIndex(0)}\n        onMouseLeave={() => setActiveIndex(null)}\n      >\n        Highlight\n      </Menus.Item>\n      <Menus.Item\n        variant=\"danger\"\n        active={activeIndex === 1}\n        onMouseEnter={() => setActiveIndex(1)}\n        onMouseLeave={() => setActiveIndex(null)}\n      >\n        Danger\n      </Menus.Item>\n    </Menus>\n  );\n}"
+      "source": "import { Menus } from \"@choice-ui/menus\"\n\nexport default function App() {\n  return (\n    <Menus>\n      <Menus.Item\n        variant=\"highlight\"\n        active={activeIndex === 0}\n        onMouseEnter={() => setActiveIndex(0)}\n        onMouseLeave={() => setActiveIndex(null)}\n      >\n        Highlight\n      </Menus.Item>\n      <Menus.Item\n        variant=\"danger\"\n        active={activeIndex === 1}\n        onMouseEnter={() => setActiveIndex(1)}\n        onMouseLeave={() => setActiveIndex(null)}\n      >\n        Danger\n      </Menus.Item>\n    </Menus>\n  );\n}"
     }
   ]
 }

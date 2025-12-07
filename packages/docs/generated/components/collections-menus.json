@@ -22,7 +22,59 @@
     }
   },
   "exports": [
-    "Menus"
+    "MenuButton",
+    "MenuCheckbox",
+    "MenuDivider",
+    "type MenuItemProps",
+    "MenuItem",
+    "type MenuLabelProps",
+    "MenuLabel",
+    "MenuScrollArrow",
+    "MenuSearch",
+    "MenuSearchEmpty",
+    "type MenuTriggerProps",
+    "MenuTrigger",
+    "MenuInput",
+    "type MenuValueProps",
+    "MenuValue",
+    "MenusBase",
+    "Menus",
+    "useMenuState",
+    "useMenuRefs",
+    "useMenuTouch",
+    "useMenuScroll",
+    "useMenuChildren",
+    "useMenuFloating",
+    "useMenuTree",
+    "useMenuScrollHeight",
+    "useMenuBaseRefs",
+    "useMenuSelection",
+    "type MenuStateConfig",
+    "type MenuStateResult",
+    "type MenuRefsConfig",
+    "type MenuRefsResult",
+    "type MenuTouchConfig",
+    "type MenuTouchResult",
+    "type MenuScrollConfig",
+    "type MenuScrollResult",
+    "type MenuChildrenConfig",
+    "type MenuChildrenResult",
+    "type MenuFloatingConfig",
+    "type MenuFloatingResult",
+    "type MenuTreeConfig",
+    "type MenuTreeResult",
+    "type MenuSelectionConfig",
+    "type MenuSelectionResult",
+    "type MenuScrollHeightConfig",
+    "type MenuBaseRefsResult",
+    "type MenuContextType",
+    "MenuContext",
+    "useMenu",
+    "type MenuContextItemProps",
+    "MenuContextItem",
+    "MenuContextContent",
+    "MenuContextLabel",
+    "MenuContextSubTrigger"
   ],
   "props": [
     {
@@ -50,42 +102,42 @@
       "name": "Basic",
       "exportName": "Basic",
       "description": "`Menus` is a versatile component for displaying lists of options or actions in a consistent format.\n\nFeatures:\n- Consistent styling for menu items with active states\n- Support for prefix and suffix elements\n- Dividers for separating groups of options\n- Labels for categorizing menu sections\n- Built-in search functionality\n- Accessible keyboard navigation\n- Input and button elements for enhanced interaction\n\nUsage Guidelines:\n- Use for dropdown menus, context menus, or option lists\n- Provide clear visual feedback for active/hover states\n- Group related items and use dividers to separate logical sections\n- Add selection indicators for multi-select or current selection\n\nAccessibility:\n- Supports keyboard navigation\n- Proper ARIA roles for menu structures\n- Visual indicators for focus and active states\n- Clear selection indicators for screen readers\nBasic: Demonstrates the standard Menus component with simple items.\n\nFeatures:\n- Active state on hover for visual feedback\n- Clean, consistent styling for all items\n- Truncation for long text with flexbox layout\n\nThis example shows the fundamental usage pattern with dynamic content.",
-      "source": "import { Component } from \"@choice-ui/menus\"\n\nexport default function App() {\n  return (\n    <Menus className=\"w-64\">\n      {options.map((option, index) => (\n        <Menus.Item\n          key={option.value}\n          active={activeIndex === index}\n          onMouseEnter={() => setActiveIndex(index)}\n          onMouseLeave={() => setActiveIndex(null)}\n        >\n          <span className=\"flex-1 truncate\">{option.label}</span>\n        </Menus.Item>\n      ))}\n    </Menus>\n  );\n}"
+      "source": "import { Menus } from \"@choice-ui/menus\"\n\nexport default function App() {\n  return (\n    <Menus className=\"w-64\">\n      {options.map((option, index) => (\n        <Menus.Item\n          key={option.value}\n          active={activeIndex === index}\n          onMouseEnter={() => setActiveIndex(index)}\n          onMouseLeave={() => setActiveIndex(null)}\n        >\n          <span className=\"flex-1 truncate\">{option.label}</span>\n        </Menus.Item>\n      ))}\n    </Menus>\n  );\n}"
     },
     {
       "id": "collections-menus--search-story",
       "name": "Search Story",
       "exportName": "SearchStory",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/menus\"\n\nexport default function App() {\n  return (\n    <Menus className=\"w-64\">\n      <MenuSearch value={search} onChange={setSearch} />\n\n      <Menus.Divider />\n\n      {filteredOptions.map((option, index) => (\n        <Menus.Item\n          key={option.value}\n          active={activeIndex === index}\n          onMouseEnter={() => setActiveIndex(index)}\n          onMouseLeave={() => setActiveIndex(null)}\n        >\n          <span className=\"flex-1 truncate\">{option.label}</span>\n        </Menus.Item>\n      ))}\n\n      {filteredOptions.length === 0 && (\n        <MenuSearchEmpty onClear={() => setSearch(\"\")}>\n          <Search\n            className=\"text-secondary-foreground\"\n            width={32}\n            height={32}\n          />\n        </MenuSearchEmpty>\n      )}\n    </Menus>\n  );\n}"
+      "source": "import { MenuSearch, MenuSearchEmpty, Menus } from \"@choice-ui/menus\"\n\nexport default function App() {\n  return (\n    <Menus className=\"w-64\">\n      <MenuSearch value={search} onChange={setSearch} />\n\n      <Menus.Divider />\n\n      {filteredOptions.map((option, index) => (\n        <Menus.Item\n          key={option.value}\n          active={activeIndex === index}\n          onMouseEnter={() => setActiveIndex(index)}\n          onMouseLeave={() => setActiveIndex(null)}\n        >\n          <span className=\"flex-1 truncate\">{option.label}</span>\n        </Menus.Item>\n      ))}\n\n      {filteredOptions.length === 0 && (\n        <MenuSearchEmpty onClear={() => setSearch(\"\")}>\n          <Search\n            className=\"text-secondary-foreground\"\n            width={32}\n            height={32}\n          />\n        </MenuSearchEmpty>\n      )}\n    </Menus>\n  );\n}"
     },
     {
       "id": "collections-menus--input-story",
       "name": "Input Story",
       "exportName": "InputStory",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/menus\"\n\nexport default function App() {\n  return (\n    <Menus className=\"w-64\">\n      <Menus.Input />\n\n      <Menus.Divider />\n\n      {options.map((option, index) => (\n        <Menus.Item\n          key={option.value}\n          active={activeIndex === index}\n          onMouseEnter={() => setActiveIndex(index)}\n          onMouseLeave={() => setActiveIndex(null)}\n        >\n          <span className=\"flex-1 truncate\">{option.label}</span>\n        </Menus.Item>\n      ))}\n    </Menus>\n  );\n}"
+      "source": "import { Menus } from \"@choice-ui/menus\"\n\nexport default function App() {\n  return (\n    <Menus className=\"w-64\">\n      <Menus.Input />\n\n      <Menus.Divider />\n\n      {options.map((option, index) => (\n        <Menus.Item\n          key={option.value}\n          active={activeIndex === index}\n          onMouseEnter={() => setActiveIndex(index)}\n          onMouseLeave={() => setActiveIndex(null)}\n        >\n          <span className=\"flex-1 truncate\">{option.label}</span>\n        </Menus.Item>\n      ))}\n    </Menus>\n  );\n}"
     },
     {
       "id": "collections-menus--button-story",
       "name": "Button Story",
       "exportName": "ButtonStory",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/menus\"\n\nexport default function App() {\n  return (\n    <Menus className=\"w-64\">\n      <Menus.Label>Menu</Menus.Label>\n      {options.map((option, index) => (\n        <Menus.Item\n          key={option.value}\n          active={activeIndex === index}\n          onMouseEnter={() => setActiveIndex(index)}\n          onMouseLeave={() => setActiveIndex(null)}\n          selected={selectedIndex.includes(index)}\n          prefixElement={selectedIndex.includes(index) ? <Check /> : <></>}\n          onMouseDown={() =>\n            setSelectedIndex((prev) =>\n              prev.includes(index)\n                ? prev.filter((i) => i !== index)\n                : [...prev, index]\n            )\n          }\n        >\n          <span className=\"flex-1 truncate\">{option.label}</span>\n        </Menus.Item>\n      ))}\n      <Menus.Divider />\n      <Menus.Button onClick={() => setSelectedIndex([])}>Button</Menus.Button>\n    </Menus>\n  );\n}"
+      "source": "import { Menus } from \"@choice-ui/menus\"\n\nexport default function App() {\n  return (\n    <Menus className=\"w-64\">\n      <Menus.Label>Menu</Menus.Label>\n      {options.map((option, index) => (\n        <Menus.Item\n          key={option.value}\n          active={activeIndex === index}\n          onMouseEnter={() => setActiveIndex(index)}\n          onMouseLeave={() => setActiveIndex(null)}\n          selected={selectedIndex.includes(index)}\n          prefixElement={selectedIndex.includes(index) ? <Check /> : <></>}\n          onMouseDown={() =>\n            setSelectedIndex((prev) =>\n              prev.includes(index)\n                ? prev.filter((i) => i !== index)\n                : [...prev, index]\n            )\n          }\n        >\n          <span className=\"flex-1 truncate\">{option.label}</span>\n        </Menus.Item>\n      ))}\n      <Menus.Divider />\n      <Menus.Button onClick={() => setSelectedIndex([])}>Button</Menus.Button>\n    </Menus>\n  );\n}"
     },
     {
       "id": "collections-menus--number-input-story",
       "name": "Number Input Story",
       "exportName": "NumberInputStory",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/menus\"\n\nexport default function App() {\n  return (\n    <Menus className=\"w-64\">\n      <NumericInput\n        variant=\"dark\"\n        value={value}\n        onChange={(newValue) => setValue(newValue as number)}\n      />\n      <Menus.Divider />\n      {options.map((option, index) => (\n        <Menus.Item\n          key={option.value}\n          active={activeIndex === index}\n          onMouseEnter={() => setActiveIndex(index)}\n          onMouseLeave={() => setActiveIndex(null)}\n          selected={selectedIndex.includes(index)}\n          prefixElement={selectedIndex.includes(index) ? <Check /> : <></>}\n          onMouseDown={() =>\n            setSelectedIndex((prev) =>\n              prev.includes(index)\n                ? prev.filter((i) => i !== index)\n                : [...prev, index]\n            )\n          }\n        >\n          <span className=\"flex-1 truncate\">{option.label}</span>\n        </Menus.Item>\n      ))}\n      <Menus.Divider />\n      <Menus.Button onClick={() => setSelectedIndex([])}>Button</Menus.Button>\n    </Menus>\n  );\n}"
+      "source": "import { Menus } from \"@choice-ui/menus\"\n\nexport default function App() {\n  return (\n    <Menus className=\"w-64\">\n      <NumericInput\n        variant=\"dark\"\n        value={value}\n        onChange={(newValue) => setValue(newValue as number)}\n      />\n      <Menus.Divider />\n      {options.map((option, index) => (\n        <Menus.Item\n          key={option.value}\n          active={activeIndex === index}\n          onMouseEnter={() => setActiveIndex(index)}\n          onMouseLeave={() => setActiveIndex(null)}\n          selected={selectedIndex.includes(index)}\n          prefixElement={selectedIndex.includes(index) ? <Check /> : <></>}\n          onMouseDown={() =>\n            setSelectedIndex((prev) =>\n              prev.includes(index)\n                ? prev.filter((i) => i !== index)\n                : [...prev, index]\n            )\n          }\n        >\n          <span className=\"flex-1 truncate\">{option.label}</span>\n        </Menus.Item>\n      ))}\n      <Menus.Divider />\n      <Menus.Button onClick={() => setSelectedIndex([])}>Button</Menus.Button>\n    </Menus>\n  );\n}"
     },
     {
       "id": "collections-menus--variant",
       "name": "Variant",
       "exportName": "Variant",
       "description": "variant: Demonstrates the different variants of the Menus component.\n- default: Follows the page theme dynamically (light/dark mode)\n- light: Fixed light appearance regardless of theme\n- dark: Fixed dark appearance regardless of theme\n- reset: Removes variant styling, no variant settings applied",
-      "source": "import { Component } from \"@choice-ui/menus\"\n\nexport default function App() {\n  return (\n    <div className=\"grid grid-cols-3 gap-2\">\n      <Menus variant=\"default\">\n        <Menus.Label>Default</Menus.Label>\n        <Menus.Item\n          active={activeDefaultIndex === 0}\n          onMouseEnter={() => setActiveDefaultIndex(0)}\n          onMouseLeave={() => setActiveDefaultIndex(null)}\n        >\n          Default\n        </Menus.Item>\n        <Menus.Item\n          variant=\"highlight\"\n          active={activeDefaultIndex === 1}\n          onMouseEnter={() => setActiveDefaultIndex(1)}\n          onMouseLeave={() => setActiveDefaultIndex(null)}\n        >\n          Highlight\n        </Menus.Item>\n        <Menus.Item\n          variant=\"danger\"\n          active={activeDefaultIndex === 2}\n          onMouseEnter={() => setActiveDefaultIndex(2)}\n          onMouseLeave={() => setActiveDefaultIndex(null)}\n        >\n          Danger\n        </Menus.Item>\n        <Menus.Divider />\n        <Menus.Item\n          variant=\"reset\"\n          active={activeDefaultIndex === 3}\n          onMouseEnter={() => setActiveDefaultIndex(3)}\n          onMouseLeave={() => setActiveDefaultIndex(null)}\n          disabled\n        >\n          Disabled\n        </Menus.Item>\n      </Menus>\n\n      <Menus variant=\"light\">\n        <Menus.Label>Light</Menus.Label>\n        <Menus.Item\n          active={activeLightIndex === 0}\n          onMouseEnter={() => setActiveLightIndex(0)}\n          onMouseLeave={() => setActiveLightIndex(null)}\n        >\n          Default\n        </Menus.Item>\n        <Menus.Item\n          variant=\"highlight\"\n          active={activeLightIndex === 1}\n          onMouseEnter={() => setActiveLightIndex(1)}\n          onMouseLeave={() => setActiveLightIndex(null)}\n        >\n          Highlight\n        </Menus.Item>\n        <Menus.Item\n          variant=\"danger\"\n          active={activeLightIndex === 2}\n          onMouseEnter={() => setActiveLightIndex(2)}\n          onMouseLeave={() => setActiveLightIndex(null)}\n        >\n          Danger\n        </Menus.Item>\n        <Menus.Divider />\n        <Menus.Item\n          variant=\"reset\"\n          active={activeLightIndex === 3}\n          onMouseEnter={() => setActiveLightIndex(3)}\n          onMouseLeave={() => setActiveLightIndex(null)}\n          disabled\n        >\n          Disabled\n        </Menus.Item>\n      </Menus>\n    </div>\n  );\n}"
+      "source": "import { Menus } from \"@choice-ui/menus\"\n\nexport default function App() {\n  return (\n    <div className=\"grid grid-cols-3 gap-2\">\n      <Menus variant=\"default\">\n        <Menus.Label>Default</Menus.Label>\n        <Menus.Item\n          active={activeDefaultIndex === 0}\n          onMouseEnter={() => setActiveDefaultIndex(0)}\n          onMouseLeave={() => setActiveDefaultIndex(null)}\n        >\n          Default\n        </Menus.Item>\n        <Menus.Item\n          variant=\"highlight\"\n          active={activeDefaultIndex === 1}\n          onMouseEnter={() => setActiveDefaultIndex(1)}\n          onMouseLeave={() => setActiveDefaultIndex(null)}\n        >\n          Highlight\n        </Menus.Item>\n        <Menus.Item\n          variant=\"danger\"\n          active={activeDefaultIndex === 2}\n          onMouseEnter={() => setActiveDefaultIndex(2)}\n          onMouseLeave={() => setActiveDefaultIndex(null)}\n        >\n          Danger\n        </Menus.Item>\n        <Menus.Divider />\n        <Menus.Item\n          variant=\"reset\"\n          active={activeDefaultIndex === 3}\n          onMouseEnter={() => setActiveDefaultIndex(3)}\n          onMouseLeave={() => setActiveDefaultIndex(null)}\n          disabled\n        >\n          Disabled\n        </Menus.Item>\n      </Menus>\n\n      <Menus variant=\"light\">\n        <Menus.Label>Light</Menus.Label>\n        <Menus.Item\n          active={activeLightIndex === 0}\n          onMouseEnter={() => setActiveLightIndex(0)}\n          onMouseLeave={() => setActiveLightIndex(null)}\n        >\n          Default\n        </Menus.Item>\n        <Menus.Item\n          variant=\"highlight\"\n          active={activeLightIndex === 1}\n          onMouseEnter={() => setActiveLightIndex(1)}\n          onMouseLeave={() => setActiveLightIndex(null)}\n        >\n          Highlight\n        </Menus.Item>\n        <Menus.Item\n          variant=\"danger\"\n          active={activeLightIndex === 2}\n          onMouseEnter={() => setActiveLightIndex(2)}\n          onMouseLeave={() => setActiveLightIndex(null)}\n        >\n          Danger\n        </Menus.Item>\n        <Menus.Divider />\n        <Menus.Item\n          variant=\"reset\"\n          active={activeLightIndex === 3}\n          onMouseEnter={() => setActiveLightIndex(3)}\n          onMouseLeave={() => setActiveLightIndex(null)}\n          disabled\n        >\n          Disabled\n        </Menus.Item>\n      </Menus>\n    </div>\n  );\n}"
     }
   ]
 }

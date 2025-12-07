@@ -18,9 +18,7 @@
   "exports": [
     "Segmented",
     "type SegmentedProps",
-    "type SegmentedItemProps",
-    "useSegmentedContext",
-    "type SegmentedContextValue"
+    "type SegmentedItemProps"
   ],
   "props": [
     {

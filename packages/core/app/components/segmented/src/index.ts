@@ -1,5 +1,3 @@
 export { Segmented } from "./segmented"
 export type { SegmentedProps } from "./segmented"
 export type { SegmentedItemProps } from "./segmented-item"
-export { useSegmentedContext } from "./context"
-export type { SegmentedContextValue } from "./context"

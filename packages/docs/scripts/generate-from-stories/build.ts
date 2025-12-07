@@ -12,9 +12,11 @@ import {
   resolveSlug,
 } from "./component"
 import {
+  coreComponentsDir,
   outputComponentsDir,
   outputDir,
   outputIndex,
+  storyExt,
   storybookStoriesDir,
   workspaceRoot,
 } from "./constants"
@@ -118,9 +120,42 @@ function collectDocFromStory(storyPath: string): { index: IndexItem; detail: Com
   return { index, detail }
 }
 
+/** 计算 story 及其关联组件文件的组合 hash */
+function computeCombinedHash(storyPath: string): string {
+  const hashes: string[] = [computeFileHash(storyPath)]
+
+  // 获取关联的组件目录
+  const relativePath = path.relative(storybookStoriesDir, storyPath)
+  const parts = relativePath.split(path.sep)
+  if (parts.length >= 1) {
+    const componentFolder = parts[0]
+    const componentSrcDir = path.join(coreComponentsDir, componentFolder, "src")
+
+    // 添加组件源文件的 hash
+    if (fs.existsSync(componentSrcDir)) {
+      const componentFiles = fs.readdirSync(componentSrcDir, { withFileTypes: true })
+      for (const file of componentFiles) {
+        if (file.isFile() && (file.name.endsWith(".ts") || file.name.endsWith(".tsx"))) {
+          const filePath = path.join(componentSrcDir, file.name)
+          hashes.push(computeFileHash(filePath))
+        }
+      }
+    }
+
+    // 添加 package.json 的 hash
+    const packageJsonPath = path.join(coreComponentsDir, componentFolder, "package.json")
+    if (fs.existsSync(packageJsonPath)) {
+      hashes.push(computeFileHash(packageJsonPath))
+    }
+  }
+
+  // 组合所有 hash
+  return hashes.sort().join("-")
+}
+
 function processFile(storyPath: string, cache: CacheData): { updated: boolean; entry: CacheEntry } {
   const cacheKey = getCacheKey(storyPath)
-  const currentHash = computeFileHash(storyPath)
+  const currentHash = computeCombinedHash(storyPath)
   const cached = cache.entries[cacheKey]
 
   if (cached && cached.hash === currentHash) {
@@ -190,10 +225,16 @@ export function buildAll(isWatch = false): CacheData {
   return cache
 }
 
-export function processSingleFile(storyPath: string, cache: CacheData): boolean {
+export function processSingleFile(storyPath: string, cache: CacheData, force = false): boolean {
   try {
+    // 强制更新时，先删除缓存
+    if (force) {
+      const cacheKey = getCacheKey(storyPath)
+      delete cache.entries[cacheKey]
+    }
+
     const result = processFile(storyPath, cache)
-    if (result.updated) {
+    if (result.updated || force) {
       generateOutputs(cache)
       saveCache(cache)
       return true
@@ -202,6 +243,31 @@ export function processSingleFile(storyPath: string, cache: CacheData): boolean 
     console.error(`  ❌ Error processing ${path.relative(workspaceRoot, storyPath)}:`, err)
   }
   return false
+}
+
+/** 根据组件文件路径找到对应的 story 文件 */
+export function findStoryForComponent(componentPath: string): string | null {
+  // 从组件路径提取组件文件夹名
+  // 例如: /packages/core/app/components/button/src/button.tsx -> button
+  const relativePath = path.relative(coreComponentsDir, componentPath)
+  const parts = relativePath.split(path.sep)
+  if (parts.length < 1) return null
+
+  const componentFolder = parts[0]
+
+  // 查找对应的 story 文件
+  const storyDir = path.join(storybookStoriesDir, componentFolder)
+  if (!fs.existsSync(storyDir)) return null
+
+  // 查找 story 文件
+  const entries = fs.readdirSync(storyDir, { withFileTypes: true })
+  for (const entry of entries) {
+    if (entry.isFile() && entry.name.endsWith(storyExt)) {
+      return path.join(storyDir, entry.name)
+    }
+  }
+
+  return null
 }
 
 export function handleFileDelete(storyPath: string, cache: CacheData) {

@@ -18,6 +18,7 @@
     }
   },
   "exports": [
+    "type SearchInputProps",
     "SearchInput"
   ],
   "props": [
@@ -123,7 +124,7 @@
       "name": "Variants",
       "exportName": "Variants",
       "description": "Variants: Demonstrates different visual variants of the numeric input component.\n- default: Follows the page theme dynamically (light/dark mode)\n- light: Fixed light appearance regardless of theme\n- dark: Fixed dark appearance regardless of theme\n- reset: Removes variant styling, no variant settings applied",
-      "source": "import { Component } from \"@choice-ui/search-input\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-2\">\n      <Checkbox value={disabled} onChange={(value) => setDisabled(value)}>\n        Disabled\n      </Checkbox>\n      <div className=\"grid grid-cols-3 overflow-hidden rounded-xl border\">\n        <div className=\"bg-default-background flex aspect-square items-center justify-center p-8\">\n          <SearchInput\n            disabled={disabled}\n            value={value}\n            onChange={setValue}\n          />\n        </div>\n        <div className=\"flex aspect-square items-center justify-center bg-white p-8\">\n          <SearchInput\n            disabled={disabled}\n            value={value}\n            onChange={setValue}\n            variant=\"light\"\n          />\n        </div>\n        <div className=\"flex aspect-square items-center justify-center bg-gray-800 p-8\">\n          <SearchInput\n            disabled={disabled}\n            value={value}\n            onChange={setValue}\n            variant=\"dark\"\n          />\n        </div>\n      </div>\n    </div>\n  );\n}"
+      "source": "import { SearchInput } from \"@choice-ui/search-input\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-2\">\n      <Checkbox value={disabled} onChange={(value) => setDisabled(value)}>\n        Disabled\n      </Checkbox>\n      <div className=\"grid grid-cols-3 overflow-hidden rounded-xl border\">\n        <div className=\"bg-default-background flex aspect-square items-center justify-center p-8\">\n          <SearchInput\n            disabled={disabled}\n            value={value}\n            onChange={setValue}\n          />\n        </div>\n        <div className=\"flex aspect-square items-center justify-center bg-white p-8\">\n          <SearchInput\n            disabled={disabled}\n            value={value}\n            onChange={setValue}\n            variant=\"light\"\n          />\n        </div>\n        <div className=\"flex aspect-square items-center justify-center bg-gray-800 p-8\">\n          <SearchInput\n            disabled={disabled}\n            value={value}\n            onChange={setValue}\n            variant=\"dark\"\n          />\n        </div>\n      </div>\n    </div>\n  );\n}"
     }
   ]
 }

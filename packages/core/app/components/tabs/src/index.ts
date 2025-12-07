@@ -1,6 +1,3 @@
-export { useTabsContext } from "./context"
-export type { TabsContextValue } from "./context"
-export type { TabItemProps } from "./tab-item"
-export type { TabsProps } from "./tabs"
 export { Tabs } from "./tabs"
-export { TabItem } from "./tab-item"
+export type { TabsProps } from "./tabs"
+export type { TabItemProps } from "./tab-item"

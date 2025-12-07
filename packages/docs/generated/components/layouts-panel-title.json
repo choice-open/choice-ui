@@ -16,7 +16,28 @@
     }
   },
   "exports": [
-    "Panel"
+    "PanelBase",
+    "Panel",
+    "type PanelRowProps",
+    "PanelRow",
+    "PanelLabel",
+    "PanelTitle",
+    "PanelSortable",
+    "PanelSortableRow",
+    "PanelRowLabel",
+    "type PanelRowManyIconItem",
+    "type PanelRowManyIconProps",
+    "PanelRowManyIcon",
+    "PanelPreviewer",
+    "PanelContext",
+    "usePanelContext",
+    "type SortableItem",
+    "type SortableRowDataContextValue",
+    "SortableRowDataContext",
+    "useSortableRowItem",
+    "type SortablePaneContextValue",
+    "SortablePaneContext",
+    "useSortablePane"
   ],
   "props": [
     {
@@ -86,7 +107,7 @@
       "name": "Basic",
       "exportName": "Basic",
       "description": "`IfPanelTitle` is a versatile panel header component that provides consistent styling and behavior\nfor panel titles across the application.\n\n### Features\n- Clean and consistent panel header styling\n- Optional collapsible functionality\n- Support for custom actions (buttons, dropdowns, etc.)\n- Customizable styling through classNames\n- Accessible button/span rendering based on interaction needs\n\n### Props\n- `title`: The text to display as the panel title\n- `children`: Optional actions to display on the right side\n- `onClick`: Optional click handler for the title\n- `classNames`: Object for custom styling of different parts\n  - `container`: Styles for the outer container\n  - `titleWrapper`: Styles for the title wrapper\n  - `title`: Styles for the title text\n  - `actionWrapper`: Styles for the actions container\n\n### Best Practices\n1. Use consistent title casing across panels\n2. Keep action buttons minimal and relevant\n3. Use collapsible panels for optional/secondary content\n4. Ensure action tooltips are descriptive\n5. Maintain consistent spacing between multiple actions",
-      "source": "import { Component } from \"@choice-ui/panel\"\n\nexport default function App() {\n  return (\n    <AllotmentContainer header=\"Panel title\">\n      {/* Basic panel title */}\n      <Panel>\n        <Panel.Title title=\"Panel title\" />\n      </Panel>\n\n      {/* Panel title with icon button */}\n      <Panel>\n        <Panel.Title title=\"Panel title with icon button\">\n          <IconButton tooltip={{ content: \"Action\" }}>\n            <Styles />\n          </IconButton>\n        </Panel.Title>\n      </Panel>\n\n      {/* Panel title with multiple icon buttons */}\n      <Panel>\n        <Panel.Title title=\"Panel title with multiple icon buttons\">\n          <IconButton tooltip={{ content: \"Action 1\" }}>\n            <Target />\n          </IconButton>\n          <IconButton tooltip={{ content: \"Action 2\" }}>\n            <Styles />\n          </IconButton>\n        </Panel.Title>\n      </Panel>\n\n      {/* Panel title with collapsible */}\n      <Panel\n        collapsible={true}\n        isCollapsed={collapsible}\n        onCollapsedChange={setCollapsible}\n      >\n        <Panel.Title title=\"Panel title with collapsible\">\n          <IconButton tooltip={{ content: \"Action\" }}>\n            <Styles />\n          </IconButton>\n        </Panel.Title>\n        <div className=\"px-4\">\n          <div className=\"bg-secondary-background grid place-items-center rounded-md py-4 text-center\">\n            <Button variant=\"secondary\" onClick={() => setCollapsible(true)}>\n              Close\n            </Button>\n          </div>\n        </div>\n      </Panel>\n\n      {/* Panel title with action */}\n      <Panel>\n        <Panel.Title\n          title=\"Panel title with action\"\n          classNames={{\n            title: tcx(\n              open\n                ? \"text-default-foreground\"\n                : \"text-secondary-foreground hover:text-default-foreground\"\n            ),\n          }}\n          onClick={() => setOpen(!open)}\n        >\n          <Dropdown open={open} onOpenChange={setOpen} placement=\"bottom-end\">\n            <Dropdown.Trigger asChild>\n              <IconButton\n                variant=\"highlight\"\n                active={open}\n                tooltip={{ content: \"Action\" }}\n              >\n                <Styles />\n              </IconButton>\n            </Dropdown.Trigger>\n            <Dropdown.Content>\n              <Dropdown.Item>Action 1</Dropdown.Item>\n              <Dropdown.Item>Action 2</Dropdown.Item>\n            </Dropdown.Content>\n          </Dropdown>\n        </Panel.Title>\n      </Panel>\n    </AllotmentContainer>\n  );\n}"
+      "source": "import { Panel } from \"@choice-ui/panel\"\n\nexport default function App() {\n  return (\n    <AllotmentContainer header=\"Panel title\">\n      {/* Basic panel title */}\n      <Panel>\n        <Panel.Title title=\"Panel title\" />\n      </Panel>\n\n      {/* Panel title with icon button */}\n      <Panel>\n        <Panel.Title title=\"Panel title with icon button\">\n          <IconButton tooltip={{ content: \"Action\" }}>\n            <Styles />\n          </IconButton>\n        </Panel.Title>\n      </Panel>\n\n      {/* Panel title with multiple icon buttons */}\n      <Panel>\n        <Panel.Title title=\"Panel title with multiple icon buttons\">\n          <IconButton tooltip={{ content: \"Action 1\" }}>\n            <Target />\n          </IconButton>\n          <IconButton tooltip={{ content: \"Action 2\" }}>\n            <Styles />\n          </IconButton>\n        </Panel.Title>\n      </Panel>\n\n      {/* Panel title with collapsible */}\n      <Panel\n        collapsible={true}\n        isCollapsed={collapsible}\n        onCollapsedChange={setCollapsible}\n      >\n        <Panel.Title title=\"Panel title with collapsible\">\n          <IconButton tooltip={{ content: \"Action\" }}>\n            <Styles />\n          </IconButton>\n        </Panel.Title>\n        <div className=\"px-4\">\n          <div className=\"bg-secondary-background grid place-items-center rounded-md py-4 text-center\">\n            <Button variant=\"secondary\" onClick={() => setCollapsible(true)}>\n              Close\n            </Button>\n          </div>\n        </div>\n      </Panel>\n\n      {/* Panel title with action */}\n      <Panel>\n        <Panel.Title\n          title=\"Panel title with action\"\n          classNames={{\n            title: tcx(\n              open\n                ? \"text-default-foreground\"\n                : \"text-secondary-foreground hover:text-default-foreground\"\n            ),\n          }}\n          onClick={() => setOpen(!open)}\n        >\n          <Dropdown open={open} onOpenChange={setOpen} placement=\"bottom-end\">\n            <Dropdown.Trigger asChild>\n              <IconButton\n                variant=\"highlight\"\n                active={open}\n                tooltip={{ content: \"Action\" }}\n              >\n                <Styles />\n              </IconButton>\n            </Dropdown.Trigger>\n            <Dropdown.Content>\n              <Dropdown.Item>Action 1</Dropdown.Item>\n              <Dropdown.Item>Action 2</Dropdown.Item>\n            </Dropdown.Content>\n          </Dropdown>\n        </Panel.Title>\n      </Panel>\n    </AllotmentContainer>\n  );\n}"
     }
   ]
 }

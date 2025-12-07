@@ -11,7 +11,7 @@ interface BaseLinkButtonProps {
 }
 
 // 条件类型：有 href 时是链接，无 href 时是按钮
-type LinkButtonProps = BaseLinkButtonProps &
+export type LinkButtonProps = BaseLinkButtonProps &
   (
     | (React.AnchorHTMLAttributes<HTMLAnchorElement> & {
         href: string

@@ -6,12 +6,12 @@ import { startWatch } from "./watch"
 export { buildAll } from "./build"
 export { startWatch } from "./watch"
 
-export function run() {
+export async function run() {
   const args = process.argv.slice(2)
   const isWatch = args.includes("--watch") || args.includes("-w")
 
   if (isWatch) {
-    startWatch()
+    await startWatch()
   } else {
     const startTime = Date.now()
     const cache = buildAll(false)
@@ -23,4 +23,4 @@ export function run() {
 }
 
 // 直接运行时执行
-run()
+run().catch(console.error)

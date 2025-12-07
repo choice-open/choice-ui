@@ -39,6 +39,7 @@ export function CodeBlockContent(props: CodeBlockContentProps) {
           orientation="both"
           hoverBoundary="none"
           className={tcx(tv.code(), className)}
+          variant={codeBlock.variant}
         >
           <ScrollArea.Viewport
             ref={scrollRef}

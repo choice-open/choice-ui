@@ -18,6 +18,8 @@
     }
   },
   "exports": [
+    "type RenderChipProps",
+    "type ChipsInputProps",
     "ChipsInput"
   ],
   "props": [
@@ -114,7 +116,7 @@
       "name": "Controlled",
       "exportName": "Controlled",
       "description": "Controlled: Demonstrates controlled usage of ChipsInput.\n- Value and onChange are managed by the parent component.\n- Useful for form integration and advanced state management.",
-      "source": "import { Component } from \"@choice-ui/chips-input\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-2\">\n      <ChipsInput\n        className=\"w-32\"\n        value={tags}\n        onChange={(newTags: string[]) => {\n          setTags(newTags);\n        }}\n        placeholder=\"Controlled tags input...\"\n      />\n      <div className=\"text-secondary-foreground\">\n        Current Tags: {JSON.stringify(tags)}\n      </div>\n    </div>\n  );\n}"
+      "source": "import { ChipsInput } from \"@choice-ui/chips-input\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-2\">\n      <ChipsInput\n        className=\"w-32\"\n        value={tags}\n        onChange={(newTags: string[]) => {\n          setTags(newTags);\n        }}\n        placeholder=\"Controlled tags input...\"\n      />\n      <div className=\"text-secondary-foreground\">\n        Current Tags: {JSON.stringify(tags)}\n      </div>\n    </div>\n  );\n}"
     },
     {
       "id": "forms-chipsinput--empty",
@@ -128,21 +130,21 @@
       "name": "Allow Duplicates",
       "exportName": "AllowDuplicates",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/chips-input\"\n\nexport default function App() {\n  return (\n    <ChipsInput\n      placeholder=\"Add tags (duplicates allowed)...\"\n      allowDuplicates\n    />\n  );\n}"
+      "source": "import { ChipsInput } from \"@choice-ui/chips-input\"\n\nexport default function App() {\n  return (\n    <ChipsInput\n      placeholder=\"Add tags (duplicates allowed)...\"\n      allowDuplicates\n    />\n  );\n}"
     },
     {
       "id": "forms-chipsinput--custom-render-chip",
       "name": "Custom Render Chip",
       "exportName": "CustomRenderChip",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/chips-input\"\n\nexport default function App() {\n  return (\n    <ChipsInput\n      placeholder=\"Add custom chips...\"\n      renderChip={customRenderChip}\n    />\n  );\n}"
+      "source": "import { ChipsInput } from \"@choice-ui/chips-input\"\n\nexport default function App() {\n  return (\n    <ChipsInput\n      placeholder=\"Add custom chips...\"\n      renderChip={customRenderChip}\n    />\n  );\n}"
     },
     {
       "id": "forms-chipsinput--readonly",
       "name": "Readonly",
       "exportName": "Readonly",
       "description": "ChipsInput component in readOnly state.\n\nIn readOnly mode:\n- The input field is disabled and read-only\n- Chips cannot be added (Enter key, blur event)\n- Chips cannot be removed (remove button, Backspace/Delete keys)\n- Useful for displaying chips without allowing changes",
-      "source": "import { Component } from \"@choice-ui/chips-input\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <div className=\"rounded-xl border bg-stone-50 p-4\">\n        <div className=\"text-body-small-strong mb-2 text-stone-700\">\n          Current Chips:\n        </div>\n        <div className=\"text-body-small font-mono text-stone-600\">\n          {chips.length > 0 ? chips.join(\", \") : \"None\"}\n        </div>\n        <div className=\"text-body-small-strong mt-2 text-stone-700\">\n          Change Count:\n        </div>\n        <div className=\"text-body-small font-mono text-stone-600\">\n          {changeCount}\n        </div>\n      </div>\n\n      <ChipsInput\n        readOnly\n        value={chips}\n        onChange={handleChange}\n        placeholder=\"Add tags...\"\n        className=\"w-80\"\n      />\n\n      <div className=\"text-body-small text-stone-600\">\n        💡 Try typing and pressing Enter, clicking chip remove buttons, or\n        pressing Backspace/Delete - chips should not change and the change\n        count should remain at 0. The input field is read-only.\n      </div>\n    </div>\n  );\n}"
+      "source": "import { ChipsInput } from \"@choice-ui/chips-input\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <div className=\"rounded-xl border bg-stone-50 p-4\">\n        <div className=\"text-body-small-strong mb-2 text-stone-700\">\n          Current Chips:\n        </div>\n        <div className=\"text-body-small font-mono text-stone-600\">\n          {chips.length > 0 ? chips.join(\", \") : \"None\"}\n        </div>\n        <div className=\"text-body-small-strong mt-2 text-stone-700\">\n          Change Count:\n        </div>\n        <div className=\"text-body-small font-mono text-stone-600\">\n          {changeCount}\n        </div>\n      </div>\n\n      <ChipsInput\n        readOnly\n        value={chips}\n        onChange={handleChange}\n        placeholder=\"Add tags...\"\n        className=\"w-80\"\n      />\n\n      <div className=\"text-body-small text-stone-600\">\n        💡 Try typing and pressing Enter, clicking chip remove buttons, or\n        pressing Backspace/Delete - chips should not change and the change\n        count should remain at 0. The input field is read-only.\n      </div>\n    </div>\n  );\n}"
     }
   ]
 }

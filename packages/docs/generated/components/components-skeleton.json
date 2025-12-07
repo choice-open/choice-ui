@@ -17,8 +17,6 @@
   "exports": [
     "Skeleton",
     "type SkeletonProps",
-    "type SkeletonVariant",
-    "skeletonTv",
     "useSkeleton",
     "useSkeletonContext",
     "SkeletonProvider",

@@ -29,6 +29,108 @@ export function readComponentPackageJson(storyPath: string): PackageInfo | undef
   }
 }
 
+/** 从单个文件中提取导出 */
+function extractExportsFromFile(filePath: string, visited = new Set<string>()): string[] {
+  if (visited.has(filePath) || !isFile(filePath)) return []
+  visited.add(filePath)
+
+  try {
+    const content = readFile(filePath)
+    const sourceFile = ts.createSourceFile(
+      path.basename(filePath),
+      content,
+      ts.ScriptTarget.Latest,
+      true,
+      ts.ScriptKind.TSX,
+    )
+
+    const exports: string[] = []
+    const dir = path.dirname(filePath)
+
+    for (const statement of sourceFile.statements) {
+      // 处理 export { X, Y } from "./xxx"
+      if (ts.isExportDeclaration(statement)) {
+        const exportClause = statement.exportClause
+
+        // export * from "./xxx" - 递归提取
+        if (!exportClause && statement.moduleSpecifier) {
+          const modulePath = (statement.moduleSpecifier as ts.StringLiteral).text
+          const resolvedPath = resolveModulePath(dir, modulePath)
+          if (resolvedPath) {
+            exports.push(...extractExportsFromFile(resolvedPath, visited))
+          }
+          continue
+        }
+
+        // export { X, Y } from "./xxx"
+        if (exportClause && ts.isNamedExports(exportClause)) {
+          for (const element of exportClause.elements) {
+            const name = element.name.text
+            const isTypeOnly = statement.isTypeOnly || element.isTypeOnly
+            exports.push(isTypeOnly ? `type ${name}` : name)
+          }
+        }
+      }
+
+      // 处理 export const/function/class
+      if (ts.isVariableStatement(statement)) {
+        const hasExport = statement.modifiers?.some((m) => m.kind === ts.SyntaxKind.ExportKeyword)
+        if (hasExport) {
+          for (const decl of statement.declarationList.declarations) {
+            if (ts.isIdentifier(decl.name)) {
+              exports.push(decl.name.text)
+            }
+          }
+        }
+      }
+
+      if (ts.isFunctionDeclaration(statement) && statement.name) {
+        const hasExport = statement.modifiers?.some((m) => m.kind === ts.SyntaxKind.ExportKeyword)
+        if (hasExport) {
+          exports.push(statement.name.text)
+        }
+      }
+
+      // 处理 export type
+      if (ts.isTypeAliasDeclaration(statement)) {
+        const hasExport = statement.modifiers?.some((m) => m.kind === ts.SyntaxKind.ExportKeyword)
+        if (hasExport) {
+          exports.push(`type ${statement.name.text}`)
+        }
+      }
+
+      if (ts.isInterfaceDeclaration(statement)) {
+        const hasExport = statement.modifiers?.some((m) => m.kind === ts.SyntaxKind.ExportKeyword)
+        if (hasExport) {
+          exports.push(`type ${statement.name.text}`)
+        }
+      }
+    }
+
+    return exports
+  } catch {
+    return []
+  }
+}
+
+/** 解析模块路径 */
+function resolveModulePath(dir: string, modulePath: string): string | null {
+  const basePath = path.join(dir, modulePath)
+  const candidates = [
+    basePath + ".ts",
+    basePath + ".tsx",
+    path.join(basePath, "index.ts"),
+    path.join(basePath, "index.tsx"),
+  ]
+
+  for (const candidate of candidates) {
+    if (isFile(candidate)) {
+      return candidate
+    }
+  }
+  return null
+}
+
 export function readComponentExports(storyPath: string): string[] {
   const relativePath = path.relative(storybookStoriesDir, storyPath)
   const parts = relativePath.split(path.sep)
@@ -37,37 +139,7 @@ export function readComponentExports(storyPath: string): string[] {
   const componentFolder = parts[0]
   const indexPath = path.join(coreComponentsDir, componentFolder, "src", "index.ts")
 
-  if (!isFile(indexPath)) return []
-
-  try {
-    const content = readFile(indexPath)
-    const sourceFile = ts.createSourceFile(
-      "index.ts",
-      content,
-      ts.ScriptTarget.Latest,
-      true,
-      ts.ScriptKind.TS,
-    )
-
-    const exports: string[] = []
-
-    for (const statement of sourceFile.statements) {
-      if (!ts.isExportDeclaration(statement)) continue
-
-      const exportClause = statement.exportClause
-      if (!exportClause || !ts.isNamedExports(exportClause)) continue
-
-      for (const element of exportClause.elements) {
-        const name = element.name.text
-        const isTypeOnly = statement.isTypeOnly || element.isTypeOnly
-        exports.push(isTypeOnly ? `type ${name}` : name)
-      }
-    }
-
-    return exports
-  } catch {
-    return []
-  }
+  return extractExportsFromFile(indexPath)
 }
 
 export function resolveComponentFromStoryPath(

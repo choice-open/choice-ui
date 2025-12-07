@@ -14,7 +14,9 @@
     }
   },
   "exports": [
-    "Spinner"
+    "type SpinnerSpinProps",
+    "SpinnerSpin",
+    "SpinnerBounce"
   ],
   "props": [
     {
@@ -105,14 +107,14 @@
       "name": "Set Sizes",
       "exportName": "SetSizes",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/spinner\"\n\nexport default function App() {\n  return (\n    <div className=\"flex items-center gap-4\">\n      <SpinnerBounce size=\"small\" />\n      <SpinnerBounce size=\"medium\" />\n      <SpinnerBounce size=\"large\" />\n    </div>\n  );\n}"
+      "source": "import { SpinnerBounce } from \"@choice-ui/spinner\"\n\nexport default function App() {\n  return (\n    <div className=\"flex items-center gap-4\">\n      <SpinnerBounce size=\"small\" />\n      <SpinnerBounce size=\"medium\" />\n      <SpinnerBounce size=\"large\" />\n    </div>\n  );\n}"
     },
     {
       "id": "status-spinner-spinnerbounce--variants",
       "name": "Variants",
       "exportName": "Variants",
       "description": "Spinner has 5 variants: `primary`, `success`, `warning`, `danger`, and `default`.",
-      "source": "import { Component } from \"@choice-ui/spinner\"\n\nexport default function App() {\n  return (\n    <div className=\"flex items-center gap-4\">\n      <SpinnerBounce variant=\"default\" />\n      <SpinnerBounce variant=\"primary\" />\n    </div>\n  );\n}"
+      "source": "import { SpinnerBounce } from \"@choice-ui/spinner\"\n\nexport default function App() {\n  return (\n    <div className=\"flex items-center gap-4\">\n      <SpinnerBounce variant=\"default\" />\n      <SpinnerBounce variant=\"primary\" />\n    </div>\n  );\n}"
     },
     {
       "id": "status-spinner-spinnerbounce--label",

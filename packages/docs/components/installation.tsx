@@ -61,10 +61,7 @@ export function Installation({
           className="mt-2"
           variant="dark"
         >
-          <CodeBlock.Content
-            code={content}
-            withScrollArea={false}
-          />
+          <CodeBlock.Content code={content} />
         </CodeBlock>
       ) : null}
       <h1 className="md-h2">Import</h1>
@@ -82,10 +79,7 @@ export function Installation({
           className="mt-2"
           variant="dark"
         >
-          <CodeBlock.Content
-            code={importContent}
-            withScrollArea={false}
-          />
+          <CodeBlock.Content code={importContent} />
         </CodeBlock>
       ) : null}
     </div>

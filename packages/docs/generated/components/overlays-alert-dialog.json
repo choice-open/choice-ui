@@ -18,7 +18,44 @@
     }
   },
   "exports": [
-    "AlertDialog"
+    "type AlertDialogProps",
+    "AlertDialog",
+    "useAlertDialog",
+    "useAlertDialogProvider",
+    "AlertDialogContext",
+    "useAlertDialogContext",
+    "type AlertDialogProviderProps",
+    "AlertDialogProvider",
+    "type AlertDialogButtonVariant",
+    "type AlertDialogVariant",
+    "type AlertDialogButton",
+    "type AlertDialogBaseConfig",
+    "type AlertDialogConfirmConfig",
+    "type AlertDialogAlertConfig",
+    "type AlertDialogCustomConfig",
+    "type AlertDialogConfig",
+    "type AlertDialogType",
+    "type AlertDialogResult",
+    "type AlertDialogState",
+    "type AlertDialogAction",
+    "type UseAlertDialogReturn",
+    "type AlertDialogContextType",
+    "type ConfirmFunction",
+    "type AlertFunction",
+    "type ShowFunction",
+    "DEFAULT_CONFIRM_TEXT",
+    "DEFAULT_CANCEL_TEXT",
+    "DEFAULT_ALERT_TEXT",
+    "DEFAULT_CONFIRM_VARIANT",
+    "DEFAULT_CANCEL_VARIANT",
+    "initialState",
+    "alertDialogReducer",
+    "normalizeConfirmConfig",
+    "normalizeAlertConfig",
+    "getButtonsForDialog",
+    "processButtonResult",
+    "getDialogTitle",
+    "shouldShowCloseButton"
   ],
   "props": [
     {
@@ -64,91 +101,91 @@
       "name": "Basic Confirm",
       "exportName": "BasicConfirm",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/alert-dialog\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <Button variant=\"secondary\" onClick={handleClick}>\n        Show Confirm Dialog\n      </Button>\n      {result !== null && (\n        <p className=\"text-secondary-foreground text-body-small\">\n          Result: {result ? \"Confirmed\" : \"Cancelled\"}\n        </p>\n      )}\n    </div>\n  );\n}"
+      "source": "import { AlertDialog } from \"@choice-ui/alert-dialog\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <Button variant=\"secondary\" onClick={handleClick}>\n        Show Confirm Dialog\n      </Button>\n      {result !== null && (\n        <p className=\"text-secondary-foreground text-body-small\">\n          Result: {result ? \"Confirmed\" : \"Cancelled\"}\n        </p>\n      )}\n    </div>\n  );\n}"
     },
     {
       "id": "overlays-alert-dialog--size",
       "name": "Size",
       "exportName": "Size",
       "description": "Size: Demonstrates the different sizes of the alert dialog.",
-      "source": "import { Component } from \"@choice-ui/alert-dialog\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      {result !== null && (\n        <p className=\"text-secondary-foreground\">\n          Result: {result ? \"Confirmed\" : \"Cancelled\"}\n        </p>\n      )}\n      <div className=\"flex gap-4\">\n        <Button variant=\"secondary\" onClick={handleSmall}>\n          Small\n        </Button>\n        <Button variant=\"secondary\" onClick={handleDefault}>\n          Default\n        </Button>\n        <Button variant=\"secondary\" onClick={handleLarge}>\n          Large\n        </Button>\n      </div>\n    </div>\n  );\n}"
+      "source": "import { AlertDialog } from \"@choice-ui/alert-dialog\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      {result !== null && (\n        <p className=\"text-secondary-foreground\">\n          Result: {result ? \"Confirmed\" : \"Cancelled\"}\n        </p>\n      )}\n      <div className=\"flex gap-4\">\n        <Button variant=\"secondary\" onClick={handleSmall}>\n          Small\n        </Button>\n        <Button variant=\"secondary\" onClick={handleDefault}>\n          Default\n        </Button>\n        <Button variant=\"secondary\" onClick={handleLarge}>\n          Large\n        </Button>\n      </div>\n    </div>\n  );\n}"
     },
     {
       "id": "overlays-alert-dialog--custom-confirm",
       "name": "Custom Confirm",
       "exportName": "CustomConfirm",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/alert-dialog\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <Button variant=\"secondary-destruct\" onClick={handleClick}>\n        Delete Account\n      </Button>\n\n      {result !== null && (\n        <p className=\"text-secondary-foreground text-body-small\">\n          Result: {result ? \"Account deleted\" : \"Cancelled\"}\n        </p>\n      )}\n    </div>\n  );\n}"
+      "source": "import { AlertDialog } from \"@choice-ui/alert-dialog\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <Button variant=\"secondary-destruct\" onClick={handleClick}>\n        Delete Account\n      </Button>\n\n      {result !== null && (\n        <p className=\"text-secondary-foreground text-body-small\">\n          Result: {result ? \"Account deleted\" : \"Cancelled\"}\n        </p>\n      )}\n    </div>\n  );\n}"
     },
     {
       "id": "overlays-alert-dialog--basic-alert",
       "name": "Basic Alert",
       "exportName": "BasicAlert",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/alert-dialog\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <Button onClick={handleClick}>Save Changes</Button>\n      {shown && (\n        <p className=\"text-secondary-foreground text-body-small\">\n          Alert was acknowledged\n        </p>\n      )}\n    </div>\n  );\n}"
+      "source": "import { AlertDialog } from \"@choice-ui/alert-dialog\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <Button onClick={handleClick}>Save Changes</Button>\n      {shown && (\n        <p className=\"text-secondary-foreground text-body-small\">\n          Alert was acknowledged\n        </p>\n      )}\n    </div>\n  );\n}"
     },
     {
       "id": "overlays-alert-dialog--custom-alert",
       "name": "Custom Alert",
       "exportName": "CustomAlert",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/alert-dialog\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <Button onClick={handleClick}>Update Profile</Button>\n      {shown && (\n        <p className=\"text-secondary-foreground text-body-small\">\n          Alert was acknowledged\n        </p>\n      )}\n    </div>\n  );\n}"
+      "source": "import { AlertDialog } from \"@choice-ui/alert-dialog\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <Button onClick={handleClick}>Update Profile</Button>\n      {shown && (\n        <p className=\"text-secondary-foreground text-body-small\">\n          Alert was acknowledged\n        </p>\n      )}\n    </div>\n  );\n}"
     },
     {
       "id": "overlays-alert-dialog--custom-dialog",
       "name": "Custom Dialog",
       "exportName": "CustomDialog",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/alert-dialog\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <Button onClick={handleClick}>Close Document</Button>\n      {result && (\n        <p className=\"text-secondary-foreground text-body-small\">\n          User choice: {result}\n        </p>\n      )}\n    </div>\n  );\n}"
+      "source": "import { AlertDialog } from \"@choice-ui/alert-dialog\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <Button onClick={handleClick}>Close Document</Button>\n      {result && (\n        <p className=\"text-secondary-foreground text-body-small\">\n          User choice: {result}\n        </p>\n      )}\n    </div>\n  );\n}"
     },
     {
       "id": "overlays-alert-dialog--queue-system",
       "name": "Queue System",
       "exportName": "QueueSystem",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/alert-dialog\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <Button onClick={handleMultipleDialogs}>Show Multiple Dialogs</Button>\n      {results.length > 0 && (\n        <div className=\"text-secondary-foreground text-body-small\">\n          <p>Results:</p>\n          <ul className=\"list-inside list-disc\">\n            {results.map((result, i) => (\n              <li key={i}>{result}</li>\n            ))}\n          </ul>\n        </div>\n      )}\n    </div>\n  );\n}"
+      "source": "import { AlertDialog } from \"@choice-ui/alert-dialog\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <Button onClick={handleMultipleDialogs}>Show Multiple Dialogs</Button>\n      {results.length > 0 && (\n        <div className=\"text-secondary-foreground text-body-small\">\n          <p>Results:</p>\n          <ul className=\"list-inside list-disc\">\n            {results.map((result, i) => (\n              <li key={i}>{result}</li>\n            ))}\n          </ul>\n        </div>\n      )}\n    </div>\n  );\n}"
     },
     {
       "id": "overlays-alert-dialog--with-content",
       "name": "With Content",
       "exportName": "WithContent",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/alert-dialog\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <Button onClick={handleClick}>Check Limits</Button>\n      {result && (\n        <p className=\"text-secondary-foreground text-body-small\">\n          User choice: {result}\n        </p>\n      )}\n    </div>\n  );\n}"
+      "source": "import { AlertDialog } from \"@choice-ui/alert-dialog\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <Button onClick={handleClick}>Check Limits</Button>\n      {result && (\n        <p className=\"text-secondary-foreground text-body-small\">\n          User choice: {result}\n        </p>\n      )}\n    </div>\n  );\n}"
     },
     {
       "id": "overlays-alert-dialog--variants",
       "name": "Variants",
       "exportName": "Variants",
       "description": "Variants: Demonstrates different visual variants for alert dialogs.\nShows how variant styles change the appearance of the dialog.",
-      "source": "import { Component } from \"@choice-ui/alert-dialog\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <div className=\"grid grid-cols-2 gap-4\">\n        <Button onClick={showDefaultConfirm} variant=\"secondary\">\n          Default Variant\n        </Button>\n        <Button onClick={showDangerConfirm} variant=\"destructive\">\n          Danger Variant\n        </Button>\n        <Button onClick={showSuccessAlert} variant=\"success\">\n          Success Variant\n        </Button>\n        <Button onClick={showWarningConfirm} variant=\"secondary\">\n          Warning Variant\n        </Button>\n      </div>\n\n      {Object.keys(results).length > 0 && (\n        <div className=\"text-secondary-foreground text-body-small\">\n          <p>Results:</p>\n          <ul className=\"list-inside list-disc\">\n            {Object.entries(results).map(([variant, result]) => (\n              <li key={variant}>\n                {variant}:{\" \"}\n                {typeof result === \"boolean\"\n                  ? result\n                    ? \"Confirmed\"\n                    : \"Cancelled\"\n                  : \"Acknowledged\"}\n              </li>\n            ))}\n          </ul>\n        </div>\n      )}\n    </div>\n  );\n}"
+      "source": "import { AlertDialog } from \"@choice-ui/alert-dialog\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <div className=\"grid grid-cols-2 gap-4\">\n        <Button onClick={showDefaultConfirm} variant=\"secondary\">\n          Default Variant\n        </Button>\n        <Button onClick={showDangerConfirm} variant=\"destructive\">\n          Danger Variant\n        </Button>\n        <Button onClick={showSuccessAlert} variant=\"success\">\n          Success Variant\n        </Button>\n        <Button onClick={showWarningConfirm} variant=\"secondary\">\n          Warning Variant\n        </Button>\n      </div>\n\n      {Object.keys(results).length > 0 && (\n        <div className=\"text-secondary-foreground text-body-small\">\n          <p>Results:</p>\n          <ul className=\"list-inside list-disc\">\n            {Object.entries(results).map(([variant, result]) => (\n              <li key={variant}>\n                {variant}:{\" \"}\n                {typeof result === \"boolean\"\n                  ? result\n                    ? \"Confirmed\"\n                    : \"Cancelled\"\n                  : \"Acknowledged\"}\n              </li>\n            ))}\n          </ul>\n        </div>\n      )}\n    </div>\n  );\n}"
     },
     {
       "id": "overlays-alert-dialog--with-overlay",
       "name": "With Overlay",
       "exportName": "WithOverlay",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/alert-dialog\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <Button onClick={handleClick}>Show Dialog with Overlay</Button>\n      {result !== null && (\n        <p className=\"text-secondary-foreground text-body-small\">\n          Result: {result ? \"Confirmed\" : \"Cancelled\"}\n        </p>\n      )}\n    </div>\n  );\n}"
+      "source": "import { AlertDialog } from \"@choice-ui/alert-dialog\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <Button onClick={handleClick}>Show Dialog with Overlay</Button>\n      {result !== null && (\n        <p className=\"text-secondary-foreground text-body-small\">\n          Result: {result ? \"Confirmed\" : \"Cancelled\"}\n        </p>\n      )}\n    </div>\n  );\n}"
     },
     {
       "id": "overlays-alert-dialog--outside-press-enabled",
       "name": "Outside Press Enabled",
       "exportName": "OutsidePressEnabled",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/alert-dialog\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <Button onClick={handleClick}>\n        Show Dialog with Outside Press Enabled\n      </Button>\n      <p className=\"text-secondary-foreground text-body-small\">\n        💡 Tip: Click outside the dialog to close it\n      </p>\n      {result !== null && (\n        <p className=\"text-secondary-foreground text-body-small\">\n          Result: {result ? \"Confirmed\" : \"Cancelled\"}\n        </p>\n      )}\n    </div>\n  );\n}"
+      "source": "import { AlertDialog } from \"@choice-ui/alert-dialog\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <Button onClick={handleClick}>\n        Show Dialog with Outside Press Enabled\n      </Button>\n      <p className=\"text-secondary-foreground text-body-small\">\n        💡 Tip: Click outside the dialog to close it\n      </p>\n      {result !== null && (\n        <p className=\"text-secondary-foreground text-body-small\">\n          Result: {result ? \"Confirmed\" : \"Cancelled\"}\n        </p>\n      )}\n    </div>\n  );\n}"
     },
     {
       "id": "overlays-alert-dialog--outside-press-disabled",
       "name": "Outside Press Disabled",
       "exportName": "OutsidePressDisabled",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/alert-dialog\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <Button onClick={handleClick}>\n        Show Dialog with Outside Press Disabled\n      </Button>\n      <p className=\"text-secondary-foreground text-body-small\">\n        💡 Tip: Clicking outside will NOT close the dialog\n      </p>\n      {result !== null && (\n        <p className=\"text-secondary-foreground text-body-small\">\n          Result: {result ? \"Confirmed\" : \"Cancelled\"}\n        </p>\n      )}\n    </div>\n  );\n}"
+      "source": "import { AlertDialog } from \"@choice-ui/alert-dialog\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <Button onClick={handleClick}>\n        Show Dialog with Outside Press Disabled\n      </Button>\n      <p className=\"text-secondary-foreground text-body-small\">\n        💡 Tip: Clicking outside will NOT close the dialog\n      </p>\n      {result !== null && (\n        <p className=\"text-secondary-foreground text-body-small\">\n          Result: {result ? \"Confirmed\" : \"Cancelled\"}\n        </p>\n      )}\n    </div>\n  );\n}"
     },
     {
       "id": "overlays-alert-dialog--full-featured",
       "name": "Full Featured",
       "exportName": "FullFeatured",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/alert-dialog\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <div className=\"flex gap-4\">\n        <Button onClick={showDangerDialog} variant=\"destructive\">\n          Delete Account\n        </Button>\n        <Button onClick={showSuccessDialog} variant=\"success\">\n          Create Account\n        </Button>\n      </div>\n\n      <div className=\"text-secondary-foreground text-body-small space-y-1\">\n        <p>💡 Features enabled:</p>\n        <ul className=\"ml-4 list-inside list-disc\">\n          <li>Dark background overlay</li>\n          <li>Click outside to close</li>\n          <li>ESC key to close</li>\n          <li>Variant styling</li>\n        </ul>\n      </div>\n\n      {Object.keys(results).length > 0 && (\n        <div className=\"text-secondary-foreground text-body-small\">\n          <p>Results:</p>\n          <ul className=\"list-inside list-disc\">\n            {Object.entries(results).map(([variant, result]) => (\n              <li key={variant}>\n                {variant}:{\" \"}\n                {typeof result === \"boolean\"\n                  ? result\n                    ? \"Confirmed\"\n                    : \"Cancelled\"\n                  : \"Acknowledged\"}\n              </li>\n            ))}\n          </ul>\n        </div>\n      )}\n    </div>\n  );\n}"
+      "source": "import { AlertDialog } from \"@choice-ui/alert-dialog\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <div className=\"flex gap-4\">\n        <Button onClick={showDangerDialog} variant=\"destructive\">\n          Delete Account\n        </Button>\n        <Button onClick={showSuccessDialog} variant=\"success\">\n          Create Account\n        </Button>\n      </div>\n\n      <div className=\"text-secondary-foreground text-body-small space-y-1\">\n        <p>💡 Features enabled:</p>\n        <ul className=\"ml-4 list-inside list-disc\">\n          <li>Dark background overlay</li>\n          <li>Click outside to close</li>\n          <li>ESC key to close</li>\n          <li>Variant styling</li>\n        </ul>\n      </div>\n\n      {Object.keys(results).length > 0 && (\n        <div className=\"text-secondary-foreground text-body-small\">\n          <p>Results:</p>\n          <ul className=\"list-inside list-disc\">\n            {Object.entries(results).map(([variant, result]) => (\n              <li key={variant}>\n                {variant}:{\" \"}\n                {typeof result === \"boolean\"\n                  ? result\n                    ? \"Confirmed\"\n                    : \"Cancelled\"\n                  : \"Acknowledged\"}\n              </li>\n            ))}\n          </ul>\n        </div>\n      )}\n    </div>\n  );\n}"
     },
     {
       "id": "overlays-alert-dialog--event-propagation",
@@ -162,14 +199,14 @@
       "name": "Z Index Test",
       "exportName": "ZIndexTest",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/alert-dialog\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <div className=\"space-y-2\">\n        <h3 className=\"text-body-large-strong\">Z-Index Test</h3>\n      </div>\n\n      <Button className=\"self-start\" onClick={() => setDialogOpen(true)}>\n        Open Dialog\n      </Button>\n\n      {dialogOpen && (\n        <Dialog draggable open={dialogOpen} onOpenChange={setDialogOpen}>\n          <Dialog.Header title=\"Regular Dialog\" />\n          <Dialog.Content className=\"flex flex-col gap-4 p-4\">\n            <div className=\"flex gap-2\">\n              <Button variant=\"primary\" onClick={handleShowAlertInDialog}>\n                Show Alert in Dialog\n              </Button>\n              <Button\n                variant=\"secondary\"\n                onClick={handleShowConfirmInDialog}\n              >\n                Show Confirm in Dialog\n              </Button>\n            </div>\n          </Dialog.Content>\n          <Dialog.Footer>\n            <Button\n              variant=\"secondary\"\n              onClick={() => setDialogOpen(false)}\n            >\n              Close Dialog\n            </Button>\n          </Dialog.Footer>\n        </Dialog>\n      )}\n    </div>\n  );\n}"
+      "source": "import { AlertDialog } from \"@choice-ui/alert-dialog\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <div className=\"space-y-2\">\n        <h3 className=\"text-body-large-strong\">Z-Index Test</h3>\n      </div>\n\n      <Button className=\"self-start\" onClick={() => setDialogOpen(true)}>\n        Open Dialog\n      </Button>\n\n      {dialogOpen && (\n        <Dialog draggable open={dialogOpen} onOpenChange={setDialogOpen}>\n          <Dialog.Header title=\"Regular Dialog\" />\n          <Dialog.Content className=\"flex flex-col gap-4 p-4\">\n            <div className=\"flex gap-2\">\n              <Button variant=\"primary\" onClick={handleShowAlertInDialog}>\n                Show Alert in Dialog\n              </Button>\n              <Button\n                variant=\"secondary\"\n                onClick={handleShowConfirmInDialog}\n              >\n                Show Confirm in Dialog\n              </Button>\n            </div>\n          </Dialog.Content>\n          <Dialog.Footer>\n            <Button\n              variant=\"secondary\"\n              onClick={() => setDialogOpen(false)}\n            >\n              Close Dialog\n            </Button>\n          </Dialog.Footer>\n        </Dialog>\n      )}\n    </div>\n  );\n}"
     },
     {
       "id": "overlays-alert-dialog--popover-z-index-test",
       "name": "Popover Z Index Test",
       "exportName": "PopoverZIndexTest",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/alert-dialog\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <div className=\"space-y-2\">\n        <h3 className=\"text-body-large-strong\">Popover Z-Index Test</h3>\n      </div>\n\n      <Button className=\"self-start\" onClick={() => setDialogOpen(true)}>\n        Open Dialog\n      </Button>\n\n      {dialogOpen && (\n        <Dialog draggable open={dialogOpen} onOpenChange={setDialogOpen}>\n          <Dialog.Header title=\"Regular Dialog\" />\n          <Dialog.Content className=\"flex flex-col gap-4 p-4\">\n            <Popover>\n              <Popover.Trigger>\n                <Button className=\"self-start\" variant=\"secondary\">\n                  Open Popover\n                </Button>\n              </Popover.Trigger>\n              <Popover.Content className=\"p-4\">\n                <div className=\"flex gap-2\">\n                  <Button\n                    variant=\"primary\"\n                    onClick={handleShowAlertInPopover}\n                  >\n                    Show Alert Above\n                  </Button>\n                  <Button\n                    variant=\"secondary\"\n                    onClick={handleShowConfirmInPopover}\n                  >\n                    Show Confirm Above\n                  </Button>\n                </div>\n              </Popover.Content>\n            </Popover>\n          </Dialog.Content>\n          <Dialog.Footer>\n            <Button\n              variant=\"secondary\"\n              onClick={() => setDialogOpen(false)}\n            >\n              Close Dialog\n            </Button>\n          </Dialog.Footer>\n        </Dialog>\n      )}\n    </div>\n  );\n}"
+      "source": "import { AlertDialog } from \"@choice-ui/alert-dialog\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <div className=\"space-y-2\">\n        <h3 className=\"text-body-large-strong\">Popover Z-Index Test</h3>\n      </div>\n\n      <Button className=\"self-start\" onClick={() => setDialogOpen(true)}>\n        Open Dialog\n      </Button>\n\n      {dialogOpen && (\n        <Dialog draggable open={dialogOpen} onOpenChange={setDialogOpen}>\n          <Dialog.Header title=\"Regular Dialog\" />\n          <Dialog.Content className=\"flex flex-col gap-4 p-4\">\n            <Popover>\n              <Popover.Trigger>\n                <Button className=\"self-start\" variant=\"secondary\">\n                  Open Popover\n                </Button>\n              </Popover.Trigger>\n              <Popover.Content className=\"p-4\">\n                <div className=\"flex gap-2\">\n                  <Button\n                    variant=\"primary\"\n                    onClick={handleShowAlertInPopover}\n                  >\n                    Show Alert Above\n                  </Button>\n                  <Button\n                    variant=\"secondary\"\n                    onClick={handleShowConfirmInPopover}\n                  >\n                    Show Confirm Above\n                  </Button>\n                </div>\n              </Popover.Content>\n            </Popover>\n          </Dialog.Content>\n          <Dialog.Footer>\n            <Button\n              variant=\"secondary\"\n              onClick={() => setDialogOpen(false)}\n            >\n              Close Dialog\n            </Button>\n          </Dialog.Footer>\n        </Dialog>\n      )}\n    </div>\n  );\n}"
     }
   ]
 }

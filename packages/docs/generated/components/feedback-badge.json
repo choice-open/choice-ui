@@ -14,6 +14,7 @@
     }
   },
   "exports": [
+    "type BadgeProps",
     "Badge"
   ],
   "props": [
@@ -54,7 +55,7 @@
       "name": "Basic",
       "exportName": "Basic",
       "description": "Badges are used to call attention to status, and come in a strong \"filled\" and light \"outline\" form.\n\nFeatures:\n- Supports multiple variants: \"default\", \"brand\", \"inverted\", \"component\", \"success\", \"warning\", and \"error\" for different semantic meanings.\n- The `strong` prop toggles between a filled (strong) and outlined (subtle) appearance.\n- Can display icons (e.g., status dots) alongside text for richer context.\n- Designed to be compact and easily embeddable in lists, cards, or next to headings.\n\nUsage:\n- Use badges to highlight new or beta features, status changes (e.g., \"Added\", \"Removed\"), or user roles (e.g., \"Admin\").\n- Combine with icons to visually reinforce meaning (e.g., a dot for status).\n- Place badges near the content they annotate, such as next to feature names or user names.\n\nBest Practices:\n- Avoid overusing badges, as too many can reduce their impact.\n- Choose variant colors that align with your application's semantic color system.\n- Use concise, clear text within badges for quick recognition.\n- Ensure badges have sufficient contrast for accessibility.\n\nAccessibility:\n- Badges should have accessible text and sufficient color contrast.\n- When used with icons, ensure the icon is decorative or has an accessible label if it conveys meaning.",
-      "source": "import { Component } from \"@choice-ui/badge\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col items-start gap-4\">\n      <div className=\"grid grid-cols-4 place-items-start gap-4 capitalize\">\n        {Object.values(Variant).map((variant) => (\n          <Fragment key={variant}>\n            {Object.values(Strong).map((strong) => (\n              <Fragment key={strong}>\n                <Badge variant={variant} strong={strong === Strong.True}>\n                  {variant}\n                </Badge>\n                <Badge variant={variant} strong={strong === Strong.True}>\n                  <Dot />\n                  {variant}\n                </Badge>\n              </Fragment>\n            ))}\n          </Fragment>\n        ))}\n      </div>\n    </div>\n  );\n}"
+      "source": "import { Badge } from \"@choice-ui/badge\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col items-start gap-4\">\n      <div className=\"grid grid-cols-4 place-items-start gap-4 capitalize\">\n        {Object.values(Variant).map((variant) => (\n          <Fragment key={variant}>\n            {Object.values(Strong).map((strong) => (\n              <Fragment key={strong}>\n                <Badge variant={variant} strong={strong === Strong.True}>\n                  {variant}\n                </Badge>\n                <Badge variant={variant} strong={strong === Strong.True}>\n                  <Dot />\n                  {variant}\n                </Badge>\n              </Fragment>\n            ))}\n          </Fragment>\n        ))}\n      </div>\n    </div>\n  );\n}"
     }
   ]
 }

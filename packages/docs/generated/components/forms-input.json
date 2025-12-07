@@ -15,7 +15,8 @@
     }
   },
   "exports": [
-    "Input"
+    "Input",
+    "type InputProps"
   ],
   "props": [
     {
@@ -79,42 +80,42 @@
       "name": "Basic",
       "exportName": "Basic",
       "description": "`Input` is a versatile text input component that supports various states and styling options.\n\nFeatures:\n- Multiple visual variants (default, reset, dark)\n- Support for all standard input states (disabled, read-only, selected)\n- Controlled and uncontrolled usage\n- Placeholder text support\n- Full keyboard accessibility\n- Customizable styling\n\nUsage Guidelines:\n- Use for single-line text input in forms\n- Provide clear labels for accessibility (typically outside the component)\n- Choose appropriate variants based on your UI background\n- Use controlled mode when you need to manipulate or validate input values\n\nAccessibility:\n- Supports all standard input ARIA attributes\n- Maintains consistent focus states\n- Ensures proper contrast in all variants\n- Works with form labels and screen readers\nBasic: Demonstrates the default Input component in its simplest form.\n\nThis minimal example shows the standard appearance with default styling.\nUse this as a starting point for customization.",
-      "source": "import { Component } from \"@choice-ui/input\"\n\nexport default function App() {\n  return (\n    <Input />\n  );\n}"
+      "source": "import { Input } from \"@choice-ui/input\"\n\nexport default function App() {\n  return (\n    <Input />\n  );\n}"
     },
     {
       "id": "forms-input--disabled",
       "name": "Disabled",
       "exportName": "Disabled",
       "description": "Disabled: Demonstrates the input in a disabled state.\n\nFeatures:\n- Visually indicates the input cannot be interacted with\n- Prevents user input and focus\n- Maintains form value during submission\n\nUse disabled inputs when:\n- The field is not applicable in the current context\n- Permissions don't allow editing this field\n- You want to prevent changes while preserving the value",
-      "source": "import { Component } from \"@choice-ui/input\"\n\nexport default function App() {\n  return (\n    <Input value={value} onChange={(value) => setValue(value)} disabled />\n  );\n}"
+      "source": "import { Input } from \"@choice-ui/input\"\n\nexport default function App() {\n  return (\n    <Input value={value} onChange={(value) => setValue(value)} disabled />\n  );\n}"
     },
     {
       "id": "forms-input--read-only",
       "name": "Read Only",
       "exportName": "ReadOnly",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/input\"\n\nexport default function App() {\n  return (\n    <Input readOnly value={value} onChange={(value) => setValue(value)} />\n  );\n}"
+      "source": "import { Input } from \"@choice-ui/input\"\n\nexport default function App() {\n  return (\n    <Input readOnly value={value} onChange={(value) => setValue(value)} />\n  );\n}"
     },
     {
       "id": "forms-input--selected",
       "name": "Selected",
       "exportName": "Selected",
       "description": "Selected: Demonstrates the input in a selected state.\n\nFeatures:\n- Visual indication that the input is currently selected\n- Useful for highlighting the active input in a form\n- Remains editable while showing selection state\n\nUse selected inputs when:\n- You want to highlight which field is currently relevant\n- The parent container or context is selected\n- You need to draw attention to a specific field",
-      "source": "import { Component } from \"@choice-ui/input\"\n\nexport default function App() {\n  return (\n    <Input value={value} onChange={(value) => setValue(value)} selected />\n  );\n}"
+      "source": "import { Input } from \"@choice-ui/input\"\n\nexport default function App() {\n  return (\n    <Input value={value} onChange={(value) => setValue(value)} selected />\n  );\n}"
     },
     {
       "id": "forms-input--placeholder",
       "name": "Placeholder",
       "exportName": "Placeholder",
       "description": "Placeholder: Demonstrates using placeholder text in the input.\n\nFeatures:\n- Provides hint text when the input is empty\n- Disappears when the user enters text\n- Helps users understand the expected content\n\nBest Practices:\n- Use concise, descriptive placeholder text\n- Don't rely on placeholders for critical information\n- Consider placeholder text as supplementary to labels\n- Ensure sufficient contrast for readability",
-      "source": "import { Component } from \"@choice-ui/input\"\n\nexport default function App() {\n  return (\n    <Input\n      placeholder=\"Placeholder\"\n      value={value}\n      onChange={(value) => setValue(value)}\n    />\n  );\n}"
+      "source": "import { Input } from \"@choice-ui/input\"\n\nexport default function App() {\n  return (\n    <Input\n      placeholder=\"Placeholder\"\n      value={value}\n      onChange={(value) => setValue(value)}\n    />\n  );\n}"
     },
     {
       "id": "forms-input--variants",
       "name": "Variants",
       "exportName": "Variants",
       "description": "Variants: Demonstrates different visual variants of the input component.\nFeatures:\n- default: Follows the page theme dynamically (light/dark mode)\n- light: Fixed light appearance regardless of theme\n- dark: Fixed dark appearance regardless of theme\n- reset: Removes variant styling, no Variant settings applied\n\nUsage:\n- Use default variant for inputs that adapt to the current theme\n- Use light/dark variants when you need fixed appearance\n- Use reset variant to remove all variant-specific styling",
-      "source": "import { Component } from \"@choice-ui/input\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-2\">\n      <Checkbox value={disabled} onChange={(value) => setDisabled(value)}>\n        Disabled\n      </Checkbox>\n      <div className=\"grid grid-cols-3 overflow-hidden rounded-xl border\">\n        <div className=\"bg-default-background flex aspect-square items-center justify-center p-8\">\n          <Input placeholder=\"Default\" disabled={disabled} />\n        </div>\n        <div className=\"flex aspect-square items-center justify-center bg-white p-8\">\n          <Input variant=\"light\" placeholder=\"Light\" disabled={disabled} />\n        </div>\n        <div className=\"flex aspect-square items-center justify-center bg-gray-800 p-8\">\n          <Input variant=\"dark\" placeholder=\"Dark\" disabled={disabled} />\n        </div>\n      </div>\n    </div>\n  );\n}"
+      "source": "import { Input } from \"@choice-ui/input\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-2\">\n      <Checkbox value={disabled} onChange={(value) => setDisabled(value)}>\n        Disabled\n      </Checkbox>\n      <div className=\"grid grid-cols-3 overflow-hidden rounded-xl border\">\n        <div className=\"bg-default-background flex aspect-square items-center justify-center p-8\">\n          <Input placeholder=\"Default\" disabled={disabled} />\n        </div>\n        <div className=\"flex aspect-square items-center justify-center bg-white p-8\">\n          <Input variant=\"light\" placeholder=\"Light\" disabled={disabled} />\n        </div>\n        <div className=\"flex aspect-square items-center justify-center bg-gray-800 p-8\">\n          <Input variant=\"dark\" placeholder=\"Dark\" disabled={disabled} />\n        </div>\n      </div>\n    </div>\n  );\n}"
     },
     {
       "id": "forms-input--controlled",
@@ -128,7 +129,7 @@
       "name": "Focus Selection Modes",
       "exportName": "FocusSelectionModes",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/input\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-6\">\n      <div>\n        <h3 className=\"text-body-small text-text-secondary mb-2\">\n          Select All (Default)\n        </h3>\n        <Input\n          value={value1}\n          onChange={setValue1}\n          focusSelection=\"all\"\n          placeholder=\"Click to select all text...\"\n          className=\"w-80\"\n        />\n        <p className=\"text-body-small text-text-tertiary mt-1\">\n          focusSelection=&quot;all&quot; - Selects all text when focused\n        </p>\n      </div>\n\n      <div>\n        <h3 className=\"text-body-small text-text-secondary mb-2\">\n          Move to End\n        </h3>\n        <Input\n          value={value2}\n          onChange={setValue2}\n          focusSelection=\"end\"\n          placeholder=\"Click to move cursor to end...\"\n          className=\"w-80\"\n        />\n        <p className=\"text-body-small text-text-tertiary mt-1\">\n          focusSelection=&quot;end&quot; - Moves cursor to end of text\n        </p>\n      </div>\n\n      <div>\n        <h3 className=\"text-body-small text-text-secondary mb-2\">\n          No Selection\n        </h3>\n        <Input\n          value={value3}\n          onChange={setValue3}\n          focusSelection=\"none\"\n          placeholder=\"Click anywhere to focus...\"\n          className=\"w-80\"\n        />\n        <p className=\"text-body-small text-text-tertiary mt-1\">\n          focusSelection=&quot;none&quot; - Maintains cursor position\n        </p>\n      </div>\n    </div>\n  );\n}"
+      "source": "import { Input } from \"@choice-ui/input\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-6\">\n      <div>\n        <h3 className=\"text-body-small text-text-secondary mb-2\">\n          Select All (Default)\n        </h3>\n        <Input\n          value={value1}\n          onChange={setValue1}\n          focusSelection=\"all\"\n          placeholder=\"Click to select all text...\"\n          className=\"w-80\"\n        />\n        <p className=\"text-body-small text-text-tertiary mt-1\">\n          focusSelection=&quot;all&quot; - Selects all text when focused\n        </p>\n      </div>\n\n      <div>\n        <h3 className=\"text-body-small text-text-secondary mb-2\">\n          Move to End\n        </h3>\n        <Input\n          value={value2}\n          onChange={setValue2}\n          focusSelection=\"end\"\n          placeholder=\"Click to move cursor to end...\"\n          className=\"w-80\"\n        />\n        <p className=\"text-body-small text-text-tertiary mt-1\">\n          focusSelection=&quot;end&quot; - Moves cursor to end of text\n        </p>\n      </div>\n\n      <div>\n        <h3 className=\"text-body-small text-text-secondary mb-2\">\n          No Selection\n        </h3>\n        <Input\n          value={value3}\n          onChange={setValue3}\n          focusSelection=\"none\"\n          placeholder=\"Click anywhere to focus...\"\n          className=\"w-80\"\n        />\n        <p className=\"text-body-small text-text-tertiary mt-1\">\n          focusSelection=&quot;none&quot; - Maintains cursor position\n        </p>\n      </div>\n    </div>\n  );\n}"
     }
   ]
 }

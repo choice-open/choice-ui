@@ -4,7 +4,7 @@ import { Children, cloneElement, CSSProperties, forwardRef, HTMLProps, isValidEl
 import { type IconButtonProps } from "./icon-button"
 import { iconButtonGroupTv } from "./tv"
 
-interface IconButtonGroupProps extends HTMLProps<HTMLDivElement> {
+export interface IconButtonGroupProps extends HTMLProps<HTMLDivElement> {
   children: React.ReactNode
   variant?: "default" | "secondary" | "solid"
 }

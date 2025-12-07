@@ -14,7 +14,8 @@
     }
   },
   "exports": [
-    "LinkButton"
+    "LinkButton",
+    "type LinkButtonProps"
   ],
   "props": [
     {
@@ -54,84 +55,84 @@
       "name": "As Button",
       "exportName": "AsButton",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/link-button\"\n\nexport default function App() {\n  return (\n    <LinkButton onClick={() => alert(\"Button clicked!\")}>Click me</LinkButton>\n  );\n}"
+      "source": "import { LinkButton } from \"@choice-ui/link-button\"\n\nexport default function App() {\n  return (\n    <LinkButton onClick={() => alert(\"Button clicked!\")}>Click me</LinkButton>\n  );\n}"
     },
     {
       "id": "buttons-linkbutton--as-internal-link",
       "name": "As Internal Link",
       "exportName": "AsInternalLink",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/link-button\"\n\nexport default function App() {\n  return (\n    <LinkButton href=\"/dashboard\">Go to Dashboard</LinkButton>\n  );\n}"
+      "source": "import { LinkButton } from \"@choice-ui/link-button\"\n\nexport default function App() {\n  return (\n    <LinkButton href=\"/dashboard\">Go to Dashboard</LinkButton>\n  );\n}"
     },
     {
       "id": "buttons-linkbutton--as-external-link",
       "name": "As External Link",
       "exportName": "AsExternalLink",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/link-button\"\n\nexport default function App() {\n  return (\n    <LinkButton href=\"https://github.com\">Visit GitHub</LinkButton>\n  );\n}"
+      "source": "import { LinkButton } from \"@choice-ui/link-button\"\n\nexport default function App() {\n  return (\n    <LinkButton href=\"https://github.com\">Visit GitHub</LinkButton>\n  );\n}"
     },
     {
       "id": "buttons-linkbutton--default",
       "name": "Default",
       "exportName": "Default",
       "description": "Default variant with standard accent color styling.",
-      "source": "import { Component } from \"@choice-ui/link-button\"\n\nexport default function App() {\n  return (\n    <LinkButton href=\"/example\" variant=\"default\">\n      Default Style\n    </LinkButton>\n  );\n}"
+      "source": "import { LinkButton } from \"@choice-ui/link-button\"\n\nexport default function App() {\n  return (\n    <LinkButton href=\"/example\" variant=\"default\">\n      Default Style\n    </LinkButton>\n  );\n}"
     },
     {
       "id": "buttons-linkbutton--subtle",
       "name": "Subtle",
       "exportName": "Subtle",
       "description": "Subtle variant with muted styling.",
-      "source": "import { Component } from \"@choice-ui/link-button\"\n\nexport default function App() {\n  return (\n    <LinkButton href=\"/example\" variant=\"subtle\">\n      Subtle Style\n    </LinkButton>\n  );\n}"
+      "source": "import { LinkButton } from \"@choice-ui/link-button\"\n\nexport default function App() {\n  return (\n    <LinkButton href=\"/example\" variant=\"subtle\">\n      Subtle Style\n    </LinkButton>\n  );\n}"
     },
     {
       "id": "buttons-linkbutton--disabled",
       "name": "Disabled",
       "exportName": "Disabled",
       "description": "Disabled state prevents interaction and shows visual feedback.\nWorks for both links and buttons.",
-      "source": "import { Component } from \"@choice-ui/link-button\"\n\nexport default function App() {\n  return (\n    <div className=\"flex gap-4\">\n      <LinkButton disabled href=\"/example\">\n        Disabled Link\n      </LinkButton>\n      <LinkButton disabled onClick={() => alert(\"Won't fire\")}>\n        Disabled Button\n      </LinkButton>\n    </div>\n  );\n}"
+      "source": "import { LinkButton } from \"@choice-ui/link-button\"\n\nexport default function App() {\n  return (\n    <div className=\"flex gap-4\">\n      <LinkButton disabled href=\"/example\">\n        Disabled Link\n      </LinkButton>\n      <LinkButton disabled onClick={() => alert(\"Won't fire\")}>\n        Disabled Button\n      </LinkButton>\n    </div>\n  );\n}"
     },
     {
       "id": "buttons-linkbutton--with-icons",
       "name": "With Icons",
       "exportName": "WithIcons",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/link-button\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col items-start gap-3\">\n      <LinkButton href=\"/home\" className=\"gap-1\">\n        <Settings width={16} height={16} />\n        Home\n      </LinkButton>\n      <LinkButton href=\"/settings\" variant=\"subtle\" className=\"gap-1\">\n        <Settings width={16} height={16} />\n        Settings\n      </LinkButton>\n    </div>\n  );\n}"
+      "source": "import { LinkButton } from \"@choice-ui/link-button\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col items-start gap-3\">\n      <LinkButton href=\"/home\" className=\"gap-1\">\n        <Settings width={16} height={16} />\n        Home\n      </LinkButton>\n      <LinkButton href=\"/settings\" variant=\"subtle\" className=\"gap-1\">\n        <Settings width={16} height={16} />\n        Settings\n      </LinkButton>\n    </div>\n  );\n}"
     },
     {
       "id": "buttons-linkbutton--all-variants",
       "name": "All Variants",
       "exportName": "AllVariants",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/link-button\"\n\nexport default function App() {\n  return (\n    <div className=\"flex gap-4\">\n      <LinkButton href=\"/example\" variant=\"default\">\n        Default\n      </LinkButton>\n      <LinkButton href=\"/example\" variant=\"subtle\">\n        Subtle\n      </LinkButton>\n    </div>\n  );\n}"
+      "source": "import { LinkButton } from \"@choice-ui/link-button\"\n\nexport default function App() {\n  return (\n    <div className=\"flex gap-4\">\n      <LinkButton href=\"/example\" variant=\"default\">\n        Default\n      </LinkButton>\n      <LinkButton href=\"/example\" variant=\"subtle\">\n        Subtle\n      </LinkButton>\n    </div>\n  );\n}"
     },
     {
       "id": "buttons-linkbutton--security-features",
       "name": "Security Features",
       "exportName": "SecurityFeatures",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/link-button\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-4\">\n      <div>\n        <h3 className=\"text-body-small-strong mb-2\">Internal Link (safe)</h3>\n        <LinkButton href=\"/internal-page\">Internal Navigation</LinkButton>\n        <p className=\"mt-1 text-xs text-gray-600\">\n          No additional attributes needed\n        </p>\n      </div>\n\n      <div>\n        <h3 className=\"text-body-small-strong mb-2\">\n          External Link (auto-secured)\n        </h3>\n        <LinkButton href=\"https://external-site.com\">External Site</LinkButton>\n        <p className=\"mt-1 text-xs text-gray-600\">\n          Automatically gets target=&quot;_blank&quot; and rel=&quot;noopener\n          noreferrer&quot;\n        </p>\n      </div>\n\n      <div>\n        <h3 className=\"text-body-small-strong mb-2\">\n          Protocol-relative Link (auto-secured)\n        </h3>\n        <LinkButton href=\"//cdn.example.com\">CDN Resource</LinkButton>\n        <p className=\"mt-1 text-xs text-gray-600\">\n          Also gets security attributes\n        </p>\n      </div>\n    </div>\n  );\n}"
+      "source": "import { LinkButton } from \"@choice-ui/link-button\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-4\">\n      <div>\n        <h3 className=\"text-body-small-strong mb-2\">Internal Link (safe)</h3>\n        <LinkButton href=\"/internal-page\">Internal Navigation</LinkButton>\n        <p className=\"mt-1 text-xs text-gray-600\">\n          No additional attributes needed\n        </p>\n      </div>\n\n      <div>\n        <h3 className=\"text-body-small-strong mb-2\">\n          External Link (auto-secured)\n        </h3>\n        <LinkButton href=\"https://external-site.com\">External Site</LinkButton>\n        <p className=\"mt-1 text-xs text-gray-600\">\n          Automatically gets target=&quot;_blank&quot; and rel=&quot;noopener\n          noreferrer&quot;\n        </p>\n      </div>\n\n      <div>\n        <h3 className=\"text-body-small-strong mb-2\">\n          Protocol-relative Link (auto-secured)\n        </h3>\n        <LinkButton href=\"//cdn.example.com\">CDN Resource</LinkButton>\n        <p className=\"mt-1 text-xs text-gray-600\">\n          Also gets security attributes\n        </p>\n      </div>\n    </div>\n  );\n}"
     },
     {
       "id": "buttons-linkbutton--accessibility-features",
       "name": "Accessibility Features",
       "exportName": "AccessibilityFeatures",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/link-button\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-4\">\n      <div>\n        <h3 className=\"text-body-small-strong mb-2\">Normal States</h3>\n        <div className=\"flex gap-2\">\n          <LinkButton href=\"/example\">Focusable Link</LinkButton>\n          <LinkButton onClick={() => {}}>Focusable Button</LinkButton>\n        </div>\n        <p className=\"mt-1 text-xs text-gray-600\">\n          Tab through these elements to see focus rings\n        </p>\n      </div>\n\n      <div>\n        <h3 className=\"text-body-small-strong mb-2\">Disabled States</h3>\n        <div className=\"flex gap-2\">\n          <LinkButton disabled href=\"/example\">\n            Disabled Link\n          </LinkButton>\n          <LinkButton disabled onClick={() => {}}>\n            Disabled Button\n          </LinkButton>\n        </div>\n        <p className=\"mt-1 text-xs text-gray-600\">\n          These are not focusable and have aria-disabled attributes\n        </p>\n      </div>\n    </div>\n  );\n}"
+      "source": "import { LinkButton } from \"@choice-ui/link-button\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-4\">\n      <div>\n        <h3 className=\"text-body-small-strong mb-2\">Normal States</h3>\n        <div className=\"flex gap-2\">\n          <LinkButton href=\"/example\">Focusable Link</LinkButton>\n          <LinkButton onClick={() => {}}>Focusable Button</LinkButton>\n        </div>\n        <p className=\"mt-1 text-xs text-gray-600\">\n          Tab through these elements to see focus rings\n        </p>\n      </div>\n\n      <div>\n        <h3 className=\"text-body-small-strong mb-2\">Disabled States</h3>\n        <div className=\"flex gap-2\">\n          <LinkButton disabled href=\"/example\">\n            Disabled Link\n          </LinkButton>\n          <LinkButton disabled onClick={() => {}}>\n            Disabled Button\n          </LinkButton>\n        </div>\n        <p className=\"mt-1 text-xs text-gray-600\">\n          These are not focusable and have aria-disabled attributes\n        </p>\n      </div>\n    </div>\n  );\n}"
     },
     {
       "id": "buttons-linkbutton--real-world-examples",
       "name": "Real World Examples",
       "exportName": "RealWorldExamples",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/link-button\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-6\">\n      <div>\n        <h3 className=\"text-body-small-strong mb-3\">Navigation Menu</h3>\n        <nav className=\"flex gap-4\">\n          <LinkButton href=\"/dashboard\" variant=\"default\">\n            Dashboard\n          </LinkButton>\n          <LinkButton href=\"/projects\" variant=\"subtle\">\n            Projects\n          </LinkButton>\n          <LinkButton href=\"/settings\" variant=\"subtle\">\n            Settings\n          </LinkButton>\n        </nav>\n      </div>\n\n      <div>\n        <h3 className=\"text-body-small-strong mb-3\">Call-to-Action</h3>\n        <div className=\"flex gap-3\">\n          <LinkButton href=\"/learn-more\" variant=\"subtle\">\n            Learn More\n          </LinkButton>\n        </div>\n      </div>\n\n      <div>\n        <h3 className=\"text-body-small-strong mb-3\">Footer Links</h3>\n        <footer className=\"text-body-small flex flex-wrap gap-4\">\n          <LinkButton href=\"/privacy\" variant=\"subtle\">\n            Privacy Policy\n          </LinkButton>\n          <LinkButton href=\"/terms\" variant=\"subtle\">\n            Terms of Service\n          </LinkButton>\n          <LinkButton href=\"https://support.example.com\" variant=\"subtle\">\n            Support\n          </LinkButton>\n        </footer>\n      </div>\n    </div>\n  );\n}"
+      "source": "import { LinkButton } from \"@choice-ui/link-button\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-6\">\n      <div>\n        <h3 className=\"text-body-small-strong mb-3\">Navigation Menu</h3>\n        <nav className=\"flex gap-4\">\n          <LinkButton href=\"/dashboard\" variant=\"default\">\n            Dashboard\n          </LinkButton>\n          <LinkButton href=\"/projects\" variant=\"subtle\">\n            Projects\n          </LinkButton>\n          <LinkButton href=\"/settings\" variant=\"subtle\">\n            Settings\n          </LinkButton>\n        </nav>\n      </div>\n\n      <div>\n        <h3 className=\"text-body-small-strong mb-3\">Call-to-Action</h3>\n        <div className=\"flex gap-3\">\n          <LinkButton href=\"/learn-more\" variant=\"subtle\">\n            Learn More\n          </LinkButton>\n        </div>\n      </div>\n\n      <div>\n        <h3 className=\"text-body-small-strong mb-3\">Footer Links</h3>\n        <footer className=\"text-body-small flex flex-wrap gap-4\">\n          <LinkButton href=\"/privacy\" variant=\"subtle\">\n            Privacy Policy\n          </LinkButton>\n          <LinkButton href=\"/terms\" variant=\"subtle\">\n            Terms of Service\n          </LinkButton>\n          <LinkButton href=\"https://support.example.com\" variant=\"subtle\">\n            Support\n          </LinkButton>\n        </footer>\n      </div>\n    </div>\n  );\n}"
     },
     {
       "id": "buttons-linkbutton--readonly",
       "name": "Readonly",
       "exportName": "Readonly",
       "description": "LinkButton component in readOnly state.\n\nIn readOnly mode:\n- Link buttons do not respond to click events\n- Links will not navigate (href is removed)\n- Useful for displaying link buttons without allowing interactions",
-      "source": "import { Component } from \"@choice-ui/link-button\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <div className=\"rounded-xl border bg-stone-50 p-4\">\n        <div className=\"text-body-small-strong mb-2 text-stone-700\">\n          Click Count:\n        </div>\n        <div className=\"text-body-small font-mono text-stone-600\">\n          {clickCount}\n        </div>\n      </div>\n\n      <div className=\"flex flex-wrap gap-4\">\n        <LinkButton\n          readOnly\n          href=\"https://example.com\"\n          onClick={() => setClickCount((prev) => prev + 1)}\n        >\n          Readonly Link\n        </LinkButton>\n        <LinkButton\n          readOnly\n          variant=\"subtle\"\n          onClick={() => setClickCount((prev) => prev + 1)}\n        >\n          Readonly Button\n        </LinkButton>\n        <LinkButton onClick={() => setClickCount((prev) => prev + 1)}>\n          Normal Link (for comparison)\n        </LinkButton>\n      </div>\n\n      <div className=\"text-body-small text-stone-600\">\n        💡 Try clicking on the readonly link buttons - the click count should\n        not change and links will not navigate. Only the normal button will\n        increment the count.\n      </div>\n    </div>\n  );\n}"
+      "source": "import { LinkButton } from \"@choice-ui/link-button\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <div className=\"rounded-xl border bg-stone-50 p-4\">\n        <div className=\"text-body-small-strong mb-2 text-stone-700\">\n          Click Count:\n        </div>\n        <div className=\"text-body-small font-mono text-stone-600\">\n          {clickCount}\n        </div>\n      </div>\n\n      <div className=\"flex flex-wrap gap-4\">\n        <LinkButton\n          readOnly\n          href=\"https://example.com\"\n          onClick={() => setClickCount((prev) => prev + 1)}\n        >\n          Readonly Link\n        </LinkButton>\n        <LinkButton\n          readOnly\n          variant=\"subtle\"\n          onClick={() => setClickCount((prev) => prev + 1)}\n        >\n          Readonly Button\n        </LinkButton>\n        <LinkButton onClick={() => setClickCount((prev) => prev + 1)}>\n          Normal Link (for comparison)\n        </LinkButton>\n      </div>\n\n      <div className=\"text-body-small text-stone-600\">\n        💡 Try clicking on the readonly link buttons - the click count should\n        not change and links will not navigate. Only the normal button will\n        increment the count.\n      </div>\n    </div>\n  );\n}"
     }
   ]
 }

@@ -16,7 +16,28 @@
     }
   },
   "exports": [
-    "Panel"
+    "PanelBase",
+    "Panel",
+    "type PanelRowProps",
+    "PanelRow",
+    "PanelLabel",
+    "PanelTitle",
+    "PanelSortable",
+    "PanelSortableRow",
+    "PanelRowLabel",
+    "type PanelRowManyIconItem",
+    "type PanelRowManyIconProps",
+    "PanelRowManyIcon",
+    "PanelPreviewer",
+    "PanelContext",
+    "usePanelContext",
+    "type SortableItem",
+    "type SortableRowDataContextValue",
+    "SortableRowDataContext",
+    "useSortableRowItem",
+    "type SortablePaneContextValue",
+    "SortablePaneContext",
+    "useSortablePane"
   ],
   "props": [
     {

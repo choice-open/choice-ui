@@ -15,6 +15,9 @@
     }
   },
   "exports": [
+    "type SwitchLabelProps",
+    "SwitchLabel",
+    "type SwitchProps",
     "Switch"
   ],
   "props": [
@@ -91,56 +94,56 @@
       "name": "Basic",
       "exportName": "Basic",
       "description": "The `Switch` component is a toggle control for binary states like on/off or enabled/disabled.\nIt is a controlled component that requires a `value` prop and an `onChange` prop.\n\nFeatures:\n- Multiple visual variants (default, accent, outline)\n- Two sizes (small, medium)\n- Support for disabled and focused states\n- Two label approaches: simple string children or explicit `<Switch.Label>` for complex content\n- Full keyboard and screen reader accessibility\n\nUsage Guidelines:\n- Use for immediate toggle actions (unlike checkboxes in forms)\n- Provide clear labels that describe the state being toggled\n- Simple labels: `<Switch>Label text</Switch>`\n- Complex labels: `<Switch><Switch.Label>Complex content</Switch.Label></Switch>`\n- Consider using tooltips for additional context when needed\n\nBest Practices:\n- Always provide a visible label (string or `<Switch.Label>`)\n- Use simple string children for basic labels\n- Use `<Switch.Label>` for labels with formatting or complex content\n- Make the toggle action and its effect immediately apparent\n- Choose appropriate size and variant based on context",
-      "source": "import { Component } from \"@choice-ui/switch\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      {Object.values(Size).map((size, index) => (\n        <Fragment key={size}>\n          <span>{size}</span>\n          <div className=\"grid grid-cols-7 gap-2\">\n            <span></span>\n            <span className=\"col-span-2\">Disabled</span>\n            <span className=\"col-span-2\">Enabled</span>\n            <span className=\"col-span-2\">Focused</span>\n          </div>\n          <div className=\"grid grid-cols-7 gap-2\">\n            {Object.values(Variant).map((variant) => (\n              <Fragment key={variant}>\n                <span className=\"text-pink-500\">{variant}</span>\n                {Object.values(State).map((state) => (\n                  <Fragment key={state}>\n                    {[false, true].map((value) => (\n                      <Switch\n                        key={`${variant}-${state}-${value}`}\n                        value={value}\n                        onChange={() => {}}\n                        variant={variant}\n                        size={size}\n                        disabled={state === State.Disabled}\n                        focused={state === State.Focused}\n                      />\n                    ))}\n                  </Fragment>\n                ))}\n              </Fragment>\n            ))}\n          </div>\n          {index < Object.values(Size).length - 1 && <hr />}\n        </Fragment>\n      ))}\n    </div>\n  );\n}"
+      "source": "import { Switch } from \"@choice-ui/switch\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      {Object.values(Size).map((size, index) => (\n        <Fragment key={size}>\n          <span>{size}</span>\n          <div className=\"grid grid-cols-7 gap-2\">\n            <span></span>\n            <span className=\"col-span-2\">Disabled</span>\n            <span className=\"col-span-2\">Enabled</span>\n            <span className=\"col-span-2\">Focused</span>\n          </div>\n          <div className=\"grid grid-cols-7 gap-2\">\n            {Object.values(Variant).map((variant) => (\n              <Fragment key={variant}>\n                <span className=\"text-pink-500\">{variant}</span>\n                {Object.values(State).map((state) => (\n                  <Fragment key={state}>\n                    {[false, true].map((value) => (\n                      <Switch\n                        key={`${variant}-${state}-${value}`}\n                        value={value}\n                        onChange={() => {}}\n                        variant={variant}\n                        size={size}\n                        disabled={state === State.Disabled}\n                        focused={state === State.Focused}\n                      />\n                    ))}\n                  </Fragment>\n                ))}\n              </Fragment>\n            ))}\n          </div>\n          {index < Object.values(Size).length - 1 && <hr />}\n        </Fragment>\n      ))}\n    </div>\n  );\n}"
     },
     {
       "id": "forms-switch--sizes",
       "name": "Sizes",
       "exportName": "Sizes",
       "description": "The `size` prop is used to set the size of the switch.\n- `small`: height: 1rem / 16px\n- `medium`: height: 1.5rem / 24px (default)",
-      "source": "import { Component } from \"@choice-ui/switch\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <Switch value={small} onChange={setSmall} size=\"small\">\n        Small size\n      </Switch>\n      <Switch value={medium} onChange={setMedium}>\n        Medium size\n      </Switch>\n    </div>\n  );\n}"
+      "source": "import { Switch } from \"@choice-ui/switch\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <Switch value={small} onChange={setSmall} size=\"small\">\n        Small size\n      </Switch>\n      <Switch value={medium} onChange={setMedium}>\n        Medium size\n      </Switch>\n    </div>\n  );\n}"
     },
     {
       "id": "forms-switch--variants",
       "name": "Variants",
       "exportName": "Variants",
       "description": "The `variant` prop is used to set the variant of the switch.\n- `default`: The default variant of the switch.\n- `accent`: The accent variant of the switch.\n- `outline`: The outline variant of the switch.",
-      "source": "import { Component } from \"@choice-ui/switch\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <Switch\n        value={defaultVariant}\n        onChange={setDefaultVariant}\n        variant=\"default\"\n      >\n        Default variant\n      </Switch>\n      <Switch\n        value={accentVariant}\n        onChange={setAccentVariant}\n        variant=\"accent\"\n      >\n        Accent variant\n      </Switch>\n      <Switch\n        value={outlineVariant}\n        onChange={setOutlineVariant}\n        variant=\"outline\"\n      >\n        Outline variant\n      </Switch>\n    </div>\n  );\n}"
+      "source": "import { Switch } from \"@choice-ui/switch\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <Switch\n        value={defaultVariant}\n        onChange={setDefaultVariant}\n        variant=\"default\"\n      >\n        Default variant\n      </Switch>\n      <Switch\n        value={accentVariant}\n        onChange={setAccentVariant}\n        variant=\"accent\"\n      >\n        Accent variant\n      </Switch>\n      <Switch\n        value={outlineVariant}\n        onChange={setOutlineVariant}\n        variant=\"outline\"\n      >\n        Outline variant\n      </Switch>\n    </div>\n  );\n}"
     },
     {
       "id": "forms-switch--disabled",
       "name": "Disabled",
       "exportName": "Disabled",
       "description": "The `disabled` prop is used to disable the switch.\n- `true`: The switch is disabled.\n- `false`: The switch is enabled.",
-      "source": "import { Component } from \"@choice-ui/switch\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <Switch value={disabled} onChange={setDisabled} disabled>\n        Disabled unchecked\n      </Switch>\n      <Switch value={disabledChecked} onChange={setDisabledChecked} disabled>\n        Disabled checked\n      </Switch>\n    </div>\n  );\n}"
+      "source": "import { Switch } from \"@choice-ui/switch\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <Switch value={disabled} onChange={setDisabled} disabled>\n        Disabled unchecked\n      </Switch>\n      <Switch value={disabledChecked} onChange={setDisabledChecked} disabled>\n        Disabled checked\n      </Switch>\n    </div>\n  );\n}"
     },
     {
       "id": "forms-switch--label-usage",
       "name": "Label Usage",
       "exportName": "LabelUsage",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/switch\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <div>\n        <h4 className=\"font-strong mb-2\">\n          Simple string label (auto-wrapped):\n        </h4>\n        <Switch value={simple} onChange={setSimple}>\n          Simple text label\n        </Switch>\n      </div>\n\n      <div>\n        <h4 className=\"font-strong mb-2\">\n          Explicit Switch.Label (for complex content):\n        </h4>\n        <Switch value={explicit} onChange={setExplicit}>\n          <Switch.Label>\n            <span className=\"text-accent-foreground\">Complex</span> label with{\" \"}\n            <strong>formatting</strong>\n          </Switch.Label>\n        </Switch>\n      </div>\n    </div>\n  );\n}"
+      "source": "import { Switch } from \"@choice-ui/switch\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <div>\n        <h4 className=\"font-strong mb-2\">\n          Simple string label (auto-wrapped):\n        </h4>\n        <Switch value={simple} onChange={setSimple}>\n          Simple text label\n        </Switch>\n      </div>\n\n      <div>\n        <h4 className=\"font-strong mb-2\">\n          Explicit Switch.Label (for complex content):\n        </h4>\n        <Switch value={explicit} onChange={setExplicit}>\n          <Switch.Label>\n            <span className=\"text-accent-foreground\">Complex</span> label with{\" \"}\n            <strong>formatting</strong>\n          </Switch.Label>\n        </Switch>\n      </div>\n    </div>\n  );\n}"
     },
     {
       "id": "forms-switch--legacy-label-prop",
       "name": "Legacy Label Prop",
       "exportName": "LegacyLabelProp",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/switch\"\n\nexport default function App() {\n  return (\n    <Switch\n      value={value}\n      onChange={setValue}\n      label=\"Switch with legacy label prop\"\n    />\n  );\n}"
+      "source": "import { Switch } from \"@choice-ui/switch\"\n\nexport default function App() {\n  return (\n    <Switch\n      value={value}\n      onChange={setValue}\n      label=\"Switch with legacy label prop\"\n    />\n  );\n}"
     },
     {
       "id": "forms-switch--with-tooltip",
       "name": "With Tooltip",
       "exportName": "WithTooltip",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/switch\"\n\nexport default function App() {\n  return (\n    <Tooltip content=\"This is a tooltip\">\n      <Switch value={tooltip} onChange={setTooltip}>\n        Switch with tooltip\n      </Switch>\n    </Tooltip>\n  );\n}"
+      "source": "import { Switch } from \"@choice-ui/switch\"\n\nexport default function App() {\n  return (\n    <Tooltip content=\"This is a tooltip\">\n      <Switch value={tooltip} onChange={setTooltip}>\n        Switch with tooltip\n      </Switch>\n    </Tooltip>\n  );\n}"
     },
     {
       "id": "forms-switch--readonly",
       "name": "Readonly",
       "exportName": "Readonly",
       "description": "Switch component in readOnly state.\n\nIn readOnly mode:\n- The switch does not respond to click or change events\n- The value cannot be changed\n- Useful for displaying switch state without allowing changes",
-      "source": "import { Component } from \"@choice-ui/switch\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <div className=\"rounded-xl border bg-stone-50 p-4\">\n        <div className=\"text-body-small-strong mb-2 text-stone-700\">\n          Current Value:\n        </div>\n        <div className=\"text-body-small font-mono text-stone-600\">\n          {value ? \"true\" : \"false\"}\n        </div>\n        <div className=\"text-body-small-strong mt-2 text-stone-700\">\n          Change Count:\n        </div>\n        <div className=\"text-body-small font-mono text-stone-600\">\n          {changeCount}\n        </div>\n      </div>\n\n      <div className=\"flex flex-wrap gap-4\">\n        <Switch readOnly value={value} onChange={handleChange}>\n          Readonly Switch\n        </Switch>\n        <Switch readOnly value={!value} onChange={handleChange}>\n          Readonly Switch (on)\n        </Switch>\n        <Switch value={value} onChange={handleChange}>\n          Normal Switch (for comparison)\n        </Switch>\n      </div>\n\n      <div className=\"text-body-small text-stone-600\">\n        💡 Try clicking on the readonly switches - the value should not change\n        and the change count should remain at 0. Only the normal switch will\n        change the value.\n      </div>\n    </div>\n  );\n}"
+      "source": "import { Switch } from \"@choice-ui/switch\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <div className=\"rounded-xl border bg-stone-50 p-4\">\n        <div className=\"text-body-small-strong mb-2 text-stone-700\">\n          Current Value:\n        </div>\n        <div className=\"text-body-small font-mono text-stone-600\">\n          {value ? \"true\" : \"false\"}\n        </div>\n        <div className=\"text-body-small-strong mt-2 text-stone-700\">\n          Change Count:\n        </div>\n        <div className=\"text-body-small font-mono text-stone-600\">\n          {changeCount}\n        </div>\n      </div>\n\n      <div className=\"flex flex-wrap gap-4\">\n        <Switch readOnly value={value} onChange={handleChange}>\n          Readonly Switch\n        </Switch>\n        <Switch readOnly value={!value} onChange={handleChange}>\n          Readonly Switch (on)\n        </Switch>\n        <Switch value={value} onChange={handleChange}>\n          Normal Switch (for comparison)\n        </Switch>\n      </div>\n\n      <div className=\"text-body-small text-stone-600\">\n        💡 Try clicking on the readonly switches - the value should not change\n        and the change count should remain at 0. Only the normal switch will\n        change the value.\n      </div>\n    </div>\n  );\n}"
     }
   ]
 }

@@ -17,7 +17,13 @@
     "ScrollArea",
     "type ScrollAreaProps",
     "type ScrollbarProps",
-    "type ThumbProps"
+    "type ThumbProps",
+    "useScrollStateAndVisibility",
+    "useThumbStyle",
+    "useThumbDrag",
+    "useHasOverflow",
+    "useScrollbarShouldShow",
+    "useScrollPerformanceMonitor"
   ],
   "props": [
     {

@@ -15,12 +15,9 @@
     }
   },
   "exports": [
-    "useTabsContext",
-    "type TabsContextValue",
-    "type TabItemProps",
-    "type TabsProps",
     "Tabs",
-    "TabItem"
+    "type TabsProps",
+    "type TabItemProps"
   ],
   "props": [],
   "stories": [

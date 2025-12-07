@@ -22,7 +22,33 @@
     }
   },
   "exports": [
-    "MdInput"
+    "MdInput",
+    "type MentionItemProps",
+    "type UseMentionsOptions",
+    "type MdInputProps",
+    "type MentionState",
+    "type MdInputContextValue",
+    "type ToolbarAction",
+    "type ToolbarProps",
+    "MdInputHeader",
+    "MdInputTabs",
+    "MdInputContainer",
+    "MdInputEditor",
+    "MdInputFooter",
+    "type MdInputHeaderProps",
+    "type MdInputTabsProps",
+    "type MdInputContainerProps",
+    "type MdInputEditorProps",
+    "type MdInputFooterProps",
+    "Toolbar",
+    "ToolbarButton",
+    "DEFAULT_TOOLBAR_GROUPS",
+    "MdInputMention",
+    "useMarkdownFormatting",
+    "useMarkdownShortcuts",
+    "useMarkdownMentions",
+    "MdInputContext",
+    "useMdInputContext"
   ],
   "props": [
     {

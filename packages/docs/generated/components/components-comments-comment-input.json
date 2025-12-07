@@ -36,7 +36,34 @@
     }
   },
   "exports": [
-    "Comments"
+    "Comments",
+    "type CommentInputProps",
+    "CommentInput",
+    "type CustomEditor",
+    "type ExtendedRenderElement",
+    "type ParagraphElement",
+    "type StructuredData",
+    "type MentionElement",
+    "type Attachment",
+    "type ImageElement",
+    "type ListItemElement",
+    "type NumberedListElement",
+    "type BulletedListElement",
+    "type CustomElement",
+    "type CustomText",
+    "CommentItem",
+    "type CommentItemProps",
+    "comments$",
+    "sortedComments$",
+    "allComments$",
+    "commentsService",
+    "useCommentsState",
+    "type User",
+    "type Reaction",
+    "type SubmittedCommentData",
+    "type InputDefaultText",
+    "type ItemDefaultText",
+    "type DefaultText"
   ],
   "props": [
     {
@@ -94,21 +121,21 @@
       "name": "Default",
       "exportName": "Default",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/comments\"\n\nexport default function App() {\n  return (\n    <BasicCommentInput\n      users={mockUsers}\n      placeholder=\"Add a comment, use @ to mention users...\"\n    />\n  );\n}"
+      "source": "import { Comments } from \"@choice-ui/comments\"\n\nexport default function App() {\n  return (\n    <BasicCommentInput\n      users={mockUsers}\n      placeholder=\"Add a comment, use @ to mention users...\"\n    />\n  );\n}"
     },
     {
       "id": "components-comments-commentinput--solid",
       "name": "Solid",
       "exportName": "Solid",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/comments\"\n\nexport default function App() {\n  return (\n    <BasicCommentInput\n      users={mockUsers}\n      placeholder=\"Add a comment, use @ to mention users...\"\n      variant=\"solid\"\n    />\n  );\n}"
+      "source": "import { Comments } from \"@choice-ui/comments\"\n\nexport default function App() {\n  return (\n    <BasicCommentInput\n      users={mockUsers}\n      placeholder=\"Add a comment, use @ to mention users...\"\n      variant=\"solid\"\n    />\n  );\n}"
     },
     {
       "id": "components-comments-commentinput--no-users",
       "name": "No Users",
       "exportName": "NoUsers",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/comments\"\n\nexport default function App() {\n  return (\n    <BasicCommentInput placeholder=\"This example has no users to @mention\" />\n  );\n}"
+      "source": "import { Comments } from \"@choice-ui/comments\"\n\nexport default function App() {\n  return (\n    <BasicCommentInput placeholder=\"This example has no users to @mention\" />\n  );\n}"
     }
   ]
 }

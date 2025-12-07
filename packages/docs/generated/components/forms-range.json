@@ -16,7 +16,10 @@
     }
   },
   "exports": [
-    "Range"
+    "type RangeProps",
+    "Range",
+    "type RangeTupleProps",
+    "RangeTuple"
   ],
   "props": [
     {
@@ -116,133 +119,133 @@
       "name": "Basic",
       "exportName": "Basic",
       "description": "`Range` is a slider component that allows users to select a numeric value within a specified range.\n\nFeatures:\n- Customizable minimum and maximum values\n- Optional step intervals with visual tick marks\n- Default value indicator with snap effect\n- Configurable track and thumb sizes\n- Disabled state support\n- Controlled and uncontrolled usage\n- Smooth drag interaction\n\nUsage Guidelines:\n- Use for selecting a value from a continuous range\n- Provide appropriate min, max, and step values for your use case\n- Consider using step marks for discrete values\n- Display the current value for better usability\n- Use defaultValue to indicate recommended or factory settings\n- Specify explicit width for consistent appearance\n\nAccessibility:\n- Keyboard support (arrow keys, home/end)\n- Proper ARIA attributes\n- Focus management\n- Screen reader compatibility\n- Appropriate contrast ratios\nBasic: Demonstrates the simplest Range implementation.\n\nFeatures:\n- Controlled component with value and onChange props\n- Default sizing and appearance\n- Smooth sliding interaction\n\nThis example shows a minimal Range implementation with default props.\nThe slider uses its default min (0), max (100), and step values.",
-      "source": "import { Component } from \"@choice-ui/range\"\n\nexport default function App() {\n  return (\n    <>\n      <Range value={value} onChange={setValue} />\n    </>\n  );\n}"
+      "source": "import { Range } from \"@choice-ui/range\"\n\nexport default function App() {\n  return (\n    <>\n      <Range value={value} onChange={setValue} />\n    </>\n  );\n}"
     },
     {
       "id": "forms-range--negative",
       "name": "Negative",
       "exportName": "Negative",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/range\"\n\nexport default function App() {\n  return (\n    <Range\n      value={value}\n      onChange={setValue}\n      min={-100}\n      max={100}\n      defaultValue={0}\n    />\n  );\n}"
+      "source": "import { Range } from \"@choice-ui/range\"\n\nexport default function App() {\n  return (\n    <Range\n      value={value}\n      onChange={setValue}\n      min={-100}\n      max={100}\n      defaultValue={0}\n    />\n  );\n}"
     },
     {
       "id": "forms-range--step",
       "name": "Step",
       "exportName": "Step",
       "description": "Step: Demonstrates Range with discrete steps and tick marks.\n\nFeatures:\n- Visual tick marks for each step\n- Snapping to step values during dragging\n- Value display to show current selection\n\nUse stepped ranges when:\n- Only specific values are valid (like percentages in increments of 10)\n- Users benefit from visual indicators of available options\n- Precise selection between specific intervals is needed",
-      "source": "import { Component } from \"@choice-ui/range\"\n\nexport default function App() {\n  return (\n    <>\n      <Range value={value} onChange={setValue} min={0} max={100} step={10} />\n      <div className=\"w-10 text-right\">{value}%</div>\n    </>\n  );\n}"
+      "source": "import { Range } from \"@choice-ui/range\"\n\nexport default function App() {\n  return (\n    <>\n      <Range value={value} onChange={setValue} min={0} max={100} step={10} />\n      <div className=\"w-10 text-right\">{value}%</div>\n    </>\n  );\n}"
     },
     {
       "id": "forms-range--default-value",
       "name": "Default Value",
       "exportName": "DefaultValue",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/range\"\n\nexport default function App() {\n  return (\n    <>\n      <Range\n        value={value}\n        onChange={setValue}\n        min={0}\n        max={100}\n        defaultValue={50}\n      />\n      <div className=\"w-10 text-right\">{value}%</div>\n    </>\n  );\n}"
+      "source": "import { Range } from \"@choice-ui/range\"\n\nexport default function App() {\n  return (\n    <>\n      <Range\n        value={value}\n        onChange={setValue}\n        min={0}\n        max={100}\n        defaultValue={50}\n      />\n      <div className=\"w-10 text-right\">{value}%</div>\n    </>\n  );\n}"
     },
     {
       "id": "forms-range--default-value-and-step",
       "name": "Default Value And Step",
       "exportName": "DefaultValueAndStep",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/range\"\n\nexport default function App() {\n  return (\n    <>\n      <Range\n        value={value}\n        onChange={setValue}\n        min={0}\n        max={100}\n        defaultValue={50}\n        step={10}\n      />\n      <div className=\"w-10 text-right\">{value}%</div>\n    </>\n  );\n}"
+      "source": "import { Range } from \"@choice-ui/range\"\n\nexport default function App() {\n  return (\n    <>\n      <Range\n        value={value}\n        onChange={setValue}\n        min={0}\n        max={100}\n        defaultValue={50}\n        step={10}\n      />\n      <div className=\"w-10 text-right\">{value}%</div>\n    </>\n  );\n}"
     },
     {
       "id": "forms-range--disabled",
       "name": "Disabled",
       "exportName": "Disabled",
       "description": "Disabled: Demonstrates the Range component in a disabled state.\n\nFeatures:\n- Visual indication that the control cannot be interacted with\n- Prevents user interaction while maintaining current value\n- Appropriate styling to show unavailable state\n\nUse disabled Range when:\n- The setting is not applicable in the current context\n- Permissions don't allow adjusting this setting\n- The control should show a value but not allow changes",
-      "source": "import { Component } from \"@choice-ui/range\"\n\nexport default function App() {\n  return (\n    <>\n      <Range value={value} onChange={setValue} min={0} max={100} disabled />\n      <div className=\"w-10 text-right\">{value}%</div>\n    </>\n  );\n}"
+      "source": "import { Range } from \"@choice-ui/range\"\n\nexport default function App() {\n  return (\n    <>\n      <Range value={value} onChange={setValue} min={0} max={100} disabled />\n      <div className=\"w-10 text-right\">{value}%</div>\n    </>\n  );\n}"
     },
     {
       "id": "forms-range--custom-size",
       "name": "Custom Size",
       "exportName": "CustomSize",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/range\"\n\nexport default function App() {\n  return (\n    <>\n      <Range\n        value={value}\n        onChange={setValue}\n        min={0}\n        max={100}\n        trackSize={{\n          width: 200,\n          height: 10,\n        }}\n        thumbSize={10}\n      />\n      <div className=\"w-10 text-right\">{value}%</div>\n    </>\n  );\n}"
+      "source": "import { Range } from \"@choice-ui/range\"\n\nexport default function App() {\n  return (\n    <>\n      <Range\n        value={value}\n        onChange={setValue}\n        min={0}\n        max={100}\n        trackSize={{\n          width: 200,\n          height: 10,\n        }}\n        thumbSize={10}\n      />\n      <div className=\"w-10 text-right\">{value}%</div>\n    </>\n  );\n}"
     },
     {
       "id": "forms-range--draggable-range-popover",
       "name": "Draggable Range Popover",
       "exportName": "DraggableRangePopover",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/range\"\n\nexport default function App() {\n  return (\n    <Popover draggable>\n      <Popover.Trigger>\n        <Button>Open</Button>\n      </Popover.Trigger>\n      <Popover.Header title=\"Range\" />\n      <Popover.Content className=\"grid w-64 grid-cols-[180px_auto] gap-2 p-3\">\n        <Range\n          className=\"flex-1\"\n          value={value}\n          onChange={setValue}\n          min={0}\n          max={100}\n          defaultValue={50}\n          trackSize={{\n            width: 180,\n            height: 16,\n          }}\n        />\n        <div className=\"w-10 flex-1 text-right\">{value}%</div>\n      </Popover.Content>\n    </Popover>\n  );\n}"
+      "source": "import { Range } from \"@choice-ui/range\"\n\nexport default function App() {\n  return (\n    <Popover draggable>\n      <Popover.Trigger>\n        <Button>Open</Button>\n      </Popover.Trigger>\n      <Popover.Header title=\"Range\" />\n      <Popover.Content className=\"grid w-64 grid-cols-[180px_auto] gap-2 p-3\">\n        <Range\n          className=\"flex-1\"\n          value={value}\n          onChange={setValue}\n          min={0}\n          max={100}\n          defaultValue={50}\n          trackSize={{\n            width: 180,\n            height: 16,\n          }}\n        />\n        <div className=\"w-10 flex-1 text-right\">{value}%</div>\n      </Popover.Content>\n    </Popover>\n  );\n}"
     },
     {
       "id": "forms-range--auto-width",
       "name": "Auto Width",
       "exportName": "AutoWidth",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/range\"\n\nexport default function App() {\n  return (\n    <div className=\"grid w-40 grid-cols-[1fr_2.5rem] gap-px\">\n      <div className=\"bg-secondary-background flex items-center rounded-l-md px-2\">\n        <Range\n          className=\"bg-default-boundary flex-1\"\n          value={value}\n          onChange={setValue}\n          min={0}\n          max={100}\n          trackSize={{\n            width: \"auto\",\n            height: 6,\n          }}\n          thumbSize={10}\n        />\n      </div>\n      <NumericInput\n        className=\"before:rounded-l-none\"\n        expression=\"{value}%\"\n        value={value}\n        onChange={(value) => setValue(value as number)}\n        min={0}\n        max={100}\n      >\n        <NumericInput.Prefix className=\"w-2 rounded-l-none\" />\n      </NumericInput>\n    </div>\n  );\n}"
+      "source": "import { Range } from \"@choice-ui/range\"\n\nexport default function App() {\n  return (\n    <div className=\"grid w-40 grid-cols-[1fr_2.5rem] gap-px\">\n      <div className=\"bg-secondary-background flex items-center rounded-l-md px-2\">\n        <Range\n          className=\"bg-default-boundary flex-1\"\n          value={value}\n          onChange={setValue}\n          min={0}\n          max={100}\n          trackSize={{\n            width: \"auto\",\n            height: 6,\n          }}\n          thumbSize={10}\n        />\n      </div>\n      <NumericInput\n        className=\"before:rounded-l-none\"\n        expression=\"{value}%\"\n        value={value}\n        onChange={(value) => setValue(value as number)}\n        min={0}\n        max={100}\n      >\n        <NumericInput.Prefix className=\"w-2 rounded-l-none\" />\n      </NumericInput>\n    </div>\n  );\n}"
     },
     {
       "id": "forms-range--basic-tuple",
       "name": "Basic Tuple",
       "exportName": "BasicTuple",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/range\"\n\nexport default function App() {\n  return (\n    <div className=\"flex items-center gap-4\">\n      <RangeTuple value={value} onChange={setValue} />\n      <div className=\"text-body-medium w-20 text-right\">\n        {value[0]} - {value[1]}\n      </div>\n    </div>\n  );\n}"
+      "source": "import { RangeTuple } from \"@choice-ui/range\"\n\nexport default function App() {\n  return (\n    <div className=\"flex items-center gap-4\">\n      <RangeTuple value={value} onChange={setValue} />\n      <div className=\"text-body-medium w-20 text-right\">\n        {value[0]} - {value[1]}\n      </div>\n    </div>\n  );\n}"
     },
     {
       "id": "forms-range--tuple-with-step",
       "name": "Tuple With Step",
       "exportName": "TupleWithStep",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/range\"\n\nexport default function App() {\n  return (\n    <div className=\"flex items-center gap-4\">\n      <RangeTuple\n        value={value}\n        onChange={setValue}\n        min={0}\n        max={100}\n        step={10}\n      />\n      <div className=\"text-body-medium w-20 text-right\">\n        {value[0]} - {value[1]}%\n      </div>\n    </div>\n  );\n}"
+      "source": "import { RangeTuple } from \"@choice-ui/range\"\n\nexport default function App() {\n  return (\n    <div className=\"flex items-center gap-4\">\n      <RangeTuple\n        value={value}\n        onChange={setValue}\n        min={0}\n        max={100}\n        step={10}\n      />\n      <div className=\"text-body-medium w-20 text-right\">\n        {value[0]} - {value[1]}%\n      </div>\n    </div>\n  );\n}"
     },
     {
       "id": "forms-range--tuple-with-default-value",
       "name": "Tuple With Default Value",
       "exportName": "TupleWithDefaultValue",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/range\"\n\nexport default function App() {\n  return (\n    <div className=\"flex items-center gap-4\">\n      <RangeTuple\n        value={value}\n        onChange={setValue}\n        min={0}\n        max={100}\n        defaultValue={[25, 75]}\n      />\n      <div className=\"text-body-medium w-20 text-right\">\n        {value[0]} - {value[1]}%\n      </div>\n    </div>\n  );\n}"
+      "source": "import { RangeTuple } from \"@choice-ui/range\"\n\nexport default function App() {\n  return (\n    <div className=\"flex items-center gap-4\">\n      <RangeTuple\n        value={value}\n        onChange={setValue}\n        min={0}\n        max={100}\n        defaultValue={[25, 75]}\n      />\n      <div className=\"text-body-medium w-20 text-right\">\n        {value[0]} - {value[1]}%\n      </div>\n    </div>\n  );\n}"
     },
     {
       "id": "forms-range--tuple-negative-range",
       "name": "Tuple Negative Range",
       "exportName": "TupleNegativeRange",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/range\"\n\nexport default function App() {\n  return (\n    <div className=\"flex items-center gap-4\">\n      <RangeTuple\n        value={value}\n        onChange={setValue}\n        min={-100}\n        max={100}\n        defaultValue={[0, 0]}\n      />\n      <div className=\"text-body-medium w-20 text-right\">\n        {value[0]} - {value[1]}\n      </div>\n    </div>\n  );\n}"
+      "source": "import { RangeTuple } from \"@choice-ui/range\"\n\nexport default function App() {\n  return (\n    <div className=\"flex items-center gap-4\">\n      <RangeTuple\n        value={value}\n        onChange={setValue}\n        min={-100}\n        max={100}\n        defaultValue={[0, 0]}\n      />\n      <div className=\"text-body-medium w-20 text-right\">\n        {value[0]} - {value[1]}\n      </div>\n    </div>\n  );\n}"
     },
     {
       "id": "forms-range--tuple-disabled",
       "name": "Tuple Disabled",
       "exportName": "TupleDisabled",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/range\"\n\nexport default function App() {\n  return (\n    <div className=\"flex items-center gap-4\">\n      <RangeTuple\n        value={value}\n        onChange={setValue}\n        min={0}\n        max={100}\n        disabled\n      />\n      <div className=\"text-body-medium w-20 text-right\">\n        {value[0]} - {value[1]}%\n      </div>\n    </div>\n  );\n}"
+      "source": "import { RangeTuple } from \"@choice-ui/range\"\n\nexport default function App() {\n  return (\n    <div className=\"flex items-center gap-4\">\n      <RangeTuple\n        value={value}\n        onChange={setValue}\n        min={0}\n        max={100}\n        disabled\n      />\n      <div className=\"text-body-medium w-20 text-right\">\n        {value[0]} - {value[1]}%\n      </div>\n    </div>\n  );\n}"
     },
     {
       "id": "forms-range--tuple-custom-size",
       "name": "Tuple Custom Size",
       "exportName": "TupleCustomSize",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/range\"\n\nexport default function App() {\n  return (\n    <div className=\"flex items-center gap-4\">\n      <RangeTuple\n        value={value}\n        onChange={setValue}\n        min={0}\n        max={100}\n        trackSize={{\n          width: 200,\n          height: 10,\n        }}\n        thumbSize={10}\n      />\n      <div className=\"text-body-medium w-20 text-right\">\n        {value[0]} - {value[1]}%\n      </div>\n    </div>\n  );\n}"
+      "source": "import { RangeTuple } from \"@choice-ui/range\"\n\nexport default function App() {\n  return (\n    <div className=\"flex items-center gap-4\">\n      <RangeTuple\n        value={value}\n        onChange={setValue}\n        min={0}\n        max={100}\n        trackSize={{\n          width: 200,\n          height: 10,\n        }}\n        thumbSize={10}\n      />\n      <div className=\"text-body-medium w-20 text-right\">\n        {value[0]} - {value[1]}%\n      </div>\n    </div>\n  );\n}"
     },
     {
       "id": "forms-range--tuple-in-popover",
       "name": "Tuple In Popover",
       "exportName": "TupleInPopover",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/range\"\n\nexport default function App() {\n  return (\n    <Popover draggable>\n      <Popover.Trigger>\n        <Button>Open Range Filter</Button>\n      </Popover.Trigger>\n      <Popover.Header title=\"Select Range\" />\n      <Popover.Content className=\"grid w-64 grid-cols-[180px_auto] gap-2 p-3\">\n        <RangeTuple\n          className=\"flex-1\"\n          value={value}\n          onChange={setValue}\n          min={0}\n          max={100}\n          defaultValue={[25, 75]}\n          trackSize={{\n            width: 180,\n            height: 16,\n          }}\n        />\n        <div className=\"text-body-medium w-14 flex-1 text-right\">\n          {value[0]}-{value[1]}%\n        </div>\n      </Popover.Content>\n    </Popover>\n  );\n}"
+      "source": "import { Range, RangeTuple } from \"@choice-ui/range\"\n\nexport default function App() {\n  return (\n    <Popover draggable>\n      <Popover.Trigger>\n        <Button>Open Range Filter</Button>\n      </Popover.Trigger>\n      <Popover.Header title=\"Select Range\" />\n      <Popover.Content className=\"grid w-64 grid-cols-[180px_auto] gap-2 p-3\">\n        <RangeTuple\n          className=\"flex-1\"\n          value={value}\n          onChange={setValue}\n          min={0}\n          max={100}\n          defaultValue={[25, 75]}\n          trackSize={{\n            width: 180,\n            height: 16,\n          }}\n        />\n        <div className=\"text-body-medium w-14 flex-1 text-right\">\n          {value[0]}-{value[1]}%\n        </div>\n      </Popover.Content>\n    </Popover>\n  );\n}"
     },
     {
       "id": "forms-range--tuple-sentiment-neutral-range",
       "name": "Tuple Sentiment Neutral Range",
       "exportName": "TupleSentimentNeutralRange",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/range\"\n\nexport default function App() {\n  return (\n    <div className=\"flex items-center gap-4\">\n      <RangeTuple\n        value={value}\n        step={0.0001}\n        onChange={(value) => {\n          console.log(\"value\", value);\n          setValue(value);\n        }}\n        min={-1}\n        max={1}\n        defaultValue={[-0.23333, 0.2]}\n      />\n      <div className=\"text-body-medium w-28 text-right\">\n        {value[0]} - {value[1]}\n      </div>\n    </div>\n  );\n}"
+      "source": "import { RangeTuple } from \"@choice-ui/range\"\n\nexport default function App() {\n  return (\n    <div className=\"flex items-center gap-4\">\n      <RangeTuple\n        value={value}\n        step={0.0001}\n        onChange={(value) => {\n          console.log(\"value\", value);\n          setValue(value);\n        }}\n        min={-1}\n        max={1}\n        defaultValue={[-0.23333, 0.2]}\n      />\n      <div className=\"text-body-medium w-28 text-right\">\n        {value[0]} - {value[1]}\n      </div>\n    </div>\n  );\n}"
     },
     {
       "id": "forms-range--readonly",
       "name": "Readonly",
       "exportName": "Readonly",
       "description": "Range component in readOnly state.\n\nIn readOnly mode:\n- The range slider does not respond to pointer or keyboard events\n- The value cannot be changed\n- Useful for displaying range value without allowing changes",
-      "source": "import { Component } from \"@choice-ui/range\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <div className=\"rounded-xl border bg-stone-50 p-4\">\n        <div className=\"text-body-small-strong mb-2 text-stone-700\">\n          Current Value:\n        </div>\n        <div className=\"text-body-small font-mono text-stone-600\">\n          {value}\n        </div>\n        <div className=\"text-body-small-strong mt-2 text-stone-700\">\n          Change Count:\n        </div>\n        <div className=\"text-body-small font-mono text-stone-600\">\n          {changeCount}\n        </div>\n      </div>\n\n      <Range\n        readOnly\n        value={value}\n        onChange={handleChange}\n        min={0}\n        max={100}\n      />\n\n      <Range value={value} onChange={handleChange} min={0} max={100} />\n\n      <div className=\"text-body-small text-stone-600\">\n        💡 Try dragging the readonly range slider or using arrow keys - the\n        value should not change and the change count should remain at 0. Only\n        the normal slider will change the value.\n      </div>\n    </div>\n  );\n}"
+      "source": "import { Range } from \"@choice-ui/range\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <div className=\"rounded-xl border bg-stone-50 p-4\">\n        <div className=\"text-body-small-strong mb-2 text-stone-700\">\n          Current Value:\n        </div>\n        <div className=\"text-body-small font-mono text-stone-600\">\n          {value}\n        </div>\n        <div className=\"text-body-small-strong mt-2 text-stone-700\">\n          Change Count:\n        </div>\n        <div className=\"text-body-small font-mono text-stone-600\">\n          {changeCount}\n        </div>\n      </div>\n\n      <Range\n        readOnly\n        value={value}\n        onChange={handleChange}\n        min={0}\n        max={100}\n      />\n\n      <Range value={value} onChange={handleChange} min={0} max={100} />\n\n      <div className=\"text-body-small text-stone-600\">\n        💡 Try dragging the readonly range slider or using arrow keys - the\n        value should not change and the change count should remain at 0. Only\n        the normal slider will change the value.\n      </div>\n    </div>\n  );\n}"
     },
     {
       "id": "forms-range--tuple-readonly",
       "name": "Tuple Readonly",
       "exportName": "TupleReadonly",
       "description": "",
-      "source": "import { Component } from \"@choice-ui/range\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <div className=\"rounded-xl border bg-stone-50 p-4\">\n        <div className=\"text-body-small-strong mb-2 text-stone-700\">\n          Current Range:\n        </div>\n        <div className=\"text-body-small font-mono text-stone-600\">\n          {value[0]} - {value[1]}\n        </div>\n        <div className=\"text-body-small-strong mt-2 text-stone-700\">\n          Change Count:\n        </div>\n        <div className=\"text-body-small font-mono text-stone-600\">\n          {changeCount}\n        </div>\n      </div>\n\n      <div className=\"flex items-center gap-4\">\n        <RangeTuple\n          readOnly\n          value={value}\n          onChange={handleChange}\n          min={0}\n          max={100}\n        />\n        <div className=\"text-body-medium w-20 text-right\">\n          {value[0]} - {value[1]}%\n        </div>\n      </div>\n\n      <div className=\"flex items-center gap-4\">\n        <RangeTuple value={value} onChange={handleChange} min={0} max={100} />\n        <div className=\"text-body-medium w-20 text-right\">\n          {value[0]} - {value[1]}%\n        </div>\n      </div>\n\n      <div className=\"text-body-small text-stone-600\">\n        💡 Try dragging the thumbs or using arrow keys on both range tuples -\n        only the normal one should change the values and increment the count.\n        The readonly one should not respond to any interactions.\n      </div>\n    </div>\n  );\n}"
+      "source": "import { RangeTuple } from \"@choice-ui/range\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <div className=\"rounded-xl border bg-stone-50 p-4\">\n        <div className=\"text-body-small-strong mb-2 text-stone-700\">\n          Current Range:\n        </div>\n        <div className=\"text-body-small font-mono text-stone-600\">\n          {value[0]} - {value[1]}\n        </div>\n        <div className=\"text-body-small-strong mt-2 text-stone-700\">\n          Change Count:\n        </div>\n        <div className=\"text-body-small font-mono text-stone-600\">\n          {changeCount}\n        </div>\n      </div>\n\n      <div className=\"flex items-center gap-4\">\n        <RangeTuple\n          readOnly\n          value={value}\n          onChange={handleChange}\n          min={0}\n          max={100}\n        />\n        <div className=\"text-body-medium w-20 text-right\">\n          {value[0]} - {value[1]}%\n        </div>\n      </div>\n\n      <div className=\"flex items-center gap-4\">\n        <RangeTuple value={value} onChange={handleChange} min={0} max={100} />\n        <div className=\"text-body-medium w-20 text-right\">\n          {value[0]} - {value[1]}%\n        </div>\n      </div>\n\n      <div className=\"text-body-small text-stone-600\">\n        💡 Try dragging the thumbs or using arrow keys on both range tuples -\n        only the normal one should change the values and increment the count.\n        The readonly one should not respond to any interactions.\n      </div>\n    </div>\n  );\n}"
     }
   ]
 }

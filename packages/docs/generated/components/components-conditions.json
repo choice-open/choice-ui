@@ -26,6 +26,7 @@
     }
   },
   "exports": [
+    "Conditions",
     "FieldType",
     "LogicalOperator",
     "ComparisonOperator",
@@ -63,8 +64,68 @@
     "type ValidationError",
     "type UseConditionsReturn",
     "type UseFieldOperatorsReturn",
+    "type OperatorGroup",
+    "getOperatorGroups",
+    "renderGroupedOperators",
+    "renderValueInput",
+    "renderSecondValueInput",
+    "OPERATOR_CONFIGS",
+    "FIELD_OPERATOR_MAP",
+    "DEFAULT_LOCALIZATION",
+    "DEFAULT_LOGICAL_OPERATOR",
+    "DEFAULT_COMPARISON_OPERATOR",
+    "DEFAULT_MAX_DEPTH",
+    "ID_PREFIXES",
+    "generateId",
+    "generateConditionId",
+    "generateGroupId",
+    "generateGroupName",
+    "generateRootId",
+    "createCondition",
+    "createConditionGroup",
+    "createConditionsRoot",
+    "createEmptyConditions",
+    "findCondition",
+    "findGroup",
+    "getConditionPath",
+    "getGroupPath",
+    "isOperatorValidForFieldType",
+    "validateCondition",
+    "validateConditionGroup",
+    "validateConditions",
+    "getOperatorsForField",
+    "getOperatorConfig",
+    "cloneConditions",
+    "duplicateCondition",
+    "isConditionsEmpty",
+    "getConditionsDepth",
+    "getConditionsCount",
     "ConditionsGroup",
-    "ConditionItem"
+    "ConditionItem",
+    "LogicalOperatorChip",
+    "AddConditionDropdown",
+    "GroupActionsDropdown",
+    "DragGuide",
+    "ArrayLengthInput",
+    "BooleanInput",
+    "ConditionDateInput",
+    "ConditionDateRangeInput",
+    "MultiSelectInput",
+    "NumberInput",
+    "NumberRangeInput",
+    "RegexInput",
+    "SelectInput",
+    "TagInput",
+    "TextInput",
+    "UserInput",
+    "useConditions",
+    "useFieldOperators",
+    "getFieldTypeDisplayName",
+    "isFieldWithOptions",
+    "isMultiValueField",
+    "getDefaultValueForField",
+    "isValidFieldValue",
+    "useDragAndDrop"
   ],
   "props": [
     {
@@ -288,70 +349,70 @@
       "name": "Basic",
       "exportName": "Basic",
       "description": "Basic usage of the Conditions component with simple field configuration.\nThis demonstrates the fundamental functionality of creating and managing filter conditions.",
-      "source": "import { FieldType } from \"@choice-ui/conditions\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-4\">\n      <Conditions\n        fields={sampleFields}\n        value={conditions}\n        onChange={setConditions}\n      />\n\n      <div className=\"mt-6 rounded-xl bg-gray-50 p-4\">\n        <h3 className=\"text-body-small-strong mb-2 text-gray-700\">\n          Current Conditions:\n        </h3>\n        <pre className=\"max-h-96 overflow-auto text-xs text-gray-600\">\n          {JSON.stringify(conditions, null, 2)}\n        </pre>\n      </div>\n    </div>\n  );\n}"
+      "source": "import { Conditions } from \"@choice-ui/conditions\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-4\">\n      <Conditions\n        fields={sampleFields}\n        value={conditions}\n        onChange={setConditions}\n      />\n\n      <div className=\"mt-6 rounded-xl bg-gray-50 p-4\">\n        <h3 className=\"text-body-small-strong mb-2 text-gray-700\">\n          Current Conditions:\n        </h3>\n        <pre className=\"max-h-96 overflow-auto text-xs text-gray-600\">\n          {JSON.stringify(conditions, null, 2)}\n        </pre>\n      </div>\n    </div>\n  );\n}"
     },
     {
       "id": "components-conditions--pre-configured",
       "name": "Pre Configured",
       "exportName": "PreConfigured",
       "description": "",
-      "source": "import { FieldType } from \"@choice-ui/conditions\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-4\">\n      <div className=\"mb-4 rounded-xl border border-blue-200 bg-blue-50 p-3\">\n        <p className=\"text-body-small text-blue-800\">\n          <strong>Pre-configured example:</strong> High priority AND not\n          completed\n        </p>\n      </div>\n\n      <Conditions\n        fields={sampleFields}\n        value={conditions}\n        onChange={setConditions}\n      />\n    </div>\n  );\n}"
+      "source": "import { Conditions } from \"@choice-ui/conditions\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-4\">\n      <div className=\"mb-4 rounded-xl border border-blue-200 bg-blue-50 p-3\">\n        <p className=\"text-body-small text-blue-800\">\n          <strong>Pre-configured example:</strong> High priority AND not\n          completed\n        </p>\n      </div>\n\n      <Conditions\n        fields={sampleFields}\n        value={conditions}\n        onChange={setConditions}\n      />\n    </div>\n  );\n}"
     },
     {
       "id": "components-conditions--field-types",
       "name": "Field Types",
       "exportName": "FieldTypes",
       "description": "",
-      "source": "import { FieldType } from \"@choice-ui/conditions\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-4\">\n      <div className=\"mb-4 rounded-xl border border-green-200 bg-green-50 p-3\">\n        <p className=\"text-body-small text-green-800\">\n          <strong>Field Types Demo:</strong> Each field type shows different\n          available operators\n        </p>\n      </div>\n\n      <Conditions\n        fields={sampleFields}\n        value={conditions}\n        onChange={setConditions}\n      />\n    </div>\n  );\n}"
+      "source": "import { Conditions } from \"@choice-ui/conditions\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-4\">\n      <div className=\"mb-4 rounded-xl border border-green-200 bg-green-50 p-3\">\n        <p className=\"text-body-small text-green-800\">\n          <strong>Field Types Demo:</strong> Each field type shows different\n          available operators\n        </p>\n      </div>\n\n      <Conditions\n        fields={sampleFields}\n        value={conditions}\n        onChange={setConditions}\n      />\n    </div>\n  );\n}"
     },
     {
       "id": "components-conditions--disabled",
       "name": "Disabled",
       "exportName": "Disabled",
       "description": "Shows the disabled state of the Conditions component.\nAll interactions are disabled but the current conditions remain visible.",
-      "source": "import { FieldType } from \"@choice-ui/conditions\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-4\">\n      <div className=\"mb-4 rounded-xl border border-gray-200 bg-gray-50 p-3\">\n        <p className=\"text-body-small text-gray-600\">\n          <strong>Disabled State:</strong> All controls are disabled but\n          conditions remain visible\n        </p>\n      </div>\n\n      <Conditions fields={sampleFields} value={conditions} disabled={true} />\n    </div>\n  );\n}"
+      "source": "import { Conditions } from \"@choice-ui/conditions\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-4\">\n      <div className=\"mb-4 rounded-xl border border-gray-200 bg-gray-50 p-3\">\n        <p className=\"text-body-small text-gray-600\">\n          <strong>Disabled State:</strong> All controls are disabled but\n          conditions remain visible\n        </p>\n      </div>\n\n      <Conditions fields={sampleFields} value={conditions} disabled={true} />\n    </div>\n  );\n}"
     },
     {
       "id": "components-conditions--task-management",
       "name": "Task Management",
       "exportName": "TaskManagement",
       "description": "",
-      "source": "import { FieldType } from \"@choice-ui/conditions\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-4\">\n      <div className=\"mb-4 rounded-xl border border-indigo-200 bg-indigo-50 p-3\">\n        <p className=\"text-body-small text-indigo-800\">\n          <strong>Task Management:</strong> Filter tasks by priority, due\n          date, and blocking status\n        </p>\n      </div>\n\n      <Conditions\n        fields={taskFields}\n        value={conditions}\n        onChange={setConditions}\n      />\n\n      <div className=\"mt-6 rounded-xl bg-gray-50 p-4\">\n        <h4 className=\"text-body-small-strong mb-2 text-gray-700\">\n          Filter Summary:\n        </h4>\n        <div className=\"text-xs text-gray-600\">\n          {conditions.groups.length === 0 ? (\n            <p>No filters applied</p>\n          ) : (\n            <p>\n              {conditions.groups[0].conditions.length} condition(s) active\n            </p>\n          )}\n        </div>\n      </div>\n    </div>\n  );\n}"
+      "source": "import { Conditions } from \"@choice-ui/conditions\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-4\">\n      <div className=\"mb-4 rounded-xl border border-indigo-200 bg-indigo-50 p-3\">\n        <p className=\"text-body-small text-indigo-800\">\n          <strong>Task Management:</strong> Filter tasks by priority, due\n          date, and blocking status\n        </p>\n      </div>\n\n      <Conditions\n        fields={taskFields}\n        value={conditions}\n        onChange={setConditions}\n      />\n\n      <div className=\"mt-6 rounded-xl bg-gray-50 p-4\">\n        <h4 className=\"text-body-small-strong mb-2 text-gray-700\">\n          Filter Summary:\n        </h4>\n        <div className=\"text-xs text-gray-600\">\n          {conditions.groups.length === 0 ? (\n            <p>No filters applied</p>\n          ) : (\n            <p>\n              {conditions.groups[0].conditions.length} condition(s) active\n            </p>\n          )}\n        </div>\n      </div>\n    </div>\n  );\n}"
     },
     {
       "id": "components-conditions--advanced-operators",
       "name": "Advanced Operators",
       "exportName": "AdvancedOperators",
       "description": "",
-      "source": "import { FieldType } from \"@choice-ui/conditions\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-4\">\n      <div className=\"mb-4 rounded-xl border border-purple-200 bg-purple-50 p-3\">\n        <p className=\"text-body-small text-purple-800\">\n          <strong>Advanced Operators:</strong> Filter by field existence,\n          emptiness, and presence\n        </p>\n      </div>\n\n      <Conditions\n        fields={sampleFields}\n        value={conditions}\n        onChange={setConditions}\n      />\n    </div>\n  );\n}"
+      "source": "import { Conditions } from \"@choice-ui/conditions\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-4\">\n      <div className=\"mb-4 rounded-xl border border-purple-200 bg-purple-50 p-3\">\n        <p className=\"text-body-small text-purple-800\">\n          <strong>Advanced Operators:</strong> Filter by field existence,\n          emptiness, and presence\n        </p>\n      </div>\n\n      <Conditions\n        fields={sampleFields}\n        value={conditions}\n        onChange={setConditions}\n      />\n    </div>\n  );\n}"
     },
     {
       "id": "components-conditions--regex-patterns",
       "name": "Regex Patterns",
       "exportName": "RegexPatterns",
       "description": "",
-      "source": "import { FieldType } from \"@choice-ui/conditions\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-4\">\n      <div className=\"mb-4 rounded-xl border border-orange-200 bg-orange-50 p-3\">\n        <p className=\"text-body-small text-orange-800\">\n          <strong>Regex Patterns:</strong> Use regular expressions for\n          advanced text matching\n        </p>\n        <div className=\"mt-2 text-xs text-orange-700\">\n          <p>• Email pattern validates standard email formats</p>\n          <p>• Phone pattern matches various international phone formats</p>\n        </div>\n      </div>\n\n      <Conditions\n        fields={regexFields}\n        value={conditions}\n        onChange={setConditions}\n      />\n    </div>\n  );\n}"
+      "source": "import { Conditions } from \"@choice-ui/conditions\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-4\">\n      <div className=\"mb-4 rounded-xl border border-orange-200 bg-orange-50 p-3\">\n        <p className=\"text-body-small text-orange-800\">\n          <strong>Regex Patterns:</strong> Use regular expressions for\n          advanced text matching\n        </p>\n        <div className=\"mt-2 text-xs text-orange-700\">\n          <p>• Email pattern validates standard email formats</p>\n          <p>• Phone pattern matches various international phone formats</p>\n        </div>\n      </div>\n\n      <Conditions\n        fields={regexFields}\n        value={conditions}\n        onChange={setConditions}\n      />\n    </div>\n  );\n}"
     },
     {
       "id": "components-conditions--array-length-filters",
       "name": "Array Length Filters",
       "exportName": "ArrayLengthFilters",
       "description": "",
-      "source": "import { FieldType } from \"@choice-ui/conditions\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-4\">\n      <div className=\"mb-4 rounded-xl border border-teal-200 bg-teal-50 p-3\">\n        <p className=\"text-body-small text-teal-800\">\n          <strong>Length Filters:</strong> Filter by text length or array item\n          count\n        </p>\n        <div className=\"mt-2 text-xs text-teal-700\">\n          <p>• Description must be longer than 50 characters</p>\n          <p>• Categories limited to 3 or fewer</p>\n          <p>• Minimum 2 reviewers required</p>\n        </div>\n      </div>\n\n      <Conditions\n        fields={lengthFields}\n        value={conditions}\n        onChange={setConditions}\n      />\n    </div>\n  );\n}"
+      "source": "import { Conditions } from \"@choice-ui/conditions\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-4\">\n      <div className=\"mb-4 rounded-xl border border-teal-200 bg-teal-50 p-3\">\n        <p className=\"text-body-small text-teal-800\">\n          <strong>Length Filters:</strong> Filter by text length or array item\n          count\n        </p>\n        <div className=\"mt-2 text-xs text-teal-700\">\n          <p>• Description must be longer than 50 characters</p>\n          <p>• Categories limited to 3 or fewer</p>\n          <p>• Minimum 2 reviewers required</p>\n        </div>\n      </div>\n\n      <Conditions\n        fields={lengthFields}\n        value={conditions}\n        onChange={setConditions}\n      />\n    </div>\n  );\n}"
     },
     {
       "id": "components-conditions--boolean-logic",
       "name": "Boolean Logic",
       "exportName": "BooleanLogic",
       "description": "",
-      "source": "import { FieldType } from \"@choice-ui/conditions\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-4\">\n      <div className=\"mb-4 rounded-xl border border-blue-200 bg-blue-50 p-3\">\n        <p className=\"text-body-small text-blue-800\">\n          <strong>Boolean Logic:</strong> Simplified true/false operators for\n          cleaner boolean filtering\n        </p>\n        <div className=\"mt-2 text-xs text-blue-700\">\n          <p>• Uses dedicated IsTrue/IsFalse operators</p>\n          <p>• No need to select true/false values manually</p>\n          <p>• Supports complex nested boolean logic</p>\n        </div>\n      </div>\n\n      <Conditions\n        fields={booleanFields}\n        value={conditions}\n        onChange={setConditions}\n      />\n    </div>\n  );\n}"
+      "source": "import { Conditions } from \"@choice-ui/conditions\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-4\">\n      <div className=\"mb-4 rounded-xl border border-blue-200 bg-blue-50 p-3\">\n        <p className=\"text-body-small text-blue-800\">\n          <strong>Boolean Logic:</strong> Simplified true/false operators for\n          cleaner boolean filtering\n        </p>\n        <div className=\"mt-2 text-xs text-blue-700\">\n          <p>• Uses dedicated IsTrue/IsFalse operators</p>\n          <p>• No need to select true/false values manually</p>\n          <p>• Supports complex nested boolean logic</p>\n        </div>\n      </div>\n\n      <Conditions\n        fields={booleanFields}\n        value={conditions}\n        onChange={setConditions}\n      />\n    </div>\n  );\n}"
     },
     {
       "id": "components-conditions--drag-and-drop-test",
       "name": "Drag And Drop Test",
       "exportName": "DragAndDropTest",
       "description": "",
-      "source": "import { FieldType } from \"@choice-ui/conditions\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-4\">\n      <div className=\"mb-4 rounded-xl border border-red-200 bg-red-50 p-3\">\n        <p className=\"text-body-small text-red-800\">\n          <strong>Drag & Drop Test:</strong> Test dragging conditions between\n          groups, within groups, and in/out of nested groups. Open browser\n          console to see debug logs.\n        </p>\n        <div className=\"mt-2 text-xs text-red-700\">\n          <p>• Try dragging conditions from main group to nested group</p>\n          <p>• Try dragging conditions from nested group to main group</p>\n          <p>• Try reordering conditions within the same group</p>\n        </div>\n      </div>\n\n      <Conditions\n        fields={sampleFields}\n        value={conditions}\n        onChange={setConditions}\n      />\n\n      <div className=\"mt-6 rounded-xl bg-gray-50 p-4\">\n        <h4 className=\"text-body-small-strong mb-2 text-gray-700\">\n          Current Structure (for debugging):\n        </h4>\n        <pre className=\"max-h-96 overflow-auto text-xs text-gray-600\">\n          {JSON.stringify(conditions, null, 2)}\n        </pre>\n      </div>\n    </div>\n  );\n}"
+      "source": "import { Conditions } from \"@choice-ui/conditions\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-4\">\n      <div className=\"mb-4 rounded-xl border border-red-200 bg-red-50 p-3\">\n        <p className=\"text-body-small text-red-800\">\n          <strong>Drag & Drop Test:</strong> Test dragging conditions between\n          groups, within groups, and in/out of nested groups. Open browser\n          console to see debug logs.\n        </p>\n        <div className=\"mt-2 text-xs text-red-700\">\n          <p>• Try dragging conditions from main group to nested group</p>\n          <p>• Try dragging conditions from nested group to main group</p>\n          <p>• Try reordering conditions within the same group</p>\n        </div>\n      </div>\n\n      <Conditions\n        fields={sampleFields}\n        value={conditions}\n        onChange={setConditions}\n      />\n\n      <div className=\"mt-6 rounded-xl bg-gray-50 p-4\">\n        <h4 className=\"text-body-small-strong mb-2 text-gray-700\">\n          Current Structure (for debugging):\n        </h4>\n        <pre className=\"max-h-96 overflow-auto text-xs text-gray-600\">\n          {JSON.stringify(conditions, null, 2)}\n        </pre>\n      </div>\n    </div>\n  );\n}"
     }
   ]
 }
