@@ -61,7 +61,7 @@
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"dark\"",
           "required": false,
           "description": ""
         }
@@ -99,7 +99,7 @@
         },
         {
           "name": "placement",
-          "type": "enum",
+          "type": "undefined | \"left-start\" | \"right-start\"",
           "required": false,
           "defaultValue": "right-start",
           "description": ""
@@ -150,7 +150,7 @@
         },
         {
           "name": "placement",
-          "type": "enum",
+          "type": "undefined | \"left-start\" | \"right-start\"",
           "required": false,
           "defaultValue": "right-start",
           "description": ""
@@ -164,7 +164,7 @@
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"dark\"",
           "required": false,
           "defaultValue": "default",
           "description": ""
@@ -178,49 +178,49 @@
       "name": "Screenshot Match",
       "exportName": "ScreenshotMatch",
       "description": "Screenshot Match - Reference implementation matching the design specification\n\nFeatures:\n- Right-start placement for optimal positioning\n- Clean layout with label and hint combination\n- Standard content formatting\n\nUsage:\n```tsx\n<Hint content=\"Optional reason\" placement=\"right-start\" />\n```",
-      "source": "import { Hint } from \"@choice-ui/hint\"\n\nexport default function App() {\n  return (\n    <div className=\"flex items-center gap-2\">\n      <span className=\"font-strong\">Reason</span>\n      <Hint\n        content=\"Optional reason\"\n        placement=\"right-start\"\n      />\n    </div>\n  );\n}"
+      "source": "import { Hint } from \"@choice-ui/hint\"\n\nexport default function App() {\n  return (\n\n    <div className=\"flex items-center gap-2\">\n      <span className=\"font-strong\">Reason</span>\n      <Hint\n        content=\"Optional reason\"\n        placement=\"right-start\"\n      />\n    </div>\n\n  );\n}"
     },
     {
       "id": "feedback-hint--custom-icon",
       "name": "Custom Icon",
       "exportName": "CustomIcon",
       "description": "Custom Icon - Demonstrates how to use custom icons in hint tooltips\n\nFeatures:\n- Custom icon replacement for default info icon\n- Maintains consistent tooltip behavior\n- Flexible icon system integration\n\nUsage:\n```tsx\n<Hint\n  icon={<CircleInfoLargeSolid />}\n  content=\"Optional reason\"\n/>\n```",
-      "source": "import { Hint } from \"@choice-ui/hint\"\n\nexport default function App() {\n  return (\n    <div className=\"flex items-center gap-2\">\n      <span className=\"font-strong\">Reason</span>\n      <Hint\n        icon={<CircleInfoLargeSolid />}\n        content=\"Optional reason\"\n      />\n    </div>\n  );\n}"
+      "source": "import { Hint } from \"@choice-ui/hint\"\n\nexport default function App() {\n  return (\n\n    <div className=\"flex items-center gap-2\">\n      <span className=\"font-strong\">Reason</span>\n      <Hint\n        icon={<CircleInfoLargeSolid />}\n        content=\"Optional reason\"\n      />\n    </div>\n\n  );\n}"
     },
     {
       "id": "feedback-hint--default",
       "name": "Default",
       "exportName": "Default",
       "description": "Default - Basic hint implementation with minimal configuration\n\nFeatures:\n- Default bottom placement\n- Standard info icon\n- Simple content display\n- Auto-positioning on hover/focus\n\nUsage:\n```tsx\n<Hint content=\"Optional reason\" />\n```",
-      "source": "import { Hint } from \"@choice-ui/hint\"\n\nexport default function App() {\n  return (\n    <div className=\"flex items-center gap-2 rounded-xl p-4\">\n      <span className=\"font-strong\">Reason</span>\n      <Hint content=\"Optional reason\" />\n    </div>\n  );\n}"
+      "source": "import { Hint } from \"@choice-ui/hint\"\n\nexport default function App() {\n  return (\n\n    <div className=\"flex items-center gap-2 rounded-xl p-4\">\n      <span className=\"font-strong\">Reason</span>\n      <Hint content=\"Optional reason\" />\n    </div>\n\n  );\n}"
     },
     {
       "id": "feedback-hint--placements",
       "name": "Placements",
       "exportName": "Placements",
       "description": "Placements - Demonstrates different tooltip positioning options\n\nFeatures:\n- Multiple placement variations (left-start, right-start)\n- Adaptive positioning based on available space\n- Consistent behavior across different alignments\n- Visual comparison of placement options\n\nUsage:\n```tsx\n<Hint content=\"Left tooltip\" placement=\"left-start\" />\n<Hint content=\"Right tooltip\" placement=\"right-start\" />\n```",
-      "source": "import { Hint } from \"@choice-ui/hint\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col items-center justify-center gap-8 p-8\">\n      <div className=\"flex items-center gap-2\">\n        <Hint\n          content=\"Information tooltip displayed on the left\"\n          placement=\"left-start\"\n        />\n        <span>Left placement</span>\n      </div>\n\n      <div className=\"flex items-center gap-2\">\n        <span>Right placement</span>\n        <Hint\n          content=\"Information tooltip displayed on the right\"\n          placement=\"right-start\"\n        />\n      </div>\n    </div>\n  );\n}"
+      "source": "import { Hint } from \"@choice-ui/hint\"\n\nexport default function App() {\n  return (\n\n    <div className=\"flex flex-col items-center justify-center gap-8 p-8\">\n      <div className=\"flex items-center gap-2\">\n        <Hint\n          content=\"Information tooltip displayed on the left\"\n          placement=\"left-start\"\n        />\n        <span>Left placement</span>\n      </div>\n\n      <div className=\"flex items-center gap-2\">\n        <span>Right placement</span>\n        <Hint\n          content=\"Information tooltip displayed on the right\"\n          placement=\"right-start\"\n        />\n      </div>\n    </div>\n\n  );\n}"
     },
     {
       "id": "feedback-hint--long-content",
       "name": "Long Content",
       "exportName": "LongContent",
       "description": "Long Content - Tests hint behavior with extensive text content\n\nFeatures:\n- Automatic text wrapping for long content\n- Maintains optimal width for readability\n- Preserves tooltip positioning with larger content\n- Responsive design adaptation\n\nUsage:\n```tsx\n<Hint\n  content=\"Very long explanatory text that demonstrates...\"\n  placement=\"right-start\"\n/>\n```",
-      "source": "import { Hint } from \"@choice-ui/hint\"\n\nexport default function App() {\n  return (\n    <div className=\"flex items-center gap-2\">\n      <span>Complex field</span>\n      <Hint\n        content=\"This is a very long information tooltip content used to demonstrate the display effect when there is more content. The component will automatically wrap and maintain appropriate width to ensure content readability and aesthetics.\"\n        placement=\"right-start\"\n      />\n    </div>\n  );\n}"
+      "source": "import { Hint } from \"@choice-ui/hint\"\n\nexport default function App() {\n  return (\n\n    <div className=\"flex items-center gap-2\">\n      <span>Complex field</span>\n      <Hint\n        content=\"This is a very long information tooltip content used to demonstrate the display effect when there is more content. The component will automatically wrap and maintain appropriate width to ensure content readability and aesthetics.\"\n        placement=\"right-start\"\n      />\n    </div>\n\n  );\n}"
     },
     {
       "id": "feedback-hint--disabled",
       "name": "Disabled",
       "exportName": "Disabled",
       "description": "Disabled - Shows hint component in disabled state\n\nFeatures:\n- Disabled interaction state\n- Visual indication of unavailable tooltip\n- Maintains layout consistency when disabled\n- Prevents hover/focus activation\n\nUsage:\n```tsx\n<Hint\n  content=\"Disabled tooltip content\"\n  disabled={true}\n/>\n```",
-      "source": "import { Hint } from \"@choice-ui/hint\"\n\nexport default function App() {\n  return (\n    <div className=\"flex items-center gap-2\">\n      <span>Disabled field</span>\n      <Hint\n        content=\"This information tooltip is disabled\"\n        disabled={true}\n      />\n    </div>\n  );\n}"
+      "source": "import { Hint } from \"@choice-ui/hint\"\n\nexport default function App() {\n  return (\n\n    <div className=\"flex items-center gap-2\">\n      <span>Disabled field</span>\n      <Hint\n        content=\"This information tooltip is disabled\"\n        disabled={true}\n      />\n    </div>\n\n  );\n}"
     },
     {
       "id": "feedback-hint--dark-variant",
       "name": "Dark Variant",
       "exportName": "DarkVariant",
       "description": "Dark Variant - Shows hint component in dark variant\n\nFeatures:\n- Dark background and text color\n- Visual consistency with dark theme\n- Maintains tooltip functionality in dark mode\n\nUsage:\n```tsx\n<Hint\n  content=\"Dark variant tooltip content\"\n  variant=\"dark\"\n/>\n```",
-      "source": "import { Hint } from \"@choice-ui/hint\"\n\nexport default function App() {\n  return (\n    <div className=\"flex items-center gap-2\">\n      <span>Dark variant</span>\n      <Hint\n        content=\"Dark variant tooltip content\"\n        variant=\"dark\"\n      />\n    </div>\n  );\n}"
+      "source": "import { Hint } from \"@choice-ui/hint\"\n\nexport default function App() {\n  return (\n\n    <div className=\"flex items-center gap-2\">\n      <span>Dark variant</span>\n      <Hint\n        content=\"Dark variant tooltip content\"\n        variant=\"dark\"\n      />\n    </div>\n\n  );\n}"
     }
   ],
   "tags": [

@@ -205,7 +205,7 @@
         },
         {
           "name": "dateComparisonMode",
-          "type": "enum",
+          "type": "undefined | \"exact-time\" | \"date-only\"",
           "required": false,
           "description": "日期比较模式"
         },
@@ -277,7 +277,7 @@
         },
         {
           "name": "selectionMode",
-          "type": "enum",
+          "type": "undefined | \"single\" | \"multiple\" | \"range\"",
           "required": false,
           "description": "选择模式，如果未指定，会根据 value 类型自动推断"
         },
@@ -307,7 +307,7 @@
         },
         {
           "name": "weekStartsOn",
-          "type": "enum",
+          "type": "undefined | 0 | 1 | 2 | 3 | 4 | 5 | 6",
           "required": false,
           "description": "一周开始的日期（0=周日, 1=周一）"
         },
@@ -319,13 +319,13 @@
         },
         {
           "name": "direction",
-          "type": "enum",
+          "type": "undefined | \"horizontal\" | \"vertical\"",
           "required": false,
           "description": "方向"
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"dark\"",
           "required": false,
           "description": "变体样式"
         }
@@ -355,7 +355,7 @@
         },
         {
           "name": "size",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"large\"",
           "required": false,
           "description": ""
         },
@@ -373,7 +373,7 @@
         },
         {
           "name": "focusSelection",
-          "type": "enum",
+          "type": "undefined | \"none\" | \"all\" | \"end\"",
           "required": false,
           "description": ""
         },
@@ -385,7 +385,7 @@
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"light\" | \"dark\" | \"reset\"",
           "required": false,
           "description": ""
         },
@@ -570,7 +570,7 @@
         },
         {
           "name": "size",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"large\"",
           "required": false,
           "description": ""
         },
@@ -588,7 +588,7 @@
         },
         {
           "name": "focusSelection",
-          "type": "enum",
+          "type": "undefined | \"none\" | \"all\" | \"end\"",
           "required": false,
           "description": ""
         },
@@ -600,7 +600,7 @@
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"light\" | \"dark\" | \"reset\"",
           "required": false,
           "description": ""
         }
@@ -738,7 +738,7 @@
         },
         {
           "name": "size",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"large\"",
           "required": false,
           "description": ""
         },
@@ -756,7 +756,7 @@
         },
         {
           "name": "focusSelection",
-          "type": "enum",
+          "type": "undefined | \"none\" | \"all\" | \"end\"",
           "required": false,
           "description": ""
         },
@@ -768,7 +768,7 @@
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"light\" | \"dark\" | \"reset\"",
           "required": false,
           "description": ""
         },
@@ -948,7 +948,7 @@
         },
         {
           "name": "size",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"large\"",
           "required": false,
           "description": ""
         },
@@ -966,7 +966,7 @@
         },
         {
           "name": "focusSelection",
-          "type": "enum",
+          "type": "undefined | \"none\" | \"all\" | \"end\"",
           "required": false,
           "description": ""
         },
@@ -978,7 +978,7 @@
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"light\" | \"dark\" | \"reset\"",
           "required": false,
           "description": ""
         }
@@ -1068,7 +1068,7 @@
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"dark\"",
           "required": false,
           "description": "变体样式"
         }
@@ -1164,7 +1164,7 @@
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"dark\"",
           "required": false,
           "description": "变体样式"
         }
@@ -1449,7 +1449,7 @@
         },
         {
           "name": "quarter",
-          "type": "enum",
+          "type": "1 | 2 | 3 | 4",
           "required": true,
           "description": ""
         },
@@ -1479,7 +1479,7 @@
         },
         {
           "name": "quarter",
-          "type": "enum",
+          "type": "1 | 2 | 3 | 4",
           "required": true,
           "description": ""
         },
@@ -1814,77 +1814,77 @@
       "name": "States",
       "exportName": "States",
       "description": "",
-      "source": "import { TimeInput, createTimeToday } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-4\">\n      <div>\n        <label className=\"font-strong mb-1 block\">Normal</label>\n        <TimeInput placeholder=\"Enter time...\" />\n      </div>\n\n      <div>\n        <label className=\"font-strong mb-1 block\">Disabled</label>\n        <TimeInput\n          disabled\n          value={createTimeToday(14, 30)}\n          placeholder=\"Disabled state\"\n        />\n      </div>\n\n      <div>\n        <label className=\"font-strong mb-1 block\">Readonly</label>\n        <TimeInput\n          readOnly\n          value={createTimeToday(14, 30)}\n          placeholder=\"Readonly state\"\n        />\n      </div>\n\n      <div>\n        <label className=\"font-strong mb-1 block\">No prefix icon</label>\n        <TimeInput\n          prefixElement={null}\n          placeholder=\"No icon\"\n        />\n      </div>\n\n      <div>\n        <label className=\"font-strong mb-1 block\">Custom prefix</label>\n        <TimeInput\n          prefixElement={<ActionWaitForSomeTime className=\"text-accent-foreground\" />}\n          placeholder=\"Custom prefix\"\n        />\n      </div>\n    </div>\n  );\n}"
+      "source": "import { TimeInput, createTimeToday } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n\n    <div className=\"space-y-4\">\n      <div>\n        <label className=\"font-strong mb-1 block\">Normal</label>\n        <TimeInput placeholder=\"Enter time...\" />\n      </div>\n\n      <div>\n        <label className=\"font-strong mb-1 block\">Disabled</label>\n        <TimeInput\n          disabled\n          value={createTimeToday(14, 30)}\n          placeholder=\"Disabled state\"\n        />\n      </div>\n\n      <div>\n        <label className=\"font-strong mb-1 block\">Readonly</label>\n        <TimeInput\n          readOnly\n          value={createTimeToday(14, 30)}\n          placeholder=\"Readonly state\"\n        />\n      </div>\n\n      <div>\n        <label className=\"font-strong mb-1 block\">No prefix icon</label>\n        <TimeInput\n          prefixElement={null}\n          placeholder=\"No icon\"\n        />\n      </div>\n\n      <div>\n        <label className=\"font-strong mb-1 block\">Custom prefix</label>\n        <TimeInput\n          prefixElement={<ActionWaitForSomeTime className=\"text-accent-foreground\" />}\n          placeholder=\"Custom prefix\"\n        />\n      </div>\n    </div>\n\n  );\n}"
     },
     {
       "id": "dateandtime-timeinput--read-only",
       "name": "Read Only",
       "exportName": "ReadOnly",
       "description": "ReadOnly: Demonstrates the TimeInput component in readOnly mode.\n- Prevents value changes while allowing focus and selection\n- Maintains normal visual appearance (unlike disabled)\n- Useful for displaying non-editable time information",
-      "source": "import { TimeInput } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <div className=\"rounded-xl border bg-stone-50 p-4\">\n        <div className=\"text-body-small-strong mb-2 text-stone-700\">Current Value:</div>\n        <div className=\"text-body-small font-mono text-stone-600\">\n          {value ? value.toLocaleTimeString() : \"null\"}\n        </div>\n        <div className=\"text-body-small-strong mt-2 text-stone-700\">Change Count:</div>\n        <div className=\"text-body-small font-mono text-stone-600\">{changeCount}</div>\n      </div>\n      <TimeInput\n        readOnly\n        value={value}\n        onChange={handleChange}\n        placeholder=\"Readonly time input...\"\n      />\n      <TimeInput\n        value={value}\n        onChange={handleChange}\n        placeholder=\"Normal time input...\"\n      />\n      <div className=\"text-body-small text-stone-600\">\n        💡 Try changing the readonly time input - the value should not change and the change count\n        should remain at 0. Only the normal input will change the value.\n      </div>\n    </div>\n  );\n}"
+      "source": "import { TimeInput, createTimeToday } from \"@choice-ui/calendar\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [value, setValue] = useState<Date | null>(createTimeToday(14, 30))\n  const [changeCount, setChangeCount] = useState(0)\n\n  const handleChange = (newValue: Date | null) => {\n    setValue(newValue)\n    setChangeCount((prev) => prev + 1)\n  }\n\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <div className=\"rounded-xl border bg-stone-50 p-4\">\n        <div className=\"text-body-small-strong mb-2 text-stone-700\">Current Value:</div>\n        <div className=\"text-body-small font-mono text-stone-600\">\n          {value ? value.toLocaleTimeString() : \"null\"}\n        </div>\n        <div className=\"text-body-small-strong mt-2 text-stone-700\">Change Count:</div>\n        <div className=\"text-body-small font-mono text-stone-600\">{changeCount}</div>\n      </div>\n      <TimeInput\n        readOnly\n        value={value}\n        onChange={handleChange}\n        placeholder=\"Readonly time input...\"\n      />\n      <TimeInput\n        value={value}\n        onChange={handleChange}\n        placeholder=\"Normal time input...\"\n      />\n      <div className=\"text-body-small text-stone-600\">\n        💡 Try changing the readonly time input - the value should not change and the change count\n        should remain at 0. Only the normal input will change the value.\n      </div>\n    </div>\n  )\n\n}"
     },
     {
       "id": "dateandtime-timeinput--size",
       "name": "Size",
       "exportName": "Size",
       "description": "",
-      "source": "import { TimeInput } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-4\">\n      <TimeInput\n        size=\"large\"\n        value={value}\n        onChange={setValue}\n      />\n    </div>\n  );\n}"
+      "source": "import { TimeInput } from \"@choice-ui/calendar\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [value, setValue] = useState<Date | null>(null)\n  return (\n    <div className=\"space-y-4\">\n      <TimeInput\n        size=\"large\"\n        value={value}\n        onChange={setValue}\n      />\n    </div>\n  )\n\n}"
     },
     {
       "id": "dateandtime-timeinput--variable",
       "name": "Variable",
       "exportName": "Variable",
       "description": "",
-      "source": "import { TimeInput } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <div className=\"bg-gray-800 p-8\">\n      <TimeInput\n        variant=\"dark\"\n        value={value}\n        onChange={setValue}\n      />\n    </div>\n  );\n}"
+      "source": "import { TimeInput } from \"@choice-ui/calendar\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [value, setValue] = useState<Date | null>(null)\n  return (\n    <div className=\"bg-gray-800 p-8\">\n      <TimeInput\n        variant=\"dark\"\n        value={value}\n        onChange={setValue}\n      />\n    </div>\n  )\n\n}"
     },
     {
       "id": "dateandtime-timeinput--keyboard-navigation",
       "name": "Keyboard Navigation",
       "exportName": "KeyboardNavigation",
       "description": "",
-      "source": "import { TimeInput } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-4\">\n      <TimeInput\n        placeholder=\"Use keyboard to adjust time\"\n        value={value}\n        onChange={setValue}\n      />\n      <div className=\"text-secondary-foreground space-y-2 rounded-md border p-2\">\n        <div className=\"font-strong\">⌨️ Keyboard Navigation</div>\n        <div>\n          • <code>↑</code> / <code>↓</code> - Adjust 1 minute\n        </div>\n        <div>\n          • <code>Shift + ↑/↓</code> - Adjust 15 minutes\n        </div>\n        <div>\n          • <code>Alt + ↑/↓</code> - Adjust 1 hour\n        </div>\n        <div>\n          • <code>Enter</code> - Confirm input\n        </div>\n      </div>\n    </div>\n  );\n}"
+      "source": "import { TimeInput } from \"@choice-ui/calendar\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [value, setValue] = useState<Date | null>(null)\n  return (\n    <div className=\"space-y-4\">\n      <TimeInput\n        placeholder=\"Use keyboard to adjust time\"\n        value={value}\n        onChange={setValue}\n      />\n      <div className=\"text-secondary-foreground space-y-2 rounded-md border p-2\">\n        <div className=\"font-strong\">⌨️ Keyboard Navigation</div>\n        <div>\n          • <code>↑</code> / <code>↓</code> - Adjust 1 minute\n        </div>\n        <div>\n          • <code>Shift + ↑/↓</code> - Adjust 15 minutes\n        </div>\n        <div>\n          • <code>Alt + ↑/↓</code> - Adjust 1 hour\n        </div>\n        <div>\n          • <code>Enter</code> - Confirm input\n        </div>\n      </div>\n    </div>\n  )\n\n}"
     },
     {
       "id": "dateandtime-timeinput--drag-interaction",
       "name": "Drag Interaction",
       "exportName": "DragInteraction",
       "description": "",
-      "source": "import { TimeInput } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-4\">\n      <TimeInput\n        placeholder=\"Use drag to adjust time\"\n        value={value}\n        onChange={setValue}\n      />\n      <div className=\"text-secondary-foreground space-y-2 rounded-md border p-2\">\n        <div className=\"font-strong\">🖱️ Drag Interaction</div>\n        <div>• Click and drag the clock icon to adjust time</div>\n        <div>• Hold Shift key to drag 15 minutes</div>\n        <div>• Hold Ctrl/Cmd key to drag 1 hour</div>\n      </div>\n    </div>\n  );\n}"
+      "source": "import { TimeInput } from \"@choice-ui/calendar\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [value, setValue] = useState<Date | null>(null)\n  return (\n    <div className=\"space-y-4\">\n      <TimeInput\n        placeholder=\"Use drag to adjust time\"\n        value={value}\n        onChange={setValue}\n      />\n      <div className=\"text-secondary-foreground space-y-2 rounded-md border p-2\">\n        <div className=\"font-strong\">🖱️ Drag Interaction</div>\n        <div>• Click and drag the clock icon to adjust time</div>\n        <div>• Hold Shift key to drag 15 minutes</div>\n        <div>• Hold Ctrl/Cmd key to drag 1 hour</div>\n      </div>\n    </div>\n  )\n\n}"
     },
     {
       "id": "dateandtime-timeinput--formats",
       "name": "Formats",
       "exportName": "Formats",
       "description": "",
-      "source": "import { TimeInput } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-6\">\n      <div>\n        <h3 className=\"font-strong mb-2\">24-hour format (HH:mm)</h3>\n        <TimeInput\n          format=\"HH:mm\"\n          placeholder=\"14:30\"\n        />\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-2\">12-hour format (h:mm a)</h3>\n        <TimeInput\n          format=\"h:mm a\"\n          placeholder=\"2:30 PM\"\n          locale={enUS}\n        />\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-2\">With seconds (HH:mm:ss)</h3>\n        <TimeInput\n          format=\"HH:mm:ss\"\n          placeholder=\"14:30:45\"\n        />\n      </div>\n    </div>\n  );\n}"
+      "source": "import { TimeInput } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n\n    <div className=\"space-y-6\">\n      <div>\n        <h3 className=\"font-strong mb-2\">24-hour format (HH:mm)</h3>\n        <TimeInput\n          format=\"HH:mm\"\n          placeholder=\"14:30\"\n        />\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-2\">12-hour format (h:mm a)</h3>\n        <TimeInput\n          format=\"h:mm a\"\n          placeholder=\"2:30 PM\"\n          locale={enUS}\n        />\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-2\">With seconds (HH:mm:ss)</h3>\n        <TimeInput\n          format=\"HH:mm:ss\"\n          placeholder=\"14:30:45\"\n        />\n      </div>\n    </div>\n\n  );\n}"
     },
     {
       "id": "dateandtime-timeinput--smart-completion",
       "name": "Smart Completion",
       "exportName": "SmartCompletion",
       "description": "",
-      "source": "import { TimeInput } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-4\">\n      <TimeInput {...args} />\n      <div className=\"text-secondary-foreground space-y-2 rounded-md border p-2\">\n        <div className=\"font-strong\">💡 Smart Completion</div>\n        <div>\n          • <code>9</code> → 09:00\n        </div>\n        <div>\n          • <code>930</code> → 09:30\n        </div>\n        <div>\n          • <code>1430</code> → 14:30\n        </div>\n        <div>\n          • <code>2pm</code> → 14:00\n        </div>\n        <div>\n          • <code>9am</code> → 09:00\n        </div>\n        <div>\n          • <code>下午2点</code> → 14:00\n        </div>\n      </div>\n    </div>\n  );\n}"
+      "source": "import { TimeInput } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n\n    <div className=\"space-y-4\">\n      <TimeInput {...args} />\n      <div className=\"text-secondary-foreground space-y-2 rounded-md border p-2\">\n        <div className=\"font-strong\">💡 Smart Completion</div>\n        <div>\n          • <code>9</code> → 09:00\n        </div>\n        <div>\n          • <code>930</code> → 09:30\n        </div>\n        <div>\n          • <code>1430</code> → 14:30\n        </div>\n        <div>\n          • <code>2pm</code> → 14:00\n        </div>\n        <div>\n          • <code>9am</code> → 09:00\n        </div>\n        <div>\n          • <code>下午2点</code> → 14:00\n        </div>\n      </div>\n    </div>\n\n  );\n}"
     },
     {
       "id": "dateandtime-timeinput--time-range",
       "name": "Time Range",
       "exportName": "TimeRange",
       "description": "",
-      "source": "import { TimeInput, createTimeToday } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-6\">\n      <div>\n        <h3 className=\"font-strong mb-2\">Work time (09:00 - 18:00)</h3>\n        <TimeInput\n          placeholder=\"Only select work time\"\n          minTime={createTimeToday(9, 0)}\n          maxTime={createTimeToday(18, 0)}\n          value={workTime}\n          onChange={setWorkTime}\n        />\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-2\">Afternoon time (12:00 - 23:59)</h3>\n        <TimeInput\n          placeholder=\"Only select afternoon time\"\n          minTime={createTimeToday(12, 0)}\n          maxTime={createTimeToday(23, 59)}\n          value={afternoonTime}\n          onChange={setAfternoonTime}\n        />\n      </div>\n    </div>\n  );\n}"
+      "source": "import { TimeInput, createTimeToday } from \"@choice-ui/calendar\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [workTime, setWorkTime] = useState<Date | null>(createTimeToday(12, 0))\n  const [afternoonTime, setAfternoonTime] = useState<Date | null>(createTimeToday(14, 0))\n  return (\n    <div className=\"space-y-6\">\n      <div>\n        <h3 className=\"font-strong mb-2\">Work time (09:00 - 18:00)</h3>\n        <TimeInput\n          placeholder=\"Only select work time\"\n          minTime={createTimeToday(9, 0)}\n          maxTime={createTimeToday(18, 0)}\n          value={workTime}\n          onChange={setWorkTime}\n        />\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-2\">Afternoon time (12:00 - 23:59)</h3>\n        <TimeInput\n          placeholder=\"Only select afternoon time\"\n          minTime={createTimeToday(12, 0)}\n          maxTime={createTimeToday(23, 59)}\n          value={afternoonTime}\n          onChange={setAfternoonTime}\n        />\n      </div>\n    </div>\n  )\n\n}"
     },
     {
       "id": "dateandtime-timeinput--custom-steps",
       "name": "Custom Steps",
       "exportName": "CustomSteps",
       "description": "",
-      "source": "import { TimeInput } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-6\">\n      <div>\n        <h3 className=\"font-strong mb-2\">5-minute step</h3>\n        <TimeInput\n          placeholder=\"Adjust 5 minutes\"\n          step={5}\n          shiftStep={30}\n          value={stepA}\n          onChange={setStepA}\n        />\n        <div className=\"mt-1 text-gray-500\">\n          ↑/↓ key adjust 5 minutes, Shift+↑/↓ adjust 30 minutes\n        </div>\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-2\">15-minute step</h3>\n        <TimeInput\n          placeholder=\"Adjust 15 minutes\"\n          step={15}\n          shiftStep={60}\n          value={stepB}\n          onChange={setStepB}\n        />\n        <div className=\"mt-1 text-gray-500\">\n          ↑/↓ key adjust 15 minutes, Shift+↑/↓ adjust 60 minutes\n        </div>\n      </div>\n    </div>\n  );\n}"
+      "source": "import { TimeInput, createTimeToday } from \"@choice-ui/calendar\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [stepA, setStepA] = useState<Date | null>(createTimeToday(14, 30))\n  const [stepB, setStepB] = useState<Date | null>(createTimeToday(14, 30))\n  return (\n    <div className=\"space-y-6\">\n      <div>\n        <h3 className=\"font-strong mb-2\">5-minute step</h3>\n        <TimeInput\n          placeholder=\"Adjust 5 minutes\"\n          step={5}\n          shiftStep={30}\n          value={stepA}\n          onChange={setStepA}\n        />\n        <div className=\"mt-1 text-gray-500\">\n          ↑/↓ key adjust 5 minutes, Shift+↑/↓ adjust 30 minutes\n        </div>\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-2\">15-minute step</h3>\n        <TimeInput\n          placeholder=\"Adjust 15 minutes\"\n          step={15}\n          shiftStep={60}\n          value={stepB}\n          onChange={setStepB}\n        />\n        <div className=\"mt-1 text-gray-500\">\n          ↑/↓ key adjust 15 minutes, Shift+↑/↓ adjust 60 minutes\n        </div>\n      </div>\n    </div>\n  )\n\n}"
     },
     {
       "id": "dateandtime-timeinput--combined",
       "name": "Combined",
       "exportName": "Combined",
       "description": "",
-      "source": "import { TimeCalendar, TimeInput, TimeRangeInput } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <>\n      <Panel className=\"w-80 rounded-xl border\">\n        <Panel.Title title=\"Select Time\" />\n        <Panel.Row>\n          <Select\n            value={format}\n            onChange={(value) => setFormat(value as Format)}\n          >\n            <Select.Trigger className=\"[grid-area:input]\">\n              <Select.Value>\n                {format === Format.HH_MM ? \"24-hour format (HH:mm)\" : \"12-hour format (h:mm a)\"}\n              </Select.Value>\n            </Select.Trigger>\n            <Select.Content>\n              <Select.Item value={Format.HH_MM}>24-hour format (HH:mm)</Select.Item>\n              <Select.Item value={Format.H_MM_A}>12-hour format (h:mm a)</Select.Item>\n            </Select.Content>\n          </Select>\n        </Panel.Row>\n        <Panel.Row\n          type=\"single\"\n          ref={timeRef}\n          className=\"time-input\"\n        >\n          <TimeInput\n            format={format}\n            className=\"[grid-area:input]\"\n            value={value}\n            onChange={setValue}\n            onFocus={() => {\n              setActiveInput(\"single\")\n              setOpen(true)\n            }}\n            step={15}\n            onEnterKeyDown={() => setOpen(false)}\n          />\n        </Panel.Row>\n\n        <Panel.Row\n          className=\"time-range-input\"\n          type=\"two-input-two-icon\"\n          ref={rangeRef}\n        >\n          <TimeRangeInput\n            format={format}\n            startValue={startTime}\n            endValue={endTime}\n            onStartChange={(newStart) => {\n              if (newStart) {\n                // 计算当前range长度（毫秒），fallback为1小时\n                const currentRange =\n                  startTime && endTime\n                    ? endTime.getTime() - startTime.getTime()\n                    : 1 * 60 * 60 * 1000\n                // 保持range长度\n                const newEnd = new Date(newStart.getTime() + currentRange)\n                setStartTime(newStart)\n                setEndTime(newEnd)\n              } else {\n                setStartTime(newStart)\n              }\n            }}\n            onEndChange={(newEnd) => {\n              if (newEnd && startTime && newEnd <= startTime) {\n                // end <= start 时推动start\n                setStartTime(newEnd)\n              }\n              setEndTime(newEnd)\n            }}\n            onStartFocus={() => {\n              setActiveInput(\"range-start\")\n              setOpen(true)\n            }}\n            onEndFocus={() => {\n              setActiveInput(\"range-end\")\n              setOpen(true)\n            }}\n            onEnterKeyDown={() => setOpen(false)}\n          />\n        </Panel.Row>\n      </Panel>\n      <Popover\n        interactions=\"focus\"\n        open={open}\n        onOpenChange={setOpen}\n        outsidePressIgnore={activeInput === \"single\" ? \"time-input\" : \"time-range-input\"}\n        triggerRef={currentTriggerRef}\n        placement=\"left-start\"\n        focusManagerProps={{\n          initialFocus: -1,\n          returnFocus: false,\n        }}\n      >\n        <Popover.Content className=\"overflow-hidden\">\n          <TimeCalendar\n            format={format}\n            className=\"h-64\"\n            value={currentValue}\n            onChange={handleValueChange}\n          />\n        </Popover.Content>\n      </Popover>\n    </>\n  );\n}"
+      "source": "import { TimeCalendar, TimeInput, TimeRangeInput, createTimeToday } from \"@choice-ui/calendar\"\nimport { useState, useRef } from \"react\"\n\nexport default function App() {\n\n  const [activeInput, setActiveInput] = useState<\"single\" | \"range-start\" | \"range-end\" | null>(\n    null,\n  )\n\n  enum Format {\n    HH_MM = \"HH:mm\",\n    H_MM_A = \"h:mm a\",\n  }\n\n  const [format, setFormat] = useState<Format>(Format.HH_MM)\n  const [value, setValue] = useState<Date | null>(createTimeToday(1, 30))\n  const [startTime, setStartTime] = useState<Date | null>(createTimeToday(1, 30))\n  const [endTime, setEndTime] = useState<Date | null>(createTimeToday(2, 30))\n\n  const [open, setOpen] = useState(false)\n  const timeRef = useRef<HTMLFieldSetElement>(null)\n  const rangeRef = useRef<HTMLFieldSetElement>(null)\n\n  const currentTriggerRef = activeInput === \"single\" ? timeRef : rangeRef\n  const currentValue =\n    activeInput === \"single\"\n      ? value\n      : activeInput === \"range-start\"\n        ? startTime\n        : activeInput === \"range-end\"\n          ? endTime\n          : null\n\n  const handleValueChange = useEventCallback((newDate: Date | null) => {\n    if (activeInput === \"single\") {\n      setValue(newDate)\n      setOpen(false)\n    } else if (activeInput === \"range-start\") {\n      if (newDate) {\n        const currentRange =\n          startTime && endTime ? endTime.getTime() - startTime.getTime() : 1 * 60 * 60 * 1000\n        const newEnd = new Date(newDate.getTime() + currentRange)\n        setStartTime(newDate)\n        setEndTime(newEnd)\n        console.log(\"🔥 Calendar start推动:\", {\n          newStart: newDate.toTimeString(),\n          newEnd: newEnd.toTimeString(),\n          rangeHours: currentRange / (60 * 60 * 1000),\n        })\n      } else {\n        setStartTime(newDate)\n      }\n      setOpen(false)\n    } else if (activeInput === \"range-end\") {\n      if (newDate && startTime && newDate <= startTime) {\n        setStartTime(newDate)\n        console.log(\"🔥 Calendar end推动start:\", newDate.toTimeString())\n      }\n      setEndTime(newDate)\n      setOpen(false)\n    }\n  })\n\n  return (\n    <>\n      <Panel className=\"w-80 rounded-xl border\">\n        <Panel.Title title=\"Select Time\" />\n        <Panel.Row>\n          <Select\n            value={format}\n            onChange={(value) => setFormat(value as Format)}\n          >\n            <Select.Trigger className=\"[grid-area:input]\">\n              <Select.Value>\n                {format === Format.HH_MM ? \"24-hour format (HH:mm)\" : \"12-hour format (h:mm a)\"}\n              </Select.Value>\n            </Select.Trigger>\n            <Select.Content>\n              <Select.Item value={Format.HH_MM}>24-hour format (HH:mm)</Select.Item>\n              <Select.Item value={Format.H_MM_A}>12-hour format (h:mm a)</Select.Item>\n            </Select.Content>\n          </Select>\n        </Panel.Row>\n        <Panel.Row\n          type=\"single\"\n          ref={timeRef}\n          className=\"time-input\"\n        >\n          <TimeInput\n            format={format}\n            className=\"[grid-area:input]\"\n            value={value}\n            onChange={setValue}\n            onFocus={() => {\n              setActiveInput(\"single\")\n              setOpen(true)\n            }}\n            step={15}\n            onEnterKeyDown={() => setOpen(false)}\n          />\n        </Panel.Row>\n\n        <Panel.Row\n          className=\"time-range-input\"\n          type=\"two-input-two-icon\"\n          ref={rangeRef}\n        >\n          <TimeRangeInput\n            format={format}\n            startValue={startTime}\n            endValue={endTime}\n            onStartChange={(newStart) => {\n              if (newStart) {\n                // 计算当前range长度（毫秒），fallback为1小时\n                const currentRange =\n                  startTime && endTime\n                    ? endTime.getTime() - startTime.getTime()\n                    : 1 * 60 * 60 * 1000\n                // 保持range长度\n                const newEnd = new Date(newStart.getTime() + currentRange)\n                setStartTime(newStart)\n                setEndTime(newEnd)\n              } else {\n                setStartTime(newStart)\n              }\n            }}\n            onEndChange={(newEnd) => {\n              if (newEnd && startTime && newEnd <= startTime) {\n                // end <= start 时推动start\n                setStartTime(newEnd)\n              }\n              setEndTime(newEnd)\n            }}\n            onStartFocus={() => {\n              setActiveInput(\"range-start\")\n              setOpen(true)\n            }}\n            onEndFocus={() => {\n              setActiveInput(\"range-end\")\n              setOpen(true)\n            }}\n            onEnterKeyDown={() => setOpen(false)}\n          />\n        </Panel.Row>\n      </Panel>\n      <Popover\n        interactions=\"focus\"\n        open={open}\n        onOpenChange={setOpen}\n        outsidePressIgnore={activeInput === \"single\" ? \"time-input\" : \"time-range-input\"}\n        triggerRef={currentTriggerRef}\n        placement=\"left-start\"\n        focusManagerProps={{\n          initialFocus: -1,\n          returnFocus: false,\n        }}\n      >\n        <Popover.Content className=\"overflow-hidden\">\n          <TimeCalendar\n            format={format}\n            className=\"h-64\"\n            value={currentValue}\n            onChange={handleValueChange}\n          />\n        </Popover.Content>\n      </Popover>\n    </>\n  )\n\n}"
     }
   ],
   "tags": [

@@ -40,7 +40,7 @@
         },
         {
           "name": "size",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"large\"",
           "required": false,
           "description": ""
         },
@@ -58,7 +58,7 @@
         },
         {
           "name": "focusSelection",
-          "type": "enum",
+          "type": "undefined | \"none\" | \"all\" | \"end\"",
           "required": false,
           "description": ""
         },
@@ -70,7 +70,7 @@
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"light\" | \"dark\" | \"reset\"",
           "required": false,
           "description": ""
         },
@@ -96,35 +96,35 @@
       "name": "Basic",
       "exportName": "Basic",
       "description": "`SearchInput` is a specialized input component designed for search functionality with built-in\nsearch icon and optional clear button.\n\nFeatures:\n- Search icon prefix for visual identification\n- Optional clear button that appears when text is entered\n- Support for different sizes and variants\n- Built on top of the core TextField component\n- Dark mode support\n- Disabled state styling\n\nUsage Guidelines:\n- Use for search functionality within applications\n- Provide clear placeholder text to indicate searchable content\n- Handle the onChange callback to process search queries\n- Consider debouncing search requests for performance\n- Place in navigation bars, toolbars, or filter sections\n- Use `clearable={false}` to hide the clear button when not needed\n\nAccessibility:\n- Includes proper ARIA labels for the search and clear functions\n- Maintains keyboard navigation support\n- Provides visual indication of focus states\n- Clear button has tooltip for screen reader support\n- Supports standard input accessibility patterns\nBasic: Demonstrates the default SearchInput with standard styling.\n\nThis example shows the fundamental implementation with controlled input\nhandling. The component displays a search icon and automatically shows\na clear button when text is entered.",
-      "source": "import { SearchInput } from \"@choice-ui/search-input\"\n\nexport default function App() {\n  return (\n    <SearchInput\n      value={value}\n      onChange={setValue}\n    />\n  );\n}"
+      "source": "import { SearchInput } from \"@choice-ui/search-input\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [value, setValue] = useState(\"\")\n\n  return (\n    <SearchInput\n      value={value}\n      onChange={setValue}\n    />\n  )\n\n}"
     },
     {
       "id": "forms-searchinput--size",
       "name": "Size",
       "exportName": "Size",
       "description": "Size: Demonstrates the SearchInput with larger sizing.\n\nThe \"large\" size provides increased visibility and touch target size,\nmaking it more suitable for:\n- Primary search interfaces\n- Touch-optimized interfaces\n- Applications with emphasis on search functionality",
-      "source": "import { SearchInput } from \"@choice-ui/search-input\"\n\nexport default function App() {\n  return (\n    <SearchInput\n      value={value}\n      onChange={setValue}\n      size=\"large\"\n    />\n  );\n}"
+      "source": "import { SearchInput } from \"@choice-ui/search-input\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [value, setValue] = useState(\"\")\n\n  return (\n    <SearchInput\n      value={value}\n      onChange={setValue}\n      size=\"large\"\n    />\n  )\n\n}"
     },
     {
       "id": "forms-searchinput--disabled",
       "name": "Disabled",
       "exportName": "Disabled",
       "description": "Disabled: Shows the SearchInput in its disabled state.\n\nThe disabled state visually indicates that the search functionality\nis currently unavailable. Use this state when:\n- Search is not applicable in the current context\n- The user doesn't have permission to search\n- Search functionality is temporarily unavailable",
-      "source": ""
+      "source": "import { SearchInput } from \"@choice-ui/search-input\"\n\nexport default function App() {\n\n  return <SearchInput disabled />\n\n}"
     },
     {
       "id": "forms-searchinput--not-clearable",
       "name": "Not Clearable",
       "exportName": "NotClearable",
       "description": "NotClearable: Demonstrates SearchInput without the clear button.\n\nSetting `clearable={false}` hides the clear button even when there is text.\nThis is useful when:\n- You want a simpler UI without the clear action\n- The search is meant to be persistent\n- You're implementing custom clearing logic elsewhere\n- The use case doesn't require quick clearing",
-      "source": "import { SearchInput } from \"@choice-ui/search-input\"\n\nexport default function App() {\n  return (\n    <SearchInput\n      value={value}\n      onChange={setValue}\n      clearable={false}\n    />\n  );\n}"
+      "source": "import { SearchInput } from \"@choice-ui/search-input\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [value, setValue] = useState(\"Search text without clear button\")\n\n  return (\n    <SearchInput\n      value={value}\n      onChange={setValue}\n      clearable={false}\n    />\n  )\n\n}"
     },
     {
       "id": "forms-searchinput--variants",
       "name": "Variants",
       "exportName": "Variants",
       "description": "Variants: Demonstrates different visual variants of the numeric input component.\n- default: Follows the page theme dynamically (light/dark mode)\n- light: Fixed light appearance regardless of theme\n- dark: Fixed dark appearance regardless of theme\n- reset: Removes variant styling, no variant settings applied",
-      "source": "import { SearchInput } from \"@choice-ui/search-input\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-2\">\n      <Checkbox\n        value={disabled}\n        onChange={(value) => setDisabled(value)}\n      >\n        Disabled\n      </Checkbox>\n      <div className=\"grid grid-cols-3 overflow-hidden rounded-xl border\">\n        <div className=\"bg-default-background flex aspect-square items-center justify-center p-8\">\n          <SearchInput\n            disabled={disabled}\n            value={value}\n            onChange={setValue}\n          />\n        </div>\n        <div className=\"flex aspect-square items-center justify-center bg-white p-8\">\n          <SearchInput\n            disabled={disabled}\n            value={value}\n            onChange={setValue}\n            variant=\"light\"\n          />\n        </div>\n        <div className=\"flex aspect-square items-center justify-center bg-gray-800 p-8\">\n          <SearchInput\n            disabled={disabled}\n            value={value}\n            onChange={setValue}\n            variant=\"dark\"\n          />\n        </div>\n      </div>\n    </div>\n  );\n}"
+      "source": "import { SearchInput } from \"@choice-ui/search-input\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [value, setValue] = useState(\"\")\n  const [disabled, setDisabled] = useState(false)\n\n  return (\n    <div className=\"flex flex-col gap-2\">\n      <Checkbox\n        value={disabled}\n        onChange={(value) => setDisabled(value)}\n      >\n        Disabled\n      </Checkbox>\n      <div className=\"grid grid-cols-3 overflow-hidden rounded-xl border\">\n        <div className=\"bg-default-background flex aspect-square items-center justify-center p-8\">\n          <SearchInput\n            disabled={disabled}\n            value={value}\n            onChange={setValue}\n          />\n        </div>\n        <div className=\"flex aspect-square items-center justify-center bg-white p-8\">\n          <SearchInput\n            disabled={disabled}\n            value={value}\n            onChange={setValue}\n            variant=\"light\"\n          />\n        </div>\n        <div className=\"flex aspect-square items-center justify-center bg-gray-800 p-8\">\n          <SearchInput\n            disabled={disabled}\n            value={value}\n            onChange={setValue}\n            variant=\"dark\"\n          />\n        </div>\n      </div>\n    </div>\n  )\n\n}"
     }
   ],
   "tags": [

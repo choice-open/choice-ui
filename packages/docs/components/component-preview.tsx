@@ -7,6 +7,7 @@ type ComponentPreviewProps = React.HTMLAttributes<HTMLDivElement> & {
   align?: "center" | "start" | "end"
   code?: string
   language?: "tsx" | "ts" | "jsx" | "js"
+  filename?: string
 }
 
 type TabKey = "preview" | "code"
@@ -17,6 +18,7 @@ export function ComponentPreview({
   align = "center",
   code,
   language = "tsx",
+  filename,
   ...props
 }: ComponentPreviewProps) {
   const [tab, setTab] = useState<TabKey>("preview")
@@ -24,7 +26,10 @@ export function ComponentPreview({
   const hasCode = typeof code === "string" && code.trim().length > 0
 
   return (
-    <div className={tcx("group relative my-4 w-full", className)}>
+    <div
+      className={tcx("group relative my-4 w-full", className)}
+      {...props}
+    >
       {hasCode ? (
         <Tabs
           value={tab}
@@ -52,14 +57,16 @@ export function ComponentPreview({
       {hasCode && tab === "code" ? (
         <CodeBlock
           language={language}
-          defaultExpanded
-          defaultCodeExpanded
           className="rounded-xl border"
+          lineThreshold={32}
+          filename={filename}
         >
+          <CodeBlock.Header />
           <CodeBlock.Content
             code={code ?? ""}
             language={language}
           />
+          <CodeBlock.Footer />
         </CodeBlock>
       ) : null}
     </div>

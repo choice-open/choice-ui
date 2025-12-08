@@ -73,14 +73,16 @@ export const Variants: Story = {
             value={variant}
             onChange={(value) => setVariant(value as Variant)}
           >
-            <Select.Trigger>{variant}</Select.Trigger>
+            <Select.Trigger>
+              {Object.keys(Variant).find((v) => Variant[v as keyof typeof Variant] === variant)}
+            </Select.Trigger>
             <Select.Content>
-              {Object.values(Variant).map((variant) => (
+              {Object.entries(Variant).map(([key, value]) => (
                 <Select.Item
-                  key={variant}
-                  value={variant}
+                  key={key}
+                  value={value}
                 >
-                  {variant}
+                  {key}
                 </Select.Item>
               ))}
             </Select.Content>
@@ -89,14 +91,16 @@ export const Variants: Story = {
             value={size}
             onChange={(value) => setSize(value as Size)}
           >
-            <Select.Trigger>{size}</Select.Trigger>
+            <Select.Trigger>
+              {Object.keys(Size).find((v) => Size[v as keyof typeof Size] === size)}
+            </Select.Trigger>
             <Select.Content>
-              {Object.values(Size).map((size) => (
+              {Object.entries(Size).map(([key, value]) => (
                 <Select.Item
-                  key={size}
-                  value={size}
+                  key={key}
+                  value={value}
                 >
-                  {size}
+                  {key}
                 </Select.Item>
               ))}
             </Select.Content>
@@ -105,14 +109,16 @@ export const Variants: Story = {
             value={event}
             onChange={(value) => setEvent(value as Event)}
           >
-            <Select.Trigger>{event}</Select.Trigger>
+            <Select.Trigger>
+              {Object.keys(Event).find((v) => Event[v as keyof typeof Event] === event)}
+            </Select.Trigger>
             <Select.Content>
-              {Object.values(Event).map((event) => (
+              {Object.entries(Event).map(([key, value]) => (
                 <Select.Item
-                  key={event}
-                  value={event}
+                  key={key}
+                  value={value}
                 >
-                  {event}
+                  {key}
                 </Select.Item>
               ))}
             </Select.Content>
@@ -122,7 +128,7 @@ export const Variants: Story = {
         <div className="grid grid-cols-[auto_1fr] items-center gap-4">
           {Object.values(State).map((state) => (
             <Fragment key={state}>
-              <span className="text-fuchsia-500 capitalize">{state}</span>
+              <span className="capitalize text-fuchsia-500">{state}</span>
               <ToggleButton
                 variant={variant}
                 value={controlled}
@@ -165,7 +171,7 @@ export const Tooltip: Story = {
 }
 
 /**
- * ToggleButton component in readOnly state.
+ * [TEST] ToggleButton component in readOnly state.
  *
  * In readOnly mode:
  * - The toggle button does not respond to click or change events

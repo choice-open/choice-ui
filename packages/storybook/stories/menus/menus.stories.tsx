@@ -1,6 +1,5 @@
-import { Menus, MenuSearch, MenuSearchEmpty, NumericInput } from "@choice-ui/react"
-import { Check, Search } from "@choiceform/icons-react"
-import { faker } from "@faker-js/faker"
+import { Menus, NumericInput } from "@choice-ui/react"
+import { Check, HugWidth, Search } from "@choiceform/icons-react"
 import { Story } from "@storybook/addon-docs/blocks"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { useMemo, useState } from "react"
@@ -8,24 +7,12 @@ import { useMemo, useState } from "react"
 const meta: Meta<typeof Menus> = {
   title: "Collections/Menus",
   component: Menus,
-  tags: ["new"],
-  decorators: [
-    (Story) => (
-      <div>
-        <Story />
-      </div>
-    ),
-  ],
+  tags: ["autodocs"],
 }
 
 export default meta
 
 type Story = StoryObj<typeof Menus>
-
-const options = Array.from({ length: 6 }, () => ({
-  label: faker.music.songName(),
-  value: faker.string.uuid(),
-}))
 
 /**
  * `Menus` is a versatile component for displaying lists of options or actions in a consistent format.
@@ -66,6 +53,15 @@ export const Basic: Story = {
   render: function BasicStory() {
     const [activeIndex, setActiveIndex] = useState<number | null>(null)
 
+    const options = [
+      { label: "Yesterday", value: "1" },
+      { label: "Bohemian Rhapsody", value: "2" },
+      { label: "Imagine", value: "3" },
+      { label: "Hotel California", value: "4" },
+      { label: "Stairway to Heaven", value: "5" },
+      { label: "Hey Jude", value: "6" },
+    ]
+
     return (
       <Menus className="w-64">
         {options.map((option, index) => (
@@ -102,13 +98,21 @@ export const SearchStory: Story = {
     const [activeIndex, setActiveIndex] = useState<number | null>(null)
     const [search, setSearch] = useState("")
 
+    const options = [
+      { label: "Yesterday", value: "1" },
+      { label: "Bohemian Rhapsody", value: "2" },
+      { label: "Imagine", value: "3" },
+      { label: "Hotel California", value: "4" },
+      { label: "Stairway to Heaven", value: "5" },
+      { label: "Hey Jude", value: "6" },
+    ]
     const filteredOptions = useMemo(() => {
       return options.filter((option) => option.label.toLowerCase().includes(search.toLowerCase()))
     }, [search])
 
     return (
       <Menus className="w-64">
-        <MenuSearch
+        <Menus.Search
           value={search}
           onChange={setSearch}
         />
@@ -127,13 +131,13 @@ export const SearchStory: Story = {
         ))}
 
         {filteredOptions.length === 0 && (
-          <MenuSearchEmpty onClear={() => setSearch("")}>
+          <Menus.SearchEmpty onClear={() => setSearch("")}>
             <Search
               className="text-secondary-foreground"
               width={32}
               height={32}
             />
-          </MenuSearchEmpty>
+          </Menus.SearchEmpty>
         )}
       </Menus>
     )
@@ -156,6 +160,16 @@ export const SearchStory: Story = {
 export const InputStory: Story = {
   render: function InputStory() {
     const [activeIndex, setActiveIndex] = useState<number | null>(null)
+
+    const options = [
+      { label: "Yesterday", value: "1" },
+      { label: "Bohemian Rhapsody", value: "2" },
+      { label: "Imagine", value: "3" },
+      { label: "Hotel California", value: "4" },
+      { label: "Stairway to Heaven", value: "5" },
+      { label: "Hey Jude", value: "6" },
+    ]
+
     return (
       <Menus className="w-64">
         <Menus.Input />
@@ -196,6 +210,16 @@ export const ButtonStory: Story = {
   render: function ButtonStory() {
     const [activeIndex, setActiveIndex] = useState<number | null>(null)
     const [selectedIndex, setSelectedIndex] = useState<number[]>([])
+
+    const options = [
+      { label: "Yesterday", value: "1" },
+      { label: "Bohemian Rhapsody", value: "2" },
+      { label: "Imagine", value: "3" },
+      { label: "Hotel California", value: "4" },
+      { label: "Stairway to Heaven", value: "5" },
+      { label: "Hey Jude", value: "6" },
+    ]
+
     return (
       <Menus className="w-64">
         <Menus.Label>Menu</Menus.Label>
@@ -223,18 +247,41 @@ export const ButtonStory: Story = {
   },
 }
 
+/**
+ * NumberInputStory: Demonstrates using a numeric input within a menu.
+ *
+ * Features:
+ * - Numeric input for integer values
+ * - Visual separation between input and menu items
+ * - Maintains consistent styling with the menu component
+ *
+ */
 export const NumberInputStory: Story = {
   render: function NumberInputStory() {
     const [activeIndex, setActiveIndex] = useState<number | null>(null)
     const [selectedIndex, setSelectedIndex] = useState<number[]>([])
     const [value, setValue] = useState(0)
+
+    const options = [
+      { label: "Yesterday", value: "1" },
+      { label: "Bohemian Rhapsody", value: "2" },
+      { label: "Imagine", value: "3" },
+      { label: "Hotel California", value: "4" },
+      { label: "Stairway to Heaven", value: "5" },
+      { label: "Hey Jude", value: "6" },
+    ]
+
     return (
       <Menus className="w-64">
         <NumericInput
           variant="dark"
           value={value}
           onChange={(newValue) => setValue(newValue as number)}
-        />
+        >
+          <NumericInput.Prefix>
+            <HugWidth />
+          </NumericInput.Prefix>
+        </NumericInput>
         <Menus.Divider />
         {options.map((option, index) => (
           <Menus.Item

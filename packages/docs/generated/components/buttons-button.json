@@ -97,7 +97,7 @@
       "name": "Sizes",
       "exportName": "Sizes",
       "description": "Sizes: Demonstrates the different size options for the Button component.\n- Shows default and large button sizes.\n- Useful for adapting buttons to different UI layouts or prominence.",
-      "source": "import { Button } from \"@choice-ui/button\"\n\nexport default function App() {\n  return (\n    <>\n      <Button>Default</Button>\n      <Button size=\"large\">Large</Button>\n    </>\n  );\n}"
+      "source": "import { Button } from \"@choice-ui/button\"\n\nexport default function App() {\n  return (\n\n    <>\n      <Button>Default</Button>\n      <Button size=\"large\">Large</Button>\n    </>\n\n  );\n}"
     },
     {
       "id": "buttons-button--disabled",
@@ -132,21 +132,21 @@
       "name": "With Icons",
       "exportName": "WithIcons",
       "description": "With Icons: Demonstrates the Button with an icon.\n- Shows how to use the icon prop to show an icon.",
-      "source": "import { Button } from \"@choice-ui/button\"\n\nexport default function App() {\n  return (\n    <div className=\"flex gap-4\">\n      <Button>\n        <SearchSmall />\n        Search\n      </Button>\n      <Button variant=\"secondary\">\n        Search\n        <SearchSmall />\n      </Button>\n    </div>\n  );\n}"
+      "source": "import { Button } from \"@choice-ui/button\"\n\nexport default function App() {\n  return (\n\n    <div className=\"flex gap-4\">\n      <Button>\n        <SearchSmall />\n        Search\n      </Button>\n      <Button variant=\"secondary\">\n        Search\n        <SearchSmall />\n      </Button>\n    </div>\n\n  );\n}"
     },
     {
       "id": "buttons-button--variants",
       "name": "Variants",
       "exportName": "Variants",
       "description": "Variants: Demonstrates all visual variants, sizes, and states for the Button component.\n- Shows how to use the variant, size, and state props.\n- Includes interactive controls for switching variants and sizes.\n- Demonstrates active, focused, loading, and disabled states.\n- Shows usage with and without icons.\n- Useful for previewing all button styles and states in your design system.",
-      "source": "import { Button } from \"@choice-ui/button\"\n\nexport default function App() {\n  return (\n    <div\n      className={tcx(\n        \"flex flex-col items-start gap-4 rounded-xl p-4\",\n        variant === Variant.Dark && \"bg-gray-800\",\n      )}\n    >\n      <Select\n        value={variant}\n        onChange={(value) => setVariant(value as Variant)}\n      >\n        <Select.Trigger>\n          {Object.keys(Variant).find((v) => Variant[v as keyof typeof Variant] === variant)}\n        </Select.Trigger>\n        <Select.Content>\n          {Object.entries(Variant).map(([key, value]) => (\n            <Select.Item\n              key={key}\n              value={value}\n            >\n              {key}\n            </Select.Item>\n          ))}\n        </Select.Content>\n      </Select>\n\n      <div className=\"grid grid-cols-[auto_1fr_1fr] items-center gap-4\">\n        {Object.values(State).map((state) => (\n          <Fragment key={state}>\n            <span className=\"capitalize text-pink-500\">{state}</span>\n            <Button\n              variant={variant}\n              active={state === State.Active}\n              disabled={state === State.Disabled}\n              loading={state === State.Loading}\n              focused={state === State.Focused}\n            >\n              Button\n            </Button>\n            <Button\n              variant={variant}\n              active={state === State.Active}\n              disabled={state === State.Disabled}\n              loading={state === State.Loading}\n              focused={state === State.Focused}\n            >\n              <SearchSmall />\n              Button\n            </Button>\n          </Fragment>\n        ))}\n      </div>\n    </div>\n  );\n}"
+      "source": "import { Button } from \"@choice-ui/button\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  enum Variant {\n    Dark = \"dark\",\n    Destructive = \"destructive\",\n    Ghost = \"ghost\",\n    Inverse = \"inverse\",\n    Link = \"link\",\n    LinkDanger = \"link-danger\",\n    Primary = \"primary\",\n    Secondary = \"secondary\",\n    SecondaryDestruct = \"secondary-destruct\",\n    Solid = \"solid\",\n    Success = \"success\",\n  }\n\n  enum State {\n    Active = \"active\",\n    Disabled = \"disabled\",\n    Focused = \"focused\",\n    Loading = \"loading\",\n    Rest = \"rest\",\n  }\n\n  const [variant, setVariant] = useState<Variant>(Variant.Primary)\n\n  return (\n    <div\n      className={tcx(\n        \"flex flex-col items-start gap-4 rounded-xl p-4\",\n        variant === Variant.Dark && \"bg-gray-800\",\n      )}\n    >\n      <Select\n        value={variant}\n        onChange={(value) => setVariant(value as Variant)}\n      >\n        <Select.Trigger>\n          {Object.keys(Variant).find((v) => Variant[v as keyof typeof Variant] === variant)}\n        </Select.Trigger>\n        <Select.Content>\n          {Object.entries(Variant).map(([key, value]) => (\n            <Select.Item\n              key={key}\n              value={value}\n            >\n              {key}\n            </Select.Item>\n          ))}\n        </Select.Content>\n      </Select>\n\n      <div className=\"grid grid-cols-[auto_1fr_1fr] items-center gap-4\">\n        {Object.values(State).map((state) => (\n          <Fragment key={state}>\n            <span className=\"capitalize text-pink-500\">{state}</span>\n            <Button\n              variant={variant}\n              active={state === State.Active}\n              disabled={state === State.Disabled}\n              loading={state === State.Loading}\n              focused={state === State.Focused}\n            >\n              Button\n            </Button>\n            <Button\n              variant={variant}\n              active={state === State.Active}\n              disabled={state === State.Disabled}\n              loading={state === State.Loading}\n              focused={state === State.Focused}\n            >\n              <SearchSmall />\n              Button\n            </Button>\n          </Fragment>\n        ))}\n      </div>\n    </div>\n  )\n\n}"
     },
     {
       "id": "buttons-button--as-child",
       "name": "As Child",
       "exportName": "AsChild",
       "description": "AsChild: Demonstrates rendering the Button as another element using the `asChild` prop.\n- Useful for rendering a button as a link or other custom element while retaining button styles and behaviors.",
-      "source": "import { Button } from \"@choice-ui/button\"\n\nexport default function App() {\n  return (\n    <Button asChild>\n      <a href=\"#\">Link</a>\n    </Button>\n  );\n}"
+      "source": "import { Button } from \"@choice-ui/button\"\n\nexport default function App() {\n  return (\n\n    <Button asChild>\n      <a href=\"#\">Link</a>\n    </Button>\n\n  );\n}"
     },
     {
       "id": "buttons-button--tooltip",
@@ -154,13 +154,6 @@
       "exportName": "Tooltip",
       "description": "Tooltip: Demonstrates the Button with a tooltip.\n- Shows how to add a tooltip for additional context or guidance.\n- Tooltips are accessible and appear on hover or focus.",
       "source": "import { Button } from \"@choice-ui/button\"\n\nexport default function App() {\n  return (\n    <Button tooltip={{ content: \"Tooltip\" }}>Button</Button>\n  );\n}"
-    },
-    {
-      "id": "buttons-button--readonly",
-      "name": "Readonly",
-      "exportName": "Readonly",
-      "description": "Button component in readOnly state.\n\nIn readOnly mode:\n- The button does not respond to click events\n- Mouse and touch events are blocked\n- Useful for displaying buttons without allowing interactions",
-      "source": "import { Button } from \"@choice-ui/button\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <div className=\"bg-secondary-background text-secondary-foreground rounded-lg p-4\">\n        <p>Click Count: {clickCount}</p>\n      </div>\n\n      <div className=\"flex gap-4\">\n        <Button\n          readOnly\n          onClick={() => setClickCount((prev) => prev + 1)}\n        >\n          Readonly Button\n        </Button>\n\n        <Button\n          variant=\"secondary\"\n          onClick={() => setClickCount((prev) => prev + 1)}\n        >\n          Normal Button\n        </Button>\n      </div>\n    </div>\n  );\n}"
     }
   ]
 }

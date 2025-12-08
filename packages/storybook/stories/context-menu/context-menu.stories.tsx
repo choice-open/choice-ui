@@ -29,7 +29,7 @@ type Story = StoryObj<typeof ContextMenu>
 export const Basic: Story = {
   render: function BasicStory() {
     return (
-      <div className="flex h-64 items-center justify-center">
+      <div className="flex items-center justify-center">
         <ContextMenu>
           <ContextMenu.Trigger>
             <div className="bg-secondary-background rounded-xl border border-dashed p-8">
@@ -82,7 +82,7 @@ export const WithSelection: Story = {
     ]
 
     return (
-      <div className="flex h-64 items-center justify-center">
+      <div className="flex items-center justify-center">
         <ContextMenu selection={true}>
           <ContextMenu.Trigger>
             <div className="bg-secondary-background rounded-xl border border-dashed p-8">
@@ -100,6 +100,46 @@ export const WithSelection: Story = {
                 <ContextMenu.Value>{option.label}</ContextMenu.Value>
               </ContextMenu.Item>
             ))}
+          </ContextMenu.Content>
+        </ContextMenu>
+      </div>
+    )
+  },
+}
+
+/**
+ * WithDisabledItems: Demonstrates disabled menu items.
+ *
+ * Features:
+ * - Visual disabled state
+ * - Prevents interaction with disabled items
+ * - Maintains keyboard navigation flow
+ * - Useful for conditional menu states
+ */
+export const WithDisabledItems: Story = {
+  render: function WithDisabledItemsStory() {
+    return (
+      <div className="flex items-center justify-center">
+        <ContextMenu>
+          <ContextMenu.Trigger>
+            <div className="bg-secondary-background rounded-xl border border-dashed p-8">
+              Right click for menu with disabled items
+            </div>
+          </ContextMenu.Trigger>
+          <ContextMenu.Content>
+            <ContextMenu.Item>
+              <ContextMenu.Value>Available Action</ContextMenu.Value>
+            </ContextMenu.Item>
+            <ContextMenu.Item disabled>
+              <ContextMenu.Value>Disabled Action</ContextMenu.Value>
+            </ContextMenu.Item>
+            <ContextMenu.Item>
+              <ContextMenu.Value>Another Available Action</ContextMenu.Value>
+            </ContextMenu.Item>
+            <ContextMenu.Divider />
+            <ContextMenu.Item disabled>
+              <ContextMenu.Value>Also Disabled</ContextMenu.Value>
+            </ContextMenu.Item>
           </ContextMenu.Content>
         </ContextMenu>
       </div>
@@ -145,7 +185,7 @@ export const SharedMenuContent: Story = {
     )
 
     return (
-      <div className="flex h-64 flex-col gap-8">
+      <div className="flex flex-col gap-8">
         {/* Dropdown using shared menu content */}
         <div>
           <p className="mb-2">Dropdown with shared menu content</p>
@@ -192,7 +232,7 @@ export const SharedMenuContent: Story = {
 export const WithDividers: Story = {
   render: function WithDividersStory() {
     return (
-      <div className="flex h-64 items-center justify-center">
+      <div className="flex items-center justify-center">
         <ContextMenu>
           <ContextMenu.Trigger>
             <div className="bg-secondary-background rounded-xl border border-dashed p-8 text-center">
@@ -230,7 +270,7 @@ export const WithDividers: Story = {
 }
 
 /**
- * FileManagerExample: Real-world example showing menu sharing in a file manager scenario.
+ * [TEST] FileManagerExample: Real-world example showing menu sharing in a file manager scenario.
  *
  * Business scenario:
  * - Same file operations available in toolbar dropdown and right-click menu
@@ -331,7 +371,7 @@ export const FileManagerExample: Story = {
 export const NestedSubmenus: Story = {
   render: function NestedSubmenusStory() {
     return (
-      <div className="flex h-96 items-center justify-center">
+      <div className="flex items-center justify-center">
         <ContextMenu>
           <ContextMenu.Trigger>
             <div className="bg-secondary-background rounded-xl border border-dashed p-8 text-center">
@@ -442,46 +482,6 @@ export const NestedSubmenus: Story = {
 }
 
 /**
- * WithDisabledItems: Demonstrates disabled menu items.
- *
- * Features:
- * - Visual disabled state
- * - Prevents interaction with disabled items
- * - Maintains keyboard navigation flow
- * - Useful for conditional menu states
- */
-export const WithDisabledItems: Story = {
-  render: function WithDisabledItemsStory() {
-    return (
-      <div className="flex h-64 items-center justify-center">
-        <ContextMenu>
-          <ContextMenu.Trigger>
-            <div className="bg-secondary-background rounded-xl border border-dashed p-8">
-              Right click for menu with disabled items
-            </div>
-          </ContextMenu.Trigger>
-          <ContextMenu.Content>
-            <ContextMenu.Item>
-              <ContextMenu.Value>Available Action</ContextMenu.Value>
-            </ContextMenu.Item>
-            <ContextMenu.Item disabled>
-              <ContextMenu.Value>Disabled Action</ContextMenu.Value>
-            </ContextMenu.Item>
-            <ContextMenu.Item>
-              <ContextMenu.Value>Another Available Action</ContextMenu.Value>
-            </ContextMenu.Item>
-            <ContextMenu.Divider />
-            <ContextMenu.Item disabled>
-              <ContextMenu.Value>Also Disabled</ContextMenu.Value>
-            </ContextMenu.Item>
-          </ContextMenu.Content>
-        </ContextMenu>
-      </div>
-    )
-  },
-}
-
-/**
  * ContextMenuNestedDropdown: Fixed implementation using triggerRef to avoid component conflicts.
  *
  * This story demonstrates the solution to the original nesting problem:
@@ -519,7 +519,7 @@ export const ContextMenuNestedDropdown: Story = {
     )
 
     return (
-      <div className="flex h-64 items-center justify-center">
+      <div className="flex items-center justify-center">
         <div
           ref={triggerRef}
           className="bg-secondary-background rounded-xl border border-dashed p-8"
@@ -545,6 +545,100 @@ export const ContextMenuNestedDropdown: Story = {
 }
 
 /**
+ * NestedSubmenuWithLongList: Tests scrolling functionality in nested submenus.
+ *
+ * This story specifically tests the fix for nested menu scrolling:
+ * - First level menu with many items
+ * - Nested submenu with a long list that exceeds screen height
+ * - Verifies scroll arrows appear correctly
+ * - Verifies scrolling works properly in nested menus
+ * - Tests height constraints are properly applied
+ *
+ * Expected behavior:
+ * - Nested submenu should show scroll arrows when content exceeds available height
+ * - Users should be able to scroll through all items in the nested menu
+ * - Menu should not overflow beyond screen boundaries
+ * - Scroll arrows should appear/disappear based on scroll position
+ *
+ * This story validates the fix for nested menu scrolling issues.
+ */
+export const NestedSubmenuWithLongList: Story = {
+  render: function NestedSubmenuWithLongListStory() {
+    // Generate a long list of items for testing scrolling
+    const longListItems = Array.from({ length: 30 }, (_, i) => ({
+      id: `item-${i + 1}`,
+      label: `Menu Item ${i + 1}`,
+    }))
+
+    return (
+      <div className="flex items-center justify-center">
+        <ContextMenu>
+          <ContextMenu.Trigger>
+            <div className="bg-secondary-background rounded-xl border border-dashed p-8 text-center">
+              Right click for menu with long nested submenu
+              <br />
+              <span className="text-body-small text-gray-500">
+                Hover over &quot;Long List&quot; to see scrolling submenu
+              </span>
+            </div>
+          </ContextMenu.Trigger>
+          <ContextMenu.Content>
+            <ContextMenu.Item>
+              <ContextMenu.Value>Cut</ContextMenu.Value>
+            </ContextMenu.Item>
+            <ContextMenu.Item>
+              <ContextMenu.Value>Copy</ContextMenu.Value>
+            </ContextMenu.Item>
+            <ContextMenu.Item>
+              <ContextMenu.Value>Paste</ContextMenu.Value>
+            </ContextMenu.Item>
+            <ContextMenu.Divider />
+
+            {/* Nested submenu with long list - this should scroll */}
+            <ContextMenu>
+              <ContextMenu.SubTrigger>
+                <ContextMenu.Value>Long List</ContextMenu.Value>
+              </ContextMenu.SubTrigger>
+              <ContextMenu.Content>
+                <ContextMenu.Label>Scrollable Items</ContextMenu.Label>
+                {longListItems.map((item) => (
+                  <ContextMenu.Item key={item.id}>
+                    <ContextMenu.Value>{item.label}</ContextMenu.Value>
+                  </ContextMenu.Item>
+                ))}
+              </ContextMenu.Content>
+            </ContextMenu>
+
+            {/* Another nested submenu with long list for comparison */}
+            <ContextMenu>
+              <ContextMenu.SubTrigger>
+                <ContextMenu.Value>Another Long List</ContextMenu.Value>
+              </ContextMenu.SubTrigger>
+              <ContextMenu.Content>
+                <ContextMenu.Label>Another Scrollable List</ContextMenu.Label>
+                {longListItems.slice(0, 25).map((item) => (
+                  <ContextMenu.Item key={item.id}>
+                    <ContextMenu.Value>{item.label}</ContextMenu.Value>
+                  </ContextMenu.Item>
+                ))}
+              </ContextMenu.Content>
+            </ContextMenu>
+
+            <ContextMenu.Divider />
+            <ContextMenu.Item>
+              <ContextMenu.Value>Properties</ContextMenu.Value>
+            </ContextMenu.Item>
+            <ContextMenu.Item variant="danger">
+              <ContextMenu.Value>Delete</ContextMenu.Value>
+            </ContextMenu.Item>
+          </ContextMenu.Content>
+        </ContextMenu>
+      </div>
+    )
+  },
+}
+
+/**
  * WithTriggerRef: Demonstrates using triggerRef to avoid component wrapping conflicts.
  *
  * This approach solves complex nesting scenarios by:
@@ -558,21 +652,6 @@ export const ContextMenuNestedDropdown: Story = {
  * - No component wrapping conflicts
  * - Clean separation of concerns
  *
- * Usage:
- * ```tsx
- * const triggerRef = useRef<HTMLDivElement>(null)
- *
- * return (
- *   <>
- *     <div ref={triggerRef}>
- *       <Dropdown>...</Dropdown>
- *     </div>
- *     <ContextMenu triggerRef={triggerRef}>
- *       <ContextMenu.Content>...</ContextMenu.Content>
- *     </ContextMenu>
- *   </>
- * )
- * ```
  */
 export const WithTriggerRef: Story = {
   render: function WithTriggerRefStory() {
@@ -597,7 +676,7 @@ export const WithTriggerRef: Story = {
     )
 
     return (
-      <div className="flex h-64 items-center justify-center">
+      <div className="flex items-center justify-center">
         <div
           ref={triggerRef}
           className="bg-secondary-background rounded-xl border border-dashed p-8"
@@ -649,75 +728,68 @@ export const WithTriggerRef: Story = {
 export const WithTriggerSelector: Story = {
   render: function WithTriggerSelectorStory() {
     return (
-      <div className="flex h-64 flex-col items-center justify-center gap-8">
-        <div className="flex gap-8">
-          {/* Using id selector */}
-          <div>
-            <p className="text-body-small-strong mb-2">Using #id selector</p>
-            <div
-              id="context-menu-trigger-by-id"
-              className="bg-secondary-background rounded-xl border border-dashed p-8"
-            >
-              Right click me (id selector)
-            </div>
-            <ContextMenu triggerSelector="#context-menu-trigger-by-id">
-              <ContextMenu.Content>
-                <ContextMenu.Label>ID Selector Menu</ContextMenu.Label>
-                <ContextMenu.Item>
-                  <ContextMenu.Value>Action 1</ContextMenu.Value>
-                </ContextMenu.Item>
-                <ContextMenu.Item>
-                  <ContextMenu.Value>Action 2</ContextMenu.Value>
-                </ContextMenu.Item>
-              </ContextMenu.Content>
-            </ContextMenu>
+      <div className="flex gap-8">
+        {/* Using id selector */}
+        <div>
+          <p className="text-body-small-strong mb-2">Using #id selector</p>
+          <div
+            id="context-menu-trigger-by-id"
+            className="bg-secondary-background rounded-lg border border-dashed p-8"
+          >
+            Right click me (id selector)
           </div>
-
-          {/* Using class selector */}
-          <div>
-            <p className="text-body-small-strong mb-2">Using .class selector</p>
-            <div className="context-menu-trigger-by-class bg-secondary-background rounded-xl border border-dashed p-8">
-              Right click me (class selector)
-            </div>
-            <ContextMenu triggerSelector=".context-menu-trigger-by-class">
-              <ContextMenu.Content>
-                <ContextMenu.Label>Class Selector Menu</ContextMenu.Label>
-                <ContextMenu.Item>
-                  <ContextMenu.Value>Option A</ContextMenu.Value>
-                </ContextMenu.Item>
-                <ContextMenu.Item>
-                  <ContextMenu.Value>Option B</ContextMenu.Value>
-                </ContextMenu.Item>
-              </ContextMenu.Content>
-            </ContextMenu>
-          </div>
-
-          {/* Using data attribute selector */}
-          <div>
-            <p className="text-body-small-strong mb-2">Using [data-*] selector</p>
-            <div
-              data-context-trigger="custom"
-              className="bg-secondary-background rounded-xl border border-dashed p-8"
-            >
-              Right click me (data-* selector)
-            </div>
-            <ContextMenu triggerSelector="[data-context-trigger='custom']">
-              <ContextMenu.Content>
-                <ContextMenu.Label>Data Attribute Menu</ContextMenu.Label>
-                <ContextMenu.Item>
-                  <ContextMenu.Value>Item X</ContextMenu.Value>
-                </ContextMenu.Item>
-                <ContextMenu.Item>
-                  <ContextMenu.Value>Item Y</ContextMenu.Value>
-                </ContextMenu.Item>
-              </ContextMenu.Content>
-            </ContextMenu>
-          </div>
+          <ContextMenu triggerSelector="#context-menu-trigger-by-id">
+            <ContextMenu.Content>
+              <ContextMenu.Label>ID Selector Menu</ContextMenu.Label>
+              <ContextMenu.Item>
+                <ContextMenu.Value>Action 1</ContextMenu.Value>
+              </ContextMenu.Item>
+              <ContextMenu.Item>
+                <ContextMenu.Value>Action 2</ContextMenu.Value>
+              </ContextMenu.Item>
+            </ContextMenu.Content>
+          </ContextMenu>
         </div>
 
-        <div className="bg-secondary-background max-w-xl rounded-xl p-4 text-center">
-          <strong>提示：</strong> triggerSelector 支持任何有效的 CSS 选择器，当无法使用 ref
-          时非常有用。
+        {/* Using class selector */}
+        <div>
+          <p className="text-body-small-strong mb-2">Using .class selector</p>
+          <div className="context-menu-trigger-by-class bg-secondary-background rounded-lg border border-dashed p-8">
+            Right click me (class selector)
+          </div>
+          <ContextMenu triggerSelector=".context-menu-trigger-by-class">
+            <ContextMenu.Content>
+              <ContextMenu.Label>Class Selector Menu</ContextMenu.Label>
+              <ContextMenu.Item>
+                <ContextMenu.Value>Option A</ContextMenu.Value>
+              </ContextMenu.Item>
+              <ContextMenu.Item>
+                <ContextMenu.Value>Option B</ContextMenu.Value>
+              </ContextMenu.Item>
+            </ContextMenu.Content>
+          </ContextMenu>
+        </div>
+
+        {/* Using data attribute selector */}
+        <div>
+          <p className="text-body-small-strong mb-2">Using [data-*] selector</p>
+          <div
+            data-context-trigger="custom"
+            className="bg-secondary-background rounded-lg border border-dashed p-8"
+          >
+            Right click me (data-* selector)
+          </div>
+          <ContextMenu triggerSelector="[data-context-trigger='custom']">
+            <ContextMenu.Content>
+              <ContextMenu.Label>Data Attribute Menu</ContextMenu.Label>
+              <ContextMenu.Item>
+                <ContextMenu.Value>Item X</ContextMenu.Value>
+              </ContextMenu.Item>
+              <ContextMenu.Item>
+                <ContextMenu.Value>Item Y</ContextMenu.Value>
+              </ContextMenu.Item>
+            </ContextMenu.Content>
+          </ContextMenu>
         </div>
       </div>
     )
@@ -737,14 +809,6 @@ export const WithTriggerSelector: Story = {
  * - Set disabled={true} to prevent context menu activation
  * - Can use CSS selectors like [data-disabled] for styling
  * - Both Target and triggerRef approaches support disabled state
- *
- * Usage:
- * ```tsx
- * <ContextMenu disabled={isReadOnly}>
- *   <ContextMenu.Trigger>...</ContextMenu.Trigger>
- *   <ContextMenu.Content>...</ContextMenu.Content>
- * </ContextMenu>
- * ```
  */
 export const WithDisabled: Story = {
   render: function WithDisabledStory() {
@@ -842,7 +906,7 @@ function DisabledWithTriggerRef({ disabled }: { disabled: boolean }) {
 }
 
 /**
- * SimpleDropdownNested: A simple example with a div trigger containing a dropdown menu.
+ * [TEST] SimpleDropdownNested: A simple example with a div trigger containing a dropdown menu.
  *
  * Features:
  * - Simple div as ContextMenu trigger
@@ -968,101 +1032,7 @@ export const NestedContextMenuInPopover: Story = {
 }
 
 /**
- * NestedSubmenuWithLongList: Tests scrolling functionality in nested submenus.
- *
- * This story specifically tests the fix for nested menu scrolling:
- * - First level menu with many items
- * - Nested submenu with a long list that exceeds screen height
- * - Verifies scroll arrows appear correctly
- * - Verifies scrolling works properly in nested menus
- * - Tests height constraints are properly applied
- *
- * Expected behavior:
- * - Nested submenu should show scroll arrows when content exceeds available height
- * - Users should be able to scroll through all items in the nested menu
- * - Menu should not overflow beyond screen boundaries
- * - Scroll arrows should appear/disappear based on scroll position
- *
- * This story validates the fix for nested menu scrolling issues.
- */
-export const NestedSubmenuWithLongList: Story = {
-  render: function NestedSubmenuWithLongListStory() {
-    // Generate a long list of items for testing scrolling
-    const longListItems = Array.from({ length: 30 }, (_, i) => ({
-      id: `item-${i + 1}`,
-      label: `Menu Item ${i + 1}`,
-    }))
-
-    return (
-      <div className="flex h-screen items-center justify-center">
-        <ContextMenu>
-          <ContextMenu.Trigger>
-            <div className="bg-secondary-background rounded-xl border border-dashed p-8 text-center">
-              Right click for menu with long nested submenu
-              <br />
-              <span className="text-body-small text-gray-500">
-                Hover over &quot;Long List&quot; to see scrolling submenu
-              </span>
-            </div>
-          </ContextMenu.Trigger>
-          <ContextMenu.Content>
-            <ContextMenu.Item>
-              <ContextMenu.Value>Cut</ContextMenu.Value>
-            </ContextMenu.Item>
-            <ContextMenu.Item>
-              <ContextMenu.Value>Copy</ContextMenu.Value>
-            </ContextMenu.Item>
-            <ContextMenu.Item>
-              <ContextMenu.Value>Paste</ContextMenu.Value>
-            </ContextMenu.Item>
-            <ContextMenu.Divider />
-
-            {/* Nested submenu with long list - this should scroll */}
-            <ContextMenu>
-              <ContextMenu.SubTrigger>
-                <ContextMenu.Value>Long List</ContextMenu.Value>
-              </ContextMenu.SubTrigger>
-              <ContextMenu.Content>
-                <ContextMenu.Label>Scrollable Items</ContextMenu.Label>
-                {longListItems.map((item) => (
-                  <ContextMenu.Item key={item.id}>
-                    <ContextMenu.Value>{item.label}</ContextMenu.Value>
-                  </ContextMenu.Item>
-                ))}
-              </ContextMenu.Content>
-            </ContextMenu>
-
-            {/* Another nested submenu with long list for comparison */}
-            <ContextMenu>
-              <ContextMenu.SubTrigger>
-                <ContextMenu.Value>Another Long List</ContextMenu.Value>
-              </ContextMenu.SubTrigger>
-              <ContextMenu.Content>
-                <ContextMenu.Label>Another Scrollable List</ContextMenu.Label>
-                {longListItems.slice(0, 25).map((item) => (
-                  <ContextMenu.Item key={item.id}>
-                    <ContextMenu.Value>{item.label}</ContextMenu.Value>
-                  </ContextMenu.Item>
-                ))}
-              </ContextMenu.Content>
-            </ContextMenu>
-
-            <ContextMenu.Divider />
-            <ContextMenu.Item>
-              <ContextMenu.Value>Properties</ContextMenu.Value>
-            </ContextMenu.Item>
-            <ContextMenu.Item variant="danger">
-              <ContextMenu.Value>Delete</ContextMenu.Value>
-            </ContextMenu.Item>
-          </ContextMenu.Content>
-        </ContextMenu>
-      </div>
-    )
-  },
-}
-
-/**
- * ContextMenu component in readOnly state.
+ * [TEST] ContextMenu component in readOnly state.
  *
  * In readOnly mode:
  * - The menu can be opened and closed normally

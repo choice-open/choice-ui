@@ -25,56 +25,32 @@
     "MenuButton",
     "MenuCheckbox",
     "MenuDivider",
-    "type MenuItemProps",
+    "MenuInput",
     "MenuItem",
-    "type MenuLabelProps",
     "MenuLabel",
-    "MenuScrollArrow",
     "MenuSearch",
     "MenuSearchEmpty",
-    "type MenuTriggerProps",
-    "MenuTrigger",
-    "MenuInput",
-    "type MenuValueProps",
     "MenuValue",
-    "MenusBase",
+    "MenuTrigger",
+    "MenuScrollArrow",
     "Menus",
-    "useMenuState",
-    "useMenuRefs",
-    "useMenuTouch",
-    "useMenuScroll",
+    "useMenuBaseRefs",
     "useMenuChildren",
     "useMenuFloating",
-    "useMenuTree",
+    "useMenuRefs",
+    "useMenuScroll",
     "useMenuScrollHeight",
-    "useMenuBaseRefs",
     "useMenuSelection",
-    "type MenuStateConfig",
-    "type MenuStateResult",
-    "type MenuRefsConfig",
-    "type MenuRefsResult",
-    "type MenuTouchConfig",
-    "type MenuTouchResult",
-    "type MenuScrollConfig",
-    "type MenuScrollResult",
-    "type MenuChildrenConfig",
-    "type MenuChildrenResult",
-    "type MenuFloatingConfig",
-    "type MenuFloatingResult",
-    "type MenuTreeConfig",
-    "type MenuTreeResult",
-    "type MenuSelectionConfig",
-    "type MenuSelectionResult",
-    "type MenuScrollHeightConfig",
-    "type MenuBaseRefsResult",
-    "type MenuContextType",
+    "useMenuState",
+    "useMenuTree",
     "MenuContext",
-    "useMenu",
-    "type MenuContextItemProps",
-    "MenuContextItem",
+    "MenuContextSubTrigger",
     "MenuContextContent",
+    "MenuContextItem",
     "MenuContextLabel",
-    "MenuContextSubTrigger"
+    "type MenusProps",
+    "type MenuContextItemProps",
+    "type MenuContextType"
   ],
   "props": [
     {
@@ -83,64 +59,59 @@
       "props": [
         {
           "name": "size",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"large\"",
           "required": false,
           "defaultValue": "\"default\"",
-          "description": "Button size variant\n@example ```tsx\n<Button size=\"large\">Large Button</Button>\n```"
+          "description": ""
         },
         {
           "name": "readOnly",
           "type": "boolean | undefined",
           "required": false,
-          "defaultValue": "false",
-          "description": "Whether the button is in readOnly state\nIn readOnly mode, the button will not respond to click events\n@example ```tsx\n<Button readOnly>Read Only Button</Button>\n```"
+          "description": ""
         },
         {
           "name": "className",
           "type": "string | undefined",
           "required": false,
-          "description": "Additional CSS class names"
+          "description": ""
         },
         {
           "name": "active",
           "type": "boolean | undefined",
           "required": false,
-          "defaultValue": "false",
-          "description": "Whether the button is in an active/pressed state\n@example ```tsx\n<Button active>Active Button</Button>\n```"
+          "description": ""
         },
         {
           "name": "asChild",
           "type": "boolean | undefined",
           "required": false,
-          "defaultValue": "false",
-          "description": "Render as a custom element instead of button\n@example ```tsx\n<Button asChild>\n  <Link href=\"/profile\">Profile</Link>\n</Button>\n```"
+          "description": ""
         },
         {
           "name": "focused",
           "type": "boolean | undefined",
           "required": false,
-          "defaultValue": "false",
-          "description": "Whether the button appears focused (for keyboard navigation)"
+          "description": ""
         },
         {
           "name": "loading",
           "type": "boolean | undefined",
           "required": false,
-          "defaultValue": "false",
-          "description": "Whether the button is in loading state with spinner\n@example ```tsx\n<Button loading>Saving...</Button>\n```"
+          "description": ""
         },
         {
           "name": "tooltip",
           "type": "TooltipProps | undefined",
           "required": false,
-          "description": "Tooltip configuration for the button\n@example ```tsx\n<Button tooltip={{ content: \"Save your changes\", placement: \"top\" }}>\n  Save\n</Button>\n```"
+          "description": ""
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"link\" | \"primary\" | \"secondary\" | \"solid\" | \"destructive\" | \"secondary-destruct\" | \"inverse\" | \"success\" | \"link-danger\" | \"ghost\" | \"dark\" | \"reset\"",
           "required": false,
           "defaultValue": "\"primary\"",
-          "description": "Visual style variant of the button\n@example ```tsx\n<Button variant=\"primary\">Primary Action</Button>\n<Button variant=\"destructive\">Delete</Button>\n<Button variant=\"ghost\">Subtle Action</Button>\n```"
+          "description": ""
         },
         {
           "name": "ref",
@@ -191,7 +162,7 @@
       "props": [
         {
           "name": "size",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"large\"",
           "required": false,
           "description": ""
         },
@@ -215,7 +186,7 @@
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"reset\" | \"highlight\" | \"danger\"",
           "required": false,
           "description": ""
         },
@@ -281,7 +252,7 @@
         },
         {
           "name": "dir",
-          "type": "enum",
+          "type": "\"up\" | \"down\"",
           "required": true,
           "description": ""
         },
@@ -329,7 +300,7 @@
       "props": [
         {
           "name": "size",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"large\"",
           "required": false,
           "description": ""
         },
@@ -359,13 +330,13 @@
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"dark\" | \"reset\" | \"light\"",
           "required": false,
           "description": ""
         },
         {
           "name": "focusSelection",
-          "type": "enum",
+          "type": "undefined | \"none\" | \"all\" | \"end\"",
           "required": false,
           "description": ""
         },
@@ -414,63 +385,59 @@
       "props": [
         {
           "name": "size",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"large\"",
           "required": false,
           "defaultValue": "\"default\"",
-          "description": "Button size variant\n@example ```tsx\n<Button size=\"large\">Large Button</Button>\n```"
+          "description": ""
         },
         {
           "name": "readOnly",
           "type": "boolean | undefined",
           "required": false,
-          "defaultValue": "false",
-          "description": "Whether the button is in readOnly state\nIn readOnly mode, the button will not respond to click events\n@example ```tsx\n<Button readOnly>Read Only Button</Button>\n```"
+          "description": ""
         },
         {
           "name": "className",
           "type": "string | undefined",
           "required": false,
-          "description": "Additional CSS class names"
+          "description": ""
         },
         {
           "name": "active",
           "type": "boolean | undefined",
           "required": false,
-          "defaultValue": "false",
-          "description": "Whether the button is in an active/pressed state\n@example ```tsx\n<Button active>Active Button</Button>\n```"
+          "description": ""
         },
         {
           "name": "asChild",
           "type": "boolean | undefined",
           "required": false,
-          "description": "Render as a custom element instead of button"
+          "description": ""
         },
         {
           "name": "focused",
           "type": "boolean | undefined",
           "required": false,
-          "defaultValue": "false",
-          "description": "Whether the button appears focused (for keyboard navigation)"
+          "description": ""
         },
         {
           "name": "loading",
           "type": "boolean | undefined",
           "required": false,
-          "defaultValue": "false",
-          "description": "Whether the button is in loading state with spinner\n@example ```tsx\n<Button loading>Saving...</Button>\n```"
+          "description": ""
         },
         {
           "name": "tooltip",
           "type": "TooltipProps | undefined",
           "required": false,
-          "description": "Tooltip configuration for the button\n@example ```tsx\n<Button tooltip={{ content: \"Save your changes\", placement: \"top\" }}>\n  Save\n</Button>\n```"
+          "description": ""
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"link\" | \"primary\" | \"secondary\" | \"solid\" | \"destructive\" | \"secondary-destruct\" | \"inverse\" | \"success\" | \"link-danger\" | \"ghost\" | \"dark\" | \"reset\"",
           "required": false,
           "defaultValue": "\"primary\"",
-          "description": "Visual style variant of the button\n@example ```tsx\n<Button variant=\"primary\">Primary Action</Button>\n<Button variant=\"destructive\">Delete</Button>\n<Button variant=\"ghost\">Subtle Action</Button>\n```"
+          "description": ""
         },
         {
           "name": "prefixElement",
@@ -516,7 +483,7 @@
       "props": [
         {
           "name": "size",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"large\"",
           "required": false,
           "description": ""
         },
@@ -546,13 +513,13 @@
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"dark\" | \"reset\" | \"light\"",
           "required": false,
           "description": ""
         },
         {
           "name": "focusSelection",
-          "type": "enum",
+          "type": "undefined | \"none\" | \"all\" | \"end\"",
           "required": false,
           "description": ""
         },
@@ -577,7 +544,7 @@
       ]
     },
     {
-      "displayName": "Menus",
+      "displayName": "MenusProps",
       "description": "",
       "props": [
         {
@@ -588,7 +555,7 @@
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"light\" | \"reset\"",
           "required": false,
           "description": ""
         }
@@ -822,7 +789,7 @@
         },
         {
           "name": "placement",
-          "type": "enum",
+          "type": "undefined | \"top\" | \"right\" | \"bottom\" | \"left\" | \"top-start\" | \"top-end\" | \"right-start\" | \"right-end\" | \"bottom-start\" | \"bottom-end\" | \"left-start\" | \"left-end\"",
           "required": false,
           "description": "位置配置"
         },
@@ -858,7 +825,7 @@
         },
         {
           "name": "type",
-          "type": "enum",
+          "type": "\"select\" | \"dropdown\"",
           "required": true,
           "description": "组件类型"
         }
@@ -1004,7 +971,7 @@
       "props": []
     },
     {
-      "displayName": "MenuContextItem",
+      "displayName": "MenuContextItemProps",
       "description": "通用菜单项组件\n\n供 Select 和 Dropdown 共用，统一所有交互逻辑：\n- touch 事件处理\n- 选择逻辑\n- 键盘导航\n- 视觉状态管理",
       "props": [
         {
@@ -1087,7 +1054,7 @@
         },
         {
           "name": "size",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"large\"",
           "required": false,
           "description": ""
         },
@@ -1099,7 +1066,7 @@
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"highlight\" | \"danger\" | \"reset\"",
           "required": false,
           "description": ""
         },
@@ -1183,7 +1150,7 @@
         },
         {
           "name": "size",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"large\"",
           "required": false,
           "description": ""
         },
@@ -1195,7 +1162,7 @@
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"highlight\" | \"danger\" | \"reset\"",
           "required": false,
           "description": ""
         },
@@ -1214,66 +1181,63 @@
       "name": "Basic",
       "exportName": "Basic",
       "description": "`MenuItem` is a flexible component for rendering individual options within menu structures.\n\nFeatures:\n- Active (hover/focus) state visual feedback\n- Support for prefix and suffix elements\n- Selection indicators\n- Keyboard shortcut display\n- Custom content rendering\n- Flexible layout with proper alignment\n\nUsage Guidelines:\n- Use consistent patterns for selection indicators\n- Provide clear hover/active states for user feedback\n- Add keyboard shortcuts for frequently used actions\n- Use prefix/suffix elements for additional context\n- Ensure text properly truncates for long content\n\nAccessibility:\n- Active states for keyboard navigation\n- Proper ARIA attributes for menu item roles\n- Selection indicators visible to screen readers\n- Clear visual hierarchy for all states\nBasic: Demonstrates the simplest usage of MenuItem.\n\nFeatures:\n- Clean, minimal appearance\n- Active state on hover/focus\n- Standard padding and alignment\n\nThis example provides the foundation for all other MenuItem variations.",
-      "source": "import { Menus } from \"@choice-ui/menus\"\n\nexport default function App() {\n  return (\n    <Menus>\n      <Menus.Item\n        active={activeIndex === 0}\n        onMouseEnter={() => setActiveIndex(0)}\n        onMouseLeave={() => setActiveIndex(null)}\n      >\n        <span>Item</span>\n      </Menus.Item>\n    </Menus>\n  );\n}"
+      "source": "import { Menus } from \"@choice-ui/menus\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [activeIndex, setActiveIndex] = useState<number | null>(null)\n  return (\n    <Menus>\n      <Menus.Item\n        active={activeIndex === 0}\n        onMouseEnter={() => setActiveIndex(0)}\n        onMouseLeave={() => setActiveIndex(null)}\n      >\n        <span>Item</span>\n      </Menus.Item>\n    </Menus>\n  )\n\n}"
     },
     {
       "id": "collections-menuitem--with-prefix-story",
       "name": "With Prefix Story",
       "exportName": "WithPrefixStory",
       "description": "WithPrefixStory: Demonstrates menu items with icons or elements before the text.\n\nFeatures:\n- Icon alignment before text content\n- Consistent spacing between icon and text\n- Maintains proper vertical alignment\n- Visual enhancement for option recognition\n\nThis pattern is useful for:\n- Adding visual cues to menu options\n- Representing different item types or categories\n- Improving recognition and scan-ability",
-      "source": "import { Menus } from \"@choice-ui/menus\"\n\nexport default function App() {\n  return (\n    <Menus>\n      {Options.map((option, index) => (\n        <Menus.Item\n          key={option.label}\n          active={activeIndex === index}\n          onMouseEnter={() => setActiveIndex(index)}\n          onMouseLeave={() => setActiveIndex(null)}\n          prefixElement={option.icon}\n        >\n          <span className=\"flex-1 truncate\">{option.label}</span>\n        </Menus.Item>\n      ))}\n    </Menus>\n  );\n}"
+      "source": "import { Menus } from \"@choice-ui/menus\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [activeIndex, setActiveIndex] = useState<number | null>(null)\n\n  const Options = [\n    {\n      label: \"Sun Bright\",\n      icon: <ThemeSunBright />,\n    },\n    {\n      label: \"Moon Dark\",\n      icon: <ThemeMoonDark />,\n    },\n    {\n      label: \"System\",\n      icon: <ThemeSystem />,\n    },\n  ]\n\n  return (\n    <Menus>\n      {Options.map((option, index) => (\n        <Menus.Item\n          key={option.label}\n          active={activeIndex === index}\n          onMouseEnter={() => setActiveIndex(index)}\n          onMouseLeave={() => setActiveIndex(null)}\n          prefixElement={option.icon}\n        >\n          <span className=\"flex-1 truncate\">{option.label}</span>\n        </Menus.Item>\n      ))}\n    </Menus>\n  )\n\n}"
     },
     {
       "id": "collections-menuitem--with-suffix-story",
       "name": "With Suffix Story",
       "exportName": "WithSuffixStory",
       "description": "WithSuffixStory: Demonstrates menu items with elements after the text.\n\nFeatures:\n- Element alignment after text content\n- Supports icons, indicators, or additional information\n- Maintains proper spacing and alignment\n\nThis pattern is useful for:\n- Indicating submenu availability\n- Showing status or additional information\n- Displaying secondary actions or counts",
-      "source": "import { Menus } from \"@choice-ui/menus\"\n\nexport default function App() {\n  return (\n    <Menus>\n      {Array.from({ length: 4 }).map((_, index) => (\n        <Menus.Item\n          key={index}\n          active={activeIndex === index}\n          onMouseEnter={() => setActiveIndex(index)}\n          onMouseLeave={() => setActiveIndex(null)}\n          suffixElement={<ChevronRightSmall />}\n        >\n          <span className=\"flex-1 truncate\">Item</span>\n        </Menus.Item>\n      ))}\n    </Menus>\n  );\n}"
+      "source": "import { Menus } from \"@choice-ui/menus\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [activeIndex, setActiveIndex] = useState<number | null>(null)\n  return (\n    <Menus>\n      {Array.from({ length: 4 }).map((_, index) => (\n        <Menus.Item\n          key={index}\n          active={activeIndex === index}\n          onMouseEnter={() => setActiveIndex(index)}\n          onMouseLeave={() => setActiveIndex(null)}\n          suffixElement={<ChevronRightSmall />}\n        >\n          <span className=\"flex-1 truncate\">Item</span>\n        </Menus.Item>\n      ))}\n    </Menus>\n  )\n\n}"
     },
     {
       "id": "collections-menuitem--with-shortcut-story",
       "name": "With Shortcut Story",
       "exportName": "WithShortcutStory",
       "description": "WithShortcutStory: Demonstrates menu items with keyboard shortcuts.\n\nFeatures:\n- Display of keyboard shortcut combinations\n- Proper alignment and spacing of shortcuts\n- Support for modifier keys (Command, Ctrl, etc.)\n- Maintains consistent layout with other menu items\n\nThis pattern is useful for:\n- Application command menus\n- Educating users about available shortcuts\n- Providing power user affordances",
-      "source": "import { Menus } from \"@choice-ui/menus\"\n\nexport default function App() {\n  return (\n    <Menus>\n      {Options.map((option, index) => (\n        <Menus.Item\n          key={option.label}\n          active={activeIndex === index}\n          onMouseEnter={() => setActiveIndex(index)}\n          onMouseLeave={() => setActiveIndex(null)}\n          shortcut={option.shortcut as { keys: ReactNode; modifier: KbdKey }}\n        >\n          <span className=\"flex-1 truncate\">{option.label}</span>\n        </Menus.Item>\n      ))}\n    </Menus>\n  );\n}"
+      "source": "import { Menus } from \"@choice-ui/menus\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [activeIndex, setActiveIndex] = useState<number | null>(null)\n  const Options = [\n    {\n      label: \"Option 1\",\n      shortcut: { modifier: \"command\", keys: \"K\" },\n    },\n    {\n      label: \"Option 2\",\n      shortcut: { modifier: \"command\", keys: \"L\" },\n    },\n    {\n      label: \"Option 3\",\n      shortcut: { modifier: \"command\", keys: \"M\" },\n    },\n    {\n      label: \"Option 4\",\n      shortcut: { modifier: \"command\", keys: \"N\" },\n    },\n  ]\n  return (\n    <Menus>\n      {Options.map((option, index) => (\n        <Menus.Item\n          key={option.label}\n          active={activeIndex === index}\n          onMouseEnter={() => setActiveIndex(index)}\n          onMouseLeave={() => setActiveIndex(null)}\n          shortcut={option.shortcut as { keys: ReactNode; modifier: KbdKey }}\n        >\n          <span className=\"flex-1 truncate\">{option.label}</span>\n        </Menus.Item>\n      ))}\n    </Menus>\n  )\n\n}"
     },
     {
       "id": "collections-menuitem--with-selection-icon-story",
       "name": "With Selection Icon Story",
       "exportName": "WithSelectionIconStory",
       "description": "WithSelectionIconStory: Demonstrates menu items with selection indicators.\n\nFeatures:\n- Visual indicator (checkmark) for selected state\n- Dynamic toggling of selection state\n- Proper alignment of selection icon\n- Maintains clean layout in both selected and unselected states\n\nThis pattern is useful for:\n- Single-select menus\n- Indicating current active option\n- Selection menus for settings or preferences",
-      "source": "import { Menus } from \"@choice-ui/menus\"\n\nexport default function App() {\n  return (\n    <Menus>\n      {Array.from({ length: 4 }).map((_, index) => (\n        <Menus.Item\n          key={index}\n          active={activeIndex === index}\n          onMouseEnter={() => setActiveIndex(index)}\n          onMouseLeave={() => setActiveIndex(null)}\n          prefixElement={selectedIndex === index ? <Check /> : <></>}\n          onMouseDown={() => setSelectedIndex(index)}\n        >\n          <span className=\"flex-1 truncate\">Item</span>\n        </Menus.Item>\n      ))}\n    </Menus>\n  );\n}"
+      "source": "import { Menus } from \"@choice-ui/menus\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [activeIndex, setActiveIndex] = useState<number | null>(null)\n  const [selectedIndex, setSelectedIndex] = useState<number | null>(null)\n  return (\n    <Menus>\n      {Array.from({ length: 4 }).map((_, index) => (\n        <Menus.Item\n          key={index}\n          active={activeIndex === index}\n          onMouseEnter={() => setActiveIndex(index)}\n          onMouseLeave={() => setActiveIndex(null)}\n          prefixElement={selectedIndex === index ? <Check /> : <></>}\n          onMouseDown={() => setSelectedIndex(index)}\n        >\n          <span className=\"flex-1 truncate\">Item</span>\n        </Menus.Item>\n      ))}\n    </Menus>\n  )\n\n}"
     },
     {
       "id": "collections-menuitem--with-right-selection-icon-story",
       "name": "With Right Selection Icon Story",
       "exportName": "WithRightSelectionIconStory",
       "description": "WithRightSelectionIconStory: Demonstrates menu items with selection checkboxes at the right.\n\nFeatures:\n- Checkbox-style selection indicators at the end of items\n- Support for multi-selection\n- Visual feedback for both active and selected states\n- Toggle behavior for selection\n\nThis pattern is useful for:\n- Multi-select menus\n- Filter selection UI\n- Setting multiple options simultaneously",
-      "source": "import { Menus } from \"@choice-ui/menus\"\n\nexport default function App() {\n  return (\n    <Menus>\n      {Array.from({ length: 4 }).map((_, index) => (\n        <Menus.Item\n          key={index}\n          active={activeIndex === index}\n          onMouseEnter={() => setActiveIndex(index)}\n          onMouseLeave={() => setActiveIndex(null)}\n          suffixElement={\n            <Menus.Checkbox\n              active={activeIndex === index}\n              selected={selectedIndex.includes(index)}\n            />\n          }\n          onMouseDown={() =>\n            setSelectedIndex((prev) =>\n              prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index],\n            )\n          }\n        >\n          <span className=\"flex-1 truncate\">Item</span>\n        </Menus.Item>\n      ))}\n    </Menus>\n  );\n}"
+      "source": "import { Menus } from \"@choice-ui/menus\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [activeIndex, setActiveIndex] = useState<number | null>(null)\n  const [selectedIndex, setSelectedIndex] = useState<number[]>([])\n  return (\n    <Menus>\n      {Array.from({ length: 4 }).map((_, index) => (\n        <Menus.Item\n          key={index}\n          active={activeIndex === index}\n          onMouseEnter={() => setActiveIndex(index)}\n          onMouseLeave={() => setActiveIndex(null)}\n          suffixElement={\n            <Menus.Checkbox\n              active={activeIndex === index}\n              selected={selectedIndex.includes(index)}\n            />\n          }\n          onMouseDown={() =>\n            setSelectedIndex((prev) =>\n              prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index],\n            )\n          }\n        >\n          <span className=\"flex-1 truncate\">Item</span>\n        </Menus.Item>\n      ))}\n    </Menus>\n  )\n\n}"
     },
     {
       "id": "collections-menuitem--with-avatar-story",
       "name": "With Avatar Story",
       "exportName": "WithAvatarStory",
       "description": "WithAvatarStory: Demonstrates menu items with avatars.\n\nFeatures:\n- Avatar integration with menu items\n- Proper alignment and spacing for avatars\n- Support for user imagery in menus\n- Consistent layout with other menu item patterns\n\nThis pattern is useful for:\n- User selection menus\n- Account switchers\n- Member lists or participant selectors\n- Contact or people pickers",
-      "source": "import { Menus } from \"@choice-ui/menus\"\n\nexport default function App() {\n  return (\n    <Menus>\n      {Options.map((option, index) => (\n        <Menus.Item\n          key={option.name}\n          active={activeIndex === index}\n          onMouseEnter={() => setActiveIndex(index)}\n          onMouseLeave={() => setActiveIndex(null)}\n        >\n          <Avatar\n            size=\"small\"\n            color={option.color}\n            photo={option.picture}\n            name={option.name}\n          />\n          <span className=\"flex-1 truncate\">{option.name}</span>\n        </Menus.Item>\n      ))}\n    </Menus>\n  );\n}"
+      "source": "import { Menus } from \"@choice-ui/menus\"\nimport { useState, useMemo } from \"react\"\n\nexport default function App() {\n\n  const Options = useMemo(\n    () =>\n      Array.from({ length: 4 }, (_, index) => ({\n        color: faker.color.rgb(),\n        name: faker.person.fullName(),\n        picture: faker.image.avatar(),\n      })),\n    [],\n  )\n\n  const [activeIndex, setActiveIndex] = useState<number | null>(null)\n\n  return (\n    <Menus>\n      {Options.map((option, index) => (\n        <Menus.Item\n          key={option.name}\n          active={activeIndex === index}\n          onMouseEnter={() => setActiveIndex(index)}\n          onMouseLeave={() => setActiveIndex(null)}\n        >\n          <Avatar\n            size=\"small\"\n            color={option.color}\n            photo={option.picture}\n            name={option.name}\n          />\n          <span className=\"flex-1 truncate\">{option.name}</span>\n        </Menus.Item>\n      ))}\n    </Menus>\n  )\n\n}"
     },
     {
       "id": "collections-menuitem--with-badge-story",
       "name": "With Badge Story",
       "exportName": "WithBadgeStory",
       "description": "WithBadgeStory: Demonstrates menu items with badges or status indicators.\n\nFeatures:\n- Badge/tag/pill support in menu items\n- Visual indicators for both selection and active states\n- Responsive styling based on item state\n- Integration of multiple elements (prefix, content, suffix)\n\nThis pattern is useful for:\n- Indicating status, quantity, or category\n- Showing additional metadata for menu items\n- Feature flags or option state indicators\n- Creating rich, informative menu experiences",
-      "source": "import { Menus } from \"@choice-ui/menus\"\n\nexport default function App() {\n  return (\n    <Menus>\n      {Options.map((option, index) => (\n        <Menus.Item\n          key={index}\n          active={activeIndex === index}\n          onMouseEnter={() => setActiveIndex(index)}\n          onMouseLeave={() => setActiveIndex(null)}\n          onMouseDown={() =>\n            setSelectedIndex((prev) =>\n              prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index],\n            )\n          }\n          prefixElement={selectedIndex.includes(index) ? <Check /> : <></>}\n          suffixElement={\n            <div\n              className={tcx(\n                \"mr-1 ml-2 flex items-center justify-center rounded-md border px-1\",\n                activeIndex === index && \"bg-menu-background\",\n                selectedIndex.includes(index) && activeIndex !== index\n                  ? \"border-white/20\"\n                  : \"border-transparent\",\n              )}\n            >\n              Badge\n            </div>\n          }\n        >\n          <span className=\"flex-1 truncate\">{option.label}</span>\n        </Menus.Item>\n      ))}\n    </Menus>\n  );\n}"
+      "source": "import { Menus } from \"@choice-ui/menus\"\nimport { useState, useMemo } from \"react\"\n\nexport default function App() {\n\n  const [activeIndex, setActiveIndex] = useState<number | null>(null)\n  const [selectedIndex, setSelectedIndex] = useState<number[]>([])\n\n  const Options = useMemo(\n    () =>\n      Array.from({ length: 4 }, (_, index) => ({\n        label: faker.music.songName(),\n      })),\n    [],\n  )\n\n  return (\n    <Menus>\n      {Options.map((option, index) => (\n        <Menus.Item\n          key={index}\n          active={activeIndex === index}\n          onMouseEnter={() => setActiveIndex(index)}\n          onMouseLeave={() => setActiveIndex(null)}\n          onMouseDown={() =>\n            setSelectedIndex((prev) =>\n              prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index],\n            )\n          }\n          prefixElement={selectedIndex.includes(index) ? <Check /> : <></>}\n          suffixElement={\n            <div\n              className={tcx(\n                \"ml-2 mr-1 flex items-center justify-center rounded-md border px-1\",\n                activeIndex === index && \"bg-menu-background\",\n                selectedIndex.includes(index) && activeIndex !== index\n                  ? \"border-white/20\"\n                  : \"border-transparent\",\n              )}\n            >\n              Badge\n            </div>\n          }\n        >\n          <span className=\"flex-1 truncate\">{option.label}</span>\n        </Menus.Item>\n      ))}\n    </Menus>\n  )\n\n}"
     },
     {
       "id": "collections-menuitem--variant",
       "name": "Variant",
       "exportName": "Variant",
       "description": "",
-      "source": "import { Menus } from \"@choice-ui/menus\"\n\nexport default function App() {\n  return (\n    <Menus>\n      <Menus.Item\n        variant=\"highlight\"\n        active={activeIndex === 0}\n        onMouseEnter={() => setActiveIndex(0)}\n        onMouseLeave={() => setActiveIndex(null)}\n      >\n        Highlight\n      </Menus.Item>\n      <Menus.Item\n        variant=\"danger\"\n        active={activeIndex === 1}\n        onMouseEnter={() => setActiveIndex(1)}\n        onMouseLeave={() => setActiveIndex(null)}\n      >\n        Danger\n      </Menus.Item>\n    </Menus>\n  );\n}"
+      "source": "import { Menus } from \"@choice-ui/menus\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [activeIndex, setActiveIndex] = useState<number | null>(null)\n  return (\n    <Menus>\n      <Menus.Item\n        variant=\"highlight\"\n        active={activeIndex === 0}\n        onMouseEnter={() => setActiveIndex(0)}\n        onMouseLeave={() => setActiveIndex(null)}\n      >\n        Highlight\n      </Menus.Item>\n      <Menus.Item\n        variant=\"danger\"\n        active={activeIndex === 1}\n        onMouseEnter={() => setActiveIndex(1)}\n        onMouseLeave={() => setActiveIndex(null)}\n      >\n        Danger\n      </Menus.Item>\n    </Menus>\n  )\n\n}"
     }
-  ],
-  "tags": [
-    "new"
   ]
 }

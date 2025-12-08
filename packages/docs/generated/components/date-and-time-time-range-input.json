@@ -205,7 +205,7 @@
         },
         {
           "name": "dateComparisonMode",
-          "type": "enum",
+          "type": "undefined | \"exact-time\" | \"date-only\"",
           "required": false,
           "description": "日期比较模式"
         },
@@ -277,7 +277,7 @@
         },
         {
           "name": "selectionMode",
-          "type": "enum",
+          "type": "undefined | \"single\" | \"multiple\" | \"range\"",
           "required": false,
           "description": "选择模式，如果未指定，会根据 value 类型自动推断"
         },
@@ -307,7 +307,7 @@
         },
         {
           "name": "weekStartsOn",
-          "type": "enum",
+          "type": "undefined | 0 | 1 | 2 | 3 | 4 | 5 | 6",
           "required": false,
           "description": "一周开始的日期（0=周日, 1=周一）"
         },
@@ -319,13 +319,13 @@
         },
         {
           "name": "direction",
-          "type": "enum",
+          "type": "undefined | \"horizontal\" | \"vertical\"",
           "required": false,
           "description": "方向"
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"dark\"",
           "required": false,
           "description": "变体样式"
         }
@@ -355,7 +355,7 @@
         },
         {
           "name": "size",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"large\"",
           "required": false,
           "description": ""
         },
@@ -373,7 +373,7 @@
         },
         {
           "name": "focusSelection",
-          "type": "enum",
+          "type": "undefined | \"none\" | \"all\" | \"end\"",
           "required": false,
           "description": ""
         },
@@ -385,7 +385,7 @@
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"light\" | \"dark\" | \"reset\"",
           "required": false,
           "description": ""
         },
@@ -570,7 +570,7 @@
         },
         {
           "name": "size",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"large\"",
           "required": false,
           "description": ""
         },
@@ -588,7 +588,7 @@
         },
         {
           "name": "focusSelection",
-          "type": "enum",
+          "type": "undefined | \"none\" | \"all\" | \"end\"",
           "required": false,
           "description": ""
         },
@@ -600,7 +600,7 @@
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"light\" | \"dark\" | \"reset\"",
           "required": false,
           "description": ""
         }
@@ -738,7 +738,7 @@
         },
         {
           "name": "size",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"large\"",
           "required": false,
           "description": ""
         },
@@ -756,7 +756,7 @@
         },
         {
           "name": "focusSelection",
-          "type": "enum",
+          "type": "undefined | \"none\" | \"all\" | \"end\"",
           "required": false,
           "description": ""
         },
@@ -768,7 +768,7 @@
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"light\" | \"dark\" | \"reset\"",
           "required": false,
           "description": ""
         },
@@ -948,7 +948,7 @@
         },
         {
           "name": "size",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"large\"",
           "required": false,
           "description": ""
         },
@@ -966,7 +966,7 @@
         },
         {
           "name": "focusSelection",
-          "type": "enum",
+          "type": "undefined | \"none\" | \"all\" | \"end\"",
           "required": false,
           "description": ""
         },
@@ -978,7 +978,7 @@
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"light\" | \"dark\" | \"reset\"",
           "required": false,
           "description": ""
         }
@@ -1068,7 +1068,7 @@
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"dark\"",
           "required": false,
           "description": "变体样式"
         }
@@ -1164,7 +1164,7 @@
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"dark\"",
           "required": false,
           "description": "变体样式"
         }
@@ -1449,7 +1449,7 @@
         },
         {
           "name": "quarter",
-          "type": "enum",
+          "type": "1 | 2 | 3 | 4",
           "required": true,
           "description": ""
         },
@@ -1479,7 +1479,7 @@
         },
         {
           "name": "quarter",
-          "type": "enum",
+          "type": "1 | 2 | 3 | 4",
           "required": true,
           "description": ""
         },
@@ -1814,14 +1814,14 @@
       "name": "Size",
       "exportName": "Size",
       "description": "Size: Demonstrates the large size variant of TimeRangeInput.\n- Shows the component with increased dimensions for prominent interfaces.\n- Useful for applications requiring larger touch targets or enhanced visibility.",
-      "source": "import { MonthCalendar } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-4\">\n      <TimeRangeDemo size=\"large\" />\n    </div>\n  );\n}"
+      "source": "import { MonthCalendar } from \"@choice-ui/calendar\"\n\nexport default function App() {\n\n  return (\n    <div className=\"space-y-4\">\n      <TimeRangeDemo size=\"large\" />\n    </div>\n  )\n\n}"
     },
     {
       "id": "dateandtime-timerangeinput--variable",
       "name": "Variable",
       "exportName": "Variable",
       "description": "Variable: Demonstrates the dark theme variant of TimeRangeInput.\n- Shows the component styled for dark theme environments.\n- Useful for applications with dark mode or specialized UI themes.",
-      "source": "import { MonthCalendar } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <div className=\"rounded-xl bg-gray-800 p-8\">\n      <TimeRangeDemo variant=\"dark\" />\n    </div>\n  );\n}"
+      "source": "import { MonthCalendar } from \"@choice-ui/calendar\"\n\nexport default function App() {\n\n  return (\n    <div className=\"rounded-xl bg-gray-800 p-8\">\n      <TimeRangeDemo variant=\"dark\" />\n    </div>\n  )\n\n}"
     },
     {
       "id": "dateandtime-timerangeinput--range-synchronization",
@@ -1842,42 +1842,42 @@
       "name": "Cross Midnight",
       "exportName": "CrossMidnight",
       "description": "CrossMidnight: Demonstrates cross-midnight time range support.\n- Shows time ranges that span across midnight (22:00 to 06:00).\n- Displays proper handling of overnight shifts and 24-hour operations.\n- Useful for night shift scheduling, security operations, or 24/7 businesses.",
-      "source": "import { MonthCalendar } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-4\">\n      <TimeRangeDemo {...args} />\n      <div className=\"text-secondary-foreground\">\n        💡 Support cross-day time range (e.g., night shift from 22:00 to the next day 06:00)\n      </div>\n    </div>\n  );\n}"
+      "source": "import { MonthCalendar } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n\n    <div className=\"space-y-4\">\n      <TimeRangeDemo {...args} />\n      <div className=\"text-secondary-foreground\">\n        💡 Support cross-day time range (e.g., night shift from 22:00 to the next day 06:00)\n      </div>\n    </div>\n\n  );\n}"
     },
     {
       "id": "dateandtime-timerangeinput--different-formats",
       "name": "Different Formats",
       "exportName": "DifferentFormats",
       "description": "DifferentFormats: Demonstrates various time format options and their visual representation.\n- Shows 24-hour format, 12-hour format with AM/PM, and format with seconds.\n- Displays how different formats affect the display and input experience.\n- Useful for understanding format flexibility and regional preferences.",
-      "source": "import { timeStringToDate } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-8\">\n      <div>\n        <h3 className=\"font-strong mb-4\">24-hour format (HH:mm)</h3>\n        <TimeRangeDemo\n          format=\"HH:mm\"\n          startPlaceholder=\"09:00\"\n          endPlaceholder=\"17:00\"\n          startValue={timeStringToDate(\"09:00\")}\n          endValue={timeStringToDate(\"17:00\")}\n        />\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-4\">12-hour format (h:mm a)</h3>\n        <TimeRangeDemo\n          format=\"h:mm a\"\n          locale={enUS}\n          startPlaceholder=\"9:00 AM\"\n          endPlaceholder=\"5:00 PM\"\n          startValue={timeStringToDate(\"09:00\")}\n          endValue={timeStringToDate(\"17:00\")}\n        />\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-4\">With seconds format (HH:mm:ss)</h3>\n        <TimeRangeDemo\n          format=\"HH:mm:ss\"\n          startPlaceholder=\"09:00:00\"\n          endPlaceholder=\"17:00:00\"\n          startValue={timeStringToDate(\"09:00\")}\n          endValue={timeStringToDate(\"17:00\")}\n        />\n      </div>\n    </div>\n  );\n}"
+      "source": "import { timeStringToDate } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n\n    <div className=\"flex flex-col gap-8\">\n      <div>\n        <h3 className=\"font-strong mb-4\">24-hour format (HH:mm)</h3>\n        <TimeRangeDemo\n          format=\"HH:mm\"\n          startPlaceholder=\"09:00\"\n          endPlaceholder=\"17:00\"\n          startValue={timeStringToDate(\"09:00\")}\n          endValue={timeStringToDate(\"17:00\")}\n        />\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-4\">12-hour format (h:mm a)</h3>\n        <TimeRangeDemo\n          format=\"h:mm a\"\n          locale={enUS}\n          startPlaceholder=\"9:00 AM\"\n          endPlaceholder=\"5:00 PM\"\n          startValue={timeStringToDate(\"09:00\")}\n          endValue={timeStringToDate(\"17:00\")}\n        />\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-4\">With seconds format (HH:mm:ss)</h3>\n        <TimeRangeDemo\n          format=\"HH:mm:ss\"\n          startPlaceholder=\"09:00:00\"\n          endPlaceholder=\"17:00:00\"\n          startValue={timeStringToDate(\"09:00\")}\n          endValue={timeStringToDate(\"17:00\")}\n        />\n      </div>\n    </div>\n\n  );\n}"
     },
     {
       "id": "dateandtime-timerangeinput--internationalization",
       "name": "Internationalization",
       "exportName": "Internationalization",
       "description": "Internationalization: Demonstrates comprehensive multi-language support.\n- Shows TimeRangeInput working with Chinese, English, and Japanese locales.\n- Displays locale-specific time formatting and placeholder text.\n- Demonstrates proper duration display in multiple languages.",
-      "source": "import { timeStringToDate } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-8\">\n      <div>\n        <h3 className=\"font-strong mb-4\">中文 (zh-CN)</h3>\n        <TimeRangeDemo\n          locale={zhCN}\n          startPlaceholder=\"开始时间\"\n          endPlaceholder=\"结束时间\"\n          startValue={timeStringToDate(\"09:00\")}\n          endValue={timeStringToDate(\"17:30\")}\n        />\n        <div className=\"text-body-small mt-2 text-gray-500\">Duration display: 8h 30m</div>\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-4\">English (en-US)</h3>\n        <TimeRangeDemo\n          locale={enUS}\n          format=\"h:mm a\"\n          startPlaceholder=\"Start Time\"\n          endPlaceholder=\"End Time\"\n          startValue={timeStringToDate(\"09:00\")}\n          endValue={timeStringToDate(\"17:30\")}\n        />\n        <div className=\"text-body-small mt-2 text-gray-500\">Duration display: 8h 30m</div>\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-4\">日本語 (ja)</h3>\n        <TimeRangeDemo\n          locale={ja}\n          startPlaceholder=\"開始時間\"\n          endPlaceholder=\"終了時間\"\n          startValue={timeStringToDate(\"09:00\")}\n          endValue={timeStringToDate(\"17:30\")}\n        />\n        <div className=\"text-body-small mt-2 text-gray-500\">Duration display: 8h 30m</div>\n      </div>\n    </div>\n  );\n}"
+      "source": "import { timeStringToDate } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n\n    <div className=\"space-y-8\">\n      <div>\n        <h3 className=\"font-strong mb-4\">中文 (zh-CN)</h3>\n        <TimeRangeDemo\n          locale={zhCN}\n          startPlaceholder=\"开始时间\"\n          endPlaceholder=\"结束时间\"\n          startValue={timeStringToDate(\"09:00\")}\n          endValue={timeStringToDate(\"17:30\")}\n        />\n        <div className=\"text-body-small mt-2 text-gray-500\">Duration display: 8h 30m</div>\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-4\">English (en-US)</h3>\n        <TimeRangeDemo\n          locale={enUS}\n          format=\"h:mm a\"\n          startPlaceholder=\"Start Time\"\n          endPlaceholder=\"End Time\"\n          startValue={timeStringToDate(\"09:00\")}\n          endValue={timeStringToDate(\"17:30\")}\n        />\n        <div className=\"text-body-small mt-2 text-gray-500\">Duration display: 8h 30m</div>\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-4\">日本語 (ja)</h3>\n        <TimeRangeDemo\n          locale={ja}\n          startPlaceholder=\"開始時間\"\n          endPlaceholder=\"終了時間\"\n          startValue={timeStringToDate(\"09:00\")}\n          endValue={timeStringToDate(\"17:30\")}\n        />\n        <div className=\"text-body-small mt-2 text-gray-500\">Duration display: 8h 30m</div>\n      </div>\n    </div>\n\n  );\n}"
     },
     {
       "id": "dateandtime-timerangeinput--common-scenarios",
       "name": "Common Scenarios",
       "exportName": "CommonScenarios",
       "description": "CommonScenarios: Demonstrates real-world usage scenarios for TimeRangeInput.\n- Shows work hours, lunch breaks, exercise time, and night shift examples.\n- Displays practical applications with appropriate time ranges and contexts.\n- Useful for understanding when and how to implement time range selection.",
-      "source": "import { timeStringToDate } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-8\">\n      <div>\n        <h3 className=\"font-strong mb-4\">🏢 Work Time</h3>\n        <TimeRangeDemo\n          startValue={timeStringToDate(\"09:00\")}\n          endValue={timeStringToDate(\"18:00\")}\n          startPlaceholder=\"Start Time\"\n          endPlaceholder=\"End Time\"\n        />\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-4\">🍽️ Lunch Time</h3>\n        <TimeRangeDemo\n          startValue={timeStringToDate(\"12:00\")}\n          endValue={timeStringToDate(\"13:00\")}\n          startPlaceholder=\"Start Time\"\n          endPlaceholder=\"End Time\"\n        />\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-4\">🏃‍♂️ Exercise Time</h3>\n        <TimeRangeDemo\n          startValue={timeStringToDate(\"06:30\")}\n          endValue={timeStringToDate(\"07:30\")}\n          startPlaceholder=\"Start Time\"\n          endPlaceholder=\"End Time\"\n        />\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-4\">🌙 Night Shift Time</h3>\n        <TimeRangeDemo\n          startValue={timeStringToDate(\"22:00\")}\n          endValue={timeStringToDate(\"06:00\")}\n          startPlaceholder=\"Start Time\"\n          endPlaceholder=\"End Time\"\n        />\n        <div className=\"text-body-small mt-2 text-gray-500\">💡 Cross-day work, 8 hours</div>\n      </div>\n    </div>\n  );\n}"
+      "source": "import { timeStringToDate } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n\n    <div className=\"space-y-8\">\n      <div>\n        <h3 className=\"font-strong mb-4\">🏢 Work Time</h3>\n        <TimeRangeDemo\n          startValue={timeStringToDate(\"09:00\")}\n          endValue={timeStringToDate(\"18:00\")}\n          startPlaceholder=\"Start Time\"\n          endPlaceholder=\"End Time\"\n        />\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-4\">🍽️ Lunch Time</h3>\n        <TimeRangeDemo\n          startValue={timeStringToDate(\"12:00\")}\n          endValue={timeStringToDate(\"13:00\")}\n          startPlaceholder=\"Start Time\"\n          endPlaceholder=\"End Time\"\n        />\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-4\">🏃‍♂️ Exercise Time</h3>\n        <TimeRangeDemo\n          startValue={timeStringToDate(\"06:30\")}\n          endValue={timeStringToDate(\"07:30\")}\n          startPlaceholder=\"Start Time\"\n          endPlaceholder=\"End Time\"\n        />\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-4\">🌙 Night Shift Time</h3>\n        <TimeRangeDemo\n          startValue={timeStringToDate(\"22:00\")}\n          endValue={timeStringToDate(\"06:00\")}\n          startPlaceholder=\"Start Time\"\n          endPlaceholder=\"End Time\"\n        />\n        <div className=\"text-body-small mt-2 text-gray-500\">💡 Cross-day work, 8 hours</div>\n      </div>\n    </div>\n\n  );\n}"
     },
     {
       "id": "dateandtime-timerangeinput--duration-only",
       "name": "Duration Only",
       "exportName": "DurationOnly",
       "description": "DurationOnly: Demonstrates time range duration calculation and display.\n- Shows short duration (45 minutes), full hours (2 hours), and long duration (12 hours).\n- Displays how the component calculates and presents time range durations.\n- Useful for understanding duration formatting and time range analysis.",
-      "source": "import { timeStringToDate } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-6\">\n      <div>\n        <h3 className=\"font-strong mb-4\">Short Time Range</h3>\n        <TimeRangeDemo\n          startValue={timeStringToDate(\"14:00\")}\n          endValue={timeStringToDate(\"14:45\")}\n          startPlaceholder=\"Start Time\"\n          endPlaceholder=\"End Time\"\n        />\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-4\">Full Hour Time Range</h3>\n        <TimeRangeDemo\n          startValue={timeStringToDate(\"10:00\")}\n          endValue={timeStringToDate(\"12:00\")}\n          startPlaceholder=\"Start Time\"\n          endPlaceholder=\"End Time\"\n        />\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-4\">Long Time Range</h3>\n        <TimeRangeDemo\n          startValue={timeStringToDate(\"08:00\")}\n          endValue={timeStringToDate(\"20:00\")}\n          startPlaceholder=\"Start Time\"\n          endPlaceholder=\"End Time\"\n        />\n      </div>\n    </div>\n  );\n}"
+      "source": "import { timeStringToDate } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n\n    <div className=\"space-y-6\">\n      <div>\n        <h3 className=\"font-strong mb-4\">Short Time Range</h3>\n        <TimeRangeDemo\n          startValue={timeStringToDate(\"14:00\")}\n          endValue={timeStringToDate(\"14:45\")}\n          startPlaceholder=\"Start Time\"\n          endPlaceholder=\"End Time\"\n        />\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-4\">Full Hour Time Range</h3>\n        <TimeRangeDemo\n          startValue={timeStringToDate(\"10:00\")}\n          endValue={timeStringToDate(\"12:00\")}\n          startPlaceholder=\"Start Time\"\n          endPlaceholder=\"End Time\"\n        />\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-4\">Long Time Range</h3>\n        <TimeRangeDemo\n          startValue={timeStringToDate(\"08:00\")}\n          endValue={timeStringToDate(\"20:00\")}\n          startPlaceholder=\"Start Time\"\n          endPlaceholder=\"End Time\"\n        />\n      </div>\n    </div>\n\n  );\n}"
     },
     {
       "id": "dateandtime-timerangeinput--read-only",
       "name": "Read Only",
       "exportName": "ReadOnly",
       "description": "ReadOnly: Demonstrates the TimeRangeInput component in readOnly mode.\n- Prevents value changes while allowing focus and selection\n- Maintains normal visual appearance (unlike disabled)\n- Useful for displaying non-editable time range information",
-      "source": "import { TimeRangeInput } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <div className=\"rounded-xl border bg-stone-50 p-4\">\n        <div className=\"text-body-small-strong mb-2 text-stone-700\">Current Start:</div>\n        <div className=\"text-body-small font-mono text-stone-600\">\n          {startValue ? startValue.toLocaleTimeString() : \"null\"}\n        </div>\n        <div className=\"text-body-small-strong mt-2 text-stone-700\">Current End:</div>\n        <div className=\"text-body-small font-mono text-stone-600\">\n          {endValue ? endValue.toLocaleTimeString() : \"null\"}\n        </div>\n        <div className=\"text-body-small-strong mt-2 text-stone-700\">Change Count:</div>\n        <div className=\"text-body-small font-mono text-stone-600\">{changeCount}</div>\n      </div>\n      <Panel.Row\n        type=\"two-input-two-icon\"\n        className=\"w-96 px-0\"\n      >\n        <TimeRangeInput\n          readOnly\n          startValue={startValue}\n          endValue={endValue}\n          onStartChange={handleStartChange}\n          onEndChange={handleEndChange}\n        />\n      </Panel.Row>\n      <Panel.Row\n        type=\"two-input-two-icon\"\n        className=\"w-96 px-0\"\n      >\n        <TimeRangeInput\n          startValue={startValue}\n          endValue={endValue}\n          onStartChange={handleStartChange}\n          onEndChange={handleEndChange}\n        />\n      </Panel.Row>\n      <div className=\"text-body-small text-stone-600\">\n        💡 Try changing the readonly time range input - the values should not change and the\n        change count should remain at 0. Only the normal input will change the values.\n      </div>\n    </div>\n  );\n}"
+      "source": "import { TimeRangeInput, timeStringToDate } from \"@choice-ui/calendar\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [startValue, setStartValue] = useState<Date | null>(timeStringToDate(\"09:00\"))\n  const [endValue, setEndValue] = useState<Date | null>(timeStringToDate(\"17:00\"))\n  const [changeCount, setChangeCount] = useState(0)\n\n  const handleStartChange = (newValue: Date | null) => {\n    setStartValue(newValue)\n    setChangeCount((prev) => prev + 1)\n  }\n\n  const handleEndChange = (newValue: Date | null) => {\n    setEndValue(newValue)\n    setChangeCount((prev) => prev + 1)\n  }\n\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <div className=\"rounded-xl border bg-stone-50 p-4\">\n        <div className=\"text-body-small-strong mb-2 text-stone-700\">Current Start:</div>\n        <div className=\"text-body-small font-mono text-stone-600\">\n          {startValue ? startValue.toLocaleTimeString() : \"null\"}\n        </div>\n        <div className=\"text-body-small-strong mt-2 text-stone-700\">Current End:</div>\n        <div className=\"text-body-small font-mono text-stone-600\">\n          {endValue ? endValue.toLocaleTimeString() : \"null\"}\n        </div>\n        <div className=\"text-body-small-strong mt-2 text-stone-700\">Change Count:</div>\n        <div className=\"text-body-small font-mono text-stone-600\">{changeCount}</div>\n      </div>\n      <Panel.Row\n        type=\"two-input-two-icon\"\n        className=\"w-96 px-0\"\n      >\n        <TimeRangeInput\n          readOnly\n          startValue={startValue}\n          endValue={endValue}\n          onStartChange={handleStartChange}\n          onEndChange={handleEndChange}\n        />\n      </Panel.Row>\n      <Panel.Row\n        type=\"two-input-two-icon\"\n        className=\"w-96 px-0\"\n      >\n        <TimeRangeInput\n          startValue={startValue}\n          endValue={endValue}\n          onStartChange={handleStartChange}\n          onEndChange={handleEndChange}\n        />\n      </Panel.Row>\n      <div className=\"text-body-small text-stone-600\">\n        💡 Try changing the readonly time range input - the values should not change and the\n        change count should remain at 0. Only the normal input will change the values.\n      </div>\n    </div>\n  )\n\n}"
     }
   ],
   "tags": [

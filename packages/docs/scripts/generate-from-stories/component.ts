@@ -185,6 +185,26 @@ export function readComponentDoc(componentPath: string): string {
   return cleaned[0] ?? ""
 }
 
+/** 解析 prop 类型，展开 enum */
+function formatPropType(
+  propType: { name: string; raw?: string; value?: Array<{ value: string }> } | undefined,
+): string {
+  if (!propType) return ""
+
+  // 如果是 enum 类型且有具体值，展开显示
+  if (propType.name === "enum" && propType.value && Array.isArray(propType.value)) {
+    const values = propType.value.map((v) => v.value).join(" | ")
+    return values || "enum"
+  }
+
+  // 如果有 raw 类型（原始类型字符串），优先使用
+  if (propType.raw) {
+    return propType.raw
+  }
+
+  return propType.name
+}
+
 /** 解析单个文件的 props，使用提供的类型名称列表 */
 function parseFileProps(filePath: string, exportedTypeNames: string[]): PropsGroup[] {
   try {
@@ -195,7 +215,7 @@ function parseFileProps(filePath: string, exportedTypeNames: string[]): PropsGro
       const props = doc.props ?? {}
       const propList: PropDoc[] = Object.entries(props).map(([name, prop]) => ({
         name,
-        type: prop.type?.name ?? "",
+        type: formatPropType(prop.type as { name: string; value?: Array<{ value: string }> }),
         required: prop.required ?? false,
         defaultValue: prop.defaultValue?.value ?? undefined,
         description: prop.description ?? "",

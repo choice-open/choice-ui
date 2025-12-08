@@ -14,14 +14,7 @@ import { ReactNode, useMemo, useState } from "react"
 const meta: Meta<typeof MenuItem> = {
   title: "Collections/MenuItem",
   component: MenuItem,
-  tags: ["new"],
-  decorators: [
-    (Story) => (
-      <div>
-        <Story />
-      </div>
-    ),
-  ],
+  tags: ["autodocs"],
 }
 
 export default meta
@@ -398,7 +391,7 @@ export const WithBadgeStory: Story = {
             suffixElement={
               <div
                 className={tcx(
-                  "mr-1 ml-2 flex items-center justify-center rounded-md border px-1",
+                  "ml-2 mr-1 flex items-center justify-center rounded-md border px-1",
                   activeIndex === index && "bg-menu-background",
                   selectedIndex.includes(index) && activeIndex !== index
                     ? "border-white/20"

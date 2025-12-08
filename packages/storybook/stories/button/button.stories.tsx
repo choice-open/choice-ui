@@ -231,7 +231,7 @@ export const Tooltip: Story = {
 }
 
 /**
- * Button component in readOnly state.
+ * [TEST] Button component in readOnly state.
  *
  * In readOnly mode:
  * - The button does not respond to click events

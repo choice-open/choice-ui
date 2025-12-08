@@ -56,3 +56,24 @@ export const multiSelectTriggerTv = tcv({
     hasValues: false,
   },
 })
+
+export const multiSelectTv = tcv({
+  slots: {
+    validationMessage:
+      "bg-menu-background absolute top-[calc(100%+4px)] right-0 left-0 rounded-xl px-3 py-2 text-white",
+  },
+  variants: {
+    variant: {
+      default: {
+        validationMessage: "bg-menu-background text-white",
+      },
+      light: {
+        validationMessage: "bg-white text-gray-900",
+      },
+      reset: {},
+    },
+  },
+  defaultVariants: {
+    variant: "default",
+  },
+})

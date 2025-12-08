@@ -43,14 +43,14 @@
         },
         {
           "name": "size",
-          "type": "enum",
+          "type": "undefined | \"small\" | \"medium\" | \"large\"",
           "required": false,
           "defaultValue": "medium",
           "description": ""
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"primary\"",
           "required": false,
           "description": ""
         }
@@ -80,14 +80,14 @@
         },
         {
           "name": "size",
-          "type": "enum",
+          "type": "undefined | \"small\" | \"medium\" | \"large\"",
           "required": false,
           "defaultValue": "medium",
           "description": ""
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"primary\"",
           "required": false,
           "description": ""
         }
@@ -107,14 +107,14 @@
       "name": "Set Sizes",
       "exportName": "SetSizes",
       "description": "",
-      "source": "import { SpinnerBounce } from \"@choice-ui/spinner\"\n\nexport default function App() {\n  return (\n    <div className=\"flex items-center gap-4\">\n      <SpinnerBounce size=\"small\" />\n      <SpinnerBounce size=\"medium\" />\n      <SpinnerBounce size=\"large\" />\n    </div>\n  );\n}"
+      "source": "import { SpinnerBounce } from \"@choice-ui/spinner\"\n\nexport default function App() {\n  return (\n\n    <div className=\"flex items-center gap-4\">\n      <SpinnerBounce size=\"small\" />\n      <SpinnerBounce size=\"medium\" />\n      <SpinnerBounce size=\"large\" />\n    </div>\n\n  );\n}"
     },
     {
       "id": "status-spinner-spinnerbounce--variants",
       "name": "Variants",
       "exportName": "Variants",
       "description": "Spinner has 5 variants: `primary`, `success`, `warning`, `danger`, and `default`.",
-      "source": "import { SpinnerBounce } from \"@choice-ui/spinner\"\n\nexport default function App() {\n  return (\n    <div className=\"flex items-center gap-4\">\n      <SpinnerBounce variant=\"default\" />\n      <SpinnerBounce variant=\"primary\" />\n    </div>\n  );\n}"
+      "source": "import { SpinnerBounce } from \"@choice-ui/spinner\"\n\nexport default function App() {\n  return (\n\n    <div className=\"flex items-center gap-4\">\n      <SpinnerBounce variant=\"default\" />\n      <SpinnerBounce variant=\"primary\" />\n    </div>\n\n  );\n}"
     },
     {
       "id": "status-spinner-spinnerbounce--label",

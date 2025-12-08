@@ -32,7 +32,7 @@
         },
         {
           "name": "size",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"large\"",
           "required": false,
           "description": ""
         },
@@ -56,7 +56,7 @@
         },
         {
           "name": "focusSelection",
-          "type": "enum",
+          "type": "undefined | \"none\" | \"all\" | \"end\"",
           "required": false,
           "description": ""
         },
@@ -68,7 +68,7 @@
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"light\" | \"dark\" | \"reset\"",
           "required": false,
           "description": ""
         }
@@ -81,84 +81,84 @@
       "name": "Basic",
       "exportName": "Basic",
       "description": "Basic text field without any additional features.\nDemonstrates the simplest usage of the TextField component.",
-      "source": ""
+      "source": "import { TextField } from \"@choice-ui/text-field\"\n\nexport default function App() {\n\n  return <TextField placeholder=\"Enter text\" />\n\n}"
     },
     {
       "id": "forms-textfield--with-prefix",
       "name": "With Prefix",
       "exportName": "WithPrefix",
       "description": "Text field with a prefix icon.\nShows how to add icons or other elements before the input area.\nThe prefix changes color on hover and focus for better user feedback.",
-      "source": "import { TextField } from \"@choice-ui/text-field\"\n\nexport default function App() {\n  return (\n    <TextField placeholder=\"Enter text\">\n      <TextField.Prefix className=\"text-secondary-foreground group-hover/text-field:text-default-foreground group-focus-within/text-field:text-default-foreground\">\n        <Search />\n      </TextField.Prefix>\n    </TextField>\n  );\n}"
+      "source": "import { TextField } from \"@choice-ui/text-field\"\n\nexport default function App() {\n\n  return (\n    <TextField placeholder=\"Enter text\">\n      <TextField.Prefix className=\"text-secondary-foreground group-hover/text-field:text-default-foreground group-focus-within/text-field:text-default-foreground\">\n        <Search />\n      </TextField.Prefix>\n    </TextField>\n  )\n\n}"
     },
     {
       "id": "forms-textfield--with-suffix",
       "name": "With Suffix",
       "exportName": "WithSuffix",
       "description": "Text field with a suffix element.\nDemonstrates adding badges, buttons, or other elements after the input.\nUseful for status indicators or action buttons.",
-      "source": "import { TextField } from \"@choice-ui/text-field\"\n\nexport default function App() {\n  return (\n    <TextField placeholder=\"Enter text\">\n      <TextField.Suffix className=\"px-1\">\n        <Badge>Suffix</Badge>\n      </TextField.Suffix>\n    </TextField>\n  );\n}"
+      "source": "import { TextField } from \"@choice-ui/text-field\"\n\nexport default function App() {\n\n  return (\n    <TextField placeholder=\"Enter text\">\n      <TextField.Suffix className=\"px-1\">\n        <Badge>Suffix</Badge>\n      </TextField.Suffix>\n    </TextField>\n  )\n\n}"
     },
     {
       "id": "forms-textfield--with-prefix-and-suffix",
       "name": "With Prefix And Suffix",
       "exportName": "WithPrefixAndSuffix",
       "description": "Text field with both prefix and suffix elements.\nCombines prefix icons and suffix badges for rich input experiences.\nCommonly used for search fields with filters or status indicators.",
-      "source": "import { TextField } from \"@choice-ui/text-field\"\n\nexport default function App() {\n  return (\n    <TextField placeholder=\"Enter text\">\n      <TextField.Prefix className=\"text-secondary-foreground group-hover/text-field:text-default-foreground group-focus-within/text-field:text-default-foreground\">\n        <Search />\n      </TextField.Prefix>\n      <TextField.Suffix className=\"px-1\">\n        <Badge>Suffix</Badge>\n      </TextField.Suffix>\n    </TextField>\n  );\n}"
+      "source": "import { TextField } from \"@choice-ui/text-field\"\n\nexport default function App() {\n\n  return (\n    <TextField placeholder=\"Enter text\">\n      <TextField.Prefix className=\"text-secondary-foreground group-hover/text-field:text-default-foreground group-focus-within/text-field:text-default-foreground\">\n        <Search />\n      </TextField.Prefix>\n      <TextField.Suffix className=\"px-1\">\n        <Badge>Suffix</Badge>\n      </TextField.Suffix>\n    </TextField>\n  )\n\n}"
     },
     {
       "id": "forms-textfield--with-label",
       "name": "With Label",
       "exportName": "WithLabel",
       "description": "Text field with a label.\nShows proper form labeling for accessibility and usability.\nLabels help users understand the expected input.",
-      "source": "import { TextField } from \"@choice-ui/text-field\"\n\nexport default function App() {\n  return (\n    <TextField placeholder=\"Enter text\">\n      <TextField.Label>Label</TextField.Label>\n    </TextField>\n  );\n}"
+      "source": "import { TextField } from \"@choice-ui/text-field\"\n\nexport default function App() {\n\n  return (\n    <TextField placeholder=\"Enter text\">\n      <TextField.Label>Label</TextField.Label>\n    </TextField>\n  )\n\n}"
     },
     {
       "id": "forms-textfield--with-description",
       "name": "With Description",
       "exportName": "WithDescription",
       "description": "Text field with a description.\nProvides additional context or help text below the input.\nUseful for explaining format requirements or providing examples.",
-      "source": "import { TextField } from \"@choice-ui/text-field\"\n\nexport default function App() {\n  return (\n    <TextField placeholder=\"Enter text\">\n      <TextField.Description>{faker.lorem.words()}</TextField.Description>\n    </TextField>\n  );\n}"
+      "source": "import { TextField } from \"@choice-ui/text-field\"\n\nexport default function App() {\n\n  return (\n    <TextField placeholder=\"Enter text\">\n      <TextField.Description>{faker.lorem.words()}</TextField.Description>\n    </TextField>\n  )\n\n}"
     },
     {
       "id": "forms-textfield--size",
       "name": "Size",
       "exportName": "Size",
       "description": "Large size variant of the text field.\nDemonstrates the larger size option for improved visibility.\nUse for prominent inputs or when more padding is needed.",
-      "source": "import { TextField } from \"@choice-ui/text-field\"\n\nexport default function App() {\n  return (\n    <TextField\n      placeholder=\"Enter text\"\n      size=\"large\"\n    />\n  );\n}"
+      "source": "import { TextField } from \"@choice-ui/text-field\"\n\nexport default function App() {\n\n  return (\n    <TextField\n      placeholder=\"Enter text\"\n      size=\"large\"\n    />\n  )\n\n}"
     },
     {
       "id": "forms-textfield--disabled",
       "name": "Disabled",
       "exportName": "Disabled",
       "description": "Disabled text field with label and description.\nShows how the component appears when interaction is prevented.\nAll child elements inherit the disabled state automatically.",
-      "source": "import { TextField } from \"@choice-ui/text-field\"\n\nexport default function App() {\n  return (\n    <TextField\n      placeholder=\"Enter text\"\n      disabled\n    >\n      <TextField.Label>Label</TextField.Label>\n      <TextField.Description>Description</TextField.Description>\n    </TextField>\n  );\n}"
+      "source": "import { TextField } from \"@choice-ui/text-field\"\n\nexport default function App() {\n\n  return (\n    <TextField\n      placeholder=\"Enter text\"\n      disabled\n    >\n      <TextField.Label>Label</TextField.Label>\n      <TextField.Description>Description</TextField.Description>\n    </TextField>\n  )\n\n}"
     },
     {
       "id": "forms-textfield--read-only",
       "name": "Read Only",
       "exportName": "ReadOnly",
       "description": "Read-only text field.\nAllows viewing but not editing the value.\nUseful for displaying non-editable information in form contexts.",
-      "source": "import { TextField } from \"@choice-ui/text-field\"\n\nexport default function App() {\n  return (\n    <TextField\n      readOnly\n      value=\"Read Only\"\n    />\n  );\n}"
+      "source": "import { TextField } from \"@choice-ui/text-field\"\n\nexport default function App() {\n\n  return (\n    <TextField\n      readOnly\n      value=\"Read Only\"\n    />\n  )\n\n}"
     },
     {
       "id": "forms-textfield--variants",
       "name": "Variants",
       "exportName": "Variants",
       "description": "Variants: Demonstrates different visual variants of the text field component.\n- default: Follows the page theme dynamically (light/dark mode)\n- light: Fixed light appearance regardless of theme\n- dark: Fixed dark appearance regardless of theme\n- reset: Removes variant styling, no variant settings applied",
-      "source": "import { TextField } from \"@choice-ui/text-field\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-2\">\n      <Checkbox\n        value={disabled}\n        onChange={(value) => setDisabled(value)}\n      >\n        Disabled\n      </Checkbox>\n      <div className=\"grid grid-cols-3 overflow-hidden rounded-xl border\">\n        <div className=\"bg-default-background flex aspect-square items-center justify-center p-8\">\n          <TextField\n            disabled={disabled}\n            placeholder=\"Enter text\"\n          >\n            <TextField.Label description=\"This is a description\">Label</TextField.Label>\n            <TextField.Description>Description</TextField.Description>\n          </TextField>\n        </div>\n        <div className=\"flex aspect-square items-center justify-center bg-white p-8\">\n          <TextField\n            disabled={disabled}\n            variant=\"light\"\n            placeholder=\"Enter text\"\n          >\n            <TextField.Label description=\"This is a description\">Label</TextField.Label>\n            <TextField.Description>Description</TextField.Description>\n          </TextField>\n        </div>\n        <div className=\"flex aspect-square items-center justify-center bg-gray-800 p-8\">\n          <TextField\n            disabled={disabled}\n            variant=\"dark\"\n            placeholder=\"Enter text\"\n          >\n            <TextField.Label description=\"This is a description\">Label</TextField.Label>\n            <TextField.Description>Description</TextField.Description>\n          </TextField>\n        </div>\n      </div>\n    </div>\n  );\n}"
+      "source": "import { TextField } from \"@choice-ui/text-field\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [disabled, setDisabled] = useState(false)\n  return (\n    <div className=\"flex flex-col gap-2\">\n      <Checkbox\n        value={disabled}\n        onChange={(value) => setDisabled(value)}\n      >\n        Disabled\n      </Checkbox>\n      <div className=\"grid grid-cols-3 overflow-hidden rounded-xl border\">\n        <div className=\"bg-default-background flex aspect-square items-center justify-center p-8\">\n          <TextField\n            disabled={disabled}\n            placeholder=\"Enter text\"\n          >\n            <TextField.Label description=\"This is a description\">Label</TextField.Label>\n            <TextField.Description>Description</TextField.Description>\n          </TextField>\n        </div>\n        <div className=\"flex aspect-square items-center justify-center bg-white p-8\">\n          <TextField\n            disabled={disabled}\n            variant=\"light\"\n            placeholder=\"Enter text\"\n          >\n            <TextField.Label description=\"This is a description\">Label</TextField.Label>\n            <TextField.Description>Description</TextField.Description>\n          </TextField>\n        </div>\n        <div className=\"flex aspect-square items-center justify-center bg-gray-800 p-8\">\n          <TextField\n            disabled={disabled}\n            variant=\"dark\"\n            placeholder=\"Enter text\"\n          >\n            <TextField.Label description=\"This is a description\">Label</TextField.Label>\n            <TextField.Description>Description</TextField.Description>\n          </TextField>\n        </div>\n      </div>\n    </div>\n  )\n\n}"
     },
     {
       "id": "forms-textfield--controlled",
       "name": "Controlled",
       "exportName": "Controlled",
       "description": "Controlled text field with value display.\nShows two-way data binding with React state.\nThe current value is displayed below the input for demonstration.",
-      "source": "import { TextField } from \"@choice-ui/text-field\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-2\">\n      <TextField\n        value={value}\n        onChange={setValue}\n      />\n      <p className=\"text-secondary-foreground h-6\">{value}</p>\n    </div>\n  );\n}"
+      "source": "import { TextField } from \"@choice-ui/text-field\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [value, setValue] = useState(\"\")\n  return (\n    <div className=\"flex flex-col gap-2\">\n      <TextField\n        value={value}\n        onChange={setValue}\n      />\n      <p className=\"text-secondary-foreground h-6\">{value}</p>\n    </div>\n  )\n\n}"
     },
     {
       "id": "forms-textfield--with-arrow-and-dropdown",
       "name": "With Arrow And Dropdown",
       "exportName": "WithArrowAndDropdown",
       "description": "TextField with arrow icon prefix and dropdown menu suffix\nDemonstrates a URL or page input with navigation and dropdown functionality",
-      "source": "import { TextField } from \"@choice-ui/text-field\"\n\nexport default function App() {\n  return (\n    <TextField placeholder=\"Page or URL\">\n      <TextField.Prefix className=\"text-secondary-foreground group-hover/text-field:text-default-foreground group-focus-within/text-field:text-default-foreground\">\n        <ArrowRight />\n      </TextField.Prefix>\n      <TextField.Suffix className=\"\">\n        <Select\n          value={dropdownValue}\n          onChange={setDropdownValue}\n        >\n          <Select.Trigger className=\"h-6 w-6 border-0 bg-transparent p-0 hover:bg-transparent\"></Select.Trigger>\n          <Select.Content>\n            <Select.Item value=\"recent\">\n              <Select.Value>Recent</Select.Value>\n            </Select.Item>\n            <Select.Item value=\"bookmarks\">\n              <Select.Value>Bookmarks</Select.Value>\n            </Select.Item>\n            <Select.Item value=\"history\">\n              <Select.Value>History</Select.Value>\n            </Select.Item>\n            <Select.Divider />\n            <Select.Item value=\"settings\">\n              <Select.Value>Settings</Select.Value>\n            </Select.Item>\n          </Select.Content>\n        </Select>\n      </TextField.Suffix>\n    </TextField>\n  );\n}"
+      "source": "import { TextField } from \"@choice-ui/text-field\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [dropdownValue, setDropdownValue] = useState<string>(\"recent\")\n\n  return (\n    <TextField placeholder=\"Page or URL\">\n      <TextField.Prefix className=\"text-secondary-foreground group-hover/text-field:text-default-foreground group-focus-within/text-field:text-default-foreground\">\n        <ArrowRight />\n      </TextField.Prefix>\n      <TextField.Suffix className=\"\">\n        <Select\n          value={dropdownValue}\n          onChange={setDropdownValue}\n        >\n          <Select.Trigger className=\"h-6 w-6 border-0 bg-transparent p-0 hover:bg-transparent\"></Select.Trigger>\n          <Select.Content>\n            <Select.Item value=\"recent\">\n              <Select.Value>Recent</Select.Value>\n            </Select.Item>\n            <Select.Item value=\"bookmarks\">\n              <Select.Value>Bookmarks</Select.Value>\n            </Select.Item>\n            <Select.Item value=\"history\">\n              <Select.Value>History</Select.Value>\n            </Select.Item>\n            <Select.Divider />\n            <Select.Item value=\"settings\">\n              <Select.Value>Settings</Select.Value>\n            </Select.Item>\n          </Select.Content>\n        </Select>\n      </TextField.Suffix>\n    </TextField>\n  )\n\n}"
     }
   ],
   "tags": [

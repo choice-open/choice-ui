@@ -180,7 +180,7 @@
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"solid\"",
           "required": false,
           "description": ""
         }
@@ -246,7 +246,7 @@
         },
         {
           "name": "locale",
-          "type": "enum",
+          "type": "undefined | \"zh-cn\" | \"en-us\"",
           "required": false,
           "description": ""
         },
@@ -386,7 +386,7 @@
       "name": "Multiple Images",
       "exportName": "MultipleImages",
       "description": "",
-      "source": "import { Comments } from \"@choice-ui/comments\"\n\nexport default function App() {\n  return (\n    item as CustomElement\n  );\n}"
+      "source": "import { CommentItem } from \"@choice-ui/comments\"\nimport { useState, useMemo } from \"react\"\n\nexport default function App() {\n\n  const [isOpen, setIsOpen] = useState(false)\n  const [imageIndex, setImageIndex] = useState<number | undefined>(undefined)\n\n  const message_meta: Descendant[] = useMemo(\n    () => [\n      {\n        type: \"paragraph\",\n        children: [{ text: \"Check out these images from our trip:\" }],\n      } as CustomElement,\n      {\n        type: \"image\",\n        attachments: [\n          {\n            url: \"https://images.unsplash.com/photo-1745750747234-5df61f67a7bc?q=80&w=5070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D\",\n            name: \"Beach\",\n          },\n          {\n            url: \"https://images.unsplash.com/photo-1739989934289-4cb75f451a56?q=80&w=5070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D\",\n            name: \"Mountains\",\n          },\n          {\n            url: \"https://images.unsplash.com/photo-1746071062150-b12db59e9c53?q=80&w=2048&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D\",\n            name: \"Forest\",\n          },\n          {\n            url: \"https://images.unsplash.com/photo-1745659601865-1af86dec8bcd?q=80&w=3183&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D\",\n            name: \"City\",\n          },\n        ],\n        children: [{ text: \"\" }],\n      } as CustomElement,\n      {\n        type: \"paragraph\",\n        children: [{ text: \"It was an amazing experience!\" }],\n      } as CustomElement,\n    ],\n    [],\n  )\n\n  const currentImage = useMemo(() => {\n    const image = message_meta.find((item) => {\n      // 检查是否为 CustomElement 并且是 image 类型\n      return (item as CustomElement).type === \"image\"\n    }) as ImageElement | undefined\n\n    if (!image || !image.attachments) return null\n    return image.attachments[imageIndex ?? 0]\n  }, [message_meta, imageIndex])\n\n  const author = useMemo(() => {\n    return {\n      id: faker.string.uuid(),\n      name: faker.person.fullName(),\n      email: faker.internet.email(),\n      photo_url: faker.image.avatar(),\n      color: null,\n    }\n  }, [])\n\n  return (\n    <>\n      <CommentItem\n        author={author}\n        created_at={faker.date.recent()}\n        message_meta={message_meta}\n        reactions={null}\n        handleOnImageClick={(index) => {\n          setImageIndex(index)\n          setIsOpen(true)\n        }}\n      />\n      {imageIndex !== undefined && (\n        <Dialog\n          open={isOpen}\n          onOpenChange={setIsOpen}\n          outsidePress\n          className=\"overflow-hidden\"\n        >\n          <Dialog.Header title={currentImage?.name} />\n          <Dialog.Content className=\"overflow-hidden p-0\">\n            <PicturePreview\n              src={currentImage?.url ?? \"\"}\n              fileName={currentImage?.name}\n            />\n          </Dialog.Content>\n        </Dialog>\n      )}\n    </>\n  )\n\n}"
     }
   ]
 }

@@ -1,5 +1,5 @@
 import { Avatar } from "@choice-ui/avatar"
-import { MenuItem, MenusBase, MenuScrollArrow } from "@choice-ui/menus"
+import { MenuItem, Menus, MenuScrollArrow } from "@choice-ui/menus"
 import {
   autoUpdate,
   FloatingList,
@@ -316,7 +316,7 @@ export const CommentInputMentionPopover = ({
             elementsRef={elementsRef}
             labelsRef={labelsRef}
           >
-            <MenusBase
+            <Menus
               ref={scrollRef}
               onScroll={handleScroll}
               style={{ overflow: "auto" }}
@@ -347,7 +347,7 @@ export const CommentInputMentionPopover = ({
                   <span className="flex-1 truncate">{user.name}</span>
                 </MenuItem>
               ))}
-            </MenusBase>
+            </Menus>
 
             {needsScrolling &&
               ["up", "down"].map((dir) => (

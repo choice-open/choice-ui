@@ -1,4 +1,4 @@
-import { ChipProps, MultiSelect, Select, tcx } from "@choice-ui/react"
+import { ChipProps, Label, MultiSelect, Select, tcx } from "@choice-ui/react"
 import {
   FieldTypeAttachment,
   FieldTypeCheckbox,
@@ -6,7 +6,6 @@ import {
   RemoveTiny,
   Settings,
 } from "@choiceform/icons-react"
-import { faker } from "@faker-js/faker"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import React, { useCallback, useMemo, useState } from "react"
 
@@ -50,8 +49,8 @@ export const Basic: Story = {
 
     return (
       <div className="space-y-4">
-        <div className="space-y-2">
-          <label className="font-strong">Basic Multi-Select</label>
+        <div className="flex flex-col gap-2">
+          <Label>Basic Multi-Select</Label>
           <MultiSelect
             values={values}
             onChange={setValues}
@@ -116,8 +115,8 @@ export const WithLimits: Story = {
 
     return (
       <div className="space-y-4">
-        <div className="space-y-2">
-          <label className="font-strong">Multi-Select with Limits (Max 3, Min 1)</label>
+        <div className="flex flex-col gap-2">
+          <Label>Multi-Select with Limits (Max 3, Min 1)</Label>
           <MultiSelect
             values={values}
             onChange={setValues}
@@ -196,8 +195,8 @@ export const WithIcons: Story = {
 
     return (
       <div className="space-y-4">
-        <div className="space-y-2">
-          <label className="font-strong">Field Types Selection</label>
+        <div className="flex flex-col gap-2">
+          <Label>Field Types Selection</Label>
           <MultiSelect
             values={values}
             onChange={setValues}
@@ -269,8 +268,8 @@ export const WithDividers: Story = {
 
     return (
       <div className="space-y-4">
-        <div className="space-y-2">
-          <label className="font-strong">Plan Selection</label>
+        <div className="flex flex-col gap-2">
+          <Label>Plan Selection</Label>
           <MultiSelect
             values={values}
             onChange={setValues}
@@ -319,6 +318,122 @@ export const WithDividers: Story = {
   },
 }
 
+// 固定的城市名称列表，确保 SSR 和客户端渲染一致
+const CITY_NAMES_MULTI = [
+  "New York",
+  "Los Angeles",
+  "Chicago",
+  "Houston",
+  "Phoenix",
+  "Philadelphia",
+  "San Antonio",
+  "San Diego",
+  "Dallas",
+  "San Jose",
+  "Austin",
+  "Jacksonville",
+  "Fort Worth",
+  "Columbus",
+  "Charlotte",
+  "San Francisco",
+  "Indianapolis",
+  "Seattle",
+  "Denver",
+  "Washington",
+  "Boston",
+  "El Paso",
+  "Nashville",
+  "Detroit",
+  "Oklahoma City",
+  "Portland",
+  "Las Vegas",
+  "Memphis",
+  "Louisville",
+  "Baltimore",
+  "Milwaukee",
+  "Albuquerque",
+  "Tucson",
+  "Fresno",
+  "Sacramento",
+  "Kansas City",
+  "Mesa",
+  "Atlanta",
+  "Omaha",
+  "Colorado Springs",
+  "Raleigh",
+  "Virginia Beach",
+  "Miami",
+  "Oakland",
+  "Minneapolis",
+  "Tulsa",
+  "Cleveland",
+  "Wichita",
+  "Arlington",
+  "Tampa",
+  "New Orleans",
+  "Honolulu",
+  "Anaheim",
+  "Santa Ana",
+  "St. Louis",
+  "Corpus Christi",
+  "Riverside",
+  "Lexington",
+  "Pittsburgh",
+  "Anchorage",
+  "Stockton",
+  "Cincinnati",
+  "St. Paul",
+  "Toledo",
+  "Greensboro",
+  "Newark",
+  "Plano",
+  "Henderson",
+  "Lincoln",
+  "Buffalo",
+  "Jersey City",
+  "Chula Vista",
+  "Fort Wayne",
+  "Orlando",
+  "St. Petersburg",
+  "Chandler",
+  "Laredo",
+  "Norfolk",
+  "Durham",
+  "Madison",
+  "Lubbock",
+  "Irvine",
+  "Winston-Salem",
+  "Glendale",
+  "Garland",
+  "Hialeah",
+  "Reno",
+  "Chesapeake",
+  "Gilbert",
+  "Baton Rouge",
+  "Irving",
+  "Scottsdale",
+  "North Las Vegas",
+  "Boise",
+  "Fremont",
+  "Richmond",
+  "Birmingham",
+  "Spokane",
+  "Rochester",
+  "Des Moines",
+  "Modesto",
+  "Fayetteville",
+  "Tacoma",
+  "Oxnard",
+  "Fontana",
+  "Columbus",
+  "Montgomery",
+  "Moreno Valley",
+  "Shreveport",
+  "Aurora",
+  "Yonkers",
+  "Akron",
+]
+
 /**
  * Multi-select with long list of options for performance testing.
  */
@@ -330,7 +445,7 @@ export const LongList: Story = {
       () =>
         Array.from({ length: 100 }, (_, i) => ({
           value: `city-${i + 1}`,
-          label: `${faker.location.city()} ${i + 1}`,
+          label: `${CITY_NAMES_MULTI[i % CITY_NAMES_MULTI.length]} ${i + 1}`,
         })),
       [],
     )
@@ -344,7 +459,7 @@ export const LongList: Story = {
 
     return (
       <div className="space-y-4">
-        <div className="space-y-2">
+        <div className="flex flex-col gap-2">
           <label className="font-strong">City Selection ({options.length} cities)</label>
           <MultiSelect
             values={values}
@@ -420,8 +535,8 @@ export const Disabled: Story = {
 
     return (
       <div className="space-y-4">
-        <div className="space-y-2">
-          <label className="font-strong">Disabled Multi-Select</label>
+        <div className="flex flex-col gap-2">
+          <Label>Disabled Multi-Select</Label>
           <MultiSelect
             values={values}
             disabled
@@ -487,8 +602,8 @@ export const DisabledItems: Story = {
 
     return (
       <div className="space-y-4">
-        <div className="space-y-2">
-          <label className="font-strong">Disabled Items</label>
+        <div className="flex flex-col gap-2">
+          <Label>Disabled Items</Label>
           <MultiSelect
             values={values}
             onChange={setValues}
@@ -541,8 +656,8 @@ export const Large: Story = {
 
     return (
       <div className="space-y-4">
-        <div className="space-y-2">
-          <label className="font-strong">Large Multi-Select</label>
+        <div className="flex flex-col gap-2">
+          <Label>Large Multi-Select</Label>
           <MultiSelect
             values={values}
             onChange={setValues}
@@ -636,7 +751,7 @@ export const ExclusiveOptions: Story = {
       <div className="space-y-4">
         <div className="text-secondary-foreground">
           <p>Exclusive Options Rules:</p>
-          <ul className="mt-2 ml-4 space-y-1">
+          <ul className="ml-4 mt-2 space-y-1">
             <li>• Group 1 (A, B, C): Can select multiple within group</li>
             <li>• Group 2 (D, E, F): Can select multiple within group</li>
             <li>• Groups are mutually exclusive (selecting Group 2 clears Group 1)</li>
@@ -952,24 +1067,22 @@ export const MaxChips: Story = {
     const [values, setValues] = useState<string[]>([])
 
     return (
-      <div>
-        <MultiSelect
-          values={values}
-          onChange={setValues}
-          maxChips={3}
-          placeholder="Select options..."
-        >
-          <MultiSelect.Trigger className="w-80" />
-          <MultiSelect.Content>
-            <MultiSelect.Item value="apple">Apple</MultiSelect.Item>
-            <MultiSelect.Item value="banana">Banana</MultiSelect.Item>
-            <MultiSelect.Item value="orange">Orange</MultiSelect.Item>
-            <MultiSelect.Item value="grape">Grape</MultiSelect.Item>
-            <MultiSelect.Item value="strawberry">Strawberry</MultiSelect.Item>
-            <MultiSelect.Item value="kiwi">Kiwi</MultiSelect.Item>
-          </MultiSelect.Content>
-        </MultiSelect>
-      </div>
+      <MultiSelect
+        values={values}
+        onChange={setValues}
+        maxChips={3}
+        placeholder="Select options..."
+      >
+        <MultiSelect.Trigger className="w-80" />
+        <MultiSelect.Content>
+          <MultiSelect.Item value="apple">Apple</MultiSelect.Item>
+          <MultiSelect.Item value="banana">Banana</MultiSelect.Item>
+          <MultiSelect.Item value="orange">Orange</MultiSelect.Item>
+          <MultiSelect.Item value="grape">Grape</MultiSelect.Item>
+          <MultiSelect.Item value="strawberry">Strawberry</MultiSelect.Item>
+          <MultiSelect.Item value="kiwi">Kiwi</MultiSelect.Item>
+        </MultiSelect.Content>
+      </MultiSelect>
     )
   },
 }
@@ -1029,43 +1142,39 @@ export const CustomChip: Story = {
   render: function CustomChipExample() {
     const [values, setValues] = useState<string[]>(["apple", "banana"])
 
-    const handleChange = useCallback((newValues: string[]) => {
-      setValues(newValues)
-    }, [])
+    const fruitConfig: Record<string, { emoji: string; colorClass: string }> = {
+      apple: { emoji: "🍎", colorClass: "bg-red-100 text-red-800 border-red-500" },
+      banana: { emoji: "🍌", colorClass: "bg-yellow-100 text-yellow-800 border-yellow-500" },
+      orange: { emoji: "🍊", colorClass: "bg-orange-100 text-orange-800 border-orange-500" },
+      grape: { emoji: "🍇", colorClass: "bg-purple-100 text-purple-800 border-purple-500" },
+      strawberry: { emoji: "🍓", colorClass: "bg-pink-100 text-pink-800 border-pink-500" },
+      kiwi: { emoji: "🥝", colorClass: "bg-green-100 text-green-800 border-green-500" },
+    }
 
     const renderCustomChip = useCallback(
       ({
         value,
-        index,
         displayValue,
         onRemove,
         disabled,
       }: {
-        disabled?: boolean
-        displayValue: string
-        index: number
-        onRemove?: (e: React.MouseEvent<HTMLButtonElement>) => void
         value: string
+        displayValue: string
+        onRemove?: (e: React.MouseEvent<HTMLButtonElement>) => void
+        disabled?: boolean
       }) => {
-        const colors = [
-          "bg-red-100 text-red-800 border-red-500",
-          "bg-blue-100 text-blue-800 border-blue-500",
-          "bg-green-100 text-green-800 border-green-500",
-          "bg-yellow-100 text-yellow-800 border-yellow-500",
-          "bg-purple-100 text-purple-800 border-purple-500",
-          "bg-pink-100 text-pink-800 border-pink-500",
-        ]
-
-        const colorClass = colors[index % colors.length]
-
+        const config = fruitConfig[value.toLowerCase()] || {
+          emoji: "🍎",
+          colorClass: "bg-blue-100 text-blue-800 border-blue-500",
+        }
         return (
           <div
             className={tcx(
               "inline-flex h-4 items-center gap-1 rounded-md border pl-1",
-              disabled ? "bg-disabled-background" : colorClass,
+              disabled ? "bg-disabled-background" : config.colorClass,
             )}
           >
-            <span>🍎</span>
+            <span>{config.emoji}</span>
             <span>{displayValue}</span>
             {onRemove && !disabled && (
               <button
@@ -1087,18 +1196,20 @@ export const CustomChip: Story = {
       <div className="space-y-4">
         <MultiSelect
           values={values}
-          onChange={handleChange}
+          onChange={setValues}
           renderChip={renderCustomChip}
           placeholder="Select fruits with custom chips"
         >
           <MultiSelect.Trigger className="w-80" />
           <MultiSelect.Content>
-            <MultiSelect.Item value="apple">Apple</MultiSelect.Item>
-            <MultiSelect.Item value="banana">Banana</MultiSelect.Item>
-            <MultiSelect.Item value="orange">Orange</MultiSelect.Item>
-            <MultiSelect.Item value="grape">Grape</MultiSelect.Item>
-            <MultiSelect.Item value="strawberry">Strawberry</MultiSelect.Item>
-            <MultiSelect.Item value="kiwi">Kiwi</MultiSelect.Item>
+            <MultiSelect.Item value="apple">{fruitConfig.apple.emoji} Apple</MultiSelect.Item>
+            <MultiSelect.Item value="banana">{fruitConfig.banana.emoji} Banana</MultiSelect.Item>
+            <MultiSelect.Item value="orange">{fruitConfig.orange.emoji} Orange</MultiSelect.Item>
+            <MultiSelect.Item value="grape">{fruitConfig.grape.emoji} Grape</MultiSelect.Item>
+            <MultiSelect.Item value="strawberry">
+              {fruitConfig.strawberry.emoji} Strawberry
+            </MultiSelect.Item>
+            <MultiSelect.Item value="kiwi">{fruitConfig.kiwi.emoji} Kiwi</MultiSelect.Item>
           </MultiSelect.Content>
         </MultiSelect>
 
@@ -1109,7 +1220,7 @@ export const CustomChip: Story = {
 }
 
 /**
- * MultiSelect component in readOnly state.
+ * [TEST] MultiSelect component in readOnly state.
  *
  * In readOnly mode:
  * - The menu can be opened and closed normally

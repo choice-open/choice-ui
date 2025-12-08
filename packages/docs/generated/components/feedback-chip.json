@@ -26,7 +26,7 @@
       "props": [
         {
           "name": "size",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"medium\"",
           "required": false,
           "description": ""
         },
@@ -86,7 +86,7 @@
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"accent\" | \"success\" | \"rest\"",
           "required": false,
           "description": ""
         },
@@ -105,38 +105,35 @@
       "name": "Basic",
       "exportName": "Basic",
       "description": "`Chip` is a compact, interactive component used for displaying information, selections, or actions.\n\nFeatures:\n- Can be selected, deselected, or removed\n- Supports prefix and suffix elements (icons, avatars, etc.)\n- Clickable for toggling selection or triggering actions\n- Can be used in groups for multi-select scenarios\n\nUsage:\n- Use chips for tags, filters, selections, or compact actions\n- Combine with prefix/suffix elements for richer context\n- Use the `onRemove` prop to make chips removable\n\nBest Practices:\n- Keep chip labels concise\n- Use icons or color indicators for additional meaning\n- Ensure sufficient contrast and accessible focus indicators\n\nAccessibility:\n- Fully accessible to screen readers and keyboard users\n- Removable chips provide accessible remove buttons\n- Prefix and suffix elements should be decorative or have accessible labels if meaningful\nBasic: Shows a simple, static Chip.\n- Use for displaying a single tag or label.",
-      "source": ""
+      "source": "import { Chip } from \"@choice-ui/chip\"\n\nexport default function App() {\n\n  return <Chip>Chip</Chip>\n\n}"
     },
     {
       "id": "feedback-chip--selected",
       "name": "Selected",
       "exportName": "Selected",
       "description": "Selected: Demonstrates a selectable Chip.\n- Click to toggle selection state.\n- Useful for filter chips or multi-select scenarios.",
-      "source": "import { Chip } from \"@choice-ui/chip\"\n\nexport default function App() {\n  return (\n    <Chip\n      selected={selected}\n      onClick={() => setSelected(!selected)}\n    >\n      Chip\n    </Chip>\n  );\n}"
+      "source": "import { Chip } from \"@choice-ui/chip\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [selected, setSelected] = useState(false)\n\n  return (\n    <Chip\n      selected={selected}\n      onClick={() => setSelected(!selected)}\n    >\n      Chip\n    </Chip>\n  )\n\n}"
     },
     {
       "id": "feedback-chip--on-remove",
       "name": "On Remove",
       "exportName": "OnRemove",
       "description": "OnRemove: Demonstrates removable Chips with selection.\n- Chips can be selected/deselected and removed from the group.\n- Useful for tag input, filter lists, or dynamic chip groups.",
-      "source": "import { Chip } from \"@choice-ui/chip\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-wrap gap-2\">\n      {chips.map((chip) => (\n        <Chip\n          key={chip}\n          selected={selected.includes(chip)}\n          onClick={() => {\n            setSelected(\n              selected.includes(chip) ? selected.filter((c) => c !== chip) : [...selected, chip],\n            )\n          }}\n          onRemove={() => {\n            setChips(chips.filter((c) => c !== chip))\n          }}\n        >\n          {chip}\n        </Chip>\n      ))}\n    </div>\n  );\n}"
+      "source": "import { Chip } from \"@choice-ui/chip\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [chips, setChips] = useState<string[]>([\"Chip 1\", \"Chip 2\", \"Chip 3\"])\n  const [selected, setSelected] = useState<string[]>([])\n\n  return (\n    <div className=\"flex flex-wrap gap-2\">\n      {chips.map((chip) => (\n        <Chip\n          key={chip}\n          selected={selected.includes(chip)}\n          onClick={() => {\n            setSelected(\n              selected.includes(chip) ? selected.filter((c) => c !== chip) : [...selected, chip],\n            )\n          }}\n          onRemove={() => {\n            setChips(chips.filter((c) => c !== chip))\n          }}\n        >\n          {chip}\n        </Chip>\n      ))}\n    </div>\n  )\n\n}"
     },
     {
       "id": "feedback-chip--prefix",
       "name": "Prefix",
       "exportName": "Prefix",
       "description": "Prefix: Demonstrates a Chip with a prefix element (e.g., icon, color dot).\n- Use for status indicators, avatars, or icons before the label.",
-      "source": ""
+      "source": "import { Chip } from \"@choice-ui/chip\"\n\nexport default function App() {\n\n  return <Chip prefixElement={<div className=\"h-2 w-2 rounded-full bg-red-500\" />}>Chip</Chip>\n\n}"
     },
     {
       "id": "feedback-chip--suffix",
       "name": "Suffix",
       "exportName": "Suffix",
       "description": "Suffix: Demonstrates a Chip with a suffix element (e.g., icon).\n- Use for actions, status, or icons after the label.",
-      "source": ""
+      "source": "import { Chip } from \"@choice-ui/chip\"\n\nexport default function App() {\n\n  return <Chip suffixElement={<SearchSmall />}>Chip</Chip>\n\n}"
     }
-  ],
-  "tags": [
-    "beta"
   ]
 }

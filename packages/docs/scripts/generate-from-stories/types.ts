@@ -55,17 +55,12 @@ export interface ComponentDetail {
   tags?: string[]
 }
 
-/** 缓存条目 */
-export interface CacheEntry {
-  hash: string
-  index: IndexItem
-  detail: ComponentDetail
-}
-
-/** 缓存数据 */
-export interface CacheData {
-  version: number
-  entries: Record<string, CacheEntry>
+/** 文档数据 */
+export interface DocsData {
+  [slug: string]: {
+    index: IndexItem
+    detail: ComponentDetail
+  }
 }
 
 export type MetaLike = {

@@ -1,7 +1,6 @@
-export * from "./list"
-export * from "./context"
-export * from "./components/list-item"
-export * from "./components/list-content"
-export * from "./components/list-label"
-export * from "./components/list-divider"
-export * from "./components/list-sub-trigger"
+export { List } from "./list"
+
+export type { ListProps } from "./list"
+export type { ListContentProps } from "./components/list-content"
+export type { ListItemProps } from "./components/list-item"
+export type { ListSubTriggerProps } from "./components/list-sub-trigger"

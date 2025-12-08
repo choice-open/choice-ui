@@ -3,7 +3,7 @@ import { forwardRef, useMemo } from "react"
 import { LevelContext, useExpandContext, useStructureContext } from "../context"
 import { ListContentTv } from "../tv"
 
-interface ListContentProps extends React.HTMLProps<HTMLDivElement> {
+export interface ListContentProps extends React.HTMLProps<HTMLDivElement> {
   children: React.ReactNode
   parentId?: string
 }

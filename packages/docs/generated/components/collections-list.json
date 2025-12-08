@@ -18,26 +18,11 @@
     }
   },
   "exports": [
-    "ListBase",
     "List",
-    "ActiveItemContext",
-    "useActiveItemContext",
-    "ExpandContext",
-    "useExpandContext",
-    "SelectionContext",
-    "useSelectionContext",
-    "StructureContext",
-    "useStructureContext",
-    "LevelContext",
-    "useLevelContext",
-    "ListProvider",
+    "type ListProps",
+    "type ListContentProps",
     "type ListItemProps",
-    "ListItem",
-    "ListContent",
-    "ListLabel",
-    "ListDivider",
-    "type ListSubTriggerProps",
-    "ListSubTrigger"
+    "type ListSubTriggerProps"
   ],
   "props": [
     {
@@ -46,7 +31,7 @@
       "props": [
         {
           "name": "size",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"large\"",
           "required": false,
           "description": ""
         },
@@ -70,53 +55,26 @@
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"primary\"",
           "required": false,
           "description": ""
         }
       ]
     },
     {
-      "displayName": "ListProvider",
+      "displayName": "ListContentProps",
       "description": "",
       "props": [
         {
-          "name": "interactive",
-          "type": "boolean | undefined",
+          "name": "parentId",
+          "type": "string | undefined",
           "required": false,
-          "defaultValue": "true",
-          "description": ""
-        },
-        {
-          "name": "selection",
-          "type": "boolean | undefined",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "shouldShowReferenceLine",
-          "type": "boolean | undefined",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "size",
-          "type": "enum",
-          "required": false,
-          "defaultValue": "default",
-          "description": ""
-        },
-        {
-          "name": "variant",
-          "type": "enum",
-          "required": false,
-          "defaultValue": "default",
           "description": ""
         }
       ]
     },
     {
-      "displayName": "ListItem",
+      "displayName": "ListItemProps",
       "description": "",
       "props": [
         {
@@ -188,29 +146,7 @@
       ]
     },
     {
-      "displayName": "ListContent",
-      "description": "",
-      "props": [
-        {
-          "name": "parentId",
-          "type": "string | undefined",
-          "required": false,
-          "description": ""
-        }
-      ]
-    },
-    {
-      "displayName": "ListLabel",
-      "description": "",
-      "props": []
-    },
-    {
-      "displayName": "ListDivider",
-      "description": "",
-      "props": []
-    },
-    {
-      "displayName": "ListSubTrigger",
+      "displayName": "ListSubTriggerProps",
       "description": "",
       "props": [
         {
@@ -282,115 +218,112 @@
       "name": "Basic",
       "exportName": "Basic",
       "description": "A basic list with simple text items.\n\nUse the `List` component with `List.Content` and `List.Item` for a simple list.",
-      "source": "import { List } from \"@choice-ui/list\"\n\nexport default function App() {\n  return (\n    <List {...args}>\n      <List.Content>\n        <List.Item>\n          <List.Value>Home</List.Value>\n        </List.Item>\n        <List.Item>\n          <List.Value>Documents</List.Value>\n        </List.Item>\n        <List.Item>\n          <List.Value>Settings</List.Value>\n        </List.Item>\n      </List.Content>\n    </List>\n  );\n}"
+      "source": "import { List } from \"@choice-ui/list\"\n\nexport default function App() {\n  return (\n\n    <List {...args}>\n      <List.Content>\n        <List.Item>\n          <List.Value>Home</List.Value>\n        </List.Item>\n        <List.Item>\n          <List.Value>Documents</List.Value>\n        </List.Item>\n        <List.Item>\n          <List.Value>Settings</List.Value>\n        </List.Item>\n      </List.Content>\n    </List>\n\n  );\n}"
     },
     {
       "id": "collections-list--with-icons",
       "name": "With Icons",
       "exportName": "WithIcons",
       "description": "A list with icon prefixes for each item.\n\nUse the `prefixElement` prop to add icons or other elements at the beginning of list items.",
-      "source": "import { List } from \"@choice-ui/list\"\n\nexport default function App() {\n  return (\n    <List {...args}>\n      <List.Content>\n        <List.Item prefixElement={<FieldTypeCheckbox />}>\n          <List.Value>Home</List.Value>\n        </List.Item>\n        <List.Item prefixElement={<FieldTypeSingleSelect />}>\n          <List.Value>Documents</List.Value>\n        </List.Item>\n        <List.Item prefixElement={<FieldTypeAttachment />}>\n          <List.Value>Settings</List.Value>\n        </List.Item>\n      </List.Content>\n    </List>\n  );\n}"
+      "source": "import { List } from \"@choice-ui/list\"\n\nexport default function App() {\n  return (\n\n    <List {...args}>\n      <List.Content>\n        <List.Item prefixElement={<FieldTypeCheckbox />}>\n          <List.Value>Home</List.Value>\n        </List.Item>\n        <List.Item prefixElement={<FieldTypeSingleSelect />}>\n          <List.Value>Documents</List.Value>\n        </List.Item>\n        <List.Item prefixElement={<FieldTypeAttachment />}>\n          <List.Value>Settings</List.Value>\n        </List.Item>\n      </List.Content>\n    </List>\n\n  );\n}"
     },
     {
       "id": "collections-list--variant",
       "name": "Variant",
       "exportName": "Variant",
       "description": "A list with primary variant.\n\nUse the `variant` prop to make the list items primary.",
-      "source": "import { List } from \"@choice-ui/list\"\n\nexport default function App() {\n  return (\n    <List\n      {...args}\n      variant=\"primary\"\n    >\n      <List.Content>\n        <List.Item prefixElement={<FieldTypeCheckbox />}>\n          <List.Value>Home</List.Value>\n        </List.Item>\n        <List.Item prefixElement={<FieldTypeSingleSelect />}>\n          <List.Value>Documents</List.Value>\n        </List.Item>\n        <List.Item prefixElement={<FieldTypeAttachment />}>\n          <List.Value>Settings</List.Value>\n        </List.Item>\n      </List.Content>\n    </List>\n  );\n}"
+      "source": "import { List } from \"@choice-ui/list\"\n\nexport default function App() {\n  return (\n\n    <List\n      {...args}\n      variant=\"primary\"\n    >\n      <List.Content>\n        <List.Item prefixElement={<FieldTypeCheckbox />}>\n          <List.Value>Home</List.Value>\n        </List.Item>\n        <List.Item prefixElement={<FieldTypeSingleSelect />}>\n          <List.Value>Documents</List.Value>\n        </List.Item>\n        <List.Item prefixElement={<FieldTypeAttachment />}>\n          <List.Value>Settings</List.Value>\n        </List.Item>\n      </List.Content>\n    </List>\n\n  );\n}"
     },
     {
       "id": "collections-list--with-labels-and-dividers",
       "name": "With Labels And Dividers",
       "exportName": "WithLabelsAndDividers",
       "description": "A list with sections and dividers.\n\nUse `List.Label` to add section titles and `List.Divider` to separate sections.",
-      "source": "import { List } from \"@choice-ui/list\"\n\nexport default function App() {\n  return (\n    <List {...args}>\n      <List.Label>Navigation</List.Label>\n      <List.Content>\n        <List.Item prefixElement={<FieldTypeCheckbox />}>\n          <List.Value>Home</List.Value>\n        </List.Item>\n        <List.Item prefixElement={<FieldTypeSingleSelect />}>\n          <List.Value>Documents</List.Value>\n        </List.Item>\n      </List.Content>\n      <List.Divider />\n      <List.Label>System</List.Label>\n      <List.Content>\n        <List.Item prefixElement={<FieldTypeAttachment />}>\n          <List.Value>Settings</List.Value>\n        </List.Item>\n      </List.Content>\n    </List>\n  );\n}"
+      "source": "import { List } from \"@choice-ui/list\"\n\nexport default function App() {\n  return (\n\n    <List {...args}>\n      <List.Label>Navigation</List.Label>\n      <List.Content>\n        <List.Item prefixElement={<FieldTypeCheckbox />}>\n          <List.Value>Home</List.Value>\n        </List.Item>\n        <List.Item prefixElement={<FieldTypeSingleSelect />}>\n          <List.Value>Documents</List.Value>\n        </List.Item>\n      </List.Content>\n      <List.Divider />\n      <List.Label>System</List.Label>\n      <List.Content>\n        <List.Item prefixElement={<FieldTypeAttachment />}>\n          <List.Value>Settings</List.Value>\n        </List.Item>\n      </List.Content>\n    </List>\n\n  );\n}"
     },
     {
       "id": "collections-list--nested-list",
       "name": "Nested List",
       "exportName": "NestedList",
       "description": "A list with collapsible nested items.\n\nUse `List.SubTrigger` to create a collapsible section and `parentId` on nested content to link them together.",
-      "source": "import { List } from \"@choice-ui/list\"\n\nexport default function App() {\n  return (\n    <List {...args}>\n      <List.Content>\n        <List.Item prefixElement={<FieldTypeLongText />}>Home</List.Item>\n        <List.SubTrigger\n          id=\"docs\"\n          prefixElement={<Folder />}\n        >\n          <List.Value>Documents</List.Value>\n        </List.SubTrigger>\n        <List.Content parentId=\"docs\">\n          <List.Item parentId=\"docs\">\n            <List.Value>Getting Started</List.Value>\n          </List.Item>\n          <List.Item parentId=\"docs\">\n            <List.Value>Components</List.Value>\n          </List.Item>\n          <List.Item\n            parentId=\"docs\"\n            prefixElement={<File />}\n          >\n            <List.Value>API Reference</List.Value>\n          </List.Item>\n        </List.Content>\n        <List.Item prefixElement={<FieldTypeDate />}>\n          <List.Value>Calendar</List.Value>\n        </List.Item>\n      </List.Content>\n    </List>\n  );\n}"
+      "source": "import { List } from \"@choice-ui/list\"\n\nexport default function App() {\n  return (\n\n    <List {...args}>\n      <List.Content>\n        <List.Item prefixElement={<FieldTypeLongText />}>Home</List.Item>\n        <List.SubTrigger\n          id=\"docs\"\n          prefixElement={<Folder />}\n        >\n          <List.Value>Documents</List.Value>\n        </List.SubTrigger>\n        <List.Content parentId=\"docs\">\n          <List.Item parentId=\"docs\">\n            <List.Value>Getting Started</List.Value>\n          </List.Item>\n          <List.Item parentId=\"docs\">\n            <List.Value>Components</List.Value>\n          </List.Item>\n          <List.Item\n            parentId=\"docs\"\n            prefixElement={<File />}\n          >\n            <List.Value>API Reference</List.Value>\n          </List.Item>\n        </List.Content>\n        <List.Item prefixElement={<FieldTypeDate />}>\n          <List.Value>Calendar</List.Value>\n        </List.Item>\n      </List.Content>\n    </List>\n\n  );\n}"
     },
     {
       "id": "collections-list--size",
       "name": "Size",
       "exportName": "Size",
       "description": "",
-      "source": "import { List } from \"@choice-ui/list\"\n\nexport default function App() {\n  return (\n    <List\n      {...args}\n      size=\"large\"\n    >\n      <List.Content>\n        <List.Item prefixElement={<FieldTypeLongText />}>Home</List.Item>\n        <List.SubTrigger\n          id=\"docs\"\n          prefixElement={<Folder />}\n        >\n          <List.Value>Documents</List.Value>\n        </List.SubTrigger>\n        <List.Content parentId=\"docs\">\n          <List.Item parentId=\"docs\">\n            <List.Value>Getting Started</List.Value>\n          </List.Item>\n          <List.Item parentId=\"docs\">\n            <List.Value>Components</List.Value>\n          </List.Item>\n          <List.Item\n            parentId=\"docs\"\n            prefixElement={<File />}\n          >\n            <List.Value>API Reference</List.Value>\n          </List.Item>\n        </List.Content>\n        <List.Item prefixElement={<FieldTypeDate />}>\n          <List.Value>Calendar</List.Value>\n        </List.Item>\n      </List.Content>\n    </List>\n  );\n}"
+      "source": "import { List } from \"@choice-ui/list\"\n\nexport default function App() {\n  return (\n\n    <List\n      {...args}\n      size=\"large\"\n    >\n      <List.Content>\n        <List.Item prefixElement={<FieldTypeLongText />}>Home</List.Item>\n        <List.SubTrigger\n          id=\"docs\"\n          prefixElement={<Folder />}\n        >\n          <List.Value>Documents</List.Value>\n        </List.SubTrigger>\n        <List.Content parentId=\"docs\">\n          <List.Item parentId=\"docs\">\n            <List.Value>Getting Started</List.Value>\n          </List.Item>\n          <List.Item parentId=\"docs\">\n            <List.Value>Components</List.Value>\n          </List.Item>\n          <List.Item\n            parentId=\"docs\"\n            prefixElement={<File />}\n          >\n            <List.Value>API Reference</List.Value>\n          </List.Item>\n        </List.Content>\n        <List.Item prefixElement={<FieldTypeDate />}>\n          <List.Value>Calendar</List.Value>\n        </List.Item>\n      </List.Content>\n    </List>\n\n  );\n}"
     },
     {
       "id": "collections-list--default-open-nested-list",
       "name": "Default Open Nested List",
       "exportName": "DefaultOpenNestedList",
       "description": "A list with pre-expanded nested content.\n\nUse the `defaultOpen` prop on `List.SubTrigger` to make nested content visible by default.",
-      "source": "import { List } from \"@choice-ui/list\"\n\nexport default function App() {\n  return (\n    <List {...args}>\n      <List.Content>\n        <List.Item prefixElement={<FieldTypeLongText />}>Home</List.Item>\n        <List.SubTrigger\n          id=\"docs\"\n          prefixElement={<Folder />}\n          defaultOpen\n        >\n          <List.Value>Documents</List.Value>\n        </List.SubTrigger>\n        <List.Content parentId=\"docs\">\n          <List.Item\n            parentId=\"docs\"\n            prefixElement={<File />}\n          >\n            <List.Value>Getting Started</List.Value>\n          </List.Item>\n          <List.Item\n            parentId=\"docs\"\n            prefixElement={<File />}\n          >\n            <List.Value>Components</List.Value>\n          </List.Item>\n          <List.Item\n            parentId=\"docs\"\n            prefixElement={<File />}\n          >\n            <List.Value>API Reference</List.Value>\n          </List.Item>\n        </List.Content>\n        <List.Item prefixElement={<FieldTypeDate />}>\n          <List.Value>Calendar</List.Value>\n        </List.Item>\n      </List.Content>\n    </List>\n  );\n}"
+      "source": "import { List } from \"@choice-ui/list\"\n\nexport default function App() {\n  return (\n\n    <List {...args}>\n      <List.Content>\n        <List.Item prefixElement={<FieldTypeLongText />}>Home</List.Item>\n        <List.SubTrigger\n          id=\"docs\"\n          prefixElement={<Folder />}\n          defaultOpen\n        >\n          <List.Value>Documents</List.Value>\n        </List.SubTrigger>\n        <List.Content parentId=\"docs\">\n          <List.Item\n            parentId=\"docs\"\n            prefixElement={<File />}\n          >\n            <List.Value>Getting Started</List.Value>\n          </List.Item>\n          <List.Item\n            parentId=\"docs\"\n            prefixElement={<File />}\n          >\n            <List.Value>Components</List.Value>\n          </List.Item>\n          <List.Item\n            parentId=\"docs\"\n            prefixElement={<File />}\n          >\n            <List.Value>API Reference</List.Value>\n          </List.Item>\n        </List.Content>\n        <List.Item prefixElement={<FieldTypeDate />}>\n          <List.Value>Calendar</List.Value>\n        </List.Item>\n      </List.Content>\n    </List>\n\n  );\n}"
     },
     {
       "id": "collections-list--with-reference-lines",
       "name": "With Reference Lines",
       "exportName": "WithReferenceLines",
       "description": "A list with indentation reference lines for better visualization of the nesting structure.\n\nUse the `shouldShowReferenceLine` prop on the List component to display vertical reference lines that help\nvisualize the hierarchical structure.",
-      "source": "import { List } from \"@choice-ui/list\"\n\nexport default function App() {\n  return (\n    <List\n      {...args}\n      shouldShowReferenceLine\n    >\n      <List.Content>\n        <List.Item prefixElement={<FieldTypeLongText />}>\n          <List.Value>Home</List.Value>\n        </List.Item>\n\n        {/* 从第一级开始递归创建嵌套结构 */}\n        {createNestedItems(1)}\n\n        <List.Item prefixElement={<FieldTypeDate />}>\n          <List.Value>Calendar</List.Value>\n        </List.Item>\n      </List.Content>\n    </List>\n  );\n}"
+      "source": "import { List } from \"@choice-ui/list\"\n\nexport default function App() {\n\n  // 递归创建嵌套项目结构的函数\n  const createNestedItems = (level: number, parentId: string = \"\", maxDepth: number = 5) => {\n    // 在达到最大深度时停止递归\n    if (level > maxDepth) return null\n\n    const currentId = parentId ? `${parentId}-level${level}` : `level${level}`\n    const items: React.ReactNode[] = []\n\n    // 创建当前级别的标题\n    items.push(\n      <List.SubTrigger\n        key={`trigger-${currentId}`}\n        id={currentId}\n        parentId={parentId || undefined}\n        prefixElement={<Folder />}\n        defaultOpen={level <= 3} // 默认展开前三级\n      >\n        <List.Value>{`Level ${level} Folder`}</List.Value>\n      </List.SubTrigger>,\n    )\n\n    // 创建该级别的内容容器\n    items.push(\n      <List.Content\n        key={`content-${currentId}`}\n        parentId={currentId}\n      >\n        {/* 为当前级别添加一些文件项目 */}\n        {[1, 2].map((fileIndex) => (\n          <List.Item\n            key={`file-${currentId}-${fileIndex}`}\n            parentId={currentId}\n            prefixElement={<File />}\n          >\n            <List.Value>{`File ${fileIndex} (Level ${level})`}</List.Value>\n          </List.Item>\n        ))}\n\n        {/* 递归创建下一级 */}\n        {level < maxDepth && createNestedItems(level + 1, currentId, maxDepth)}\n      </List.Content>,\n    )\n\n    return items\n  }\n\n  return (\n    <List\n      {...args}\n      shouldShowReferenceLine\n    >\n      <List.Content>\n        <List.Item prefixElement={<FieldTypeLongText />}>\n          <List.Value>Home</List.Value>\n        </List.Item>\n\n        {/* 从第一级开始递归创建嵌套结构 */}\n        {createNestedItems(1)}\n\n        <List.Item prefixElement={<FieldTypeDate />}>\n          <List.Value>Calendar</List.Value>\n        </List.Item>\n      </List.Content>\n    </List>\n  )\n\n}"
     },
     {
       "id": "collections-list--with-shortcuts",
       "name": "With Shortcuts",
       "exportName": "WithShortcuts",
       "description": "A list with keyboard shortcut hints.\n\nUse the `shortcut` prop to display keyboard shortcuts next to list items.",
-      "source": "import { List } from \"@choice-ui/list\"\n\nexport default function App() {\n  return (\n    <List {...args}>\n      <List.Content>\n        <List.Item\n          prefixElement={<FieldTypeLongText />}\n          shortcut={{ keys: \"H\" }}\n        >\n          <List.Value>Home</List.Value>\n        </List.Item>\n        <List.Item\n          prefixElement={<FieldTypeLongText />}\n          shortcut={{ keys: \"D\" }}\n        >\n          <List.Value>Documents</List.Value>\n        </List.Item>\n        <List.Item\n          prefixElement={<FieldTypeAttachment />}\n          shortcut={{ modifier: \"command\", keys: \",\" }}\n        >\n          <List.Value>Settings</List.Value>\n        </List.Item>\n      </List.Content>\n    </List>\n  );\n}"
+      "source": "import { List } from \"@choice-ui/list\"\n\nexport default function App() {\n  return (\n\n    <List {...args}>\n      <List.Content>\n        <List.Item\n          prefixElement={<FieldTypeLongText />}\n          shortcut={{ keys: \"H\" }}\n        >\n          <List.Value>Home</List.Value>\n        </List.Item>\n        <List.Item\n          prefixElement={<FieldTypeLongText />}\n          shortcut={{ keys: \"D\" }}\n        >\n          <List.Value>Documents</List.Value>\n        </List.Item>\n        <List.Item\n          prefixElement={<FieldTypeAttachment />}\n          shortcut={{ modifier: \"command\", keys: \",\" }}\n        >\n          <List.Value>Settings</List.Value>\n        </List.Item>\n      </List.Content>\n    </List>\n\n  );\n}"
     },
     {
       "id": "collections-list--with-selection-enabled",
       "name": "With Selection Enabled",
       "exportName": "WithSelectionEnabled",
       "description": "A list with selection functionality.\n\nUse the `selection` prop on the List component to enable selection functionality. This example\ndemonstrates radio-like behavior (single selection) with ability to deselect.\n\nNOTE: This example uses a custom implementation to override the component's internal selection state.",
-      "source": "import { List } from \"@choice-ui/list\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-2\">\n      <div>\n        <strong>Selected item:</strong> {selectedId || \"None\"}\n      </div>\n      {/* 不启用内置selection功能，完全由外部状态控制 */}\n      <List {...args}>\n        <List.Label>Radio-like selection with toggle</List.Label>\n        <List.Content>\n          <List.Item\n            id=\"doc1\"\n            prefixElement={getItemPrefixElement(\"doc1\")}\n            onClick={() => handleItemClick(\"doc1\")}\n          >\n            <List.Value>document1.txt</List.Value>\n          </List.Item>\n          <List.Item\n            id=\"doc2\"\n            prefixElement={getItemPrefixElement(\"doc2\")}\n            onClick={() => handleItemClick(\"doc2\")}\n          >\n            <List.Value>document2.txt</List.Value>\n          </List.Item>\n          <List.Item\n            id=\"doc3\"\n            prefixElement={getItemPrefixElement(\"doc3\")}\n            onClick={() => handleItemClick(\"doc3\")}\n          >\n            <List.Value>document3.txt</List.Value>\n          </List.Item>\n        </List.Content>\n      </List>\n    </div>\n  );\n}"
+      "source": "import { List } from \"@choice-ui/list\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  // 使用useState管理选中项ID，null表示没有选中项\n  const [selectedId, setSelectedId] = useState<string | null>(\"doc1\")\n\n  // 处理点击事件，实现单选和取消选择逻辑\n  const handleItemClick = (id: string) => {\n    // 如果点击已选中项，则取消选择\n    if (selectedId === id) {\n      setSelectedId(null)\n    } else {\n      // 否则，选择当前点击项\n      setSelectedId(id)\n    }\n  }\n\n  // 要完全控制选择状态，我们不启用List组件的内置selection功能\n  // 而是手动为选中的项目添加check图标\n  const getItemPrefixElement = (id: string) => {\n    return selectedId === id ? <Check /> : <></>\n  }\n\n  return (\n    <div className=\"flex flex-col gap-2\">\n      <div>\n        <strong>Selected item:</strong> {selectedId || \"None\"}\n      </div>\n      {/* 不启用内置selection功能，完全由外部状态控制 */}\n      <List {...args}>\n        <List.Label>Radio-like selection with toggle</List.Label>\n        <List.Content>\n          <List.Item\n            id=\"doc1\"\n            prefixElement={getItemPrefixElement(\"doc1\")}\n            onClick={() => handleItemClick(\"doc1\")}\n          >\n            <List.Value>document1.txt</List.Value>\n          </List.Item>\n          <List.Item\n            id=\"doc2\"\n            prefixElement={getItemPrefixElement(\"doc2\")}\n            onClick={() => handleItemClick(\"doc2\")}\n          >\n            <List.Value>document2.txt</List.Value>\n          </List.Item>\n          <List.Item\n            id=\"doc3\"\n            prefixElement={getItemPrefixElement(\"doc3\")}\n            onClick={() => handleItemClick(\"doc3\")}\n          >\n            <List.Value>document3.txt</List.Value>\n          </List.Item>\n        </List.Content>\n      </List>\n    </div>\n  )\n\n}"
     },
     {
       "id": "collections-list--with-disabled-items",
       "name": "With Disabled Items",
       "exportName": "WithDisabledItems",
       "description": "A list with disabled items.\n\nUse the `disabled` prop to make items non-interactive.",
-      "source": "import { List } from \"@choice-ui/list\"\n\nexport default function App() {\n  return (\n    <List {...args}>\n      <List.Content>\n        <List.Item prefixElement={<FieldTypeLongText />}>\n          <List.Value>Home</List.Value>\n        </List.Item>\n        <List.Item\n          prefixElement={<FieldTypeLongText />}\n          disabled\n        >\n          <List.Value>Mail (Maintenance)</List.Value>\n        </List.Item>\n        <List.Item prefixElement={<FieldTypeAttachment />}>\n          <List.Value>Settings</List.Value>\n        </List.Item>\n      </List.Content>\n    </List>\n  );\n}"
+      "source": "import { List } from \"@choice-ui/list\"\n\nexport default function App() {\n  return (\n\n    <List {...args}>\n      <List.Content>\n        <List.Item prefixElement={<FieldTypeLongText />}>\n          <List.Value>Home</List.Value>\n        </List.Item>\n        <List.Item\n          prefixElement={<FieldTypeLongText />}\n          disabled\n        >\n          <List.Value>Mail (Maintenance)</List.Value>\n        </List.Item>\n        <List.Item prefixElement={<FieldTypeAttachment />}>\n          <List.Value>Settings</List.Value>\n        </List.Item>\n      </List.Content>\n    </List>\n\n  );\n}"
     },
     {
       "id": "collections-list--non-collapsible-nested-list",
       "name": "Non Collapsible Nested List",
       "exportName": "NonCollapsibleNestedList",
       "description": "A nested list with non-collapsible sub-sections.\n\nUse the `disableCollapse` prop on `List.SubTrigger` to prevent toggling of the sub-list.",
-      "source": "import { List } from \"@choice-ui/list\"\n\nexport default function App() {\n  return (\n    <List {...args}>\n      <List.Content>\n        <List.Item prefixElement={<FieldTypeLongText />}>Home</List.Item>\n        <List.SubTrigger\n          id=\"docs\"\n          prefixElement={<Folder />}\n          defaultOpen\n          disableCollapse\n        >\n          <List.Value>Documents</List.Value>\n        </List.SubTrigger>\n        <List.Content parentId=\"docs\">\n          <List.Item\n            parentId=\"docs\"\n            prefixElement={<File />}\n          >\n            <List.Value>Getting Started</List.Value>\n          </List.Item>\n          <List.Item\n            parentId=\"docs\"\n            prefixElement={<File />}\n          >\n            <List.Value>Components</List.Value>\n          </List.Item>\n          <List.Item\n            parentId=\"docs\"\n            prefixElement={<File />}\n          >\n            <List.Value>API Reference</List.Value>\n          </List.Item>\n        </List.Content>\n        <List.Item prefixElement={<FieldTypeDate />}>\n          <List.Value>Calendar</List.Value>\n        </List.Item>\n      </List.Content>\n    </List>\n  );\n}"
+      "source": "import { List } from \"@choice-ui/list\"\n\nexport default function App() {\n  return (\n\n    <List {...args}>\n      <List.Content>\n        <List.Item prefixElement={<FieldTypeLongText />}>Home</List.Item>\n        <List.SubTrigger\n          id=\"docs\"\n          prefixElement={<Folder />}\n          defaultOpen\n          disableCollapse\n        >\n          <List.Value>Documents</List.Value>\n        </List.SubTrigger>\n        <List.Content parentId=\"docs\">\n          <List.Item\n            parentId=\"docs\"\n            prefixElement={<File />}\n          >\n            <List.Value>Getting Started</List.Value>\n          </List.Item>\n          <List.Item\n            parentId=\"docs\"\n            prefixElement={<File />}\n          >\n            <List.Value>Components</List.Value>\n          </List.Item>\n          <List.Item\n            parentId=\"docs\"\n            prefixElement={<File />}\n          >\n            <List.Value>API Reference</List.Value>\n          </List.Item>\n        </List.Content>\n        <List.Item prefixElement={<FieldTypeDate />}>\n          <List.Value>Calendar</List.Value>\n        </List.Item>\n      </List.Content>\n    </List>\n\n  );\n}"
     },
     {
       "id": "collections-list--multi-level-nested-list",
       "name": "Multi Level Nested List",
       "exportName": "MultiLevelNestedList",
       "description": "A list with multiple levels of nesting.\n\nYou can create deeply nested structures by using multiple layers of `List.SubTrigger` and `List.Content` with appropriate `parentId` props.",
-      "source": "import { List } from \"@choice-ui/list\"\n\nexport default function App() {\n  return (\n    <List\n      {...args}\n      size=\"large\"\n      shouldShowReferenceLine\n    >\n      <List.Content>\n        <List.Item prefixElement={<FieldTypeLongText />}>\n          <List.Value>Home</List.Value>\n        </List.Item>\n\n        {/* 从第一级开始递归创建嵌套结构 */}\n        {createNestedItems(1)}\n\n        <List.Item prefixElement={<FieldTypeDate />}>\n          <List.Value>Calendar</List.Value>\n        </List.Item>\n      </List.Content>\n    </List>\n  );\n}"
+      "source": "import { List } from \"@choice-ui/list\"\n\nexport default function App() {\n\n  // 递归创建嵌套项目结构的函数\n  const createNestedItems = (level: number, parentId: string = \"\", maxDepth: number = 5) => {\n    // 在达到最大深度时停止递归\n    if (level > maxDepth) return null\n\n    const currentId = parentId ? `${parentId}-level${level}` : `level${level}`\n    const items: React.ReactNode[] = []\n\n    // 创建当前级别的标题\n    items.push(\n      <List.SubTrigger\n        key={`trigger-${currentId}`}\n        id={currentId}\n        parentId={parentId || undefined}\n        prefixElement={<Folder />}\n        defaultOpen={level <= 2} // 默认展开前两级\n      >\n        <List.Value>{`Level ${level} Folder`}</List.Value>\n      </List.SubTrigger>,\n    )\n\n    // 创建该级别的内容容器\n    items.push(\n      <List.Content\n        key={`content-${currentId}`}\n        parentId={currentId}\n      >\n        {/* 为当前级别添加一些文件项目 */}\n        {[1, 2].map((fileIndex) => (\n          <List.Item\n            key={`file-${currentId}-${fileIndex}`}\n            parentId={currentId}\n            prefixElement={<File />}\n          >\n            <List.Value>{`File ${fileIndex} (Level ${level})`}</List.Value>\n          </List.Item>\n        ))}\n\n        {/* 递归创建下一级 */}\n        {level < maxDepth && createNestedItems(level + 1, currentId, maxDepth)}\n      </List.Content>,\n    )\n\n    return items\n  }\n\n  return (\n    <List\n      {...args}\n      size=\"large\"\n      shouldShowReferenceLine\n    >\n      <List.Content>\n        <List.Item prefixElement={<FieldTypeLongText />}>\n          <List.Value>Home</List.Value>\n        </List.Item>\n\n        {/* 从第一级开始递归创建嵌套结构 */}\n        {createNestedItems(1)}\n\n        <List.Item prefixElement={<FieldTypeDate />}>\n          <List.Value>Calendar</List.Value>\n        </List.Item>\n      </List.Content>\n    </List>\n  )\n\n}"
     },
     {
       "id": "collections-list--nested-list-with-selection",
       "name": "Nested List With Selection",
       "exportName": "NestedListWithSelection",
       "description": "A nested list with selection functionality.\n\nCombine the selection mode with nested lists to create hierarchical selectable content.",
-      "source": "import { List } from \"@choice-ui/list\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-2\">\n      <div>\n        <strong>Selected items:</strong>{\" \"}\n        {[...selectedItems].map((id) => (\n          <span\n            key={id}\n            className=\"mx-1\"\n          >\n            {id}\n          </span>\n        ))}\n      </div>\n      <List\n        {...args}\n        shouldShowReferenceLine\n      >\n        <List.Content>\n          <List.Item\n            id=\"root1\"\n            selected={selectedItems.has(\"root1\")}\n            onClick={() => handleItemClick(\"root1\")}\n            prefixElement={selectedItems.has(\"root1\") ? <Check /> : undefined}\n          >\n            <List.Value>Root Item 1</List.Value>\n          </List.Item>\n          <List.SubTrigger\n            id=\"nested\"\n            defaultOpen\n          >\n            <List.Value>Nested Section</List.Value>\n          </List.SubTrigger>\n          <List.Content parentId=\"nested\">\n            <List.Item\n              id=\"nested1\"\n              parentId=\"nested\"\n              selected={selectedItems.has(\"nested1\")}\n              onClick={() => handleItemClick(\"nested1\")}\n              prefixElement={selectedItems.has(\"nested1\") ? <Check /> : <></>}\n            >\n              <List.Value>Nested Item 1</List.Value>\n            </List.Item>\n            <List.Item\n              id=\"nested2\"\n              parentId=\"nested\"\n              selected={selectedItems.has(\"nested2\")}\n              onClick={() => handleItemClick(\"nested2\")}\n              prefixElement={selectedItems.has(\"nested2\") ? <Check /> : <></>}\n            >\n              <List.Value>Nested Item 2</List.Value>\n            </List.Item>\n            <List.Item\n              id=\"nested3\"\n              parentId=\"nested\"\n              selected={selectedItems.has(\"nested3\")}\n              onClick={() => handleItemClick(\"nested3\")}\n              prefixElement={selectedItems.has(\"nested3\") ? <Check /> : <></>}\n            >\n              <List.Value>Nested Item 3</List.Value>\n            </List.Item>\n          </List.Content>\n          <List.Item\n            id=\"root2\"\n            selected={selectedItems.has(\"root2\")}\n            onClick={() => handleItemClick(\"root2\")}\n            prefixElement={selectedItems.has(\"root2\") ? <Check /> : <></>}\n          >\n            <List.Value>Root Item 2</List.Value>\n          </List.Item>\n        </List.Content>\n      </List>\n    </div>\n  );\n}"
+      "source": "import { List } from \"@choice-ui/list\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  // 使用useState来管理选中状态\n  const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set([\"root1\", \"nested2\"]))\n\n  // 处理选择变化\n  const handleItemClick = (id: string) => {\n    setSelectedItems((prev) => {\n      const newSet = new Set(prev)\n      if (newSet.has(id)) {\n        newSet.delete(id)\n      } else {\n        newSet.add(id)\n      }\n      return newSet\n    })\n  }\n\n  return (\n    <div className=\"flex flex-col gap-2\">\n      <div>\n        <strong>Selected items:</strong>{\" \"}\n        {[...selectedItems].map((id) => (\n          <span\n            key={id}\n            className=\"mx-1\"\n          >\n            {id}\n          </span>\n        ))}\n      </div>\n      <List\n        {...args}\n        shouldShowReferenceLine\n      >\n        <List.Content>\n          <List.Item\n            id=\"root1\"\n            selected={selectedItems.has(\"root1\")}\n            onClick={() => handleItemClick(\"root1\")}\n            prefixElement={selectedItems.has(\"root1\") ? <Check /> : undefined}\n          >\n            <List.Value>Root Item 1</List.Value>\n          </List.Item>\n          <List.SubTrigger\n            id=\"nested\"\n            defaultOpen\n          >\n            <List.Value>Nested Section</List.Value>\n          </List.SubTrigger>\n          <List.Content parentId=\"nested\">\n            <List.Item\n              id=\"nested1\"\n              parentId=\"nested\"\n              selected={selectedItems.has(\"nested1\")}\n              onClick={() => handleItemClick(\"nested1\")}\n              prefixElement={selectedItems.has(\"nested1\") ? <Check /> : <></>}\n            >\n              <List.Value>Nested Item 1</List.Value>\n            </List.Item>\n            <List.Item\n              id=\"nested2\"\n              parentId=\"nested\"\n              selected={selectedItems.has(\"nested2\")}\n              onClick={() => handleItemClick(\"nested2\")}\n              prefixElement={selectedItems.has(\"nested2\") ? <Check /> : <></>}\n            >\n              <List.Value>Nested Item 2</List.Value>\n            </List.Item>\n            <List.Item\n              id=\"nested3\"\n              parentId=\"nested\"\n              selected={selectedItems.has(\"nested3\")}\n              onClick={() => handleItemClick(\"nested3\")}\n              prefixElement={selectedItems.has(\"nested3\") ? <Check /> : <></>}\n            >\n              <List.Value>Nested Item 3</List.Value>\n            </List.Item>\n          </List.Content>\n          <List.Item\n            id=\"root2\"\n            selected={selectedItems.has(\"root2\")}\n            onClick={() => handleItemClick(\"root2\")}\n            prefixElement={selectedItems.has(\"root2\") ? <Check /> : <></>}\n          >\n            <List.Value>Root Item 2</List.Value>\n          </List.Item>\n        </List.Content>\n      </List>\n    </div>\n  )\n\n}"
     },
     {
       "id": "collections-list--with-as-prop",
       "name": "With As Prop",
       "exportName": "WithAsProp",
       "description": "A list demonstrating the `as` prop functionality on ListItem.\n\nThe `as` prop allows you to render ListItem as different HTML elements or React components.\nThis is useful for semantic HTML, accessibility, or integrating with routing libraries.\nAll ListItem features (prefixElement, suffixElement, shortcut, active, selected, disabled)\nwork regardless of the `as` prop value.",
-      "source": "import { List } from \"@choice-ui/list\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-4\">\n      <div className=\"space-y-2\">\n        <p className=\"text-body-small text-gray-600\">As button (default):</p>\n        <List {...args}>\n          <List.Content>\n            <List.Item>\n              <List.Value>Button Item</List.Value>\n            </List.Item>\n          </List.Content>\n        </List>\n      </div>\n\n      <div className=\"space-y-2\">\n        <p className=\"text-body-small text-gray-600\">As div:</p>\n        <List {...args}>\n          <List.Content>\n            <List.Item as=\"div\">\n              <List.Value>Div Item</List.Value>\n            </List.Item>\n          </List.Content>\n        </List>\n      </div>\n\n      <div className=\"space-y-2\">\n        <p className=\"text-body-small text-gray-600\">As anchor:</p>\n        <List {...args}>\n          <List.Content>\n            <List.Item\n              as=\"a\"\n              onClick={(e) => {\n                e.preventDefault()\n                console.log(\"Link clicked\")\n              }}\n            >\n              <List.Value>Link Item</List.Value>\n            </List.Item>\n          </List.Content>\n        </List>\n      </div>\n\n      <div className=\"space-y-2\">\n        <p className=\"text-body-small text-gray-600\">As anchor with all features:</p>\n        <List {...args}>\n          <List.Content>\n            <List.Item\n              as=\"a\"\n              active\n              prefixElement={<FieldTypeLongText />}\n              suffixElement={<FieldTypeSingleSelect />}\n              shortcut={{ keys: \"L\" }}\n              onClick={(e) => {\n                e.preventDefault()\n                console.log(\"Link with features clicked\")\n              }}\n            >\n              <List.Value>Link with features</List.Value>\n            </List.Item>\n          </List.Content>\n        </List>\n      </div>\n\n      <div className=\"space-y-2\">\n        <p className=\"text-body-small text-gray-600\">Mixed element types in one list:</p>\n        <List {...args}>\n          <List.Content>\n            <List.Item>\n              <List.Value>Default Button Item</List.Value>\n            </List.Item>\n            <List.Item\n              as=\"a\"\n              prefixElement={<FieldTypeCheckbox />}\n            >\n              <List.Value>Link Item</List.Value>\n            </List.Item>\n            <List.Item as=\"div\">\n              <List.Value>Div Item</List.Value>\n            </List.Item>\n            <List.Item\n              as=\"a\"\n              prefixElement={<FieldTypeAttachment />}\n              shortcut={{ modifier: \"command\", keys: \"S\" }}\n            >\n              <List.Value>Link with Icon and Shortcut</List.Value>\n            </List.Item>\n          </List.Content>\n        </List>\n      </div>\n    </div>\n  );\n}"
+      "source": "import { List } from \"@choice-ui/list\"\n\nexport default function App() {\n  return (\n\n    <div className=\"space-y-4\">\n      <List {...args}>\n        <List.Label>As div:</List.Label>\n        <List.Content>\n          <List.Item as=\"div\">\n            <List.Value>Div Item</List.Value>\n          </List.Item>\n        </List.Content>\n      </List>\n\n      <List {...args}>\n        <List.Label>As anchor:</List.Label>\n        <List.Content>\n          <List.Item\n            as=\"a\"\n            onClick={(e) => {\n              e.preventDefault()\n              console.log(\"Link clicked\")\n            }}\n          >\n            <List.Value>Link Item</List.Value>\n          </List.Item>\n        </List.Content>\n      </List>\n    </div>\n\n  );\n}"
     },
     {
       "id": "collections-list--non-interactive",
       "name": "Non Interactive",
       "exportName": "NonInteractive",
       "description": "NonInteractive: Demonstrates a non-interactive list for display purposes only.\n- When `interactive={false}`, list items use `div` as default element instead of `button`.\n- Hover effects and active states are disabled.\n- Useful for read-only lists, documentation, or static content display.",
-      "source": "import { List } from \"@choice-ui/list\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-8\">\n      <div className=\"space-y-2\">\n        <h3 className=\"text-body-large-strong\">Interactive List (Default)</h3>\n        <p className=\"text-body-small text-secondary-foreground\">\n          Hover over items to see active state. Items use button elements by default.\n        </p>\n        <List {...args}>\n          <List.Content>\n            <List.Item prefixElement={<FieldTypeCheckbox />}>\n              <List.Value>Home</List.Value>\n            </List.Item>\n            <List.Item prefixElement={<FieldTypeSingleSelect />}>\n              <List.Value>Documents</List.Value>\n            </List.Item>\n            <List.Item prefixElement={<FieldTypeAttachment />}>\n              <List.Value>Settings</List.Value>\n            </List.Item>\n          </List.Content>\n        </List>\n      </div>\n\n      <div className=\"space-y-2\">\n        <h3 className=\"text-body-large-strong\">Non-Interactive List</h3>\n        <p className=\"text-body-small text-secondary-foreground\">\n          Hover effects disabled. Items use div elements by default. No active state on hover.\n        </p>\n        <List\n          {...args}\n          interactive={false}\n        >\n          <List.Content>\n            <List.Item prefixElement={<FieldTypeCheckbox />}>\n              <List.Value>Home</List.Value>\n            </List.Item>\n            <List.Item prefixElement={<FieldTypeSingleSelect />}>\n              <List.Value>Documents</List.Value>\n            </List.Item>\n            <List.Item prefixElement={<FieldTypeAttachment />}>\n              <List.Value>Settings</List.Value>\n            </List.Item>\n            <List.Item prefixElement={<FieldTypeLongText />}>\n              <List.Value>Read-only Item</List.Value>\n            </List.Item>\n            <List.Item prefixElement={<FieldTypeDate />}>\n              <List.Value>Static Content</List.Value>\n            </List.Item>\n          </List.Content>\n        </List>\n      </div>\n    </div>\n  );\n}"
+      "source": "import { List } from \"@choice-ui/list\"\n\nexport default function App() {\n  return (\n\n    <div className=\"space-y-2\">\n      <h3 className=\"text-body-large-strong\">Non-Interactive List</h3>\n      <p className=\"text-body-small text-secondary-foreground\">\n        Hover effects disabled. Items use div elements by default. No active state on hover.\n      </p>\n      <List\n        {...args}\n        interactive={false}\n      >\n        <List.Content>\n          <List.Item prefixElement={<FieldTypeCheckbox />}>\n            <List.Value>Home</List.Value>\n          </List.Item>\n          <List.Item prefixElement={<FieldTypeSingleSelect />}>\n            <List.Value>Documents</List.Value>\n          </List.Item>\n          <List.Item prefixElement={<FieldTypeAttachment />}>\n            <List.Value>Settings</List.Value>\n          </List.Item>\n          <List.Item prefixElement={<FieldTypeLongText />}>\n            <List.Value>Read-only Item</List.Value>\n          </List.Item>\n          <List.Item prefixElement={<FieldTypeDate />}>\n            <List.Value>Static Content</List.Value>\n          </List.Item>\n        </List.Content>\n      </List>\n    </div>\n\n  );\n}"
     }
-  ],
-  "tags": [
-    "new"
   ]
 }

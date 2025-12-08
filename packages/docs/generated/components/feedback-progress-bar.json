@@ -58,7 +58,7 @@
         },
         {
           "name": "size",
-          "type": "enum",
+          "type": "undefined | \"small\" | \"large\" | \"default\"",
           "required": false,
           "description": ""
         },
@@ -76,7 +76,7 @@
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"accent\" | \"reset\" | \"based-on-value\"",
           "required": false,
           "description": ""
         }
@@ -124,7 +124,7 @@
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"accent\" | \"default\" | \"based-on-value\" | \"reset\"",
           "required": false,
           "description": ""
         }
@@ -137,35 +137,35 @@
       "name": "Basic",
       "exportName": "Basic",
       "description": "Basic: Shows the default ProgressBar with label and value.\n- Demonstrates composite API usage with `ProgressBar.Label`, `ProgressBar.Track`, and `ProgressBar.Connects`.\n- Displays current progress value via `showValue`.\n- Use for simple linear progress indications.",
-      "source": "import { ProgressBar } from \"@choice-ui/progress\"\n\nexport default function App() {\n  return (\n    <ProgressBar\n      value={45}\n      showValue\n    >\n      <ProgressBar.Track>\n        <ProgressBar.Connects />\n      </ProgressBar.Track>\n    </ProgressBar>\n  );\n}"
+      "source": "import { ProgressBar } from \"@choice-ui/progress\"\n\nexport default function App() {\n  return (\n\n    <ProgressBar\n      value={45}\n      showValue\n    >\n      <ProgressBar.Track>\n        <ProgressBar.Connects />\n      </ProgressBar.Track>\n    </ProgressBar>\n\n  );\n}"
     },
     {
       "id": "feedback-progressbar--sizes",
       "name": "Sizes",
       "exportName": "Sizes",
       "description": "Sizes: Demonstrates the two size options available.\n- `size=\"small\"` for compact contexts.\n- `size=\"default\"` (default) for compact contexts.\n- `size=\"large\"` for more prominent progress indicators.",
-      "source": "import { ProgressBar } from \"@choice-ui/progress\"\n\nexport default function App() {\n  return (\n    <div className=\"grid gap-4\">\n      <div className=\"grid gap-2\">\n        <span>Small</span>\n        <ProgressBar\n          size=\"small\"\n          value={60}\n          showValue\n        >\n          <ProgressBar.Label>Processing</ProgressBar.Label>\n          <ProgressBar.Track>\n            <ProgressBar.Connects />\n          </ProgressBar.Track>\n        </ProgressBar>\n      </div>\n      <div className=\"grid gap-2\">\n        <span>Default</span>\n        <ProgressBar\n          size=\"default\"\n          value={60}\n          showValue\n        >\n          <ProgressBar.Label>Processing</ProgressBar.Label>\n          <ProgressBar.Track>\n            <ProgressBar.Connects />\n          </ProgressBar.Track>\n        </ProgressBar>\n      </div>\n      <div className=\"grid gap-2\">\n        <span>Large</span>\n        <ProgressBar\n          size=\"large\"\n          value={60}\n          showValue\n        >\n          <ProgressBar.Label>Processing</ProgressBar.Label>\n          <ProgressBar.Track>\n            <ProgressBar.Connects />\n          </ProgressBar.Track>\n        </ProgressBar>\n      </div>\n    </div>\n  );\n}"
+      "source": "import { ProgressBar } from \"@choice-ui/progress\"\n\nexport default function App() {\n  return (\n\n    <div className=\"grid gap-4\">\n      <div className=\"grid gap-2\">\n        <span>Small</span>\n        <ProgressBar\n          size=\"small\"\n          value={60}\n          showValue\n        >\n          <ProgressBar.Label>Processing</ProgressBar.Label>\n          <ProgressBar.Track>\n            <ProgressBar.Connects />\n          </ProgressBar.Track>\n        </ProgressBar>\n      </div>\n      <div className=\"grid gap-2\">\n        <span>Default</span>\n        <ProgressBar\n          size=\"default\"\n          value={60}\n          showValue\n        >\n          <ProgressBar.Label>Processing</ProgressBar.Label>\n          <ProgressBar.Track>\n            <ProgressBar.Connects />\n          </ProgressBar.Track>\n        </ProgressBar>\n      </div>\n      <div className=\"grid gap-2\">\n        <span>Large</span>\n        <ProgressBar\n          size=\"large\"\n          value={60}\n          showValue\n        >\n          <ProgressBar.Label>Processing</ProgressBar.Label>\n          <ProgressBar.Track>\n            <ProgressBar.Connects />\n          </ProgressBar.Track>\n        </ProgressBar>\n      </div>\n    </div>\n\n  );\n}"
     },
     {
       "id": "feedback-progressbar--variants",
       "name": "Variants",
       "exportName": "Variants",
       "description": "Variants: Demonstrates theme-driven color variants.\n- Uses theme tokens for `accent`, `success`, `warning`, `danger`, and `inverse`.\n- Choose the variant that matches the semantic meaning of the progress.",
-      "source": "import { ProgressBar } from \"@choice-ui/progress\"\n\nexport default function App() {\n  return (\n    <div className=\"grid gap-4\">\n      {variants.map((variant) => (\n        <Fragment key={variant}>\n          <span className=\"capitalize\">{variant}</span>\n          <ProgressBar\n            variant={variant}\n            value={72}\n            showValue\n          >\n            <ProgressBar.Label>Uploading</ProgressBar.Label>\n            <ProgressBar.Track>\n              <ProgressBar.Connects />\n            </ProgressBar.Track>\n          </ProgressBar>\n        </Fragment>\n      ))}\n    </div>\n  );\n}"
+      "source": "import { ProgressBar } from \"@choice-ui/progress\"\n\nexport default function App() {\n\n  const variants: Array<NonNullable<React.ComponentProps<typeof ProgressBar>[\"variant\"]>> = [\n    \"accent\",\n    \"default\",\n  ]\n\n  return (\n    <div className=\"grid gap-4\">\n      {variants.map((variant) => (\n        <Fragment key={variant}>\n          <span className=\"capitalize\">{variant}</span>\n          <ProgressBar\n            variant={variant}\n            value={72}\n            showValue\n          >\n            <ProgressBar.Label>Uploading</ProgressBar.Label>\n            <ProgressBar.Track>\n              <ProgressBar.Connects />\n            </ProgressBar.Track>\n          </ProgressBar>\n        </Fragment>\n      ))}\n    </div>\n  )\n\n}"
     },
     {
       "id": "feedback-progressbar--striped-and-indeterminate",
       "name": "Striped And Indeterminate",
       "exportName": "StripedAndIndeterminate",
       "description": "Striped & Indeterminate: Shows a striped progress and an indeterminate state.\n- `striped` adds a subtle moving texture for ongoing processes.\n- `indeterminate` renders without a known value; useful for unknown durations.",
-      "source": "import { ProgressBar } from \"@choice-ui/progress\"\n\nexport default function App() {\n  return (\n    <div className=\"grid gap-6\">\n      <div className=\"grid gap-2\">\n        <span>Striped</span>\n        <ProgressBar\n          value={65}\n          striped\n        >\n          <ProgressBar.Label>Transferring</ProgressBar.Label>\n          <ProgressBar.Track>\n            <ProgressBar.Connects />\n          </ProgressBar.Track>\n        </ProgressBar>\n      </div>\n\n      <div className=\"grid gap-2\">\n        <span>Indeterminate</span>\n        <ProgressBar indeterminate>\n          <ProgressBar.Label>Loading</ProgressBar.Label>\n          <ProgressBar.Track>\n            <ProgressBar.Connects />\n          </ProgressBar.Track>\n        </ProgressBar>\n      </div>\n    </div>\n  );\n}"
+      "source": "import { ProgressBar } from \"@choice-ui/progress\"\n\nexport default function App() {\n  return (\n\n    <div className=\"grid gap-6\">\n      <div className=\"grid gap-2\">\n        <span>Striped</span>\n        <ProgressBar\n          value={65}\n          striped\n        >\n          <ProgressBar.Label>Transferring</ProgressBar.Label>\n          <ProgressBar.Track>\n            <ProgressBar.Connects />\n          </ProgressBar.Track>\n        </ProgressBar>\n      </div>\n\n      <div className=\"grid gap-2\">\n        <span>Indeterminate</span>\n        <ProgressBar indeterminate>\n          <ProgressBar.Label>Loading</ProgressBar.Label>\n          <ProgressBar.Track>\n            <ProgressBar.Connects />\n          </ProgressBar.Track>\n        </ProgressBar>\n      </div>\n    </div>\n\n  );\n}"
     },
     {
       "id": "feedback-progressbar--based-on-value",
       "name": "Based On Value",
       "exportName": "BasedOnValue",
       "description": "Based-on-value: Demonstrates continuous color blending driven by `value`.\n- Set `variant=\"based-on-value\"` and provide `dynamicColors`.\n- Accepts either an array of colors (evenly spaced) or stops with `{ at, color }`.\n- Colors are smoothly mixed between stops using the current progress value.",
-      "source": "import { ProgressBar } from \"@choice-ui/progress\"\n\nexport default function App() {\n  return (\n    <div className=\"grid gap-4\">\n      <div className=\"grid gap-2\">\n        <span>Evenly spaced colors</span>\n        <ProgressBar\n          value={value}\n          variant=\"based-on-value\"\n          dynamicColors={[\"#ef4444\", \"#f59e0b\", \"#22c55e\"]}\n        >\n          <ProgressBar.Label showValue>Score</ProgressBar.Label>\n          <ProgressBar.Track>\n            <ProgressBar.Connects />\n          </ProgressBar.Track>\n        </ProgressBar>\n      </div>\n\n      <div className=\"grid gap-2\">\n        <span>Custom stops (at)</span>\n        <ProgressBar\n          value={value}\n          variant=\"based-on-value\"\n          dynamicColors={[\n            { at: 0, color: \"#ef4444\" },\n            { at: 0.5, color: \"#f59e0b\" },\n            { at: 1, color: \"#22c55e\" },\n          ]}\n        >\n          <ProgressBar.Label showValue>Health</ProgressBar.Label>\n          <ProgressBar.Track>\n            <ProgressBar.Connects />\n          </ProgressBar.Track>\n        </ProgressBar>\n      </div>\n\n      <div className=\"grid gap-2\">\n        <Range\n          min={0}\n          max={100}\n          value={value}\n          onChange={(v) => setValue(v)}\n          trackSize={{\n            width: \"auto\",\n            height: 16,\n          }}\n        />\n        <span>Value: {value}</span>\n      </div>\n    </div>\n  );\n}"
+      "source": "import { ProgressBar } from \"@choice-ui/progress\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [value, setValue] = useState(35)\n\n  return (\n    <div className=\"grid gap-4\">\n      <div className=\"grid gap-2\">\n        <span>Evenly spaced colors</span>\n        <ProgressBar\n          value={value}\n          variant=\"based-on-value\"\n          dynamicColors={[\"#ef4444\", \"#f59e0b\", \"#22c55e\"]}\n        >\n          <ProgressBar.Label showValue>Score</ProgressBar.Label>\n          <ProgressBar.Track>\n            <ProgressBar.Connects />\n          </ProgressBar.Track>\n        </ProgressBar>\n      </div>\n\n      <div className=\"grid gap-2\">\n        <span>Custom stops (at)</span>\n        <ProgressBar\n          value={value}\n          variant=\"based-on-value\"\n          dynamicColors={[\n            { at: 0, color: \"#ef4444\" },\n            { at: 0.5, color: \"#f59e0b\" },\n            { at: 1, color: \"#22c55e\" },\n          ]}\n        >\n          <ProgressBar.Label showValue>Health</ProgressBar.Label>\n          <ProgressBar.Track>\n            <ProgressBar.Connects />\n          </ProgressBar.Track>\n        </ProgressBar>\n      </div>\n\n      <div className=\"grid gap-2\">\n        <Range\n          min={0}\n          max={100}\n          value={value}\n          onChange={(v) => setValue(v)}\n          trackSize={{\n            width: \"auto\",\n            height: 16,\n          }}\n        />\n        <span>Value: {value}</span>\n      </div>\n    </div>\n  )\n\n}"
     }
   ]
 }

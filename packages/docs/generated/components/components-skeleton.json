@@ -61,7 +61,7 @@
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"text\" | \"rectangular\" | \"rounded\" | \"circular\"",
           "required": false,
           "defaultValue": "'text'",
           "description": "The variant of the skeleton"

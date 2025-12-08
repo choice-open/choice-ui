@@ -561,7 +561,7 @@ export const LongList: Story = {
 }
 
 /**
- * Multiple dropdowns testing proper event handling and switching.
+ * [TEST] Multiple dropdowns testing proper event handling and switching.
  */
 export const MultipleDropdowns: Story = {
   render: function MultipleDropdownsStory() {
@@ -831,6 +831,8 @@ export const MatchTriggerWidth: Story = {
 /**
  * Coordinate mode - Dropdown without trigger, positioned at specific coordinates
  * This mode replaces the deprecated CoordinateMenu component
+ * - This demonstrates the Dropdown component in coordinate mode - no trigger element,
+ * - Positioned at specific x/y coordinates. Perfect for context menus, mentions, etc.
  */
 export const CoordinateMode: Story = {
   render: function CoordinateModeStory() {
@@ -848,22 +850,12 @@ export const CoordinateMode: Story = {
 
     return (
       <div className="w-80 space-y-4">
-        <div className="rounded-xl border p-4">
-          <h3 className="font-strong mb-2">📍 Coordinate Positioning Mode</h3>
-          <p className="text-secondary-foreground">
-            This demonstrates the Dropdown component in coordinate mode - no trigger element,
-            positioned at specific x/y coordinates. Perfect for context menus, mentions, etc.
-          </p>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <Checkbox
-            value={autoSelectFirstItem}
-            onChange={setAutoSelectFirstItem}
-          >
-            Auto Select First Item
-          </Checkbox>
-        </div>
+        <Checkbox
+          value={autoSelectFirstItem}
+          onChange={setAutoSelectFirstItem}
+        >
+          Auto Select First Item
+        </Checkbox>
 
         <div
           className="bg-secondary-background relative h-64 rounded-lg border border-dashed p-4"
@@ -872,15 +864,6 @@ export const CoordinateMode: Story = {
           <p className="text-secondary-foreground text-center">
             Click anywhere in this area to show dropdown at mouse position
           </p>
-
-          {position && (
-            <div
-              className="text-secondary-foreground fixed z-10 size-4"
-              style={{ left: position.x - 8, top: position.y - 8 }}
-            >
-              <Add />
-            </div>
-          )}
         </div>
 
         {/* Dropdown in coordinate mode */}
@@ -921,6 +904,7 @@ export const CoordinateMode: Story = {
 
 /**
  * Mentions example using coordinate mode with Slate.js editor
+ * - Type @ to trigger the mentions menu. This uses a simple Slate.js editor with Dropdown in coordinate mode.
  */
 export const MentionsWithCoordinateMode: Story = {
   render: function MentionsStory() {
@@ -1045,14 +1029,6 @@ export const MentionsWithCoordinateMode: Story = {
 
     return (
       <div className="w-80 space-y-4">
-        <div className="rounded-xl border p-4">
-          <h3 className="font-strong mb-2">@ Mentions with Slate.js</h3>
-          <p className="text-secondary-foreground">
-            Type @ to trigger the mentions menu. This uses a simple Slate.js editor with Dropdown in
-            coordinate mode.
-          </p>
-        </div>
-
         {/* 简单的 Slate 编辑器 */}
         <div
           ref={editorRef}
@@ -1078,6 +1054,9 @@ export const MentionsWithCoordinateMode: Story = {
             open={isOpen}
             onOpenChange={setIsOpen}
             placement="bottom-start"
+            focusManagerProps={{
+              initialFocus: 0,
+            }}
           >
             <Dropdown.Content>
               <Dropdown.Label>Mention User</Dropdown.Label>
@@ -1110,7 +1089,7 @@ export const MentionsWithCoordinateMode: Story = {
 }
 
 /**
- * Interactive test for nested menu click behavior
+ * [TEST] Interactive test for nested menu click behavior
  */
 export const NestedMenuClickTest: Story = {
   render: function DropdownNestedTest() {
@@ -1355,7 +1334,7 @@ export const NestedSubmenuWithLongList: Story = {
     }))
 
     return (
-      <div className="flex h-screen items-center justify-center">
+      <div className="flex items-center justify-center">
         <Dropdown>
           <Dropdown.Trigger>
             <Dropdown.Value>Menu with long nested submenu</Dropdown.Value>
@@ -1417,7 +1396,7 @@ export const NestedSubmenuWithLongList: Story = {
 }
 
 /**
- * Dropdown component in readOnly state.
+ * [TEST] Dropdown component in readOnly state.
  *
  * In readOnly mode:
  * - The menu can be opened and closed normally
@@ -1515,12 +1494,12 @@ export const WithTriggerRef: Story = {
     const [isOpen, setIsOpen] = useState(false)
 
     return (
-      <div className="flex h-64 items-center justify-center gap-8">
+      <div className="flex items-center justify-center gap-8">
         <div>
           <p className="text-body-small-strong mb-2">Using triggerRef</p>
           <button
             ref={triggerRef}
-            className="bg-secondary-background rounded-xl border border-dashed px-4 py-2"
+            className="bg-secondary-background rounded-lg border border-dashed px-4 py-2"
           >
             Click me (via triggerRef)
           </button>
@@ -1564,87 +1543,80 @@ export const WithTriggerSelector: Story = {
     const [isOpen3, setIsOpen3] = useState(false)
 
     return (
-      <div className="flex h-64 flex-col items-center justify-center gap-8">
-        <div className="flex gap-8">
-          {/* Using id selector */}
-          <div>
-            <p className="text-body-small-strong mb-2">Using #id selector</p>
-            <button
-              id="dropdown-trigger-by-id"
-              className="bg-secondary-background rounded-xl border border-dashed px-4 py-2"
-            >
-              Click me (id selector)
-            </button>
-            <Dropdown
-              triggerSelector="#dropdown-trigger-by-id"
-              open={isOpen1}
-              onOpenChange={setIsOpen1}
-            >
-              <Dropdown.Content>
-                <Dropdown.Label>ID Selector Menu</Dropdown.Label>
-                <Dropdown.Item>
-                  <Dropdown.Value>Action 1</Dropdown.Value>
-                </Dropdown.Item>
-                <Dropdown.Item>
-                  <Dropdown.Value>Action 2</Dropdown.Value>
-                </Dropdown.Item>
-              </Dropdown.Content>
-            </Dropdown>
-          </div>
-
-          {/* Using class selector */}
-          <div>
-            <p className="text-body-small-strong mb-2">Using .class selector</p>
-            <button className="dropdown-trigger-by-class bg-secondary-background rounded-xl border border-dashed px-4 py-2">
-              Click me (class selector)
-            </button>
-            <Dropdown
-              triggerSelector=".dropdown-trigger-by-class"
-              open={isOpen2}
-              onOpenChange={setIsOpen2}
-            >
-              <Dropdown.Content>
-                <Dropdown.Label>Class Selector Menu</Dropdown.Label>
-                <Dropdown.Item>
-                  <Dropdown.Value>Option A</Dropdown.Value>
-                </Dropdown.Item>
-                <Dropdown.Item>
-                  <Dropdown.Value>Option B</Dropdown.Value>
-                </Dropdown.Item>
-              </Dropdown.Content>
-            </Dropdown>
-          </div>
-
-          {/* Using data attribute selector */}
-          <div>
-            <p className="text-body-small-strong mb-2">Using [data-*] selector</p>
-            <button
-              data-dropdown-trigger="custom"
-              className="bg-secondary-background rounded-xl border border-dashed px-4 py-2"
-            >
-              Click me (data-* selector)
-            </button>
-            <Dropdown
-              triggerSelector="[data-dropdown-trigger='custom']"
-              open={isOpen3}
-              onOpenChange={setIsOpen3}
-            >
-              <Dropdown.Content>
-                <Dropdown.Label>Data Attribute Menu</Dropdown.Label>
-                <Dropdown.Item>
-                  <Dropdown.Value>Item X</Dropdown.Value>
-                </Dropdown.Item>
-                <Dropdown.Item>
-                  <Dropdown.Value>Item Y</Dropdown.Value>
-                </Dropdown.Item>
-              </Dropdown.Content>
-            </Dropdown>
-          </div>
+      <div className="flex gap-8">
+        {/* Using id selector */}
+        <div>
+          <p className="text-body-small-strong mb-2">Using #id selector</p>
+          <button
+            id="dropdown-trigger-by-id"
+            className="bg-secondary-background rounded-lg border border-dashed px-4 py-2"
+          >
+            Click me (id selector)
+          </button>
+          <Dropdown
+            triggerSelector="#dropdown-trigger-by-id"
+            open={isOpen1}
+            onOpenChange={setIsOpen1}
+          >
+            <Dropdown.Content>
+              <Dropdown.Label>ID Selector Menu</Dropdown.Label>
+              <Dropdown.Item>
+                <Dropdown.Value>Action 1</Dropdown.Value>
+              </Dropdown.Item>
+              <Dropdown.Item>
+                <Dropdown.Value>Action 2</Dropdown.Value>
+              </Dropdown.Item>
+            </Dropdown.Content>
+          </Dropdown>
         </div>
 
-        <div className="bg-secondary-background max-w-xl rounded-xl p-4 text-center">
-          <strong>提示：</strong> triggerSelector 支持任何有效的 CSS 选择器，当无法使用 ref
-          时非常有用。
+        {/* Using class selector */}
+        <div>
+          <p className="text-body-small-strong mb-2">Using .class selector</p>
+          <button className="dropdown-trigger-by-class bg-secondary-background rounded-lg border border-dashed px-4 py-2">
+            Click me (class selector)
+          </button>
+          <Dropdown
+            triggerSelector=".dropdown-trigger-by-class"
+            open={isOpen2}
+            onOpenChange={setIsOpen2}
+          >
+            <Dropdown.Content>
+              <Dropdown.Label>Class Selector Menu</Dropdown.Label>
+              <Dropdown.Item>
+                <Dropdown.Value>Option A</Dropdown.Value>
+              </Dropdown.Item>
+              <Dropdown.Item>
+                <Dropdown.Value>Option B</Dropdown.Value>
+              </Dropdown.Item>
+            </Dropdown.Content>
+          </Dropdown>
+        </div>
+
+        {/* Using data attribute selector */}
+        <div>
+          <p className="text-body-small-strong mb-2">Using [data-*] selector</p>
+          <button
+            data-dropdown-trigger="custom"
+            className="bg-secondary-background rounded-lg border border-dashed px-4 py-2"
+          >
+            Click me (data-* selector)
+          </button>
+          <Dropdown
+            triggerSelector="[data-dropdown-trigger='custom']"
+            open={isOpen3}
+            onOpenChange={setIsOpen3}
+          >
+            <Dropdown.Content>
+              <Dropdown.Label>Data Attribute Menu</Dropdown.Label>
+              <Dropdown.Item>
+                <Dropdown.Value>Item X</Dropdown.Value>
+              </Dropdown.Item>
+              <Dropdown.Item>
+                <Dropdown.Value>Item Y</Dropdown.Value>
+              </Dropdown.Item>
+            </Dropdown.Content>
+          </Dropdown>
         </div>
       </div>
     )

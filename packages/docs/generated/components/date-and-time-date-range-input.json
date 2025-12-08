@@ -205,7 +205,7 @@
         },
         {
           "name": "dateComparisonMode",
-          "type": "enum",
+          "type": "undefined | \"exact-time\" | \"date-only\"",
           "required": false,
           "description": "日期比较模式"
         },
@@ -277,7 +277,7 @@
         },
         {
           "name": "selectionMode",
-          "type": "enum",
+          "type": "undefined | \"single\" | \"multiple\" | \"range\"",
           "required": false,
           "description": "选择模式，如果未指定，会根据 value 类型自动推断"
         },
@@ -307,7 +307,7 @@
         },
         {
           "name": "weekStartsOn",
-          "type": "enum",
+          "type": "undefined | 0 | 1 | 2 | 3 | 4 | 5 | 6",
           "required": false,
           "description": "一周开始的日期（0=周日, 1=周一）"
         },
@@ -319,13 +319,13 @@
         },
         {
           "name": "direction",
-          "type": "enum",
+          "type": "undefined | \"horizontal\" | \"vertical\"",
           "required": false,
           "description": "方向"
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"dark\"",
           "required": false,
           "description": "变体样式"
         }
@@ -355,7 +355,7 @@
         },
         {
           "name": "size",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"large\"",
           "required": false,
           "description": ""
         },
@@ -373,7 +373,7 @@
         },
         {
           "name": "focusSelection",
-          "type": "enum",
+          "type": "undefined | \"none\" | \"all\" | \"end\"",
           "required": false,
           "description": ""
         },
@@ -385,7 +385,7 @@
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"light\" | \"dark\" | \"reset\"",
           "required": false,
           "description": ""
         },
@@ -570,7 +570,7 @@
         },
         {
           "name": "size",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"large\"",
           "required": false,
           "description": ""
         },
@@ -588,7 +588,7 @@
         },
         {
           "name": "focusSelection",
-          "type": "enum",
+          "type": "undefined | \"none\" | \"all\" | \"end\"",
           "required": false,
           "description": ""
         },
@@ -600,7 +600,7 @@
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"light\" | \"dark\" | \"reset\"",
           "required": false,
           "description": ""
         }
@@ -738,7 +738,7 @@
         },
         {
           "name": "size",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"large\"",
           "required": false,
           "description": ""
         },
@@ -756,7 +756,7 @@
         },
         {
           "name": "focusSelection",
-          "type": "enum",
+          "type": "undefined | \"none\" | \"all\" | \"end\"",
           "required": false,
           "description": ""
         },
@@ -768,7 +768,7 @@
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"light\" | \"dark\" | \"reset\"",
           "required": false,
           "description": ""
         },
@@ -948,7 +948,7 @@
         },
         {
           "name": "size",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"large\"",
           "required": false,
           "description": ""
         },
@@ -966,7 +966,7 @@
         },
         {
           "name": "focusSelection",
-          "type": "enum",
+          "type": "undefined | \"none\" | \"all\" | \"end\"",
           "required": false,
           "description": ""
         },
@@ -978,7 +978,7 @@
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"light\" | \"dark\" | \"reset\"",
           "required": false,
           "description": ""
         }
@@ -1068,7 +1068,7 @@
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"dark\"",
           "required": false,
           "description": "变体样式"
         }
@@ -1164,7 +1164,7 @@
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"dark\"",
           "required": false,
           "description": "变体样式"
         }
@@ -1449,7 +1449,7 @@
         },
         {
           "name": "quarter",
-          "type": "enum",
+          "type": "1 | 2 | 3 | 4",
           "required": true,
           "description": ""
         },
@@ -1479,7 +1479,7 @@
         },
         {
           "name": "quarter",
-          "type": "enum",
+          "type": "1 | 2 | 3 | 4",
           "required": true,
           "description": ""
         },
@@ -1814,14 +1814,14 @@
       "name": "Size",
       "exportName": "Size",
       "description": "Size: Demonstrates the large size variant of DateRangeInput.\n- Shows the component with increased dimensions for prominent interfaces.\n- Useful for applications requiring larger touch targets or enhanced visibility.",
-      "source": "import { MonthCalendar } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-4\">\n      <DateRangeDemo size=\"large\" />\n    </div>\n  );\n}"
+      "source": "import { MonthCalendar } from \"@choice-ui/calendar\"\n\nexport default function App() {\n\n  return (\n    <div className=\"space-y-4\">\n      <DateRangeDemo size=\"large\" />\n    </div>\n  )\n\n}"
     },
     {
       "id": "dateandtime-daterangeinput--variable",
       "name": "Variable",
       "exportName": "Variable",
       "description": "Variable: Demonstrates the dark theme variant of DateRangeInput.\n- Shows the component styled for dark theme environments.\n- Useful for applications with dark mode or specialized UI themes.",
-      "source": "import { MonthCalendar } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <div className=\"rounded-xl bg-gray-800 p-8\">\n      <DateRangeDemo variant=\"dark\" />\n    </div>\n  );\n}"
+      "source": "import { MonthCalendar } from \"@choice-ui/calendar\"\n\nexport default function App() {\n\n  return (\n    <div className=\"rounded-xl bg-gray-800 p-8\">\n      <DateRangeDemo variant=\"dark\" />\n    </div>\n  )\n\n}"
     },
     {
       "id": "dateandtime-daterangeinput--range-synchronization",
@@ -1842,42 +1842,42 @@
       "name": "Internationalization",
       "exportName": "Internationalization",
       "description": "Internationalization: Demonstrates comprehensive multi-language support.\n- Shows DateRangeInput working with Chinese, English, Japanese, and Korean locales.\n- Displays locale-specific date formats and placeholder text.\n- Demonstrates proper range calculation display in multiple languages.",
-      "source": "import { MonthCalendar } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-8\">\n      <div>\n        <h3 className=\"font-strong mb-4\">中文 (zh-CN)</h3>\n        <DateRangeDemo\n          locale={zhCN}\n          startValue={new Date()}\n          endValue={addDays(new Date(), 7)}\n          startPlaceholder=\"开始日期\"\n          endPlaceholder=\"结束日期\"\n          format=\"yyyy年MM月dd日\"\n        />\n        <div className=\"text-body-small mt-2 text-gray-500\">范围显示：7 天</div>\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-4\">English (en-US)</h3>\n        <DateRangeDemo\n          locale={enUS}\n          startValue={new Date()}\n          endValue={addDays(new Date(), 7)}\n          startPlaceholder=\"Start Date\"\n          endPlaceholder=\"End Date\"\n          format=\"MM/dd/yyyy\"\n        />\n        <div className=\"text-body-small mt-2 text-gray-500\">Range display: 7 days</div>\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-4\">日本語 (ja)</h3>\n        <DateRangeDemo\n          locale={ja}\n          startValue={new Date()}\n          endValue={addDays(new Date(), 7)}\n          startPlaceholder=\"開始日\"\n          endPlaceholder=\"終了日\"\n          format=\"yyyy/MM/dd\"\n        />\n        <div className=\"text-body-small mt-2 text-gray-500\">範囲表示：7日</div>\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-4\">한국어 (ko)</h3>\n        <DateRangeDemo\n          locale={ko}\n          startValue={new Date()}\n          endValue={addDays(new Date(), 7)}\n          startPlaceholder=\"시작일\"\n          endPlaceholder=\"종료일\"\n          format=\"yyyy.MM.dd\"\n        />\n        <div className=\"text-body-small mt-2 text-gray-500\">범위 표시：7일</div>\n      </div>\n    </div>\n  );\n}"
+      "source": "import { MonthCalendar } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n\n    <div className=\"space-y-8\">\n      <div>\n        <h3 className=\"font-strong mb-4\">中文 (zh-CN)</h3>\n        <DateRangeDemo\n          locale={zhCN}\n          startValue={new Date()}\n          endValue={addDays(new Date(), 7)}\n          startPlaceholder=\"开始日期\"\n          endPlaceholder=\"结束日期\"\n          format=\"yyyy年MM月dd日\"\n        />\n        <div className=\"text-body-small mt-2 text-gray-500\">范围显示：7 天</div>\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-4\">English (en-US)</h3>\n        <DateRangeDemo\n          locale={enUS}\n          startValue={new Date()}\n          endValue={addDays(new Date(), 7)}\n          startPlaceholder=\"Start Date\"\n          endPlaceholder=\"End Date\"\n          format=\"MM/dd/yyyy\"\n        />\n        <div className=\"text-body-small mt-2 text-gray-500\">Range display: 7 days</div>\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-4\">日本語 (ja)</h3>\n        <DateRangeDemo\n          locale={ja}\n          startValue={new Date()}\n          endValue={addDays(new Date(), 7)}\n          startPlaceholder=\"開始日\"\n          endPlaceholder=\"終了日\"\n          format=\"yyyy/MM/dd\"\n        />\n        <div className=\"text-body-small mt-2 text-gray-500\">範囲表示：7日</div>\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-4\">한국어 (ko)</h3>\n        <DateRangeDemo\n          locale={ko}\n          startValue={new Date()}\n          endValue={addDays(new Date(), 7)}\n          startPlaceholder=\"시작일\"\n          endPlaceholder=\"종료일\"\n          format=\"yyyy.MM.dd\"\n        />\n        <div className=\"text-body-small mt-2 text-gray-500\">범위 표시：7일</div>\n      </div>\n    </div>\n\n  );\n}"
     },
     {
       "id": "dateandtime-daterangeinput--different-formats",
       "name": "Different Formats",
       "exportName": "DifferentFormats",
       "description": "DifferentFormats: Demonstrates various date format options and their visual representation.\n- Shows ISO format, American format, Chinese format, and European format.\n- Displays how different formats affect the display and input experience.\n- Useful for understanding format flexibility and regional preferences.",
-      "source": "import { MonthCalendar } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-8\">\n      <div>\n        <h3 className=\"font-strong mb-4\">ISO Format (yyyy-MM-dd)</h3>\n        <DateRangeDemo\n          format=\"yyyy-MM-dd\"\n          startValue={new Date()}\n          endValue={addDays(new Date(), 3)}\n          locale={enUS}\n        />\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-4\">American Format (MM/dd/yyyy)</h3>\n        <DateRangeDemo\n          format=\"MM/dd/yyyy\"\n          startValue={new Date()}\n          endValue={addDays(new Date(), 3)}\n          locale={enUS}\n        />\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-4\">Chinese Format (yyyy年MM月dd日)</h3>\n        <DateRangeDemo\n          format=\"yyyy年MM月dd日\"\n          startValue={new Date()}\n          endValue={addDays(new Date(), 3)}\n          locale={zhCN}\n        />\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-4\">European Format (dd.MM.yyyy)</h3>\n        <DateRangeDemo\n          format=\"dd.MM.yyyy\"\n          startValue={new Date()}\n          endValue={addDays(new Date(), 3)}\n          locale={enUS}\n        />\n      </div>\n    </div>\n  );\n}"
+      "source": "import { MonthCalendar } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n\n    <div className=\"space-y-8\">\n      <div>\n        <h3 className=\"font-strong mb-4\">ISO Format (yyyy-MM-dd)</h3>\n        <DateRangeDemo\n          format=\"yyyy-MM-dd\"\n          startValue={new Date()}\n          endValue={addDays(new Date(), 3)}\n          locale={enUS}\n        />\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-4\">American Format (MM/dd/yyyy)</h3>\n        <DateRangeDemo\n          format=\"MM/dd/yyyy\"\n          startValue={new Date()}\n          endValue={addDays(new Date(), 3)}\n          locale={enUS}\n        />\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-4\">Chinese Format (yyyy年MM月dd日)</h3>\n        <DateRangeDemo\n          format=\"yyyy年MM月dd日\"\n          startValue={new Date()}\n          endValue={addDays(new Date(), 3)}\n          locale={zhCN}\n        />\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-4\">European Format (dd.MM.yyyy)</h3>\n        <DateRangeDemo\n          format=\"dd.MM.yyyy\"\n          startValue={new Date()}\n          endValue={addDays(new Date(), 3)}\n          locale={enUS}\n        />\n      </div>\n    </div>\n\n  );\n}"
     },
     {
       "id": "dateandtime-daterangeinput--common-scenarios",
       "name": "Common Scenarios",
       "exportName": "CommonScenarios",
       "description": "CommonScenarios: Demonstrates real-world usage scenarios for DateRangeInput.\n- Shows holiday planning, data analysis periods, and event scheduling examples.\n- Displays practical applications with appropriate date ranges and contexts.\n- Useful for understanding when and how to implement date range selection.",
-      "source": "import { MonthCalendar } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-8\">\n      <div>\n        <h3 className=\"font-strong mb-4\">🏖️ Holiday Planning</h3>\n        <DateRangeDemo\n          startValue={addDays(new Date(), 30)}\n          endValue={addDays(new Date(), 37)}\n          startPlaceholder=\"Holiday Start\"\n          endPlaceholder=\"Holiday End\"\n          locale={zhCN}\n          format=\"yyyy年MM月dd日\"\n        />\n        <div className=\"text-secondary-foreground mt-2\">\n          💡 Planning a week-long holiday, displaying the total number of days\n        </div>\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-4\">📊 Data Analysis Period</h3>\n        <DateRangeDemo\n          startValue={subDays(new Date(), 30)}\n          endValue={new Date()}\n          startPlaceholder=\"Start Period\"\n          endPlaceholder=\"End Period\"\n          locale={enUS}\n          format=\"yyyy-MM-dd\"\n        />\n        <div className=\"text-secondary-foreground mt-2\">\n          💡 Data analysis period for the past 30 days\n        </div>\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-4\">🎫 Event Time</h3>\n        <DateRangeDemo\n          startValue={addDays(new Date(), 15)}\n          endValue={addDays(new Date(), 17)}\n          startPlaceholder=\"活動開始\"\n          endPlaceholder=\"活動終了\"\n          locale={ja}\n          format=\"yyyy/MM/dd\"\n        />\n        <div className=\"text-secondary-foreground mt-2\">\n          💡 3-day event period, Japanese environment\n        </div>\n      </div>\n    </div>\n  );\n}"
+      "source": "import { MonthCalendar } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n\n    <div className=\"space-y-8\">\n      <div>\n        <h3 className=\"font-strong mb-4\">🏖️ Holiday Planning</h3>\n        <DateRangeDemo\n          startValue={addDays(new Date(), 30)}\n          endValue={addDays(new Date(), 37)}\n          startPlaceholder=\"Holiday Start\"\n          endPlaceholder=\"Holiday End\"\n          locale={zhCN}\n          format=\"yyyy年MM月dd日\"\n        />\n        <div className=\"text-secondary-foreground mt-2\">\n          💡 Planning a week-long holiday, displaying the total number of days\n        </div>\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-4\">📊 Data Analysis Period</h3>\n        <DateRangeDemo\n          startValue={subDays(new Date(), 30)}\n          endValue={new Date()}\n          startPlaceholder=\"Start Period\"\n          endPlaceholder=\"End Period\"\n          locale={enUS}\n          format=\"yyyy-MM-dd\"\n        />\n        <div className=\"text-secondary-foreground mt-2\">\n          💡 Data analysis period for the past 30 days\n        </div>\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-4\">🎫 Event Time</h3>\n        <DateRangeDemo\n          startValue={addDays(new Date(), 15)}\n          endValue={addDays(new Date(), 17)}\n          startPlaceholder=\"活動開始\"\n          endPlaceholder=\"活動終了\"\n          locale={ja}\n          format=\"yyyy/MM/dd\"\n        />\n        <div className=\"text-secondary-foreground mt-2\">\n          💡 3-day event period, Japanese environment\n        </div>\n      </div>\n    </div>\n\n  );\n}"
     },
     {
       "id": "dateandtime-daterangeinput--edge-cases",
       "name": "Edge Cases",
       "exportName": "EdgeCases",
       "description": "EdgeCases: Demonstrates how DateRangeInput handles boundary and edge cases.\n- Shows same time point handling, reverse time ranges, and cross-year ranges.\n- Displays proper validation and calculation behavior in unusual scenarios.\n- Useful for understanding component robustness and error handling.",
-      "source": "import { MonthCalendar } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-8\">\n      <div>\n        <h3 className=\"font-strong mb-4\">Same Time Point</h3>\n        <DateRangeDemo\n          startValue={new Date()}\n          endValue={new Date()}\n          locale={enUS}\n        />\n        <div className=\"text-secondary-foreground mt-2\">\n          💡 Display as 1 day at the same time point\n        </div>\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-4\">Reverse Time Range</h3>\n        <DateRangeDemo\n          startValue={addDays(new Date(), 5)}\n          endValue={new Date()}\n          locale={enUS}\n        />\n        <div className=\"text-secondary-foreground mt-2\">\n          💡 Display the absolute difference in reverse range\n        </div>\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-4\">Cross-year Range</h3>\n        <DateRangeDemo\n          startValue={new Date(\"2024-12-25\")}\n          endValue={new Date(\"2025-01-05\")}\n          locale={zhCN}\n          format=\"yyyy年MM月dd日\"\n        />\n        <div className=\"text-secondary-foreground mt-2\">\n          💡 Calculating the cross-year date range\n        </div>\n      </div>\n    </div>\n  );\n}"
+      "source": "import { MonthCalendar } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n\n    <div className=\"space-y-8\">\n      <div>\n        <h3 className=\"font-strong mb-4\">Same Time Point</h3>\n        <DateRangeDemo\n          startValue={new Date()}\n          endValue={new Date()}\n          locale={enUS}\n        />\n        <div className=\"text-secondary-foreground mt-2\">\n          💡 Display as 1 day at the same time point\n        </div>\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-4\">Reverse Time Range</h3>\n        <DateRangeDemo\n          startValue={addDays(new Date(), 5)}\n          endValue={new Date()}\n          locale={enUS}\n        />\n        <div className=\"text-secondary-foreground mt-2\">\n          💡 Display the absolute difference in reverse range\n        </div>\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-4\">Cross-year Range</h3>\n        <DateRangeDemo\n          startValue={new Date(\"2024-12-25\")}\n          endValue={new Date(\"2025-01-05\")}\n          locale={zhCN}\n          format=\"yyyy年MM月dd日\"\n        />\n        <div className=\"text-secondary-foreground mt-2\">\n          💡 Calculating the cross-year date range\n        </div>\n      </div>\n    </div>\n\n  );\n}"
     },
     {
       "id": "dateandtime-daterangeinput--disabled-states",
       "name": "Disabled States",
       "exportName": "DisabledStates",
       "description": "DisabledStates: Demonstrates various disabled state configurations.\n- Shows individual input field disabling (start only, end only, or both).\n- Displays how disabled states affect user interaction and visual appearance.\n- Useful for implementing conditional form controls and readOnly scenarios.",
-      "source": "import { MonthCalendar } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-8\">\n      <div>\n        <h3 className=\"font-strong mb-4\">Start Date Disabled</h3>\n        <DateRangeDemo\n          startValue={new Date()}\n          endValue={addDays(new Date(), 7)}\n          startDisabled={true}\n          locale={enUS}\n        />\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-4\">End Date Disabled</h3>\n        <DateRangeDemo\n          startValue={new Date()}\n          endValue={addDays(new Date(), 7)}\n          endDisabled={true}\n          locale={enUS}\n        />\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-4\">All Disabled</h3>\n        <DateRangeDemo\n          startValue={new Date()}\n          endValue={addDays(new Date(), 7)}\n          startDisabled={true}\n          endDisabled={true}\n          locale={enUS}\n        />\n      </div>\n    </div>\n  );\n}"
+      "source": "import { MonthCalendar } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n\n    <div className=\"space-y-8\">\n      <div>\n        <h3 className=\"font-strong mb-4\">Start Date Disabled</h3>\n        <DateRangeDemo\n          startValue={new Date()}\n          endValue={addDays(new Date(), 7)}\n          startDisabled={true}\n          locale={enUS}\n        />\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-4\">End Date Disabled</h3>\n        <DateRangeDemo\n          startValue={new Date()}\n          endValue={addDays(new Date(), 7)}\n          endDisabled={true}\n          locale={enUS}\n        />\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-4\">All Disabled</h3>\n        <DateRangeDemo\n          startValue={new Date()}\n          endValue={addDays(new Date(), 7)}\n          startDisabled={true}\n          endDisabled={true}\n          locale={enUS}\n        />\n      </div>\n    </div>\n\n  );\n}"
     },
     {
       "id": "dateandtime-daterangeinput--read-only",
       "name": "Read Only",
       "exportName": "ReadOnly",
       "description": "ReadOnly: Demonstrates the DateRangeInput component in readOnly mode.\n- Prevents value changes while allowing focus and selection\n- Maintains normal visual appearance (unlike disabled)\n- Useful for displaying non-editable date range information",
-      "source": "import { DateRangeInput } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <div className=\"rounded-xl border bg-stone-50 p-4\">\n        <div className=\"text-body-small-strong mb-2 text-stone-700\">Current Start:</div>\n        <div className=\"text-body-small font-mono text-stone-600\">\n          {startValue ? startValue.toLocaleDateString() : \"null\"}\n        </div>\n        <div className=\"text-body-small-strong mt-2 text-stone-700\">Current End:</div>\n        <div className=\"text-body-small font-mono text-stone-600\">\n          {endValue ? endValue.toLocaleDateString() : \"null\"}\n        </div>\n        <div className=\"text-body-small-strong mt-2 text-stone-700\">Change Count:</div>\n        <div className=\"text-body-small font-mono text-stone-600\">{changeCount}</div>\n      </div>\n      <Panel.Row\n        type=\"two-input-two-icon\"\n        className=\"px-0\"\n      >\n        <DateRangeInput\n          readOnly\n          startValue={startValue}\n          endValue={endValue}\n          onStartChange={handleStartChange}\n          onEndChange={handleEndChange}\n          locale={enUS}\n        />\n      </Panel.Row>\n      <Panel.Row\n        type=\"two-input-two-icon\"\n        className=\"px-0\"\n      >\n        <DateRangeInput\n          startValue={startValue}\n          endValue={endValue}\n          onStartChange={handleStartChange}\n          onEndChange={handleEndChange}\n          locale={enUS}\n        />\n      </Panel.Row>\n      <div className=\"text-body-small text-stone-600\">\n        💡 Try changing the readonly date range input - the values should not change and the\n        change count should remain at 0. Only the normal input will change the values.\n      </div>\n    </div>\n  );\n}"
+      "source": "import { DateRangeInput } from \"@choice-ui/calendar\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [startValue, setStartValue] = useState<Date | null>(new Date())\n  const [endValue, setEndValue] = useState<Date | null>(addDays(new Date(), 7))\n  const [changeCount, setChangeCount] = useState(0)\n\n  const handleStartChange = (newValue: Date | null) => {\n    setStartValue(newValue)\n    setChangeCount((prev) => prev + 1)\n  }\n\n  const handleEndChange = (newValue: Date | null) => {\n    setEndValue(newValue)\n    setChangeCount((prev) => prev + 1)\n  }\n\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <div className=\"rounded-xl border bg-stone-50 p-4\">\n        <div className=\"text-body-small-strong mb-2 text-stone-700\">Current Start:</div>\n        <div className=\"text-body-small font-mono text-stone-600\">\n          {startValue ? startValue.toLocaleDateString() : \"null\"}\n        </div>\n        <div className=\"text-body-small-strong mt-2 text-stone-700\">Current End:</div>\n        <div className=\"text-body-small font-mono text-stone-600\">\n          {endValue ? endValue.toLocaleDateString() : \"null\"}\n        </div>\n        <div className=\"text-body-small-strong mt-2 text-stone-700\">Change Count:</div>\n        <div className=\"text-body-small font-mono text-stone-600\">{changeCount}</div>\n      </div>\n      <Panel.Row\n        type=\"two-input-two-icon\"\n        className=\"px-0\"\n      >\n        <DateRangeInput\n          readOnly\n          startValue={startValue}\n          endValue={endValue}\n          onStartChange={handleStartChange}\n          onEndChange={handleEndChange}\n          locale={enUS}\n        />\n      </Panel.Row>\n      <Panel.Row\n        type=\"two-input-two-icon\"\n        className=\"px-0\"\n      >\n        <DateRangeInput\n          startValue={startValue}\n          endValue={endValue}\n          onStartChange={handleStartChange}\n          onEndChange={handleEndChange}\n          locale={enUS}\n        />\n      </Panel.Row>\n      <div className=\"text-body-small text-stone-600\">\n        💡 Try changing the readonly date range input - the values should not change and the\n        change count should remain at 0. Only the normal input will change the values.\n      </div>\n    </div>\n  )\n\n}"
     }
   ],
   "tags": [

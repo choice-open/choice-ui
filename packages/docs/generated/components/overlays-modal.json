@@ -103,7 +103,7 @@
         },
         {
           "name": "size",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"large\"",
           "required": false,
           "description": ""
         },
@@ -121,7 +121,7 @@
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"light\" | \"reset\"",
           "required": false,
           "description": ""
         },
@@ -151,7 +151,7 @@
         },
         {
           "name": "placement",
-          "type": "enum",
+          "type": "undefined | \"bottom-start\" | \"bottom-end\"",
           "required": false,
           "description": ""
         },
@@ -217,7 +217,7 @@
         },
         {
           "name": "size",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"large\"",
           "required": false,
           "description": ""
         },
@@ -241,7 +241,7 @@
         },
         {
           "name": "focusSelection",
-          "type": "enum",
+          "type": "undefined | \"none\" | \"all\" | \"end\"",
           "required": false,
           "description": ""
         },
@@ -253,7 +253,7 @@
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"light\" | \"reset\" | \"dark\"",
           "required": false,
           "description": ""
         },
@@ -307,7 +307,7 @@
         },
         {
           "name": "focusSelection",
-          "type": "enum",
+          "type": "undefined | \"none\" | \"all\" | \"end\"",
           "required": false,
           "description": ""
         },
@@ -319,7 +319,7 @@
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"light\" | \"reset\" | \"dark\"",
           "required": false,
           "description": ""
         },
@@ -392,21 +392,21 @@
       "name": "Basic",
       "exportName": "Basic",
       "description": "`Modal` is a versatile overlay component for displaying focused content and gathering user input.\n\nFeatures:\n- Structured layout with header, content, and footer sections\n- Flexible header with support for custom elements (tabs, selects, navigation)\n- Customizable sizing and positioning\n- Specialized input components for modal contexts\n- Footer with action buttons\n- Proper focus management\n\nUsage Guidelines:\n- Use for important interactions that require focused attention\n- Structure content with clear headers and organized body content\n- Include appropriate action buttons in the footer\n- Consider responsive behavior for different screen sizes\n- Limit the number of interactive elements to maintain focus\n\nAccessibility:\n- Manages focus properly when opened and closed\n- Traps focus within the modal when open\n- Supports keyboard navigation and dismissal\n- Provides appropriate ARIA roles and attributes\n- Ensures adequate contrast for all elements\nBasic: Demonstrates the Modal component with different header configurations.\n\nFeatures:\n- Multiple header styles showcasing flexibility\n- Icon button for navigation or dismissal\n- Tabs integration for content organization\n- Select component in header for filtering or context\n- Basic content area with padding\n- Footer with action buttons\n\nThis example shows how the Modal can be adapted for various UI patterns\nwhile maintaining a consistent structure and appearance.",
-      "source": "import { Modal } from \"@choice-ui/modal\"\n\nexport default function App() {\n  return (\n    <Modal className=\"w-md\">\n      <Modal.Header\n        title=\"Modal\"\n        onClose={() => {}}\n      />\n      <Modal.Header\n        title=\"Modal\"\n        onClose={() => {}}\n      >\n        <div className=\"px-2 pb-2 [grid-area:input]\">\n          <SearchInput />\n        </div>\n      </Modal.Header>\n      <Modal.Header\n        title={\n          <div className=\"flex items-center gap-2\">\n            <IconButton>\n              <ChevronLeft />\n            </IconButton>\n            Modal\n          </div>\n        }\n      />\n      <Modal.Header\n        title=\"Title\"\n        onClose={() => {}}\n      >\n        <div className=\"flex items-center justify-end\">\n          <LinkButton>\n            <LockAspectRatio />\n            Link\n          </LinkButton>\n        </div>\n      </Modal.Header>\n      <Modal.Header\n        title={\n          <Tabs\n            value={tab}\n            onChange={setTab}\n          >\n            <Tabs.Item value=\"tab-1\">Tab 1</Tabs.Item>\n            <Tabs.Item value=\"tab-2\">Tab 2</Tabs.Item>\n            <Tabs.Item value=\"tab-3\">Tab 3</Tabs.Item>\n          </Tabs>\n        }\n      />\n      <Modal.Header\n        title={\n          <Select\n            matchTriggerWidth\n            value={select}\n            onChange={setSelect}\n          >\n            <Select.Trigger prefixElement={<ThemeSunBright />}>\n              {select || \"Select\"}\n            </Select.Trigger>\n            <Select.Content>\n              <Select.Item value=\"option-1\">Option 1</Select.Item>\n              <Select.Item value=\"option-2\">Option 2</Select.Item>\n              <Select.Item value=\"option-3\">Option 3</Select.Item>\n            </Select.Content>\n          </Select>\n        }\n      />\n\n      <Modal.Content>\n        <div className=\"p-4\">\n          Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.\n        </div>\n      </Modal.Content>\n      <Modal.Footer className=\"justify-end\">\n        <Button variant=\"secondary\">Cancel</Button>\n        <Button>Action</Button>\n      </Modal.Footer>\n    </Modal>\n  );\n}"
+      "source": "import { Modal } from \"@choice-ui/modal\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [tab, setTab] = useState(\"tab-1\")\n  const [select, setSelect] = useState(\"option-1\")\n  return (\n    <Modal className=\"w-md\">\n      <Modal.Header\n        title=\"Modal\"\n        onClose={() => {}}\n      />\n      <Modal.Header\n        title=\"Modal\"\n        onClose={() => {}}\n      >\n        <div className=\"px-2 pb-2 [grid-area:input]\">\n          <SearchInput />\n        </div>\n      </Modal.Header>\n      <Modal.Header\n        title={\n          <div className=\"flex items-center gap-2\">\n            <IconButton>\n              <ChevronLeft />\n            </IconButton>\n            Modal\n          </div>\n        }\n      />\n      <Modal.Header\n        title=\"Title\"\n        onClose={() => {}}\n      >\n        <div className=\"flex items-center justify-end\">\n          <LinkButton>\n            <LockAspectRatio />\n            Link\n          </LinkButton>\n        </div>\n      </Modal.Header>\n      <Modal.Header\n        title={\n          <Tabs\n            value={tab}\n            onChange={setTab}\n          >\n            <Tabs.Item value=\"tab-1\">Tab 1</Tabs.Item>\n            <Tabs.Item value=\"tab-2\">Tab 2</Tabs.Item>\n            <Tabs.Item value=\"tab-3\">Tab 3</Tabs.Item>\n          </Tabs>\n        }\n      />\n      <Modal.Header\n        title={\n          <Select\n            matchTriggerWidth\n            value={select}\n            onChange={setSelect}\n          >\n            <Select.Trigger prefixElement={<ThemeSunBright />}>\n              {select || \"Select\"}\n            </Select.Trigger>\n            <Select.Content>\n              <Select.Item value=\"option-1\">Option 1</Select.Item>\n              <Select.Item value=\"option-2\">Option 2</Select.Item>\n              <Select.Item value=\"option-3\">Option 3</Select.Item>\n            </Select.Content>\n          </Select>\n        }\n      />\n\n      <Modal.Content>\n        <div className=\"p-4\">\n          Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.\n        </div>\n      </Modal.Content>\n      <Modal.Footer className=\"justify-end\">\n        <Button variant=\"secondary\">Cancel</Button>\n        <Button>Action</Button>\n      </Modal.Footer>\n    </Modal>\n  )\n\n}"
     },
     {
       "id": "overlays-modal--modal-content",
       "name": "Modal Content",
       "exportName": "ModalContent",
       "description": "ModalContent: Demonstrates specialized form elements designed for modals.\n\nFeatures:\n- TextField component integration\n- Modal.MultiLineInput for multi-line text entry\n- Modal.Select for dropdown selection with custom trigger content\n- Proper spacing and layout for form elements\n- Avatar integration with select component\n\nThis pattern is useful for:\n- Forms and data entry dialogs\n- Settings or configuration panels\n- User input collection with proper validation\n- Creating consistent form experiences within modals",
-      "source": "import { Modal } from \"@choice-ui/modal\"\n\nexport default function App() {\n  return (\n    <Modal>\n      <Modal.Header title=\"Modal\" />\n      <Modal.Content className=\"flex w-md flex-col gap-4 p-4\">\n        <div className=\"flex w-full items-center gap-2\">\n          <TextField\n            className=\"flex-1 rounded-lg\"\n            size=\"large\"\n            placeholder=\"Please enter your name\"\n            selected={open}\n            value={search}\n            onChange={setSearch}\n          >\n            <TextField.Suffix className=\"px-1\">\n              <Select\n                open={open}\n                onOpenChange={setOpen}\n                value={dropdown}\n                onChange={setDropdown}\n              >\n                <Select.Trigger>\n                  <Select.Value>{dropdown}</Select.Value>\n                </Select.Trigger>\n                <Select.Content>\n                  {[\"option-1\", \"option-2\", \"option-3\"].map((option) => (\n                    <Select.Item\n                      key={option}\n                      value={option}\n                    >\n                      {option}\n                    </Select.Item>\n                  ))}\n                </Select.Content>\n              </Select>\n            </TextField.Suffix>\n          </TextField>\n          <Button\n            className=\"font-strong rounded-lg px-4\"\n            size=\"large\"\n          >\n            Share\n          </Button>\n        </div>\n        <Modal.Input\n          size=\"large\"\n          label=\"Name\"\n          placeholder=\"Please enter your name\"\n          description=\"This is a description\"\n          value={input}\n          onChange={setInput}\n        />\n        <Modal.Textarea\n          label=\"Textarea\"\n          placeholder=\"Please enter your textarea\"\n          description=\"This is a description\"\n          value={textarea}\n          onChange={setTextarea}\n        />\n\n        <Modal.Select\n          label=\"Select\"\n          size=\"large\"\n          value={select}\n          onChange={setSelect}\n        >\n          <Select.Trigger\n            size=\"large\"\n            className=\"gap-2\"\n          >\n            <Avatar\n              photo={\"https://api.dicebear.com/7.x/avataaars/svg?seed=Jennifer%20Miller\"}\n              name={faker.name.fullName()}\n              size=\"small\"\n            />\n            <span className=\"flex-1 truncate\">{select || \"Select\"}</span>\n          </Select.Trigger>\n          <Select.Content>\n            <Select.Item value=\"option-1\">Option 1</Select.Item>\n            <Select.Item value=\"option-2\">Option 2</Select.Item>\n            <Select.Item value=\"option-3\">Option 3</Select.Item>\n          </Select.Content>\n        </Modal.Select>\n      </Modal.Content>\n    </Modal>\n  );\n}"
+      "source": "import { Modal } from \"@choice-ui/modal\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [search, setSearch] = useState(\"\")\n  const [select, setSelect] = useState(\"option-1\")\n  const [input, setInput] = useState(\"\")\n  const [textarea, setTextarea] = useState(\"\")\n  const [multiLineInput, setMultiLineInput] = useState(\"\")\n  const [dropdown, setDropdown] = useState(\"option-1\")\n  const [open, setOpen] = useState(false)\n\n  return (\n    <Modal>\n      <Modal.Header title=\"Modal\" />\n      <Modal.Content className=\"flex w-md flex-col gap-4 p-4\">\n        <div className=\"flex w-full items-center gap-2\">\n          <TextField\n            className=\"flex-1 rounded-lg\"\n            size=\"large\"\n            placeholder=\"Please enter your name\"\n            selected={open}\n            value={search}\n            onChange={setSearch}\n          >\n            <TextField.Suffix className=\"px-1\">\n              <Select\n                open={open}\n                onOpenChange={setOpen}\n                value={dropdown}\n                onChange={setDropdown}\n              >\n                <Select.Trigger>\n                  <Select.Value>{dropdown}</Select.Value>\n                </Select.Trigger>\n                <Select.Content>\n                  {[\"option-1\", \"option-2\", \"option-3\"].map((option) => (\n                    <Select.Item\n                      key={option}\n                      value={option}\n                    >\n                      {option}\n                    </Select.Item>\n                  ))}\n                </Select.Content>\n              </Select>\n            </TextField.Suffix>\n          </TextField>\n          <Button\n            className=\"font-strong rounded-lg px-4\"\n            size=\"large\"\n          >\n            Share\n          </Button>\n        </div>\n        <Modal.Input\n          size=\"large\"\n          label=\"Name\"\n          placeholder=\"Please enter your name\"\n          description=\"This is a description\"\n          value={input}\n          onChange={setInput}\n        />\n        <Modal.Textarea\n          label=\"Textarea\"\n          placeholder=\"Please enter your textarea\"\n          description=\"This is a description\"\n          value={textarea}\n          onChange={setTextarea}\n        />\n\n        <Modal.Select\n          label=\"Select\"\n          size=\"large\"\n          value={select}\n          onChange={setSelect}\n        >\n          <Select.Trigger\n            size=\"large\"\n            className=\"gap-2\"\n          >\n            <Avatar\n              photo={\"https://api.dicebear.com/7.x/avataaars/svg?seed=Jennifer%20Miller\"}\n              name={faker.name.fullName()}\n              size=\"small\"\n            />\n            <span className=\"flex-1 truncate\">{select || \"Select\"}</span>\n          </Select.Trigger>\n          <Select.Content>\n            <Select.Item value=\"option-1\">Option 1</Select.Item>\n            <Select.Item value=\"option-2\">Option 2</Select.Item>\n            <Select.Item value=\"option-3\">Option 3</Select.Item>\n          </Select.Content>\n        </Modal.Select>\n      </Modal.Content>\n    </Modal>\n  )\n\n}"
     },
     {
       "id": "overlays-modal--long-title",
       "name": "Long Title",
       "exportName": "LongTitle",
       "description": "",
-      "source": "import { Modal } from \"@choice-ui/modal\"\n\nexport default function App() {\n  return (\n    <Modal className=\"w-sm\">\n      <Modal.Header title={faker.lorem.sentence(10)} />\n      <Modal.Content className=\"p-4\">{faker.lorem.sentence(10)}</Modal.Content>\n    </Modal>\n  );\n}"
+      "source": "import { Modal } from \"@choice-ui/modal\"\n\nexport default function App() {\n\n  return (\n    <Modal className=\"w-sm\">\n      <Modal.Header title={faker.lorem.sentence(10)} />\n      <Modal.Content className=\"p-4\">{faker.lorem.sentence(10)}</Modal.Content>\n    </Modal>\n  )\n\n}"
     }
   ],
   "tags": [

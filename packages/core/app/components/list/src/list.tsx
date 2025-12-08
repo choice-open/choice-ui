@@ -10,7 +10,7 @@ import { ListProvider, useActiveItemContext } from "./context"
 import { useListKeyboard } from "./hooks"
 import { ListTv } from "./tv"
 
-interface ListProps extends Omit<HTMLProps<HTMLDivElement>, "size"> {
+export interface ListProps extends Omit<HTMLProps<HTMLDivElement>, "size"> {
   children: React.ReactNode
   interactive?: boolean
   selection?: boolean

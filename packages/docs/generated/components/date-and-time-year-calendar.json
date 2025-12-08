@@ -205,7 +205,7 @@
         },
         {
           "name": "dateComparisonMode",
-          "type": "enum",
+          "type": "undefined | \"exact-time\" | \"date-only\"",
           "required": false,
           "description": "日期比较模式"
         },
@@ -277,7 +277,7 @@
         },
         {
           "name": "selectionMode",
-          "type": "enum",
+          "type": "undefined | \"single\" | \"multiple\" | \"range\"",
           "required": false,
           "description": "选择模式，如果未指定，会根据 value 类型自动推断"
         },
@@ -307,7 +307,7 @@
         },
         {
           "name": "weekStartsOn",
-          "type": "enum",
+          "type": "undefined | 0 | 1 | 2 | 3 | 4 | 5 | 6",
           "required": false,
           "description": "一周开始的日期（0=周日, 1=周一）"
         },
@@ -319,13 +319,13 @@
         },
         {
           "name": "direction",
-          "type": "enum",
+          "type": "undefined | \"horizontal\" | \"vertical\"",
           "required": false,
           "description": "方向"
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"dark\"",
           "required": false,
           "description": "变体样式"
         }
@@ -355,7 +355,7 @@
         },
         {
           "name": "size",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"large\"",
           "required": false,
           "description": ""
         },
@@ -373,7 +373,7 @@
         },
         {
           "name": "focusSelection",
-          "type": "enum",
+          "type": "undefined | \"none\" | \"all\" | \"end\"",
           "required": false,
           "description": ""
         },
@@ -385,7 +385,7 @@
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"light\" | \"dark\" | \"reset\"",
           "required": false,
           "description": ""
         },
@@ -570,7 +570,7 @@
         },
         {
           "name": "size",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"large\"",
           "required": false,
           "description": ""
         },
@@ -588,7 +588,7 @@
         },
         {
           "name": "focusSelection",
-          "type": "enum",
+          "type": "undefined | \"none\" | \"all\" | \"end\"",
           "required": false,
           "description": ""
         },
@@ -600,7 +600,7 @@
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"light\" | \"dark\" | \"reset\"",
           "required": false,
           "description": ""
         }
@@ -738,7 +738,7 @@
         },
         {
           "name": "size",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"large\"",
           "required": false,
           "description": ""
         },
@@ -756,7 +756,7 @@
         },
         {
           "name": "focusSelection",
-          "type": "enum",
+          "type": "undefined | \"none\" | \"all\" | \"end\"",
           "required": false,
           "description": ""
         },
@@ -768,7 +768,7 @@
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"light\" | \"dark\" | \"reset\"",
           "required": false,
           "description": ""
         },
@@ -948,7 +948,7 @@
         },
         {
           "name": "size",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"large\"",
           "required": false,
           "description": ""
         },
@@ -966,7 +966,7 @@
         },
         {
           "name": "focusSelection",
-          "type": "enum",
+          "type": "undefined | \"none\" | \"all\" | \"end\"",
           "required": false,
           "description": ""
         },
@@ -978,7 +978,7 @@
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"light\" | \"dark\" | \"reset\"",
           "required": false,
           "description": ""
         }
@@ -1068,7 +1068,7 @@
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"dark\"",
           "required": false,
           "description": "变体样式"
         }
@@ -1164,7 +1164,7 @@
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"dark\"",
           "required": false,
           "description": "变体样式"
         }
@@ -1449,7 +1449,7 @@
         },
         {
           "name": "quarter",
-          "type": "enum",
+          "type": "1 | 2 | 3 | 4",
           "required": true,
           "description": ""
         },
@@ -1479,7 +1479,7 @@
         },
         {
           "name": "quarter",
-          "type": "enum",
+          "type": "1 | 2 | 3 | 4",
           "required": true,
           "description": ""
         },
@@ -1849,7 +1849,7 @@
       "name": "Read Only",
       "exportName": "ReadOnly",
       "description": "ReadOnly: Demonstrates the YearCalendar component in readOnly mode.\n- Prevents value changes while allowing focus and navigation\n- Maintains normal visual appearance (unlike disabled)\n- Useful for displaying non-editable year information",
-      "source": "import { YearCalendar } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <div className=\"rounded-xl border bg-stone-50 p-4\">\n        <div className=\"text-body-small-strong mb-2 text-stone-700\">Current Value:</div>\n        <div className=\"text-body-small font-mono text-stone-600\">\n          {value ? value.getFullYear().toString() : \"null\"}\n        </div>\n        <div className=\"text-body-small-strong mt-2 text-stone-700\">Change Count:</div>\n        <div className=\"text-body-small font-mono text-stone-600\">{changeCount}</div>\n      </div>\n      <div className=\"grid grid-cols-2 gap-4\">\n        <YearCalendar\n          readOnly\n          value={value}\n          onChange={handleChange}\n          currentYear={currentYear}\n        />\n        <YearCalendar\n          value={value}\n          onChange={handleChange}\n          currentYear={currentYear}\n        />\n      </div>\n      <div className=\"text-body-small text-stone-600\">\n        💡 Try clicking years on the readonly calendar - the value should not change and the\n        change count should remain at 0. Only the normal calendar will change the value.\n      </div>\n    </div>\n  );\n}"
+      "source": "import { YearCalendar } from \"@choice-ui/calendar\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [value, setValue] = useState<Date | null>(new Date(2024, 0, 1))\n  const [changeCount, setChangeCount] = useState(0)\n\n  const handleChange = (newValue: Date | null) => {\n    setValue(newValue)\n    setChangeCount((prev) => prev + 1)\n  }\n\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <div className=\"rounded-xl border bg-stone-50 p-4\">\n        <div className=\"text-body-small-strong mb-2 text-stone-700\">Current Value:</div>\n        <div className=\"text-body-small font-mono text-stone-600\">\n          {value ? value.getFullYear().toString() : \"null\"}\n        </div>\n        <div className=\"text-body-small-strong mt-2 text-stone-700\">Change Count:</div>\n        <div className=\"text-body-small font-mono text-stone-600\">{changeCount}</div>\n      </div>\n      <div className=\"grid grid-cols-2 gap-4\">\n        <YearCalendar\n          readOnly\n          value={value}\n          onChange={handleChange}\n          currentYear={currentYear}\n        />\n        <YearCalendar\n          value={value}\n          onChange={handleChange}\n          currentYear={currentYear}\n        />\n      </div>\n      <div className=\"text-body-small text-stone-600\">\n        💡 Try clicking years on the readonly calendar - the value should not change and the\n        change count should remain at 0. Only the normal calendar will change the value.\n      </div>\n    </div>\n  )\n\n}"
     }
   ],
   "tags": [

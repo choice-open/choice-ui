@@ -180,7 +180,7 @@
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"solid\"",
           "required": false,
           "description": ""
         }
@@ -246,7 +246,7 @@
         },
         {
           "name": "locale",
-          "type": "enum",
+          "type": "undefined | \"zh-cn\" | \"en-us\"",
           "required": false,
           "description": ""
         },
@@ -309,14 +309,14 @@
       "name": "Default",
       "exportName": "Default",
       "description": "",
-      "source": "import { Comments } from \"@choice-ui/comments\"\n\nexport default function App() {\n  return (\n    <BasicCommentInput\n      users={mockUsers}\n      placeholder=\"Add a comment, use @ to mention users...\"\n    />\n  );\n}"
+      "source": "import { Comments } from \"@choice-ui/comments\"\n\nexport default function App() {\n  return (\n\n    <BasicCommentInput\n      users={mockUsers}\n      placeholder=\"Add a comment, use @ to mention users...\"\n    />\n\n  );\n}"
     },
     {
       "id": "components-comments-commentinput--solid",
       "name": "Solid",
       "exportName": "Solid",
       "description": "",
-      "source": "import { Comments } from \"@choice-ui/comments\"\n\nexport default function App() {\n  return (\n    <BasicCommentInput\n      users={mockUsers}\n      placeholder=\"Add a comment, use @ to mention users...\"\n      variant=\"solid\"\n    />\n  );\n}"
+      "source": "import { Comments } from \"@choice-ui/comments\"\n\nexport default function App() {\n  return (\n\n    <BasicCommentInput\n      users={mockUsers}\n      placeholder=\"Add a comment, use @ to mention users...\"\n      variant=\"solid\"\n    />\n\n  );\n}"
     },
     {
       "id": "components-comments-commentinput--no-users",

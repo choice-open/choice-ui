@@ -55,6 +55,7 @@ import { useEventCallback } from "usehooks-ts"
 import { MultiSelectTrigger } from "./components"
 import { useMultiSelectSelection, useMultiSelectState } from "./hooks"
 import { extractItemElements, filterSelectableOptions, processOptions } from "./utils"
+import { multiSelectTv } from "./tv"
 
 const PORTAL_ROOT_ID = "floating-menu-root"
 
@@ -149,6 +150,8 @@ const MultiSelectComponent = memo(
       root,
       variant = "default",
     } = props
+
+    const tv = multiSelectTv()
 
     // 提取子元素
     const [itemElements, triggerElement, contentElement] = useMemo(() => {
@@ -630,7 +633,7 @@ const MultiSelectComponent = memo(
                       />
                     ))}
                     {showValidationMessage && validationMessage && (
-                      <div className="text-secondary-foreground px-3 py-2">{validationMessage}</div>
+                      <div className={tv.validationMessage({ variant })}>{validationMessage}</div>
                     )}
                   </div>
                 </div>

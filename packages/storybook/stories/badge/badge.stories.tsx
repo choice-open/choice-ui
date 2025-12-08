@@ -7,7 +7,7 @@ import { Fragment } from "react"
 const meta: Meta<typeof Badge> = {
   title: "Feedback/Badge",
   component: Badge,
-  tags: ["new", "autodocs"],
+  tags: ["autodocs"],
 }
 
 export default meta

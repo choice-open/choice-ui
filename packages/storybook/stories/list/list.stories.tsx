@@ -18,7 +18,7 @@ const meta: Meta<typeof List> = {
   parameters: {
     layout: "centered",
   },
-  tags: ["new"],
+  tags: ["autodocs"],
 }
 
 export default meta
@@ -676,92 +676,29 @@ export const NestedListWithSelection: Story = {
 export const WithAsProp: Story = {
   render: (args) => (
     <div className="space-y-4">
-      <div className="space-y-2">
-        <p className="text-body-small text-gray-600">As button (default):</p>
-        <List {...args}>
-          <List.Content>
-            <List.Item>
-              <List.Value>Button Item</List.Value>
-            </List.Item>
-          </List.Content>
-        </List>
-      </div>
+      <List {...args}>
+        <List.Label>As div:</List.Label>
+        <List.Content>
+          <List.Item as="div">
+            <List.Value>Div Item</List.Value>
+          </List.Item>
+        </List.Content>
+      </List>
 
-      <div className="space-y-2">
-        <p className="text-body-small text-gray-600">As div:</p>
-        <List {...args}>
-          <List.Content>
-            <List.Item as="div">
-              <List.Value>Div Item</List.Value>
-            </List.Item>
-          </List.Content>
-        </List>
-      </div>
-
-      <div className="space-y-2">
-        <p className="text-body-small text-gray-600">As anchor:</p>
-        <List {...args}>
-          <List.Content>
-            <List.Item
-              as="a"
-              onClick={(e) => {
-                e.preventDefault()
-                console.log("Link clicked")
-              }}
-            >
-              <List.Value>Link Item</List.Value>
-            </List.Item>
-          </List.Content>
-        </List>
-      </div>
-
-      <div className="space-y-2">
-        <p className="text-body-small text-gray-600">As anchor with all features:</p>
-        <List {...args}>
-          <List.Content>
-            <List.Item
-              as="a"
-              active
-              prefixElement={<FieldTypeLongText />}
-              suffixElement={<FieldTypeSingleSelect />}
-              shortcut={{ keys: "L" }}
-              onClick={(e) => {
-                e.preventDefault()
-                console.log("Link with features clicked")
-              }}
-            >
-              <List.Value>Link with features</List.Value>
-            </List.Item>
-          </List.Content>
-        </List>
-      </div>
-
-      <div className="space-y-2">
-        <p className="text-body-small text-gray-600">Mixed element types in one list:</p>
-        <List {...args}>
-          <List.Content>
-            <List.Item>
-              <List.Value>Default Button Item</List.Value>
-            </List.Item>
-            <List.Item
-              as="a"
-              prefixElement={<FieldTypeCheckbox />}
-            >
-              <List.Value>Link Item</List.Value>
-            </List.Item>
-            <List.Item as="div">
-              <List.Value>Div Item</List.Value>
-            </List.Item>
-            <List.Item
-              as="a"
-              prefixElement={<FieldTypeAttachment />}
-              shortcut={{ modifier: "command", keys: "S" }}
-            >
-              <List.Value>Link with Icon and Shortcut</List.Value>
-            </List.Item>
-          </List.Content>
-        </List>
-      </div>
+      <List {...args}>
+        <List.Label>As anchor:</List.Label>
+        <List.Content>
+          <List.Item
+            as="a"
+            onClick={(e) => {
+              e.preventDefault()
+              console.log("Link clicked")
+            }}
+          >
+            <List.Value>Link Item</List.Value>
+          </List.Item>
+        </List.Content>
+      </List>
     </div>
   ),
 }
@@ -774,55 +711,33 @@ export const WithAsProp: Story = {
  */
 export const NonInteractive: Story = {
   render: (args) => (
-    <div className="flex flex-col gap-8">
-      <div className="space-y-2">
-        <h3 className="text-body-large-strong">Interactive List (Default)</h3>
-        <p className="text-body-small text-secondary-foreground">
-          Hover over items to see active state. Items use button elements by default.
-        </p>
-        <List {...args}>
-          <List.Content>
-            <List.Item prefixElement={<FieldTypeCheckbox />}>
-              <List.Value>Home</List.Value>
-            </List.Item>
-            <List.Item prefixElement={<FieldTypeSingleSelect />}>
-              <List.Value>Documents</List.Value>
-            </List.Item>
-            <List.Item prefixElement={<FieldTypeAttachment />}>
-              <List.Value>Settings</List.Value>
-            </List.Item>
-          </List.Content>
-        </List>
-      </div>
-
-      <div className="space-y-2">
-        <h3 className="text-body-large-strong">Non-Interactive List</h3>
-        <p className="text-body-small text-secondary-foreground">
-          Hover effects disabled. Items use div elements by default. No active state on hover.
-        </p>
-        <List
-          {...args}
-          interactive={false}
-        >
-          <List.Content>
-            <List.Item prefixElement={<FieldTypeCheckbox />}>
-              <List.Value>Home</List.Value>
-            </List.Item>
-            <List.Item prefixElement={<FieldTypeSingleSelect />}>
-              <List.Value>Documents</List.Value>
-            </List.Item>
-            <List.Item prefixElement={<FieldTypeAttachment />}>
-              <List.Value>Settings</List.Value>
-            </List.Item>
-            <List.Item prefixElement={<FieldTypeLongText />}>
-              <List.Value>Read-only Item</List.Value>
-            </List.Item>
-            <List.Item prefixElement={<FieldTypeDate />}>
-              <List.Value>Static Content</List.Value>
-            </List.Item>
-          </List.Content>
-        </List>
-      </div>
+    <div className="space-y-2">
+      <h3 className="text-body-large-strong">Non-Interactive List</h3>
+      <p className="text-body-small text-secondary-foreground">
+        Hover effects disabled. Items use div elements by default. No active state on hover.
+      </p>
+      <List
+        {...args}
+        interactive={false}
+      >
+        <List.Content>
+          <List.Item prefixElement={<FieldTypeCheckbox />}>
+            <List.Value>Home</List.Value>
+          </List.Item>
+          <List.Item prefixElement={<FieldTypeSingleSelect />}>
+            <List.Value>Documents</List.Value>
+          </List.Item>
+          <List.Item prefixElement={<FieldTypeAttachment />}>
+            <List.Value>Settings</List.Value>
+          </List.Item>
+          <List.Item prefixElement={<FieldTypeLongText />}>
+            <List.Value>Read-only Item</List.Value>
+          </List.Item>
+          <List.Item prefixElement={<FieldTypeDate />}>
+            <List.Value>Static Content</List.Value>
+          </List.Item>
+        </List.Content>
+      </List>
     </div>
   ),
 }

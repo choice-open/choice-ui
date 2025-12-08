@@ -30,7 +30,7 @@
         },
         {
           "name": "as",
-          "type": "enum",
+          "type": "undefined | \"label\" | \"legend\"",
           "required": false,
           "description": ""
         },
@@ -54,7 +54,7 @@
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"light\" | \"dark\" | \"reset\"",
           "required": false,
           "description": ""
         }
@@ -67,35 +67,35 @@
       "name": "Basic",
       "exportName": "Basic",
       "description": "Basic label usage.\n\nUse the `Label` component to annotate form fields.",
-      "source": "import { Label } from \"@choice-ui/label\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-2\">\n      <Label htmlFor=\"name\">Name</Label>\n      <Input id=\"name\" />\n    </div>\n  );\n}"
+      "source": "import { Label } from \"@choice-ui/label\"\n\nexport default function App() {\n  return (\n\n    <div className=\"flex flex-col gap-2\">\n      <Label htmlFor=\"name\">Name</Label>\n      <Input id=\"name\" />\n    </div>\n\n  );\n}"
     },
     {
       "id": "forms-label--with-description",
       "name": "With Description",
       "exportName": "WithDescription",
       "description": "Label with description.\n\nUse the `description` prop to provide additional context.",
-      "source": "import { Label } from \"@choice-ui/label\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-2\">\n      <Label\n        htmlFor=\"description\"\n        description=\"Please enter your full name\"\n      >\n        Name\n      </Label>\n\n      <Input id=\"description\" />\n    </div>\n  );\n}"
+      "source": "import { Label } from \"@choice-ui/label\"\n\nexport default function App() {\n  return (\n\n    <div className=\"flex flex-col gap-2\">\n      <Label\n        htmlFor=\"description\"\n        description=\"Please enter your full name\"\n      >\n        Name\n      </Label>\n\n      <Input id=\"description\" />\n    </div>\n\n  );\n}"
     },
     {
       "id": "forms-label--disabled",
       "name": "Disabled",
       "exportName": "Disabled",
       "description": "Disabled label.\n\nUse the `disabled` prop to indicate the field is not editable.",
-      "source": "import { Label } from \"@choice-ui/label\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-2\">\n      <Label\n        htmlFor=\"disabled\"\n        disabled\n      >\n        Name\n      </Label>\n      <Input\n        id=\"disabled\"\n        disabled\n      />\n    </div>\n  );\n}"
+      "source": "import { Label } from \"@choice-ui/label\"\n\nexport default function App() {\n  return (\n\n    <div className=\"flex flex-col gap-2\">\n      <Label\n        htmlFor=\"disabled\"\n        disabled\n      >\n        Name\n      </Label>\n      <Input\n        id=\"disabled\"\n        disabled\n      />\n    </div>\n\n  );\n}"
     },
     {
       "id": "forms-label--required",
       "name": "Required",
       "exportName": "Required",
       "description": "Required label.\n\nUse the `required` prop to show a required indicator.",
-      "source": "import { Label } from \"@choice-ui/label\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-2\">\n      <Label\n        htmlFor=\"required\"\n        required\n      >\n        Name\n      </Label>\n      <Input id=\"required\" />\n    </div>\n  );\n}"
+      "source": "import { Label } from \"@choice-ui/label\"\n\nexport default function App() {\n  return (\n\n    <div className=\"flex flex-col gap-2\">\n      <Label\n        htmlFor=\"required\"\n        required\n      >\n        Name\n      </Label>\n      <Input id=\"required\" />\n    </div>\n\n  );\n}"
     },
     {
       "id": "forms-label--with-action",
       "name": "With Action",
       "exportName": "WithAction",
       "description": "Label with action.\n\nUse the `action` prop to add an action to the label.",
-      "source": "import { Label } from \"@choice-ui/label\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-2\">\n      <Label\n        htmlFor=\"action\"\n        description=\"This is a description\"\n        action={\n          <IconButton\n            variant=\"ghost\"\n            className=\"size-4\"\n          >\n            <QuestionCircle />\n          </IconButton>\n        }\n      >\n        Name\n      </Label>\n      <Input id=\"action\" />\n    </div>\n  );\n}"
+      "source": "import { Label } from \"@choice-ui/label\"\n\nexport default function App() {\n  return (\n\n    <div className=\"flex flex-col gap-2\">\n      <Label\n        htmlFor=\"action\"\n        description=\"This is a description\"\n        action={\n          <IconButton\n            variant=\"ghost\"\n            className=\"size-4\"\n          >\n            <QuestionCircle />\n          </IconButton>\n        }\n      >\n        Name\n      </Label>\n      <Input id=\"action\" />\n    </div>\n\n  );\n}"
     }
   ],
   "tags": [

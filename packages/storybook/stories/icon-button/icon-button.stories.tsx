@@ -216,7 +216,7 @@ export const AsChild: Story = {
 }
 
 /**
- * IconButton component in readOnly state.
+ * [TEST] IconButton component in readOnly state.
  *
  * In readOnly mode:
  * - The button does not respond to click events

@@ -10,7 +10,7 @@ import { MenuSearch, MenuSearchEmpty } from "./components/menu-search"
 import { MenuValue } from "./components/menu-value"
 import { MenusTv } from "./tv"
 
-interface MenusProps extends HTMLProps<HTMLDivElement> {
+export interface MenusProps extends HTMLProps<HTMLDivElement> {
   children: React.ReactNode
   matchTriggerWidth?: boolean
   variant?: "default" | "light" | "reset"

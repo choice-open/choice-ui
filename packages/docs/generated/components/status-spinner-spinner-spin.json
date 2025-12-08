@@ -43,14 +43,14 @@
         },
         {
           "name": "size",
-          "type": "enum",
+          "type": "undefined | \"small\" | \"medium\" | \"large\"",
           "required": false,
           "defaultValue": "medium",
           "description": ""
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"primary\"",
           "required": false,
           "description": ""
         }
@@ -80,14 +80,14 @@
         },
         {
           "name": "size",
-          "type": "enum",
+          "type": "undefined | \"small\" | \"medium\" | \"large\"",
           "required": false,
           "defaultValue": "medium",
           "description": ""
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"primary\"",
           "required": false,
           "description": ""
         }
@@ -107,7 +107,7 @@
       "name": "Size",
       "exportName": "Size",
       "description": "",
-      "source": "import { SpinnerSpin } from \"@choice-ui/spinner\"\n\nexport default function App() {\n  return (\n    <div className=\"flex items-center gap-4\">\n      <SpinnerSpin size=\"small\" />\n      <SpinnerSpin size=\"medium\" />\n      <SpinnerSpin size=\"large\" />\n    </div>\n  );\n}"
+      "source": "import { SpinnerSpin } from \"@choice-ui/spinner\"\n\nexport default function App() {\n  return (\n\n    <div className=\"flex items-center gap-4\">\n      <SpinnerSpin size=\"small\" />\n      <SpinnerSpin size=\"medium\" />\n      <SpinnerSpin size=\"large\" />\n    </div>\n\n  );\n}"
     },
     {
       "id": "status-spinner-spinnerspin--opacity",
@@ -121,7 +121,7 @@
       "name": "Variants",
       "exportName": "Variants",
       "description": "Spinner has 5 variants: `primary`, `success`, `warning`, `danger`, and `default`.",
-      "source": "import { SpinnerSpin } from \"@choice-ui/spinner\"\n\nexport default function App() {\n  return (\n    <div className=\"flex items-center gap-4\">\n      <SpinnerSpin />\n      <SpinnerSpin variant=\"primary\" />\n    </div>\n  );\n}"
+      "source": "import { SpinnerSpin } from \"@choice-ui/spinner\"\n\nexport default function App() {\n  return (\n\n    <div className=\"flex items-center gap-4\">\n      <SpinnerSpin />\n      <SpinnerSpin variant=\"primary\" />\n    </div>\n\n  );\n}"
     },
     {
       "id": "status-spinner-spinnerspin--custom-color",

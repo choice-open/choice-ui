@@ -14,13 +14,12 @@ export async function run() {
     await startWatch()
   } else {
     const startTime = Date.now()
-    const cache = buildAll(false)
-    const docCount = Object.keys(cache.entries).length
+    const data = buildAll()
+    const docCount = Object.keys(data).length
     console.log(
       `✅ Generated docs for ${docCount} components -> ${path.relative(workspaceRoot, outputDir)} (${Date.now() - startTime}ms)`,
     )
   }
 }
 
-// 直接运行时执行
 run().catch(console.error)

@@ -1,39 +1,44 @@
 import fs from "node:fs"
 import path from "node:path"
-import { outputComponentsDir, outputIndex, outputRegistry, workspaceRoot } from "./constants"
-import type { CacheData, ComponentDetail } from "./types"
+import { outputComponentsDir, outputIndex, outputRegistry, storybookStoriesDir } from "./constants"
+import type { ComponentDetail, DocsData } from "./types"
+import { walkStories } from "./utils"
 
-export function generateOutputs(cache: CacheData) {
-  const cacheEntries = Object.entries(cache.entries)
+/** 只更新单个组件的 JSON 文件 */
+export function generateSingleOutput(detail: ComponentDetail) {
+  const fileName = detail.slug.replace(/\//g, "-") + ".json"
+  const filePath = path.join(outputComponentsDir, fileName)
+  fs.writeFileSync(filePath, JSON.stringify(detail, null, 2), "utf8")
+}
+
+/** 生成所有输出文件 */
+export function generateOutputs(data: DocsData) {
+  const entries = Object.entries(data)
 
   // 生成索引文件
-  const indexItems = cacheEntries
-    .map(([, entry]) => entry.index)
+  const indexItems = entries
+    .map(([, { index }]) => index)
     .sort((a, b) => a.title.localeCompare(b.title))
   fs.writeFileSync(outputIndex, JSON.stringify({ components: indexItems }, null, 2), "utf8")
 
   // 生成每个组件的详情文件
-  for (const [, entry] of cacheEntries) {
-    const fileName = entry.detail.slug.replace(/\//g, "-") + ".json"
-    const filePath = path.join(outputComponentsDir, fileName)
-    fs.writeFileSync(filePath, JSON.stringify(entry.detail, null, 2), "utf8")
+  for (const [, { detail }] of entries) {
+    generateSingleOutput(detail)
   }
 
-  // 生成组件详情映射 TypeScript 文件（用于静态导入，提升性能）
-  // Next.js 会自动进行代码分割，只加载需要的组件数据
-  const componentImports = cacheEntries
-    .map(([, entry], idx) => {
-      const fileName = entry.detail.slug.replace(/\//g, "-") + ".json"
+  // 生成组件详情映射 TypeScript 文件
+  const componentImports = entries
+    .map(([, { detail }], idx) => {
+      const fileName = detail.slug.replace(/\//g, "-") + ".json"
       const importVar = `ComponentDetail${idx}`
-      return { importVar, fileName, slug: entry.detail.slug }
+      return `import ${importVar} from "./${fileName}"`
     })
-    .map(({ importVar, fileName }) => `import ${importVar} from "./${fileName}"`)
     .join("\n")
 
-  const componentMap = cacheEntries
-    .map(([, entry], idx) => {
+  const componentMap = entries
+    .map(([, { detail }], idx) => {
       const importVar = `ComponentDetail${idx}`
-      return `  "${entry.detail.slug}": ${importVar} as ComponentDetail,`
+      return `  "${detail.slug}": ${importVar} as ComponentDetail,`
     })
     .join("\n")
 
@@ -50,15 +55,36 @@ ${componentMap}
   fs.writeFileSync(componentsDetailsPath, componentsDetailsContent, "utf8")
 
   // 生成 registry.ts
-  const registryEntries = cacheEntries.map(([storyPath, entry], idx) => {
-    const importVar = `StoryModule${idx}`
-    const importPath = path
-      .relative(path.dirname(outputRegistry), path.resolve(workspaceRoot, storyPath))
-      .replace(/\\/g, "/")
-      .replace(/\.tsx?$/, "")
+  const storyFiles = walkStories(storybookStoriesDir)
+  const slugToStoryPath = new Map<string, string>()
 
-    return { importVar, importPath, slug: entry.detail.slug }
-  })
+  for (const [slug] of entries) {
+    const componentFolder = slug.split("/").pop()
+    if (componentFolder) {
+      // 精确匹配文件名：componentFolder.stories.tsx
+      const storyPath = storyFiles.find((f) =>
+        f.endsWith(`/${componentFolder}/${componentFolder}.stories.tsx`),
+      )
+      if (storyPath) {
+        slugToStoryPath.set(slug, storyPath)
+      }
+    }
+  }
+
+  const registryEntries = entries
+    .map(([slug, { detail }], idx) => {
+      const storyPath = slugToStoryPath.get(slug)
+      if (!storyPath) return null
+
+      const importVar = `StoryModule${idx}`
+      const importPath = path
+        .relative(path.dirname(outputRegistry), storyPath)
+        .replace(/\\/g, "/")
+        .replace(/\.tsx?$/, "")
+
+      return { importVar, importPath, slug: detail.slug }
+    })
+    .filter((x): x is NonNullable<typeof x> => x !== null)
 
   const imports = registryEntries
     .map(

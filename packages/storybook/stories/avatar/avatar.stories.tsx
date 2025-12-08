@@ -6,7 +6,7 @@ import { useMemo } from "react"
 const meta: Meta<typeof Avatar> = {
   title: "Feedback/Avatar",
   component: Avatar,
-  tags: ["new", "autodocs"],
+  tags: ["autodocs"],
 }
 
 export default meta

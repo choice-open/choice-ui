@@ -25,20 +25,14 @@
       "name": "@choice-ui/avatar",
       "title": "Avatar",
       "description": "",
-      "version": "0.0.4",
-      "tags": [
-        "new"
-      ]
+      "version": "0.0.4"
     },
     {
       "slug": "feedback/badge",
       "name": "@choice-ui/badge",
       "title": "Badge",
       "description": "",
-      "version": "0.0.3",
-      "tags": [
-        "new"
-      ]
+      "version": "0.0.3"
     },
     {
       "slug": "status/bells",
@@ -64,7 +58,7 @@
       "slug": "buttons/button",
       "name": "@choice-ui/button",
       "title": "Button",
-      "description": "Button component for user interactions",
+      "description": "@default \"default\"",
       "version": "0.0.4"
     },
     {
@@ -79,10 +73,7 @@
       "name": "@choice-ui/chip",
       "title": "Chip",
       "description": "",
-      "version": "0.0.3",
-      "tags": [
-        "beta"
-      ]
+      "version": "0.0.3"
     },
     {
       "slug": "forms/chips-input",
@@ -267,7 +258,7 @@
       "slug": "buttons/icon-button",
       "name": "@choice-ui/icon-button",
       "title": "IconButton",
-      "description": "Whether the button is in an active/pressed state",
+      "description": "",
       "version": "0.0.4"
     },
     {
@@ -299,20 +290,14 @@
       "name": "@choice-ui/link-button",
       "title": "LinkButton",
       "description": "",
-      "version": "0.0.2",
-      "tags": [
-        "new"
-      ]
+      "version": "0.0.2"
     },
     {
       "slug": "collections/list",
       "name": "@choice-ui/list",
       "title": "List",
       "description": "",
-      "version": "0.0.4",
-      "tags": [
-        "new"
-      ]
+      "version": "0.0.4"
     },
     {
       "slug": "layouts/loader",
@@ -340,20 +325,14 @@
       "name": "@choice-ui/menus",
       "title": "MenuItem",
       "description": "",
-      "version": "0.1.0",
-      "tags": [
-        "new"
-      ]
+      "version": "0.1.0"
     },
     {
       "slug": "collections/menus",
       "name": "@choice-ui/menus",
       "title": "Menus",
       "description": "",
-      "version": "0.1.0",
-      "tags": [
-        "new"
-      ]
+      "version": "0.1.0"
     },
     {
       "slug": "overlays/modal",
@@ -679,10 +658,7 @@
       "name": "@choice-ui/tooltip",
       "title": "Tooltip",
       "description": "",
-      "version": "0.0.4",
-      "tags": [
-        "upgrade"
-      ]
+      "version": "0.0.4"
     },
     {
       "slug": "components/tree-list",

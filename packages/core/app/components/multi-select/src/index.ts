@@ -1,4 +1,5 @@
-export * from "./multi-select"
-export * from "./components"
-export * from "./hooks"
-export * from "./utils"
+export { MultiSelect } from "./multi-select"
+export { MultiSelectTrigger } from "./components"
+
+export type { MultiSelectProps } from "./multi-select"
+export type { MultiSelectTriggerProps } from "./components"

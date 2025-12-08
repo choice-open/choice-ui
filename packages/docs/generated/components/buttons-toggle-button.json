@@ -37,7 +37,7 @@
         },
         {
           "name": "size",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"large\"",
           "required": false,
           "description": ""
         },
@@ -67,7 +67,7 @@
         },
         {
           "name": "event",
-          "type": "enum",
+          "type": "undefined | \"click\" | \"mousedown\"",
           "required": false,
           "description": ""
         },
@@ -85,7 +85,7 @@
         },
         {
           "name": "variant",
-          "type": "enum",
+          "type": "undefined | \"default\" | \"secondary\" | \"highlight\" | \"reset\"",
           "required": false,
           "description": ""
         }
@@ -98,28 +98,21 @@
       "name": "Basic",
       "exportName": "Basic",
       "description": "- The `aria-label` prop is required.\n- This is a controlled component that requires `value` and `onChange` props to control its state.",
-      "source": "import { ToggleButton } from \"@choice-ui/toggle-button\"\n\nexport default function App() {\n  return (\n    <ToggleButton\n      aria-label=\"Toggle button\"\n      value={controlled}\n      onChange={(value) => setControlled(value)}\n    >\n      {controlled ? <FieldTypeCheckbox /> : <FieldAdd />}\n    </ToggleButton>\n  );\n}"
+      "source": "import { ToggleButton } from \"@choice-ui/toggle-button\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [controlled, setControlled] = useState(false)\n  return (\n    <ToggleButton\n      aria-label=\"Toggle button\"\n      value={controlled}\n      onChange={(value) => setControlled(value)}\n    >\n      {controlled ? <FieldTypeCheckbox /> : <FieldAdd />}\n    </ToggleButton>\n  )\n\n}"
     },
     {
       "id": "buttons-togglebutton--variants",
       "name": "Variants",
       "exportName": "Variants",
       "description": "The `variant` prop is used to set the variant of the toggle button.\n- `default`: default variant\n- `secondary`: secondary variant\n- `highlight`: highlight variant",
-      "source": "import { ToggleButton } from \"@choice-ui/toggle-button\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col items-start gap-4\">\n      <div className=\"flex gap-4\">\n        <Select\n          value={variant}\n          onChange={(value) => setVariant(value as Variant)}\n        >\n          <Select.Trigger>{variant}</Select.Trigger>\n          <Select.Content>\n            {Object.values(Variant).map((variant) => (\n              <Select.Item\n                key={variant}\n                value={variant}\n              >\n                {variant}\n              </Select.Item>\n            ))}\n          </Select.Content>\n        </Select>\n        <Select\n          value={size}\n          onChange={(value) => setSize(value as Size)}\n        >\n          <Select.Trigger>{size}</Select.Trigger>\n          <Select.Content>\n            {Object.values(Size).map((size) => (\n              <Select.Item\n                key={size}\n                value={size}\n              >\n                {size}\n              </Select.Item>\n            ))}\n          </Select.Content>\n        </Select>\n        <Select\n          value={event}\n          onChange={(value) => setEvent(value as Event)}\n        >\n          <Select.Trigger>{event}</Select.Trigger>\n          <Select.Content>\n            {Object.values(Event).map((event) => (\n              <Select.Item\n                key={event}\n                value={event}\n              >\n                {event}\n              </Select.Item>\n            ))}\n          </Select.Content>\n        </Select>\n      </div>\n\n      <div className=\"grid grid-cols-[auto_1fr] items-center gap-4\">\n        {Object.values(State).map((state) => (\n          <Fragment key={state}>\n            <span className=\"text-fuchsia-500 capitalize\">{state}</span>\n            <ToggleButton\n              variant={variant}\n              value={controlled}\n              onChange={(value) => setControlled(value)}\n              size={size}\n              active={state === State.Active}\n              focused={state === State.Focused}\n              disabled={state === State.Disabled}\n              event={event}\n            >\n              {controlled ? <FieldTypeCheckbox /> : <FieldTypeAttachment />}\n            </ToggleButton>\n          </Fragment>\n        ))}\n      </div>\n    </div>\n  );\n}"
+      "source": "import { ToggleButton } from \"@choice-ui/toggle-button\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  enum Variant {\n    Default = \"default\",\n    Highlight = \"highlight\",\n    Secondary = \"secondary\",\n  }\n\n  enum Size {\n    Default = \"default\",\n    Large = \"large\",\n  }\n\n  enum State {\n    Active = \"active\",\n    Disabled = \"disabled\",\n    Focused = \"focused\",\n    Rest = \"rest\",\n  }\n\n  enum Event {\n    Click = \"click\",\n    Mousedown = \"mousedown\",\n  }\n\n  const [variant, setVariant] = useState<Variant>(Variant.Default)\n  const [size, setSize] = useState<Size>(Size.Default)\n  const [controlled, setControlled] = useState(false)\n  const [event, setEvent] = useState<Event>(Event.Click)\n  return (\n    <div className=\"flex flex-col items-start gap-4\">\n      <div className=\"flex gap-4\">\n        <Select\n          value={variant}\n          onChange={(value) => setVariant(value as Variant)}\n        >\n          <Select.Trigger>\n            {Object.keys(Variant).find((v) => Variant[v as keyof typeof Variant] === variant)}\n          </Select.Trigger>\n          <Select.Content>\n            {Object.entries(Variant).map(([key, value]) => (\n              <Select.Item\n                key={key}\n                value={value}\n              >\n                {key}\n              </Select.Item>\n            ))}\n          </Select.Content>\n        </Select>\n        <Select\n          value={size}\n          onChange={(value) => setSize(value as Size)}\n        >\n          <Select.Trigger>\n            {Object.keys(Size).find((v) => Size[v as keyof typeof Size] === size)}\n          </Select.Trigger>\n          <Select.Content>\n            {Object.entries(Size).map(([key, value]) => (\n              <Select.Item\n                key={key}\n                value={value}\n              >\n                {key}\n              </Select.Item>\n            ))}\n          </Select.Content>\n        </Select>\n        <Select\n          value={event}\n          onChange={(value) => setEvent(value as Event)}\n        >\n          <Select.Trigger>\n            {Object.keys(Event).find((v) => Event[v as keyof typeof Event] === event)}\n          </Select.Trigger>\n          <Select.Content>\n            {Object.entries(Event).map(([key, value]) => (\n              <Select.Item\n                key={key}\n                value={value}\n              >\n                {key}\n              </Select.Item>\n            ))}\n          </Select.Content>\n        </Select>\n      </div>\n\n      <div className=\"grid grid-cols-[auto_1fr] items-center gap-4\">\n        {Object.values(State).map((state) => (\n          <Fragment key={state}>\n            <span className=\"capitalize text-fuchsia-500\">{state}</span>\n            <ToggleButton\n              variant={variant}\n              value={controlled}\n              onChange={(value) => setControlled(value)}\n              size={size}\n              active={state === State.Active}\n              focused={state === State.Focused}\n              disabled={state === State.Disabled}\n              event={event}\n            >\n              {controlled ? <FieldTypeCheckbox /> : <FieldTypeAttachment />}\n            </ToggleButton>\n          </Fragment>\n        ))}\n      </div>\n    </div>\n  )\n\n}"
     },
     {
       "id": "buttons-togglebutton--tooltip",
       "name": "Tooltip",
       "exportName": "Tooltip",
       "description": "The `tooltip` prop is used to show a tooltip when the toggle button is hovered.\n- The `aria-label` will be used as the tooltip's content if the content type is string.",
-      "source": "import { ToggleButton } from \"@choice-ui/toggle-button\"\n\nexport default function App() {\n  return (\n    <ToggleButton\n      tooltip={{\n        content: controlled ? \"Current state is correct\" : \"Current state is wrong\",\n      }}\n      value={controlled}\n      onChange={(value) => setControlled(value)}\n    >\n      {controlled ? <FieldTypeCheckbox /> : <FieldAdd />}\n    </ToggleButton>\n  );\n}"
-    },
-    {
-      "id": "buttons-togglebutton--readonly",
-      "name": "Readonly",
-      "exportName": "Readonly",
-      "description": "ToggleButton component in readOnly state.\n\nIn readOnly mode:\n- The toggle button does not respond to click or change events\n- The value cannot be changed\n- Useful for displaying toggle state without allowing changes",
-      "source": "import { ToggleButton } from \"@choice-ui/toggle-button\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <div className=\"rounded-xl border bg-stone-50 p-4\">\n        <div className=\"text-body-small-strong mb-2 text-stone-700\">Current Value:</div>\n        <div className=\"text-body-small font-mono text-stone-600\">{value ? \"true\" : \"false\"}</div>\n        <div className=\"text-body-small-strong mt-2 text-stone-700\">Change Count:</div>\n        <div className=\"text-body-small font-mono text-stone-600\">{changeCount}</div>\n      </div>\n\n      <div className=\"flex flex-wrap gap-4\">\n        <ToggleButton\n          readOnly\n          value={value}\n          onChange={handleChange}\n        >\n          {value ? <FieldTypeCheckbox /> : <FieldAdd />}\n        </ToggleButton>\n        <ToggleButton\n          readOnly\n          value={!value}\n          onChange={handleChange}\n          variant=\"secondary\"\n        >\n          {!value ? <FieldTypeCheckbox /> : <FieldAdd />}\n        </ToggleButton>\n        <ToggleButton\n          value={value}\n          onChange={handleChange}\n        >\n          {value ? <FieldTypeCheckbox /> : <FieldAdd />}\n        </ToggleButton>\n      </div>\n\n      <div className=\"text-body-small text-stone-600\">\n        💡 Try clicking on the readonly toggle buttons - the value should not change and the\n        change count should remain at 0. Only the normal button will change the value.\n      </div>\n    </div>\n  );\n}"
+      "source": "import { ToggleButton } from \"@choice-ui/toggle-button\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [controlled, setControlled] = useState(false)\n  return (\n    <ToggleButton\n      tooltip={{\n        content: controlled ? \"Current state is correct\" : \"Current state is wrong\",\n      }}\n      value={controlled}\n      onChange={(value) => setControlled(value)}\n    >\n      {controlled ? <FieldTypeCheckbox /> : <FieldAdd />}\n    </ToggleButton>\n  )\n\n}"
     }
   ]
 }
