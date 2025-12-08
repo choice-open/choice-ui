@@ -1,6 +1,9 @@
 "use client"
 
 import { InfoCircle } from "@choiceform/icons-react"
+import { useTheme } from "next-themes"
+import { Highlight, Language, themes } from "prism-react-renderer"
+import { Fragment } from "react/jsx-runtime"
 import { IconButton } from "~/components"
 
 export type PropDoc = {
@@ -21,6 +24,45 @@ type ApiTableProps = {
   props: PropsGroup[]
 }
 
+const CodeBlock = ({ code, language }: { code: string; language: Language }) => {
+  const { theme } = useTheme()
+  const highlightTheme = theme === "dark" ? themes.vsDark : themes.vsLight
+  return (
+    <Highlight
+      theme={highlightTheme}
+      code={code}
+      language={language}
+    >
+      {({ style, tokens, getLineProps, getTokenProps }) => (
+        <code style={{ ...style, backgroundColor: "transparent" }}>
+          {tokens.map((line, i) => {
+            const { key, ...lineProps } = getLineProps({ line, key: i })
+            return (
+              <div
+                key={i}
+                {...lineProps}
+              >
+                {line.map((token, tokenKey) => {
+                  const { key: tokenPropsKey, ...tokenProps } = getTokenProps({
+                    token,
+                    key: tokenKey,
+                  })
+                  return (
+                    <span
+                      key={tokenKey}
+                      {...tokenProps}
+                    />
+                  )
+                })}
+              </div>
+            )
+          })}
+        </code>
+      )}
+    </Highlight>
+  )
+}
+
 function cleanDescription(text?: string): string {
   if (!text) return ""
   const withoutCode = text.replace(/```[\s\S]*?```/g, "")
@@ -34,6 +76,8 @@ function cleanDescription(text?: string): string {
 
 export function ApiTable({ props }: ApiTableProps) {
   if (!props || props.length === 0) return null
+  const { theme } = useTheme()
+  const highlightTheme = theme === "dark" ? themes.vsDark : themes.vsLight
 
   return (
     <section
@@ -41,48 +85,62 @@ export function ApiTable({ props }: ApiTableProps) {
       className="space-y-4"
     >
       <h2 className="md-h2">API</h2>
-      {props.map((group, idx) => (
-        <div
-          key={`${group.displayName ?? idx}-${idx}`}
-          className="space-y-2"
-        >
-          {group.displayName && <h4 className="md-h4">{group.displayName}</h4>}
+      <div className="flex flex-col gap-8">
+        <div className="space-y-2">
           <div className="overflow-hidden rounded-xl border">
-            <table className="w-full text-left">
-              <thead className="bg-muted/50">
-                <tr className="text-secondary-foreground border-b">
-                  <th className="w-1/4 px-4 py-2 font-semibold">Prop</th>
-                  <th className="w-2/4 px-4 py-2 font-semibold">Type</th>
-                  <th className="w-1/4 px-4 py-2 font-semibold">Default</th>
-                </tr>
-              </thead>
-              <tbody>
-                {(group.props ?? []).map((prop) => (
-                  <tr key={prop.name}>
-                    <td className="px-4 py-2 font-mono">
-                      <div className="flex items-center gap-2">
-                        <span>{prop.name}</span>
-                        {prop.description && (
-                          <IconButton
-                            variant="ghost"
-                            tooltip={{ content: cleanDescription(prop.description) || "—" }}
-                          >
-                            <InfoCircle />
-                          </IconButton>
-                        )}
-                      </div>
-                    </td>
-                    <td className="px-4 py-2 font-mono whitespace-pre-wrap">{prop.type}</td>
-                    <td className="text-muted-foreground px-4 py-2 font-mono">
-                      {prop.defaultValue ?? "—"}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
+            <table className="w-full min-w-0 text-left">
+              {props.map((group, idx) => (
+                <Fragment key={`${group.displayName ?? idx}-${idx}`}>
+                  <thead className="bg-secondary-background">
+                    <tr className="text-secondary-foreground">
+                      <th className="font-strong text-default-foreground px-4 py-2">
+                        {group.displayName}
+                      </th>
+                      <th className="px-4 py-2 font-semibold">Type</th>
+                      <th className="px-4 py-2 font-semibold">Default</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {(group.props ?? []).map((prop) => (
+                      <tr key={prop.name}>
+                        <td className="px-4 py-2">
+                          <div className="flex items-center gap-2">
+                            <span>{prop.name}</span>
+                            {prop.description && (
+                              <IconButton
+                                variant="ghost"
+                                tooltip={{ content: cleanDescription(prop.description) || "—" }}
+                              >
+                                <InfoCircle />
+                              </IconButton>
+                            )}
+                          </div>
+                        </td>
+                        <td className="px-4 py-2 whitespace-pre-wrap">
+                          <CodeBlock
+                            code={prop.type}
+                            language="typescript"
+                          />
+                        </td>
+                        <td className="px-4 py-2">
+                          {prop.defaultValue ? (
+                            <CodeBlock
+                              code={prop.defaultValue}
+                              language="typescript"
+                            />
+                          ) : (
+                            <span className="text-secondary-foreground"> - </span>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Fragment>
+              ))}
             </table>
           </div>
         </div>
-      ))}
+      </div>
     </section>
   )
 }

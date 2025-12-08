@@ -1,22 +1,40 @@
 import { isMultiElement, tcx } from "@choice-ui/shared"
 import { LoaderCircle } from "@choiceform/icons-react"
 import { Slot } from "@choice-ui/slot"
-import { Tooltip } from "@choice-ui/tooltip"
-import { cloneElement, forwardRef, isValidElement, useMemo } from "react"
+import { Tooltip, TooltipProps } from "@choice-ui/tooltip"
+import { cloneElement, forwardRef, HTMLProps, isValidElement, useMemo } from "react"
 import { buttonTv } from "./tv"
-import { type ButtonProps } from "./types"
 
-/**
- * Button component for user interactions
- *
- * @displayName Button
- * @description A versatile button component that supports various styles, states, and behaviors. Renders as a button element or can be used with asChild for custom elements.
- * @category Actions
- * @status stable
- * @version 1.0.0
- * @since 1.0.0
- * @see {@link https://design-system.choiceform.io/components/button Button Documentation}
- */
+export interface ButtonProps extends Omit<HTMLProps<HTMLButtonElement>, "size"> {
+  active?: boolean
+  asChild?: boolean
+  className?: string
+  focused?: boolean
+  loading?: boolean
+  readOnly?: boolean
+  /**
+   * @default "default"
+   */
+  size?: "default" | "large"
+  tooltip?: TooltipProps
+  /**
+   * @default "primary"
+   */
+  variant?:
+    | "primary"
+    | "secondary"
+    | "solid"
+    | "destructive"
+    | "secondary-destruct"
+    | "inverse"
+    | "success"
+    | "link"
+    | "link-danger"
+    | "ghost"
+    | "dark"
+    | "reset"
+}
+
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(props, ref) {
   const {
     className,

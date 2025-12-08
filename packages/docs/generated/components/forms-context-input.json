@@ -128,23 +128,30 @@
       "description": "",
       "props": [
         {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Icon content to display\n@example ```tsx\n<IconButton>IconButton</IconButton>\n```"
+        },
+        {
           "name": "className",
           "type": "string | undefined",
           "required": false,
-          "description": ""
+          "description": "Additional CSS class names\n@example ```tsx\n<IconButton className=\"bg-red-500\">IconButton</IconButton>\n```"
         },
         {
           "name": "size",
           "type": "enum",
           "required": false,
-          "description": ""
+          "defaultValue": "\"default\"",
+          "description": "Button size variant\n@example ```tsx\n<IconButton size=\"large\">Large IconButton</IconButton>\n```"
         },
         {
           "name": "disabled",
           "type": "boolean | undefined",
           "required": false,
           "defaultValue": "false",
-          "description": ""
+          "description": "Whether the button is disabled\n@example ```tsx\n<IconButton disabled>IconButton</IconButton>\n```"
         },
         {
           "name": "onClick",
@@ -156,49 +163,56 @@
           "name": "as",
           "type": "ElementType<any, keyof IntrinsicElements> | undefined",
           "required": false,
-          "description": ""
+          "defaultValue": "\"button\"",
+          "description": "Render as a custom element instead of button\n@example ```tsx\n<IconButton as={Link}>IconButton</IconButton>\n```"
         },
         {
           "name": "readOnly",
           "type": "boolean | undefined",
           "required": false,
-          "description": ""
+          "defaultValue": "false",
+          "description": "Whether the button is in readOnly state\nIn readOnly mode, the button will not respond to click events\n@example ```tsx\n<IconButton readOnly>Read Only IconButton</IconButton>\n```"
         },
         {
           "name": "active",
           "type": "boolean | undefined",
           "required": false,
-          "description": ""
+          "defaultValue": "false",
+          "description": "Whether the button is in an active/pressed state\n@example ```tsx\n<IconButton active>Active IconButton</IconButton>\n```"
         },
         {
           "name": "asChild",
           "type": "boolean | undefined",
           "required": false,
-          "description": ""
+          "defaultValue": "false",
+          "description": "Render as a child element instead of button\n@example ```tsx\n<IconButton asChild>IconButton</IconButton>\n```"
         },
         {
           "name": "focused",
           "type": "boolean | undefined",
           "required": false,
-          "description": ""
+          "defaultValue": "false",
+          "description": "Whether the button appears focused (for keyboard navigation)\n@example ```tsx\n<IconButton focused>Focused IconButton</IconButton>\n```"
         },
         {
           "name": "loading",
           "type": "boolean | undefined",
           "required": false,
-          "description": ""
+          "defaultValue": "false",
+          "description": "Whether the button is in loading state with spinner\n@example ```tsx\n<IconButton loading>Loading IconButton</IconButton>\n```"
         },
         {
           "name": "tooltip",
           "type": "TooltipProps | undefined",
           "required": false,
-          "description": ""
+          "description": "Tooltip configuration for the button\n@example ```tsx\n<IconButton tooltip={{ content: \"Tooltip\" }}>IconButton</IconButton>\n```"
         },
         {
           "name": "variant",
           "type": "enum",
           "required": false,
-          "description": ""
+          "defaultValue": "\"default\"",
+          "description": "Visual style variant of the button\n@example ```tsx\n<IconButton variant=\"secondary\">IconButton</IconButton>\n```"
         },
         {
           "name": "successDuration",

@@ -88,11 +88,6 @@ export const Variants: Story = {
       Solid = "solid",
     }
 
-    enum Size {
-      Default = "default",
-      Large = "large",
-    }
-
     enum State {
       Active = "active",
       Disabled = "disabled",
@@ -102,7 +97,6 @@ export const Variants: Story = {
     }
 
     const [variant, setVariant] = useState<Variant>(Variant.Default)
-    const [size, setSize] = useState<Size>(Size.Default)
 
     return (
       <div
@@ -111,48 +105,31 @@ export const Variants: Story = {
           variant === Variant.Dark && "bg-gray-800",
         )}
       >
-        <div className="flex gap-4">
-          <Select
-            value={variant}
-            onChange={(value) => setVariant(value as Variant)}
-          >
-            <Select.Trigger>{variant}</Select.Trigger>
-            <Select.Content>
-              {Object.values(Variant).map((variant) => (
-                <Select.Item
-                  key={variant}
-                  value={variant}
-                >
-                  {variant}
-                </Select.Item>
-              ))}
-            </Select.Content>
-          </Select>
-          <Select
-            value={size}
-            onChange={(value) => setSize(value as Size)}
-          >
-            <Select.Trigger>{size}</Select.Trigger>
-            <Select.Content>
-              {Object.values(Size).map((size) => (
-                <Select.Item
-                  key={size}
-                  value={size}
-                >
-                  {size}
-                </Select.Item>
-              ))}
-            </Select.Content>
-          </Select>
-        </div>
+        <Select
+          value={variant}
+          onChange={(value) => setVariant(value as Variant)}
+        >
+          <Select.Trigger>
+            {Object.keys(Variant).find((v) => Variant[v as keyof typeof Variant] === variant)}
+          </Select.Trigger>
+          <Select.Content>
+            {Object.entries(Variant).map(([key, value]) => (
+              <Select.Item
+                key={key}
+                value={value}
+              >
+                {key}
+              </Select.Item>
+            ))}
+          </Select.Content>
+        </Select>
 
         <div className="grid grid-cols-[auto_1fr] items-center gap-4">
           {Object.values(State).map((state) => (
             <Fragment key={state}>
-              <span className="text-pink-500 capitalize">{state}</span>
+              <span className="capitalize text-pink-500">{state}</span>
               <IconButton
                 variant={variant}
-                size={size}
                 active={state === State.Active}
                 disabled={state === State.Disabled}
                 loading={state === State.Loading}
@@ -227,15 +204,6 @@ export const Group: Story = {
  * - Maintains IconButton styling while using different underlying elements
  * - Useful for links, form elements, or custom components
  * - Preserves accessibility features
- *
- * Usage:
- * ```tsx
- * <IconButton asChild>
- *   <a href="/some-path">
- *     <Icon />
- *   </a>
- * </IconButton>
- * ```
  */
 export const AsChild: Story = {
   render: () => (
@@ -260,9 +228,8 @@ export const Readonly: Story = {
 
     return (
       <div className="flex flex-col gap-4">
-        <div className="rounded-xl border bg-stone-50 p-4">
-          <div className="text-body-small-strong mb-2 text-stone-700">Click Count:</div>
-          <div className="text-body-small font-mono text-stone-600">{clickCount}</div>
+        <div className="bg-secondary-background text-secondary-foreground rounded-lg p-4">
+          <p>Click Count: {clickCount}</p>
         </div>
 
         <div className="flex flex-wrap gap-4">
@@ -272,21 +239,10 @@ export const Readonly: Story = {
           >
             <FieldTypeAttachment />
           </IconButton>
-          <IconButton
-            readOnly
-            variant="secondary"
-            onClick={() => setClickCount((prev) => prev + 1)}
-          >
-            <FieldTypeCheckbox />
-          </IconButton>
+
           <IconButton onClick={() => setClickCount((prev) => prev + 1)}>
             <FieldTypeCount />
           </IconButton>
-        </div>
-
-        <div className="text-body-small text-stone-600">
-          💡 Try clicking on the readonly icon buttons - the click count should not change. Only the
-          normal button will increment the count.
         </div>
       </div>
     )

@@ -153,7 +153,12 @@ export const Variants: Story = {
     const [variant, setVariant] = useState<Variant>(Variant.Primary)
 
     return (
-      <div className="flex flex-col items-start gap-4">
+      <div
+        className={tcx(
+          "flex flex-col items-start gap-4 rounded-xl p-4",
+          variant === Variant.Dark && "bg-gray-800",
+        )}
+      >
         <Select
           value={variant}
           onChange={(value) => setVariant(value as Variant)}

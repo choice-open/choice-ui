@@ -267,7 +267,7 @@
       "slug": "buttons/icon-button",
       "name": "@choice-ui/icon-button",
       "title": "IconButton",
-      "description": "",
+      "description": "Whether the button is in an active/pressed state",
       "version": "0.0.4"
     },
     {
