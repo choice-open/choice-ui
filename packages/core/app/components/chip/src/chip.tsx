@@ -19,7 +19,7 @@ export interface ChipProps extends Omit<HTMLProps<HTMLDivElement>, "size" | "as"
     remove: string
   }
   onClick?: (e: React.MouseEvent<HTMLDivElement>) => void
-  onRemove?: (e: React.MouseEvent<HTMLButtonElement>) => void
+  onRemove?: (e: React.MouseEvent<HTMLElement>) => void
   prefixElement?: ReactNode
   selected?: boolean
   size?: "default" | "medium"

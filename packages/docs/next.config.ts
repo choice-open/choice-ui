@@ -33,6 +33,7 @@ const utilAliases = createWorkspaceAliases(path.resolve(coreDir, "app/utils"))
 
 const nextConfig: NextConfig = {
   /* config options here */
+  output: "standalone",
   pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
   transpilePackages: ["@choice-ui/react"],
   webpack: (config) => {

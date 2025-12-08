@@ -1,5 +1,5 @@
 "use client"
-import { color, typography } from "@choice-ui/design-tokens"
+import { color, ColorPath, typography } from "@choice-ui/design-tokens"
 import { memo, useState } from "react"
 import {
   ColorField,
@@ -89,7 +89,7 @@ export const SectionTextTintedColors = memo(function SectionTextTintedColors() {
           key={theme}
         >
           {textTintedGroups.map((colorData) => {
-            const colorKey = color(colorData.colorKey, 1, theme as "light" | "dark")
+            const colorKey = color(colorData.colorKey as ColorPath, 1, theme as "light" | "dark")
 
             return (
               <div

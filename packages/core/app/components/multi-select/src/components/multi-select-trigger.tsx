@@ -102,7 +102,7 @@ export const MultiSelectTrigger = memo(
             const chipDisabled = !!valueDisabledMap[value] || disabled
             const handleRemove =
               !chipDisabled && !readOnly && onRemove
-                ? (e: React.MouseEvent<HTMLButtonElement>) => {
+                ? (e: React.MouseEvent<HTMLElement>) => {
                     e.stopPropagation()
                     onRemove(value)
                   }

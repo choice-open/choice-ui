@@ -68,7 +68,7 @@
         },
         {
           "name": "onRemove",
-          "type": "((e: MouseEvent<HTMLButtonElement, MouseEvent>) => void) | undefined",
+          "type": "((e: MouseEvent<HTMLElement, MouseEvent>) => void) | undefined",
           "required": false,
           "description": ""
         },
