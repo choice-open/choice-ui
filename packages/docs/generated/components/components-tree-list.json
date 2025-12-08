@@ -212,6 +212,614 @@
           "description": ""
         }
       ]
+    },
+    {
+      "displayName": "TreeNode",
+      "description": "",
+      "props": [
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "containerWidth",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "fullPath",
+          "type": "string[] | undefined",
+          "required": false,
+          "description": "完整路径的节点名称数组（从根到当前节点）"
+        },
+        {
+          "name": "hasHorizontalScroll",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "isCommandKeyPressed",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "isFirstSelected",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "isLastInParent",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "isLastSelected",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "isMiddleSelected",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "isMultiSelectionActive",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "node",
+          "type": "TreeNodeType",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "onContextMenu",
+          "type": "((node: TreeNodeType, event: MouseEvent<Element, MouseEvent>) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onDragEnd",
+          "type": "((event: DragEvent<Element>) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onDragOver",
+          "type": "((node: TreeNodeType, event: DragEvent<Element>) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onDragStart",
+          "type": "((node: TreeNodeType, event: DragEvent<Element>) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onDrop",
+          "type": "((node: TreeNodeType, event: DragEvent<Element>) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onExpand",
+          "type": "((node: TreeNodeType) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onHover",
+          "type": "((node: TreeNodeType, isHovered: boolean, event: MouseEvent<Element, MouseEvent>) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onIconDoubleClick",
+          "type": "((node: TreeNodeType, event: MouseEvent<Element, MouseEvent>) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onMeasure",
+          "type": "((width: number) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onRename",
+          "type": "((node: TreeNodeType, newName: string) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onSelect",
+          "type": "((node: TreeNodeType, event: MouseEvent<Element, MouseEvent> | KeyboardEvent<Element>) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "renderActions",
+          "type": "((node: TreeNodeType) => ReactNode) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "renderIcon",
+          "type": "((node: TreeNodeType) => ReactNode) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "renderLabel",
+          "type": "((node: TreeNodeType) => ReactNode) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "showFullPathOnRename",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": "是否在重命名时显示完整路径"
+        },
+        {
+          "name": "size",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "start",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "style",
+          "type": "CSSProperties | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "DropIndicator",
+      "description": "",
+      "props": [
+        {
+          "name": "dropPosition",
+          "type": "DropPosition | null | undefined",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "isDropTarget",
+          "type": "boolean",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "isExpanded",
+          "type": "boolean",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "isFolderWithChildren",
+          "type": "boolean",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "level",
+          "type": "number",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "TreeNodeWrapper",
+      "description": "使用 memo 优化性能，只有当相关属性变化时才重新渲染",
+      "props": [
+        {
+          "name": "containerWidth",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "dragNodes",
+          "type": "TreeNodeType[]",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "flattenedNodes",
+          "type": "TreeNodeType[]",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "hasHorizontalScroll",
+          "type": "boolean",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "isCommandKeyPressed",
+          "type": "boolean",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "isDragging",
+          "type": "boolean",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "listRef",
+          "type": "RefObject<HTMLDivElement>",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "node",
+          "type": "TreeNodeType",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "onContextMenu",
+          "type": "(node: TreeNodeType, event: MouseEvent<Element, MouseEvent>) => void",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "onDragEnd",
+          "type": "() => void",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "onDragOver",
+          "type": "(node: TreeNodeType, event: DragEvent<Element>) => void",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "onDragStart",
+          "type": "(nodes: TreeNodeType[], event: DragEvent<Element>) => void",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "onDrop",
+          "type": "(node: TreeNodeType, position: DropPosition) => void",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "onExpand",
+          "type": "(node: TreeNodeType, expanded: boolean) => void",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "onHover",
+          "type": "((node: TreeNodeType, isHovered: boolean, event: MouseEvent<Element, MouseEvent>) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onIconDoubleClick",
+          "type": "((node: TreeNodeType, event: MouseEvent<Element, MouseEvent>) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onMeasure",
+          "type": "(width: number) => void",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "onRename",
+          "type": "(node: TreeNodeType, newName: string) => void",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "onSelect",
+          "type": "(node: TreeNodeType, event?: MouseEvent<Element, MouseEvent> | KeyboardEvent<Element> | undefined) => void",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "renderActions",
+          "type": "((node: TreeNodeType) => ReactNode) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "renderIcon",
+          "type": "((node: TreeNodeType) => ReactNode) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "renderLabel",
+          "type": "((node: TreeNodeType) => ReactNode) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "renderNode",
+          "type": "((node: TreeNodeType) => ReactNode) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "selectedNodes",
+          "type": "TreeNodeType[]",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "showFullPathOnRename",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "visibleNodes",
+          "type": "TreeNodeType[]",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "TreeNodeRenameInput",
+      "description": "",
+      "props": [
+        {
+          "name": "contentRef",
+          "type": "RefObject<HTMLDivElement>",
+          "required": true,
+          "description": "节点名称展示区域的 ref，用于外部测量宽度"
+        },
+        {
+          "name": "fullPath",
+          "type": "string[] | undefined",
+          "required": false,
+          "description": "完整路径的节点名称数组（从根到当前节点）"
+        },
+        {
+          "name": "isEditable",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": "是否可编辑（可重命名），默认为 true"
+        },
+        {
+          "name": "isRenaming",
+          "type": "boolean",
+          "required": true,
+          "description": "是否处于重命名状态"
+        },
+        {
+          "name": "isSelected",
+          "type": "boolean",
+          "required": true,
+          "description": "当前节点是否被选中，用于样式控制"
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "description": "当前节点名称"
+        },
+        {
+          "name": "onRename",
+          "type": "((newName: string) => void) | undefined",
+          "required": false,
+          "description": "重命名完成后触发，返回新的名称\n如果启用 showFullPathOnRename，newName 将包含完整路径"
+        },
+        {
+          "name": "onRenameValueChange",
+          "type": "(value: string) => void",
+          "required": true,
+          "description": "当输入值变化时触发"
+        },
+        {
+          "name": "onRenamingChange",
+          "type": "(isRenaming: boolean) => void",
+          "required": true,
+          "description": "当重命名状态变化时触发"
+        },
+        {
+          "name": "renameValue",
+          "type": "string",
+          "required": true,
+          "description": "重命名输入框的值"
+        },
+        {
+          "name": "showFullPathOnRename",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": "是否在重命名时显示完整路径\n当为 true 时，输入框会显示完整路径，但只选中最后一部分"
+        },
+        {
+          "name": "triggerMeasure",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "请求外部重新测量节点宽度"
+        }
+      ]
+    },
+    {
+      "displayName": "TreeNodeToggle",
+      "description": "",
+      "props": [
+        {
+          "name": "isDragging",
+          "type": "boolean",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "isExpanded",
+          "type": "boolean",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "isFolderWithChildren",
+          "type": "boolean",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "nodeId",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "onExpandClick",
+          "type": "(event: MouseEvent<HTMLButtonElement, MouseEvent>) => void",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "shouldRenderToggle",
+          "type": "boolean",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "TreeNodeIcon",
+      "description": "",
+      "props": [
+        {
+          "name": "isSelected",
+          "type": "boolean",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "node",
+          "type": "TreeNodeType",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "onIconDoubleClick",
+          "type": "((node: TreeNodeType, event: MouseEvent<HTMLDivElement, MouseEvent>) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "renderIcon",
+          "type": "((node: TreeNodeType) => ReactNode) | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "buildTree",
+      "description": "将扁平化的数据转换为树形结构",
+      "props": []
+    },
+    {
+      "displayName": "flattenTree",
+      "description": "将树形结构扁平化为数组，用于虚拟列表",
+      "props": []
+    },
+    {
+      "displayName": "getVisibleChildren",
+      "description": "获取节点的所有可见子节点",
+      "props": []
+    },
+    {
+      "displayName": "getVisibleNodes",
+      "description": "获取所有可见节点",
+      "props": []
+    },
+    {
+      "displayName": "findNodeById",
+      "description": "深度遍历查找节点",
+      "props": []
+    },
+    {
+      "displayName": "getAncestorIds",
+      "description": "获取当前节点的所有祖先节点ID",
+      "props": []
+    },
+    {
+      "displayName": "getNodePathNames",
+      "description": "获取节点的完整路径名称数组（从根到当前节点）",
+      "props": []
+    },
+    {
+      "displayName": "getDescendantIds",
+      "description": "获取当前节点的所有子孙节点",
+      "props": []
+    },
+    {
+      "displayName": "findNodePathById",
+      "description": "查找指定节点的完整路径（返回节点ID数组）",
+      "props": []
+    },
+    {
+      "displayName": "renameNode",
+      "description": "修改节点显示名称",
+      "props": []
+    },
+    {
+      "displayName": "getNodesInRange",
+      "description": "处理多选逻辑 (Shift + Click)",
+      "props": []
+    },
+    {
+      "displayName": "calculateDropPosition",
+      "description": "计算拖放位置",
+      "props": []
+    },
+    {
+      "displayName": "getNextNodeId",
+      "description": "处理键盘导航",
+      "props": []
+    },
+    {
+      "displayName": "isLastInParent",
+      "description": "判断节点是否是父文件夹的最后一个子项",
+      "props": []
+    },
+    {
+      "displayName": "getSelectionPosition",
+      "description": "获取节点在选择组中的位置状态",
+      "props": []
+    },
+    {
+      "displayName": "isInvalidDropTarget",
+      "description": "检查目标节点是否是拖拽节点的子孙",
+      "props": []
     }
   ],
   "stories": [
@@ -226,15 +834,18 @@
       "id": "components-treelist--label-visibility",
       "name": "Label Visibility",
       "exportName": "LabelVisibility",
-      "description": "",
+      "description": "Simple side-by-side comparison showing label visibility with and without tail actions.",
       "source": "import { TreeList } from \"@choice-ui/tree-list\"\n\nexport default function App() {\n  return (\n    <LabelVisibilityDemo />\n  );\n}"
     },
     {
       "id": "components-treelist--large-dataset",
       "name": "Large Dataset",
       "exportName": "LargeDataset",
-      "description": "",
+      "description": "Performance benchmark story rendering a large dataset to evaluate virtual scrolling.",
       "source": "import { TreeList } from \"@choice-ui/tree-list\"\n\nexport default function App() {\n  return (\n    <LargeDatasetTreeList />\n  );\n}"
     }
+  ],
+  "tags": [
+    "beta"
   ]
 }

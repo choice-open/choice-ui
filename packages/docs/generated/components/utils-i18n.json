@@ -30,14 +30,14 @@
       "id": "utils-i18n--partial-french",
       "name": "Partial French",
       "exportName": "PartialFrench",
-      "description": "",
+      "description": "French configuration with partial override",
       "source": ""
     },
     {
       "id": "utils-i18n--easy-usage",
       "name": "Easy Usage",
       "exportName": "EasyUsage",
-      "description": "",
+      "description": "Shows how easy it is - just import useI18n and use directly",
       "source": "import { Component } from \"@choice-ui/i18n\"\n\nexport default function App() {\n  return (\n        <div className=\"max-w-md\">\n          <h2 className=\"mb-4 text-lg font-bold\">🚀 Super Easy to Use!</h2>\n          <pre className=\"rounded bg-gray-100 p-4 text-sm\">\n            {`import { useI18n } from \"~/utils\"\n\n    // Just 1 line in your component:\n    const i18n = useI18n(defaultConfig, userI18n)\n\n    // No need to:\n    ❌ Create custom hooks\n    ❌ Write wrapper functions\n    ❌ Handle caching manually\n    ✅ Everything is automated!`}\n          </pre>\n\n          <div className=\"mt-4\">\n            <I18nDemoComponent\n              i18n={{\n                buttons: { save: \"保存\" },\n                messages: { loading: \"载入中...\" },\n              }}\n            />\n          </div>\n        </div>\n  );\n}"
     }
   ]

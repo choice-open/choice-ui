@@ -74,39 +74,9 @@
   ],
   "props": [
     {
-      "displayName": "useForm",
-      "description": "增强版的 useForm hook\n在 TanStack Form 的基础上添加适配器组件",
+      "displayName": "BaseAdapter",
+      "description": "",
       "props": [
-        {
-          "name": "defaultValues",
-          "type": "Record<string, unknown> | undefined",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "onSubmit",
-          "type": "((formApi: { value: unknown; }) => void | Promise<void>) | undefined",
-          "required": false,
-          "description": ""
-        }
-      ]
-    },
-    {
-      "displayName": "CheckboxAdapter",
-      "description": "Checkbox 适配器 - 将 Checkbox 组件适配到 Form 系统",
-      "props": [
-        {
-          "name": "value",
-          "type": "boolean | undefined",
-          "required": true,
-          "description": ""
-        },
-        {
-          "name": "readOnly",
-          "type": "boolean | undefined",
-          "required": false,
-          "description": ""
-        },
         {
           "name": "className",
           "type": "string | undefined",
@@ -114,102 +84,47 @@
           "description": ""
         },
         {
-          "name": "focused",
-          "type": "boolean | undefined",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "mixed",
-          "type": "boolean | undefined",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "variant",
-          "type": "enum",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "onChange",
-          "type": "(value: T) => void",
-          "required": true,
-          "description": "值变化回调"
-        },
-        {
-          "name": "onBlur",
-          "type": "(() => void) | undefined",
-          "required": false,
-          "description": "失焦回调"
-        },
-        {
-          "name": "onFocus",
-          "type": "(() => void) | undefined",
-          "required": false,
-          "description": "聚焦回调"
-        },
-        {
-          "name": "label",
-          "type": "ReactNode",
-          "required": false,
-          "description": "字段标签"
-        },
-        {
-          "name": "size",
-          "type": "enum",
-          "required": false,
-          "description": "字段大小"
-        },
-        {
           "name": "description",
           "type": "ReactNode",
           "required": false,
-          "description": "字段描述"
+          "description": ""
         },
         {
           "name": "error",
           "type": "ReactNode",
           "required": false,
-          "description": "单个错误信息"
+          "description": ""
         },
         {
-          "name": "onBlurAsync",
-          "type": "(() => void) | undefined",
-          "required": false,
-          "description": "异步失焦验证"
-        },
-        {
-          "name": "onBlurAsyncDebounceMs",
-          "type": "number | undefined",
+          "name": "htmlFor",
+          "type": "string | undefined",
           "required": false,
           "description": ""
         },
         {
-          "name": "onChangeAsync",
-          "type": "((value: T) => void) | undefined",
-          "required": false,
-          "description": "异步值变化验证"
-        },
-        {
-          "name": "onChangeAsyncDebounceMs",
-          "type": "number | undefined",
+          "name": "label",
+          "type": "ReactNode",
           "required": false,
           "description": ""
         },
         {
-          "name": "onFocusAsync",
-          "type": "(() => void) | undefined",
+          "name": "legendMode",
+          "type": "boolean | undefined",
           "required": false,
-          "description": "异步聚焦验证"
-        },
-        {
-          "name": "onFocusAsyncDebounceMs",
-          "type": "number | undefined",
-          "required": false,
+          "defaultValue": "false",
           "description": ""
         }
       ]
+    },
+    {
+      "displayName": "filterFormProps",
+      "description": "过滤表单特定属性的工具函数",
+      "props": []
+    },
+    {
+      "displayName": "BaseAdapterProps",
+      "description": "基础适配器组件\n提供统一的表单字段布局和样式",
+      "props": []
     },
     {
       "displayName": "InputAdapter",
@@ -228,12 +143,6 @@
           "description": ""
         },
         {
-          "name": "variant",
-          "type": "enum",
-          "required": false,
-          "description": ""
-        },
-        {
           "name": "focusSelection",
           "type": "enum",
           "required": false,
@@ -242,6 +151,12 @@
         {
           "name": "onIsEditingChange",
           "type": "((isEditing: boolean) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "variant",
+          "type": "enum",
           "required": false,
           "description": ""
         },
@@ -332,12 +247,30 @@
       ]
     },
     {
-      "displayName": "RadioGroupAdapter",
-      "description": "RadioGroup 适配器 - 将 RadioGroup 组件适配到 Form 系统\n\n核心功能：\n1. 值绑定\n2. 事件处理\n3. 错误状态显示\n4. 样式适配",
+      "displayName": "createInputAdapter",
+      "description": "",
       "props": [
         {
-          "name": "readOnly",
+          "name": "selected",
           "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "focusSelection",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onIsEditingChange",
+          "type": "((isEditing: boolean) => void) | undefined",
           "required": false,
           "description": ""
         },
@@ -348,8 +281,170 @@
           "description": ""
         },
         {
-          "name": "options",
-          "type": "{ disabled?: boolean | undefined; label: string; value: string; }[] | undefined",
+          "name": "description",
+          "type": "ReactNode",
+          "required": false,
+          "description": "字段描述"
+        },
+        {
+          "name": "error",
+          "type": "ReactNode",
+          "required": false,
+          "description": "单个错误信息"
+        },
+        {
+          "name": "label",
+          "type": "ReactNode",
+          "required": false,
+          "description": "字段标签"
+        },
+        {
+          "name": "onBlur",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "失焦回调"
+        },
+        {
+          "name": "onBlurAsync",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "异步失焦验证"
+        },
+        {
+          "name": "onBlurAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "((value: T) => void) | undefined",
+          "required": false,
+          "description": "值变化回调"
+        },
+        {
+          "name": "onChangeAsync",
+          "type": "((value: T) => void) | undefined",
+          "required": false,
+          "description": "异步值变化验证"
+        },
+        {
+          "name": "onChangeAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onFocus",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "聚焦回调"
+        },
+        {
+          "name": "onFocusAsync",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "异步聚焦验证"
+        },
+        {
+          "name": "onFocusAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "size",
+          "type": "enum",
+          "required": false,
+          "description": "字段大小"
+        },
+        {
+          "name": "value",
+          "type": "string | undefined",
+          "required": false,
+          "description": "字段值"
+        }
+      ]
+    },
+    {
+      "displayName": "TextareaAdapter",
+      "description": "Textarea 适配器 - 将 Textarea 组件适配到 Form 系统",
+      "props": [
+        {
+          "name": "selected",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "focusSelection",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onIsEditingChange",
+          "type": "((isEditing: boolean) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "variant",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "allowNewline",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": "Whether to allow newline characters when pressing Enter. Default is true"
+        },
+        {
+          "name": "contentRef",
+          "type": "RefObject<HTMLDivElement> | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "lineHeight",
+          "type": "number | undefined",
+          "required": false,
+          "description": "Line height in pixels for calculating textarea height. Default is 16"
+        },
+        {
+          "name": "maxRows",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "minRows",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "padding",
+          "type": "number | undefined",
+          "required": false,
+          "description": "Padding in pixels (top/bottom) for calculating textarea height. Default is 4 (py-1)"
+        },
+        {
+          "name": "resize",
+          "type": "false | \"auto\" | \"handle\" | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "scrollRef",
+          "type": "RefObject<HTMLDivElement> | undefined",
           "required": false,
           "description": ""
         },
@@ -435,6 +530,174 @@
           "name": "value",
           "type": "string",
           "required": true,
+          "description": "字段值"
+        }
+      ]
+    },
+    {
+      "displayName": "createTextareaAdapter",
+      "description": "",
+      "props": [
+        {
+          "name": "selected",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "focusSelection",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onIsEditingChange",
+          "type": "((isEditing: boolean) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "variant",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "allowNewline",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": "Whether to allow newline characters when pressing Enter. Default is true"
+        },
+        {
+          "name": "contentRef",
+          "type": "RefObject<HTMLDivElement> | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "lineHeight",
+          "type": "number | undefined",
+          "required": false,
+          "description": "Line height in pixels for calculating textarea height. Default is 16"
+        },
+        {
+          "name": "maxRows",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "minRows",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "padding",
+          "type": "number | undefined",
+          "required": false,
+          "description": "Padding in pixels (top/bottom) for calculating textarea height. Default is 4 (py-1)"
+        },
+        {
+          "name": "resize",
+          "type": "false | \"auto\" | \"handle\" | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "scrollRef",
+          "type": "RefObject<HTMLDivElement> | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "description",
+          "type": "ReactNode",
+          "required": false,
+          "description": "字段描述"
+        },
+        {
+          "name": "error",
+          "type": "ReactNode",
+          "required": false,
+          "description": "单个错误信息"
+        },
+        {
+          "name": "label",
+          "type": "ReactNode",
+          "required": false,
+          "description": "字段标签"
+        },
+        {
+          "name": "onBlur",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "失焦回调"
+        },
+        {
+          "name": "onBlurAsync",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "异步失焦验证"
+        },
+        {
+          "name": "onBlurAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "((value: T) => void) | undefined",
+          "required": false,
+          "description": "值变化回调"
+        },
+        {
+          "name": "onChangeAsync",
+          "type": "((value: T) => void) | undefined",
+          "required": false,
+          "description": "异步值变化验证"
+        },
+        {
+          "name": "onChangeAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onFocus",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "聚焦回调"
+        },
+        {
+          "name": "onFocusAsync",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "异步聚焦验证"
+        },
+        {
+          "name": "onFocusAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "size",
+          "type": "enum",
+          "required": false,
+          "description": "字段大小"
+        },
+        {
+          "name": "value",
+          "type": "string | undefined",
+          "required": false,
           "description": "字段值"
         }
       ]
@@ -621,11 +884,23 @@
       ]
     },
     {
-      "displayName": "TextareaAdapter",
-      "description": "Textarea 适配器 - 将 Textarea 组件适配到 Form 系统",
+      "displayName": "createSelectAdapter",
+      "description": "",
       "props": [
         {
-          "name": "selected",
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "open",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "readOnly",
           "type": "boolean | undefined",
           "required": false,
           "description": ""
@@ -643,62 +918,410 @@
           "description": ""
         },
         {
-          "name": "focusSelection",
+          "name": "closeOnEscape",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "focusManagerProps",
+          "type": "Partial<FloatingFocusManagerProps> | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "matchTriggerWidth",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onOpenChange",
+          "type": "((open: boolean) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "placement",
           "type": "enum",
           "required": false,
           "description": ""
         },
         {
-          "name": "onIsEditingChange",
-          "type": "((isEditing: boolean) => void) | undefined",
+          "name": "portalId",
+          "type": "string | undefined",
           "required": false,
           "description": ""
         },
         {
-          "name": "allowNewline",
+          "name": "root",
+          "type": "HTMLElement | null | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "description",
+          "type": "ReactNode",
+          "required": false,
+          "description": "字段描述"
+        },
+        {
+          "name": "error",
+          "type": "ReactNode",
+          "required": false,
+          "description": "单个错误信息"
+        },
+        {
+          "name": "label",
+          "type": "ReactNode",
+          "required": false,
+          "description": "字段标签"
+        },
+        {
+          "name": "onBlur",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "失焦回调"
+        },
+        {
+          "name": "onBlurAsync",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "异步失焦验证"
+        },
+        {
+          "name": "onBlurAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "((value: T) => void) | undefined",
+          "required": false,
+          "description": "值变化回调"
+        },
+        {
+          "name": "onChangeAsync",
+          "type": "((value: T) => void) | undefined",
+          "required": false,
+          "description": "异步值变化验证"
+        },
+        {
+          "name": "onChangeAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onFocus",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "聚焦回调"
+        },
+        {
+          "name": "onFocusAsync",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "异步聚焦验证"
+        },
+        {
+          "name": "onFocusAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "size",
+          "type": "enum",
+          "required": false,
+          "description": "字段大小"
+        },
+        {
+          "name": "value",
+          "type": "string | undefined",
+          "required": false,
+          "description": "字段值"
+        },
+        {
+          "name": "name",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "options",
+          "type": "SelectOption<T>[] | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "placeholder",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "CheckboxAdapter",
+      "description": "Checkbox 适配器 - 将 Checkbox 组件适配到 Form 系统",
+      "props": [
+        {
+          "name": "value",
+          "type": "boolean | undefined",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "readOnly",
           "type": "boolean | undefined",
           "required": false,
-          "description": "Whether to allow newline characters when pressing Enter. Default is true"
+          "description": ""
         },
         {
-          "name": "contentRef",
-          "type": "RefObject<HTMLDivElement> | undefined",
+          "name": "className",
+          "type": "string | undefined",
           "required": false,
           "description": ""
         },
         {
-          "name": "lineHeight",
-          "type": "number | undefined",
+          "name": "variant",
+          "type": "enum",
           "required": false,
-          "description": "Line height in pixels for calculating textarea height. Default is 16"
+          "description": ""
         },
         {
-          "name": "maxRows",
+          "name": "focused",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "mixed",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "(value: T) => void",
+          "required": true,
+          "description": "值变化回调"
+        },
+        {
+          "name": "onBlur",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "失焦回调"
+        },
+        {
+          "name": "onFocus",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "聚焦回调"
+        },
+        {
+          "name": "label",
+          "type": "ReactNode",
+          "required": false,
+          "description": "字段标签"
+        },
+        {
+          "name": "size",
+          "type": "enum",
+          "required": false,
+          "description": "字段大小"
+        },
+        {
+          "name": "description",
+          "type": "ReactNode",
+          "required": false,
+          "description": "字段描述"
+        },
+        {
+          "name": "error",
+          "type": "ReactNode",
+          "required": false,
+          "description": "单个错误信息"
+        },
+        {
+          "name": "onBlurAsync",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "异步失焦验证"
+        },
+        {
+          "name": "onBlurAsyncDebounceMs",
           "type": "number | undefined",
           "required": false,
           "description": ""
         },
         {
-          "name": "minRows",
+          "name": "onChangeAsync",
+          "type": "((value: T) => void) | undefined",
+          "required": false,
+          "description": "异步值变化验证"
+        },
+        {
+          "name": "onChangeAsyncDebounceMs",
           "type": "number | undefined",
           "required": false,
           "description": ""
         },
         {
-          "name": "padding",
-          "type": "number | undefined",
+          "name": "onFocusAsync",
+          "type": "(() => void) | undefined",
           "required": false,
-          "description": "Padding in pixels (top/bottom) for calculating textarea height. Default is 4 (py-1)"
+          "description": "异步聚焦验证"
         },
         {
-          "name": "resize",
-          "type": "false | \"auto\" | \"handle\" | undefined",
+          "name": "onFocusAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "createCheckboxAdapter",
+      "description": "",
+      "props": [
+        {
+          "name": "value",
+          "type": "boolean | undefined",
           "required": false,
           "description": ""
         },
         {
-          "name": "scrollRef",
-          "type": "RefObject<HTMLDivElement> | undefined",
+          "name": "readOnly",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "variant",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "focused",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "mixed",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "((value: T) => void) | undefined",
+          "required": false,
+          "description": "值变化回调"
+        },
+        {
+          "name": "onBlur",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "失焦回调"
+        },
+        {
+          "name": "onFocus",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "聚焦回调"
+        },
+        {
+          "name": "label",
+          "type": "ReactNode",
+          "required": false,
+          "description": "字段标签"
+        },
+        {
+          "name": "size",
+          "type": "enum",
+          "required": false,
+          "description": "字段大小"
+        },
+        {
+          "name": "description",
+          "type": "ReactNode",
+          "required": false,
+          "description": "字段描述"
+        },
+        {
+          "name": "error",
+          "type": "ReactNode",
+          "required": false,
+          "description": "单个错误信息"
+        },
+        {
+          "name": "onBlurAsync",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "异步失焦验证"
+        },
+        {
+          "name": "onBlurAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChangeAsync",
+          "type": "((value: T) => void) | undefined",
+          "required": false,
+          "description": "异步值变化验证"
+        },
+        {
+          "name": "onChangeAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onFocusAsync",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "异步聚焦验证"
+        },
+        {
+          "name": "onFocusAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "RadioGroupAdapter",
+      "description": "RadioGroup 适配器 - 将 RadioGroup 组件适配到 Form 系统\n\n核心功能：\n1. 值绑定\n2. 事件处理\n3. 错误状态显示\n4. 样式适配",
+      "props": [
+        {
+          "name": "readOnly",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "variant",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "options",
+          "type": "{ disabled?: boolean | undefined; label: string; value: string; }[] | undefined",
           "required": false,
           "description": ""
         },
@@ -789,6 +1412,114 @@
       ]
     },
     {
+      "displayName": "createRadioGroupAdapter",
+      "description": "",
+      "props": [
+        {
+          "name": "readOnly",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "variant",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "options",
+          "type": "{ disabled?: boolean | undefined; label: string; value: string; }[] | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "description",
+          "type": "ReactNode",
+          "required": false,
+          "description": "字段描述"
+        },
+        {
+          "name": "error",
+          "type": "ReactNode",
+          "required": false,
+          "description": "单个错误信息"
+        },
+        {
+          "name": "label",
+          "type": "ReactNode",
+          "required": false,
+          "description": "字段标签"
+        },
+        {
+          "name": "onBlur",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "失焦回调"
+        },
+        {
+          "name": "onBlurAsync",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "异步失焦验证"
+        },
+        {
+          "name": "onBlurAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "((value: T) => void) | undefined",
+          "required": false,
+          "description": "值变化回调"
+        },
+        {
+          "name": "onChangeAsync",
+          "type": "((value: T) => void) | undefined",
+          "required": false,
+          "description": "异步值变化验证"
+        },
+        {
+          "name": "onChangeAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onFocus",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "聚焦回调"
+        },
+        {
+          "name": "onFocusAsync",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "异步聚焦验证"
+        },
+        {
+          "name": "onFocusAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "size",
+          "type": "enum",
+          "required": false,
+          "description": "字段大小"
+        },
+        {
+          "name": "value",
+          "type": "string | undefined",
+          "required": false,
+          "description": "字段值"
+        }
+      ]
+    },
+    {
       "displayName": "SwitchAdapter",
       "description": "Switch 适配器 - 将 Switch 组件适配到 Form 系统",
       "props": [
@@ -805,14 +1536,14 @@
           "description": ""
         },
         {
-          "name": "focused",
-          "type": "boolean | undefined",
+          "name": "variant",
+          "type": "enum",
           "required": false,
           "description": ""
         },
         {
-          "name": "variant",
-          "type": "enum",
+          "name": "focused",
+          "type": "boolean | undefined",
           "required": false,
           "description": ""
         },
@@ -898,6 +1629,120 @@
           "name": "value",
           "type": "boolean",
           "required": true,
+          "description": "字段值"
+        }
+      ]
+    },
+    {
+      "displayName": "createSwitchAdapter",
+      "description": "",
+      "props": [
+        {
+          "name": "readOnly",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "variant",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "focused",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "description",
+          "type": "ReactNode",
+          "required": false,
+          "description": "字段描述"
+        },
+        {
+          "name": "error",
+          "type": "ReactNode",
+          "required": false,
+          "description": "单个错误信息"
+        },
+        {
+          "name": "label",
+          "type": "ReactNode",
+          "required": false,
+          "description": "字段标签"
+        },
+        {
+          "name": "onBlur",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "失焦回调"
+        },
+        {
+          "name": "onBlurAsync",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "异步失焦验证"
+        },
+        {
+          "name": "onBlurAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "((value: T) => void) | undefined",
+          "required": false,
+          "description": "值变化回调"
+        },
+        {
+          "name": "onChangeAsync",
+          "type": "((value: T) => void) | undefined",
+          "required": false,
+          "description": "异步值变化验证"
+        },
+        {
+          "name": "onChangeAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onFocus",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "聚焦回调"
+        },
+        {
+          "name": "onFocusAsync",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "异步聚焦验证"
+        },
+        {
+          "name": "onFocusAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "size",
+          "type": "enum",
+          "required": false,
+          "description": "字段大小"
+        },
+        {
+          "name": "value",
+          "type": "boolean | undefined",
+          "required": false,
           "description": "字段值"
         }
       ]
@@ -1065,6 +1910,168 @@
       ]
     },
     {
+      "displayName": "createRangeAdapter",
+      "description": "",
+      "props": [
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "max",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "min",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "readOnly",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "step",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "defaultValue",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "connectsClassName",
+          "type": "{ negative?: string | undefined; positive?: string | undefined; } | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChangeEnd",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChangeStart",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "thumbSize",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "trackSize",
+          "type": "{ height?: number | undefined; width?: number | \"auto\" | undefined; } | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "description",
+          "type": "ReactNode",
+          "required": false,
+          "description": "字段描述"
+        },
+        {
+          "name": "error",
+          "type": "ReactNode",
+          "required": false,
+          "description": "单个错误信息"
+        },
+        {
+          "name": "label",
+          "type": "ReactNode",
+          "required": false,
+          "description": "字段标签"
+        },
+        {
+          "name": "onBlur",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "失焦回调"
+        },
+        {
+          "name": "onBlurAsync",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "异步失焦验证"
+        },
+        {
+          "name": "onBlurAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "((value: T) => void) | undefined",
+          "required": false,
+          "description": "值变化回调"
+        },
+        {
+          "name": "onChangeAsync",
+          "type": "((value: T) => void) | undefined",
+          "required": false,
+          "description": "异步值变化验证"
+        },
+        {
+          "name": "onChangeAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onFocus",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "聚焦回调"
+        },
+        {
+          "name": "onFocusAsync",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "异步聚焦验证"
+        },
+        {
+          "name": "onFocusAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "size",
+          "type": "enum",
+          "required": false,
+          "description": "字段大小"
+        },
+        {
+          "name": "value",
+          "type": "number | undefined",
+          "required": false,
+          "description": "字段值"
+        }
+      ]
+    },
+    {
       "displayName": "NumericInputAdapter",
       "description": "NumericInput 适配器 - 将 NumericInput 组件适配到 Form 系统",
       "props": [
@@ -1123,8 +2130,8 @@
           "description": ""
         },
         {
-          "name": "focused",
-          "type": "boolean | undefined",
+          "name": "onIsEditingChange",
+          "type": "((isEditing: boolean) => void) | undefined",
           "required": false,
           "description": ""
         },
@@ -1135,20 +2142,8 @@
           "description": ""
         },
         {
-          "name": "tooltip",
-          "type": "TooltipProps | undefined",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "decimal",
-          "type": "number | undefined",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "onIsEditingChange",
-          "type": "((isEditing: boolean) => void) | undefined",
+          "name": "focused",
+          "type": "boolean | undefined",
           "required": false,
           "description": ""
         },
@@ -1159,8 +2154,20 @@
           "description": ""
         },
         {
+          "name": "tooltip",
+          "type": "TooltipProps | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
           "name": "triggerRef",
           "type": "RefObject<HTMLDivElement> | ((el: HTMLDivElement | null) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "decimal",
+          "type": "number | undefined",
           "required": false,
           "description": ""
         },
@@ -1216,6 +2223,228 @@
           "name": "onChange",
           "type": "(value: T) => void",
           "required": true,
+          "description": "值变化回调"
+        },
+        {
+          "name": "onBlur",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "失焦回调"
+        },
+        {
+          "name": "onFocus",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "聚焦回调"
+        },
+        {
+          "name": "label",
+          "type": "ReactNode",
+          "required": false,
+          "description": "字段标签"
+        },
+        {
+          "name": "description",
+          "type": "ReactNode",
+          "required": false,
+          "description": "字段描述"
+        },
+        {
+          "name": "error",
+          "type": "ReactNode",
+          "required": false,
+          "description": "单个错误信息"
+        },
+        {
+          "name": "onBlurAsync",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "异步失焦验证"
+        },
+        {
+          "name": "onBlurAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChangeAsync",
+          "type": "((value: T) => void) | undefined",
+          "required": false,
+          "description": "异步值变化验证"
+        },
+        {
+          "name": "onChangeAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onFocusAsync",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "异步聚焦验证"
+        },
+        {
+          "name": "onFocusAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "createNumericInputAdapter",
+      "description": "",
+      "props": [
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "max",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "min",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "readOnly",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "selected",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "step",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "defaultValue",
+          "type": "NumericInputValue | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "id",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onIsEditingChange",
+          "type": "((isEditing: boolean) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "variant",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "focused",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "classNames",
+          "type": "{ container?: string | undefined; input?: string | undefined; } | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "tooltip",
+          "type": "TooltipProps | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "triggerRef",
+          "type": "RefObject<HTMLDivElement> | ((el: HTMLDivElement | null) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "decimal",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "expression",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "handlerPressed",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "handlerProps",
+          "type": "Record<string, unknown> | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onEmpty",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onPressEnd",
+          "type": "(((event: PressEvent) => void) & ((e: PointerEvent) => void)) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onPressStart",
+          "type": "(((event: PressEvent) => void) & ((e: PointerEvent) => void)) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "shiftStep",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "value",
+          "type": "number | undefined",
+          "required": false,
+          "description": "字段值"
+        },
+        {
+          "name": "onChange",
+          "type": "((value: T) => void) | undefined",
+          "required": false,
           "description": "值变化回调"
         },
         {
@@ -1522,6 +2751,240 @@
       ]
     },
     {
+      "displayName": "createMultiSelectAdapter",
+      "description": "",
+      "props": [
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "open",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "placeholder",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "readOnly",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "variant",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "focusManagerProps",
+          "type": "FloatingFocusManagerProps | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "matchTriggerWidth",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onOpenChange",
+          "type": "((open: boolean) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "placement",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "portalId",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "root",
+          "type": "HTMLElement | null | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "chipVariant",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "closeOnSelect",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "getDisplayValue",
+          "type": "((value: string) => string) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "i18n",
+          "type": "{ maxSelectionMessage?: ((maxSelection: number) => string) | undefined; minSelectionMessage?: ((minSelection: number) => string) | undefined; } | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "maxChips",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "maxSelection",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "minSelection",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "renderChip",
+          "type": "((props: { disabled?: boolean | undefined; displayValue: string; index: number; onRemove?: ((e: MouseEvent<HTMLButtonElement, MouseEvent>) => void) | undefined; value: string; }) => ReactNode) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "showValidationMessage",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "values",
+          "type": "string[] | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "description",
+          "type": "ReactNode",
+          "required": false,
+          "description": "字段描述"
+        },
+        {
+          "name": "error",
+          "type": "ReactNode",
+          "required": false,
+          "description": "单个错误信息"
+        },
+        {
+          "name": "label",
+          "type": "ReactNode",
+          "required": false,
+          "description": "字段标签"
+        },
+        {
+          "name": "onBlur",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "失焦回调"
+        },
+        {
+          "name": "onBlurAsync",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "异步失焦验证"
+        },
+        {
+          "name": "onBlurAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "((value: T[]) => void) | undefined",
+          "required": false,
+          "description": "值变化回调"
+        },
+        {
+          "name": "onChangeAsync",
+          "type": "((value: T[]) => void) | undefined",
+          "required": false,
+          "description": "异步值变化验证"
+        },
+        {
+          "name": "onChangeAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onFocus",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "聚焦回调"
+        },
+        {
+          "name": "onFocusAsync",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "异步聚焦验证"
+        },
+        {
+          "name": "onFocusAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "size",
+          "type": "enum",
+          "required": false,
+          "description": "字段大小"
+        },
+        {
+          "name": "value",
+          "type": "T[] | undefined",
+          "required": false,
+          "description": "字段值"
+        },
+        {
+          "name": "name",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "options",
+          "type": "SelectOption<T>[] | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
       "displayName": "SegmentedAdapter",
       "description": "Segmented 适配器 - 将 Segmented 组件适配到 Form 系统\n\n核心功能：\n1. 值绑定\n2. 事件处理\n3. 错误状态显示\n4. 样式适配",
       "props": [
@@ -1646,6 +3109,157 @@
           "description": ""
         }
       ]
+    },
+    {
+      "displayName": "createSegmentedAdapter",
+      "description": "",
+      "props": [
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "readOnly",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "variant",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "tooltip",
+          "type": "TooltipProps | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "description",
+          "type": "ReactNode",
+          "required": false,
+          "description": "字段描述"
+        },
+        {
+          "name": "error",
+          "type": "ReactNode",
+          "required": false,
+          "description": "单个错误信息"
+        },
+        {
+          "name": "label",
+          "type": "ReactNode",
+          "required": false,
+          "description": "字段标签"
+        },
+        {
+          "name": "onBlur",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "失焦回调"
+        },
+        {
+          "name": "onBlurAsync",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "异步失焦验证"
+        },
+        {
+          "name": "onBlurAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "((value: T) => void) | undefined",
+          "required": false,
+          "description": "值变化回调"
+        },
+        {
+          "name": "onChangeAsync",
+          "type": "((value: T) => void) | undefined",
+          "required": false,
+          "description": "异步值变化验证"
+        },
+        {
+          "name": "onChangeAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onFocus",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "聚焦回调"
+        },
+        {
+          "name": "onFocusAsync",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "异步聚焦验证"
+        },
+        {
+          "name": "onFocusAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "size",
+          "type": "enum",
+          "required": false,
+          "description": "字段大小"
+        },
+        {
+          "name": "value",
+          "type": "string | undefined",
+          "required": false,
+          "description": "字段值"
+        },
+        {
+          "name": "options",
+          "type": "SegmentedOption<T>[] | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "InputAdapterProps",
+      "description": "文本输入类适配器 (Input, Textarea)",
+      "props": []
+    },
+    {
+      "displayName": "SelectAdapterProps",
+      "description": "选择类适配器 (Select, MultiSelect)",
+      "props": []
+    },
+    {
+      "displayName": "CheckboxAdapterProps",
+      "description": "布尔类适配器 (Checkbox, Switch)",
+      "props": []
+    },
+    {
+      "displayName": "RangeAdapterProps",
+      "description": "数字类适配器 (Range, NumericInput)",
+      "props": []
+    },
+    {
+      "displayName": "RadioGroupAdapterProps",
+      "description": "单选类适配器 (RadioGroup, Segmented)",
+      "props": []
     }
   ],
   "stories": [
@@ -1660,70 +3274,70 @@
       "id": "forms-form-examples--with-description",
       "name": "With Description",
       "exportName": "WithDescription",
-      "description": "",
+      "description": "Form example with description\n1. description is a string\n2. description is a ReactNode",
       "source": "import { CheckboxAdapter } from \"@choice-ui/form\"\n\nexport default function App() {\n  return (\n    <>\n      <form\n        className=\"w-80 space-y-4\"\n        onSubmit={(e) => {\n          e.preventDefault()\n          e.stopPropagation()\n          form.handleSubmit()\n        }}\n      >\n        <form.Field name=\"username\">\n          {(field) => (\n            <form.Input\n              name={field.name}\n              label=\"Username\"\n              value={field.state.value as string}\n              onChange={field.handleChange}\n              onBlur={field.handleBlur}\n              placeholder=\"Enter username\"\n              description=\"Username is required\"\n            />\n          )}\n        </form.Field>\n\n        <form.Field name=\"email\">\n          {(field) => (\n            <form.Input\n              name={field.name}\n              label=\"Email\"\n              value={field.state.value as string}\n              onChange={field.handleChange}\n              onBlur={field.handleBlur}\n              type=\"email\"\n              placeholder=\"Enter email address\"\n              description={\n                <>\n                  <span>Email is required</span>{\" \"}\n                  <LinkButton className=\"float-right\">Learn more</LinkButton>\n                </>\n              }\n            />\n          )}\n        </form.Field>\n\n        <form.Field name=\"role\">\n          {(field) => (\n            <form.Select\n              name={field.name}\n              label=\"Role\"\n              value={field.state.value as string}\n              onChange={field.handleChange}\n              options={[\n                { label: \"Select Role\" },\n                { label: \"Admin\", value: \"admin\" },\n                { label: \"User\", value: \"user\" },\n                { label: \"Guest\", value: \"guest\" },\n                { divider: true },\n                { label: \"Other\", value: \"other\" },\n              ]}\n              description=\"Role is required\"\n            />\n          )}\n        </form.Field>\n\n        <form.Button type=\"submit\">Submit Form</form.Button>\n      </form>\n\n      <div className=\"bg-secondary-background mt-4 rounded-xl p-4\">\n        <strong>Form Result:</strong>\n        <CodeBlock language=\"json\">\n          <CodeBlock.Content code={result} />\n        </CodeBlock>\n      </div>\n    </>\n  );\n}"
     },
     {
       "id": "forms-form-examples--with-validation",
       "name": "With Validation",
       "exportName": "WithValidation",
-      "description": "",
+      "description": "Form with validation rules and error handling",
       "source": "import { CheckboxAdapter } from \"@choice-ui/form\"\n\nexport default function App() {\n  return (\n    <>\n      <form\n        className=\"w-80 space-y-4\"\n        onSubmit={(e) => {\n          e.preventDefault()\n          e.stopPropagation()\n          form.handleSubmit()\n        }}\n      >\n        <form.Field\n          name=\"password\"\n          validators={{\n            onChange: ({ value }) => {\n              if ((value as string).length < 6) {\n                return \"Password must be at least 6 characters\"\n              }\n            },\n          }}\n        >\n          {(field) => (\n            <form.Input\n              label=\"Password\"\n              name={field.name}\n              value={field.state.value as string}\n              onChange={field.handleChange}\n              onBlur={field.handleBlur}\n              type=\"password\"\n              placeholder=\"Enter password\"\n              error={field.state.meta.errors.join(\", \")}\n            />\n          )}\n        </form.Field>\n\n        <form.Field\n          name=\"confirmPassword\"\n          validators={{\n            onChange: ({ value }) => {\n              if (value !== form.state.values.password) {\n                return \"Passwords do not match\"\n              }\n            },\n          }}\n        >\n          {(field) => (\n            <form.Input\n              label=\"Confirm Password\"\n              name={field.name}\n              value={field.state.value as string}\n              onChange={field.handleChange}\n              onBlur={field.handleBlur}\n              type=\"password\"\n              placeholder=\"Confirm password\"\n              error={field.state.meta.errors.join(\", \")}\n            />\n          )}\n        </form.Field>\n\n        <form.Field\n          name=\"age\"\n          validators={{\n            onChange: ({ value }) => {\n              const age = parseInt(value as string)\n              if (isNaN(age) || age < 1) {\n                return \"Please enter a valid age\"\n              }\n              if (age < 18 || age > 80) {\n                return \"Must be 18 or older and less than 80\"\n              }\n            },\n          }}\n        >\n          {(field) => (\n            <form.Input\n              label=\"Age\"\n              name={field.name}\n              value={field.state.value as string}\n              onChange={field.handleChange}\n              onBlur={field.handleBlur}\n              type=\"number\"\n              placeholder=\"Enter age\"\n              error={field.state.meta.errors.join(\", \")}\n            />\n          )}\n        </form.Field>\n\n        <form.Button type=\"submit\">Create Account</form.Button>\n      </form>\n\n      <div className=\"bg-secondary-background mt-4 rounded-xl p-4\">\n        <strong>Form Result:</strong>\n        <CodeBlock language=\"json\">\n          <CodeBlock.Content code={result} />\n        </CodeBlock>\n      </div>\n    </>\n  );\n}"
     },
     {
       "id": "forms-form-examples--with-schema-validation",
       "name": "With Schema Validation",
       "exportName": "WithSchemaValidation",
-      "description": "",
+      "description": "Form with Zod schema validation",
       "source": "import { CheckboxAdapter } from \"@choice-ui/form\"\n\nexport default function App() {\n  return (\n    <div className=\"w-80\">\n      <h3 className=\"text-body-large-strong\">Schema Validation</h3>\n      <p className=\"text-secondary-foreground mt-2\">\n        Use Zod Schema to validate the form, support complex validation rules\n      </p>\n\n      <form\n        onSubmit={(e) => {\n          e.preventDefault()\n          form.handleSubmit()\n        }}\n        className=\"mt-4 space-y-4\"\n      >\n        <form.Field name=\"name\">\n          {(field) => (\n            <form.Input\n              label=\"Name\"\n              name={field.name}\n              value={field.state.value as string}\n              onChange={field.handleChange}\n              onBlur={field.handleBlur}\n              placeholder=\"Enter name\"\n              error={formatErrors(field.state.meta.errors).join(\", \")}\n            />\n          )}\n        </form.Field>\n\n        <form.Field name=\"email\">\n          {(field) => (\n            <form.Input\n              label=\"Email\"\n              name={field.name}\n              value={field.state.value as string}\n              onChange={field.handleChange}\n              onBlur={field.handleBlur}\n              type=\"email\"\n              placeholder=\"Enter email address\"\n              error={formatErrors(field.state.meta.errors).join(\", \")}\n            />\n          )}\n        </form.Field>\n\n        <form.Field name=\"age\">\n          {(field) => (\n            <form.Input\n              label=\"Age\"\n              name={field.name}\n              value={String(field.state.value)}\n              onChange={(value) => field.handleChange(parseInt(value) || 0)}\n              onBlur={field.handleBlur}\n              type=\"number\"\n              placeholder=\"Enter age\"\n              error={formatErrors(field.state.meta.errors).join(\", \")}\n            />\n          )}\n        </form.Field>\n\n        <form.Field name=\"website\">\n          {(field) => (\n            <form.Input\n              label=\"Website\"\n              name={field.name}\n              value={field.state.value as string}\n              onChange={field.handleChange}\n              onBlur={field.handleBlur}\n              type=\"url\"\n              placeholder=\"https://example.com\"\n              error={formatErrors(field.state.meta.errors).join(\", \")}\n            />\n          )}\n        </form.Field>\n\n        <form.Field name=\"bio\">\n          {(field) => (\n            <>\n              <form.Textarea\n                label=\"Bio\"\n                name={field.name}\n                value={field.state.value as string}\n                onChange={field.handleChange}\n                onBlur={field.handleBlur}\n                placeholder=\"Enter bio\"\n                error={formatErrors(field.state.meta.errors).join(\", \")}\n                description={`${(field.state.value as string).length}/${BIO_MAX_LENGTH} characters`}\n              />\n            </>\n          )}\n        </form.Field>\n\n        <form.Button\n          type=\"submit\"\n          disabled={isSubmitting || !form.state.canSubmit}\n        >\n          {isSubmitting ? \"Submitting...\" : \"Submit\"}\n        </form.Button>\n      </form>\n\n      {submitResult && (\n        <div\n          className={tcx(\n            \"mt-4 rounded-xl p-4\",\n            submitResult.includes(\"success\")\n              ? \"bg-success-background text-success-foreground\"\n              : \"bg-danger-background text-danger-foreground\",\n          )}\n        >\n          {submitResult}\n        </div>\n      )}\n\n      <div className=\"bg-secondary-background mt-4 grid grid-cols-[auto_1fr] place-items-start gap-2 rounded-xl p-4\">\n        <div className=\"font-strong col-span-2\">Form state:</div>\n        <span>Can submit:</span> <Badge>{form.state.canSubmit ? \"Yes\" : \"No\"}</Badge>\n        <span>Is dirty:</span> <Badge>{form.state.isDirty ? \"Yes\" : \"No\"}</Badge>\n        <span>Validating:</span> <Badge>{form.state.isValidating ? \"Yes\" : \"No\"}</Badge>\n        <span>Submitting:</span> <Badge>{form.state.isSubmitting ? \"Yes\" : \"No\"}</Badge>\n        <span>Valid:</span> <Badge>{form.state.isValid ? \"Yes\" : \"No\"}</Badge>\n      </div>\n    </div>\n  );\n}"
     },
     {
       "id": "forms-form-examples--query-integration",
       "name": "Query Integration",
       "exportName": "QueryIntegration",
-      "description": "",
+      "description": "Form with TanStack Query integration",
       "source": "import { CheckboxAdapter } from \"@choice-ui/form\"\n\nexport default function App() {\n  return (\n    <div className=\"flex items-center justify-center p-8\">\n      <div className=\"text-default-foreground text-body-large\">Loading user data...</div>\n    </div>\n  );\n}"
     },
     {
       "id": "forms-form-examples--with-async-initial-values",
       "name": "With Async Initial Values",
       "exportName": "WithAsyncInitialValues",
-      "description": "",
+      "description": "Form with async initial values",
       "source": "import { CheckboxAdapter } from \"@choice-ui/form\"\n\nexport default function App() {\n  return (\n    <div className=\"w-full max-w-md space-y-4\">\n      <div className=\"w-80\">\n        <h3 className=\"font-strong\">Async Initial Values Example</h3>\n        <p className=\"text-secondary-foreground\">\n          Demonstrate how to asynchronously load the initial values of the form, commonly used in\n          editing existing data scenarios\n        </p>\n      </div>\n\n      {/* 用户选择器 */}\n      <div className=\"flex w-80 flex-col gap-2 rounded-xl border p-4\">\n        <Label>Select user to edit:</Label>\n        <Tabs\n          value={selectedUserId.toString()}\n          onChange={(value) => handleUserChange(Number(value))}\n        >\n          <Tabs.Item value=\"1\">User 1</Tabs.Item>\n          <Tabs.Item value=\"2\">User 2</Tabs.Item>\n          <Tabs.Item value=\"3\">User 3</Tabs.Item>\n        </Tabs>\n      </div>\n\n      {/* 加载状态 */}\n      {isInitialLoading && (\n        <div className=\"flex items-center justify-center p-8\">\n          <div className=\"text-center\">\n            <div className=\"text-body-large\">Loading user data...</div>\n            <div className=\"text-secondary-foreground mt-2\">Please wait</div>\n          </div>\n        </div>\n      )}\n\n      {/* 加载错误 */}\n      {loadError && (\n        <div className=\"p-4\">\n          <div className=\"text-danger-foreground\">\n            <div className=\"font-strong\">Load failed</div>\n            <div className=\"mt-1\">{loadError}</div>\n          </div>\n          <Button\n            onClick={handleReload}\n            className=\"mt-2\"\n          >\n            Reload\n          </Button>\n        </div>\n      )}\n\n      {/* 表单内容 */}\n      {!isInitialLoading && !loadError && initialData && (\n        <form\n          key={`form-${selectedUserId}`}\n          onSubmit={(e) => {\n            e.preventDefault()\n            form.handleSubmit()\n          }}\n          className=\"w-80 space-y-4\"\n        >\n          <form.Field\n            name=\"name\"\n            validators={{\n              onChange: ({ value }) => {\n                const stringValue = String(value || \"\")\n                return !stringValue\n                  ? \"Name cannot be empty\"\n                  : stringValue.length < 2\n                    ? \"Name must be at least 2 characters\"\n                    : undefined\n              },\n            }}\n          >\n            {(field) => (\n              <form.Input\n                name={field.name}\n                label=\"Name\"\n                value={String(field.state.value || \"\")}\n                onChange={field.handleChange}\n                onBlur={field.handleBlur}\n                placeholder=\"Enter your name\"\n                error={formatErrors(field.state.meta.errors).join(\", \")}\n              />\n            )}\n          </form.Field>\n\n          <form.Field\n            name=\"email\"\n            validators={{\n              onChange: ({ value }) => {\n                const stringValue = String(value || \"\")\n                if (!stringValue) return \"Email cannot be empty\"\n                const emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/\n                return !emailRegex.test(stringValue)\n                  ? \"Please enter a valid email address\"\n                  : undefined\n              },\n            }}\n          >\n            {(field) => (\n              <form.Input\n                label=\"Email\"\n                name={field.name}\n                value={String(field.state.value || \"\")}\n                onChange={field.handleChange}\n                onBlur={field.handleBlur}\n                type=\"email\"\n                placeholder=\"Enter your email address\"\n                error={formatErrors(field.state.meta.errors).join(\", \")}\n              />\n            )}\n          </form.Field>\n\n          <form.Field\n            name=\"age\"\n            validators={{\n              onChange: ({ value }) => {\n                const numValue = Number(value)\n                if (isNaN(numValue) || numValue <= 0) return \"Please enter a valid age\"\n                if (numValue < 18) return \"Age must be greater than 18\"\n                if (numValue > 100) return \"Age must be less than 100\"\n                return undefined\n              },\n            }}\n          >\n            {(field) => (\n              <form.NumericInput\n                label=\"Age\"\n                name={field.name}\n                value={field.state.value as number}\n                onChange={(value) => field.handleChange(value)}\n                onBlur={field.handleBlur}\n                type=\"number\"\n                placeholder=\"Enter your age\"\n                error={formatErrors(field.state.meta.errors).join(\", \")}\n              />\n            )}\n          </form.Field>\n\n          <form.Field\n            name=\"department\"\n            validators={{\n              onChange: ({ value }) => {\n                const stringValue = String(value || \"\")\n                return !stringValue ? \"Department cannot be empty\" : undefined\n              },\n            }}\n          >\n            {(field) => (\n              <form.Select\n                label=\"Department\"\n                name={field.name}\n                value={String(field.state.value || \"\")}\n                onChange={field.handleChange}\n                options={[\n                  { label: \"Engineering\", value: \"Engineering\" },\n                  { label: \"Product\", value: \"Product\" },\n                  { label: \"Design\", value: \"Design\" },\n                  { label: \"Marketing\", value: \"Marketing\" },\n                  { label: \"Human Resources\", value: \"Human Resources\" },\n                ]}\n                error={formatErrors(field.state.meta.errors).join(\", \")}\n              />\n            )}\n          </form.Field>\n\n          <div className=\"flex gap-2\">\n            <form.Button\n              type=\"submit\"\n              disabled={!form.state.canSubmit || form.state.isSubmitting}\n            >\n              {form.state.isSubmitting ? \"Updating...\" : \"Update user\"}\n            </form.Button>\n\n            <form.Button\n              type=\"button\"\n              variant=\"secondary\"\n              onClick={handleReload}\n            >\n              Reload\n            </form.Button>\n          </div>\n        </form>\n      )}\n\n      {submitResult && (\n        <div\n          className={tcx(\n            \"w-80 rounded-xl p-4\",\n            submitResult.includes(\"success\")\n              ? \"text-success-foreground bg-green-100\"\n              : \"text-danger-foreground bg-red-100\",\n          )}\n        >\n          {submitResult}\n        </div>\n      )}\n\n      {/* 表单状态信息 */}\n      {!isInitialLoading && !loadError && (\n        <div className=\"bg-secondary-background w-80 space-y-2 rounded p-4\">\n          <div className=\"font-strong\">Form state:</div>\n          <div className=\"grid grid-cols-2 gap-2\">\n            <div>Can submit: {form.state.canSubmit ? \"Yes\" : \"No\"}</div>\n            <div>Is dirty: {form.state.isDirty ? \"Yes\" : \"No\"}</div>\n            <div>Submitting: {form.state.isSubmitting ? \"Yes\" : \"No\"}</div>\n            <div>Valid: {form.state.isValid ? \"Yes\" : \"No\"}</div>\n          </div>\n        </div>\n      )}\n    </div>\n  );\n}"
     },
     {
       "id": "forms-form-examples--with-array-fields",
       "name": "With Array Fields",
       "exportName": "WithArrayFields",
-      "description": "",
+      "description": "Form with array fields",
       "source": "import { CheckboxAdapter } from \"@choice-ui/form\"\n\nexport default function App() {\n  return (\n    <div className=\"w-80 space-y-6\">\n      <div className=\"flex w-80 flex-col gap-2\">\n        <h3 className=\"font-strong\">Array Form Example</h3>\n        <p className=\"text-secondary-foreground\">\n          Demonstrate how to handle array-type form fields, including simple arrays and object\n          arrays\n        </p>\n      </div>\n\n      <form\n        onSubmit={(e) => {\n          e.preventDefault()\n          form.handleSubmit()\n        }}\n        className=\"space-y-4\"\n      >\n        {/* 基本字段 */}\n        <form.Field\n          name=\"name\"\n          validators={{\n            onChange: ({ value }) => {\n              const stringValue = String(value || \"\")\n              return !stringValue ? \"Name cannot be empty\" : undefined\n            },\n          }}\n        >\n          {(field) => (\n            <form.Input\n              label=\"Name\"\n              name={field.name}\n              value={String(field.state.value || \"\")}\n              onChange={field.handleChange}\n              onBlur={field.handleBlur}\n              placeholder=\"Enter your name\"\n              error={formatErrors(field.state.meta.errors).join(\", \")}\n            />\n          )}\n        </form.Field>\n\n        {/* 简单数组 - 技能列表 */}\n        <form.Field\n          name=\"skills\"\n          mode=\"array\"\n        >\n          {(skillsField) => (\n            <fieldset className=\"flex flex-col gap-3\">\n              <div className=\"flex items-center justify-between\">\n                <Label>Skills List</Label>\n                <Button\n                  onClick={() => {\n                    skillsField.pushValue(\"\" as never)\n                  }}\n                >\n                  Add skill\n                </Button>\n              </div>\n\n              <div className=\"space-y-2\">\n                {(skillsField.state.value as string[]).length === 0 ? (\n                  <div className=\"text-secondary-foreground\">\n                    No skills, click &quot;Add skill&quot; button to add\n                  </div>\n                ) : (\n                  (skillsField.state.value as string[]).map((_, index) => (\n                    <form.Field\n                      key={index}\n                      name={`skills[${index}]`}\n                      validators={{\n                        onChange: ({ value }) => {\n                          const stringValue = String(value || \"\")\n                          return !stringValue ? \"Skill cannot be empty\" : undefined\n                        },\n                      }}\n                    >\n                      {(skillField) => (\n                        <div className=\"grid grid-cols-[1fr_auto] gap-2\">\n                          <form.Input\n                            name={skillField.name}\n                            value={String(skillField.state.value || \"\")}\n                            onChange={skillField.handleChange}\n                            onBlur={skillField.handleBlur}\n                            placeholder={`Skill ${index + 1}`}\n                            className=\"flex-1\"\n                          />\n                          <IconButton onClick={() => skillsField.removeValue(index)}>\n                            <TrashSmall />\n                          </IconButton>\n                          {skillField.state.meta.errors.length > 0 && (\n                            <div className=\"text-danger-foreground col-span-2\">\n                              {formatErrors(skillField.state.meta.errors).join(\", \")}\n                            </div>\n                          )}\n                        </div>\n                      )}\n                    </form.Field>\n                  ))\n                )}\n              </div>\n            </fieldset>\n          )}\n        </form.Field>\n\n        {/* 对象数组 - 爱好列表 */}\n        <form.Field\n          name=\"hobbies\"\n          mode=\"array\"\n        >\n          {(hobbiesField) => (\n            <fieldset className=\"flex flex-col gap-2\">\n              <div className=\"flex items-center justify-between\">\n                <Label>Hobbies List</Label>\n                <Button\n                  onClick={() => {\n                    hobbiesField.pushValue({\n                      name: \"\",\n                      description: \"\",\n                      yearsOfExperience: 0,\n                    } as never)\n                  }}\n                >\n                  Add hobby\n                </Button>\n              </div>\n\n              <div className=\"space-y-4\">\n                {(\n                  hobbiesField.state.value as Array<{\n                    description: string\n                    name: string\n                    yearsOfExperience: number\n                  }>\n                ).length === 0 ? (\n                  <div className=\"text-secondary-foreground\">\n                    No hobbies, click &quot;Add hobby&quot; button to add\n                  </div>\n                ) : (\n                  (\n                    hobbiesField.state.value as Array<{\n                      description: string\n                      name: string\n                      yearsOfExperience: number\n                    }>\n                  ).map((_, index) => (\n                    <div\n                      key={index}\n                      className=\"rounded-xl border p-4\"\n                    >\n                      <div className=\"mb-2 flex items-center justify-between\">\n                        <Label>Hobby {index + 1}</Label>\n                        <IconButton onClick={() => hobbiesField.removeValue(index)}>\n                          <TrashSmall />\n                        </IconButton>\n                      </div>\n\n                      <div className=\"grid grid-cols-1 gap-3 md:grid-cols-2\">\n                        <form.Field\n                          name={`hobbies[${index}].name`}\n                          validators={{\n                            onChange: ({ value }) => {\n                              const stringValue = String(value || \"\")\n                              return !stringValue ? \"爱好名称不能为空\" : undefined\n                            },\n                          }}\n                        >\n                          {(field) => (\n                            <form.Input\n                              label=\"Name\"\n                              name={field.name}\n                              value={String(field.state.value || \"\")}\n                              onChange={field.handleChange}\n                              onBlur={field.handleBlur}\n                              placeholder=\"e.g. Basketball, Reading\"\n                              error={formatErrors(field.state.meta.errors).join(\", \")}\n                            />\n                          )}\n                        </form.Field>\n\n                        <form.Field\n                          name={`hobbies[${index}].yearsOfExperience`}\n                          validators={{\n                            onChange: ({ value }) => {\n                              const numValue = Number(value)\n                              if (isNaN(numValue) || numValue < 0)\n                                return \"Please enter a valid number\"\n                              return undefined\n                            },\n                          }}\n                        >\n                          {(field) => (\n                            <form.NumericInput\n                              label=\"Years of experience\"\n                              name={field.name}\n                              value={Number(field.state.value || 0)}\n                              onChange={(value) => field.handleChange(value || 0)}\n                              onBlur={field.handleBlur}\n                              placeholder=\"0\"\n                              error={formatErrors(field.state.meta.errors).join(\", \")}\n                            />\n                          )}\n                        </form.Field>\n\n                        <form.Field name={`hobbies[${index}].description`}>\n                          {(field) => (\n                            <form.Textarea\n                              className=\"col-span-2\"\n                              label=\"Description\"\n                              name={field.name}\n                              value={String(field.state.value || \"\")}\n                              onChange={(value) => field.handleChange(value)}\n                              onBlur={field.handleBlur}\n                              placeholder=\"Describe your hobby...\"\n                              rows={4}\n                              error={formatErrors(field.state.meta.errors).join(\", \")}\n                            />\n                          )}\n                        </form.Field>\n                      </div>\n                    </div>\n                  ))\n                )}\n              </div>\n            </fieldset>\n          )}\n        </form.Field>\n\n        {/* 复杂对象数组 - 联系方式 */}\n        <form.Field\n          name=\"contacts\"\n          mode=\"array\"\n        >\n          {(contactsField) => (\n            <fieldset className=\"flex flex-col gap-3\">\n              <div className=\"flex items-center justify-between\">\n                <Label>Contacts List</Label>\n                <Button\n                  onClick={() => {\n                    contactsField.pushValue({\n                      type: \"email\",\n                      value: \"\",\n                      isPrimary: false,\n                    } as never)\n                  }}\n                >\n                  Add contact\n                </Button>\n              </div>\n\n              <div className=\"space-y-3\">\n                {(\n                  contactsField.state.value as Array<{\n                    isPrimary: boolean\n                    type: string\n                    value: string\n                  }>\n                ).map((_, index) => (\n                  <div\n                    key={index}\n                    className=\"rounded-xl border p-4\"\n                  >\n                    <div className=\"mb-2 flex items-center justify-between\">\n                      <Label>Contact {index + 1}</Label>\n                      <IconButton onClick={() => contactsField.removeValue(index)}>\n                        <TrashSmall />\n                      </IconButton>\n                    </div>\n\n                    <div className=\"grid grid-cols-2 gap-2\">\n                      <form.Field name={`contacts[${index}].type`}>\n                        {(field) => (\n                          <form.Select\n                            label=\"Type\"\n                            name={field.name}\n                            value={String(field.state.value || \"\")}\n                            onChange={field.handleChange}\n                            onBlur={field.handleBlur}\n                            options={[\n                              { label: \"Email\", value: \"email\" },\n                              { label: \"Phone\", value: \"phone\" },\n                              { label: \"Wechat\", value: \"wechat\" },\n                              { label: \"QQ\", value: \"qq\" },\n                            ]}\n                            error={formatErrors(field.state.meta.errors).join(\", \")}\n                          />\n                        )}\n                      </form.Field>\n\n                      <form.Field\n                        name={`contacts[${index}].value`}\n                        validators={{\n                          onChange: ({ value }) => {\n                            const stringValue = String(value || \"\")\n                            return !stringValue ? \"Contact value cannot be empty\" : undefined\n                          },\n                        }}\n                      >\n                        {(field) => (\n                          <form.Input\n                            label=\"Value\"\n                            name={field.name}\n                            value={String(field.state.value || \"\")}\n                            onChange={field.handleChange}\n                            onBlur={field.handleBlur}\n                            placeholder=\"Enter contact value\"\n                            error={formatErrors(field.state.meta.errors).join(\", \")}\n                          />\n                        )}\n                      </form.Field>\n\n                      <form.Field name={`contacts[${index}].isPrimary`}>\n                        {(field) => (\n                          <form.Checkbox\n                            className=\"col-span-2\"\n                            label=\"Is primary\"\n                            name={field.name}\n                            value={Boolean(field.state.value)}\n                            onChange={(value) => field.handleChange(value)}\n                            onBlur={field.handleBlur}\n                          />\n                        )}\n                      </form.Field>\n                    </div>\n                  </div>\n                ))}\n              </div>\n            </fieldset>\n          )}\n        </form.Field>\n\n        <div className=\"flex gap-2\">\n          <form.Button\n            type=\"submit\"\n            disabled={!form.state.canSubmit || form.state.isSubmitting}\n          >\n            {form.state.isSubmitting ? \"Submitting...\" : \"Submit form\"}\n          </form.Button>\n\n          <form.Button\n            type=\"button\"\n            variant=\"secondary\"\n            onClick={() => form.reset()}\n          >\n            Reset form\n          </form.Button>\n        </div>\n      </form>\n\n      {submitResult && (\n        <div\n          className={tcx(\n            \"rounded-xl p-4\",\n            submitResult.includes(\"success\")\n              ? \"text-success-foreground bg-green-100\"\n              : \"text-danger-foreground bg-red-100\",\n          )}\n        >\n          {submitResult}\n        </div>\n      )}\n\n      {/* 表单状态和数据预览 */}\n      <div className=\"space-y-4\">\n        <div className=\"rounded-xl border p-4\">\n          <div className=\"font-strong mb-2\">Form status:</div>\n          <div className=\"grid grid-cols-2 gap-2\">\n            <div>Can submit: {form.state.canSubmit ? \"Yes\" : \"No\"}</div>\n            <div>Is dirty: {form.state.isDirty ? \"Yes\" : \"No\"}</div>\n            <div>Is submitting: {form.state.isSubmitting ? \"Yes\" : \"No\"}</div>\n            <div>Is valid: {form.state.isValid ? \"Yes\" : \"No\"}</div>\n          </div>\n        </div>\n\n        <div className=\"rounded-xl border p-4\">\n          <div className=\"font-strong mb-2\">Current form data:</div>\n          <pre className=\"overflow-auto\">{JSON.stringify(form.state.values, null, 2)}</pre>\n        </div>\n      </div>\n    </div>\n  );\n}"
     },
     {
       "id": "forms-form-examples--with-linked-fields",
       "name": "With Linked Fields",
       "exportName": "WithLinkedFields",
-      "description": "",
+      "description": "Form with linked fields",
       "source": "import { CheckboxAdapter } from \"@choice-ui/form\"\n\nexport default function App() {\n  return (\n    <div className=\"w-80 space-y-4\">\n      <div className=\"space-y-2\">\n        <h3 className=\"font-strong\">Linked fields example</h3>\n        <p className=\"text-secondary-foreground\">\n          Demonstrates how to link two fields, when one field value changes, the validation of the\n          other field will be re-run\n        </p>\n      </div>\n\n      <form\n        onSubmit={(e) => {\n          e.preventDefault()\n          form.handleSubmit()\n        }}\n        className=\"space-y-4\"\n      >\n        {/* 基本字段 */}\n        <form.Field\n          name=\"username\"\n          validators={{\n            onChange: ({ value }) => {\n              const stringValue = String(value || \"\")\n              if (!stringValue) return \"Username cannot be empty\"\n              if (stringValue.length < 3) return \"Username must be at least 3 characters\"\n              return undefined\n            },\n          }}\n        >\n          {(field) => (\n            <form.Input\n              label=\"Username\"\n              name={field.name}\n              value={String(field.state.value || \"\")}\n              onChange={field.handleChange}\n              onBlur={field.handleBlur}\n              placeholder=\"Enter username\"\n              error={formatErrors(field.state.meta.errors).join(\", \")}\n            />\n          )}\n        </form.Field>\n\n        {/* 邮箱字段 */}\n        <form.Field\n          name=\"email\"\n          validators={{\n            onChange: ({ value }) => {\n              const stringValue = String(value || \"\")\n              if (!stringValue) return \"Email cannot be empty\"\n              const emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/\n              return !emailRegex.test(stringValue)\n                ? \"Please enter a valid email address\"\n                : undefined\n            },\n          }}\n        >\n          {(field) => (\n            <form.Input\n              label=\"Email\"\n              name={field.name}\n              value={String(field.state.value || \"\")}\n              onChange={field.handleChange}\n              onBlur={field.handleBlur}\n              type=\"email\"\n              placeholder=\"Enter email address\"\n              error={formatErrors(field.state.meta.errors).join(\", \")}\n            />\n          )}\n        </form.Field>\n\n        <div className=\"rounded-xl border p-4\">\n          <h4 className=\"text-warning-foreground font-strong mb-2\">\n            Password validation example\n          </h4>\n          <p className=\"text-warning-foreground mb-3\">\n            Try this flow: 1\n  );\n}"
     },
     {
       "id": "forms-form-examples--with-reactivity",
       "name": "With Reactivity",
       "exportName": "WithReactivity",
-      "description": "",
+      "description": "Form with reactivity patterns",
       "source": "import { CheckboxAdapter } from \"@choice-ui/form\"\n\nexport default function App() {\n  return (\n    <div className=\"w-80 space-y-4\">\n      <div>\n        <h3 className=\"font-strong\">Reactive subscription example</h3>\n        <p className=\"text-secondary-foreground\">\n          Demonstrates how to use useStore and form.Subscribe to access reactive form values\n        </p>\n      </div>\n\n      {/* 使用 useStore 的响应式状态显示 */}\n      <div className=\"rounded-xl border p-4\">\n        <h4 className=\"text-success-foreground font-strong mb-2\">\n          useStore subscription example\n        </h4>\n        <div className=\"space-y-1\">\n          <div>\n            • Current user type:{\" \"}\n            <span className=\"font-strong\">\n              {userType === \"personal\" ? \"Personal user\" : \"Business user\"}\n            </span>\n          </div>\n          <div>\n            • Calculate price: <span className=\"font-strong\">${calculatePrice()}/month</span>\n          </div>\n          <div>\n            • Form status:\n            <Badge\n              variant={canSubmit ? \"success\" : \"error\"}\n              className=\"ml-1\"\n            >\n              {canSubmit ? \"Can submit\" : \"Cannot submit\"}\n            </Badge>\n          </div>\n        </div>\n      </div>\n\n      <form\n        onSubmit={(e) => {\n          e.preventDefault()\n          form.handleSubmit()\n        }}\n        className=\"space-y-4\"\n      >\n        {/* 用户类型选择 */}\n        <form.Field name=\"userType\">\n          {(field) => (\n            <form.Segmented\n              name={field.name}\n              value={String(field.state.value || \"\")}\n              onChange={field.handleChange}\n              options={[\n                { content: \"Personal user\", value: \"personal\" },\n                { content: \"Business user\", value: \"business\" },\n              ]}\n            />\n          )}\n        </form.Field>\n\n        {/* 基本信息 */}\n        <form.Field\n          name=\"name\"\n          validators={{\n            onChange: ({ value }) => {\n              const stringValue = String(value || \"\")\n              return !stringValue ? \"Name cannot be empty\" : undefined\n            },\n          }}\n        >\n          {(field) => (\n            <form.Input\n              label={userType === \"personal\" ? \"Name\" : \"Contact name\"}\n              name={field.name}\n              value={String(field.state.value || \"\")}\n              onChange={field.handleChange}\n              onBlur={field.handleBlur}\n              placeholder={userType === \"personal\" ? \"Enter your name\" : \"Enter contact name\"}\n              error={formatErrors(field.state.meta.errors).join(\", \")}\n            />\n          )}\n        </form.Field>\n\n        <form.Field\n          name=\"email\"\n          validators={{\n            onChange: ({ value }) => {\n              const stringValue = String(value || \"\")\n              if (!stringValue) return \"Email cannot be empty\"\n              const emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/\n              return !emailRegex.test(stringValue)\n                ? \"Please enter a valid email address\"\n                : undefined\n            },\n          }}\n        >\n          {(field) => (\n            <form.Input\n              label=\"Email\"\n              name={field.name}\n              value={String(field.state.value || \"\")}\n              onChange={field.handleChange}\n              onBlur={field.handleBlur}\n              type=\"email\"\n              placeholder=\"Enter email address\"\n              error={formatErrors(field.state.meta.errors).join(\", \")}\n            />\n          )}\n        </form.Field>\n\n        {/* 条件渲染 - 企业用户额外字段 */}\n        {userType === \"business\" && (\n          <div className=\"space-y-4 rounded-xl border p-4\">\n            <h4 className=\"text-accent-foreground font-strong\">Business information</h4>\n\n            <form.Field\n              name=\"company\"\n              validators={{\n                onChange: ({ value }) => {\n                  // 只有在企业用户时才验证公司名称\n                  if (userType === \"business\") {\n                    const stringValue = String(value || \"\")\n                    return !stringValue ? \"Company name cannot be empty\" : undefined\n                  }\n                  return undefined\n                },\n              }}\n            >\n              {(field) => (\n                <form.Input\n                  label=\"Company name\"\n                  name={field.name}\n                  value={String(field.state.value || \"\")}\n                  onChange={field.handleChange}\n                  onBlur={field.handleBlur}\n                  placeholder=\"Enter company name\"\n                  error={formatErrors(field.state.meta.errors).join(\", \")}\n                />\n              )}\n            </form.Field>\n\n            <form.Field name=\"website\">\n              {(field) => (\n                <form.Input\n                  label=\"Company website\"\n                  name={field.name}\n                  value={String(field.state.value || \"\")}\n                  onChange={field.handleChange}\n                  onBlur={field.handleBlur}\n                  type=\"url\"\n                  placeholder=\"https://example.com\"\n                  error={formatErrors(field.state.meta.errors).join(\", \")}\n                />\n              )}\n            </form.Field>\n          </div>\n        )}\n\n        {/* 套餐选择 */}\n        <form.Field name=\"plan\">\n          {(field) => (\n            <form.Segmented\n              name={field.name}\n              value={String(field.state.value || \"\")}\n              onChange={field.handleChange}\n              options={[\n                { content: \"Basic - $10\", value: \"basic\" },\n                { content: \"Pro - $50\", value: \"pro\" },\n                { content: \"Enterprise - $200\", value: \"enterprise\" },\n              ]}\n            />\n          )}\n        </form.Field>\n\n        {/* 使用 form.Subscribe 的响应式组件 */}\n        <form.Subscribe selector={(state) => [state.values.plan, state.values.userType]}>\n          {([plan, userType]) => (\n            <div className=\"rounded-xl border p-4\">\n              <h4 className=\"text-accent-foreground font-strong mb-2\">\n                form.Subscribe subscription example\n              </h4>\n              <div className=\"text-secondary-foreground\">\n                <div>\n                  • Selected plan: <span className=\"font-strong\">{String(plan)}</span>\n                </div>\n                <div>\n                  • User type: <span className=\"font-strong\">{String(userType)}</span>\n                </div>\n                <div>\n                  • Actual price:{\" \"}\n                  <span className=\"text-body-large-strong\">\n                    $\n                    {({ basic: 10, pro: 50, enterprise: 200 }[plan as keyof typeof plan] || 0) *\n                      (userType === \"business\" ? 2 : 1)}\n                    /month\n                  </span>\n                </div>\n                {userType === \"business\" && (\n                  <div className=\"mt-2\">\n                    Business users get 2x features, with corresponding price adjustments\n                  </div>\n                )}\n              </div>\n            </div>\n          )}\n        </form.Subscribe>\n\n        {/* 预算滑块 */}\n        <form.Field name=\"budget\">\n          {(field) => (\n            <form.Range\n              label=\"Budget\"\n              value={Number(field.state.value) || 1000}\n              onChange={(value) => field.handleChange(value)}\n              min={100}\n              max={10000}\n              error={formatErrors(field.state.meta.errors).join(\", \")}\n            />\n          )}\n        </form.Field>\n\n        {/* 通知设置 */}\n        <div className=\"space-y-4\">\n          <h4 className=\"font-strong\">Notification settings</h4>\n\n          <form.Field name=\"newsletter\">\n            {(field) => (\n              <form.Checkbox\n                label=\"Subscribe to newsletter\"\n                name={field.name}\n                value={Boolean(field.state.value)}\n                onChange={(value) => field.handleChange(value)}\n              />\n            )}\n          </form.Field>\n\n          <form.Field name=\"notifications.email\">\n            {(field) => (\n              <form.Checkbox\n                label=\"Email notifications\"\n                name={field.name}\n                value={Boolean(field.state.value)}\n                onChange={(value) => field.handleChange(value)}\n              />\n            )}\n          </form.Field>\n\n          <form.Field name=\"notifications.sms\">\n            {(field) => (\n              <form.Checkbox\n                label=\"SMS notifications\"\n                name={field.name}\n                value={Boolean(field.state.value)}\n                onChange={(value) => field.handleChange(value)}\n              />\n            )}\n          </form.Field>\n\n          <form.Field name=\"notifications.push\">\n            {(field) => (\n              <form.Checkbox\n                label=\"Push notifications\"\n                name={field.name}\n                value={Boolean(field.state.value)}\n                onChange={(value) => field.handleChange(value)}\n              />\n            )}\n          </form.Field>\n        </div>\n\n        {/* 响应式提交按钮 */}\n        <form.Subscribe\n          selector={(state) => [state.canSubmit, state.isSubmitting, state.isDirty]}\n        >\n          {([canSubmit, isSubmitting, isDirty]) => (\n            <div className=\"flex gap-2\">\n              <form.Button\n                type=\"submit\"\n                disabled={!canSubmit || isSubmitting}\n              >\n                {isSubmitting ? \"Submitting...\" : \"Submit form\"}\n              </form.Button>\n\n              <form.Button\n                type=\"button\"\n                variant=\"secondary\"\n                onClick={() => form.reset()}\n                disabled={!isDirty}\n              >\n                Reset form\n              </form.Button>\n            </div>\n          )}\n        </form.Subscribe>\n      </form>\n\n      {submitResult && (\n        <div\n          className={tcx(\n            \"rounded-xl p-4\",\n            submitResult.includes(\"success\")\n              ? \"text-success-foreground bg-green-100\"\n              : \"text-danger-foreground bg-red-100\",\n          )}\n        >\n          {submitResult}\n        </div>\n      )}\n\n      {/* 响应式状态监控 */}\n      <div className=\"space-y-4\">\n        <form.Subscribe\n          selector={(state) => [\n            state.canSubmit,\n            state.isDirty,\n            state.isValid,\n            state.isSubmitting,\n            state.errorMap,\n          ]}\n        >\n          {([canSubmit, isDirty, isValid, isSubmitting, errorMap]) => (\n            <div className=\"rounded-xl border p-4\">\n              <div className=\"font-strong mb-2\">Real-time form status (form.Subscribe):</div>\n              <div className=\"grid grid-cols-2 gap-2\">\n                <div className={canSubmit ? \"text-green-600\" : \"text-red-600\"}>\n                  Can submit: {canSubmit ? \"Yes\" : \"No\"}\n                </div>\n                <div className={isDirty ? \"text-blue-600\" : \"text-gray-600\"}>\n                  Is dirty: {isDirty ? \"Yes\" : \"No\"}\n                </div>\n                <div className={isValid ? \"text-green-600\" : \"text-red-600\"}>\n                  Is valid: {isValid ? \"Yes\" : \"No\"}\n                </div>\n                <div className={isSubmitting ? \"text-orange-600\" : \"text-gray-600\"}>\n                  Is submitting: {isSubmitting ? \"Yes\" : \"No\"}\n                </div>\n              </div>\n              {Object.keys(errorMap).length > 0 && (\n                <div className=\"mt-2 text-red-600\">\n                  Error fields: {Object.keys(errorMap).join(\", \")}\n                </div>\n              )}\n            </div>\n          )}\n        </form.Subscribe>\n\n        <form.Subscribe selector={(state) => state.values}>\n          {(values) => (\n            <div className=\"rounded-xl border p-4\">\n              <div className=\"font-strong mb-2\">Real-time form data (form.Subscribe):</div>\n              <pre className=\"max-h-40 overflow-auto\">{JSON.stringify(values, null, 2)}</pre>\n            </div>\n          )}\n        </form.Subscribe>\n\n        {/* 性能对比说明 */}\n        <div className=\"rounded-xl border p-4\">\n          <div className=\"font-strong mb-2\">Performance optimization:</div>\n          <div>\n            • <strong>form.Subscribe</strong>: Suitable for responsive rendering, only\n            re-rendering when the subscribed value changes\n          </div>\n          <div>\n            • <strong>Selector</strong>: Use precise selectors to avoid unnecessary re-rendering\n          </div>\n          <div>\n            • <strong>Multiple value subscription</strong>: Can subscribe to multiple values,\n            reducing subscription count\n          </div>\n        </div>\n      </div>\n    </div>\n  );\n}"
     },
     {
       "id": "forms-form-examples--with-listeners",
       "name": "With Listeners",
       "exportName": "WithListeners",
-      "description": "",
+      "description": "Form with listeners API",
       "source": "import { CheckboxAdapter } from \"@choice-ui/form\"\n\nexport default function App() {\n  return (\n    <div className=\"w-80 space-y-4\">\n      <div className=\"space-y-2\">\n        <h3 className=\"font-strong\">Listeners API example</h3>\n        <p className=\"text-secondary-foreground\">\n          Demonstrates how to use Listeners API to handle side effects and cascading logic between\n          fields\n        </p>\n      </div>\n\n      {/* 活动日志 */}\n      <div className=\"rounded-xl border p-4\">\n        <h4 className=\"font-strong mb-2\">Activity log</h4>\n        <div className=\"max-h-32 space-y-1 overflow-y-auto\">\n          {activityLog.length === 0 ? (\n            <div className=\"text-secondary-foreground\">No activity</div>\n          ) : (\n            activityLog.map((log, index) => (\n              <div\n                key={index}\n                className=\"text-gray-700\"\n              >\n                {log}\n              </div>\n            ))\n          )}\n        </div>\n      </div>\n\n      <form\n        onSubmit={(e) => {\n          e.preventDefault()\n          form.handleSubmit()\n        }}\n        className=\"space-y-6\"\n      >\n        {/* 级联选择示例 - 国家-省份 */}\n        <div className=\"space-y-4 rounded-xl border p-4\">\n          <h4 className=\"font-strong\">Cascading select example</h4>\n          <p className=\"text-secondary-foreground\">\n            Demonstrates classic country-province cascading select, resetting province when\n            country changes\n          </p>\n\n          <div className=\"grid grid-cols-1 gap-4 md:grid-cols-2\">\n            {/* 国家选择 */}\n            <form.Field\n              name=\"country\"\n              listeners={{\n                onChange: ({ value }) => {\n                  // 当国家改变时，重置省份和城市\n                  form.setFieldValue(\"province\", \"\")\n                  form.setFieldValue(\"city\", \"\")\n                  addLog(`Country changed to: ${value || \"empty\"}, reset province and city`)\n                },\n                onMount: () => {\n                  addLog(\"Country field mounted\")\n                },\n              }}\n              validators={{\n                onChange: ({ value }) => {\n                  const stringValue = String(value || \"\")\n                  return !stringValue ? \"Please select a country\" : undefined\n                },\n              }}\n            >\n              {(field) => (\n                <form.Select\n                  label=\"Country\"\n                  name={field.name}\n                  value={String(field.state.value || \"\")}\n                  onChange={field.handleChange}\n                  placeholder=\"Please select a country\"\n                  options={[\n                    { label: \"China\", value: \"china\" },\n                    { label: \"USA\", value: \"usa\" },\n                    { label: \"Japan\", value: \"japan\" },\n                  ]}\n                  error={\n                    field.state.meta.errors.length > 0\n                      ? formatErrors(field.state.meta.errors).join(\", \")\n                      : undefined\n                  }\n                />\n              )}\n            </form.Field>\n\n            {/* 省份选择 */}\n            <form.Field\n              name=\"province\"\n              listeners={{\n                onChange: ({ value }) => {\n                  // 当省份改变时，重置城市\n                  form.setFieldValue(\"city\", \"\")\n                  addLog(`Province changed to: ${value || \"empty\"}, reset city`)\n                },\n                onBlur: ({ value }) => {\n                  if (value) {\n                    addLog(`Province field blurred, current value: ${value}`)\n                  }\n                },\n              }}\n              validators={{\n                onChange: ({ value }) => {\n                  const country = form.getFieldValue(\"country\")\n                  if (country && !value) return \"Please select a province\"\n                  return undefined\n                },\n              }}\n            >\n              {(field) => {\n                const currentCountry = String(form.getFieldValue(\"country\") || \"\")\n                const provinces = currentCountry\n                  ? countryProvinceData[currentCountry as keyof typeof countryProvinceData] || []\n                  : []\n\n                return (\n                  <form.Select\n                    label=\"Province\"\n                    name={field.name}\n                    value={String(field.state.value || \"\")}\n                    onChange={field.handleChange}\n                    onBlur={field.handleBlur}\n                    placeholder=\"Please select a province\"\n                    options={provinces}\n                    disabled={!currentCountry}\n                    error={\n                      field.state.meta.errors.length > 0\n                        ? formatErrors(field.state.meta.errors).join(\", \")\n                        : undefined\n                    }\n                    description=\"Please select a province\"\n                  />\n                )\n              }}\n            </form.Field>\n\n            {/* 城市输入 */}\n            <form.Field\n              name=\"city\"\n              listeners={{\n                onChange: ({ value }) => {\n                  if (value) {\n                    addLog(`City input: ${value}`)\n                  }\n                },\n              }}\n            >\n              {(field) => {\n                const currentProvince = String(form.getFieldValue(\"province\") || \"\")\n\n                return (\n                  <form.Input\n                    className=\"col-span-2\"\n                    label=\"City\"\n                    name={field.name}\n                    value={String(field.state.value || \"\")}\n                    onChange={field.handleChange}\n                    onBlur={field.handleBlur}\n                    placeholder=\"Please enter city name\"\n                    disabled={!currentProvince}\n                    description=\"Please select a province\"\n                  />\n                )\n              }}\n            </form.Field>\n          </div>\n        </div>\n\n        {/* 用户类型切换示例 */}\n        <div className=\"space-y-4 rounded-xl border p-4\">\n          <h4 className=\"font-strong\">User type switch example</h4>\n          <p className=\"text-secondary-foreground\">\n            Demonstrates when user type changes, reset related information fields\n          </p>\n\n          {/* 用户类型选择 */}\n          <form.Field\n            name=\"userType\"\n            listeners={{\n              onChange: ({ value }) => {\n                // 重置所有类型相关的字段\n                form.setFieldValue(\"personalInfo\", {\n                  firstName: \"\",\n                  lastName: \"\",\n                  idNumber: \"\",\n                })\n                form.setFieldValue(\"companyInfo\", {\n                  companyName: \"\",\n                  taxId: \"\",\n                  industry: \"\",\n                })\n                form.setFieldValue(\"organizationInfo\", {\n                  orgName: \"\",\n                  orgType: \"\",\n                  registrationNumber: \"\",\n                })\n                addLog(`User type changed to: ${value}, reset all related information`)\n              },\n            }}\n          >\n            {(field) => (\n              <form.RadioGroup\n                label=\"User type\"\n                name={field.name}\n                value={String(field.state.value || \"\")}\n                onChange={field.handleChange}\n                options={[\n                  { label: \"Individual\", value: \"individual\" },\n                  { label: \"Company\", value: \"company\" },\n                  { label: \"Organization\", value: \"organization\" },\n                ]}\n              />\n            )}\n          </form.Field>\n\n          {/* 条件渲染不同类型的信息字段 */}\n          {form.getFieldValue(\"userType\") === \"individual\" && (\n            <div className=\"space-y-4\">\n              <h5 className=\"font-strong\">Personal information</h5>\n              <div className=\"grid grid-cols-2 gap-4\">\n                <form.Field\n                  name=\"personalInfo.firstName\"\n                  listeners={{\n                    onMount: () => addLog(\"Personal information - first name field mounted\"),\n                    onBlur: ({ value }) => {\n                      if (value)\n                        addLog(`Personal information - first name input completed: ${value}`)\n                    },\n                  }}\n                >\n                  {(field) => (\n                    <form.Input\n                      label=\"First name\"\n                      name={field.name}\n                      value={String(field.state.value || \"\")}\n                      onChange={field.handleChange}\n                      onBlur={field.handleBlur}\n                      placeholder=\"Please enter first name\"\n                    />\n                  )}\n                </form.Field>\n\n                <form.Field name=\"personalInfo.lastName\">\n                  {(field) => (\n                    <form.Input\n                      label=\"Last name\"\n                      name={field.name}\n                      value={String(field.state.value || \"\")}\n                      onChange={field.handleChange}\n                      onBlur={field.handleBlur}\n                      placeholder=\"Please enter last name\"\n                    />\n                  )}\n                </form.Field>\n\n                <form.Field\n                  name=\"personalInfo.idNumber\"\n                  listeners={{\n                    onChange: ({ value }) => {\n                      // 身份证号变化时的格式化或验证\n                      if (value && String(value).length === 18) {\n                        addLog(\"ID number input completed, format validation in progress...\")\n                      }\n                    },\n                  }}\n                >\n                  {(field) => (\n                    <form.Input\n                      label=\"ID number\"\n                      name={field.name}\n                      value={String(field.state.value || \"\")}\n                      onChange={field.handleChange}\n                      onBlur={field.handleBlur}\n                      placeholder=\"Please enter ID number\"\n                    />\n                  )}\n                </form.Field>\n              </div>\n            </div>\n          )}\n\n          {form.getFieldValue(\"userType\") === \"company\" && (\n            <div className=\"space-y-4\">\n              <h5 className=\"font-strong\">Company information</h5>\n              <div className=\"grid grid-cols-2 gap-4\">\n                <form.Field\n                  name=\"companyInfo.companyName\"\n                  listeners={{\n                    onMount: () => addLog(\"Company information - company name field mounted\"),\n                    onChange: ({ value }) => {\n                      if (value && String(value).length >= 3) {\n                        addLog(`Company name updated: ${value}`)\n                      }\n                    },\n                  }}\n                >\n                  {(field) => (\n                    <form.Input\n                      label=\"Company name\"\n                      name={field.name}\n                      value={String(field.state.value || \"\")}\n                      onChange={field.handleChange}\n                      onBlur={field.handleBlur}\n                      placeholder=\"Please enter company name\"\n                    />\n                  )}\n                </form.Field>\n\n                <form.Field name=\"companyInfo.taxId\">\n                  {(field) => (\n                    <form.Input\n                      label=\"Tax ID\"\n                      name={field.name}\n                      value={String(field.state.value || \"\")}\n                      onChange={field.handleChange}\n                      onBlur={field.handleBlur}\n                      placeholder=\"Please enter tax ID\"\n                    />\n                  )}\n                </form.Field>\n\n                <form.Field name=\"companyInfo.industry\">\n                  {(field) => (\n                    <form.Select\n                      label=\"Industry\"\n                      name={field.name}\n                      value={String(field.state.value || \"\")}\n                      onChange={field.handleChange}\n                      placeholder=\"Please select industry\"\n                      options={[\n                        { label: \"Technology\", value: \"technology\" },\n                        { label: \"Finance\", value: \"finance\" },\n                        { label: \"Manufacturing\", value: \"manufacturing\" },\n                        { label: \"Service\", value: \"service\" },\n                      ]}\n                    />\n                  )}\n                </form.Field>\n              </div>\n            </div>\n          )}\n\n          {form.getFieldValue(\"userType\") === \"organization\" && (\n            <div className=\"space-y-4\">\n              <h5 className=\"font-strong\">Organization information</h5>\n              <div className=\"grid grid-cols-2 gap-4\">\n                <form.Field name=\"organizationInfo.orgName\">\n                  {(field) => (\n                    <form.Input\n                      label=\"Organization name\"\n                      name={field.name}\n                      value={String(field.state.value || \"\")}\n                      onChange={field.handleChange}\n                      onBlur={field.handleBlur}\n                      placeholder=\"Please enter organization name\"\n                    />\n                  )}\n                </form.Field>\n\n                <form.Field name=\"organizationInfo.orgType\">\n                  {(field) => (\n                    <form.Select\n                      label=\"Organization type\"\n                      name={field.name}\n                      value={String(field.state.value || \"\")}\n                      onChange={field.handleChange}\n                      placeholder=\"Please select organization type\"\n                      options={[\n                        {\n                          label: \"Nonprofit organization\",\n                          value: \"nonprofit\",\n                        },\n                        { label: \"Government agency\", value: \"government\" },\n                        {\n                          label: \"Education institution\",\n                          value: \"education\",\n                        },\n                        { label: \"Charity organization\", value: \"charity\" },\n                      ]}\n                    />\n                  )}\n                </form.Field>\n\n                <form.Field name=\"organizationInfo.registrationNumber\">\n                  {(field) => (\n                    <form.Input\n                      label=\"Registration number\"\n                      name={field.name}\n                      value={String(field.state.value || \"\")}\n                      onChange={field.handleChange}\n                      onBlur={field.handleBlur}\n                      placeholder=\"Please enter registration number\"\n                    />\n                  )}\n                </form.Field>\n              </div>\n            </div>\n          )}\n        </div>\n\n        {/* 通知设置示例 */}\n        <div className=\"space-y-4 rounded-xl border p-4\">\n          <h4 className=\"font-strong\">Notification settings example</h4>\n          <p className=\"text-secondary-foreground\">\n            Demonstrates the logic of linking checkboxes\n          </p>\n\n          <div className=\"space-y-4\">\n            <form.Field\n              name=\"newsletter\"\n              listeners={{\n                onChange: ({ value }) => {\n                  if (!value) {\n                    // 如果取消订阅新闻通讯，也取消邮件通知\n                    form.setFieldValue(\"notifications.email\", false)\n                    addLog(\"Unsubscribe from newsletter, also cancel email notification\")\n                  } else {\n                    addLog(\"Subscribe to newsletter\")\n                  }\n                },\n              }}\n            >\n              {(field) => (\n                <form.Checkbox\n                  label=\"Subscribe to newsletter\"\n                  name={field.name}\n                  value={Boolean(field.state.value)}\n                  onChange={field.handleChange}\n                />\n              )}\n            </form.Field>\n\n            <form.Field\n              name=\"notifications.email\"\n              listeners={{\n                onChange: ({ value }) => {\n                  if (value) {\n                    // 如果开启邮件通知，自动订阅新闻通讯\n                    form.setFieldValue(\"newsletter\", true)\n                    addLog(\"Enable email notification, automatically subscribe to newsletter\")\n                  } else {\n                    addLog(\"Disable email notification\")\n                  }\n                },\n              }}\n            >\n              {(field) => (\n                <form.Checkbox\n                  label=\"Email notification\"\n                  name={field.name}\n                  value={Boolean(field.state.value)}\n                  onChange={field.handleChange}\n                />\n              )}\n            </form.Field>\n\n            <form.Field\n              name=\"notifications.sms\"\n              listeners={{\n                onChange: ({ value }) => {\n                  addLog(`SMS notification ${value ? \"enabled\" : \"disabled\"}`)\n                },\n              }}\n            >\n              {(field) => (\n                <form.Checkbox\n                  label=\"SMS notification\"\n                  name={field.name}\n                  value={Boolean(field.state.value)}\n                  onChange={field.handleChange}\n                />\n              )}\n            </form.Field>\n          </div>\n        </div>\n\n        {/* 基本联系信息 */}\n        <div className=\"space-y-4\">\n          <h4 className=\"font-strong\">Contact information</h4>\n\n          <div className=\"grid grid-cols-1 gap-4 md:grid-cols-2\">\n            <form.Field\n              name=\"email\"\n              listeners={{\n                onBlur: ({ value }) => {\n                  if (value && String(value).includes(\"@\")) {\n                    addLog(`Email input completed: ${value}`)\n                  }\n                },\n              }}\n              validators={{\n                onChange: ({ value }) => {\n                  const stringValue = String(value || \"\")\n                  if (!stringValue) return \"Email cannot be empty\"\n                  const emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/\n                  return !emailRegex.test(stringValue)\n                    ? \"Please enter a valid email address\"\n                    : undefined\n                },\n              }}\n            >\n              {(field) => (\n                <form.Input\n                  label=\"Email *\"\n                  name={field.name}\n                  value={String(field.state.value || \"\")}\n                  onChange={field.handleChange}\n                  onBlur={field.handleBlur}\n                  type=\"email\"\n                  placeholder=\"Please enter email address\"\n                  error={\n                    field.state.meta.errors.length > 0\n                      ? formatErrors(field.state.meta.errors).join(\", \")\n                      : undefined\n                  }\n                />\n              )}\n            </form.Field>\n\n            <form.Field\n              name=\"phone\"\n              listeners={{\n                onChange: ({ value }) => {\n                  const phone = String(value || \"\")\n                  if (phone.length === 11) {\n                    addLog(`Phone number input completed: ${phone}`)\n                  }\n                },\n              }}\n            >\n              {(field) => (\n                <form.Input\n                  label=\"Phone number\"\n                  name={field.name}\n                  value={String(field.state.value || \"\")}\n                  onChange={field.handleChange}\n                  onBlur={field.handleBlur}\n                  type=\"tel\"\n                  placeholder=\"Please enter phone number\"\n                />\n              )}\n            </form.Field>\n          </div>\n        </div>\n\n        {/* 提交按钮 */}\n        <div className=\"flex gap-2\">\n          <form.Button\n            type=\"submit\"\n            disabled={!form.state.canSubmit || form.state.isSubmitting}\n          >\n            {form.state.isSubmitting ? \"Submitting...\" : \"Submit form\"}\n          </form.Button>\n\n          <form.Button\n            type=\"button\"\n            variant=\"secondary\"\n            onClick={() => {\n              form.reset()\n              addLog(\"Form has been reset\")\n              setActivityLog([])\n            }}\n          >\n            Reset form\n          </form.Button>\n        </div>\n      </form>\n\n      {submitResult && (\n        <div\n          className={tcx(\n            \"rounded-xl p-4\",\n            submitResult.includes(\"success\")\n              ? \"text-success-foreground bg-green-100\"\n              : \"text-danger-foreground bg-red-100\",\n          )}\n        >\n          {submitResult}\n        </div>\n      )}\n\n      {/* 表单状态监控 */}\n      <div className=\"rounded-xl border p-4\">\n        <div className=\"font-strong mb-2\">Current form data preview:</div>\n        <pre className=\"max-h-60 overflow-auto rounded bg-white p-2\">\n          {JSON.stringify(form.state.values, null, 2)}\n        </pre>\n      </div>\n\n      {/* 监听器说明 */}\n      <div className=\"rounded-xl border p-4\">\n        <div className=\"font-strong mb-2\">Listener events description:</div>\n        <div className=\"text-secondary-foreground space-y-1\">\n          <div>\n            • <strong>onChange</strong>: Triggered when the field value changes (most commonly\n            used)\n          </div>\n          <div>\n            • <strong>onBlur</strong>: Triggered when the field loses focus\n          </div>\n          <div>\n            • <strong>onMount</strong>: Triggered when the field is first mounted\n          </div>\n          <div>\n            • <strong>onSubmit</strong>: Triggered when the form is submitted\n          </div>\n        </div>\n      </div>\n    </div>\n  );\n}"
     },
     {
       "id": "forms-form-examples--with-custom-errors",
       "name": "With Custom Errors",
       "exportName": "WithCustomErrors",
-      "description": "",
+      "description": "Form with custom errors",
       "source": "import { CheckboxAdapter } from \"@choice-ui/form\"\n\nexport default function App() {\n  return (\n    <div\n      key={index}\n      className=\"text-danger-foreground\"\n    >\n      {error}\n    </div>\n  );\n}"
     }
   ]

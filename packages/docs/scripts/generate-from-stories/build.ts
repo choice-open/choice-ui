@@ -76,8 +76,13 @@ function collectDocFromStory(storyPath: string): { index: IndexItem; detail: Com
   const stories: StoryItem[] = (csf.stories as StoryLike[]).map((story) => {
     const parameters = (story.parameters ?? {}) as Parameters
     const storyName = story.name ?? story.id
-    const description = extractStoryDescription(parameters) || storyDocblocks[storyName] || ""
     const exportName = story.exportName ?? toExportName(story.id)
+    // 优先用 exportName 查找（变量名如 WithIcons），再用 storyName（转换后的名称如 With Icons）
+    const description =
+      extractStoryDescription(parameters) ||
+      storyDocblocks[exportName] ||
+      storyDocblocks[storyName] ||
+      ""
     const rawSnippet = storySnippets[exportName] ?? storySnippets[storyName]
 
     return {
@@ -100,12 +105,15 @@ function collectDocFromStory(storyPath: string): { index: IndexItem; detail: Com
     dependencies: {},
   }
 
+  const tags = meta.tags?.filter((tag) => tag !== "autodocs") ?? []
+
   const index: IndexItem = {
     slug,
     name: packageInfo?.name ?? defaultPackage.name,
     title,
     description: metaDescription,
     version: packageInfo?.version ?? "0.0.0",
+    tags: tags.length > 0 ? tags : undefined,
   }
 
   const detail: ComponentDetail = {
@@ -115,6 +123,7 @@ function collectDocFromStory(storyPath: string): { index: IndexItem; detail: Com
     exports: componentExports.length > 0 ? componentExports : [componentName],
     props,
     stories,
+    tags: tags.length > 0 ? tags : undefined,
   }
 
   return { index, detail }
@@ -216,8 +225,12 @@ export function buildAll(isWatch = false): CacheData {
 
   const hasDeleted = removeDeletedFiles(storyFiles, cache)
   const outputExists = fs.existsSync(outputIndex)
+  const componentsDetailsExists = fs.existsSync(
+    path.join(outputComponentsDir, "components-details.ts"),
+  )
 
-  if (updatedCount > 0 || hasDeleted || !outputExists) {
+  // 如果组件有更新、有删除、索引文件不存在，或者 components-details.ts 不存在，都需要重新生成
+  if (updatedCount > 0 || hasDeleted || !outputExists || !componentsDetailsExists) {
     generateOutputs(cache)
     saveCache(cache)
   }

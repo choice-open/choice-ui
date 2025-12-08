@@ -36,7 +36,7 @@
   ],
   "props": [
     {
-      "displayName": "CodeBlock",
+      "displayName": "CodeBlockContentProps",
       "description": "",
       "props": [
         {
@@ -46,27 +46,9 @@
           "description": ""
         },
         {
-          "name": "defaultCodeExpanded",
-          "type": "boolean | undefined",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "defaultExpanded",
-          "type": "boolean | undefined",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "expandable",
-          "type": "boolean | undefined",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "filename",
-          "type": "string | undefined",
-          "required": false,
+          "name": "code",
+          "type": "string",
+          "required": true,
           "description": ""
         },
         {
@@ -76,30 +58,38 @@
           "description": ""
         },
         {
-          "name": "lineThreshold",
-          "type": "number | undefined",
+          "name": "withScrollArea",
+          "type": "boolean | undefined",
           "required": false,
           "description": ""
         },
         {
-          "name": "onCodeExpandChange",
-          "type": "((expanded: boolean) => void) | undefined",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "onExpandChange",
-          "type": "((expanded: boolean) => void) | undefined",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "variant",
-          "type": "enum",
+          "name": "codeBlock",
+          "type": "CodeBlockContextValue | undefined",
           "required": false,
           "description": ""
         }
       ]
+    },
+    {
+      "displayName": "extractCodeFromChildren",
+      "description": "",
+      "props": []
+    },
+    {
+      "displayName": "getLanguageIcon",
+      "description": "",
+      "props": []
+    },
+    {
+      "displayName": "getIconFromFilename",
+      "description": "",
+      "props": []
+    },
+    {
+      "displayName": "getDefaultFilenameForLanguage",
+      "description": "",
+      "props": []
     }
   ],
   "stories": [
@@ -107,28 +97,28 @@
       "id": "components-codeblock--languages-and-themes",
       "name": "Languages And Themes",
       "exportName": "LanguagesAndThemes",
-      "description": "",
+      "description": "Demonstrates different programming languages with automatic theme switching.\nThe theme automatically adapts to the system/app theme (light/dark).",
       "source": "import { CodeBlock } from \"@choice-ui/code-block\"\n\nexport default function App() {\n  return (\n    <div className=\"flex max-w-4xl flex-col gap-4\">\n      <CodeBlock language=\"ts\">\n        <CodeBlock.Content code={tsCode} />\n      </CodeBlock>\n\n      <CodeBlock language=\"json\">\n        <CodeBlock.Content code={jsonCode} />\n      </CodeBlock>\n\n      <CodeBlock language=\"diff\">\n        <CodeBlock.Content code={diffCode} />\n      </CodeBlock>\n    </div>\n  );\n}"
     },
     {
       "id": "components-codeblock--long-code-with-scroll",
       "name": "Long Code With Scroll",
       "exportName": "LongCodeWithScroll",
-      "description": "",
+      "description": "Shows how long code content is handled with vertical scrolling.\nUseful for displaying large code files without taking up too much space.",
       "source": "import { CodeBlock } from \"@choice-ui/code-block\"\n\nexport default function App() {\n  return (\n    <div className=\"max-w-3xl\">\n      <CodeBlock language=\"js\">\n        <CodeBlock.Content code={long} />\n      </CodeBlock>\n    </div>\n  );\n}"
     },
     {
       "id": "components-codeblock--long-code-without-scroll",
       "name": "Long Code Without Scroll",
       "exportName": "LongCodeWithoutScroll",
-      "description": "",
+      "description": "Demonstrates code block without scroll area container.\nUse this when you want the code to naturally extend the container height.",
       "source": "import { CodeBlock } from \"@choice-ui/code-block\"\n\nexport default function App() {\n  return (\n    <div className=\"max-w-3xl\">\n      <CodeBlock language=\"js\">\n        <CodeBlock.Content\n          code={long}\n          withScrollArea={false}\n        />\n      </CodeBlock>\n    </div>\n  );\n}"
     },
     {
       "id": "components-codeblock--popular-languages",
       "name": "Popular Languages",
       "exportName": "PopularLanguages",
-      "description": "",
+      "description": "Showcases popular programming and markup languages.\nEach language has proper syntax highlighting powered by Shiki.",
       "source": "import { CodeBlock } from \"@choice-ui/code-block\"\n\nexport default function App() {\n  return (\n    <div className=\"flex max-w-4xl flex-col gap-4\">\n      <CodeBlock language=\"tsx\">\n        <CodeBlock.Content code={tsxCode} />\n      </CodeBlock>\n\n      <CodeBlock language=\"html\">\n        <CodeBlock.Content code={htmlCode} />\n      </CodeBlock>\n\n      <CodeBlock language=\"js\">\n        <CodeBlock.Content\n          code={`(() => {\\n  const msg = 'hello';\\n  console.log(msg);\\n})();`}\n        />\n      </CodeBlock>\n\n      <CodeBlock language=\"css\">\n        <CodeBlock.Content code={cssCode} />\n      </CodeBlock>\n\n      <CodeBlock language=\"python\">\n        <CodeBlock.Content code={pyCode} />\n      </CodeBlock>\n    </div>\n  );\n}"
     },
     {
@@ -142,35 +132,35 @@
       "id": "components-codeblock--with-interactive-header",
       "name": "With Interactive Header",
       "exportName": "WithInteractiveHeader",
-      "description": "",
+      "description": "Code block with interactive header showing filename and controls.\nHeader includes language icon, filename, copy button, and expand/collapse toggle.",
       "source": "import { CodeBlock } from \"@choice-ui/code-block\"\n\nexport default function App() {\n  return (\n    <div className=\"max-w-3xl\">\n      <CodeBlock\n        language=\"tsx\"\n        filename=\"HelloWorld.tsx\"\n      >\n        <CodeBlock.Header />\n        <CodeBlock.Content code={tsxCode} />\n      </CodeBlock>\n    </div>\n  );\n}"
     },
     {
       "id": "components-codeblock--with-header-and-footer",
       "name": "With Header And Footer",
       "exportName": "WithHeaderAndFooter",
-      "description": "",
+      "description": "Full featured code block with header and footer.\nFooter appears when code exceeds the line threshold, showing expand controls.",
       "source": "import { CodeBlock } from \"@choice-ui/code-block\"\n\nexport default function App() {\n  return (\n    <div className=\"max-w-3xl\">\n      <CodeBlock\n        language=\"tsx\"\n        filename=\"LongComponent.tsx\"\n      >\n        <CodeBlock.Header />\n        <CodeBlock.Content code={longTSXExample} />\n        <CodeBlock.Footer />\n      </CodeBlock>\n    </div>\n  );\n}"
     },
     {
       "id": "components-codeblock--collapsed-by-default",
       "name": "Collapsed By Default",
       "exportName": "CollapsedByDefault",
-      "description": "",
+      "description": "Code block collapsed by default to save space.\nUsers can click the expand button to reveal the code content.",
       "source": "import { CodeBlock } from \"@choice-ui/code-block\"\n\nexport default function App() {\n  return (\n    <div className=\"max-w-3xl\">\n      <CodeBlock\n        language=\"python\"\n        filename=\"example.py\"\n        defaultExpanded={false}\n      >\n        <CodeBlock.Header />\n        <CodeBlock.Content code={pyCode} />\n        <CodeBlock.Footer />\n      </CodeBlock>\n    </div>\n  );\n}"
     },
     {
       "id": "components-codeblock--expanded-code",
       "name": "Expanded Code",
       "exportName": "ExpandedCode",
-      "description": "",
+      "description": "Long code that starts fully expanded, showing all lines.\nUseful when you want to display complete code without initial truncation.",
       "source": "import { CodeBlock } from \"@choice-ui/code-block\"\n\nexport default function App() {\n  return (\n    <div className=\"max-w-3xl\">\n      <CodeBlock\n        language=\"tsx\"\n        filename=\"LongFile.tsx\"\n        defaultCodeExpanded={true}\n      >\n        <CodeBlock.Header />\n        <CodeBlock.Content code={longTSXExample} />\n        <CodeBlock.Footer />\n      </CodeBlock>\n    </div>\n  );\n}"
     },
     {
       "id": "components-codeblock--non-expandable",
       "name": "Non Expandable",
       "exportName": "NonExpandable",
-      "description": "",
+      "description": "Code block with expand/collapse functionality disabled.\nUse this for short code snippets that don't need truncation.",
       "source": "import { CodeBlock } from \"@choice-ui/code-block\"\n\nexport default function App() {\n  return (\n    <div className=\"max-w-3xl\">\n      <CodeBlock\n        language=\"json\"\n        filename=\"config.json\"\n        expandable={false}\n      >\n        <CodeBlock.Header />\n        <CodeBlock.Content code={jsonCode} />\n      </CodeBlock>\n    </div>\n  );\n}"
     },
     {
@@ -184,7 +174,7 @@
       "id": "components-codeblock--language-icons",
       "name": "Language Icons",
       "exportName": "LanguageIcons",
-      "description": "",
+      "description": "Comprehensive showcase of language-specific icons in the header.\nIcons are automatically selected based on the language or filename.\nDemonstrates JavaScript, TypeScript, markup, config files, and more.",
       "source": "import { CodeBlock } from \"@choice-ui/code-block\"\n\nexport default function App() {\n  return (\n    <div className=\"grid max-w-6xl grid-cols-3 place-content-start place-items-start gap-4\">\n      {examples.map((example, index) => (\n        <CodeBlock\n          className=\"w-full\"\n          key={index}\n          language={example.language}\n          filename={example.filename}\n        >\n          <CodeBlock.Header />\n          <CodeBlock.Content code={example.code} />\n        </CodeBlock>\n      ))}\n    </div>\n  );\n}"
     },
     {
@@ -198,21 +188,21 @@
       "id": "components-codeblock--line-count-threshold",
       "name": "Line Count Threshold",
       "exportName": "LineCountThreshold",
-      "description": "",
+      "description": "Shows how the lineThreshold property controls when footer appears.\nFooter with expand controls only shows when code exceeds the threshold.\nUseful for managing space with varying code lengths.",
       "source": "import { CodeBlock } from \"@choice-ui/code-block\"\n\nexport default function App() {\n  return (\n    <li className=\"todo-item\">\n      <input\n        type=\"checkbox\"\n        checked={todo.completed}\n        onChange={() => onToggle(todo.id)}\n      />\n      <span>{todo.text}</span>\n    </li>\n  );\n}"
     },
     {
       "id": "components-codeblock--streaming-with-auto-scroll",
       "name": "Streaming With Auto Scroll",
       "exportName": "StreamingWithAutoScroll",
-      "description": "",
+      "description": "Streaming code blocks simulation with auto-scroll to bottom.\nUses useStickToBottom hook to keep scroll position at bottom as new code blocks appear.\nClick \"Add Code Block\" to simulate streaming new content.",
       "source": "import { CodeBlock } from \"@choice-ui/code-block\"\n\nexport default function App() {\n  return (\n    <div className=\"flex h-[600px] w-[600px] flex-col gap-4\">\n      <div className=\"flex items-center gap-2\">\n        <button\n          onClick={addBlock}\n          disabled={isStreaming}\n          className=\"rounded bg-blue-500 px-3 py-1.5 text-sm text-white hover:bg-blue-600 disabled:opacity-50\"\n        >\n          Add Code Block\n        </button>\n        <button\n          onClick={startStreaming}\n          disabled={isStreaming}\n          className=\"rounded bg-green-500 px-3 py-1.5 text-sm text-white hover:bg-green-600 disabled:opacity-50\"\n        >\n          {isStreaming ? \"Streaming...\" : \"Auto Stream\"}\n        </button>\n        <button\n          onClick={reset}\n          className=\"rounded bg-gray-500 px-3 py-1.5 text-sm text-white hover:bg-gray-600\"\n        >\n          Reset\n        </button>\n        {!isAtBottom && (\n          <button\n            onClick={() => scrollToBottom()}\n            className=\"rounded bg-orange-500 px-3 py-1.5 text-sm text-white hover:bg-orange-600\"\n          >\n            Scroll to Bottom\n          </button>\n        )}\n      </div>\n\n      <div className=\"text-body-small text-fg-subtle\">\n        Blocks: {blocks.length} | At bottom: {isAtBottom ? \"Yes\" : \"No\"}\n      </div>\n\n      <ScrollArea className=\"flex-1 rounded-lg border\">\n        <ScrollArea.Viewport ref={scrollRef as React.RefObject<HTMLDivElement>}>\n          <ScrollArea.Content\n            ref={contentRef as React.RefObject<HTMLDivElement>}\n            className=\"flex flex-col gap-4 p-4\"\n          >\n            {blocks.length === 0 ? (\n              <div className=\"text-body-small text-fg-subtle py-8 text-center\">\n                Click &quot;Add Code Block&quot; or &quot;Auto Stream&quot; to start\n              </div>\n            ) : (\n              blocks.map((block, index) => (\n                <CodeBlock\n                  key={index}\n                  language={block.language}\n                  filename={block.filename}\n                >\n                  <CodeBlock.Header />\n                  <CodeBlock.Content code={block.code} />\n                </CodeBlock>\n              ))\n            )}\n          </ScrollArea.Content>\n        </ScrollArea.Viewport>\n      </ScrollArea>\n    </div>\n  );\n}"
     },
     {
       "id": "components-codeblock--character-streaming",
       "name": "Character Streaming",
       "exportName": "CharacterStreaming",
-      "description": "",
+      "description": "Simulates character-by-character streaming of code content.\nContent appears gradually like AI-generated code output.",
       "source": "import { CodeBlock } from \"@choice-ui/code-block\"\n\nexport default function App() {\n  return (\n    <div className=\"flex h-[500px] w-[600px] flex-col gap-4\">\n      <div className=\"flex items-center gap-2\">\n        <button\n          onClick={startCharacterStream}\n          disabled={isStreaming}\n          className=\"rounded bg-blue-500 px-3 py-1.5 text-sm text-white hover:bg-blue-600 disabled:opacity-50\"\n        >\n          {isStreaming ? \"Streaming...\" : \"Start Stream\"}\n        </button>\n        <button\n          onClick={reset}\n          className=\"rounded bg-gray-500 px-3 py-1.5 text-sm text-white hover:bg-gray-600\"\n        >\n          Reset\n        </button>\n      </div>\n\n      <ScrollArea className=\"flex-1 rounded-lg border\">\n        <ScrollArea.Viewport ref={scrollRef as React.RefObject<HTMLDivElement>}>\n          <ScrollArea.Content\n            ref={contentRef as React.RefObject<HTMLDivElement>}\n            className=\"p-4\"\n          >\n            <CodeBlock\n              language=\"typescript\"\n              filename=\"useUser.ts\"\n            >\n              <CodeBlock.Header />\n              <CodeBlock.Content\n                code={streamedCode || \"// Code will appear here...\"}\n                withScrollArea={false}\n              />\n            </CodeBlock>\n          </ScrollArea.Content>\n        </ScrollArea.Viewport>\n      </ScrollArea>\n    </div>\n  );\n}"
     },
     {

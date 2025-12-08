@@ -5,42 +5,60 @@
       "name": "@choice-ui/form",
       "title": "Adapters",
       "description": "增强版的 useForm hook",
-      "version": "0.0.3"
+      "version": "0.0.3",
+      "tags": [
+        "beta"
+      ]
     },
     {
       "slug": "overlays/alert-dialog",
       "name": "@choice-ui/alert-dialog",
       "title": "Alert Dialog",
       "description": "",
-      "version": "0.0.3"
+      "version": "0.0.3",
+      "tags": [
+        "new"
+      ]
     },
     {
       "slug": "feedback/avatar",
       "name": "@choice-ui/avatar",
       "title": "Avatar",
       "description": "",
-      "version": "0.0.4"
+      "version": "0.0.4",
+      "tags": [
+        "new"
+      ]
     },
     {
       "slug": "feedback/badge",
       "name": "@choice-ui/badge",
       "title": "Badge",
       "description": "",
-      "version": "0.0.3"
+      "version": "0.0.3",
+      "tags": [
+        "new"
+      ]
     },
     {
       "slug": "status/bells",
       "name": "@choice-ui/bells",
       "title": "Bells",
       "description": "",
-      "version": "0.0.4"
+      "version": "0.0.4",
+      "tags": [
+        "new"
+      ]
     },
     {
       "slug": "utilities/bezier-curve-editor",
       "name": "@choice-ui/bezier-curve-editor",
       "title": "BezierCurveEditor",
       "description": "",
-      "version": "0.0.3"
+      "version": "0.0.3",
+      "tags": [
+        "beta"
+      ]
     },
     {
       "slug": "buttons/button",
@@ -61,14 +79,20 @@
       "name": "@choice-ui/chip",
       "title": "Chip",
       "description": "",
-      "version": "0.0.3"
+      "version": "0.0.3",
+      "tags": [
+        "beta"
+      ]
     },
     {
       "slug": "forms/chips-input",
       "name": "@choice-ui/chips-input",
       "title": "ChipsInput",
       "description": "",
-      "version": "0.0.4"
+      "version": "0.0.4",
+      "tags": [
+        "beta"
+      ]
     },
     {
       "slug": "components/code-block",
@@ -82,14 +106,20 @@
       "name": "@choice-ui/combobox",
       "title": "Combobox",
       "description": "",
-      "version": "0.0.4"
+      "version": "0.0.4",
+      "tags": [
+        "beta"
+      ]
     },
     {
       "slug": "collections/command",
       "name": "@choice-ui/command",
       "title": "Command",
       "description": "Value of the search query.",
-      "version": "0.0.3"
+      "version": "0.0.3",
+      "tags": [
+        "new"
+      ]
     },
     {
       "slug": "components/comments/comment-input",
@@ -110,28 +140,40 @@
       "name": "@choice-ui/comments",
       "title": "Comments",
       "description": "",
-      "version": "0.0.3"
+      "version": "0.0.3",
+      "tags": [
+        "experimental"
+      ]
     },
     {
       "slug": "components/conditions",
       "name": "@choice-ui/conditions",
       "title": "Conditions",
       "description": "",
-      "version": "0.0.3"
+      "version": "0.0.3",
+      "tags": [
+        "beta"
+      ]
     },
     {
       "slug": "forms/context-input",
       "name": "@choice-ui/context-input",
       "title": "ContextInput",
       "description": "",
-      "version": "0.0.7"
+      "version": "0.0.7",
+      "tags": [
+        "beta"
+      ]
     },
     {
       "slug": "collections/context-menu",
       "name": "@choice-ui/context-menu",
       "title": "ContextMenu",
       "description": "",
-      "version": "0.0.7"
+      "version": "0.0.7",
+      "tags": [
+        "upgrade"
+      ]
     },
     {
       "slug": "utils/date-formatting",
@@ -145,14 +187,20 @@
       "name": "@choice-ui/calendar",
       "title": "DateInput",
       "description": "",
-      "version": "0.0.5"
+      "version": "0.0.5",
+      "tags": [
+        "new"
+      ]
     },
     {
       "slug": "date-and-time/date-range-input",
       "name": "@choice-ui/calendar",
       "title": "DateRangeInput",
       "description": "",
-      "version": "0.0.5"
+      "version": "0.0.5",
+      "tags": [
+        "new"
+      ]
     },
     {
       "slug": "overlays/dialog",
@@ -166,14 +214,20 @@
       "name": "@choice-ui/dropdown",
       "title": "Dropdown",
       "description": "CoordinateMode, first item auto select",
-      "version": "0.0.9"
+      "version": "0.0.9",
+      "tags": [
+        "upgrade"
+      ]
     },
     {
       "slug": "pickers/emoji-picker",
       "name": "@choice-ui/emoji-picker",
       "title": "EmojiPicker",
       "description": "",
-      "version": "0.0.4"
+      "version": "0.0.4",
+      "tags": [
+        "beta"
+      ]
     },
     {
       "slug": "forms/form/examples",
@@ -187,14 +241,20 @@
       "name": "@choice-ui/file-upload",
       "title": "FileUpload",
       "description": "",
-      "version": "0.0.3"
+      "version": "0.0.3",
+      "tags": [
+        "beta"
+      ]
     },
     {
       "slug": "feedback/hint",
       "name": "@choice-ui/hint",
       "title": "Hint",
       "description": "",
-      "version": "0.0.3"
+      "version": "0.0.3",
+      "tags": [
+        "new"
+      ]
     },
     {
       "slug": "utils/i18n",
@@ -229,21 +289,30 @@
       "name": "@choice-ui/label",
       "title": "Label",
       "description": "",
-      "version": "0.0.2"
+      "version": "0.0.2",
+      "tags": [
+        "new"
+      ]
     },
     {
       "slug": "buttons/link-button",
       "name": "@choice-ui/link-button",
       "title": "LinkButton",
       "description": "",
-      "version": "0.0.2"
+      "version": "0.0.2",
+      "tags": [
+        "new"
+      ]
     },
     {
       "slug": "collections/list",
       "name": "@choice-ui/list",
       "title": "List",
       "description": "",
-      "version": "0.0.4"
+      "version": "0.0.4",
+      "tags": [
+        "new"
+      ]
     },
     {
       "slug": "layouts/loader",
@@ -271,63 +340,90 @@
       "name": "@choice-ui/menus",
       "title": "MenuItem",
       "description": "",
-      "version": "0.1.0"
+      "version": "0.1.0",
+      "tags": [
+        "new"
+      ]
     },
     {
       "slug": "collections/menus",
       "name": "@choice-ui/menus",
       "title": "Menus",
       "description": "",
-      "version": "0.1.0"
+      "version": "0.1.0",
+      "tags": [
+        "new"
+      ]
     },
     {
       "slug": "overlays/modal",
       "name": "@choice-ui/modal",
       "title": "Modal",
       "description": "",
-      "version": "0.0.5"
+      "version": "0.0.5",
+      "tags": [
+        "new"
+      ]
     },
     {
       "slug": "date-and-time/month-calendar",
       "name": "@choice-ui/calendar",
       "title": "MonthCalendar",
       "description": "",
-      "version": "0.0.5"
+      "version": "0.0.5",
+      "tags": [
+        "new"
+      ]
     },
     {
       "slug": "collections/multi-select",
       "name": "@choice-ui/multi-select",
       "title": "MultiSelect",
       "description": "MultiSelect - 多选组件，支持标准下拉定位",
-      "version": "0.0.4"
+      "version": "0.0.4",
+      "tags": [
+        "new"
+      ]
     },
     {
       "slug": "status/notifications",
       "name": "@choice-ui/notifications",
       "title": "Notifications",
       "description": "",
-      "version": "0.0.3"
+      "version": "0.0.3",
+      "tags": [
+        "new"
+      ]
     },
     {
       "slug": "forms/numeric-input",
       "name": "@choice-ui/numeric-input",
       "title": "NumericInput",
       "description": "",
-      "version": "0.0.7"
+      "version": "0.0.7",
+      "tags": [
+        "upgrade"
+      ]
     },
     {
       "slug": "navigation/pagination",
       "name": "@choice-ui/pagination",
       "title": "Pagination",
       "description": "",
-      "version": "0.0.2"
+      "version": "0.0.2",
+      "tags": [
+        "new"
+      ]
     },
     {
       "slug": "data-display/picture-preview",
       "name": "@choice-ui/picture-preview",
       "title": "PicturePreview",
       "description": "",
-      "version": "0.0.3"
+      "version": "0.0.3",
+      "tags": [
+        "beta"
+      ]
     },
     {
       "slug": "overlays/popover",
@@ -355,7 +451,10 @@
       "name": "@choice-ui/calendar",
       "title": "QuarterCalendar",
       "description": "",
-      "version": "0.0.5"
+      "version": "0.0.5",
+      "tags": [
+        "new"
+      ]
     },
     {
       "slug": "forms/radio",
@@ -376,7 +475,10 @@
       "name": "@choice-ui/rich-input",
       "title": "RichInput",
       "description": "",
-      "version": "0.0.2"
+      "version": "0.0.2",
+      "tags": [
+        "new"
+      ]
     },
     {
       "slug": "layouts/panel/row",
@@ -390,14 +492,20 @@
       "name": "@choice-ui/scroll-area",
       "title": "ScrollArea",
       "description": "",
-      "version": "0.0.4"
+      "version": "0.0.4",
+      "tags": [
+        "new"
+      ]
     },
     {
       "slug": "forms/search-input",
       "name": "@choice-ui/search-input",
       "title": "SearchInput",
       "description": "Whether to show the clear button when there is a value",
-      "version": "0.0.4"
+      "version": "0.0.4",
+      "tags": [
+        "new"
+      ]
     },
     {
       "slug": "buttons/segmented",
@@ -411,7 +519,10 @@
       "name": "@choice-ui/select",
       "title": "Select",
       "description": "Select - 高性能的选择组件，支持 macOS 风格定位",
-      "version": "0.0.7"
+      "version": "0.0.7",
+      "tags": [
+        "upgrade"
+      ]
     },
     {
       "slug": "components/skeleton",
@@ -453,21 +564,30 @@
       "name": "@choice-ui/splitter",
       "title": "Splitter",
       "description": "",
-      "version": "0.0.3"
+      "version": "0.0.3",
+      "tags": [
+        "new"
+      ]
     },
     {
       "slug": "utilities/spring-visualizer",
       "name": "@choice-ui/spring-visualizer",
       "title": "SpringVisualizer",
       "description": "根据 mode 计算 path",
-      "version": "0.0.2"
+      "version": "0.0.2",
+      "tags": [
+        "beta"
+      ]
     },
     {
       "slug": "navigation/stackflow",
       "name": "@choice-ui/stackflow",
       "title": "Stackflow",
       "description": "",
-      "version": "0.0.3"
+      "version": "0.0.3",
+      "tags": [
+        "new"
+      ]
     },
     {
       "slug": "forms/switch",
@@ -495,35 +615,50 @@
       "name": "@choice-ui/textarea",
       "title": "Textarea",
       "description": "",
-      "version": "0.0.3"
+      "version": "0.0.3",
+      "tags": [
+        "new"
+      ]
     },
     {
       "slug": "forms/text-field",
       "name": "@choice-ui/text-field",
       "title": "TextField",
       "description": "",
-      "version": "0.0.5"
+      "version": "0.0.5",
+      "tags": [
+        "new"
+      ]
     },
     {
       "slug": "date-and-time/time-calendar",
       "name": "@choice-ui/calendar",
       "title": "TimeCalendar",
       "description": "",
-      "version": "0.0.5"
+      "version": "0.0.5",
+      "tags": [
+        "new"
+      ]
     },
     {
       "slug": "date-and-time/time-input",
       "name": "@choice-ui/calendar",
       "title": "TimeInput",
       "description": "",
-      "version": "0.0.5"
+      "version": "0.0.5",
+      "tags": [
+        "new"
+      ]
     },
     {
       "slug": "date-and-time/time-range-input",
       "name": "@choice-ui/calendar",
       "title": "TimeRangeInput",
       "description": "",
-      "version": "0.0.5"
+      "version": "0.0.5",
+      "tags": [
+        "new"
+      ]
     },
     {
       "slug": "layouts/panel/title",
@@ -544,14 +679,20 @@
       "name": "@choice-ui/tooltip",
       "title": "Tooltip",
       "description": "",
-      "version": "0.0.4"
+      "version": "0.0.4",
+      "tags": [
+        "upgrade"
+      ]
     },
     {
       "slug": "components/tree-list",
       "name": "@choice-ui/tree-list",
       "title": "TreeList",
       "description": "",
-      "version": "0.0.5"
+      "version": "0.0.5",
+      "tags": [
+        "beta"
+      ]
     },
     {
       "slug": "forms/use-numeric-input",
@@ -565,14 +706,20 @@
       "name": "@choice-ui/virtualized-grid",
       "title": "VirtualizedGrid",
       "description": "",
-      "version": "0.0.2"
+      "version": "0.0.2",
+      "tags": [
+        "new"
+      ]
     },
     {
       "slug": "date-and-time/year-calendar",
       "name": "@choice-ui/calendar",
       "title": "YearCalendar",
       "description": "",
-      "version": "0.0.5"
+      "version": "0.0.5",
+      "tags": [
+        "new"
+      ]
     }
   ]
 }

@@ -1,7 +1,13 @@
 import type { Metadata } from "next"
+import { Inter } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/providers"
 import { SiteHeader } from "@/components/site-header"
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+})
 
 export const metadata: Metadata = {
   title: "Hero UI Documentation",
@@ -15,13 +21,14 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
+      lang="us"
       suppressHydrationWarning
+      className={inter.variable}
     >
-      <body className="bg-background min-h-screen font-sans antialiased">
+      <body>
         <ThemeProvider
           attribute="class"
-          defaultTheme="dark"
+          defaultTheme="light"
           enableSystem
           disableTransitionOnChange
         >

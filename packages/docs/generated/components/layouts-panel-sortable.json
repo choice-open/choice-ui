@@ -99,6 +99,175 @@
           "description": ""
         }
       ]
+    },
+    {
+      "displayName": "PanelRow",
+      "description": "",
+      "props": [
+        {
+          "name": "type",
+          "type": "enum",
+          "required": false,
+          "defaultValue": "\"single\"",
+          "description": "The type of the panel row.\n@description - `single`: `columns`: 1fr | `areas`: \"label\" \"input\" | `rows`: auto minmax(2rem, auto)\n- `two-columns`: `columns`: 1fr 1fr | `areas`: \"label label\" \"left right\" | `rows`: auto minmax(2rem, auto)\n- `one-label-one-input`: `columns`: 8fr 20fr | `areas`: \"label input\" | `rows`: 2rem\n- `one-label-one-input-one-icon`: `columns`: 8fr 20fr 2rem | `areas`: \"label input icon\" | `rows`: 2rem\n- `one-label-two-input`: `columns`: 8fr 1fr 1fr | `areas`: \"label left right\" | `rows`: 2rem\n- `one-icon-one-input`: `columns`: 2rem 1fr | `areas`: \"icon input\" | `rows`: 2rem\n- `one-input-one-icon`: `columns`: 1fr 2rem | `areas`: \"input icon\" | `rows`: 2rem\n- `one-input-two-icon`: `columns`: 1fr 1fr 2rem | `areas`: \"input left icon\" \"input right icon\" | `rows`: 2rem\n- `two-input-two-icon`: `columns`: 1fr 1fr 2rem | `areas`: \"left icon right icon\" | `rows`: 2rem\n- `two-input-one-icon`: `columns`: 2rem 1fr 1fr | `areas`: \"icon left right\" | `rows`: 2rem\n- `one-icon-one-input-two-icon`: `columns`: 2rem 1fr 2rem | `areas`: \"icon input icon\" | `rows`: 2rem\n- `two-input-one-icon-double-row`: `columns`: 1fr 1fr 2rem | `areas`: \"left icon right icon\" | `rows`: 2rem 2rem\n- `one-icon-one-input-two-icon-double-row`: `columns`: 2rem 1fr 2rem | `areas`: \"icon input icon\" | `rows`: 2rem 2rem"
+        },
+        {
+          "name": "active",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "triggerRef",
+          "type": "RefObject<HTMLDivElement> | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "PanelLabel",
+      "description": "",
+      "props": [
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "PanelTitle",
+      "description": "",
+      "props": [
+        {
+          "name": "title",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "classNames",
+          "type": "{ actionWrapper?: string | undefined; container?: string | undefined; title?: string | undefined; titleWrapper?: string | undefined; } | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onHeaderClick",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onTitleClick",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "PanelSortable",
+      "description": "",
+      "props": [
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "data",
+          "type": "SortableItem[]",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "onDrop",
+          "type": "(position: \"top\" | \"bottom\" | null, id: string, newIndex: number) => void",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "onSelectedIdChange",
+          "type": "(id: string | null) => void",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "selectedId",
+          "type": "string | null",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "PanelSortableRow",
+      "description": "",
+      "props": [
+        {
+          "name": "type",
+          "type": "enum",
+          "required": false,
+          "defaultValue": "\"single\"",
+          "description": "The type of the panel row.\n@description - `single`: `columns`: 1fr | `areas`: \"label\" \"input\" | `rows`: auto minmax(2rem, auto)\n- `two-columns`: `columns`: 1fr 1fr | `areas`: \"label label\" \"left right\" | `rows`: auto minmax(2rem, auto)\n- `one-label-one-input`: `columns`: 8fr 20fr | `areas`: \"label input\" | `rows`: 2rem\n- `one-label-one-input-one-icon`: `columns`: 8fr 20fr 2rem | `areas`: \"label input icon\" | `rows`: 2rem\n- `one-label-two-input`: `columns`: 8fr 1fr 1fr | `areas`: \"label left right\" | `rows`: 2rem\n- `one-icon-one-input`: `columns`: 2rem 1fr | `areas`: \"icon input\" | `rows`: 2rem\n- `one-input-one-icon`: `columns`: 1fr 2rem | `areas`: \"input icon\" | `rows`: 2rem\n- `one-input-two-icon`: `columns`: 1fr 1fr 2rem | `areas`: \"input left icon\" \"input right icon\" | `rows`: 2rem\n- `two-input-two-icon`: `columns`: 1fr 1fr 2rem | `areas`: \"left icon right icon\" | `rows`: 2rem\n- `two-input-one-icon`: `columns`: 2rem 1fr 1fr | `areas`: \"icon left right\" | `rows`: 2rem\n- `one-icon-one-input-two-icon`: `columns`: 2rem 1fr 2rem | `areas`: \"icon input icon\" | `rows`: 2rem\n- `two-input-one-icon-double-row`: `columns`: 1fr 1fr 2rem | `areas`: \"left icon right icon\" | `rows`: 2rem 2rem\n- `one-icon-one-input-two-icon-double-row`: `columns`: 2rem 1fr 2rem | `areas`: \"icon input icon\" | `rows`: 2rem 2rem"
+        },
+        {
+          "name": "active",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "triggerRef",
+          "type": "RefObject<HTMLDivElement> | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "ref",
+          "type": "((instance: HTMLFieldSetElement | null) => void) | RefObject<HTMLFieldSetElement> | null | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "PanelRowLabel",
+      "description": "",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "PanelRowManyIcon",
+      "description": "",
+      "props": [
+        {
+          "name": "icons",
+          "type": "PanelRowManyIconItem[]",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "isEditing",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "PanelPreviewer",
+      "description": "",
+      "props": []
     }
   ],
   "stories": [

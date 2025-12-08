@@ -31,6 +31,100 @@
   ],
   "props": [
     {
+      "displayName": "TooltipTrigger",
+      "description": "",
+      "props": []
+    },
+    {
+      "displayName": "TooltipContent",
+      "description": "",
+      "props": [
+        {
+          "name": "portalId",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "variant",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "withArrow",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "TooltipArrow",
+      "description": "",
+      "props": [
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "variant",
+          "type": "enum",
+          "required": false,
+          "defaultValue": "default",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "useTooltip",
+      "description": "",
+      "props": [
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "defaultValue": "false",
+          "description": ""
+        },
+        {
+          "name": "initialOpen",
+          "type": "boolean | undefined",
+          "required": false,
+          "defaultValue": "false",
+          "description": ""
+        },
+        {
+          "name": "offset",
+          "type": "number | undefined",
+          "required": false,
+          "defaultValue": "5",
+          "description": ""
+        },
+        {
+          "name": "onOpenChange",
+          "type": "((open: boolean) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "open",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "placement",
+          "type": "enum",
+          "required": false,
+          "defaultValue": "top",
+          "description": ""
+        }
+      ]
+    },
+    {
       "displayName": "Tooltip",
       "description": "",
       "props": [
@@ -146,5 +240,8 @@
       "description": "Shows how to use the `shortcut` prop to add keyboard shortcuts to a tooltip.\n\n### Features\n- Display keyboard shortcuts\n- Support for modifier keys\n\n### Usage\n```tsx\n<Tooltip\n  content=\"This is a tooltip\"\n  shortcut={{ modifier: [\"command\"], keys: \"K\" }}\n>\n  <Button>Tooltip</Button>\n</Tooltip>\n```",
       "source": "import { TooltipProvider, Tooltip } from \"@choice-ui/tooltip\"\n\nexport default function App() {\n  return (\n    <TooltipProvider\n      delay={{\n        open: 400,\n        close: 200,\n      }}\n    >\n      <div className=\"flex gap-4\">\n        <Tooltip\n          content=\"Save file\"\n          shortcut={{ modifier: [\"command\"], keys: \"K\" }}\n        >\n          <Button variant=\"secondary\">Command + K</Button>\n        </Tooltip>\n\n        <Tooltip\n          content=\"Select all\"\n          shortcut={{ modifier: [\"ctrl\"], keys: \"A\" }}\n        >\n          <Button variant=\"secondary\">Ctrl + A</Button>\n        </Tooltip>\n\n        <Tooltip\n          content=\"Shift\"\n          shortcut={{ modifier: [\"shift\"], keys: \"A\" }}\n        >\n          <Button variant=\"secondary\">Shift + A</Button>\n        </Tooltip>\n      </div>\n    </TooltipProvider>\n  );\n}"
     }
+  ],
+  "tags": [
+    "upgrade"
   ]
 }

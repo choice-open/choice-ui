@@ -19,7 +19,7 @@
   ],
   "props": [
     {
-      "displayName": "Label",
+      "displayName": "LabelProps",
       "description": "",
       "props": [
         {
@@ -73,7 +73,7 @@
       "id": "forms-label--with-description",
       "name": "With Description",
       "exportName": "WithDescription",
-      "description": "",
+      "description": "Label with description.\n\nUse the `description` prop to provide additional context.",
       "source": "import { Label } from \"@choice-ui/label\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-2\">\n      <Label\n        htmlFor=\"description\"\n        description=\"Please enter your full name\"\n      >\n        Name\n      </Label>\n\n      <Input id=\"description\" />\n    </div>\n  );\n}"
     },
     {
@@ -94,8 +94,11 @@
       "id": "forms-label--with-action",
       "name": "With Action",
       "exportName": "WithAction",
-      "description": "",
+      "description": "Label with action.\n\nUse the `action` prop to add an action to the label.",
       "source": "import { Label } from \"@choice-ui/label\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-2\">\n      <Label\n        htmlFor=\"action\"\n        description=\"This is a description\"\n        action={\n          <IconButton\n            variant=\"ghost\"\n            className=\"size-4\"\n          >\n            <QuestionCircle />\n          </IconButton>\n        }\n      >\n        Name\n      </Label>\n      <Input id=\"action\" />\n    </div>\n  );\n}"
     }
+  ],
+  "tags": [
+    "new"
   ]
 }

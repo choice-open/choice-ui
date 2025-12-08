@@ -24,7 +24,7 @@
   ],
   "props": [
     {
-      "displayName": "Checkbox",
+      "displayName": "CheckboxProps",
       "description": "",
       "props": [
         {
@@ -70,6 +70,18 @@
           "description": ""
         }
       ]
+    },
+    {
+      "displayName": "Checkbox.Label",
+      "description": "",
+      "props": [
+        {
+          "name": "ref",
+          "type": "((instance: HTMLLabelElement | null) => void) | RefObject<HTMLLabelElement> | null | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
     }
   ],
   "stories": [
@@ -105,7 +117,7 @@
       "id": "forms-checkbox--label-usage",
       "name": "Label Usage",
       "exportName": "LabelUsage",
-      "description": "",
+      "description": "Label Usage: Demonstrates two ways to use labels with Checkbox.\n- Simple string children: automatically wrapped with Checkbox.Label\n- Explicit Checkbox.Label: for more complex label content",
       "source": "import { Checkbox } from \"@choice-ui/checkbox\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <div>\n        <h4 className=\"font-strong mb-2\">Simple string label (auto-wrapped):</h4>\n        <Checkbox\n          value={simple}\n          onChange={setSimple}\n        >\n          Simple text label\n        </Checkbox>\n      </div>\n\n      <div>\n        <h4 className=\"font-strong mb-2\">Explicit Checkbox.Label (for complex content):</h4>\n        <Checkbox\n          value={explicit}\n          onChange={setExplicit}\n        >\n          <Checkbox.Label>\n            <span className=\"text-accent-foreground\">Complex</span> label with{\" \"}\n            <strong>formatting</strong>\n          </Checkbox.Label>\n        </Checkbox>\n      </div>\n    </div>\n  );\n}"
     },
     {

@@ -127,6 +127,90 @@
           "description": ""
         }
       ]
+    },
+    {
+      "displayName": "ComboboxTrigger",
+      "description": "",
+      "props": [
+        {
+          "name": "size",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "((value: string) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "placeholder",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "value",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onClick",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "active",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "i18n",
+          "type": "{ clear: string; placeholder: string; } | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "noMatch",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "prefixElement",
+          "type": "ReactNode",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "showClear",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "suffixElement",
+          "type": "ReactNode",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "variant",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        }
+      ]
     }
   ],
   "stories": [
@@ -176,28 +260,28 @@
       "id": "collections-combobox--long-list",
       "name": "Long List",
       "exportName": "LongList",
-      "description": "",
+      "description": "LongList: Combobox with many options demonstrating scrolling.\n- Generated list of countries\n- Efficient filtering\n- Scroll behavior in dropdown",
       "source": "import { Combobox } from \"@choice-ui/combobox\"\n\nexport default function App() {\n  return (\n    <div className=\"w-64\">\n      <Combobox\n        value={value}\n        onChange={setValue}\n      >\n        <Combobox.Trigger placeholder=\"Search countries...\" />\n        <Combobox.Content>\n          <Combobox.Label>\n            Countries ({filteredCountries.length} {!value ? \"shown\" : \"found\"})\n          </Combobox.Label>\n          {filteredCountries.map((country, index) => (\n            <Combobox.Item\n              key={`${country}-${index}`}\n              onClick={() => setValue(country)}\n            >\n              <Combobox.Value>{country}</Combobox.Value>\n            </Combobox.Item>\n          ))}\n          {filteredCountries.length === 0 && value && (\n            <div className=\"p-4 text-center text-white/50\">\n              No countries found for &ldquo;{value}&rdquo;\n            </div>\n          )}\n        </Combobox.Content>\n      </Combobox>\n    </div>\n  );\n}"
     },
     {
       "id": "collections-combobox--custom-width",
       "name": "Custom Width",
       "exportName": "CustomWidth",
-      "description": "",
+      "description": "CustomWidth: Combobox with custom width that doesn't match trigger.\n- Dropdown width independent of trigger\n- Useful for compact triggers with wider options",
       "source": "import { Combobox } from \"@choice-ui/combobox\"\n\nexport default function App() {\n  return (\n    <div className=\"w-48\">\n      <Combobox\n        value={value}\n        onChange={setValue}\n        matchTriggerWidth={false}\n      >\n        <Combobox.Trigger placeholder=\"Fruit...\" />\n        <Combobox.Content className=\"w-80\">\n          <Combobox.Label>Available Fruits (Custom Width)</Combobox.Label>\n          {filteredFruits.map((fruit) => (\n            <Combobox.Item\n              key={fruit}\n              onClick={() => setValue(fruit)}\n            >\n              <Combobox.Value>{fruit}</Combobox.Value>\n            </Combobox.Item>\n          ))}\n        </Combobox.Content>\n      </Combobox>\n    </div>\n  );\n}"
     },
     {
       "id": "collections-combobox--coordinate-mode",
       "name": "Coordinate Mode",
       "exportName": "CoordinateMode",
-      "description": "",
+      "description": "Coordinate mode - Combobox positioned at specific coordinates for mentions",
       "source": "import { Combobox } from \"@choice-ui/combobox\"\n\nexport default function App() {\n  return (\n    <div className=\"w-80 space-y-4\">\n      <div className=\"rounded-xl border p-4\">\n        <h3 className=\"font-strong mb-2\">📍 Coordinate Mode Combobox</h3>\n        <p className=\"text-secondary-foreground text-body-small\">\n          Click anywhere in the area below to trigger a Combobox at that position. Perfect for\n          mentions, autocomplete, etc.\n        </p>\n      </div>\n\n      <div\n        className=\"bg-secondary-background relative h-64 cursor-pointer rounded-lg border border-dashed p-4\"\n        onMouseDown={handleClick}\n      >\n        <p className=\"text-secondary-foreground text-center\">\n          Click anywhere in this area to show Combobox at mouse position\n        </p>\n\n        {position && (\n          <div\n            className=\"text-secondary-foreground fixed z-10 size-4\"\n            style={{ left: position.x - 8, top: position.y - 8 }}\n          >\n            📍\n          </div>\n        )}\n      </div>\n\n      {/* Combobox in coordinate mode */}\n      <Combobox\n        trigger=\"coordinate\"\n        position={position}\n        value={query}\n        onChange={setQuery}\n        open={isOpen}\n        onOpenChange={setIsOpen}\n        placement=\"bottom-start\"\n        autoSelection={true}\n      >\n        <Combobox.Content>\n          <Combobox.Label>\n            {query ? `Search results for \"${query}\"` : \"Select User\"}\n          </Combobox.Label>\n          {filteredUsers.length > 0 ? (\n            filteredUsers.map((user) => (\n              <Combobox.Item\n                key={user.id}\n                onClick={() => handleSelectUser(user)}\n              >\n                <img\n                  src={user.avatar}\n                  alt={user.name}\n                  className=\"mr-2 size-4 rounded-full\"\n                />\n                <Combobox.Value>{user.name}</Combobox.Value>\n              </Combobox.Item>\n            ))\n          ) : (\n            <div className=\"p-4 text-center text-white/50\">\n              No users found for &ldquo;{query}&rdquo;\n            </div>\n          )}\n        </Combobox.Content>\n      </Combobox>\n\n      {/* Debug info */}\n      <div className=\"bg-secondary-background text-secondary-foreground rounded-lg p-3 text-xs\">\n        <div>\n          <strong>Query:</strong> &ldquo;{query}&rdquo;\n        </div>\n        <div>\n          <strong>Position:</strong> {position ? `${position.x}, ${position.y}` : \"null\"}\n        </div>\n        <div>\n          <strong>Open:</strong> {isOpen ? \"Yes\" : \"No\"}\n        </div>\n        <div>\n          <strong>Results:</strong> {filteredUsers.length}\n        </div>\n      </div>\n    </div>\n  );\n}"
     },
     {
       "id": "collections-combobox--mentions-with-slate",
       "name": "Mentions With Slate",
       "exportName": "MentionsWithSlate",
-      "description": "",
+      "description": "Mentions with Slate.js - Combobox integrated with rich text editor for mentions",
       "source": "import { Combobox } from \"@choice-ui/combobox\"\n\nexport default function App() {\n  return (\n    <div className=\"w-96 space-y-4\">\n      <div className=\"rounded-xl border p-4\">\n        <h3 className=\"font-strong mb-2\">🔍 Combobox Mentions with Slate.js</h3>\n        <p className=\"text-secondary-foreground text-body-small\">\n          Type @ and continue typing to filter users. Combobox maintains focus on the editor.\n        </p>\n      </div>\n\n      <Checkbox\n        value={enterFilter}\n        onChange={setEnterFilter}\n      >\n        <Checkbox.Label>Enter filter</Checkbox.Label>\n      </Checkbox>\n\n      {/* Slate 编辑器 */}\n      <div\n        ref={editorRef}\n        className=\"focus-within:border-selected-boundary min-h-[100px] w-full rounded-lg border p-3\"\n      >\n        <Slate\n          editor={editor}\n          initialValue={initialValue}\n          onChange={handleChange}\n        >\n          <Editable\n            placeholder=\"Type @ to mention someone, then continue typing to filter...\"\n            className=\"outline-none\"\n            style={{ minHeight: \"76px\" }}\n            onKeyDown={handleKeyDown}\n          />\n        </Slate>\n      </div>\n\n      <Combobox\n        trigger=\"coordinate\" // 明确指定坐标模式\n        position={position}\n        value={mentionQuery}\n        onChange={handleComboboxQueryChange}\n        open={isOpen}\n        onOpenChange={setIsOpen}\n        placement=\"bottom-start\"\n        autoSelection={true} // 启用自动选择\n      >\n        {filteredUsers.length > 0 && (\n          <Combobox.Content>\n            <Combobox.Label>\n              {enterFilter ? (mentionQuery ? `Search ${mentionQuery}` : \"Users\") : \"Users\"}\n              {` (${filteredUsers.length})`}\n            </Combobox.Label>\n\n            {filteredUsers.map((user) => (\n              <Combobox.Item\n                key={user.id}\n                onClick={() => handleSelectUser(user)}\n                prefixElement={\n                  <img\n                    src={user.avatar}\n                    alt={user.name}\n                    className=\"size-4 rounded-full\"\n                  />\n                }\n                suffixElement={<span className=\"text-body-small text-white/60\">{user.role}</span>}\n              >\n                <Combobox.Value>{user.name}</Combobox.Value>\n              </Combobox.Item>\n            ))}\n          </Combobox.Content>\n        )}\n      </Combobox>\n\n      {/* 调试信息 */}\n      <div className=\"space-y-2\">\n        <div className=\"bg-secondary-background text-secondary-foreground rounded-xl p-4\">\n          <div>\n            <strong>Current text:</strong> &ldquo;{getEditorText()}&rdquo;\n          </div>\n          <div>\n            <strong>Mention query:</strong> &ldquo;{mentionQuery}&rdquo;\n          </div>\n          <div>\n            <strong>Filtered users:</strong> {filteredUsers.length} / {allUsers.length}\n          </div>\n          <div>\n            <strong>Menu open:</strong> {isOpen ? \"Yes\" : \"No\"}\n          </div>\n          <div>\n            <strong>Position:</strong> {position ? `x:${position.x}, y:${position.y}` : \"null\"}\n          </div>\n          <div>\n            <strong>Should show menu:</strong> {isOpen ? \"Yes\" : \"No\"}\n          </div>\n        </div>\n\n        <div className=\"rounded-xl border p-4\">\n          <h4 className=\"font-strong mb-2\">Test Cases:</h4>\n          <ul className=\"text-secondary-foreground space-y-1\">\n            <li>• Type @ - Shows all 5 users</li>\n            <li>• Type @john - Filters to John Doe, Alice Johnson</li>\n            <li>• Type @dev - Filters to developers</li>\n            <li>• Type @engineer - Filters to engineers</li>\n            <li>• Type @xyz - Shows &ldquo;No users found&rdquo;</li>\n            <li>• Add space after selection - Closes menu</li>\n          </ul>\n        </div>\n      </div>\n    </div>\n  );\n}"
     },
     {
@@ -214,5 +298,8 @@
       "description": "Combobox component in light variant.",
       "source": "import { Combobox } from \"@choice-ui/combobox\"\n\nexport default function App() {\n  return (\n    <Combobox\n      variant=\"light\"\n      value={value}\n      onChange={setValue}\n    >\n      <Combobox.Trigger placeholder=\"Select a fruit...\" />\n      <Combobox.Content>\n        {options.map((option) => (\n          <Combobox.Item\n            key={option.value}\n            value={option.value}\n          >\n            <Combobox.Value>{option.label}</Combobox.Value>\n          </Combobox.Item>\n        ))}\n      </Combobox.Content>\n    </Combobox>\n  );\n}"
     }
+  ],
+  "tags": [
+    "beta"
   ]
 }

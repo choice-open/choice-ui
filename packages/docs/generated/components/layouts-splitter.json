@@ -136,5 +136,8 @@
       "description": "Reset: Demonstrates programmatic control using the splitter ref.\n\nThis example shows:\n- Using a ref to access splitter methods\n- Implementing a reset button to restore default layout\n- Proper typing with SplitterHandle\n- Imperative control of the component\n\nThis pattern is useful for providing users with a way to reset\nthe layout after manual adjustments, or for programmatically\ncontrolling the splitter layout from parent components.",
       "source": "import { Splitter } from \"@choice-ui/splitter\"\n\nexport default function App() {\n  return (\n    <div className=\"flex h-full w-full flex-col items-center justify-center gap-4\">\n      <Button\n        onClick={() => {\n          ref.current?.reset()\n        }}\n      >\n        Reset\n      </Button>\n      <div className=\"h-96 w-96 rounded-xl border\">\n        <Splitter ref={ref}>\n          <div className=\"grid h-full place-content-center\">Pane 1</div>\n          <div className=\"grid h-full place-content-center\">Pane 2</div>\n        </Splitter>\n      </div>\n    </div>\n  );\n}"
     }
+  ],
+  "tags": [
+    "new"
   ]
 }

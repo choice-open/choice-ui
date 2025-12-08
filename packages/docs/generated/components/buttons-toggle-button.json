@@ -20,7 +20,7 @@
   ],
   "props": [
     {
-      "displayName": "ToggleButton",
+      "displayName": "ToggleButtonProps",
       "description": "",
       "props": [
         {

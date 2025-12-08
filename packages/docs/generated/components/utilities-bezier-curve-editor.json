@@ -29,7 +29,12 @@
   ],
   "props": [
     {
-      "displayName": "BezierCurveEditor",
+      "displayName": "PREVIEW_KEYFRAMES",
+      "description": "",
+      "props": []
+    },
+    {
+      "displayName": "BezierCurveEditorProps",
       "description": "",
       "props": [
         {
@@ -111,6 +116,30 @@
           "description": ""
         }
       ]
+    },
+    {
+      "displayName": "LinearGradient",
+      "description": "",
+      "props": [
+        {
+          "name": "endColor",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "mainColor",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "startColor",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
     }
   ],
   "stories": [
@@ -125,7 +154,7 @@
       "id": "utilities-beziercurveeditor--advanced-both-axes",
       "name": "Advanced",
       "exportName": "AdvancedBothAxes",
-      "description": "",
+      "description": "To use the component in the advanced way, you must set the `allowNodeEditing` prop to `true`.\nAn array with 8 numbers between 0 and 1 inclusive will be used for the value and will be passed to your change handler.\n\n_Note: By default, all of the values are editable. Scroll down to see examples that constrain axes._",
       "source": "import { BezierCurveEditor } from \"@choice-ui/bezier-curve-editor\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <div className=\"flex aspect-square w-80 items-center justify-center rounded-xl border\">\n        <BezierCurveEditor\n          size={200}\n          value={value}\n          onChange={setValue}\n          allowNodeEditing\n          handleSize={12}\n          className=\"absolute\"\n        />\n      </div>\n      <div className=\"flex w-full items-center gap-2\">\n        <p className=\"flex-1\">Bezier</p>\n        <NumericInput\n          className=\"w-full\"\n          value={value}\n          expression=\"{v1},{v2},{v3},{v4},{v5},{v6},{v7},{v8}\"\n          onChange={(_val, detail) => {\n            setValue(detail.array.slice(0, 8) as BezierCurveExpandedValueType)\n          }}\n        />\n      </div>\n    </div>\n  );\n}"
     },
     {
@@ -135,5 +164,8 @@
       "description": "",
       "source": "import { PREVIEW_KEYFRAMES, BezierCurveEditor } from \"@choice-ui/bezier-curve-editor\"\n\nexport default function App() {\n  return (\n    <div className=\"flex items-stretch gap-8\">\n      <style>{PREVIEW_KEYFRAMES(160 - 24 - 8).bezierLoop}</style>\n      <div className=\"flex flex-col gap-4\">\n        <BezierCurveEditor\n          size={128}\n          value={selectedValue.value}\n          onChange={handleValueChange}\n          outerAreaSize={0}\n          allowNodeEditing={false}\n          duration={duration}\n          delay={delay}\n        />\n        <div className=\"flex h-6 items-center\">\n          <strong\n            className={tcx(\n              PRESET_EASINGS.some((v) => v.name === selectedValue.name)\n                ? \"\"\n                : \"w-40 min-w-0 text-xs\",\n            )}\n          >\n            {selectedValue.name}\n          </strong>\n        </div>\n\n        <div className=\"flex flex-col gap-1\">\n          <span className=\"text-xs\">Preview</span>\n          <div className=\"bg-secondary-background relative h-8 w-40 rounded-lg\">\n            <div\n              className=\"absolute top-1 left-1 size-6 rounded-md bg-white shadow-xs\"\n              style={previewAnimationStyle}\n            />\n          </div>\n        </div>\n      </div>\n\n      <div className=\"grid grid-cols-4 gap-4\">\n        {PRESET_EASINGS.map((item, index) => (\n          <PresetEasingItem\n            key={index}\n            item={item}\n            index={index}\n            isSelected={selectedValue.name === item.name}\n            isHovered={isHovered === index}\n            duration={duration}\n            delay={delay}\n            onHover={setIsHovered}\n            onClick={handlePresetClick}\n          />\n        ))}\n      </div>\n    </div>\n  );\n}"
     }
+  ],
+  "tags": [
+    "beta"
   ]
 }

@@ -78,6 +78,505 @@
   ],
   "props": [
     {
+      "displayName": "MenuButton",
+      "description": "",
+      "props": [
+        {
+          "name": "size",
+          "type": "enum",
+          "required": false,
+          "defaultValue": "\"default\"",
+          "description": "Button size variant\n@example ```tsx\n<Button size=\"large\">Large Button</Button>\n```"
+        },
+        {
+          "name": "readOnly",
+          "type": "boolean | undefined",
+          "required": false,
+          "defaultValue": "false",
+          "description": "Whether the button is in readOnly state\nIn readOnly mode, the button will not respond to click events\n@example ```tsx\n<Button readOnly>Read Only Button</Button>\n```"
+        },
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": "Additional CSS class names"
+        },
+        {
+          "name": "active",
+          "type": "boolean | undefined",
+          "required": false,
+          "defaultValue": "false",
+          "description": "Whether the button is in an active/pressed state\n@example ```tsx\n<Button active>Active Button</Button>\n```"
+        },
+        {
+          "name": "asChild",
+          "type": "boolean | undefined",
+          "required": false,
+          "defaultValue": "false",
+          "description": "Render as a custom element instead of button\n@example ```tsx\n<Button asChild>\n  <Link href=\"/profile\">Profile</Link>\n</Button>\n```"
+        },
+        {
+          "name": "focused",
+          "type": "boolean | undefined",
+          "required": false,
+          "defaultValue": "false",
+          "description": "Whether the button appears focused (for keyboard navigation)"
+        },
+        {
+          "name": "loading",
+          "type": "boolean | undefined",
+          "required": false,
+          "defaultValue": "false",
+          "description": "Whether the button is in loading state with spinner\n@example ```tsx\n<Button loading>Saving...</Button>\n```"
+        },
+        {
+          "name": "tooltip",
+          "type": "TooltipProps | undefined",
+          "required": false,
+          "description": "Tooltip configuration for the button\n@example ```tsx\n<Button tooltip={{ content: \"Save your changes\", placement: \"top\" }}>\n  Save\n</Button>\n```"
+        },
+        {
+          "name": "variant",
+          "type": "enum",
+          "required": false,
+          "defaultValue": "\"primary\"",
+          "description": "Visual style variant of the button\n@example ```tsx\n<Button variant=\"primary\">Primary Action</Button>\n<Button variant=\"destructive\">Delete</Button>\n<Button variant=\"ghost\">Subtle Action</Button>\n```"
+        },
+        {
+          "name": "ref",
+          "type": "((instance: HTMLButtonElement | null) => void) | RefObject<HTMLButtonElement> | null | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "MenuCheckbox",
+      "description": "",
+      "props": [
+        {
+          "name": "active",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "indeterminate",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "selected",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "MenuDivider",
+      "description": "",
+      "props": []
+    },
+    {
+      "displayName": "MenuItem",
+      "description": "",
+      "props": [
+        {
+          "name": "size",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "selected",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "active",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "variant",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "classNames",
+          "type": "{ icon?: string | undefined; root?: string | undefined; shortcut?: string | undefined; } | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "prefixElement",
+          "type": "ReactNode",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "shortcut",
+          "type": "{ keys?: ReactNode; modifier?: KbdKey | KbdKey[] | undefined; } | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "suffixElement",
+          "type": "ReactNode",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "ref",
+          "type": "((instance: HTMLButtonElement | null) => void) | RefObject<HTMLButtonElement> | null | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "MenuLabel",
+      "description": "",
+      "props": [
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "selection",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "MenuScrollArrow",
+      "description": "",
+      "props": [
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "dir",
+          "type": "enum",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "innerOffset",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "isPositioned",
+          "type": "boolean",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "onHide",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onScroll",
+          "type": "(amount: number) => void",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "scrollRef",
+          "type": "MutableRefObject<HTMLDivElement | null>",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "scrollTop",
+          "type": "number",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "MenuSearch",
+      "description": "",
+      "props": [
+        {
+          "name": "size",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "selected",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "value",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "((value: string) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "variant",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "focusSelection",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onIsEditingChange",
+          "type": "((isEditing: boolean) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "clearable",
+          "type": "boolean | undefined",
+          "required": false,
+          "defaultValue": "true",
+          "description": "Whether to show the clear button when there is a value"
+        },
+        {
+          "name": "i18n",
+          "type": "{ clear: string; placeholder: string; } | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "MenuSearchEmpty",
+      "description": "",
+      "props": [
+        {
+          "name": "defaultText",
+          "type": "{ searchEmpty: string; searchEmptyButton: string; } | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onClear",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "MenuTrigger",
+      "description": "",
+      "props": [
+        {
+          "name": "size",
+          "type": "enum",
+          "required": false,
+          "defaultValue": "\"default\"",
+          "description": "Button size variant\n@example ```tsx\n<Button size=\"large\">Large Button</Button>\n```"
+        },
+        {
+          "name": "readOnly",
+          "type": "boolean | undefined",
+          "required": false,
+          "defaultValue": "false",
+          "description": "Whether the button is in readOnly state\nIn readOnly mode, the button will not respond to click events\n@example ```tsx\n<Button readOnly>Read Only Button</Button>\n```"
+        },
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": "Additional CSS class names"
+        },
+        {
+          "name": "active",
+          "type": "boolean | undefined",
+          "required": false,
+          "defaultValue": "false",
+          "description": "Whether the button is in an active/pressed state\n@example ```tsx\n<Button active>Active Button</Button>\n```"
+        },
+        {
+          "name": "asChild",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": "Render as a custom element instead of button"
+        },
+        {
+          "name": "focused",
+          "type": "boolean | undefined",
+          "required": false,
+          "defaultValue": "false",
+          "description": "Whether the button appears focused (for keyboard navigation)"
+        },
+        {
+          "name": "loading",
+          "type": "boolean | undefined",
+          "required": false,
+          "defaultValue": "false",
+          "description": "Whether the button is in loading state with spinner\n@example ```tsx\n<Button loading>Saving...</Button>\n```"
+        },
+        {
+          "name": "tooltip",
+          "type": "TooltipProps | undefined",
+          "required": false,
+          "description": "Tooltip configuration for the button\n@example ```tsx\n<Button tooltip={{ content: \"Save your changes\", placement: \"top\" }}>\n  Save\n</Button>\n```"
+        },
+        {
+          "name": "variant",
+          "type": "enum",
+          "required": false,
+          "defaultValue": "\"primary\"",
+          "description": "Visual style variant of the button\n@example ```tsx\n<Button variant=\"primary\">Primary Action</Button>\n<Button variant=\"destructive\">Delete</Button>\n<Button variant=\"ghost\">Subtle Action</Button>\n```"
+        },
+        {
+          "name": "prefixElement",
+          "type": "ReactNode",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "suffixElement",
+          "type": "ReactNode",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "empty",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "enterForwardedProps",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "prefixClassName",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "ref",
+          "type": "((instance: HTMLButtonElement | null) => void) | RefObject<HTMLButtonElement> | null | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "MenuInput",
+      "description": "",
+      "props": [
+        {
+          "name": "size",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "selected",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "value",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "((value: string) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "variant",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "focusSelection",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onIsEditingChange",
+          "type": "((isEditing: boolean) => void) | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "MenuValue",
+      "description": "",
+      "props": [
+        {
+          "name": "ref",
+          "type": "((instance: HTMLSpanElement | null) => void) | RefObject<HTMLSpanElement> | null | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
       "displayName": "Menus",
       "description": "",
       "props": [
@@ -90,6 +589,619 @@
         {
           "name": "variant",
           "type": "enum",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "useMenuState",
+      "description": "",
+      "props": [
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": "是否禁用"
+        },
+        {
+          "name": "onOpenChange",
+          "type": "((open: boolean) => void) | undefined",
+          "required": false,
+          "description": "打开状态变化回调"
+        },
+        {
+          "name": "open",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": "受控的打开状态"
+        }
+      ]
+    },
+    {
+      "displayName": "useMenuRefs",
+      "description": "",
+      "props": [
+        {
+          "name": "isSelect",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": "是否为 Select 类型（需要额外的选择相关引用）"
+        }
+      ]
+    },
+    {
+      "displayName": "useMenuTouch",
+      "description": "",
+      "props": [
+        {
+          "name": "setTouch",
+          "type": "(touch: boolean) => void",
+          "required": true,
+          "description": "设置触摸状态"
+        },
+        {
+          "name": "touch",
+          "type": "boolean",
+          "required": true,
+          "description": "触摸状态"
+        }
+      ]
+    },
+    {
+      "displayName": "useMenuScroll",
+      "description": "",
+      "props": [
+        {
+          "name": "fallback",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": "Select 专用：fallback 模式"
+        },
+        {
+          "name": "isSelect",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": "是否是 Select 类型（使用不同的滚动逻辑）"
+        },
+        {
+          "name": "scrollRef",
+          "type": "RefObject<HTMLDivElement>",
+          "required": true,
+          "description": "滚动容器引用"
+        },
+        {
+          "name": "scrollTop",
+          "type": "number",
+          "required": true,
+          "description": "滚动位置状态"
+        },
+        {
+          "name": "selectTimeoutRef",
+          "type": "RefObject<number | undefined>",
+          "required": true,
+          "description": "定时器引用"
+        },
+        {
+          "name": "setInnerOffset",
+          "type": "((offset: number | ((prev: number) => number)) => void) | undefined",
+          "required": false,
+          "description": "Select 专用：设置内部偏移"
+        },
+        {
+          "name": "setScrollTop",
+          "type": "(scrollTop: number) => void",
+          "required": true,
+          "description": "设置滚动位置"
+        },
+        {
+          "name": "touch",
+          "type": "boolean",
+          "required": true,
+          "description": "触摸状态"
+        }
+      ]
+    },
+    {
+      "displayName": "useMenuChildren",
+      "description": "",
+      "props": [
+        {
+          "name": "ContentComponent",
+          "type": "ElementType<any, keyof IntrinsicElements>",
+          "required": true,
+          "description": "Content 组件类型"
+        },
+        {
+          "name": "SubTriggerComponent",
+          "type": "ElementType<any, keyof IntrinsicElements> | undefined",
+          "required": false,
+          "description": "SubTrigger 组件类型（仅 Dropdown 使用）"
+        },
+        {
+          "name": "TriggerComponent",
+          "type": "ElementType<any, keyof IntrinsicElements>",
+          "required": true,
+          "description": "Trigger 组件类型"
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "description": "子元素"
+        },
+        {
+          "name": "componentName",
+          "type": "string",
+          "required": true,
+          "description": "组件类型名称，用于错误提示"
+        }
+      ]
+    },
+    {
+      "displayName": "useMenuFloating",
+      "description": "",
+      "props": [
+        {
+          "name": "activeIndex",
+          "type": "number | null",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "currentSelectedIndex",
+          "type": "number | undefined",
+          "required": false,
+          "description": "当前选中索引（Select 专用）"
+        },
+        {
+          "name": "elementsRef",
+          "type": "RefObject<(HTMLElement | null)[]>",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "fallback",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": "是否为 fallback 模式（Select 专用）"
+        },
+        {
+          "name": "handleOpenChange",
+          "type": "(open: boolean) => void",
+          "required": true,
+          "description": "状态变化回调"
+        },
+        {
+          "name": "innerOffset",
+          "type": "number | undefined",
+          "required": false,
+          "description": "内部偏移（Select 专用）"
+        },
+        {
+          "name": "isControlledOpen",
+          "type": "boolean",
+          "required": true,
+          "description": "当前打开状态"
+        },
+        {
+          "name": "isNested",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": "是否为嵌套模式（仅 Dropdown 使用）"
+        },
+        {
+          "name": "labelsRef",
+          "type": "RefObject<(string | null)[]>",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "matchTriggerWidth",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": "是否匹配触发器宽度"
+        },
+        {
+          "name": "nodeId",
+          "type": "string | undefined",
+          "required": false,
+          "description": "节点 ID（仅 Dropdown 使用）"
+        },
+        {
+          "name": "offsetDistance",
+          "type": "number | undefined",
+          "required": false,
+          "description": "偏移距离"
+        },
+        {
+          "name": "overflowRef",
+          "type": "RefObject<SideObject | null> | undefined",
+          "required": false,
+          "description": "overflow 引用（Select 专用）"
+        },
+        {
+          "name": "placement",
+          "type": "enum",
+          "required": false,
+          "description": "位置配置"
+        },
+        {
+          "name": "scrollRef",
+          "type": "RefObject<HTMLDivElement>",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "setActiveIndex",
+          "type": "(index: number | null) => void",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "setFallback",
+          "type": "((fallback: boolean) => void) | undefined",
+          "required": false,
+          "description": "设置 fallback（Select 专用）"
+        },
+        {
+          "name": "setInnerOffset",
+          "type": "((offset: number) => void) | undefined",
+          "required": false,
+          "description": "设置内部偏移（Select 专用）"
+        },
+        {
+          "name": "touch",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": "触摸状态"
+        },
+        {
+          "name": "type",
+          "type": "enum",
+          "required": true,
+          "description": "组件类型"
+        }
+      ]
+    },
+    {
+      "displayName": "useMenuTree",
+      "description": "",
+      "props": [
+        {
+          "name": "disabledNested",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": "是否禁用嵌套功能"
+        },
+        {
+          "name": "handleOpenChange",
+          "type": "(open: boolean) => void",
+          "required": true,
+          "description": "打开状态变化处理函数"
+        },
+        {
+          "name": "isControlledOpen",
+          "type": "boolean",
+          "required": true,
+          "description": "当前打开状态"
+        }
+      ]
+    },
+    {
+      "displayName": "useMenuScrollHeight",
+      "description": "设置滚动容器高度\n这个 hook 会在菜单打开且定位完成后，确保滚动容器正确设置高度",
+      "props": [
+        {
+          "name": "isControlledOpen",
+          "type": "boolean",
+          "required": true,
+          "description": "是否打开"
+        },
+        {
+          "name": "isPositioned",
+          "type": "boolean",
+          "required": true,
+          "description": "是否已定位"
+        },
+        {
+          "name": "scrollRef",
+          "type": "RefObject<HTMLDivElement>",
+          "required": true,
+          "description": "滚动容器引用"
+        }
+      ]
+    },
+    {
+      "displayName": "useMenuBaseRefs",
+      "description": "创建菜单基础引用",
+      "props": []
+    },
+    {
+      "displayName": "useMenuSelection",
+      "description": "",
+      "props": [
+        {
+          "name": "handleOpenChange",
+          "type": "(open: boolean) => void",
+          "required": true,
+          "description": "关闭菜单回调"
+        },
+        {
+          "name": "isControlledOpen",
+          "type": "boolean",
+          "required": true,
+          "description": "是否控制打开状态"
+        },
+        {
+          "name": "onChange",
+          "type": "((value: string) => void) | undefined",
+          "required": false,
+          "description": "值变化回调"
+        },
+        {
+          "name": "options",
+          "type": "{ [key: string]: unknown; disabled?: boolean | undefined; divider?: boolean | undefined; value?: string | undefined; }[]",
+          "required": true,
+          "description": "选项列表"
+        },
+        {
+          "name": "value",
+          "type": "string | null | undefined",
+          "required": false,
+          "description": "当前值"
+        }
+      ]
+    },
+    {
+      "displayName": "MenuStateConfig",
+      "description": "基础菜单状态管理 Hook\n\n处理所有菜单组件的通用状态：\n- open/close 状态及受控逻辑\n- activeIndex 状态\n- touch 交互状态\n- scrollTop 状态\n- 唯一ID生成\n- 状态变化回调",
+      "props": []
+    },
+    {
+      "displayName": "MenuRefsConfig",
+      "description": "菜单引用管理 Hook\n\n统一管理菜单组件中所有需要的引用：\n- 滚动容器引用\n- 列表项引用数组\n- 列表内容引用数组\n- 定时器引用\n- Select 专用引用（overflow, allowSelect 等）",
+      "props": []
+    },
+    {
+      "displayName": "MenuTouchConfig",
+      "description": "菜单触摸交互 Hook\n\n处理菜单组件的触摸交互逻辑：\n- 触摸状态检测\n- 触摸开始事件处理\n- 指针移动事件处理\n- 触摸相关的事件处理器",
+      "props": []
+    },
+    {
+      "displayName": "MenuScrollConfig",
+      "description": "菜单滚动处理 Hook\n\n处理菜单组件的滚动相关逻辑：\n- 滚动位置管理\n- 箭头滚动处理\n- 滚动事件处理\n- 触摸相关的滚动隐藏逻辑",
+      "props": []
+    },
+    {
+      "displayName": "MenuChildrenConfig",
+      "description": "菜单子元素解析 Hook\n\n处理菜单组件的子元素解析逻辑：\n- 从 children 中提取 trigger 元素\n- 从 children 中提取 content 元素\n- 支持 Select 和 Dropdown 的不同子元素类型\n- 错误处理和警告",
+      "props": []
+    },
+    {
+      "displayName": "MenuFloatingConfig",
+      "description": "菜单 FloatingUI 配置 Hook\n\n为 Select 和 Dropdown 提供不同的 floating 配置：\n- Select: 使用 inner 中间件 + 虚拟滚动\n- Dropdown: 使用标准中间件 + 嵌套支持",
+      "props": []
+    },
+    {
+      "displayName": "MenuTreeConfig",
+      "description": "菜单 FloatingTree 集成 Hook\n\n专用于 Dropdown 组件的 FloatingTree 支持：\n- 管理 nodeId 和 parentId\n- 处理树形结构的事件通信\n- 支持嵌套菜单的打开/关闭协调\n- 处理父子菜单的焦点管理",
+      "props": []
+    },
+    {
+      "displayName": "MenuSelectionConfig",
+      "description": "菜单选择状态管理 Hook\n\n专用于 Select 组件的选择逻辑：\n- 管理选中索引和值的映射\n- 处理选择延迟和阻止机制\n- 处理鼠标和键盘选择\n- 支持受控和非受控值",
+      "props": []
+    },
+    {
+      "displayName": "MenuScrollHeightConfig",
+      "description": "菜单滚动容器高度设置 Hook\n\n确保滚动容器正确设置高度，作为 size middleware 的补充\n在所有菜单组件中都有类似的逻辑，统一抽取到这里\n\n功能：\n- 在菜单打开且定位完成后，确保滚动容器正确继承父元素高度\n- 使用 requestAnimationFrame 确保 DOM 已更新，避免与 size middleware 的时序冲突",
+      "props": []
+    },
+    {
+      "displayName": "MenuBaseRefsResult",
+      "description": "菜单基础引用管理 Hook\n\n统一管理所有菜单组件需要的基础 refs：\n- scrollRef: 滚动容器引用\n- elementsRef: 菜单项元素引用数组\n- labelsRef: 菜单项标签引用数组（用于 typeahead）\n- selectTimeoutRef: 选择延迟定时器引用\n\n这些 refs 在多个组件中都有使用，统一管理可以保持一致性",
+      "props": []
+    },
+    {
+      "displayName": "MenuContextItem",
+      "description": "通用菜单项组件\n\n供 Select 和 Dropdown 共用，统一所有交互逻辑：\n- touch 事件处理\n- 选择逻辑\n- 键盘导航\n- 视觉状态管理",
+      "props": [
+        {
+          "name": "customActive",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "exclusiveIndex",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onClick",
+          "type": "((e: MouseEvent<HTMLButtonElement, MouseEvent>) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onKeyDown",
+          "type": "((e: KeyboardEvent<HTMLButtonElement>) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onMouseUp",
+          "type": "((e: MouseEvent<HTMLButtonElement, MouseEvent>) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onTouchStart",
+          "type": "((e: TouchEvent<HTMLButtonElement>) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "value",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "active",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "classNames",
+          "type": "{ icon?: string | undefined; root?: string | undefined; shortcut?: string | undefined; } | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "prefixElement",
+          "type": "ReactNode",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "selected",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "shortcut",
+          "type": "{ keys?: ReactNode; modifier?: KbdKey | KbdKey[] | undefined; } | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "size",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "suffixElement",
+          "type": "ReactNode",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "variant",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "ref",
+          "type": "((instance: HTMLButtonElement | null) => void) | RefObject<HTMLButtonElement> | null | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "MenuContextContent",
+      "description": "",
+      "props": [
+        {
+          "name": "matchTriggerWidth",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "MenuContextLabel",
+      "description": "",
+      "props": [
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "selection",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "MenuContextSubTrigger",
+      "description": "",
+      "props": [
+        {
+          "name": "active",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "classNames",
+          "type": "{ icon?: string | undefined; root?: string | undefined; shortcut?: string | undefined; } | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "prefixElement",
+          "type": "ReactNode",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "selected",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "shortcut",
+          "type": "{ keys?: ReactNode; modifier?: KbdKey | KbdKey[] | undefined; } | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "size",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "suffixElement",
+          "type": "ReactNode",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "variant",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "ref",
+          "type": "((instance: HTMLButtonElement | null) => void) | RefObject<HTMLButtonElement> | null | undefined",
           "required": false,
           "description": ""
         }
@@ -108,49 +1220,49 @@
       "id": "collections-menuitem--with-prefix-story",
       "name": "With Prefix Story",
       "exportName": "WithPrefixStory",
-      "description": "",
+      "description": "WithPrefixStory: Demonstrates menu items with icons or elements before the text.\n\nFeatures:\n- Icon alignment before text content\n- Consistent spacing between icon and text\n- Maintains proper vertical alignment\n- Visual enhancement for option recognition\n\nThis pattern is useful for:\n- Adding visual cues to menu options\n- Representing different item types or categories\n- Improving recognition and scan-ability",
       "source": "import { Menus } from \"@choice-ui/menus\"\n\nexport default function App() {\n  return (\n    <Menus>\n      {Options.map((option, index) => (\n        <Menus.Item\n          key={option.label}\n          active={activeIndex === index}\n          onMouseEnter={() => setActiveIndex(index)}\n          onMouseLeave={() => setActiveIndex(null)}\n          prefixElement={option.icon}\n        >\n          <span className=\"flex-1 truncate\">{option.label}</span>\n        </Menus.Item>\n      ))}\n    </Menus>\n  );\n}"
     },
     {
       "id": "collections-menuitem--with-suffix-story",
       "name": "With Suffix Story",
       "exportName": "WithSuffixStory",
-      "description": "",
+      "description": "WithSuffixStory: Demonstrates menu items with elements after the text.\n\nFeatures:\n- Element alignment after text content\n- Supports icons, indicators, or additional information\n- Maintains proper spacing and alignment\n\nThis pattern is useful for:\n- Indicating submenu availability\n- Showing status or additional information\n- Displaying secondary actions or counts",
       "source": "import { Menus } from \"@choice-ui/menus\"\n\nexport default function App() {\n  return (\n    <Menus>\n      {Array.from({ length: 4 }).map((_, index) => (\n        <Menus.Item\n          key={index}\n          active={activeIndex === index}\n          onMouseEnter={() => setActiveIndex(index)}\n          onMouseLeave={() => setActiveIndex(null)}\n          suffixElement={<ChevronRightSmall />}\n        >\n          <span className=\"flex-1 truncate\">Item</span>\n        </Menus.Item>\n      ))}\n    </Menus>\n  );\n}"
     },
     {
       "id": "collections-menuitem--with-shortcut-story",
       "name": "With Shortcut Story",
       "exportName": "WithShortcutStory",
-      "description": "",
+      "description": "WithShortcutStory: Demonstrates menu items with keyboard shortcuts.\n\nFeatures:\n- Display of keyboard shortcut combinations\n- Proper alignment and spacing of shortcuts\n- Support for modifier keys (Command, Ctrl, etc.)\n- Maintains consistent layout with other menu items\n\nThis pattern is useful for:\n- Application command menus\n- Educating users about available shortcuts\n- Providing power user affordances",
       "source": "import { Menus } from \"@choice-ui/menus\"\n\nexport default function App() {\n  return (\n    <Menus>\n      {Options.map((option, index) => (\n        <Menus.Item\n          key={option.label}\n          active={activeIndex === index}\n          onMouseEnter={() => setActiveIndex(index)}\n          onMouseLeave={() => setActiveIndex(null)}\n          shortcut={option.shortcut as { keys: ReactNode; modifier: KbdKey }}\n        >\n          <span className=\"flex-1 truncate\">{option.label}</span>\n        </Menus.Item>\n      ))}\n    </Menus>\n  );\n}"
     },
     {
       "id": "collections-menuitem--with-selection-icon-story",
       "name": "With Selection Icon Story",
       "exportName": "WithSelectionIconStory",
-      "description": "",
+      "description": "WithSelectionIconStory: Demonstrates menu items with selection indicators.\n\nFeatures:\n- Visual indicator (checkmark) for selected state\n- Dynamic toggling of selection state\n- Proper alignment of selection icon\n- Maintains clean layout in both selected and unselected states\n\nThis pattern is useful for:\n- Single-select menus\n- Indicating current active option\n- Selection menus for settings or preferences",
       "source": "import { Menus } from \"@choice-ui/menus\"\n\nexport default function App() {\n  return (\n    <Menus>\n      {Array.from({ length: 4 }).map((_, index) => (\n        <Menus.Item\n          key={index}\n          active={activeIndex === index}\n          onMouseEnter={() => setActiveIndex(index)}\n          onMouseLeave={() => setActiveIndex(null)}\n          prefixElement={selectedIndex === index ? <Check /> : <></>}\n          onMouseDown={() => setSelectedIndex(index)}\n        >\n          <span className=\"flex-1 truncate\">Item</span>\n        </Menus.Item>\n      ))}\n    </Menus>\n  );\n}"
     },
     {
       "id": "collections-menuitem--with-right-selection-icon-story",
       "name": "With Right Selection Icon Story",
       "exportName": "WithRightSelectionIconStory",
-      "description": "",
+      "description": "WithRightSelectionIconStory: Demonstrates menu items with selection checkboxes at the right.\n\nFeatures:\n- Checkbox-style selection indicators at the end of items\n- Support for multi-selection\n- Visual feedback for both active and selected states\n- Toggle behavior for selection\n\nThis pattern is useful for:\n- Multi-select menus\n- Filter selection UI\n- Setting multiple options simultaneously",
       "source": "import { Menus } from \"@choice-ui/menus\"\n\nexport default function App() {\n  return (\n    <Menus>\n      {Array.from({ length: 4 }).map((_, index) => (\n        <Menus.Item\n          key={index}\n          active={activeIndex === index}\n          onMouseEnter={() => setActiveIndex(index)}\n          onMouseLeave={() => setActiveIndex(null)}\n          suffixElement={\n            <Menus.Checkbox\n              active={activeIndex === index}\n              selected={selectedIndex.includes(index)}\n            />\n          }\n          onMouseDown={() =>\n            setSelectedIndex((prev) =>\n              prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index],\n            )\n          }\n        >\n          <span className=\"flex-1 truncate\">Item</span>\n        </Menus.Item>\n      ))}\n    </Menus>\n  );\n}"
     },
     {
       "id": "collections-menuitem--with-avatar-story",
       "name": "With Avatar Story",
       "exportName": "WithAvatarStory",
-      "description": "",
+      "description": "WithAvatarStory: Demonstrates menu items with avatars.\n\nFeatures:\n- Avatar integration with menu items\n- Proper alignment and spacing for avatars\n- Support for user imagery in menus\n- Consistent layout with other menu item patterns\n\nThis pattern is useful for:\n- User selection menus\n- Account switchers\n- Member lists or participant selectors\n- Contact or people pickers",
       "source": "import { Menus } from \"@choice-ui/menus\"\n\nexport default function App() {\n  return (\n    <Menus>\n      {Options.map((option, index) => (\n        <Menus.Item\n          key={option.name}\n          active={activeIndex === index}\n          onMouseEnter={() => setActiveIndex(index)}\n          onMouseLeave={() => setActiveIndex(null)}\n        >\n          <Avatar\n            size=\"small\"\n            color={option.color}\n            photo={option.picture}\n            name={option.name}\n          />\n          <span className=\"flex-1 truncate\">{option.name}</span>\n        </Menus.Item>\n      ))}\n    </Menus>\n  );\n}"
     },
     {
       "id": "collections-menuitem--with-badge-story",
       "name": "With Badge Story",
       "exportName": "WithBadgeStory",
-      "description": "",
+      "description": "WithBadgeStory: Demonstrates menu items with badges or status indicators.\n\nFeatures:\n- Badge/tag/pill support in menu items\n- Visual indicators for both selection and active states\n- Responsive styling based on item state\n- Integration of multiple elements (prefix, content, suffix)\n\nThis pattern is useful for:\n- Indicating status, quantity, or category\n- Showing additional metadata for menu items\n- Feature flags or option state indicators\n- Creating rich, informative menu experiences",
       "source": "import { Menus } from \"@choice-ui/menus\"\n\nexport default function App() {\n  return (\n    <Menus>\n      {Options.map((option, index) => (\n        <Menus.Item\n          key={index}\n          active={activeIndex === index}\n          onMouseEnter={() => setActiveIndex(index)}\n          onMouseLeave={() => setActiveIndex(null)}\n          onMouseDown={() =>\n            setSelectedIndex((prev) =>\n              prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index],\n            )\n          }\n          prefixElement={selectedIndex.includes(index) ? <Check /> : <></>}\n          suffixElement={\n            <div\n              className={tcx(\n                \"mr-1 ml-2 flex items-center justify-center rounded-md border px-1\",\n                activeIndex === index && \"bg-menu-background\",\n                selectedIndex.includes(index) && activeIndex !== index\n                  ? \"border-white/20\"\n                  : \"border-transparent\",\n              )}\n            >\n              Badge\n            </div>\n          }\n        >\n          <span className=\"flex-1 truncate\">{option.label}</span>\n        </Menus.Item>\n      ))}\n    </Menus>\n  );\n}"
     },
     {
@@ -160,5 +1272,8 @@
       "description": "",
       "source": "import { Menus } from \"@choice-ui/menus\"\n\nexport default function App() {\n  return (\n    <Menus>\n      <Menus.Item\n        variant=\"highlight\"\n        active={activeIndex === 0}\n        onMouseEnter={() => setActiveIndex(0)}\n        onMouseLeave={() => setActiveIndex(null)}\n      >\n        Highlight\n      </Menus.Item>\n      <Menus.Item\n        variant=\"danger\"\n        active={activeIndex === 1}\n        onMouseEnter={() => setActiveIndex(1)}\n        onMouseLeave={() => setActiveIndex(null)}\n      >\n        Danger\n      </Menus.Item>\n    </Menus>\n  );\n}"
     }
+  ],
+  "tags": [
+    "new"
   ]
 }

@@ -27,7 +27,7 @@
   ],
   "props": [
     {
-      "displayName": "Pagination",
+      "displayName": "PaginationItemsPerPageProps",
       "description": "",
       "props": [
         {
@@ -135,5 +135,8 @@
       "description": "",
       "source": "import { Pagination } from \"@choice-ui/pagination\"\n\nexport default function App() {\n  return (\n    <div className=\"w-full space-y-4\">\n      <div className=\"rounded-lg border p-4\">\n        <div className=\"mb-4 flex items-center gap-4\">\n          <h3 className=\"text-lg font-semibold\">Loading State Example</h3>\n          <button\n            type=\"button\"\n            onClick={() => setIsLoading(!isLoading)}\n            className=\"rounded bg-blue-600 px-3 py-1 text-sm text-white hover:bg-blue-700\"\n          >\n            Toggle Loading\n          </button>\n        </div>\n\n        <div className=\"mb-4 space-y-2\">\n          {isLoading ? (\n            <div className=\"space-y-2\">\n              <div className=\"h-8 animate-pulse rounded bg-gray-200 dark:bg-gray-700\" />\n              <div className=\"h-8 animate-pulse rounded bg-gray-200 dark:bg-gray-700\" />\n              <div className=\"h-8 animate-pulse rounded bg-gray-200 dark:bg-gray-700\" />\n            </div>\n          ) : (\n            Array.from({ length: itemsPerPage }, (_, i) => (\n              <div\n                key={`${currentPage}-${i}`}\n                className=\"rounded bg-gray-50 px-3 py-2 dark:bg-gray-800\"\n              >\n                Page {currentPage} - Item {i + 1}\n              </div>\n            ))\n          )}\n        </div>\n      </div>\n\n      <Pagination\n        currentPage={currentPage}\n        totalItems={250}\n        itemsPerPage={itemsPerPage}\n        onPageChange={handlePageChange}\n        onItemsPerPageChange={handleItemsPerPageChange}\n        loading={isLoading}\n        pageSizeOptions={[10, 20, 50, 100]}\n      >\n        <Pagination.Spinner />\n        <Pagination.Navigation />\n        <Pagination.ItemsPerPage />\n      </Pagination>\n    </div>\n  );\n}"
     }
+  ],
+  "tags": [
+    "new"
   ]
 }

@@ -188,156 +188,6 @@
   ],
   "props": [
     {
-      "displayName": "BaseYearProps",
-      "description": "年份组件的基础属性",
-      "props": []
-    },
-    {
-      "displayName": "YearItem",
-      "description": "年份项目状态",
-      "props": []
-    },
-    {
-      "displayName": "YearLayoutProps",
-      "description": "年份布局相关属性",
-      "props": []
-    },
-    {
-      "displayName": "YearNavigationProps",
-      "description": "年份导航相关属性",
-      "props": []
-    },
-    {
-      "displayName": "BaseQuarterProps",
-      "description": "季度组件的基础属性",
-      "props": []
-    },
-    {
-      "displayName": "Quarter",
-      "description": "季度对象",
-      "props": []
-    },
-    {
-      "displayName": "QuarterItem",
-      "description": "季度项目状态",
-      "props": []
-    },
-    {
-      "displayName": "QuarterLayoutProps",
-      "description": "季度布局相关属性",
-      "props": []
-    },
-    {
-      "displayName": "QuarterNavigationProps",
-      "description": "季度导航相关属性",
-      "props": []
-    },
-    {
-      "displayName": "BaseCalendarProps",
-      "description": "月历组件的基础属性",
-      "props": []
-    },
-    {
-      "displayName": "CalendarValue",
-      "description": "日历选择值的类型",
-      "props": []
-    },
-    {
-      "displayName": "CalendarState",
-      "description": "日历状态接口",
-      "props": []
-    },
-    {
-      "displayName": "CalendarLayoutProps",
-      "description": "月历布局相关属性",
-      "props": []
-    },
-    {
-      "displayName": "BaseDateProps",
-      "description": "日期组件的基础属性",
-      "props": []
-    },
-    {
-      "displayName": "DateInputValue",
-      "description": "日期输入解析结果",
-      "props": []
-    },
-    {
-      "displayName": "DateDataFormat",
-      "description": "日期格式字符串\n\n支持所有 date-fns 格式字符串，常用格式示例：\n\n**年份**：\n- yyyy: 2025 (4位年份)\n- yy: 25 (2位年份)\n\n**月份**：\n- MMMM: December (完整月份名)\n- MMM: Dec (缩写月份名)\n- MM: 12 (2位数字月份)\n- M: 12 (1-2位数字月份)\n\n**日期**：\n- dd: 31 (2位日期)\n- d: 31 (1-2位日期)\n\n**常用组合**：\n- \"yyyy-MM-dd\" → 2025-12-31\n- \"yy-MM-dd\" → 25-12-31\n- \"yyyy年MM月dd日\" → 2025年12月31日\n- \"yy年M月d日\" → 25年12月31日\n- \"MMMM dd, yyyy\" → December 31, 2025\n- \"MMM dd, yy\" → Dec 31, 25\n- \"MM/dd/yyyy\" → 12/31/2025\n- \"dd.MM.yy\" → 31.12.25",
-      "props": []
-    },
-    {
-      "displayName": "DateRange",
-      "description": "日期范围对象",
-      "props": []
-    },
-    {
-      "displayName": "DateParserOptions",
-      "description": "日期解析选项",
-      "props": []
-    },
-    {
-      "displayName": "DateInteractionProps",
-      "description": "日期交互功能属性",
-      "props": []
-    },
-    {
-      "displayName": "BaseTimeProps",
-      "description": "时间组件的基础属性",
-      "props": []
-    },
-    {
-      "displayName": "Time",
-      "description": "时间对象（小时和分钟）",
-      "props": []
-    },
-    {
-      "displayName": "TimeInputValue",
-      "description": "时间输入解析结果",
-      "props": []
-    },
-    {
-      "displayName": "TimeDataFormat",
-      "description": "时间格式字符串\n\n支持所有 date-fns 时间格式字符串，常用格式示例：\n\n**24小时制**：\n- \"HH:mm\" → 09:30, 14:45 (2位小时)\n- \"H:mm\" → 9:30, 14:45 (1-2位小时)\n- \"HH:mm:ss\" → 09:30:15 (带秒)\n- \"HHmm\" → 0930, 1445 (紧凑格式)\n\n**12小时制**：\n- \"h:mm a\" → 9:30 AM, 2:45 PM\n- \"hh:mm a\" → 09:30 AM, 02:45 PM (2位小时)\n- \"h:mm aa\" → 9:30 A.M., 2:45 P.M. (完整AM/PM)\n- \"h:mm:ss a\" → 9:30:15 AM (带秒)",
-      "props": []
-    },
-    {
-      "displayName": "TimeParserOptions",
-      "description": "时间解析选项",
-      "props": []
-    },
-    {
-      "displayName": "TimeLayout",
-      "description": "时间布局模式",
-      "props": []
-    },
-    {
-      "displayName": "TimeInteractionProps",
-      "description": "时间交互功能属性",
-      "props": []
-    },
-    {
-      "displayName": "TimeOptionItem",
-      "description": "时间选项项",
-      "props": []
-    },
-    {
-      "displayName": "StepProps",
-      "description": "时间步长相关属性",
-      "props": []
-    },
-    {
-      "displayName": "NaturalLanguageMap",
-      "description": "自然语言关键词映射",
-      "props": []
-    },
-    {
-      "displayName": "RelativeDatePattern",
-      "description": "相对日期模式",
-      "props": []
-    },
-    {
       "displayName": "MonthCalendar",
       "description": "",
       "props": [
@@ -482,7 +332,7 @@
       ]
     },
     {
-      "displayName": "DateInput",
+      "displayName": "DateInputValue",
       "description": "Advanced date input component\n\nFeatures:\n- 🎯 Intelligent date parsing: Supports multiple formats and natural language\n- ⌨️ Keyboard navigation: Up key to past, down key to future (intuitive operation)\n- 🔄 Race protection: Smartly detect data flow direction, avoid loop updates\n- 🛡️ Type safety: Complete TypeScript support\n- 🌍 Internationalization support: Configurable language region\n- 💡 Intelligent prediction: Real-time prediction prompts and holiday recognition",
       "props": [
         {
@@ -853,7 +703,7 @@
       ]
     },
     {
-      "displayName": "TimeInput",
+      "displayName": "TimeInputValue",
       "description": "高级时间输入组件\n\n特性：\n- 🎯 智能时间解析：支持多种格式和自然语言\n- ⌨️ 键盘导航：上键减少，下键增加（符合列表导航逻辑）\n- 🔄 竞态保护：智能检测数据流方向，避免循环更新\n- 🚀 性能优化：使用 useEventCallback 和缓存机制\n- 🛡️ 类型安全：完整的 TypeScript 支持\n- 🌍 国际化支持：可配置语言区域\n- 📱 拖拽交互：支持通过前缀图标拖拽调整时间",
       "props": [
         {
@@ -875,6 +725,18 @@
           "description": "时间格式，支持所有 date-fns 格式字符串"
         },
         {
+          "name": "defaultValue",
+          "type": "Date | null | undefined",
+          "required": false,
+          "description": "默认值"
+        },
+        {
+          "name": "step",
+          "type": "number | undefined",
+          "required": false,
+          "description": "基础步长（分钟），默认1分钟"
+        },
+        {
           "name": "size",
           "type": "enum",
           "required": false,
@@ -885,18 +747,6 @@
           "type": "boolean | undefined",
           "required": false,
           "description": ""
-        },
-        {
-          "name": "step",
-          "type": "number | undefined",
-          "required": false,
-          "description": "基础步长（分钟），默认1分钟"
-        },
-        {
-          "name": "defaultValue",
-          "type": "Date | null | undefined",
-          "required": false,
-          "description": "默认值"
         },
         {
           "name": "className",
@@ -923,36 +773,6 @@
           "description": ""
         },
         {
-          "name": "enableCache",
-          "type": "boolean | undefined",
-          "required": false,
-          "description": "是否启用解析缓存"
-        },
-        {
-          "name": "enableKeyboardNavigation",
-          "type": "boolean | undefined",
-          "required": false,
-          "description": "是否启用键盘导航（默认启用）"
-        },
-        {
-          "name": "enableProfiling",
-          "type": "boolean | undefined",
-          "required": false,
-          "description": "是否启用性能分析"
-        },
-        {
-          "name": "locale",
-          "type": "string | Locale | undefined",
-          "required": false,
-          "description": "语言区域 - 支持 Locale 对象或字符串（如 \"zh-CN\", \"en-US\"）"
-        },
-        {
-          "name": "onEnterKeyDown",
-          "type": "(() => void) | undefined",
-          "required": false,
-          "description": "按下 Enter 键的回调"
-        },
-        {
           "name": "prefixElement",
           "type": "ReactNode",
           "required": false,
@@ -963,6 +783,12 @@
           "type": "ReactNode",
           "required": false,
           "description": ""
+        },
+        {
+          "name": "locale",
+          "type": "string | Locale | undefined",
+          "required": false,
+          "description": "语言区域 - 支持 Locale 对象或字符串（如 \"zh-CN\", \"en-US\"）"
         },
         {
           "name": "maxTime",
@@ -987,6 +813,30 @@
           "type": "number | undefined",
           "required": false,
           "description": "Shift + 按键的步长（分钟），默认15分钟"
+        },
+        {
+          "name": "enableCache",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": "是否启用解析缓存"
+        },
+        {
+          "name": "enableKeyboardNavigation",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": "是否启用键盘导航（默认启用）"
+        },
+        {
+          "name": "enableProfiling",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": "是否启用性能分析"
+        },
+        {
+          "name": "onEnterKeyDown",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "按下 Enter 键的回调"
         }
       ]
     },
@@ -1206,7 +1056,7 @@
         },
         {
           "name": "onNavigate",
-          "type": "((direction: \"next\" | \"prev\", newYear: number) => void) | undefined",
+          "type": "((direction: \"prev\" | \"next\", newYear: number) => void) | undefined",
           "required": false,
           "description": "年份范围导航回调"
         },
@@ -1302,7 +1152,7 @@
         },
         {
           "name": "onNavigate",
-          "type": "((direction: \"next\" | \"prev\", newStartYear: Date) => void) | undefined",
+          "type": "((direction: \"prev\" | \"next\", newStartYear: Date) => void) | undefined",
           "required": false,
           "description": "年份范围导航回调"
         },
@@ -1977,28 +1827,28 @@
       "id": "dateandtime-timerangeinput--range-synchronization",
       "name": "Range Synchronization",
       "exportName": "RangeSynchronization",
-      "description": "",
+      "description": "RangeSynchronization: Demonstrates the intelligent time range synchronization feature.\n- Shows how start time changes automatically adjust the end time to maintain range length.\n- Displays boundary validation where end times push start times when necessary.\n- Includes comprehensive explanation and test scenarios for understanding the behavior.",
       "source": "import { MonthCalendar } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <RangeSyncDemo />\n  );\n}"
     },
     {
       "id": "dateandtime-timerangeinput--with-preset-range",
       "name": "With Preset Range",
       "exportName": "WithPresetRange",
-      "description": "",
+      "description": "WithPresetRange: Demonstrates TimeRangeInput with pre-filled time values.\n- Shows the component with initial start (09:00) and end (17:30) times set.\n- Displays a typical work schedule as an example of preset configurations.\n- Useful for forms or interfaces that need default time ranges.",
       "source": "import { MonthCalendar } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <TimeRangeDemo {...args} />\n  );\n}"
     },
     {
       "id": "dateandtime-timerangeinput--cross-midnight",
       "name": "Cross Midnight",
       "exportName": "CrossMidnight",
-      "description": "",
+      "description": "CrossMidnight: Demonstrates cross-midnight time range support.\n- Shows time ranges that span across midnight (22:00 to 06:00).\n- Displays proper handling of overnight shifts and 24-hour operations.\n- Useful for night shift scheduling, security operations, or 24/7 businesses.",
       "source": "import { MonthCalendar } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-4\">\n      <TimeRangeDemo {...args} />\n      <div className=\"text-secondary-foreground\">\n        💡 Support cross-day time range (e.g., night shift from 22:00 to the next day 06:00)\n      </div>\n    </div>\n  );\n}"
     },
     {
       "id": "dateandtime-timerangeinput--different-formats",
       "name": "Different Formats",
       "exportName": "DifferentFormats",
-      "description": "",
+      "description": "DifferentFormats: Demonstrates various time format options and their visual representation.\n- Shows 24-hour format, 12-hour format with AM/PM, and format with seconds.\n- Displays how different formats affect the display and input experience.\n- Useful for understanding format flexibility and regional preferences.",
       "source": "import { timeStringToDate } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-8\">\n      <div>\n        <h3 className=\"font-strong mb-4\">24-hour format (HH:mm)</h3>\n        <TimeRangeDemo\n          format=\"HH:mm\"\n          startPlaceholder=\"09:00\"\n          endPlaceholder=\"17:00\"\n          startValue={timeStringToDate(\"09:00\")}\n          endValue={timeStringToDate(\"17:00\")}\n        />\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-4\">12-hour format (h:mm a)</h3>\n        <TimeRangeDemo\n          format=\"h:mm a\"\n          locale={enUS}\n          startPlaceholder=\"9:00 AM\"\n          endPlaceholder=\"5:00 PM\"\n          startValue={timeStringToDate(\"09:00\")}\n          endValue={timeStringToDate(\"17:00\")}\n        />\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-4\">With seconds format (HH:mm:ss)</h3>\n        <TimeRangeDemo\n          format=\"HH:mm:ss\"\n          startPlaceholder=\"09:00:00\"\n          endPlaceholder=\"17:00:00\"\n          startValue={timeStringToDate(\"09:00\")}\n          endValue={timeStringToDate(\"17:00\")}\n        />\n      </div>\n    </div>\n  );\n}"
     },
     {
@@ -2012,22 +1862,25 @@
       "id": "dateandtime-timerangeinput--common-scenarios",
       "name": "Common Scenarios",
       "exportName": "CommonScenarios",
-      "description": "",
+      "description": "CommonScenarios: Demonstrates real-world usage scenarios for TimeRangeInput.\n- Shows work hours, lunch breaks, exercise time, and night shift examples.\n- Displays practical applications with appropriate time ranges and contexts.\n- Useful for understanding when and how to implement time range selection.",
       "source": "import { timeStringToDate } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-8\">\n      <div>\n        <h3 className=\"font-strong mb-4\">🏢 Work Time</h3>\n        <TimeRangeDemo\n          startValue={timeStringToDate(\"09:00\")}\n          endValue={timeStringToDate(\"18:00\")}\n          startPlaceholder=\"Start Time\"\n          endPlaceholder=\"End Time\"\n        />\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-4\">🍽️ Lunch Time</h3>\n        <TimeRangeDemo\n          startValue={timeStringToDate(\"12:00\")}\n          endValue={timeStringToDate(\"13:00\")}\n          startPlaceholder=\"Start Time\"\n          endPlaceholder=\"End Time\"\n        />\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-4\">🏃‍♂️ Exercise Time</h3>\n        <TimeRangeDemo\n          startValue={timeStringToDate(\"06:30\")}\n          endValue={timeStringToDate(\"07:30\")}\n          startPlaceholder=\"Start Time\"\n          endPlaceholder=\"End Time\"\n        />\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-4\">🌙 Night Shift Time</h3>\n        <TimeRangeDemo\n          startValue={timeStringToDate(\"22:00\")}\n          endValue={timeStringToDate(\"06:00\")}\n          startPlaceholder=\"Start Time\"\n          endPlaceholder=\"End Time\"\n        />\n        <div className=\"text-body-small mt-2 text-gray-500\">💡 Cross-day work, 8 hours</div>\n      </div>\n    </div>\n  );\n}"
     },
     {
       "id": "dateandtime-timerangeinput--duration-only",
       "name": "Duration Only",
       "exportName": "DurationOnly",
-      "description": "",
+      "description": "DurationOnly: Demonstrates time range duration calculation and display.\n- Shows short duration (45 minutes), full hours (2 hours), and long duration (12 hours).\n- Displays how the component calculates and presents time range durations.\n- Useful for understanding duration formatting and time range analysis.",
       "source": "import { timeStringToDate } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-6\">\n      <div>\n        <h3 className=\"font-strong mb-4\">Short Time Range</h3>\n        <TimeRangeDemo\n          startValue={timeStringToDate(\"14:00\")}\n          endValue={timeStringToDate(\"14:45\")}\n          startPlaceholder=\"Start Time\"\n          endPlaceholder=\"End Time\"\n        />\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-4\">Full Hour Time Range</h3>\n        <TimeRangeDemo\n          startValue={timeStringToDate(\"10:00\")}\n          endValue={timeStringToDate(\"12:00\")}\n          startPlaceholder=\"Start Time\"\n          endPlaceholder=\"End Time\"\n        />\n      </div>\n\n      <div>\n        <h3 className=\"font-strong mb-4\">Long Time Range</h3>\n        <TimeRangeDemo\n          startValue={timeStringToDate(\"08:00\")}\n          endValue={timeStringToDate(\"20:00\")}\n          startPlaceholder=\"Start Time\"\n          endPlaceholder=\"End Time\"\n        />\n      </div>\n    </div>\n  );\n}"
     },
     {
       "id": "dateandtime-timerangeinput--read-only",
       "name": "Read Only",
       "exportName": "ReadOnly",
-      "description": "",
+      "description": "ReadOnly: Demonstrates the TimeRangeInput component in readOnly mode.\n- Prevents value changes while allowing focus and selection\n- Maintains normal visual appearance (unlike disabled)\n- Useful for displaying non-editable time range information",
       "source": "import { TimeRangeInput } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <div className=\"rounded-xl border bg-stone-50 p-4\">\n        <div className=\"text-body-small-strong mb-2 text-stone-700\">Current Start:</div>\n        <div className=\"text-body-small font-mono text-stone-600\">\n          {startValue ? startValue.toLocaleTimeString() : \"null\"}\n        </div>\n        <div className=\"text-body-small-strong mt-2 text-stone-700\">Current End:</div>\n        <div className=\"text-body-small font-mono text-stone-600\">\n          {endValue ? endValue.toLocaleTimeString() : \"null\"}\n        </div>\n        <div className=\"text-body-small-strong mt-2 text-stone-700\">Change Count:</div>\n        <div className=\"text-body-small font-mono text-stone-600\">{changeCount}</div>\n      </div>\n      <Panel.Row\n        type=\"two-input-two-icon\"\n        className=\"w-96 px-0\"\n      >\n        <TimeRangeInput\n          readOnly\n          startValue={startValue}\n          endValue={endValue}\n          onStartChange={handleStartChange}\n          onEndChange={handleEndChange}\n        />\n      </Panel.Row>\n      <Panel.Row\n        type=\"two-input-two-icon\"\n        className=\"w-96 px-0\"\n      >\n        <TimeRangeInput\n          startValue={startValue}\n          endValue={endValue}\n          onStartChange={handleStartChange}\n          onEndChange={handleEndChange}\n        />\n      </Panel.Row>\n      <div className=\"text-body-small text-stone-600\">\n        💡 Try changing the readonly time range input - the values should not change and the\n        change count should remain at 0. Only the normal input will change the values.\n      </div>\n    </div>\n  );\n}"
     }
+  ],
+  "tags": [
+    "new"
   ]
 }

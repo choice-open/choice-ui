@@ -87,35 +87,35 @@
       "id": "forms-textfield--with-prefix",
       "name": "With Prefix",
       "exportName": "WithPrefix",
-      "description": "",
+      "description": "Text field with a prefix icon.\nShows how to add icons or other elements before the input area.\nThe prefix changes color on hover and focus for better user feedback.",
       "source": "import { TextField } from \"@choice-ui/text-field\"\n\nexport default function App() {\n  return (\n    <TextField placeholder=\"Enter text\">\n      <TextField.Prefix className=\"text-secondary-foreground group-hover/text-field:text-default-foreground group-focus-within/text-field:text-default-foreground\">\n        <Search />\n      </TextField.Prefix>\n    </TextField>\n  );\n}"
     },
     {
       "id": "forms-textfield--with-suffix",
       "name": "With Suffix",
       "exportName": "WithSuffix",
-      "description": "",
+      "description": "Text field with a suffix element.\nDemonstrates adding badges, buttons, or other elements after the input.\nUseful for status indicators or action buttons.",
       "source": "import { TextField } from \"@choice-ui/text-field\"\n\nexport default function App() {\n  return (\n    <TextField placeholder=\"Enter text\">\n      <TextField.Suffix className=\"px-1\">\n        <Badge>Suffix</Badge>\n      </TextField.Suffix>\n    </TextField>\n  );\n}"
     },
     {
       "id": "forms-textfield--with-prefix-and-suffix",
       "name": "With Prefix And Suffix",
       "exportName": "WithPrefixAndSuffix",
-      "description": "",
+      "description": "Text field with both prefix and suffix elements.\nCombines prefix icons and suffix badges for rich input experiences.\nCommonly used for search fields with filters or status indicators.",
       "source": "import { TextField } from \"@choice-ui/text-field\"\n\nexport default function App() {\n  return (\n    <TextField placeholder=\"Enter text\">\n      <TextField.Prefix className=\"text-secondary-foreground group-hover/text-field:text-default-foreground group-focus-within/text-field:text-default-foreground\">\n        <Search />\n      </TextField.Prefix>\n      <TextField.Suffix className=\"px-1\">\n        <Badge>Suffix</Badge>\n      </TextField.Suffix>\n    </TextField>\n  );\n}"
     },
     {
       "id": "forms-textfield--with-label",
       "name": "With Label",
       "exportName": "WithLabel",
-      "description": "",
+      "description": "Text field with a label.\nShows proper form labeling for accessibility and usability.\nLabels help users understand the expected input.",
       "source": "import { TextField } from \"@choice-ui/text-field\"\n\nexport default function App() {\n  return (\n    <TextField placeholder=\"Enter text\">\n      <TextField.Label>Label</TextField.Label>\n    </TextField>\n  );\n}"
     },
     {
       "id": "forms-textfield--with-description",
       "name": "With Description",
       "exportName": "WithDescription",
-      "description": "",
+      "description": "Text field with a description.\nProvides additional context or help text below the input.\nUseful for explaining format requirements or providing examples.",
       "source": "import { TextField } from \"@choice-ui/text-field\"\n\nexport default function App() {\n  return (\n    <TextField placeholder=\"Enter text\">\n      <TextField.Description>{faker.lorem.words()}</TextField.Description>\n    </TextField>\n  );\n}"
     },
     {
@@ -136,7 +136,7 @@
       "id": "forms-textfield--read-only",
       "name": "Read Only",
       "exportName": "ReadOnly",
-      "description": "",
+      "description": "Read-only text field.\nAllows viewing but not editing the value.\nUseful for displaying non-editable information in form contexts.",
       "source": "import { TextField } from \"@choice-ui/text-field\"\n\nexport default function App() {\n  return (\n    <TextField\n      readOnly\n      value=\"Read Only\"\n    />\n  );\n}"
     },
     {
@@ -157,8 +157,11 @@
       "id": "forms-textfield--with-arrow-and-dropdown",
       "name": "With Arrow And Dropdown",
       "exportName": "WithArrowAndDropdown",
-      "description": "",
+      "description": "TextField with arrow icon prefix and dropdown menu suffix\nDemonstrates a URL or page input with navigation and dropdown functionality",
       "source": "import { TextField } from \"@choice-ui/text-field\"\n\nexport default function App() {\n  return (\n    <TextField placeholder=\"Page or URL\">\n      <TextField.Prefix className=\"text-secondary-foreground group-hover/text-field:text-default-foreground group-focus-within/text-field:text-default-foreground\">\n        <ArrowRight />\n      </TextField.Prefix>\n      <TextField.Suffix className=\"\">\n        <Select\n          value={dropdownValue}\n          onChange={setDropdownValue}\n        >\n          <Select.Trigger className=\"h-6 w-6 border-0 bg-transparent p-0 hover:bg-transparent\"></Select.Trigger>\n          <Select.Content>\n            <Select.Item value=\"recent\">\n              <Select.Value>Recent</Select.Value>\n            </Select.Item>\n            <Select.Item value=\"bookmarks\">\n              <Select.Value>Bookmarks</Select.Value>\n            </Select.Item>\n            <Select.Item value=\"history\">\n              <Select.Value>History</Select.Value>\n            </Select.Item>\n            <Select.Divider />\n            <Select.Item value=\"settings\">\n              <Select.Value>Settings</Select.Value>\n            </Select.Item>\n          </Select.Content>\n        </Select>\n      </TextField.Suffix>\n    </TextField>\n  );\n}"
     }
+  ],
+  "tags": [
+    "new"
   ]
 }

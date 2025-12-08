@@ -23,7 +23,7 @@
   ],
   "props": [
     {
-      "displayName": "Loader",
+      "displayName": "LoaderProps",
       "description": "",
       "props": [
         {
@@ -42,6 +42,48 @@
           "name": "onStageChange",
           "type": "((stage: number) => void) | undefined",
           "required": false,
+          "description": ""
+        },
+        {
+          "name": "stages",
+          "type": "LoaderStage[]",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "loaderVariants",
+      "description": "",
+      "props": [
+        {
+          "name": "active",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "class",
+          "type": "ClassNameValue",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "ClassNameValue",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "LoaderProvider",
+      "description": "",
+      "props": [
+        {
+          "name": "currentStage",
+          "type": "number",
+          "required": true,
           "description": ""
         },
         {

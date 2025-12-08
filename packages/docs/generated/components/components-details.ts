@@ -1,0 +1,169 @@
+import type { ComponentDetail } from "../../scripts/generate-from-stories/types"
+
+import ComponentDetail0 from "./overlays-alert-dialog.json"
+import ComponentDetail1 from "./feedback-avatar.json"
+import ComponentDetail2 from "./feedback-badge.json"
+import ComponentDetail3 from "./status-bells.json"
+import ComponentDetail4 from "./utilities-bezier-curve-editor.json"
+import ComponentDetail5 from "./buttons-button.json"
+import ComponentDetail6 from "./date-and-time-date-input.json"
+import ComponentDetail7 from "./date-and-time-date-range-input.json"
+import ComponentDetail8 from "./date-and-time-month-calendar.json"
+import ComponentDetail9 from "./date-and-time-quarter-calendar.json"
+import ComponentDetail10 from "./date-and-time-time-calendar.json"
+import ComponentDetail11 from "./date-and-time-time-input.json"
+import ComponentDetail12 from "./date-and-time-time-range-input.json"
+import ComponentDetail13 from "./date-and-time-year-calendar.json"
+import ComponentDetail14 from "./forms-checkbox.json"
+import ComponentDetail15 from "./feedback-chip.json"
+import ComponentDetail16 from "./forms-chips-input.json"
+import ComponentDetail17 from "./components-code-block.json"
+import ComponentDetail18 from "./collections-combobox.json"
+import ComponentDetail19 from "./collections-command.json"
+import ComponentDetail20 from "./components-comments-comment-input.json"
+import ComponentDetail21 from "./components-comments-comment-item.json"
+import ComponentDetail22 from "./components-comments.json"
+import ComponentDetail23 from "./components-conditions.json"
+import ComponentDetail24 from "./forms-context-input.json"
+import ComponentDetail25 from "./collections-context-menu.json"
+import ComponentDetail26 from "./overlays-dialog.json"
+import ComponentDetail27 from "./collections-dropdown.json"
+import ComponentDetail28 from "./pickers-emoji-picker.json"
+import ComponentDetail29 from "./forms-file-upload.json"
+import ComponentDetail30 from "./forms-form-adapters.json"
+import ComponentDetail31 from "./forms-form-examples.json"
+import ComponentDetail32 from "./feedback-hint.json"
+import ComponentDetail33 from "./buttons-icon-button.json"
+import ComponentDetail34 from "./forms-input.json"
+import ComponentDetail35 from "./data-display-kbd.json"
+import ComponentDetail36 from "./forms-label.json"
+import ComponentDetail37 from "./buttons-link-button.json"
+import ComponentDetail38 from "./collections-list.json"
+import ComponentDetail39 from "./layouts-loader.json"
+import ComponentDetail40 from "./forms-md-input.json"
+import ComponentDetail41 from "./components-md-render.json"
+import ComponentDetail42 from "./collections-menu-item.json"
+import ComponentDetail43 from "./collections-menus.json"
+import ComponentDetail44 from "./overlays-modal.json"
+import ComponentDetail45 from "./collections-multi-select.json"
+import ComponentDetail46 from "./status-notifications.json"
+import ComponentDetail47 from "./forms-numeric-input.json"
+import ComponentDetail48 from "./forms-use-numeric-input.json"
+import ComponentDetail49 from "./navigation-pagination.json"
+import ComponentDetail50 from "./layouts-panel-row.json"
+import ComponentDetail51 from "./layouts-panel-sortable.json"
+import ComponentDetail52 from "./layouts-panel-title.json"
+import ComponentDetail53 from "./data-display-picture-preview.json"
+import ComponentDetail54 from "./overlays-popover.json"
+import ComponentDetail55 from "./feedback-progress-bar.json"
+import ComponentDetail56 from "./feedback-progress-circle.json"
+import ComponentDetail57 from "./forms-radio.json"
+import ComponentDetail58 from "./forms-range.json"
+import ComponentDetail59 from "./forms-rich-input.json"
+import ComponentDetail60 from "./layouts-scroll-area.json"
+import ComponentDetail61 from "./forms-search-input.json"
+import ComponentDetail62 from "./buttons-segmented.json"
+import ComponentDetail63 from "./collections-select.json"
+import ComponentDetail64 from "./utils-date-formatting.json"
+import ComponentDetail65 from "./utils-i18n.json"
+import ComponentDetail66 from "./utils-tcx-tw-merge.json"
+import ComponentDetail67 from "./components-skeleton.json"
+import ComponentDetail68 from "./utils-slot.json"
+import ComponentDetail69 from "./status-spinner-spinner-bounce.json"
+import ComponentDetail70 from "./status-spinner-spinner-spin.json"
+import ComponentDetail71 from "./layouts-splitter.json"
+import ComponentDetail72 from "./utilities-spring-visualizer.json"
+import ComponentDetail73 from "./navigation-stackflow.json"
+import ComponentDetail74 from "./forms-switch.json"
+import ComponentDetail75 from "./navigation-tabs.json"
+import ComponentDetail76 from "./forms-text-field.json"
+import ComponentDetail77 from "./forms-textarea.json"
+import ComponentDetail78 from "./buttons-toggle-button.json"
+import ComponentDetail79 from "./feedback-tooltip.json"
+import ComponentDetail80 from "./components-tree-list.json"
+import ComponentDetail81 from "./utilities-virtualized-grid.json"
+
+export const componentsDetails = {
+  "overlays/alert-dialog": ComponentDetail0 as ComponentDetail,
+  "feedback/avatar": ComponentDetail1 as ComponentDetail,
+  "feedback/badge": ComponentDetail2 as ComponentDetail,
+  "status/bells": ComponentDetail3 as ComponentDetail,
+  "utilities/bezier-curve-editor": ComponentDetail4 as ComponentDetail,
+  "buttons/button": ComponentDetail5 as ComponentDetail,
+  "date-and-time/date-input": ComponentDetail6 as ComponentDetail,
+  "date-and-time/date-range-input": ComponentDetail7 as ComponentDetail,
+  "date-and-time/month-calendar": ComponentDetail8 as ComponentDetail,
+  "date-and-time/quarter-calendar": ComponentDetail9 as ComponentDetail,
+  "date-and-time/time-calendar": ComponentDetail10 as ComponentDetail,
+  "date-and-time/time-input": ComponentDetail11 as ComponentDetail,
+  "date-and-time/time-range-input": ComponentDetail12 as ComponentDetail,
+  "date-and-time/year-calendar": ComponentDetail13 as ComponentDetail,
+  "forms/checkbox": ComponentDetail14 as ComponentDetail,
+  "feedback/chip": ComponentDetail15 as ComponentDetail,
+  "forms/chips-input": ComponentDetail16 as ComponentDetail,
+  "components/code-block": ComponentDetail17 as ComponentDetail,
+  "collections/combobox": ComponentDetail18 as ComponentDetail,
+  "collections/command": ComponentDetail19 as ComponentDetail,
+  "components/comments/comment-input": ComponentDetail20 as ComponentDetail,
+  "components/comments/comment-item": ComponentDetail21 as ComponentDetail,
+  "components/comments": ComponentDetail22 as ComponentDetail,
+  "components/conditions": ComponentDetail23 as ComponentDetail,
+  "forms/context-input": ComponentDetail24 as ComponentDetail,
+  "collections/context-menu": ComponentDetail25 as ComponentDetail,
+  "overlays/dialog": ComponentDetail26 as ComponentDetail,
+  "collections/dropdown": ComponentDetail27 as ComponentDetail,
+  "pickers/emoji-picker": ComponentDetail28 as ComponentDetail,
+  "forms/file-upload": ComponentDetail29 as ComponentDetail,
+  "forms/form/adapters": ComponentDetail30 as ComponentDetail,
+  "forms/form/examples": ComponentDetail31 as ComponentDetail,
+  "feedback/hint": ComponentDetail32 as ComponentDetail,
+  "buttons/icon-button": ComponentDetail33 as ComponentDetail,
+  "forms/input": ComponentDetail34 as ComponentDetail,
+  "data-display/kbd": ComponentDetail35 as ComponentDetail,
+  "forms/label": ComponentDetail36 as ComponentDetail,
+  "buttons/link-button": ComponentDetail37 as ComponentDetail,
+  "collections/list": ComponentDetail38 as ComponentDetail,
+  "layouts/loader": ComponentDetail39 as ComponentDetail,
+  "forms/md-input": ComponentDetail40 as ComponentDetail,
+  "components/md-render": ComponentDetail41 as ComponentDetail,
+  "collections/menu-item": ComponentDetail42 as ComponentDetail,
+  "collections/menus": ComponentDetail43 as ComponentDetail,
+  "overlays/modal": ComponentDetail44 as ComponentDetail,
+  "collections/multi-select": ComponentDetail45 as ComponentDetail,
+  "status/notifications": ComponentDetail46 as ComponentDetail,
+  "forms/numeric-input": ComponentDetail47 as ComponentDetail,
+  "forms/use-numeric-input": ComponentDetail48 as ComponentDetail,
+  "navigation/pagination": ComponentDetail49 as ComponentDetail,
+  "layouts/panel/row": ComponentDetail50 as ComponentDetail,
+  "layouts/panel/sortable": ComponentDetail51 as ComponentDetail,
+  "layouts/panel/title": ComponentDetail52 as ComponentDetail,
+  "data-display/picture-preview": ComponentDetail53 as ComponentDetail,
+  "overlays/popover": ComponentDetail54 as ComponentDetail,
+  "feedback/progress-bar": ComponentDetail55 as ComponentDetail,
+  "feedback/progress-circle": ComponentDetail56 as ComponentDetail,
+  "forms/radio": ComponentDetail57 as ComponentDetail,
+  "forms/range": ComponentDetail58 as ComponentDetail,
+  "forms/rich-input": ComponentDetail59 as ComponentDetail,
+  "layouts/scroll-area": ComponentDetail60 as ComponentDetail,
+  "forms/search-input": ComponentDetail61 as ComponentDetail,
+  "buttons/segmented": ComponentDetail62 as ComponentDetail,
+  "collections/select": ComponentDetail63 as ComponentDetail,
+  "utils/date-formatting": ComponentDetail64 as ComponentDetail,
+  "utils/i18n": ComponentDetail65 as ComponentDetail,
+  "utils/tcx-tw-merge": ComponentDetail66 as ComponentDetail,
+  "components/skeleton": ComponentDetail67 as ComponentDetail,
+  "utils/slot": ComponentDetail68 as ComponentDetail,
+  "status/spinner/spinner-bounce": ComponentDetail69 as ComponentDetail,
+  "status/spinner/spinner-spin": ComponentDetail70 as ComponentDetail,
+  "layouts/splitter": ComponentDetail71 as ComponentDetail,
+  "utilities/spring-visualizer": ComponentDetail72 as ComponentDetail,
+  "navigation/stackflow": ComponentDetail73 as ComponentDetail,
+  "forms/switch": ComponentDetail74 as ComponentDetail,
+  "navigation/tabs": ComponentDetail75 as ComponentDetail,
+  "forms/text-field": ComponentDetail76 as ComponentDetail,
+  "forms/textarea": ComponentDetail77 as ComponentDetail,
+  "buttons/toggle-button": ComponentDetail78 as ComponentDetail,
+  "feedback/tooltip": ComponentDetail79 as ComponentDetail,
+  "components/tree-list": ComponentDetail80 as ComponentDetail,
+  "utilities/virtualized-grid": ComponentDetail81 as ComponentDetail,
+} as Record<string, ComponentDetail>

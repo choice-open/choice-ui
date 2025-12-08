@@ -188,156 +188,6 @@
   ],
   "props": [
     {
-      "displayName": "BaseYearProps",
-      "description": "年份组件的基础属性",
-      "props": []
-    },
-    {
-      "displayName": "YearItem",
-      "description": "年份项目状态",
-      "props": []
-    },
-    {
-      "displayName": "YearLayoutProps",
-      "description": "年份布局相关属性",
-      "props": []
-    },
-    {
-      "displayName": "YearNavigationProps",
-      "description": "年份导航相关属性",
-      "props": []
-    },
-    {
-      "displayName": "BaseQuarterProps",
-      "description": "季度组件的基础属性",
-      "props": []
-    },
-    {
-      "displayName": "Quarter",
-      "description": "季度对象",
-      "props": []
-    },
-    {
-      "displayName": "QuarterItem",
-      "description": "季度项目状态",
-      "props": []
-    },
-    {
-      "displayName": "QuarterLayoutProps",
-      "description": "季度布局相关属性",
-      "props": []
-    },
-    {
-      "displayName": "QuarterNavigationProps",
-      "description": "季度导航相关属性",
-      "props": []
-    },
-    {
-      "displayName": "BaseCalendarProps",
-      "description": "月历组件的基础属性",
-      "props": []
-    },
-    {
-      "displayName": "CalendarValue",
-      "description": "日历选择值的类型",
-      "props": []
-    },
-    {
-      "displayName": "CalendarState",
-      "description": "日历状态接口",
-      "props": []
-    },
-    {
-      "displayName": "CalendarLayoutProps",
-      "description": "月历布局相关属性",
-      "props": []
-    },
-    {
-      "displayName": "BaseDateProps",
-      "description": "日期组件的基础属性",
-      "props": []
-    },
-    {
-      "displayName": "DateInputValue",
-      "description": "日期输入解析结果",
-      "props": []
-    },
-    {
-      "displayName": "DateDataFormat",
-      "description": "日期格式字符串\n\n支持所有 date-fns 格式字符串，常用格式示例：\n\n**年份**：\n- yyyy: 2025 (4位年份)\n- yy: 25 (2位年份)\n\n**月份**：\n- MMMM: December (完整月份名)\n- MMM: Dec (缩写月份名)\n- MM: 12 (2位数字月份)\n- M: 12 (1-2位数字月份)\n\n**日期**：\n- dd: 31 (2位日期)\n- d: 31 (1-2位日期)\n\n**常用组合**：\n- \"yyyy-MM-dd\" → 2025-12-31\n- \"yy-MM-dd\" → 25-12-31\n- \"yyyy年MM月dd日\" → 2025年12月31日\n- \"yy年M月d日\" → 25年12月31日\n- \"MMMM dd, yyyy\" → December 31, 2025\n- \"MMM dd, yy\" → Dec 31, 25\n- \"MM/dd/yyyy\" → 12/31/2025\n- \"dd.MM.yy\" → 31.12.25",
-      "props": []
-    },
-    {
-      "displayName": "DateRange",
-      "description": "日期范围对象",
-      "props": []
-    },
-    {
-      "displayName": "DateParserOptions",
-      "description": "日期解析选项",
-      "props": []
-    },
-    {
-      "displayName": "DateInteractionProps",
-      "description": "日期交互功能属性",
-      "props": []
-    },
-    {
-      "displayName": "BaseTimeProps",
-      "description": "时间组件的基础属性",
-      "props": []
-    },
-    {
-      "displayName": "Time",
-      "description": "时间对象（小时和分钟）",
-      "props": []
-    },
-    {
-      "displayName": "TimeInputValue",
-      "description": "时间输入解析结果",
-      "props": []
-    },
-    {
-      "displayName": "TimeDataFormat",
-      "description": "时间格式字符串\n\n支持所有 date-fns 时间格式字符串，常用格式示例：\n\n**24小时制**：\n- \"HH:mm\" → 09:30, 14:45 (2位小时)\n- \"H:mm\" → 9:30, 14:45 (1-2位小时)\n- \"HH:mm:ss\" → 09:30:15 (带秒)\n- \"HHmm\" → 0930, 1445 (紧凑格式)\n\n**12小时制**：\n- \"h:mm a\" → 9:30 AM, 2:45 PM\n- \"hh:mm a\" → 09:30 AM, 02:45 PM (2位小时)\n- \"h:mm aa\" → 9:30 A.M., 2:45 P.M. (完整AM/PM)\n- \"h:mm:ss a\" → 9:30:15 AM (带秒)",
-      "props": []
-    },
-    {
-      "displayName": "TimeParserOptions",
-      "description": "时间解析选项",
-      "props": []
-    },
-    {
-      "displayName": "TimeLayout",
-      "description": "时间布局模式",
-      "props": []
-    },
-    {
-      "displayName": "TimeInteractionProps",
-      "description": "时间交互功能属性",
-      "props": []
-    },
-    {
-      "displayName": "TimeOptionItem",
-      "description": "时间选项项",
-      "props": []
-    },
-    {
-      "displayName": "StepProps",
-      "description": "时间步长相关属性",
-      "props": []
-    },
-    {
-      "displayName": "NaturalLanguageMap",
-      "description": "自然语言关键词映射",
-      "props": []
-    },
-    {
-      "displayName": "RelativeDatePattern",
-      "description": "相对日期模式",
-      "props": []
-    },
-    {
       "displayName": "MonthCalendar",
       "description": "",
       "props": [
@@ -482,7 +332,7 @@
       ]
     },
     {
-      "displayName": "DateInput",
+      "displayName": "DateInputValue",
       "description": "Advanced date input component\n\nFeatures:\n- 🎯 Intelligent date parsing: Supports multiple formats and natural language\n- ⌨️ Keyboard navigation: Up key to past, down key to future (intuitive operation)\n- 🔄 Race protection: Smartly detect data flow direction, avoid loop updates\n- 🛡️ Type safety: Complete TypeScript support\n- 🌍 Internationalization support: Configurable language region\n- 💡 Intelligent prediction: Real-time prediction prompts and holiday recognition",
       "props": [
         {
@@ -853,7 +703,7 @@
       ]
     },
     {
-      "displayName": "TimeInput",
+      "displayName": "TimeInputValue",
       "description": "高级时间输入组件\n\n特性：\n- 🎯 智能时间解析：支持多种格式和自然语言\n- ⌨️ 键盘导航：上键减少，下键增加（符合列表导航逻辑）\n- 🔄 竞态保护：智能检测数据流方向，避免循环更新\n- 🚀 性能优化：使用 useEventCallback 和缓存机制\n- 🛡️ 类型安全：完整的 TypeScript 支持\n- 🌍 国际化支持：可配置语言区域\n- 📱 拖拽交互：支持通过前缀图标拖拽调整时间",
       "props": [
         {
@@ -875,6 +725,18 @@
           "description": "时间格式，支持所有 date-fns 格式字符串"
         },
         {
+          "name": "defaultValue",
+          "type": "Date | null | undefined",
+          "required": false,
+          "description": "默认值"
+        },
+        {
+          "name": "step",
+          "type": "number | undefined",
+          "required": false,
+          "description": "基础步长（分钟），默认1分钟"
+        },
+        {
           "name": "size",
           "type": "enum",
           "required": false,
@@ -885,18 +747,6 @@
           "type": "boolean | undefined",
           "required": false,
           "description": ""
-        },
-        {
-          "name": "step",
-          "type": "number | undefined",
-          "required": false,
-          "description": "基础步长（分钟），默认1分钟"
-        },
-        {
-          "name": "defaultValue",
-          "type": "Date | null | undefined",
-          "required": false,
-          "description": "默认值"
         },
         {
           "name": "className",
@@ -923,36 +773,6 @@
           "description": ""
         },
         {
-          "name": "enableCache",
-          "type": "boolean | undefined",
-          "required": false,
-          "description": "是否启用解析缓存"
-        },
-        {
-          "name": "enableKeyboardNavigation",
-          "type": "boolean | undefined",
-          "required": false,
-          "description": "是否启用键盘导航（默认启用）"
-        },
-        {
-          "name": "enableProfiling",
-          "type": "boolean | undefined",
-          "required": false,
-          "description": "是否启用性能分析"
-        },
-        {
-          "name": "locale",
-          "type": "string | Locale | undefined",
-          "required": false,
-          "description": "语言区域 - 支持 Locale 对象或字符串（如 \"zh-CN\", \"en-US\"）"
-        },
-        {
-          "name": "onEnterKeyDown",
-          "type": "(() => void) | undefined",
-          "required": false,
-          "description": "按下 Enter 键的回调"
-        },
-        {
           "name": "prefixElement",
           "type": "ReactNode",
           "required": false,
@@ -963,6 +783,12 @@
           "type": "ReactNode",
           "required": false,
           "description": ""
+        },
+        {
+          "name": "locale",
+          "type": "string | Locale | undefined",
+          "required": false,
+          "description": "语言区域 - 支持 Locale 对象或字符串（如 \"zh-CN\", \"en-US\"）"
         },
         {
           "name": "maxTime",
@@ -987,6 +813,30 @@
           "type": "number | undefined",
           "required": false,
           "description": "Shift + 按键的步长（分钟），默认15分钟"
+        },
+        {
+          "name": "enableCache",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": "是否启用解析缓存"
+        },
+        {
+          "name": "enableKeyboardNavigation",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": "是否启用键盘导航（默认启用）"
+        },
+        {
+          "name": "enableProfiling",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": "是否启用性能分析"
+        },
+        {
+          "name": "onEnterKeyDown",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "按下 Enter 键的回调"
         }
       ]
     },
@@ -1206,7 +1056,7 @@
         },
         {
           "name": "onNavigate",
-          "type": "((direction: \"next\" | \"prev\", newYear: number) => void) | undefined",
+          "type": "((direction: \"prev\" | \"next\", newYear: number) => void) | undefined",
           "required": false,
           "description": "年份范围导航回调"
         },
@@ -1302,7 +1152,7 @@
         },
         {
           "name": "onNavigate",
-          "type": "((direction: \"next\" | \"prev\", newStartYear: Date) => void) | undefined",
+          "type": "((direction: \"prev\" | \"next\", newStartYear: Date) => void) | undefined",
           "required": false,
           "description": "年份范围导航回调"
         },
@@ -1963,28 +1813,28 @@
       "id": "dateandtime-timecalendar--twelve-hour-format",
       "name": "Twelve Hour Format",
       "exportName": "TwelveHourFormat",
-      "description": "",
+      "description": "TwelveHourFormat: Demonstrates 12-hour time format with AM/PM indicators.\n- Shows time selection using 12-hour format with AM/PM suffix.\n- Maintains 15-minute step intervals in 12-hour display.\n- Useful for applications targeting US users or 12-hour time preferences.",
       "source": "import { MonthCalendar } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <SingleColumnDemo {...args} />\n  );\n}"
     },
     {
       "id": "dateandtime-timecalendar--custom-steps",
       "name": "Custom Steps",
       "exportName": "CustomSteps",
-      "description": "",
+      "description": "CustomSteps: Demonstrates 30-minute step intervals for broader time selection.\n- Shows time selection with 30-minute intervals instead of default 15-minute.\n- Useful for applications with less precise time requirements.\n- Reduces list length for faster navigation in broad time ranges.",
       "source": "import { MonthCalendar } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <SingleColumnDemo {...args} />\n  );\n}"
     },
     {
       "id": "dateandtime-timecalendar--precise-minutes",
       "name": "Precise Minutes",
       "exportName": "PreciseMinutes",
-      "description": "",
+      "description": "PreciseMinutes: Demonstrates 5-minute step intervals for precise time selection.\n- Shows time selection with 5-minute intervals for high precision.\n- Ideal for applications requiring detailed time scheduling.\n- Provides more granular control over time selection.",
       "source": "import { MonthCalendar } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <SingleColumnDemo {...args} />\n  );\n}"
     },
     {
       "id": "dateandtime-timecalendar--special-value",
       "name": "Special Value",
       "exportName": "SpecialValue",
-      "description": "",
+      "description": "SpecialValue: Demonstrates handling of times outside the configured step range.\n- Shows how the component handles 14:37 with 15-minute steps.\n- Displays special values that don't align with step intervals.\n- Useful for understanding flexible time value handling.",
       "source": "import { MonthCalendar } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <SpecialValueDemo {...args} />\n  );\n}"
     },
     {
@@ -1998,8 +1848,11 @@
       "id": "dateandtime-timecalendar--read-only",
       "name": "Read Only",
       "exportName": "ReadOnly",
-      "description": "",
+      "description": "ReadOnly: Demonstrates the TimeCalendar component in readOnly mode.\n- Prevents value changes while allowing focus and scrolling\n- Maintains normal visual appearance (unlike disabled)\n- Useful for displaying non-editable time information",
       "source": "import { TimeCalendar } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <div className=\"rounded-xl border bg-stone-50 p-4\">\n        <div className=\"text-body-small-strong mb-2 text-stone-700\">Current Value:</div>\n        <div className=\"text-body-small font-mono text-stone-600\">\n          {value ? value.toLocaleTimeString() : \"null\"}\n        </div>\n        <div className=\"text-body-small-strong mt-2 text-stone-700\">Change Count:</div>\n        <div className=\"text-body-small font-mono text-stone-600\">{changeCount}</div>\n      </div>\n      <div className=\"grid grid-cols-2 gap-4\">\n        <TimeCalendar\n          readOnly\n          value={value}\n          onChange={handleChange}\n          format=\"HH:mm\"\n          step={15}\n        />\n        <TimeCalendar\n          value={value}\n          onChange={handleChange}\n          format=\"HH:mm\"\n          step={15}\n        />\n      </div>\n      <div className=\"text-body-small text-stone-600\">\n        💡 Try clicking time options on the readonly calendar - the value should not change and\n        the change count should remain at 0. Only the normal calendar will change the value.\n      </div>\n    </div>\n  );\n}"
     }
+  ],
+  "tags": [
+    "new"
   ]
 }

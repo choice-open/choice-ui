@@ -22,7 +22,7 @@
   ],
   "props": [
     {
-      "displayName": "Segmented",
+      "displayName": "SegmentedProps",
       "description": "",
       "props": [
         {
@@ -68,6 +68,54 @@
           "description": ""
         }
       ]
+    },
+    {
+      "displayName": "SegmentedItemProps",
+      "description": "",
+      "props": [
+        {
+          "name": "aria-label",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onHoverChange",
+          "type": "((isHovered: boolean) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "tooltip",
+          "type": "TooltipProps | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "ref",
+          "type": "((instance: HTMLLabelElement | null) => void) | RefObject<HTMLLabelElement> | null | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
     }
   ],
   "stories": [
@@ -89,21 +137,21 @@
       "id": "buttons-segmented--custom-content-style",
       "name": "Custom Content Style",
       "exportName": "CustomContentStyle",
-      "description": "",
+      "description": "### Custom Content Styling\n\nThe component provides flexible styling options:\n\n- Use the `className` property to directly style individual options\n- Use `classNames.container` to style the outer container\n\n#### Best Practices\n- For text content, add horizontal padding using `px-{size}`\n- For icon + text combinations, use `gap-{size}` to control spacing\n- Keep padding consistent across all options for visual alignment",
       "source": "import { Segmented } from \"@choice-ui/segmented\"\n\nexport default function App() {\n  return (\n    <Segmented\n      value={value}\n      onChange={(value) => setValue(value)}\n    >\n      <Segmented.Item\n        value=\"left\"\n        className=\"px-2\"\n      >\n        Left\n      </Segmented.Item>\n      <Segmented.Item\n        value=\"center\"\n        className=\"px-2\"\n      >\n        Center\n      </Segmented.Item>\n      <Segmented.Item\n        value=\"right\"\n        className=\"px-2\"\n      >\n        Right\n      </Segmented.Item>\n    </Segmented>\n  );\n}"
     },
     {
       "id": "buttons-segmented--with-icons-and-labels",
       "name": "With Icons And Labels",
       "exportName": "WithIconsAndLabels",
-      "description": "",
+      "description": "### Mixed Content with Icons and Labels\n\nThe component supports flexible content rendering, allowing you to combine icons and text:\n\n#### Features\n- Supports any valid React node as content\n- Maintains consistent alignment with mixed content\n- Automatically handles spacing and layout\n\n#### Best Practices\n- Use consistent icon sizes within the same control\n- Maintain a logical reading order (icon + label)\n- Provide `aria-label` for icon-only options\n- Use `gap-1` or `gap-2` for spacing between icon and text",
       "source": "import { Segmented } from \"@choice-ui/segmented\"\n\nexport default function App() {\n  return (\n    <Segmented\n      value={value}\n      onChange={(value) => setValue(value)}\n    >\n      <Segmented.Item\n        value=\"desktop\"\n        aria-label=\"Desktop\"\n        className=\"gap-1 px-2\"\n      >\n        <>\n          <FieldTypeCheckbox />\n          Desktop\n        </>\n      </Segmented.Item>\n      <Segmented.Item\n        value=\"tablet\"\n        aria-label=\"Tablet\"\n        className=\"gap-1 px-2\"\n      >\n        <>\n          <FieldTypeCheckbox />\n          Tablet\n        </>\n      </Segmented.Item>\n      <Segmented.Item\n        value=\"mobile\"\n        aria-label=\"Mobile\"\n        className=\"gap-1 px-2\"\n      >\n        <>\n          <FieldTypeCheckbox />\n          Mobile\n        </>\n      </Segmented.Item>\n    </Segmented>\n  );\n}"
     },
     {
       "id": "buttons-segmented--with-tooltip",
       "name": "With Tooltip",
       "exportName": "WithTooltip",
-      "description": "",
+      "description": "### Tooltip Configuration\n\nThe component supports two levels of tooltip configuration:\n\n#### 1. Individual Option Tooltips\n- Set through the `tooltip` property in each option\n- Automatically used as `aria-label` if no explicit label is provided\n- Ideal for icon-only options or additional context\n\n#### 2. Global Tooltip Settings\n- Applied to all options through the component's `tooltip` prop\n- Controls behavior such as placement, delay, and animations\n- Can be overridden by individual option settings\n\n#### Accessibility Notes\nThe component follows a priority order for accessibility labels:\n1. Explicit `aria-label` if provided\n2. `tooltip` text if available\n3. String content if the option content is a string",
       "source": "import { Segmented } from \"@choice-ui/segmented\"\n\nexport default function App() {\n  return (\n    <Segmented\n      value={value}\n      onChange={(value) => setValue(value)}\n    >\n      <Segmented.Item\n        value=\"sun\"\n        tooltip={{\n          content: \"Sun\",\n        }}\n      >\n        <FieldTypeAttachment />\n      </Segmented.Item>\n      <Segmented.Item\n        value=\"moon\"\n        tooltip={{\n          content: \"Moon\",\n        }}\n      >\n        <FieldTypeCheckbox />\n      </Segmented.Item>\n      <Segmented.Item\n        value=\"system\"\n        tooltip={{\n          content: \"System\",\n        }}\n      >\n        <FieldTypeCount />\n      </Segmented.Item>\n    </Segmented>\n  );\n}"
     },
     {

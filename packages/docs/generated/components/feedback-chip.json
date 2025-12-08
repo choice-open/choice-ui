@@ -118,7 +118,7 @@
       "id": "feedback-chip--on-remove",
       "name": "On Remove",
       "exportName": "OnRemove",
-      "description": "",
+      "description": "OnRemove: Demonstrates removable Chips with selection.\n- Chips can be selected/deselected and removed from the group.\n- Useful for tag input, filter lists, or dynamic chip groups.",
       "source": "import { Chip } from \"@choice-ui/chip\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-wrap gap-2\">\n      {chips.map((chip) => (\n        <Chip\n          key={chip}\n          selected={selected.includes(chip)}\n          onClick={() => {\n            setSelected(\n              selected.includes(chip) ? selected.filter((c) => c !== chip) : [...selected, chip],\n            )\n          }}\n          onRemove={() => {\n            setChips(chips.filter((c) => c !== chip))\n          }}\n        >\n          {chip}\n        </Chip>\n      ))}\n    </div>\n  );\n}"
     },
     {
@@ -135,5 +135,8 @@
       "description": "Suffix: Demonstrates a Chip with a suffix element (e.g., icon).\n- Use for actions, status, or icons after the label.",
       "source": ""
     }
+  ],
+  "tags": [
+    "beta"
   ]
 }

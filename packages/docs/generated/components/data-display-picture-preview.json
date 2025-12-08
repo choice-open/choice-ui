@@ -65,7 +65,7 @@
       "id": "data-display-picturepreview--with-error",
       "name": "With Error",
       "exportName": "WithError",
-      "description": "",
+      "description": "WithError: Demonstrates how the component handles image loading errors.\n\nThis example shows how the PicturePreview component displays an error state\nwhen the image fails to load. It provides visual feedback to the user\nthat there was a problem loading the image, while still displaying the\nfilename information.",
       "source": "import { PicturePreview } from \"@choice-ui/picture-preview\"\n\nexport default function App() {\n  return (\n    <PicturePreview\n      src=\"https://example.com/non-existent-image.jpg\"\n      fileName=\"broken-image.jpg\"\n    />\n  );\n}"
     },
     {
@@ -75,5 +75,8 @@
       "description": "Gallery: Demonstrates using multiple PicturePreview components together.\n\nThis example shows how multiple PicturePreview components can be used\nin a grid layout to create a simple image gallery. Each preview retains\nits own filename display and error handling capabilities.",
       "source": "import { PicturePreview } from \"@choice-ui/picture-preview\"\n\nexport default function App() {\n  return (\n    <div className=\"grid grid-cols-2 gap-4\">\n      {sampleImages.map((image, index) => (\n        <PicturePreview\n          key={index}\n          src={image.src}\n          fileName={image.fileName}\n        />\n      ))}\n    </div>\n  );\n}"
     }
+  ],
+  "tags": [
+    "beta"
   ]
 }

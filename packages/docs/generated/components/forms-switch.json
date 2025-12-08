@@ -121,21 +121,21 @@
       "id": "forms-switch--label-usage",
       "name": "Label Usage",
       "exportName": "LabelUsage",
-      "description": "",
+      "description": "Label Usage: Demonstrates two ways to use labels with Switch.\n- Simple string children: automatically wrapped with Switch.Label\n- Explicit Switch.Label: for more complex label content",
       "source": "import { Switch } from \"@choice-ui/switch\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <div>\n        <h4 className=\"font-strong mb-2\">Simple string label (auto-wrapped):</h4>\n        <Switch\n          value={simple}\n          onChange={setSimple}\n        >\n          Simple text label\n        </Switch>\n      </div>\n\n      <div>\n        <h4 className=\"font-strong mb-2\">Explicit Switch.Label (for complex content):</h4>\n        <Switch\n          value={explicit}\n          onChange={setExplicit}\n        >\n          <Switch.Label>\n            <span className=\"text-accent-foreground\">Complex</span> label with{\" \"}\n            <strong>formatting</strong>\n          </Switch.Label>\n        </Switch>\n      </div>\n    </div>\n  );\n}"
     },
     {
       "id": "forms-switch--legacy-label-prop",
       "name": "Legacy Label Prop",
       "exportName": "LegacyLabelProp",
-      "description": "",
+      "description": "Legacy Label Prop: Shows backward compatibility with the label prop.\nNote: The label prop is still supported for backward compatibility,\nbut using children is now the preferred approach.",
       "source": "import { Switch } from \"@choice-ui/switch\"\n\nexport default function App() {\n  return (\n    <Switch\n      value={value}\n      onChange={setValue}\n      label=\"Switch with legacy label prop\"\n    />\n  );\n}"
     },
     {
       "id": "forms-switch--with-tooltip",
       "name": "With Tooltip",
       "exportName": "WithTooltip",
-      "description": "",
+      "description": "The Switch component does not have a built-in tooltip interface and requires the use of the `Tooltip` component to implement it.",
       "source": "import { Switch } from \"@choice-ui/switch\"\n\nexport default function App() {\n  return (\n    <Tooltip content=\"This is a tooltip\">\n      <Switch\n        value={tooltip}\n        onChange={setTooltip}\n      >\n        Switch with tooltip\n      </Switch>\n    </Tooltip>\n  );\n}"
     },
     {

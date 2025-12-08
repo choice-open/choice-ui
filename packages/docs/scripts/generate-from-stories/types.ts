@@ -7,6 +7,7 @@ export interface IndexItem {
   title: string
   description: string
   version: string
+  tags?: string[]
 }
 
 /** 包信息 */
@@ -51,6 +52,7 @@ export interface ComponentDetail {
   exports: string[]
   props: PropsGroup[]
   stories: StoryItem[]
+  tags?: string[]
 }
 
 /** 缓存条目 */

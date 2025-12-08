@@ -29,7 +29,7 @@
       "props": []
     },
     {
-      "displayName": "Slot",
+      "displayName": "SlotProps",
       "description": "优化的 Slot 组件实现\n\n相比",
       "props": []
     },
@@ -51,35 +51,35 @@
       "id": "utils-slot--event-merging",
       "name": "Event Merging",
       "exportName": "EventMerging",
-      "description": "",
+      "description": "EventMerging: Shows how Slot merges event handlers from parent and child.\n\nWhen both parent and child have the same event handler,\nSlot automatically merges them - child fires first, then parent.",
       "source": "import { Slot } from \"@choice-ui/slot\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-4\">\n      <h3 className=\"text-body-large-strong\">Event Handler Merging</h3>\n      <p className=\"text-body-small text-gray-600\">\n        Click the button to see both child and parent handlers execute\n      </p>\n      <Slot\n        onClick={handleParentClick}\n        className=\"inline-block\"\n      >\n        <button\n          onClick={handleChildClick}\n          className=\"rounded bg-green-500 px-4 py-2 text-white hover:bg-green-600\"\n        >\n          Click me (merged events)\n        </button>\n      </Slot>\n    </div>\n  );\n}"
     },
     {
       "id": "utils-slot--as-child-pattern",
       "name": "As Child Pattern",
       "exportName": "AsChildPattern",
-      "description": "",
+      "description": "AsChildPattern: Demonstrates the asChild pattern using useAsChild hook.\n\nThis pattern allows components to render as child elements,\ncommonly used in design systems for flexible component composition.",
       "source": "import { Slot } from \"@choice-ui/slot\"\n\nexport default function App() {\n  return (\n    <Component\n      ref={ref}\n      className=\"rounded bg-purple-500 px-4 py-2 text-white hover:bg-purple-600\"\n      {...props}\n    >\n      {children}\n    </Component>\n  );\n}"
     },
     {
       "id": "utils-slot--complex-composition",
       "name": "Complex Composition",
       "exportName": "ComplexComposition",
-      "description": "",
+      "description": "ComplexComposition: Shows complex component composition with multiple props.\n\nDemonstrates how Slot handles complex scenarios with multiple props,\nstyles, and event handlers in nested component structures.",
       "source": "import { Slot } from \"@choice-ui/slot\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-4\">\n      <h3 className=\"text-body-large-strong\">Complex Component Composition</h3>\n      <p className=\"text-body-small text-gray-600\">Count: {count}</p>\n\n      <Slot\n        onClick={() => setCount((c) => c + 1)}\n        className=\"rounded border-2 border-dashed border-gray-300 p-2\"\n        style={{ backgroundColor: \"rgba(255, 0, 0, 0.1)\" }}\n        data-testid=\"slot-wrapper\"\n      >\n        <div\n          className=\"cursor-pointer rounded bg-red-500 p-4 text-white hover:bg-red-600\"\n          onClick={() => console.log(\"Child clicked\")}\n          style={{ fontSize: \"16px\" }}\n        >\n          Complex merged component (click to increment)\n        </div>\n      </Slot>\n    </div>\n  );\n}"
     },
     {
       "id": "utils-slot--use-slot-hook",
       "name": "Use Slot Hook",
       "exportName": "UseSlotHook",
-      "description": "",
+      "description": "UseSlotHook: Demonstrates the useSlot hook for custom implementations.\n\nThe useSlot hook provides direct access to the slot logic,\nuseful for building custom components that need fine-grained control.",
       "source": "import { useSlot } from \"@choice-ui/slot\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-2\">\n      <p className=\"text-body-small text-gray-600\">Enhanced with useSlot hook:</p>\n      {slottedChild}\n    </div>\n  );\n}"
     },
     {
       "id": "utils-slot--performance-comparison",
       "name": "Performance Comparison",
       "exportName": "PerformanceComparison",
-      "description": "",
+      "description": "PerformanceComparison: Shows performance benefits of the optimized implementation.\n\nThis example demonstrates the performance improvements achieved through\nmemoization and optimized prop merging strategies.",
       "source": "import { Slot } from \"@choice-ui/slot\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-4\">\n      <h3 className=\"text-body-large-strong\">Performance Optimization</h3>\n      <p className=\"text-body-small text-gray-600\">\n        Update count: {updateCount} (components optimized with useMemo)\n      </p>\n      <p className=\"text-xs text-gray-500\">\n        Our Slot component uses useMemo caching to prevent unnecessary re-renders, making it up to\n        30% faster than the original @radix-ui/react-slot implementation.\n      </p>\n\n      <button\n        onClick={handleForceUpdate}\n        className=\"rounded bg-gray-500 px-4 py-2 text-white hover:bg-gray-600\"\n      >\n        Force update (count: {updateCount})\n      </button>\n\n      <div className=\"space-y-2\">\n        <p className=\"text-body-small-strong\">Optimized Slot Components:</p>\n        <div className=\"flex gap-2\">\n          <Slot className=\"inline-block\">\n            <button className=\"rounded bg-indigo-500 px-3 py-2 text-white hover:bg-indigo-600\">\n              Slot Button 1\n            </button>\n          </Slot>\n          <Slot className=\"inline-block\">\n            <button className=\"rounded bg-purple-500 px-3 py-2 text-white hover:bg-purple-600\">\n              Slot Button 2\n            </button>\n          </Slot>\n          <Slot className=\"inline-block\">\n            <button className=\"rounded bg-pink-500 px-3 py-2 text-white hover:bg-pink-600\">\n              Slot Button 3\n            </button>\n          </Slot>\n        </div>\n      </div>\n    </div>\n  );\n}"
     }
   ]

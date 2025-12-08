@@ -62,7 +62,583 @@
     "type ContextInputRef",
     "contextInputTv"
   ],
-  "props": [],
+  "props": [
+    {
+      "displayName": "ContextInputHeader",
+      "description": "",
+      "props": [
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "handleClick",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "size",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "ref",
+          "type": "((instance: HTMLDivElement | null) => void) | RefObject<HTMLDivElement> | null | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "ContextInputFooter",
+      "description": "",
+      "props": [
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "handleClick",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "size",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "ref",
+          "type": "((instance: HTMLDivElement | null) => void) | RefObject<HTMLDivElement> | null | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "CopyButton",
+      "description": "",
+      "props": [
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "size",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "defaultValue": "false",
+          "description": ""
+        },
+        {
+          "name": "onClick",
+          "type": "((copiedText: string) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "as",
+          "type": "ElementType<any, keyof IntrinsicElements> | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "readOnly",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "active",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "asChild",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "focused",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "loading",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "tooltip",
+          "type": "TooltipProps | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "variant",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "successDuration",
+          "type": "number | undefined",
+          "required": false,
+          "defaultValue": "2000",
+          "description": ""
+        },
+        {
+          "name": "ref",
+          "type": "((instance: HTMLElement | null) => void) | RefObject<HTMLElement> | null | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "MentionMenu",
+      "description": "",
+      "props": [
+        {
+          "name": "onSelect",
+          "type": "(mention: MentionItem, index: number) => void",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "loading",
+          "type": "boolean",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "isOpen",
+          "type": "boolean",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "onClose",
+          "type": "() => void",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "position",
+          "type": "MentionMenuPosition | null",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "renderSuggestion",
+          "type": "((item: MentionItem, isSelected: boolean) => ReactNode) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "root",
+          "type": "HTMLElement | null | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "suggestions",
+          "type": "MentionItem[]",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "ref",
+          "type": "((instance: MentionMenuRef | null) => void) | RefObject<MentionMenuRef> | null | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "SlateEditor",
+      "description": "",
+      "props": [
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "size",
+          "type": "enum",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "defaultValue": "false",
+          "description": ""
+        },
+        {
+          "name": "maxLength",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "placeholder",
+          "type": "string | undefined",
+          "required": false,
+          "defaultValue": "Type someone...",
+          "description": ""
+        },
+        {
+          "name": "readOnly",
+          "type": "boolean | undefined",
+          "required": false,
+          "defaultValue": "false",
+          "description": ""
+        },
+        {
+          "name": "autoFocus",
+          "type": "boolean | undefined",
+          "required": false,
+          "defaultValue": "false",
+          "description": ""
+        },
+        {
+          "name": "onCompositionEnd",
+          "type": "((event: CompositionEvent<Element>) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onCompositionStart",
+          "type": "((event: CompositionEvent<Element>) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onFocus",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onBlur",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "(value: Descendant[]) => void",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "onKeyDown",
+          "type": "(event: KeyboardEvent<Element>) => void",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "variant",
+          "type": "enum",
+          "required": false,
+          "defaultValue": "default",
+          "description": ""
+        },
+        {
+          "name": "renderMention",
+          "type": "((mention: MentionMatch) => ReactNode) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "mentionPrefix",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "customMentionComponent",
+          "type": "ComponentType<MentionProps> | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "editor",
+          "type": "ReactEditor",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "footer",
+          "type": "ReactNode",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "hasFooter",
+          "type": "boolean",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "hasHeader",
+          "type": "boolean",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "minHeight",
+          "type": "number",
+          "required": false,
+          "defaultValue": "80",
+          "description": ""
+        },
+        {
+          "name": "slateValue",
+          "type": "Descendant[]",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "ref",
+          "type": "((instance: HTMLDivElement | null) => void) | RefObject<HTMLDivElement> | null | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "Mention",
+      "description": "",
+      "props": [
+        {
+          "name": "mentionPrefix",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "renderMention",
+          "type": "((mention: MentionMatch) => ReactNode) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "variant",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "useMentions",
+      "description": "",
+      "props": [
+        {
+          "name": "editor",
+          "type": "ContextEditor",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "maxSuggestions",
+          "type": "number | undefined",
+          "required": false,
+          "defaultValue": "10",
+          "description": ""
+        },
+        {
+          "name": "mentionPrefix",
+          "type": "string | undefined",
+          "required": false,
+          "defaultValue": "@",
+          "description": ""
+        },
+        {
+          "name": "onMentionSelect",
+          "type": "((mention: MentionItem, trigger: string) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onSearchClose",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "triggers",
+          "type": "MentionTrigger[]",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "useSlateEditor",
+      "description": "",
+      "props": []
+    },
+    {
+      "displayName": "useContextInput",
+      "description": "",
+      "props": [
+        {
+          "name": "autoFocus",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "editor",
+          "type": "ContextEditor | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "((value: ContextInputValue) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "value",
+          "type": "ContextInputValue | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "Context",
+      "description": "Context lets components pass information deep down without explicitly\npassing props.\n\nCreated from {@link createContext}",
+      "props": []
+    },
+    {
+      "displayName": "convertSlateToText",
+      "description": "将SlateJS节点数组转换为字符串\nmention节点转换为 {{#context#}}{{#id.text#}} 格式",
+      "props": []
+    },
+    {
+      "displayName": "convertTextToSlate",
+      "description": "将字符串转换为SlateJS节点数组\n支持解析 {{#context#}}{{#id.text#}} 格式为mention节点",
+      "props": []
+    },
+    {
+      "displayName": "convertTextToSlateWithResolver",
+      "description": "高级版本：支持异步解析mention信息",
+      "props": []
+    },
+    {
+      "displayName": "extractTextWithMentions",
+      "description": "",
+      "props": []
+    },
+    {
+      "displayName": "shouldInsertSpaceBefore",
+      "description": "检查是否需要在当前位置前面添加空格",
+      "props": []
+    },
+    {
+      "displayName": "shouldInsertSpaceAfter",
+      "description": "检查是否需要在当前位置后面添加空格",
+      "props": []
+    },
+    {
+      "displayName": "insertSpaceBeforeIfNeeded",
+      "description": "在当前位置智能插入空格（前导空格）",
+      "props": []
+    },
+    {
+      "displayName": "insertSpaceAfterIfNeeded",
+      "description": "在当前位置智能插入空格（后导空格）",
+      "props": []
+    },
+    {
+      "displayName": "insertWithSmartSpacing",
+      "description": "为 mention 插入智能间距\n这个函数会在插入 mention 前后根据上下文智能添加空格",
+      "props": []
+    },
+    {
+      "displayName": "contextInputTv",
+      "description": "",
+      "props": [
+        {
+          "name": "hasHeader",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "hasFooter",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "size",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "variant",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "selected",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "class",
+          "type": "ClassNameValue",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "ClassNameValue",
+          "required": false,
+          "description": ""
+        }
+      ]
+    }
+  ],
   "stories": [
     {
       "id": "forms-contextinput--basic",
@@ -82,7 +658,7 @@
       "id": "forms-contextinput--read-only",
       "name": "Read Only",
       "exportName": "ReadOnly",
-      "description": "",
+      "description": "ReadOnly: Demonstrates the ContextInput component in readOnly mode.\n- Prevents value changes while allowing focus and selection\n- Maintains normal visual appearance (unlike disabled)\n- Useful for displaying non-editable context input information",
       "source": "import { ContextInput } from \"@choice-ui/context-input\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <div className=\"rounded-xl border bg-stone-50 p-4\">\n        <div className=\"text-body-small-strong mb-2 text-stone-700\">Current Value:</div>\n        <div className=\"text-body-small font-mono text-stone-600\">{value.text || \"(empty)\"}</div>\n        <div className=\"text-body-small-strong mt-2 text-stone-700\">Mentions Count:</div>\n        <div className=\"text-body-small font-mono text-stone-600\">{value.mentions.length}</div>\n        <div className=\"text-body-small-strong mt-2 text-stone-700\">Change Count:</div>\n        <div className=\"text-body-small font-mono text-stone-600\">{changeCount}</div>\n      </div>\n      <div className=\"w-full max-w-md\">\n        <ContextInput\n          readOnly\n          value={value}\n          placeholder=\"Type @ to mention someone...\"\n          className=\"max-h-96 w-80\"\n          triggers={[\n            {\n              char: \"@\",\n              onSearch: async (query) => {\n                return users.filter((user) =>\n                  user.label.toLowerCase().includes(query.toLowerCase()),\n                )\n              },\n            },\n          ]}\n          onChange={handleChange}\n          onMentionSelect={(mention, trigger) => {\n            console.log(\"Mention selected:\", mention, trigger)\n          }}\n        />\n        <CodeBlock language=\"tsx\">\n          <CodeBlock.Content code={value.text} />\n        </CodeBlock>\n      </div>\n      <div className=\"w-full max-w-md\">\n        <ContextInput\n          value={value}\n          placeholder=\"Type @ to mention someone...\"\n          className=\"max-h-96 w-80\"\n          triggers={[\n            {\n              char: \"@\",\n              onSearch: async (query) => {\n                return users.filter((user) =>\n                  user.label.toLowerCase().includes(query.toLowerCase()),\n                )\n              },\n            },\n          ]}\n          onChange={handleChange}\n          onMentionSelect={(mention, trigger) => {\n            console.log(\"Mention selected:\", mention, trigger)\n          }}\n        />\n        <CodeBlock language=\"tsx\">\n          <CodeBlock.Content code={value.text} />\n        </CodeBlock>\n      </div>\n      <div className=\"text-body-small text-stone-600\">\n        💡 Try editing the readonly context input - the value should not change and the change\n        count should remain at 0. Only the normal input will change the value.\n      </div>\n    </div>\n  );\n}"
     },
     {
@@ -103,92 +679,95 @@
       "id": "forms-contextinput--min-height",
       "name": "Min Height",
       "exportName": "MinHeight",
-      "description": "",
+      "description": "MinHeight: Context input with custom minimum height.\n- Set minHeight prop to control initial height\n- Useful for ensuring consistent layout\n- Input will grow beyond minHeight if needed\n\n```tsx\n<ContextInput\n  minHeight={128}\n  size=\"large\"\n  value={value}\n  placeholder=\"Min height 128px...\"\n  triggers={triggers}\n  onChange={setValue}\n/>\n```",
       "source": "import { ContextInput } from \"@choice-ui/context-input\"\n\nexport default function App() {\n  return (\n    <div className=\"w-full max-w-md\">\n      <ContextInput\n        minHeight={128}\n        size=\"large\"\n        value={value}\n        placeholder=\"Min height 128\"\n        className=\"max-h-96 w-80\"\n        triggers={[\n          {\n            char: \"@\",\n            onSearch: async (query) => {\n              return users.filter((user) =>\n                user.label.toLowerCase().includes(query.toLowerCase()),\n              )\n            },\n          },\n        ]}\n        onChange={setValue}\n        onMentionSelect={(mention, trigger) => {\n          console.log(\"Mention selected:\", mention, trigger)\n        }}\n      />\n\n      <CodeBlock language=\"tsx\">\n        <CodeBlock.Content code={value.text} />\n      </CodeBlock>\n    </div>\n  );\n}"
     },
     {
       "id": "forms-contextinput--with-header",
       "name": "With Header",
       "exportName": "WithHeader",
-      "description": "",
+      "description": "WithHeader: Context input with custom header section.\n- Header section automatically inherits size prop\n- Useful for titles, actions, or additional controls\n- Header content can include buttons and text\n\n```tsx\n<ContextInput value={value} onChange={setValue}>\n  <ContextInput.Header>\n    <h3>Header Title</h3>\n    <IconButton>\n      <ExpandSmall />\n    </IconButton>\n  </ContextInput.Header>\n</ContextInput>\n```",
       "source": "import { ContextInput } from \"@choice-ui/context-input\"\n\nexport default function App() {\n  return (\n    <div className=\"w-full max-w-md\">\n      <ContextInput\n        size=\"large\"\n        value={value}\n        placeholder=\"Type @ to mention someone...\"\n        className=\"max-h-96 w-80\"\n        triggers={[\n          {\n            char: \"@\",\n            onSearch: async (query) => {\n              return users.filter((user) =>\n                user.label.toLowerCase().includes(query.toLowerCase()),\n              )\n            },\n          },\n        ]}\n        onChange={setValue}\n        onMentionSelect={(mention, trigger) => {\n          console.log(\"Mention selected:\", mention, trigger)\n        }}\n      >\n        <ContextInput.Header>\n          <h3 className=\"font-strong\">Header</h3>\n          <IconButton\n            tooltip={{\n              content: \"Expand\",\n            }}\n          >\n            <ExpandSmall />\n          </IconButton>\n        </ContextInput.Header>\n      </ContextInput>\n\n      <CodeBlock language=\"tsx\">\n        <CodeBlock.Content code={value.text} />\n      </CodeBlock>\n    </div>\n  );\n}"
     },
     {
       "id": "forms-contextinput--with-footer",
       "name": "With Footer",
       "exportName": "WithFooter",
-      "description": "",
+      "description": "WithFooter: Context input with custom footer section.\n- Footer section automatically inherits size prop\n- Ideal for action buttons, status indicators, or character counts\n- Supports complex footer layouts\n\n```tsx\n<ContextInput value={value} onChange={setValue}>\n  <ContextInput.Footer>\n    <div className=\"flex gap-2\">\n      <IconButton><AddSmall /></IconButton>\n      <IconButton><Image /></IconButton>\n    </div>\n    <span>Status text</span>\n  </ContextInput.Footer>\n</ContextInput>\n```",
       "source": "import { ContextInput } from \"@choice-ui/context-input\"\n\nexport default function App() {\n  return (\n    <ContextInput\n      size=\"large\"\n      ref={inputRef}\n      value={value}\n      placeholder=\"Type @ to mention someone...\"\n      className=\"max-h-96 w-80\"\n      triggers={[\n        {\n          char: \"@\",\n          onSearch: async (query) => {\n            await new Promise((resolve) => setTimeout(resolve, 10))\n            return users.filter((user) => user.label.toLowerCase().includes(query.toLowerCase()))\n          },\n        },\n      ]}\n      onChange={setValue}\n      onMentionSelect={(mention, trigger) => {\n        console.log(\"Mention selected:\", mention, trigger)\n      }}\n    >\n      <ContextInput.Footer>\n        <div className=\"flex items-center gap-2\">\n          <IconButton\n            tooltip={{\n              content: \"Expand\",\n            }}\n          >\n            <AddSmall />\n          </IconButton>\n          <IconButton\n            tooltip={{\n              content: \"Expand\",\n            }}\n          >\n            <Image />\n          </IconButton>\n        </div>\n        <div className=\"flex items-center gap-2\">\n          <span className=\"text-secondary-foreground\">Claude Sonnet 4</span>\n          <IconButton\n            className=\"bg-accent-background text-on-accent-foreground hover:bg-accent-background rounded-full\"\n            tooltip={{\n              content: \"Expand\",\n            }}\n          >\n            <ArrowUp />\n          </IconButton>\n        </div>\n      </ContextInput.Footer>\n    </ContextInput>\n  );\n}"
     },
     {
       "id": "forms-contextinput--max-length",
       "name": "Max Length",
       "exportName": "MaxLength",
-      "description": "",
+      "description": "MaxLength: Context input with character limit enforcement.\n- Set maxLength prop to limit input characters\n- Prevents typing/pasting beyond the limit\n- Character count display shows current/max length\n- Visual indicator when approaching limit\n\n```tsx\n<ContextInput\n  maxLength={100}\n  value={value}\n  onChange={setValue}\n>\n  <ContextInput.Footer>\n    <span className={value.text.length === 100 ? \"text-red-500\" : \"\"}>\n      {value.text.length}/100\n    </span>\n  </ContextInput.Footer>\n</ContextInput>\n```",
       "source": "import { ContextInput } from \"@choice-ui/context-input\"\n\nexport default function App() {\n  return (\n    <ContextInput\n      size=\"large\"\n      maxLength={100}\n      ref={inputRef}\n      value={value}\n      placeholder=\"Type @ to mention someone...\"\n      className=\"max-h-96 w-80\"\n      triggers={[\n        {\n          char: \"@\",\n          onSearch: async (query) => {\n            await new Promise((resolve) => setTimeout(resolve, 10))\n            return users.filter((user) => user.label.toLowerCase().includes(query.toLowerCase()))\n          },\n        },\n      ]}\n      onChange={setValue}\n      onMentionSelect={(mention, trigger) => {\n        console.log(\"Mention selected:\", mention, trigger)\n      }}\n    >\n      <ContextInput.Footer>\n        <div className=\"flex items-center gap-2\">\n          <IconButton\n            tooltip={{\n              content: \"Expand\",\n            }}\n          >\n            <AddSmall />\n          </IconButton>\n          <IconButton\n            tooltip={{\n              content: \"Expand\",\n            }}\n          >\n            <Image />\n          </IconButton>\n        </div>\n        <div className=\"flex items-center gap-2\">\n          <span\n            className={tcx(\n              value.text.length === 100 ? \"text-danger-foreground\" : \"text-secondary-foreground\",\n            )}\n          >\n            {value.text.length}/100\n          </span>\n        </div>\n      </ContextInput.Footer>\n    </ContextInput>\n  );\n}"
     },
     {
       "id": "forms-contextinput--max-suggestions",
       "name": "Max Suggestions",
       "exportName": "MaxSuggestions",
-      "description": "",
+      "description": "MaxSuggestions: Context input with limited suggestion count.\n- Set maxSuggestions prop to limit displayed options\n- Useful for keeping suggestion lists manageable\n- Search results are truncated to the specified limit\n\n```tsx\n<ContextInput\n  maxSuggestions={3}\n  value={value}\n  placeholder=\"Max 3 suggestions\"\n  triggers={triggers}\n  onChange={setValue}\n/>\n```",
       "source": "import { ContextInput } from \"@choice-ui/context-input\"\n\nexport default function App() {\n  return (\n    <ContextInput\n      size=\"large\"\n      maxSuggestions={3}\n      ref={inputRef}\n      value={value}\n      placeholder=\"Max suggestions 3\"\n      className=\"max-h-96 w-80\"\n      triggers={[\n        {\n          char: \"@\",\n          onSearch: async (query) => {\n            await new Promise((resolve) => setTimeout(resolve, 10))\n            return users.filter((user) => user.label.toLowerCase().includes(query.toLowerCase()))\n          },\n        },\n      ]}\n      onChange={setValue}\n      onMentionSelect={(mention, trigger) => {\n        console.log(\"Mention selected:\", mention, trigger)\n      }}\n    />\n  );\n}"
     },
     {
       "id": "forms-contextinput--with-header-and-footer",
       "name": "With Header And Footer",
       "exportName": "WithHeaderAndFooter",
-      "description": "",
+      "description": "WithHeaderAndFooter: Context input with both header and footer sections.\n- Combines header and footer functionality\n- Both sections inherit size prop automatically\n- Includes built-in copy and mention insert buttons\n- Perfect for complex input scenarios\n\n```tsx\n<ContextInput value={value} onChange={setValue}>\n  <ContextInput.Header>\n    <h3>Title</h3>\n    <div className=\"flex gap-2\">\n      <ContextInput.InsertMentionsButton />\n      <ContextInput.CopyButton />\n    </div>\n  </ContextInput.Header>\n  <ContextInput.Footer>\n    <div>Footer content</div>\n  </ContextInput.Footer>\n</ContextInput>\n```",
       "source": "import { ContextInput } from \"@choice-ui/context-input\"\n\nexport default function App() {\n  return (\n    <ContextInput\n      size=\"large\"\n      ref={inputRef}\n      value={value}\n      placeholder=\"Type @ to mention someone...\"\n      className=\"max-h-96 w-80\"\n      triggers={[\n        {\n          char: \"@\",\n          onSearch: async (query) => {\n            await new Promise((resolve) => setTimeout(resolve, 10))\n            return users.filter((user) => user.label.toLowerCase().includes(query.toLowerCase()))\n          },\n        },\n      ]}\n      onChange={setValue}\n      onMentionSelect={(mention, trigger) => {\n        console.log(\"Mention selected:\", mention, trigger)\n      }}\n    >\n      <ContextInput.Header>\n        <h3>Header</h3>\n        <div className=\"flex items-center gap-2\">\n          <ContextInput.InsertMentionsButton\n            tooltip={{\n              content: \"Insert @\",\n            }}\n            onClick={() => console.log(\"Insert @ clicked\")}\n          />\n          <ContextInput.CopyButton\n            tooltip={{\n              content: \"Copy\",\n            }}\n            onClick={(copiedText) => {\n              console.log(\"Copied text:\", copiedText)\n            }}\n          />\n          <IconButton\n            tooltip={{\n              content: \"Expand\",\n            }}\n          >\n            <ExpandSmall />\n          </IconButton>\n        </div>\n      </ContextInput.Header>\n      <ContextInput.Footer>\n        <div className=\"flex items-center gap-2\">\n          <IconButton\n            tooltip={{\n              content: \"Expand\",\n            }}\n          >\n            <AddSmall />\n          </IconButton>\n          <IconButton\n            tooltip={{\n              content: \"Expand\",\n            }}\n          >\n            <Image />\n          </IconButton>\n        </div>\n        <div className=\"flex items-center gap-2\">\n          <span className=\"text-secondary-foreground\">Claude Sonnet 4</span>\n          <IconButton\n            className=\"bg-accent-background text-on-accent-foreground hover:bg-accent-background rounded-full\"\n            tooltip={{\n              content: \"Expand\",\n            }}\n          >\n            <ArrowUp />\n          </IconButton>\n        </div>\n      </ContextInput.Footer>\n    </ContextInput>\n  );\n}"
     },
     {
       "id": "forms-contextinput--with-paste-button",
       "name": "With Paste Button",
       "exportName": "WithPasteButton",
-      "description": "",
+      "description": "WithPasteButton: Context input with copy button functionality.\n- Copy button extracts text including mention placeholders\n- Demonstrates format conversion for external use\n- Integration with AlertDialog for confirmation\n- Shows mention data transformation\n\n```tsx\n<ContextInput value={value} onChange={setValue}>\n  <ContextInput.Header>\n    <h3>Input content</h3>\n    <ContextInput.CopyButton\n      onClick={(copiedText) => {\n        console.log(\"Copied:\", copiedText)\n      }}\n    />\n  </ContextInput.Header>\n</ContextInput>\n```",
       "source": "import { ContextInput } from \"@choice-ui/context-input\"\n\nexport default function App() {\n  return (\n    <div className=\"w-full max-w-md space-y-4\">\n      <ContextInput\n        value={value}\n        placeholder=\"Type @ to mention someone...\"\n        className=\"max-h-96 w-80\"\n        triggers={[\n          {\n            char: \"@\",\n            onSearch: async (query) => {\n              return users.filter((user) =>\n                user.label.toLowerCase().includes(query.toLowerCase()),\n              )\n            },\n          },\n        ]}\n        onChange={setValue}\n      >\n        <ContextInput.Header>\n          <div className=\"flex items-center justify-between\">\n            <h3 className=\"font-strong\">Input content</h3>\n            <ContextInput.CopyButton\n              onClick={async (copiedText) => {\n                const confirmed = await confirm({\n                  title: \"Paste\",\n                  description: copiedText,\n                })\n                if (confirmed) {\n                  setCopiedText(copiedText)\n                }\n              }}\n            />\n          </div>\n        </ContextInput.Header>\n      </ContextInput>\n    </div>\n  );\n}"
     },
     {
       "id": "forms-contextinput--multiple-triggers",
       "name": "Multiple Triggers",
       "exportName": "MultipleTriggers",
-      "description": "",
+      "description": "MultipleTriggers: Context input with multiple mention triggers.\n- Use @ to mention users and / to mention channels\n- Different search functions for each trigger type\n- Demonstrates versatile mention system\n- Clear visual instructions for users\n\n```tsx\n<ContextInput\n  value={value}\n  placeholder=\"Try @ for users, / for channels...\"\n  triggers={[\n    {\n      char: \"@\",\n      onSearch: async (query) => searchUsers(query)\n    },\n    {\n      char: \"/\",\n      onSearch: async (query) => searchChannels(query)\n    }\n  ]}\n  onChange={setValue}\n/>\n```",
       "source": "import { ContextInput } from \"@choice-ui/context-input\"\n\nexport default function App() {\n  return (\n    <div className=\"w-full max-w-md\">\n      <ContextInput\n        className=\"max-h-96 w-80\"\n        value={value}\n        placeholder=\"Try @ for users, / for channels...\"\n        triggers={[\n          {\n            char: \"@\",\n            onSearch: async (query) => {\n              return users.filter((user) =>\n                user.label.toLowerCase().includes(query.toLowerCase()),\n              )\n            },\n          },\n          {\n            char: \"/\",\n            onSearch: async (query) => {\n              return channels.filter((channel) =>\n                channel.label.toLowerCase().includes(query.toLowerCase()),\n              )\n            },\n          },\n        ]}\n        onChange={setValue}\n        onMentionSelect={(mention, trigger) => {\n          console.log(\"Selected:\", mention.label, \"via\", trigger)\n        }}\n      />\n\n      <div className=\"bg-secondary-background mt-4 rounded-xl p-4\">\n        <p className=\"font-strong\">Instructions:</p>\n        <ul className=\"text-secondary-foreground mt-2 space-y-1\">\n          <li>\n            • Type <code>@</code> to mention users\n          </li>\n          <li>\n            • Type <code>/</code> to mention channels\n          </li>\n          <li>• Use arrow keys to navigate</li>\n          <li>• Press Enter or Tab to select</li>\n        </ul>\n      </div>\n    </div>\n  );\n}"
     },
     {
       "id": "forms-contextinput--custom-mention-prefix",
       "name": "Custom Mention Prefix",
       "exportName": "CustomMentionPrefix",
-      "description": "",
+      "description": "CustomMentionPrefix: Demonstrates customizable mention prefix.\n- Use # instead of @ for mentions\n- Configurable via mentionPrefix prop\n- Supports any string as prefix (e.g., \"+\", \"~\", \"#\", etc.)\n- Useful for different contexts like hashtags or custom notations\n\n```tsx\n<ContextInput\n  mentionPrefix=\"#\"\n  placeholder=\"Type @ to mention with # prefix...\"\n  triggers={[\n    {\n      char: \"@\",\n      onSearch: async (query) => searchUsers(query)\n    }\n  ]}\n/>\n```",
       "source": "import { ContextInput } from \"@choice-ui/context-input\"\n\nexport default function App() {\n  return (\n    <div className=\"w-full max-w-md space-y-4\">\n      <ContextInput\n        value={value}\n        mentionPrefix=\"#\"\n        placeholder=\"Type @ to mention someone with # prefix...\"\n        className=\"max-h-96 w-80\"\n        triggers={[\n          {\n            char: \"@\",\n            onSearch: async (query) => {\n              return users.filter((user) =>\n                user.label.toLowerCase().includes(query.toLowerCase()),\n              )\n            },\n          },\n        ]}\n        onChange={setValue}\n      />\n\n      <div className=\"bg-secondary-background rounded-xl p-4\">\n        <p className=\"font-strong\">Custom Prefix: #</p>\n        <p className=\"text-secondary-foreground mt-2\">\n          Mentions will appear as <code>#JohnDoe</code> instead of <code>@JohnDoe</code>\n        </p>\n      </div>\n\n      <CodeBlock language=\"tsx\">\n        <CodeBlock.Content code={value.text} />\n      </CodeBlock>\n    </div>\n  );\n}"
     },
     {
       "id": "forms-contextinput--clear-function-test",
       "name": "Clear Function Test",
       "exportName": "ClearFunctionTest",
-      "description": "",
+      "description": "**Clear Function Test**\n- Test the clear function of the context input\n- Click the clear button to clear the input\n- The input should be cleared and the value should be an empty object",
       "source": "import { ContextInput } from \"@choice-ui/context-input\"\n\nexport default function App() {\n  return (\n    <div className=\"w-80 space-y-4\">\n      <Button\n        variant=\"secondary\"\n        onClick={handleClear}\n      >\n        Clear\n      </Button>\n\n      <div className=\"text-secondary-foreground\">\n        Input some content and click the clear button to test the clear function\n      </div>\n\n      <ContextInput\n        className=\"max-h-96 w-80 rounded-lg border border-gray-300\"\n        value={value}\n        placeholder=\"Input some content and click the clear button to test...\"\n        triggers={[\n          {\n            char: \"@\",\n            onSearch: async (query) => {\n              return users.filter((user) =>\n                user.label.toLowerCase().includes(query.toLowerCase()),\n              )\n            },\n          },\n          {\n            char: \"/\",\n            onSearch: async (query) => {\n              return channels.filter((channel) =>\n                channel.label.toLowerCase().includes(query.toLowerCase()),\n              )\n            },\n          },\n        ]}\n        onChange={setValue}\n        onMentionSelect={(mention, trigger) => {\n          console.log(\"Selected:\", mention.label, \"via\", trigger)\n        }}\n      />\n    </div>\n  );\n}"
     },
     {
       "id": "forms-contextinput--controlled-value",
       "name": "Controlled Value",
       "exportName": "ControlledValue",
-      "description": "",
+      "description": "ControlledValue: Context input with external value control.\n- Demonstrates controlled value state management\n- External buttons can modify input content and mentions\n- Shows programmatic content insertion and clearing\n- Auto-focuses editor when value changes externally (when autoFocus is enabled)\n- Cursor always moves to end position after value changes\n- Useful for form integration and external state management\n\n```tsx\nconst [value, setValue] = useState<ContextInputValue>({ text: \"\", mentions: [] })\n\n<ContextInput\n  value={value}\n  autoFocus\n  onChange={setValue}\n  triggers={triggers}\n/>\n\n<Button onClick={() => setValue({ text: \"Hello world!\", mentions: [] })}>\n  Set Content\n</Button>\n```",
       "source": "import { ContextInput } from \"@choice-ui/context-input\"\n\nexport default function App() {\n  return (\n    <div className=\"w-full max-w-md space-y-4\">\n      <div className=\"space-y-2\">\n        <h4 className=\"font-strong\">Value Control Buttons</h4>\n        <div className=\"flex flex-wrap gap-2\">\n          {presetValues.map((preset) => (\n            <Button\n              key={preset.label}\n              variant=\"secondary\"\n              size=\"default\"\n              onClick={() => setValue(preset.value)}\n            >\n              {preset.label}\n            </Button>\n          ))}\n        </div>\n      </div>\n\n      <div className=\"space-y-2\">\n        <h4 className=\"font-strong\">Dynamic Actions</h4>\n        <div className=\"flex flex-wrap gap-2\">\n          <Button\n            variant=\"secondary\"\n            size=\"default\"\n            onClick={() => appendText(\"Great job!\")}\n          >\n            Add &quot;Great job!&quot;\n          </Button>\n          <Button\n            variant=\"secondary\"\n            size=\"default\"\n            onClick={() => appendText(\"👍\")}\n          >\n            Add 👍\n          </Button>\n\n          <Button\n            variant=\"secondary\"\n            size=\"default\"\n            onClick={() =>\n              setValue({\n                text: \"Hello @john, check this @admin message!\",\n                mentions: [\n                  {\n                    item: {\n                      id: \"john\",\n                      type: \"user\",\n                      label: \"John Doe\",\n                      metadata: {},\n                    },\n                    startIndex: 6,\n                    endIndex: 11,\n                    text: \"@john\",\n                    context: {\n                      fullContext: \"Hello @john, check this @admin message!\",\n                      mentionText: \"@john\",\n                    },\n                  },\n                  {\n                    item: {\n                      id: \"admin\",\n                      type: \"user\",\n                      label: \"Admin\",\n                      metadata: {},\n                    },\n                    startIndex: 24,\n                    endIndex: 30,\n                    text: \"@admin\",\n                    context: {\n                      fullContext: \"Hello @john, check this @admin message!\",\n                      mentionText: \"@admin\",\n                    },\n                  },\n                ],\n              })\n            }\n          >\n            Test Multiple @\n          </Button>\n          <Button\n            variant=\"secondary\"\n            size=\"default\"\n            onClick={() => setValue({ text: faker.lorem.sentence(), mentions: [] })}\n          >\n            Random Text\n          </Button>\n          <Button\n            variant=\"secondary\"\n            size=\"default\"\n            onClick={() => setValue({ text: \"Hello world!\", mentions: [] })}\n          >\n            Simple Text\n          </Button>\n          <Button\n            variant=\"secondary\"\n            size=\"default\"\n            onClick={() => {\n              const text = \"Simple text with @user at end\"\n              const mentionText = \"@user\"\n              const startIndex = text.indexOf(mentionText)\n              const endIndex = startIndex + mentionText.length\n\n              setValue({\n                text: text,\n                mentions: [\n                  {\n                    item: {\n                      id: \"test\",\n                      type: \"user\",\n                      label: \"Test User\",\n                      metadata: {},\n                    },\n                    startIndex: startIndex,\n                    endIndex: endIndex,\n                    text: mentionText,\n                    context: {\n                      fullContext: text,\n                      mentionText: mentionText,\n                    },\n                  },\n                ],\n              })\n            }}\n          >\n            Test End @\n          </Button>\n        </div>\n      </div>\n\n      <ContextInput\n        value={value}\n        autoFocus\n        placeholder=\"Content is controlled externally...\"\n        className=\"max-h-96 w-80\"\n        triggers={[\n          {\n            char: \"@\",\n            onSearch: async (query) => {\n              return users.filter((user) =>\n                user.label.toLowerCase().includes(query.toLowerCase()),\n              )\n            },\n          },\n          {\n            char: \"/\",\n            onSearch: async (query) => {\n              return channels.filter((channel) =>\n                channel.label.toLowerCase().includes(query.toLowerCase()),\n              )\n            },\n          },\n        ]}\n        onChange={setValue}\n        onMentionSelect={(mention, trigger) => {\n          console.log(\"Mention selected:\", mention, trigger)\n        }}\n      >\n        <ContextInput.Footer>\n          <div className=\"flex items-center gap-2\">\n            <span className=\"text-secondary-foreground text-body-small\">\n              Characters: {value.text.length}\n            </span>\n            <span className=\"text-secondary-foreground text-body-small\">\n              Mentions: {value.mentions.length}\n            </span>\n          </div>\n          <Button\n            variant=\"secondary\"\n            size=\"default\"\n            onClick={() => setValue({ text: \"\", mentions: [] })}\n          >\n            Clear All\n          </Button>\n        </ContextInput.Footer>\n      </ContextInput>\n\n      <CodeBlock language=\"tsx\">\n        <CodeBlock.Content code={value.text} />\n      </CodeBlock>\n\n      <div className=\"bg-secondary-background rounded-xl p-4\">\n        <p className=\"font-strong mb-2\">Controlled Value Features:</p>\n        <ul className=\"text-secondary-foreground text-body-small space-y-1\">\n          <li>• External buttons control input content</li>\n          <li>• Programmatic mention insertion</li>\n          <li>• Real-time character and mention counts</li>\n          <li>• Preset content examples</li>\n          <li>• Full bidirectional data binding</li>\n          <li>\n            • <strong>Auto-focus:</strong> Editor auto-focuses when autoFocus is enabled\n          </li>\n          <li>\n            • <strong>Cursor positioning:</strong> Always moves to end after value changes\n          </li>\n        </ul>\n      </div>\n    </div>\n  );\n}"
     },
     {
       "id": "forms-contextinput--custom-mention-component",
       "name": "Custom Mention Component",
       "exportName": "CustomMentionComponent",
-      "description": "",
+      "description": "Custom Mention Component example showing how to use ContextInput.Mention for customization",
       "source": "import { ContextInput } from \"@choice-ui/context-input\"\n\nexport default function App() {\n  return (\n    <span\n      {...attributes}\n      contentEditable={false}\n      className={tcx(\n        \"inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium\",\n        \"bg-gradient-to-r from-purple-500 to-pink-500 text-white\",\n        \"border border-white/20 shadow-sm\",\n      )}\n    >\n      {children}\n      <span className=\"text-white/80\">{mentionElement.mentionPrefix || mentionPrefix}</span>\n      <span className=\"font-semibold\">{mentionElement.mentionLabel}</span>\n      <span className=\"ml-1 text-white/60\">✨</span>\n    </span>\n  );\n}"
     },
     {
       "id": "forms-contextinput--imperative-focus",
       "name": "Imperative Focus",
       "exportName": "ImperativeFocus",
-      "description": "",
+      "description": "Imperative Focus: Demonstrates how to programmatically focus the input using ref.\n- Use ref to get access to the focus method\n- Call ref.current.focus() to focus the input from outside",
       "source": "import { ContextInput } from \"@choice-ui/context-input\"\n\nexport default function App() {\n  return (\n    <div className=\"flex w-[500px] flex-col gap-4\">\n      <div className=\"flex items-center gap-2\">\n        <Button\n          variant=\"secondary\"\n          size=\"default\"\n          onClick={handleFocusClick}\n        >\n          Focus Input\n        </Button>\n        <span className=\"text-body-small text-fg-subtle\">\n          Click button to focus the input below\n        </span>\n      </div>\n\n      <ContextInput\n        ref={inputRef}\n        placeholder=\"This input can be focused programmatically...\"\n        triggers={[\n          {\n            char: \"@\",\n            onSearch: async (query: string) => {\n              return users.filter((user) =>\n                user.label.toLowerCase().includes(query.toLowerCase()),\n              )\n            },\n          },\n        ]}\n      >\n        <ContextInput.Footer>\n          <div className=\"flex items-center justify-between\">\n            <span className=\"text-body-small text-fg-subtle\">\n              Use ref.current.focus() to focus programmatically\n            </span>\n          </div>\n        </ContextInput.Footer>\n      </ContextInput>\n    </div>\n  );\n}"
     }
+  ],
+  "tags": [
+    "beta"
   ]
 }

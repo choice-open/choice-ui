@@ -37,7 +37,420 @@
   ],
   "props": [
     {
-      "displayName": "NumericInput",
+      "displayName": "NumericInputElement",
+      "description": "",
+      "props": [
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "position",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "type",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "ref",
+          "type": "((instance: HTMLDivElement | null) => void) | RefObject<HTMLDivElement> | null | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "NumericInputMenuTrigger",
+      "description": "",
+      "props": [
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "type",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "size",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "as",
+          "type": "ElementType<any, keyof IntrinsicElements> | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "readOnly",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "active",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "asChild",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "focused",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "loading",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "tooltip",
+          "type": "TooltipProps | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "variant",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "NumericInputMenuActionPrompt",
+      "description": "",
+      "props": [
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "NumericInputVariable",
+      "description": "",
+      "props": [
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "hasPrefixElement",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onClick",
+          "type": "((e: MouseEvent<HTMLDivElement, MouseEvent>) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "value",
+          "type": "number | null | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "useNumericInput",
+      "description": "数值输入控件的主钩子，整合各种交互功能",
+      "props": [
+        {
+          "name": "containerRef",
+          "type": "RefObject<HTMLElement> | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "decimal",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "defaultValue",
+          "type": "NumericInputValue | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "expression",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "max",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "min",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "((value: T, obj: NumberResult) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onEmpty",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onPressEnd",
+          "type": "(((event: PressEvent) => void) & ((e: PointerEvent) => void)) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onPressStart",
+          "type": "(((event: PressEvent) => void) & ((e: PointerEvent) => void)) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "readOnly",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "ref",
+          "type": "Ref<HTMLInputElement> | undefined",
+          "required": false,
+          "description": "Allows getting a ref to the component instance.\nOnce the component unmounts, React will set `ref.current` to `null`\n(or call the ref with `null` if you passed a callback ref)."
+        },
+        {
+          "name": "shiftStep",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "step",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "value",
+          "type": "NumericInputValue | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "useStepCalculation",
+      "description": "计算数值步进大小的钩子",
+      "props": []
+    },
+    {
+      "displayName": "useNumericValueProcessing",
+      "description": "处理数值输入和转换的钩子",
+      "props": [
+        {
+          "name": "decimal",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "defaultValue",
+          "type": "NumericInputValue | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "expression",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "max",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "min",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "value",
+          "type": "NumericInputValue | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "useInputInteractions",
+      "description": "处理输入框交互的钩子",
+      "props": [
+        {
+          "name": "decimal",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "displayValue",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "expression",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "getCurrentStep",
+          "type": "() => number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "innerValue",
+          "type": "NumberResult | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "inputRef",
+          "type": "RefObject<HTMLInputElement>",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "isFocused",
+          "type": "boolean",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "max",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "min",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "((value: T, detail: NumberResult) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onEmpty",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "readOnly",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "setDisplayValue",
+          "type": "(value: string) => void",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "setIsFocused",
+          "type": "(focused: boolean) => void",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "setValue",
+          "type": "(value: NumberResult | ((prev: NumberResult | undefined) => NumberResult)) => void",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "updateValue",
+          "type": "(updateFn?: ((value: number) => number) | undefined) => void",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "value",
+          "type": "NumericInputValue | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "NumericInputValue",
       "description": "",
       "props": [
         {
@@ -219,28 +632,28 @@
       "id": "forms-numericinput--prefix-and-suffix",
       "name": "Prefix And Suffix",
       "exportName": "PrefixAndSuffix",
-      "description": "",
+      "description": "Example showing NumericInput with both prefix and suffix elements.\nThis pattern is useful for providing complete context around a value.",
       "source": "import { NumericInput } from \"@choice-ui/numeric-input\"\n\nexport default function App() {\n  return (\n    <NumericInput\n      value={value}\n      onChange={(newValue) => setValue(newValue as number)}\n    >\n      <NumericInput.Prefix>\n        <HugWidth />\n      </NumericInput.Prefix>\n      <NumericInput.Suffix>\n        <Relative />\n      </NumericInput.Suffix>\n    </NumericInput>\n  );\n}"
     },
     {
       "id": "forms-numericinput--suffix-menu",
       "name": "Suffix Menu",
       "exportName": "SuffixMenu",
-      "description": "",
+      "description": "Example demonstrating a NumericInput with a dropdown menu in the suffix.\nThis pattern allows additional actions to be performed on the input value.\nThe menu is triggered by a button in the suffix position.",
       "source": "import { NumericInput } from \"@choice-ui/numeric-input\"\n\nexport default function App() {\n  return (\n    <NumericInput\n      focused={menuOpen}\n      value={value}\n      onChange={(newValue) => setValue(newValue as number)}\n    >\n      <NumericInput.Suffix type=\"menu\">\n        <Dropdown\n          open={menuOpen}\n          onOpenChange={setMenuOpen}\n          placement=\"bottom\"\n        >\n          <Dropdown.Trigger asChild>\n            <IconButton className=\"rounded-l-none\">\n              <ChevronDownSmall />\n            </IconButton>\n          </Dropdown.Trigger>\n          <Dropdown.Content>\n            <Dropdown.Item>\n              <FixedHeight />\n              Fixed height\n            </Dropdown.Item>\n            <Dropdown.Item>\n              <HugHeight />\n              Hug contents\n            </Dropdown.Item>\n            <Dropdown.Divider />\n            <Dropdown.Item>\n              <MinHeight />\n              Add min height...\n            </Dropdown.Item>\n            <Dropdown.Item>\n              <MaxHeight />\n              Add max height...\n            </Dropdown.Item>\n          </Dropdown.Content>\n        </Dropdown>\n      </NumericInput.Suffix>\n    </NumericInput>\n  );\n}"
     },
     {
       "id": "forms-numericinput--suffix-action",
       "name": "Suffix Action",
       "exportName": "SuffixAction",
-      "description": "",
+      "description": "Example showing a NumericInput with an action in the suffix.\nAction suffixes allow changing the behavior or formatting of the input.\nThis example demonstrates a dropdown selector that changes the height behavior.",
       "source": "import { NumericInput } from \"@choice-ui/numeric-input\"\n\nexport default function App() {\n  return (\n    <NumericInput\n      focused={menuOpen}\n      value={value}\n      onChange={(newValue) => setValue(newValue as number)}\n    >\n      {menuValue !== \"fixed\" && (\n        <NumericInput.ActionPrompt>\n          {selectOptions.find((option) => option.value === menuValue)?.label?.split(\" \")[0]}\n        </NumericInput.ActionPrompt>\n      )}\n\n      <NumericInput.Suffix type=\"action\">\n        <Select\n          open={menuOpen}\n          onOpenChange={setMenuOpen}\n          value={menuValue}\n          onChange={(value) => setMenuValue(value)}\n          placement=\"bottom-end\"\n        >\n          <Select.Trigger asChild>\n            <IconButton className=\"rounded-l-none\">\n              <ChevronDownSmall />\n            </IconButton>\n          </Select.Trigger>\n          <Select.Content>\n            <Select.Item value=\"fixed\">\n              <FixedHeight />\n              Fixed height\n            </Select.Item>\n            <Select.Item value=\"hug\">\n              <HugHeight />\n              Hug contents\n            </Select.Item>\n            <Select.Divider />\n            <Select.Item value=\"min\">\n              <MinHeight />\n              Add min height...\n            </Select.Item>\n            <Select.Item value=\"max\">\n              <MaxHeight />\n              Add max height...\n            </Select.Item>\n          </Select.Content>\n        </Select>\n      </NumericInput.Suffix>\n    </NumericInput>\n  );\n}"
     },
     {
       "id": "forms-numericinput--add-variable",
       "name": "Add Variable",
       "exportName": "AddVariable",
-      "description": "",
+      "description": "Example demonstrating variable value support in NumericInput.\nVariables allow users to reference dynamic values instead of hardcoded numbers.\nThis example shows how to toggle between a concrete value and a variable reference.",
       "source": "import { NumericInput } from \"@choice-ui/numeric-input\"\n\nexport default function App() {\n  return (\n    <NumericInput\n      value={value}\n      onChange={handleChange}\n    >\n      <NumericInput.Prefix>\n        <FixedWidth />\n      </NumericInput.Prefix>\n\n      {variableValue && !value && <NumericInput.Variable value={variableValue} />}\n\n      <NumericInput.Suffix type=\"menu\">\n        <Dropdown>\n          <Dropdown.Trigger asChild>\n            <IconButton className=\"rounded-l-none\">\n              <Variable />\n            </IconButton>\n          </Dropdown.Trigger>\n          <Dropdown.Content>\n            <Dropdown.Item\n              onMouseUp={() => {\n                setVariableValue(10)\n                setValue(undefined)\n              }}\n            >\n              Add variable...\n            </Dropdown.Item>\n          </Dropdown.Content>\n        </Dropdown>\n      </NumericInput.Suffix>\n    </NumericInput>\n  );\n}"
     },
     {
@@ -275,29 +688,32 @@
       "id": "forms-numericinput--expression-calculation",
       "name": "Expression Calculation",
       "exportName": "ExpressionCalculation",
-      "description": "",
+      "description": "Example demonstrating the mathematical expression evaluation feature.\nThis shows how NumericInput can:\n1. Accept and evaluate mathematical expressions (e.g., 1+1)\n2. Compare calculation results with current value\n3. Only trigger onChange when the result differs from current value\n\nFor example:\n- When value is 2, entering \"2\" won't trigger onChange\n- When value is 2, entering \"1+1\" won't trigger onChange (same result)\n- When value is 2, entering \"3\" or \"1+2\" will trigger onChange (different result)",
       "source": "import { NumericInput } from \"@choice-ui/numeric-input\"\n\nexport default function App() {\n  return (\n    <div className=\"grid w-96 gap-4\">\n      <div className=\"flex flex-col gap-2\">\n        <h3 className=\"text-body-large-strong\">Mathematical Expression Test</h3>\n        <p className=\"text-secondary-foreground\">\n          Try entering different values and expressions to observe onChange event behavior:\n        </p>\n        <ul className=\"text-secondary-foreground list-disc pl-5\">\n          <li>\n            Current value is {value}, entering {value} won&apos;t trigger onChange\n          </li>\n          <li>\n            Current value is {value}, entering expressions that result in {value} (like{\" \"}\n            {value - 1}+1) won&apos;t trigger onChange\n          </li>\n          <li>Entering other values or expressions will trigger onChange</li>\n        </ul>\n      </div>\n\n      <div className=\"flex flex-col items-start gap-2\">\n        <NumericInput\n          value={value}\n          onChange={handleChange}\n        />\n\n        <div className=\"mt-2 rounded border bg-gray-50 p-3\">\n          <p className=\"text-body-small\">\n            <b>Current value:</b> {value}\n          </p>\n          <p className=\"text-body-small\">\n            <b>onChange trigger count:</b> {changeCount}\n          </p>\n          {lastInputText && (\n            <p className=\"text-body-small\">\n              <b>Last input text:</b> {lastInputText}\n            </p>\n          )}\n          <p className=\"text-secondary-foreground mt-2\">\n            Tip: Try entering &ldquo;1+1&rdquo;, &ldquo;2*1&rdquo;, &ldquo;4/2&rdquo; or other\n            expressions that result in the current value\n          </p>\n        </div>\n      </div>\n    </div>\n  );\n}"
     },
     {
       "id": "forms-numericinput--unit-expression-calculation",
       "name": "Unit Expression Calculation",
       "exportName": "UnitExpressionCalculation",
-      "description": "",
+      "description": "Example demonstrating expression calculations with unit formatting.\nShows how:\n1. Expressions with units like \"{value}px\" display values with units\n2. Input expressions are evaluated before comparison\n3. Similar expressions resulting in the same value won't trigger onChange\n\nFor example:\n- When value is \"24px\", entering \"24\" or \"12+12\" won't trigger onChange\n- When value is \"24px\", entering \"25\" or \"12+13\" will trigger onChange",
       "source": "import { NumericInput } from \"@choice-ui/numeric-input\"\n\nexport default function App() {\n  return (\n    <div className=\"grid w-96 gap-4\">\n      <div className=\"flex flex-col gap-2\">\n        <h3 className=\"text-body-large-strong\">Unit Expression Test</h3>\n        <p className=\"text-secondary-foreground\">\n          Try entering values and expressions with a pixel unit pattern:\n        </p>\n        <ul className=\"text-secondary-foreground list-disc pl-5\">\n          <li>\n            Current value is {value}px, entering {value} won&apos;t trigger onChange\n          </li>\n          <li>\n            Entering expressions like &ldquo;{value / 2}+{value / 2}&rdquo; won&apos;t trigger\n            onChange\n          </li>\n          <li>Entering different values or expressions will trigger onChange</li>\n        </ul>\n      </div>\n\n      <div className=\"flex flex-col items-start gap-2\">\n        <NumericInput\n          value={value}\n          onChange={handleChange}\n          expression=\"{value}px\"\n        />\n\n        <div className=\"mt-2 rounded border bg-gray-50 p-3\">\n          <p className=\"text-body-small\">\n            <b>Current value:</b> {value}px\n          </p>\n          <p className=\"text-body-small\">\n            <b>onChange trigger count:</b> {changeCount}\n          </p>\n          {lastInputText && (\n            <p className=\"text-body-small\">\n              <b>Last input text:</b> {lastInputText}\n            </p>\n          )}\n          <p className=\"text-secondary-foreground mt-2\">\n            Tip: Try entering &ldquo;12+12&rdquo;, &ldquo;24*1&rdquo;, or other expressions that\n            result in the current numerical value\n          </p>\n        </div>\n      </div>\n    </div>\n  );\n}"
     },
     {
       "id": "forms-numericinput--multi-value-expression-update",
       "name": "Multi Value Expression Update",
       "exportName": "MultiValueExpressionUpdate",
-      "description": "",
+      "description": "这个示例专门用于测试和展示修复后的多值表达式更新行为。\n在之前的版本中，当只修改第二个值（如height）而不修改第一个值（如width）时，\n组件无法正确更新。这个修复确保了即使只修改一个属性，整个对象也能正确更新。",
       "source": "import { NumericInput } from \"@choice-ui/numeric-input\"\n\nexport default function App() {\n  return (\n    <div className=\"grid w-96 gap-4\">\n      <div className=\"flex flex-col gap-2\">\n        <h3 className=\"text-body-large-strong\">多值表达式更新测试</h3>\n        <p className=\"text-secondary-foreground\">这个示例测试修复后的多值表达式更新行为：</p>\n        <ul className=\"text-secondary-foreground list-disc pl-5\">\n          <li>修改首个值（width）</li>\n          <li>修改第二个值（height）</li>\n          <li>同时修改两个值</li>\n        </ul>\n        <p className=\"text-secondary-foreground\">修复后，所有三种情况都应该正确触发更新。</p>\n      </div>\n\n      <div className=\"flex flex-col items-start gap-2\">\n        <NumericInput\n          expression=\"{width}, {height}\"\n          value={value}\n          onChange={handleChange}\n        />\n\n        <div className=\"mt-2 rounded border bg-gray-50 p-3\">\n          <p className=\"text-body-small\">\n            <b>当前值:</b> {value.width}, {value.height}\n          </p>\n          <p className=\"text-body-small\">\n            <b>更新次数:</b> {updateCount}\n          </p>\n          {lastUpdatedProperty && (\n            <p className=\"text-body-small\">\n              <b>最近更新的属性:</b> {lastUpdatedProperty}\n            </p>\n          )}\n          <p className=\"text-secondary-foreground mt-2\">\n            提示: 输入逗号分隔的两个值（例如 &quot;15, 20&quot;）来更新两个属性，\n            或者保留逗号前的值不变只修改后面的值（例如 &quot;, 25&quot;）来只更新height。\n          </p>\n        </div>\n      </div>\n    </div>\n  );\n}"
     },
     {
       "id": "forms-numericinput--step-and-shift-step",
       "name": "Step And Shift Step",
       "exportName": "StepAndShiftStep",
-      "description": "",
+      "description": "Step and Shift Step: Demonstrates the step functionality with modifier key support\n\nThis example shows how NumericInput responds to different step values based on modifier keys:\n- Default: 1 step\n- Shift: 10 steps (larger increments)\n- Meta/Ctrl: 0.1 steps (finer control)",
       "source": "import { NumericInput } from \"@choice-ui/numeric-input\"\n\nexport default function App() {\n  return (\n    <div className=\"grid w-96 gap-4\">\n      <div className=\"flex flex-col gap-2\">\n        <h3 className=\"text-body-large-strong\">Step and Shift Step</h3>\n        <p className=\"text-secondary-foreground\">\n          Focus the input and use arrow keys with modifier keys to see different step values:\n        </p>\n        <ul className=\"text-secondary-foreground list-disc pl-5\">\n          <li>↑/↓: Default step (1)</li>\n          <li>Shift + ↑/↓: Large step (10)</li>\n        </ul>\n      </div>\n\n      <div className=\"flex flex-col items-start gap-2\">\n        <NumericInput\n          value={value}\n          onChange={(newValue) => setValue(newValue as number)}\n          step={1}\n          min={0}\n          max={1000}\n        >\n          <NumericInput.Prefix>\n            <HugWidth />\n          </NumericInput.Prefix>\n        </NumericInput>\n\n        <div className=\"mt-2 rounded border bg-gray-50 p-3\">\n          <p className=\"text-body-small\">\n            <b>Current value:</b> {value}\n          </p>\n          <p className=\"text-secondary-foreground mt-2\">\n            Tip: Try holding Shift while using arrow keys to see different step sizes\n          </p>\n        </div>\n      </div>\n    </div>\n  );\n}"
     }
+  ],
+  "tags": [
+    "upgrade"
   ]
 }

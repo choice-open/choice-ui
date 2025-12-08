@@ -188,156 +188,6 @@
   ],
   "props": [
     {
-      "displayName": "BaseYearProps",
-      "description": "年份组件的基础属性",
-      "props": []
-    },
-    {
-      "displayName": "YearItem",
-      "description": "年份项目状态",
-      "props": []
-    },
-    {
-      "displayName": "YearLayoutProps",
-      "description": "年份布局相关属性",
-      "props": []
-    },
-    {
-      "displayName": "YearNavigationProps",
-      "description": "年份导航相关属性",
-      "props": []
-    },
-    {
-      "displayName": "BaseQuarterProps",
-      "description": "季度组件的基础属性",
-      "props": []
-    },
-    {
-      "displayName": "Quarter",
-      "description": "季度对象",
-      "props": []
-    },
-    {
-      "displayName": "QuarterItem",
-      "description": "季度项目状态",
-      "props": []
-    },
-    {
-      "displayName": "QuarterLayoutProps",
-      "description": "季度布局相关属性",
-      "props": []
-    },
-    {
-      "displayName": "QuarterNavigationProps",
-      "description": "季度导航相关属性",
-      "props": []
-    },
-    {
-      "displayName": "BaseCalendarProps",
-      "description": "月历组件的基础属性",
-      "props": []
-    },
-    {
-      "displayName": "CalendarValue",
-      "description": "日历选择值的类型",
-      "props": []
-    },
-    {
-      "displayName": "CalendarState",
-      "description": "日历状态接口",
-      "props": []
-    },
-    {
-      "displayName": "CalendarLayoutProps",
-      "description": "月历布局相关属性",
-      "props": []
-    },
-    {
-      "displayName": "BaseDateProps",
-      "description": "日期组件的基础属性",
-      "props": []
-    },
-    {
-      "displayName": "DateInputValue",
-      "description": "日期输入解析结果",
-      "props": []
-    },
-    {
-      "displayName": "DateDataFormat",
-      "description": "日期格式字符串\n\n支持所有 date-fns 格式字符串，常用格式示例：\n\n**年份**：\n- yyyy: 2025 (4位年份)\n- yy: 25 (2位年份)\n\n**月份**：\n- MMMM: December (完整月份名)\n- MMM: Dec (缩写月份名)\n- MM: 12 (2位数字月份)\n- M: 12 (1-2位数字月份)\n\n**日期**：\n- dd: 31 (2位日期)\n- d: 31 (1-2位日期)\n\n**常用组合**：\n- \"yyyy-MM-dd\" → 2025-12-31\n- \"yy-MM-dd\" → 25-12-31\n- \"yyyy年MM月dd日\" → 2025年12月31日\n- \"yy年M月d日\" → 25年12月31日\n- \"MMMM dd, yyyy\" → December 31, 2025\n- \"MMM dd, yy\" → Dec 31, 25\n- \"MM/dd/yyyy\" → 12/31/2025\n- \"dd.MM.yy\" → 31.12.25",
-      "props": []
-    },
-    {
-      "displayName": "DateRange",
-      "description": "日期范围对象",
-      "props": []
-    },
-    {
-      "displayName": "DateParserOptions",
-      "description": "日期解析选项",
-      "props": []
-    },
-    {
-      "displayName": "DateInteractionProps",
-      "description": "日期交互功能属性",
-      "props": []
-    },
-    {
-      "displayName": "BaseTimeProps",
-      "description": "时间组件的基础属性",
-      "props": []
-    },
-    {
-      "displayName": "Time",
-      "description": "时间对象（小时和分钟）",
-      "props": []
-    },
-    {
-      "displayName": "TimeInputValue",
-      "description": "时间输入解析结果",
-      "props": []
-    },
-    {
-      "displayName": "TimeDataFormat",
-      "description": "时间格式字符串\n\n支持所有 date-fns 时间格式字符串，常用格式示例：\n\n**24小时制**：\n- \"HH:mm\" → 09:30, 14:45 (2位小时)\n- \"H:mm\" → 9:30, 14:45 (1-2位小时)\n- \"HH:mm:ss\" → 09:30:15 (带秒)\n- \"HHmm\" → 0930, 1445 (紧凑格式)\n\n**12小时制**：\n- \"h:mm a\" → 9:30 AM, 2:45 PM\n- \"hh:mm a\" → 09:30 AM, 02:45 PM (2位小时)\n- \"h:mm aa\" → 9:30 A.M., 2:45 P.M. (完整AM/PM)\n- \"h:mm:ss a\" → 9:30:15 AM (带秒)",
-      "props": []
-    },
-    {
-      "displayName": "TimeParserOptions",
-      "description": "时间解析选项",
-      "props": []
-    },
-    {
-      "displayName": "TimeLayout",
-      "description": "时间布局模式",
-      "props": []
-    },
-    {
-      "displayName": "TimeInteractionProps",
-      "description": "时间交互功能属性",
-      "props": []
-    },
-    {
-      "displayName": "TimeOptionItem",
-      "description": "时间选项项",
-      "props": []
-    },
-    {
-      "displayName": "StepProps",
-      "description": "时间步长相关属性",
-      "props": []
-    },
-    {
-      "displayName": "NaturalLanguageMap",
-      "description": "自然语言关键词映射",
-      "props": []
-    },
-    {
-      "displayName": "RelativeDatePattern",
-      "description": "相对日期模式",
-      "props": []
-    },
-    {
       "displayName": "MonthCalendar",
       "description": "",
       "props": [
@@ -482,7 +332,7 @@
       ]
     },
     {
-      "displayName": "DateInput",
+      "displayName": "DateInputValue",
       "description": "Advanced date input component\n\nFeatures:\n- 🎯 Intelligent date parsing: Supports multiple formats and natural language\n- ⌨️ Keyboard navigation: Up key to past, down key to future (intuitive operation)\n- 🔄 Race protection: Smartly detect data flow direction, avoid loop updates\n- 🛡️ Type safety: Complete TypeScript support\n- 🌍 Internationalization support: Configurable language region\n- 💡 Intelligent prediction: Real-time prediction prompts and holiday recognition",
       "props": [
         {
@@ -853,7 +703,7 @@
       ]
     },
     {
-      "displayName": "TimeInput",
+      "displayName": "TimeInputValue",
       "description": "高级时间输入组件\n\n特性：\n- 🎯 智能时间解析：支持多种格式和自然语言\n- ⌨️ 键盘导航：上键减少，下键增加（符合列表导航逻辑）\n- 🔄 竞态保护：智能检测数据流方向，避免循环更新\n- 🚀 性能优化：使用 useEventCallback 和缓存机制\n- 🛡️ 类型安全：完整的 TypeScript 支持\n- 🌍 国际化支持：可配置语言区域\n- 📱 拖拽交互：支持通过前缀图标拖拽调整时间",
       "props": [
         {
@@ -875,6 +725,18 @@
           "description": "时间格式，支持所有 date-fns 格式字符串"
         },
         {
+          "name": "defaultValue",
+          "type": "Date | null | undefined",
+          "required": false,
+          "description": "默认值"
+        },
+        {
+          "name": "step",
+          "type": "number | undefined",
+          "required": false,
+          "description": "基础步长（分钟），默认1分钟"
+        },
+        {
           "name": "size",
           "type": "enum",
           "required": false,
@@ -885,18 +747,6 @@
           "type": "boolean | undefined",
           "required": false,
           "description": ""
-        },
-        {
-          "name": "step",
-          "type": "number | undefined",
-          "required": false,
-          "description": "基础步长（分钟），默认1分钟"
-        },
-        {
-          "name": "defaultValue",
-          "type": "Date | null | undefined",
-          "required": false,
-          "description": "默认值"
         },
         {
           "name": "className",
@@ -923,36 +773,6 @@
           "description": ""
         },
         {
-          "name": "enableCache",
-          "type": "boolean | undefined",
-          "required": false,
-          "description": "是否启用解析缓存"
-        },
-        {
-          "name": "enableKeyboardNavigation",
-          "type": "boolean | undefined",
-          "required": false,
-          "description": "是否启用键盘导航（默认启用）"
-        },
-        {
-          "name": "enableProfiling",
-          "type": "boolean | undefined",
-          "required": false,
-          "description": "是否启用性能分析"
-        },
-        {
-          "name": "locale",
-          "type": "string | Locale | undefined",
-          "required": false,
-          "description": "语言区域 - 支持 Locale 对象或字符串（如 \"zh-CN\", \"en-US\"）"
-        },
-        {
-          "name": "onEnterKeyDown",
-          "type": "(() => void) | undefined",
-          "required": false,
-          "description": "按下 Enter 键的回调"
-        },
-        {
           "name": "prefixElement",
           "type": "ReactNode",
           "required": false,
@@ -963,6 +783,12 @@
           "type": "ReactNode",
           "required": false,
           "description": ""
+        },
+        {
+          "name": "locale",
+          "type": "string | Locale | undefined",
+          "required": false,
+          "description": "语言区域 - 支持 Locale 对象或字符串（如 \"zh-CN\", \"en-US\"）"
         },
         {
           "name": "maxTime",
@@ -987,6 +813,30 @@
           "type": "number | undefined",
           "required": false,
           "description": "Shift + 按键的步长（分钟），默认15分钟"
+        },
+        {
+          "name": "enableCache",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": "是否启用解析缓存"
+        },
+        {
+          "name": "enableKeyboardNavigation",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": "是否启用键盘导航（默认启用）"
+        },
+        {
+          "name": "enableProfiling",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": "是否启用性能分析"
+        },
+        {
+          "name": "onEnterKeyDown",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "按下 Enter 键的回调"
         }
       ]
     },
@@ -1206,7 +1056,7 @@
         },
         {
           "name": "onNavigate",
-          "type": "((direction: \"next\" | \"prev\", newYear: number) => void) | undefined",
+          "type": "((direction: \"prev\" | \"next\", newYear: number) => void) | undefined",
           "required": false,
           "description": "年份范围导航回调"
         },
@@ -1302,7 +1152,7 @@
         },
         {
           "name": "onNavigate",
-          "type": "((direction: \"next\" | \"prev\", newStartYear: Date) => void) | undefined",
+          "type": "((direction: \"prev\" | \"next\", newStartYear: Date) => void) | undefined",
           "required": false,
           "description": "年份范围导航回调"
         },
@@ -1970,7 +1820,7 @@
       "id": "dateandtime-dateinput--read-only",
       "name": "Read Only",
       "exportName": "ReadOnly",
-      "description": "",
+      "description": "ReadOnly: Demonstrates the DateInput component in readOnly mode.\n- Prevents value changes while allowing focus and selection\n- Maintains normal visual appearance (unlike disabled)\n- Useful for displaying non-editable date information",
       "source": "import { DateInput } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <div className=\"rounded-xl border bg-stone-50 p-4\">\n        <div className=\"text-body-small-strong mb-2 text-stone-700\">Current Value:</div>\n        <div className=\"text-body-small font-mono text-stone-600\">\n          {value ? value.toLocaleDateString() : \"null\"}\n        </div>\n        <div className=\"text-body-small-strong mt-2 text-stone-700\">Change Count:</div>\n        <div className=\"text-body-small font-mono text-stone-600\">{changeCount}</div>\n      </div>\n      <DateInput\n        readOnly\n        value={value}\n        onChange={handleChange}\n        placeholder=\"Readonly date input...\"\n      />\n      <DateInput\n        value={value}\n        onChange={handleChange}\n        placeholder=\"Normal date input...\"\n      />\n      <div className=\"text-body-small text-stone-600\">\n        💡 Try changing the readonly date input - the value should not change and the change count\n        should remain at 0. Only the normal input will change the value.\n      </div>\n    </div>\n  );\n}"
     },
     {
@@ -1991,14 +1841,14 @@
       "id": "dateandtime-dateinput--keyboard-navigation",
       "name": "Keyboard Navigation",
       "exportName": "KeyboardNavigation",
-      "description": "",
+      "description": "KeyboardNavigation: Demonstrates the keyboard navigation capabilities of the DateInput component.\n- Shows how to use arrow keys with modifiers to adjust dates quickly.\n- Displays interactive keyboard shortcuts for efficient date navigation.\n- Useful for power users who prefer keyboard-driven date selection.",
       "source": "import { DateInput } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-4\">\n      <DateInput\n        placeholder=\"Use keyboard to adjust date\"\n        value={value}\n        onChange={setValue}\n      />\n      <div className=\"text-secondary-foreground space-y-2 rounded-md border p-2\">\n        <div className=\"font-strong\">⌨️ Keyboard Navigation</div>\n        <div>\n          • <code>↑</code> / <code>↓</code> - Adjust 1 day\n        </div>\n        <div>\n          • <code>Shift + ↑/↓</code> - Adjust 1 week\n        </div>\n        <div>\n          • <code>Ctrl/Cmd + ↑/↓</code> - Adjust 1 month\n        </div>\n        <div>\n          • <code>Enter</code> - Confirm input\n        </div>\n      </div>\n    </div>\n  );\n}"
     },
     {
       "id": "dateandtime-dateinput--drag-interaction",
       "name": "Drag Interaction",
       "exportName": "DragInteraction",
-      "description": "",
+      "description": "DragInteraction: Demonstrates the mouse drag interaction feature of the DateInput component.\n- Shows how to click and drag the calendar icon to adjust dates.\n- Displays modifier keys (Shift, Ctrl/Cmd) for different drag increments.\n- Provides an intuitive mouse-based alternative to keyboard navigation.",
       "source": "import { DateInput } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-4\">\n      <DateInput\n        placeholder=\"Use drag to adjust date\"\n        value={value}\n        onChange={setValue}\n      />\n      <div className=\"text-secondary-foreground space-y-2 rounded-md border p-2\">\n        <div className=\"font-strong\">🖱️ Drag Interaction</div>\n        <div>• Click and drag the calendar icon to adjust date</div>\n        <div>• Hold Shift key to drag 1 week</div>\n        <div>• Hold Ctrl/Cmd key to drag 1 month</div>\n      </div>\n    </div>\n  );\n}"
     },
     {
@@ -2012,7 +1862,7 @@
       "id": "dateandtime-dateinput--variable-length-formats",
       "name": "Variable Length Formats",
       "exportName": "VariableLengthFormats",
-      "description": "",
+      "description": "VariableLengthFormats: Demonstrates the flexible date format support with variable length patterns.\n- Shows how the component handles different year, month, and day format lengths.\n- Displays various international formats with different separators and structures.\n- Includes a comprehensive guide to date-fns format patterns and usage tips.",
       "source": "import { DateInput } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-8\">\n      <div className=\"text-body-large-strong\">📏 Variable Length Formats</div>\n      <div className=\"text-secondary-foreground\">\n        DateInput now supports any date-fns format string, including different length years,\n        months, etc.\n      </div>\n\n      <div className=\"grid grid-cols-2 gap-4\">\n        {[\n          {\n            title: \"🇨🇳 Chinese Long Format\",\n            format: \"yyyy年MM月dd日\",\n            placeholder: \"2025年12月31日\",\n            value: longChineseValue,\n            onChange: setLongChineseValue,\n            locale: \"zh-CN\",\n          },\n          {\n            title: \"🇨🇳 Chinese Short Format\",\n            format: \"yy年M月d日\",\n            placeholder: \"25年12月31日\",\n            value: shortChineseValue,\n            onChange: setShortChineseValue,\n            locale: \"zh-CN\",\n          },\n          {\n            title: \"🇨🇳 Chinese Flexible Format\",\n            format: \"yyyy年M月d日\",\n            placeholder: \"2025年1月5日\",\n            value: flexibleChineseValue,\n            onChange: setFlexibleChineseValue,\n            locale: \"zh-CN\",\n          },\n          {\n            title: \"🇺🇸 English Long Format\",\n            format: \"MMMM dd, yyyy\",\n            placeholder: \"December 25, 2025\",\n            value: longEnglishValue,\n            onChange: setLongEnglishValue,\n            locale: \"en-US\",\n          },\n          {\n            title: \"🇺🇸 English Short Format\",\n            format: \"MMM dd, yy\",\n            placeholder: \"Dec 25, 25\",\n            value: shortEnglishValue,\n            onChange: setShortEnglishValue,\n            locale: \"en-US\",\n          },\n          {\n            title: \"📱 Compact Format\",\n            format: \"M/d/yy\",\n            placeholder: \"12/25/25\",\n            value: compactValue,\n            onChange: setCompactValue,\n            locale: \"en-US\",\n          },\n          {\n            title: \"🇫🇷 Français\",\n            format: \"MMM d yyyy\",\n            placeholder: \"Déc 25 2025\",\n            value: longFrenchValue,\n            onChange: setLongFrenchValue,\n            locale: \"fr\",\n          },\n          {\n            title: \"🇩🇪 Deutsch\",\n            format: \"dd.MM.yyyy\",\n            placeholder: \"25.12.2025\",\n            value: longGermanValue,\n            onChange: setLongGermanValue,\n            locale: \"de\",\n          },\n        ].map((item) => (\n          <VariableLengthFormatsComponent\n            key={item.title}\n            title={item.title}\n            format={item.format}\n            placeholder={item.placeholder}\n            value={item.value}\n            onChange={item.onChange}\n            locale={item.locale}\n          />\n        ))}\n      </div>\n\n      <div className=\"space-y-4 rounded-md border p-4\">\n        <div className=\"text-secondary-foreground font-strong\">📖 Format Description</div>\n        <div className=\"grid grid-cols-2 gap-4\">\n          <div className=\"bg-blue-50\">\n            <div className=\"font-strong mb-2 text-blue-800\">Year Format</div>\n            <div className=\"space-y-1 text-blue-700\">\n              <div>\n                <code>yyyy</code> → 2025 (4-digit year)\n              </div>\n              <div>\n                <code>yy</code> → 25 (2-digit year)\n              </div>\n            </div>\n          </div>\n\n          <div className=\"bg-green-50\">\n            <div className=\"font-strong mb-2 text-green-800\">Month Format</div>\n            <div className=\"space-y-1 text-green-700\">\n              <div>\n                <code>MMMM</code> → December (full month name)\n              </div>\n              <div>\n                <code>MMM</code> → Dec (short month name)\n              </div>\n              <div>\n                <code>MM</code> → 12 (2-digit month)\n              </div>\n              <div>\n                <code>M</code> → 12 (1-2 digit month)\n              </div>\n            </div>\n          </div>\n\n          <div className=\"bg-purple-50\">\n            <div className=\"font-strong mb-2 text-purple-800\">Day Format</div>\n            <div className=\"space-y-1 text-purple-700\">\n              <div>\n                <code>dd</code> → 31 (2-digit day)\n              </div>\n              <div>\n                <code>d</code> → 31 (1-2 digit day)\n              </div>\n            </div>\n          </div>\n\n          <div className=\"bg-orange-50\">\n            <div className=\"font-strong mb-2 text-orange-800\">Separator Format</div>\n            <div className=\"space-y-1 text-orange-700\">\n              <div>\n                <code>-</code> → 2025-12-31\n              </div>\n              <div>\n                <code>/</code> → 12/31/2025\n              </div>\n              <div>\n                <code>.</code> → 31.12.2025\n              </div>\n              <div>\n                <code>年月日</code> → 2025年12月31日\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n\n      <div className=\"rounded-md border p-4\">\n        <div className=\"font-strong mb-2\">💡 Usage Tips</div>\n        <div className=\"text-secondary-foreground\">\n          Now you can use any date-fns format string directly, no longer limited by predefined\n          formats. View full format options:\n          <a\n            href=\"https://date-fns.org/v2.29.3/docs/format\"\n            target=\"_blank\"\n            rel=\"noopener noreferrer\"\n            className=\"ml-1 text-yellow-800 underline hover:text-yellow-900\"\n          >\n            date-fns format documentation\n          </a>\n        </div>\n      </div>\n    </div>\n  );\n}"
     },
     {
@@ -2026,28 +1876,28 @@
       "id": "dateandtime-dateinput--shortcut-keys",
       "name": "Shortcut Keys",
       "exportName": "ShortcutKeys",
-      "description": "",
+      "description": "ShortcutKeys: Demonstrates the natural language shortcut key support.\n- Shows how to use text shortcuts like \"today\", \"yesterday\", \"tomorrow\".\n- Displays multilingual support for shortcut keys (English and Chinese).\n- Demonstrates relative date shortcuts like \"this week\", \"this month\".\n- Useful for users who prefer typing natural language date expressions.",
       "source": "import { DateInput } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-6\">\n      <DateInput {...args} />\n\n      <div className=\"space-y-4\">\n        <div className=\"font-strong\">⚡ Shortcut Key Highlight Demo</div>\n        <div className=\"space-y-2 rounded-md border p-2\">\n          <div>\n            <div className=\"font-strong\">Today</div>\n            <div className=\"text-secondary-foreground\">\n              Input: <code>t</code> or <code>Today</code> or <code>今天</code>\n            </div>\n          </div>\n          <div>\n            <div className=\"font-strong\">Yesterday</div>\n            <div className=\"text-secondary-foreground\">\n              Input: <code>y</code> or <code>Yesterday</code> or <code>昨天</code>\n            </div>\n          </div>\n          <div>\n            <div className=\"font-strong\">Tomorrow</div>\n            <div className=\"text-secondary-foreground\">\n              Input: <code>tm</code> or <code>Tomorrow</code> or <code>明天</code>\n            </div>\n          </div>\n          <div>\n            <div className=\"font-strong\">This Week</div>\n            <div className=\"text-secondary-foreground\">\n              Input: <code>w</code> or <code>This Week</code> or <code>本周</code>\n            </div>\n          </div>\n          <div>\n            <div className=\"font-strong\">This Month</div>\n            <div className=\"text-secondary-foreground\">\n              Input: <code>m</code> or <code>This Month</code> or <code>本月</code>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n  );\n}"
     },
     {
       "id": "dateandtime-dateinput--english-month-support",
       "name": "English Month Support",
       "exportName": "EnglishMonthSupport",
-      "description": "",
+      "description": "EnglishMonthSupport: Demonstrates the English month name recognition feature.\n- Shows support for full month names, abbreviations, and various formats.\n- Displays flexible date input patterns like \"may 15\", \"15 may\", \"may 15, 2024\".\n- Demonstrates intelligent parsing of month names with dots and variants.\n- Useful for international users who prefer English month names.",
       "source": "import { DateInput } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-6\">\n      <DateInput {...args} />\n\n      <div className=\"space-y-4\">\n        <div className=\"text-body-large-strong\">🌍 English Month Recognition</div>\n\n        <div className=\"space-y-3 rounded-md border p-4\">\n          <div className=\"font-strong\">📝 支持格式</div>\n          <div className=\"text-secondary-foreground space-y-2\">\n            <div>\n              • <code>may</code> → May 1st\n            </div>\n            <div>\n              • <code>may 15</code> → May 15th\n            </div>\n            <div>\n              • <code>15 may</code> → May 15th\n            </div>\n            <div>\n              • <code>may 15, 2024</code> → May 15th, 2024\n            </div>\n            <div>\n              • <code>15 may 2024</code> → May 15th, 2024\n            </div>\n            <div>\n              • <code>may 15th</code> → May 15th\n            </div>\n          </div>\n        </div>\n\n        <div className=\"space-y-3 rounded-md border p-4\">\n          <div className=\"font-strong\">📚 Month Abbreviations</div>\n          <div className=\"text-secondary-foreground space-y-2\">\n            <div>\n              • <code>jan</code> → January\n            </div>\n            <div>\n              • <code>feb</code> → February\n            </div>\n            <div>\n              • <code>mar</code> → March\n            </div>\n            <div>\n              • <code>apr</code> → April\n            </div>\n            <div>\n              • <code>may</code> → May\n            </div>\n            <div>\n              • <code>jun</code> → June\n            </div>\n            <div>\n              • <code>jul</code> → July\n            </div>\n            <div>\n              • <code>aug</code> → August\n            </div>\n          </div>\n        </div>\n\n        <div className=\"space-y-3 rounded-md border p-4\">\n          <div className=\"font-strong\">🎯 Intelligent Recognition</div>\n\n          <div>\n            <div className=\"font-strong\">Full Name</div>\n            <div className=\"text-secondary-foreground\">january, february...</div>\n          </div>\n          <div>\n            <div className=\"font-strong\">Abbreviations</div>\n            <div className=\"text-secondary-foreground\">jan, feb, mar...</div>\n          </div>\n          <div>\n            <div className=\"font-strong\">With Dots</div>\n            <div className=\"text-secondary-foreground\">jan., feb., mar.</div>\n          </div>\n          <div>\n            <div className=\"font-strong\">Variants</div>\n            <div className=\"text-secondary-foreground\">sept, sept.</div>\n          </div>\n        </div>\n\n        <div className=\"w-96 rounded-md border p-4\">\n          <div className=\"font-strong mb-2\">💡 Tips</div>\n          <div className=\"text-secondary-foreground\">\n            Support mixed input of English and Chinese, automatically recognize the best match. When\n            inputting, it will display the segmented effect and prediction prompt in real time.\n          </div>\n        </div>\n      </div>\n    </div>\n  );\n}"
     },
     {
       "id": "dateandtime-dateinput--smart-date-correction",
       "name": "Smart Date Correction",
       "exportName": "SmartDateCorrection",
-      "description": "",
+      "description": "SmartDateCorrection: Demonstrates the intelligent date correction feature.\n- Shows how invalid dates are automatically corrected to valid dates.\n- Displays correction rules for dates exceeding month limits, invalid months, and leap years.\n- Demonstrates seamless user experience without error prompts.\n- Useful for preventing user frustration with invalid date inputs.",
       "source": "import { DateInput } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-6\">\n      <DateInput {...args} />\n\n      <div className=\"w-sm space-y-4\">\n        <div className=\"text-body-large-strong\">🔧 Smart Date Correction</div>\n        <div className=\"text-secondary-foreground mb-4\">\n          When an invalid date is entered, the system will automatically correct it to the last day\n          of the month, ensuring that the date is always valid. ✨ Now fixed!\n        </div>\n\n        <div className=\"space-y-3 rounded-md border p-4\">\n          <div className=\"font-strong text-red-600\">❌ Invalid Date Input</div>\n          <div className=\"text-secondary-foreground space-y-2\">\n            <div>\n              • <code>2025-04-31</code> → 2025-04-30 (April has 30 days)\n            </div>\n            <div>\n              • <code>2025-02-30</code> → 2025-02-28 (February has 28 days)\n            </div>\n            <div>\n              • <code>2024-02-30</code> → 2024-02-29 (February 29th in leap year)\n            </div>\n            <div>\n              • <code>2025-13-15</code> → 2025-12-15 (No 13th month)\n            </div>\n            <div>\n              • <code>2025-06-00</code> → 2025-06-01 (No 0th day)\n            </div>\n          </div>\n        </div>\n\n        <div className=\"space-y-3 rounded-md border p-4\">\n          <div className=\"font-strong\">✅ Smart Correction Rules</div>\n          <div className=\"text-secondary-foreground space-y-2\">\n            <div>\n              • Date exceeds the number of days in the month → Corrected to the last day of the\n              month\n            </div>\n            <div>• Month greater than 12 → Corrected to December</div>\n            <div>• Month less than 1 → Corrected to January</div>\n            <div>• Date less than 1 → Corrected to 1st</div>\n            <div>• Automatically handle February 29th in leap year</div>\n          </div>\n        </div>\n\n        <div className=\"space-y-3 rounded-md border p-4\">\n          <div className=\"font-strong\">�� Test Examples</div>\n\n          <div className=\"grid grid-cols-[repeat(auto-fill,minmax(128px,1fr))]\">\n            <div className=\"space-y-2\">\n              <div className=\"font-strong\">April 31st</div>\n              <div className=\"text-secondary-foreground\">\n                Input: <code>20250431</code>\n              </div>\n              <div className=\"font-strong text-green-700\">→ 2025-04-30</div>\n            </div>\n            <div className=\"space-y-2\">\n              <div className=\"font-strong\">February 30th</div>\n              <div className=\"text-secondary-foreground\">\n                Input: <code>20250230</code>\n              </div>\n              <div className=\"font-strong text-green-700\">→ 2025-02-28</div>\n            </div>\n            <div className=\"space-y-2\">\n              <div className=\"font-strong\">13th month 15th</div>\n              <div className=\"text-secondary-foreground\">\n                Input: <code>20251315</code>\n              </div>\n              <div className=\"font-strong text-green-700\">→ 2025-12-15</div>\n            </div>\n            <div className=\"space-y-2\">\n              <div className=\"font-strong\">June 0th</div>\n              <div className=\"text-secondary-foreground\">\n                Input: <code>20250600</code>\n              </div>\n              <div className=\"font-strong text-green-700\">→ 2025-06-01</div>\n            </div>\n            <div className=\"space-y-2\">\n              <div className=\"font-strong\">Leap year February 29th</div>\n              <div className=\"text-secondary-foreground\">\n                Input: <code>20240230</code>\n              </div>\n              <div className=\"font-strong text-green-700\">→ 2024-02-29</div>\n            </div>\n            <div className=\"space-y-2\">\n              <div className=\"font-strong\">September 31st</div>\n              <div className=\"text-secondary-foreground\">\n                Input: <code>20250931</code>\n              </div>\n              <div className=\"font-strong text-green-700\">→ 2025-09-30</div>\n            </div>\n          </div>\n        </div>\n\n        <div className=\"rounded-md border p-4\">\n          <div className=\"font-strong mb-2\">✨ Intelligent Features</div>\n          <div className=\"text-secondary-foreground\">\n            No matter what invalid date is entered, the system will automatically correct it to the\n            nearest valid date, ensuring a smooth user experience without error prompts. 🚀 Fixed\n            and working properly!\n          </div>\n        </div>\n      </div>\n    </div>\n  );\n}"
     },
     {
       "id": "dateandtime-dateinput--internationalization-support",
       "name": "Internationalization Support",
       "exportName": "InternationalizationSupport",
-      "description": "",
+      "description": "InternationalizationSupport: Demonstrates comprehensive internationalization support.\n- Shows DateInput working with multiple locales (Chinese, English, German, French).\n- Displays natural language parsing in different languages.\n- Demonstrates locale-specific date formatting and display.\n- Includes usage examples and integration code snippets.",
       "source": "import { MonthCalendar } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <InternationalizationDemo />\n  );\n}"
     },
     {
@@ -2057,5 +1907,8 @@
       "description": "Combined: Demonstrates a complete integration example with calendar popover.\n- Shows DateInput integrated with MonthCalendar in a popover.\n- Displays both single date input and date range input functionality.\n- Demonstrates locale switching and proper state management.\n- Useful as a reference for real-world implementation patterns.",
       "source": "import { MonthCalendar } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <CombinedDateInputDemo />\n  );\n}"
     }
+  ],
+  "tags": [
+    "new"
   ]
 }

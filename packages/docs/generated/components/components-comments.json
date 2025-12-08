@@ -113,6 +113,194 @@
           "description": ""
         }
       ]
+    },
+    {
+      "displayName": "CommentInput",
+      "description": "",
+      "props": [
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "defaultText",
+          "type": "InputDefaultText | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "initialValue",
+          "type": "Descendant[] | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "maxUploadFiles",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onCancel",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "((value: Descendant[]) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onSubmit",
+          "type": "((value: Descendant[]) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onTypingChange",
+          "type": "((isTyping: boolean) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "placeholder",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "users",
+          "type": "User[] | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "variant",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "CommentItem",
+      "description": "",
+      "props": [
+        {
+          "name": "author",
+          "type": "User",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "created_at",
+          "type": "Date",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "defaultText",
+          "type": "ItemDefaultText | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "handleOnDelete",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "handleOnEdit",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "handleOnImageClick",
+          "type": "((attachmentIndex?: number | undefined) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "handleOnReactionClick",
+          "type": "((reaction: GroupedReaction) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "handleOnReactionPopoverClick",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "locale",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "message_meta",
+          "type": "Descendant[]",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "reactionAnchorRef",
+          "type": "RefObject<HTMLButtonElement> | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "reactions",
+          "type": "Reaction[] | null",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "reactionsPopoverIsOpen",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "ref",
+          "type": "((instance: HTMLDivElement | null) => void) | RefObject<HTMLDivElement> | null | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "startEditing",
+      "description": "",
+      "props": []
+    },
+    {
+      "displayName": "setEditingContent",
+      "description": "",
+      "props": []
+    },
+    {
+      "displayName": "deleteComment",
+      "description": "",
+      "props": []
+    },
+    {
+      "displayName": "loadMoreComments",
+      "description": "",
+      "props": []
     }
   ],
   "stories": [
@@ -123,5 +311,8 @@
       "description": "",
       "source": ""
     }
+  ],
+  "tags": [
+    "experimental"
   ]
 }

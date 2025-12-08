@@ -24,7 +24,7 @@
   ],
   "props": [
     {
-      "displayName": "IconButton",
+      "displayName": "IconButtonProps",
       "description": "",
       "props": [
         {
@@ -94,6 +94,18 @@
           "description": ""
         }
       ]
+    },
+    {
+      "displayName": "IconButtonGroupProps",
+      "description": "",
+      "props": [
+        {
+          "name": "variant",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        }
+      ]
     }
   ],
   "stories": [
@@ -129,7 +141,7 @@
       "id": "buttons-iconbutton--as-child",
       "name": "As Child",
       "exportName": "AsChild",
-      "description": "",
+      "description": "AsChild: Demonstrates rendering the IconButton as another element.\n\nFeatures:\n- Maintains IconButton styling while using different underlying elements\n- Useful for links, form elements, or custom components\n- Preserves accessibility features\n\nUsage:\n```tsx\n<IconButton asChild>\n  <a href=\"/some-path\">\n    <Icon />\n  </a>\n</IconButton>\n```",
       "source": "import { IconButton } from \"@choice-ui/icon-button\"\n\nexport default function App() {\n  return (\n    <IconButton asChild>\n      <a href=\"#\">\n        <FieldTypeAttachment />\n      </a>\n    </IconButton>\n  );\n}"
     },
     {

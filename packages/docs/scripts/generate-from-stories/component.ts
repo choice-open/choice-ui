@@ -185,10 +185,11 @@ export function readComponentDoc(componentPath: string): string {
   return cleaned[0] ?? ""
 }
 
-export function readComponentProps(componentPath: string): PropsGroup[] {
+/** 解析单个文件的 props，使用提供的类型名称列表 */
+function parseFileProps(filePath: string, exportedTypeNames: string[]): PropsGroup[] {
   try {
-    if (!isFile(componentPath)) return []
-    const docs = getDocgenParser().parse(componentPath)
+    if (!isFile(filePath)) return []
+    const docs = getDocgenParser().parse(filePath)
     if (!docs.length) return []
     return docs.map((doc) => {
       const props = doc.props ?? {}
@@ -199,12 +200,117 @@ export function readComponentProps(componentPath: string): PropsGroup[] {
         defaultValue: prop.defaultValue?.value ?? undefined,
         description: prop.description ?? "",
       }))
+      // 尝试从导出的类型名称中找到匹配的
+      // react-docgen 的 displayName 是组件名，我们需要找到对应的 Props 类型名
+      const componentName = doc.displayName ?? ""
+      // 在导出的类型中找到包含组件名的类型（如 Segmented -> SegmentedProps）
+      const matchedTypeName = exportedTypeNames.find((typeName) => typeName.includes(componentName))
       return {
-        displayName: doc.displayName ?? "",
+        displayName: matchedTypeName ?? componentName,
         description: doc.description ?? "",
         props: propList,
       }
     })
+  } catch {
+    return []
+  }
+}
+
+interface ComponentFilesInfo {
+  files: string[] // 需要解析的文件路径
+  allTypeNames: string[] // 所有导出的类型名称（共享给所有文件）
+}
+
+/** 从 index.ts 提取所有需要解析的文件路径和导出的类型名称 */
+function getComponentFilesFromIndex(indexPath: string): ComponentFilesInfo {
+  if (!isFile(indexPath)) return { files: [], allTypeNames: [] }
+
+  const dir = path.dirname(indexPath)
+  const content = readFile(indexPath)
+  const sourceFile = ts.createSourceFile(
+    path.basename(indexPath),
+    content,
+    ts.ScriptTarget.Latest,
+    true,
+    ts.ScriptKind.TSX,
+  )
+
+  const files: string[] = []
+  const allTypeNames: string[] = []
+
+  for (const statement of sourceFile.statements) {
+    if (ts.isExportDeclaration(statement) && statement.moduleSpecifier) {
+      const modulePath = (statement.moduleSpecifier as ts.StringLiteral).text
+      const resolvedPath = resolveModulePath(dir, modulePath)
+      if (!resolvedPath) continue
+
+      // 收集文件路径（去重）
+      if (!files.includes(resolvedPath)) {
+        files.push(resolvedPath)
+      }
+
+      // 提取 export type { TypeName } 中的类型名称
+      const exportClause = statement.exportClause
+      const isTypeExport = statement.isTypeOnly
+
+      if (exportClause && ts.isNamedExports(exportClause)) {
+        for (const element of exportClause.elements) {
+          const exportedName = element.name.text
+          const isTypeOnly = isTypeExport || element.isTypeOnly
+
+          // 收集所有类型导出的名称（共享给所有文件）
+          if (isTypeOnly && !allTypeNames.includes(exportedName)) {
+            allTypeNames.push(exportedName)
+          }
+        }
+      }
+    }
+  }
+
+  return { files, allTypeNames }
+}
+
+export function readComponentProps(componentPath: string): PropsGroup[] {
+  try {
+    if (!isFile(componentPath)) return []
+
+    // 获取组件目录
+    const componentDir = path.dirname(componentPath)
+    const indexPath = path.join(componentDir, "index.ts")
+
+    // 解析所有文件并合并 props
+    const allProps: PropsGroup[] = []
+    const seenDisplayNames = new Set<string>()
+
+    // 如果有 index.ts，从中提取所有导出的文件和类型名称
+    if (isFile(indexPath)) {
+      const { files, allTypeNames } = getComponentFilesFromIndex(indexPath)
+
+      if (files.length > 0) {
+        // 所有文件共享同一个类型名称列表
+        for (const filePath of files) {
+          const fileProps = parseFileProps(filePath, allTypeNames)
+          for (const prop of fileProps) {
+            if (!seenDisplayNames.has(prop.displayName)) {
+              seenDisplayNames.add(prop.displayName)
+              allProps.push(prop)
+            }
+          }
+        }
+        return allProps
+      }
+    }
+
+    // 如果没有从 index.ts 提取到文件，使用传入的 componentPath
+    const fileProps = parseFileProps(componentPath, [])
+    for (const prop of fileProps) {
+      if (!seenDisplayNames.has(prop.displayName)) {
+        seenDisplayNames.add(prop.displayName)
+        allProps.push(prop)
+      }
+    }
+
+    return allProps
   } catch {
     return []
   }

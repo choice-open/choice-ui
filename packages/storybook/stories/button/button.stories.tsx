@@ -68,6 +68,57 @@ export const Sizes: Story = {
 }
 
 /**
+ * Disabled: Demonstrates the disabled state of the Button component.
+ * - Shows how to use the disabled prop to disable the button.
+ */
+export const Disabled: Story = {
+  render: () => <Button disabled>Disabled</Button>,
+}
+
+/**
+ * Loading: Demonstrates the loading state of the Button component.
+ * - Shows how to use the loading prop to show a loading spinner.
+ */
+export const Loading: Story = {
+  render: () => <Button loading>Loading</Button>,
+}
+
+/**
+ * Active: Demonstrates the active state of the Button component.
+ * - Shows how to use the active prop to show a active state.
+ */
+export const Active: Story = {
+  render: () => <Button active>Active</Button>,
+}
+
+/**
+ * Focused: Demonstrates the focused state of the Button component.
+ * - Shows how to use the focused prop to show a focused state.
+ */
+export const Focused: Story = {
+  render: () => <Button focused>Focused</Button>,
+}
+
+/**
+ * With Icons: Demonstrates the Button with an icon.
+ * - Shows how to use the icon prop to show an icon.
+ */
+export const WithIcons: Story = {
+  render: () => (
+    <div className="flex gap-4">
+      <Button>
+        <SearchSmall />
+        Search
+      </Button>
+      <Button variant="secondary">
+        Search
+        <SearchSmall />
+      </Button>
+    </div>
+  ),
+}
+
+/**
  * Variants: Demonstrates all visual variants, sizes, and states for the Button component.
  * - Shows how to use the variant, size, and state props.
  * - Includes interactive controls for switching variants and sizes.
@@ -91,11 +142,6 @@ export const Variants: Story = {
       Success = "success",
     }
 
-    enum Size {
-      Default = "default",
-      Large = "large",
-    }
-
     enum State {
       Active = "active",
       Disabled = "disabled",
@@ -105,57 +151,34 @@ export const Variants: Story = {
     }
 
     const [variant, setVariant] = useState<Variant>(Variant.Primary)
-    const [size, setSize] = useState<Size>(Size.Default)
 
     return (
-      <div
-        className={tcx(
-          "flex flex-col items-start gap-4 rounded-xl p-4",
-          variant === Variant.Dark && "bg-gray-800",
-        )}
-      >
-        <div className="flex gap-4">
-          <Select
-            value={variant}
-            onChange={(value) => setVariant(value as Variant)}
-          >
-            <Select.Trigger>{variant}</Select.Trigger>
-            <Select.Content>
-              {Object.values(Variant).map((variant) => (
-                <Select.Item
-                  key={variant}
-                  value={variant}
-                >
-                  {variant}
-                </Select.Item>
-              ))}
-            </Select.Content>
-          </Select>
-          <Select
-            value={size}
-            onChange={(value) => setSize(value as Size)}
-          >
-            <Select.Trigger>{size}</Select.Trigger>
-            <Select.Content>
-              {Object.values(Size).map((size) => (
-                <Select.Item
-                  key={size}
-                  value={size}
-                >
-                  {size}
-                </Select.Item>
-              ))}
-            </Select.Content>
-          </Select>
-        </div>
+      <div className="flex flex-col items-start gap-4">
+        <Select
+          value={variant}
+          onChange={(value) => setVariant(value as Variant)}
+        >
+          <Select.Trigger>
+            {Object.keys(Variant).find((v) => Variant[v as keyof typeof Variant] === variant)}
+          </Select.Trigger>
+          <Select.Content>
+            {Object.entries(Variant).map(([key, value]) => (
+              <Select.Item
+                key={key}
+                value={value}
+              >
+                {key}
+              </Select.Item>
+            ))}
+          </Select.Content>
+        </Select>
 
         <div className="grid grid-cols-[auto_1fr_1fr] items-center gap-4">
           {Object.values(State).map((state) => (
             <Fragment key={state}>
-              <span className="text-pink-500 capitalize">{state}</span>
+              <span className="capitalize text-pink-500">{state}</span>
               <Button
                 variant={variant}
-                size={size}
                 active={state === State.Active}
                 disabled={state === State.Disabled}
                 loading={state === State.Loading}
@@ -165,7 +188,6 @@ export const Variants: Story = {
               </Button>
               <Button
                 variant={variant}
-                size={size}
                 active={state === State.Active}
                 disabled={state === State.Disabled}
                 loading={state === State.Loading}
@@ -188,11 +210,9 @@ export const Variants: Story = {
  */
 export const AsChild: Story = {
   render: () => (
-    <>
-      <Button asChild>
-        <a href="#">Link</a>
-      </Button>
-    </>
+    <Button asChild>
+      <a href="#">Link</a>
+    </Button>
   ),
 }
 
@@ -219,33 +239,24 @@ export const Readonly: Story = {
 
     return (
       <div className="flex flex-col gap-4">
-        <div className="rounded-xl border bg-stone-50 p-4">
-          <div className="text-body-small-strong mb-2 text-stone-700">Click Count:</div>
-          <div className="text-body-small font-mono text-stone-600">{clickCount}</div>
+        <div className="bg-secondary-background text-secondary-foreground rounded-lg p-4">
+          <p>Click Count: {clickCount}</p>
         </div>
 
-        <div className="flex flex-wrap gap-4">
+        <div className="flex gap-4">
           <Button
             readOnly
             onClick={() => setClickCount((prev) => prev + 1)}
           >
             Readonly Button
           </Button>
+
           <Button
-            readOnly
             variant="secondary"
             onClick={() => setClickCount((prev) => prev + 1)}
           >
-            Readonly Secondary
+            Normal Button
           </Button>
-          <Button onClick={() => setClickCount((prev) => prev + 1)}>
-            Normal Button (for comparison)
-          </Button>
-        </div>
-
-        <div className="text-body-small text-stone-600">
-          💡 Try clicking on the readOnly buttons - the click count should not change. Only the
-          normal button will increment the count.
         </div>
       </div>
     )

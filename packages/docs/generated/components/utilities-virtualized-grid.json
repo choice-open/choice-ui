@@ -152,6 +152,74 @@
           "description": ""
         }
       ]
+    },
+    {
+      "displayName": "useLayoutData",
+      "description": "",
+      "props": [
+        {
+          "name": "columnCount",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "entries",
+          "type": "EntryProps<P>[]",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "gridGap",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "overscan",
+          "type": "number",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "useConstRef",
+      "description": "",
+      "props": []
+    },
+    {
+      "displayName": "useElementSize",
+      "description": "",
+      "props": []
+    },
+    {
+      "displayName": "useElementScroll",
+      "description": "",
+      "props": []
+    },
+    {
+      "displayName": "useElementWindowOffset",
+      "description": "",
+      "props": []
+    },
+    {
+      "displayName": "VirtualizedGridErrorBoundary",
+      "description": "",
+      "props": [
+        {
+          "name": "fallback",
+          "type": "ComponentType<{ error?: Error | undefined; retry: () => void; }> | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onError",
+          "type": "((error: Error, errorInfo: ErrorInfo) => void) | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
     }
   ],
   "stories": [
@@ -166,28 +234,28 @@
       "id": "utilities-virtualizedgrid--list-mode",
       "name": "List Mode",
       "exportName": "ListMode",
-      "description": "",
+      "description": "List mode for single-column vertical layouts.\n\nDemonstrates:\n- List mode with single column\n- Variable item heights\n- Horizontal layout within items\n\n```tsx\n<VirtualizedGrid\n  listMode={true}\n  items={items}\n  columnCount={() => 1}\n  itemData={(item) => ({ key: item.id, height: 120 })}\n  renderItem={(item) => <ListItem {...item} />}\n/>\n```",
       "source": "import { VirtualizedGrid } from \"@choice-ui/virtualized-grid\"\n\nexport default function App() {\n  return (\n    <VirtualizedGrid\n      listMode={true}\n      items={items}\n      overscan={3}\n      columnCount={() => 1}\n      gridGap={() => 8}\n      itemData={(item) => ({\n        key: item.id,\n        height: 120,\n      })}\n      renderItem={(item, index) => (\n        <div className=\"bg-default-background rounded-lg border p-4 transition-colors hover:bg-gray-50\">\n          <div className=\"flex items-center gap-4\">\n            <img\n              src={item.image}\n              alt={item.title}\n              className=\"h-16 w-16 flex-shrink-0 rounded-lg object-cover\"\n            />\n            <div className=\"min-w-0 flex-grow\">\n              <div className=\"mb-1 flex items-center justify-between\">\n                <h3 className=\"font-strong truncate\">{item.title}</h3>\n                <span className=\"text-success-foreground font-strong\">${item.price}</span>\n              </div>\n              <p className=\"text-secondary-foreground mb-2 line-clamp-2\">{item.description}</p>\n              <div className=\"flex items-center gap-2\">\n                <Badge>{item.category}</Badge>\n                <span className=\"text-secondary-foreground\">#{(index ?? 0) + 1}</span>\n              </div>\n            </div>\n          </div>\n        </div>\n      )}\n    />\n  );\n}"
     },
     {
       "id": "utilities-virtualizedgrid--performance-optimized",
       "name": "Performance Optimized",
       "exportName": "PerformanceOptimized",
-      "description": "",
+      "description": "Performance optimized setup with DOM node pooling.\n\nDemonstrates:\n- DOM node pooling for memory efficiency\n- Minimal overscan for better performance\n- Large dataset handling (10k items)\n- Performance monitoring indicators\n\n```tsx\n<VirtualizedGrid\n  enablePooling={true}\n  poolSize={50}\n  maxPoolSize={200}\n  overscan={2}\n  items={largeDataset}\n  // ... other props\n/>\n```",
       "source": "import { VirtualizedGrid } from \"@choice-ui/virtualized-grid\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-4\">\n      <div className=\"flex items-center gap-4 rounded-lg bg-blue-50 p-4\">\n        <div className=\"\">\n          <strong>Dataset:</strong> {items.length.toLocaleString()} items\n        </div>\n        <div className=\"\">\n          <strong>Rendered:</strong> ~50-100 DOM nodes (pooled)\n        </div>\n        <div className=\"\">\n          <strong>Performance:</strong> O(log n) rendering\n        </div>\n      </div>\n\n      <VirtualizedGrid\n        enablePooling={true}\n        poolSize={50}\n        maxPoolSize={200}\n        overscan={2}\n        items={items}\n        columnCount={(width, gap) => Math.max(1, Math.floor((width + gap) / (200 + gap)))}\n        gridGap={() => 12}\n        itemData={(item) => ({\n          key: item.id,\n          height: 200,\n        })}\n        renderItem={(item, index) => (\n          <div className=\"bg-default-background rounded-lg border p-3 transition-shadow hover:shadow-md\">\n            <div className=\"mb-3 h-20 w-full rounded bg-gradient-to-br from-blue-400 to-purple-500\" />\n            <div className=\"space-y-2\">\n              <h3 className=\"font-strong line-clamp-1\">{item.title}</h3>\n              <div className=\"flex items-center justify-between\">\n                <Badge>#{(index ?? 0) + 1}</Badge>\n                <span className=\"text-success-foreground font-strong\">${item.price}</span>\n              </div>\n            </div>\n          </div>\n        )}\n      />\n    </div>\n  );\n}"
     },
     {
       "id": "utilities-virtualizedgrid--container-scroll",
       "name": "Container Scroll",
       "exportName": "ContainerScroll",
-      "description": "",
+      "description": "Container scroll implementation within a ScrollArea.\n\nDemonstrates:\n- Custom scroll container setup\n- Integration with ScrollArea component\n- Constrained height virtualization\n\n```tsx\nconst scrollRef = useRef<HTMLDivElement>(null)\nconst containerRef = useRef<HTMLDivElement>(null)\n\n<ScrollArea>\n  <ScrollArea.Viewport ref={scrollRef}>\n    <ScrollArea.Content ref={containerRef}>\n      <VirtualizedGrid\n        scrollRef={scrollRef}\n        containerRef={containerRef}\n        // ... other props\n      />\n    </ScrollArea.Content>\n  </ScrollArea.Viewport>\n</ScrollArea>\n```",
       "source": "import { VirtualizedGrid } from \"@choice-ui/virtualized-grid\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-4\">\n      <div className=\"rounded-lg bg-green-50 p-4\">\n        <p className=\"\">\n          <strong>Container Scroll:</strong> Virtualization within a custom scroll container\n          instead of the window. Useful for modals, sidebars, or embedded layouts.\n        </p>\n      </div>\n\n      <ScrollArea>\n        <ScrollArea.Viewport\n          ref={scrollRef}\n          className=\"max-h-96 rounded-xl border\"\n        >\n          <ScrollArea.Content\n            ref={containerRef}\n            className=\"p-4\"\n          >\n            <VirtualizedGrid\n              scrollRef={scrollRef}\n              containerRef={containerRef}\n              items={items}\n              overscan={3}\n              columnCount={(width, gap) => Math.max(1, Math.floor((width + gap) / (220 + gap)))}\n              gridGap={() => 16}\n              itemData={(item) => ({\n                key: item.id,\n                height: 180,\n              })}\n              renderItem={(item, index) => (\n                <div className=\"bg-default-background rounded-lg border p-3\">\n                  <div\n                    className=\"mb-3 h-16 w-full rounded\"\n                    style={{ backgroundColor: item.color }}\n                  />\n                  <h3 className=\"font-strong mb-2 line-clamp-2\">{item.title}</h3>\n                  <div className=\"flex items-center justify-between\">\n                    <span className=\"text-secondary-foreground\">Item {(index ?? 0) + 1}</span>\n                    <Badge>{item.category}</Badge>\n                  </div>\n                </div>\n              )}\n            />\n          </ScrollArea.Content>\n        </ScrollArea.Viewport>\n      </ScrollArea>\n    </div>\n  );\n}"
     },
     {
       "id": "utilities-virtualizedgrid--error-handling",
       "name": "Error Handling",
       "exportName": "ErrorHandling",
-      "description": "",
+      "description": "Error handling and edge cases demonstration.\n\nDemonstrates:\n- Custom error boundary fallback\n- Error recovery mechanisms\n- Empty state handling\n- Loading states\n\n```tsx\n<VirtualizedGrid\n  items={items}\n  errorFallback={({ error, retry }) => (\n    <CustomErrorState error={error} onRetry={retry} />\n  )}\n  onError={(error, errorInfo) => {\n    console.error('Grid error:', error)\n  }}\n  // ... other props\n/>\n```",
       "source": "import { VirtualizedGrid } from \"@choice-ui/virtualized-grid\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-4\">\n      <div className=\"flex items-center gap-4 rounded-lg bg-yellow-50 p-4\">\n        <div className=\"flex-grow\">\n          <p className=\"\">\n            <strong>Error Handling:</strong> Demonstrates error boundaries, recovery, and edge\n            cases.\n          </p>\n        </div>\n        <div className=\"flex gap-2\">\n          <Button\n            variant={shouldError ? \"destructive\" : \"secondary\"}\n            onClick={() => setShouldError(!shouldError)}\n          >\n            {shouldError ? \"Fix Error\" : \"Trigger Error\"}\n          </Button>\n          <Button\n            variant=\"secondary\"\n            onClick={() => setItems([])}\n          >\n            Clear Items\n          </Button>\n          <Button\n            variant=\"secondary\"\n            onClick={() => setItems(generateItems(100))}\n          >\n            Reset Items\n          </Button>\n        </div>\n      </div>\n\n      <VirtualizedGrid\n        items={errorProneItems}\n        overscan={5}\n        columnCount={(width, gap) => Math.max(1, Math.floor((width + gap) / (250 + gap)))}\n        gridGap={() => 16}\n        itemData={(item) => ({\n          key: item.id,\n          height: 200,\n        })}\n        renderItem={(item, index) => (\n          <div className=\"bg-default-background rounded-lg border p-4\">\n            <div className=\"mb-3 h-24 w-full rounded bg-gray-200\" />\n            <h3 className=\"font-strong mb-2\">{item.title?.toUpperCase()}</h3>\n            <p className=\"text-secondary-foreground mb-3 line-clamp-2\">{item.description}</p>\n            <Badge>#{(index ?? 0) + 1}</Badge>\n          </div>\n        )}\n        errorFallback={({ error, retry }) => (\n          <div className=\"flex h-full flex-col items-center justify-center p-8 text-center\">\n            <div className=\"mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-red-100\">\n              <span className=\"text-heading-display\">⚠️</span>\n            </div>\n            <h3 className=\"text-body-large-strong mb-2\">Something went wrong</h3>\n            <p className=\"text-secondary-foreground mb-4 max-w-md\">\n              The virtualized grid encountered an error while rendering items. This could be due\n              to invalid data or rendering issues.\n            </p>\n            <div className=\"flex gap-2\">\n              <Button onClick={retry}>Try Again</Button>\n              <Button\n                variant=\"secondary\"\n                onClick={() => setShouldError(false)}\n              >\n                Fix Data\n              </Button>\n            </div>\n            {process.env.NODE_ENV === \"development\" && (\n              <details className=\"mt-4 text-left\">\n                <summary className=\"text-secondary-foreground cursor-pointer\">\n                  Error Details (Dev Mode)\n                </summary>\n                <pre className=\"mt-2 max-w-md overflow-auto rounded bg-gray-100 p-2\">\n                  {error?.stack}\n                </pre>\n              </details>\n            )}\n          </div>\n        )}\n        onError={(error, errorInfo) => {\n          console.error(\"VirtualizedGrid Error:\", error, errorInfo)\n        }}\n      />\n    </div>\n  );\n}"
     },
     {
@@ -197,5 +265,8 @@
       "description": "Interactive configuration playground.\n\nDemonstrates:\n- Dynamic configuration changes\n- Real-time performance impact visualization\n- Different overscan values\n- Variable item sizes\n\n```tsx\nconst [overscan, setOverscan] = useState(5)\nconst [itemCount, setItemCount] = useState(1000)\n\n<VirtualizedGrid\n  overscan={overscan}\n  items={items.slice(0, itemCount)}\n  // ... other props\n/>\n```",
       "source": "import { VirtualizedGrid } from \"@choice-ui/virtualized-grid\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-6\">\n      <div className=\"grid grid-cols-2 gap-4 rounded-lg bg-gray-50 p-4 md:grid-cols-4\">\n        <div>\n          <label className=\"font-strong mb-1 block\">Item Count</label>\n          <Input\n            type=\"number\"\n            value={itemCount.toString()}\n            onChange={(e) => setItemCount(Number(e))}\n            min={10}\n            max={50000}\n            step={100}\n          />\n        </div>\n        <div>\n          <label className=\"font-strong mb-1 block\">Overscan</label>\n          <Input\n            type=\"number\"\n            value={overscan.toString()}\n            onChange={(e) => setOverscan(Number(e))}\n            min={0}\n            max={20}\n          />\n        </div>\n        <div>\n          <label className=\"font-strong mb-1 block\">Min Height</label>\n          <Input\n            type=\"number\"\n            value={minHeight.toString()}\n            onChange={(e) => setMinHeight(Number(e))}\n            min={100}\n            max={300}\n            step={10}\n          />\n        </div>\n        <div>\n          <label className=\"font-strong mb-1 block\">Max Height</label>\n          <Input\n            type=\"number\"\n            value={maxHeight.toString()}\n            onChange={(e) => setMaxHeight(Number(e))}\n            min={100}\n            max={400}\n            step={10}\n          />\n        </div>\n      </div>\n\n      <div className=\"flex items-center gap-4 rounded-lg bg-blue-50 p-4\">\n        <label className=\"flex items-center gap-2\">\n          <input\n            type=\"checkbox\"\n            checked={enablePooling}\n            onChange={(e) => setEnablePooling(e.target.checked)}\n          />\n          <span className=\"\">Enable DOM Node Pooling</span>\n        </label>\n        <div className=\"text-secondary-foreground\">\n          Items: {itemCount.toLocaleString()} | Overscan: {overscan} | Pool:{\" \"}\n          {enablePooling ? \"ON\" : \"OFF\"}\n        </div>\n      </div>\n\n      <VirtualizedGrid\n        enablePooling={enablePooling}\n        poolSize={50}\n        maxPoolSize={200}\n        overscan={overscan}\n        items={items}\n        columnCount={(width, gap) => Math.max(1, Math.floor((width + gap) / (240 + gap)))}\n        gridGap={() => 16}\n        itemData={(item) => {\n          // Variable height based on settings\n          const height = minHeight + (item.index % (maxHeight - minHeight))\n          return {\n            key: item.id,\n            height,\n          }\n        }}\n        renderItem={(item, index) => {\n          const height = minHeight + (item.index % (maxHeight - minHeight))\n\n          return (\n            <div\n              className=\"bg-default-background flex flex-col rounded-lg border p-4\"\n              style={{ height }}\n            >\n              <div className=\"flex-grow\">\n                <div\n                  className=\"mb-3 h-16 w-full rounded\"\n                  style={{ backgroundColor: item.color }}\n                />\n                <h3 className=\"font-strong mb-2 line-clamp-2\">{item.title}</h3>\n                <p className=\"text-secondary-foreground line-clamp-3\">{item.description}</p>\n              </div>\n              <div className=\"mt-auto flex items-center justify-between pt-2\">\n                <Badge>#{(index ?? 0) + 1}</Badge>\n                <span className=\"text-secondary-foreground\">{height}px</span>\n              </div>\n            </div>\n          )\n        }}\n      />\n    </div>\n  );\n}"
     }
+  ],
+  "tags": [
+    "new"
   ]
 }

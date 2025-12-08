@@ -138,42 +138,42 @@
       "id": "collections-select--disabled-options",
       "name": "Disabled Options",
       "exportName": "DisabledOptions",
-      "description": "",
+      "description": "Select with individual disabled options.",
       "source": "import { Select } from \"@choice-ui/select\"\n\nexport default function App() {\n  return (\n    <Select\n      value={value}\n      onChange={setValue}\n    >\n      <Select.Trigger>\n        <Select.Value>{value || \"Select an option...\"}</Select.Value>\n      </Select.Trigger>\n      <Select.Content>\n        <Select.Item\n          value=\"option-1\"\n          disabled\n        >\n          <Select.Value>Option 1 (Disabled)</Select.Value>\n        </Select.Item>\n        <Select.Item value=\"option-2\">\n          <Select.Value>Option 2</Select.Value>\n        </Select.Item>\n        <Select.Item value=\"option-3\">\n          <Select.Value>Option 3</Select.Value>\n        </Select.Item>\n        <Select.Item\n          value=\"option-4\"\n          disabled\n        >\n          <Select.Value>Option 4 (Disabled)</Select.Value>\n        </Select.Item>\n        <Select.Item value=\"option-5\">\n          <Select.Value>Option 5</Select.Value>\n        </Select.Item>\n      </Select.Content>\n    </Select>\n  );\n}"
     },
     {
       "id": "collections-select--with-divider",
       "name": "With Divider",
       "exportName": "WithDivider",
-      "description": "",
+      "description": "Select with dividers for grouping options.",
       "source": "import { Select } from \"@choice-ui/select\"\n\nexport default function App() {\n  return (\n    <Select\n      value={value}\n      onChange={setValue}\n    >\n      <Select.Trigger>\n        <Select.Value>{value || \"Select an option...\"}</Select.Value>\n      </Select.Trigger>\n      <Select.Content>\n        <Select.Item value=\"category-a-1\">\n          <Select.Value>Category A - Option 1</Select.Value>\n        </Select.Item>\n        <Select.Item value=\"category-a-2\">\n          <Select.Value>Category A - Option 2</Select.Value>\n        </Select.Item>\n        <Select.Divider />\n        <Select.Item value=\"category-b-1\">\n          <Select.Value>Category B - Option 1</Select.Value>\n        </Select.Item>\n        <Select.Item value=\"category-b-2\">\n          <Select.Value>Category B - Option 2</Select.Value>\n        </Select.Item>\n        <Select.Divider />\n        <Select.Item value=\"category-c-1\">\n          <Select.Value>Category C - Option 1</Select.Value>\n        </Select.Item>\n      </Select.Content>\n    </Select>\n  );\n}"
     },
     {
       "id": "collections-select--with-labels",
       "name": "With Labels",
       "exportName": "WithLabels",
-      "description": "",
+      "description": "Select with labels for better organization.",
       "source": "import { Select } from \"@choice-ui/select\"\n\nexport default function App() {\n  return (\n    <Select\n      value={value}\n      onChange={setValue}\n    >\n      <Select.Trigger>\n        <Select.Value>{value || \"Select a plan...\"}</Select.Value>\n      </Select.Trigger>\n      <Select.Content>\n        <Select.Label>Basic Plans</Select.Label>\n        <Select.Item value=\"basic-1\">\n          <Select.Value>Basic - Starter</Select.Value>\n        </Select.Item>\n        <Select.Item value=\"basic-2\">\n          <Select.Value>Basic - Professional</Select.Value>\n        </Select.Item>\n\n        <Select.Divider />\n\n        <Select.Label>Premium Plans</Select.Label>\n        <Select.Item value=\"premium-1\">\n          <Select.Value>Premium - Business</Select.Value>\n        </Select.Item>\n        <Select.Item value=\"premium-2\">\n          <Select.Value>Premium - Enterprise</Select.Value>\n        </Select.Item>\n\n        <Select.Divider />\n\n        <Select.Label>Custom Solutions</Select.Label>\n        <Select.Item value=\"custom-1\">\n          <Select.Value>Custom - Tailored</Select.Value>\n        </Select.Item>\n      </Select.Content>\n    </Select>\n  );\n}"
     },
     {
       "id": "collections-select--with-icons",
       "name": "With Icons",
       "exportName": "WithIcons",
-      "description": "",
+      "description": "Select with icons for better visual recognition.",
       "source": "import { Select } from \"@choice-ui/select\"\n\nexport default function App() {\n  return (\n    <Select\n      value={value}\n      onChange={setValue}\n    >\n      <Select.Trigger>\n        <Select.Value>{value || \"Select field type...\"}</Select.Value>\n      </Select.Trigger>\n      <Select.Content>\n        <Select.Item value=\"attachment\">\n          <FieldTypeAttachment />\n          <Select.Value>Attachment Field</Select.Value>\n        </Select.Item>\n        <Select.Item value=\"checkbox\">\n          <FieldTypeCheckbox />\n          <Select.Value>Checkbox Field</Select.Value>\n        </Select.Item>\n        <Select.Item value=\"count\">\n          <FieldTypeCount />\n          <Select.Value>Count Field</Select.Value>\n        </Select.Item>\n      </Select.Content>\n    </Select>\n  );\n}"
     },
     {
       "id": "collections-select--long-list",
       "name": "Long List",
       "exportName": "LongList",
-      "description": "",
+      "description": "Select with a large number of options demonstrating scroll performance.",
       "source": "import { Select } from \"@choice-ui/select\"\n\nexport default function App() {\n  return (\n    <Select\n      value={value}\n      onChange={setValue}\n    >\n      <Select.Trigger>\n        <Select.Value>\n          {value ? options.find((opt) => opt.value === value)?.label : \"Select a city...\"}\n        </Select.Value>\n      </Select.Trigger>\n      <Select.Content>\n        <Select.Label>Cities ({options.length} total)</Select.Label>\n        {options.map((option) => (\n          <Select.Item\n            key={option.value}\n            value={option.value}\n          >\n            <Select.Value>{option.label}</Select.Value>\n          </Select.Item>\n        ))}\n      </Select.Content>\n    </Select>\n  );\n}"
     },
     {
       "id": "collections-select--match-trigger-width",
       "name": "Match Trigger Width",
       "exportName": "MatchTriggerWidth",
-      "description": "",
+      "description": "Select that matches the trigger width for consistent layout.",
       "source": "import { Select } from \"@choice-ui/select\"\n\nexport default function App() {\n  return (\n    <Select\n      value={value}\n      onChange={setValue}\n      matchTriggerWidth\n    >\n      <Select.Trigger className=\"w-80\">\n        <Select.Value>\n          {value ? options.find((opt) => opt.value === value)?.label : \"Select a song...\"}\n        </Select.Value>\n      </Select.Trigger>\n      <Select.Content>\n        <Select.Label>Songs</Select.Label>\n        {options.map((option) => (\n          <Select.Item\n            key={option.value}\n            value={option.value}\n          >\n            <Select.Value>{option.label}</Select.Value>\n          </Select.Item>\n        ))}\n      </Select.Content>\n    </Select>\n  );\n}"
     },
     {
@@ -187,14 +187,14 @@
       "id": "collections-select--compound-component",
       "name": "Compound Component",
       "exportName": "CompoundComponent",
-      "description": "",
+      "description": "Compound component pattern demonstration.",
       "source": "import { Select } from \"@choice-ui/select\"\n\nexport default function App() {\n  return (\n    <div className=\"flex w-80 flex-col gap-8\">\n      <Select\n        value={value}\n        onChange={setValue}\n      >\n        <Select.Trigger>\n          <Select.Value>{value ? `Selected: ${value}` : \"Choose an option...\"}</Select.Value>\n        </Select.Trigger>\n        <Select.Content>\n          <Select.Label>Available Options</Select.Label>\n          <Select.Item value=\"option-1\">\n            <Select.Value>First Option</Select.Value>\n          </Select.Item>\n          <Select.Item value=\"option-2\">\n            <Select.Value>Second Option</Select.Value>\n          </Select.Item>\n          <Select.Divider />\n          <Select.Item value=\"option-3\">\n            <Select.Value>Third Option</Select.Value>\n          </Select.Item>\n          <Select.Item\n            value=\"option-4\"\n            disabled\n          >\n            <Select.Value>Disabled Option</Select.Value>\n          </Select.Item>\n        </Select.Content>\n      </Select>\n\n      <div className=\"rounded-xl bg-stone-50 p-4\">\n        <div className=\"text-body-small-strong mb-2 text-stone-700\">Current Selection:</div>\n        <div className=\"text-body-small font-mono text-stone-600\">{value || \"None\"}</div>\n      </div>\n    </div>\n  );\n}"
     },
     {
       "id": "collections-select--marginal-conditions",
       "name": "Marginal Conditions",
       "exportName": "MarginalConditions",
-      "description": "",
+      "description": "Select positioned at edge cases for testing placement behavior.",
       "source": "import { Select } from \"@choice-ui/select\"\n\nexport default function App() {\n  return (\n    <div className=\"flex h-screen flex-col justify-end p-4\">\n      <Select\n        value={value}\n        onChange={setValue}\n      >\n        <Select.Trigger>\n          <Select.Value>{value || \"Edge case test...\"}</Select.Value>\n        </Select.Trigger>\n        <Select.Content>\n          <Select.Label>Edge Position Test</Select.Label>\n          {Array.from({ length: 12 }, (_, i) => (\n            <Select.Item\n              key={i}\n              value={`edge-option-${i + 1}`}\n            >\n              <Select.Value>Edge Option {i + 1}</Select.Value>\n            </Select.Item>\n          ))}\n        </Select.Content>\n      </Select>\n    </div>\n  );\n}"
     },
     {
@@ -208,7 +208,7 @@
       "id": "collections-select--item-active",
       "name": "Item Active",
       "exportName": "ItemActive",
-      "description": "",
+      "description": "Select with active item handling and popover integration.",
       "source": "import { Select } from \"@choice-ui/select\"\n\nexport default function App() {\n  return (\n    <>\n      <Select\n        value={value}\n        onChange={setValue}\n        open={selectOpen}\n        onOpenChange={setSelectOpen}\n      >\n        <Select.Trigger className=\"relative\">\n          <Select.Value>\n            {value ? options.find((option) => option.value === value)?.label : \"Select song...\"}\n          </Select.Value>\n          <div\n            className=\"absolute inset-x-0 bottom-0 h-px\"\n            ref={itemRef}\n          />\n        </Select.Trigger>\n        <Select.Content>\n          <Select.Label>Music Library</Select.Label>\n          {options.map((option) => (\n            <Select.Item\n              key={option.value}\n              value={option.value}\n            >\n              <Select.Value>{option.label}</Select.Value>\n            </Select.Item>\n          ))}\n          <Select.Divider />\n          <Select.Label>Actions</Select.Label>\n          <Select.Item\n            onClick={() => {\n              setOpen(true)\n              setSelectOpen(false)\n            }}\n          >\n            <Settings />\n            <Select.Value>Open Music Settings</Select.Value>\n          </Select.Item>\n        </Select.Content>\n      </Select>\n\n      <Popover\n        open={open}\n        onOpenChange={setOpen}\n        triggerRef={itemRef}\n      >\n        <Popover.Content className=\"w-80 p-4\">\n          <div className=\"space-y-4\">\n            <h3 className=\"font-strong\">Music Settings</h3>\n            <p className=\"text-body-small text-stone-600\">\n              Configure your music playback preferences and library settings.\n            </p>\n            <div className=\"flex gap-2\">\n              <button\n                className=\"text-body-small rounded bg-blue-500 px-3 py-1 text-white\"\n                onClick={() => setOpen(false)}\n              >\n                Save\n              </button>\n              <button\n                className=\"text-body-small rounded border px-3 py-1\"\n                onClick={() => setOpen(false)}\n              >\n                Cancel\n              </button>\n            </div>\n          </div>\n        </Popover.Content>\n      </Popover>\n    </>\n  );\n}"
     },
     {
@@ -229,21 +229,21 @@
       "id": "collections-select--close-on-escape-toggle",
       "name": "Close On Escape Toggle",
       "exportName": "CloseOnEscapeToggle",
-      "description": "",
+      "description": "Demonstrates closeOnEscape functionality with interactive toggle.\n\nWhen closeOnEscape is set to false, pressing ESC key will not close the select menu.\nThis is useful when the select is nested in other components that also handle ESC key,\nand you want to prevent the ESC event from bubbling up.",
       "source": "import { Select } from \"@choice-ui/select\"\n\nexport default function App() {\n  return (\n    <div\n      style={{\n        display: \"flex\",\n        flexDirection: \"column\",\n        gap: \"20px\",\n        alignItems: \"flex-start\",\n      }}\n    >\n      <label style={{ display: \"flex\", alignItems: \"center\", gap: \"8px\" }}>\n        <input\n          type=\"checkbox\"\n          checked={closeOnEscape}\n          onChange={(e) => setCloseOnEscape(e.target.checked)}\n        />\n        <span>Enable close on ESC key</span>\n      </label>\n\n      <Select\n        value={value}\n        onChange={setValue}\n        closeOnEscape={closeOnEscape}\n      >\n        <Select.Trigger>\n          <Select.Value>{value || \"Select an option...\"}</Select.Value>\n        </Select.Trigger>\n        <Select.Content>\n          {Array.from({ length: 5 }, (_, i) => (\n            <Select.Item\n              key={i}\n              value={`option-${i + 1}`}\n            >\n              <Select.Value>Option {i + 1}</Select.Value>\n            </Select.Item>\n          ))}\n        </Select.Content>\n      </Select>\n\n      <div style={{ fontSize: \"14px\", color: \"#666\", maxWidth: \"400px\" }}>\n        {closeOnEscape\n          ? \"✅ Try opening the select and pressing ESC - it will close the menu.\"\n          : \"❌ With this option disabled, pressing ESC will not close the select menu.\"}\n      </div>\n    </div>\n  );\n}"
     },
     {
       "id": "collections-select--disable-close-on-escape",
       "name": "Disable Close On Escape",
       "exportName": "DisableCloseOnEscape",
-      "description": "",
+      "description": "Example with ESC key disabled.\n\nPressing ESC key will NOT close the select menu.\nThis is useful in modal dialogs or nested overlays where you want to prevent\nESC from closing the select and instead let it close the parent container.",
       "source": "import { Select } from \"@choice-ui/select\"\n\nexport default function App() {\n  return (\n    <div\n      style={{\n        display: \"flex\",\n        flexDirection: \"column\",\n        gap: \"20px\",\n        alignItems: \"flex-start\",\n      }}\n    >\n      <Select\n        value={value}\n        onChange={setValue}\n        closeOnEscape={false}\n      >\n        <Select.Trigger>\n          <Select.Value>{value || \"Select an option...\"}</Select.Value>\n        </Select.Trigger>\n        <Select.Content>\n          {Array.from({ length: 5 }, (_, i) => (\n            <Select.Item\n              key={i}\n              value={`option-${i + 1}`}\n            >\n              <Select.Value>Option {i + 1}</Select.Value>\n            </Select.Item>\n          ))}\n        </Select.Content>\n      </Select>\n\n      <div\n        style={{\n          padding: \"12px 16px\",\n          backgroundColor: \"#fff3cd\",\n          border: \"1px solid #ffc107\",\n          borderRadius: \"4px\",\n          fontSize: \"14px\",\n          maxWidth: \"400px\",\n        }}\n      >\n        <strong>⚠️ Note:</strong> Pressing ESC key will NOT close this select menu. Click outside\n        or select an option to close it.\n      </div>\n    </div>\n  );\n}"
     },
     {
       "id": "collections-select--event-propagation",
       "name": "Event Propagation",
       "exportName": "EventPropagation",
-      "description": "",
+      "description": "EventPropagation: Verifies that ESC key events do not propagate to window when closeOnEscape is true.\n\nThis story demonstrates that when the select menu is open and you press ESC:\n- The select menu will close\n- The ESC event will NOT propagate to the window\n- The window ESC counter will NOT increment\n\nPress ESC outside the select to increment the counter, then open the select and press ESC again.\nThe counter should not change when pressing ESC inside the select menu.",
       "source": ""
     },
     {
@@ -260,5 +260,8 @@
       "description": "Select component in light variant.",
       "source": "import { Select } from \"@choice-ui/select\"\n\nexport default function App() {\n  return (\n    <Select\n      variant=\"light\"\n      value={value}\n      onChange={setValue}\n    >\n      <Select.Trigger>\n        <Select.Value>{value || \"Select an option...\"}</Select.Value>\n      </Select.Trigger>\n      <Select.Content>\n        {Array.from({ length: 5 }, (_, i) => (\n          <Select.Item\n            key={i}\n            value={`option-${i + 1}`}\n          >\n            <Select.Value>Option {i + 1}</Select.Value>\n          </Select.Item>\n        ))}\n      </Select.Content>\n    </Select>\n  );\n}"
     }
+  ],
+  "tags": [
+    "upgrade"
   ]
 }

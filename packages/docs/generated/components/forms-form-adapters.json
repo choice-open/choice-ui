@@ -74,39 +74,9 @@
   ],
   "props": [
     {
-      "displayName": "useForm",
-      "description": "增强版的 useForm hook\n在 TanStack Form 的基础上添加适配器组件",
+      "displayName": "BaseAdapter",
+      "description": "",
       "props": [
-        {
-          "name": "defaultValues",
-          "type": "Record<string, unknown> | undefined",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "onSubmit",
-          "type": "((formApi: { value: unknown; }) => void | Promise<void>) | undefined",
-          "required": false,
-          "description": ""
-        }
-      ]
-    },
-    {
-      "displayName": "CheckboxAdapter",
-      "description": "Checkbox 适配器 - 将 Checkbox 组件适配到 Form 系统",
-      "props": [
-        {
-          "name": "value",
-          "type": "boolean | undefined",
-          "required": true,
-          "description": ""
-        },
-        {
-          "name": "readOnly",
-          "type": "boolean | undefined",
-          "required": false,
-          "description": ""
-        },
         {
           "name": "className",
           "type": "string | undefined",
@@ -114,102 +84,47 @@
           "description": ""
         },
         {
-          "name": "focused",
-          "type": "boolean | undefined",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "mixed",
-          "type": "boolean | undefined",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "variant",
-          "type": "enum",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "onChange",
-          "type": "(value: T) => void",
-          "required": true,
-          "description": "值变化回调"
-        },
-        {
-          "name": "onBlur",
-          "type": "(() => void) | undefined",
-          "required": false,
-          "description": "失焦回调"
-        },
-        {
-          "name": "onFocus",
-          "type": "(() => void) | undefined",
-          "required": false,
-          "description": "聚焦回调"
-        },
-        {
-          "name": "label",
-          "type": "ReactNode",
-          "required": false,
-          "description": "字段标签"
-        },
-        {
-          "name": "size",
-          "type": "enum",
-          "required": false,
-          "description": "字段大小"
-        },
-        {
           "name": "description",
           "type": "ReactNode",
           "required": false,
-          "description": "字段描述"
+          "description": ""
         },
         {
           "name": "error",
           "type": "ReactNode",
           "required": false,
-          "description": "单个错误信息"
+          "description": ""
         },
         {
-          "name": "onBlurAsync",
-          "type": "(() => void) | undefined",
-          "required": false,
-          "description": "异步失焦验证"
-        },
-        {
-          "name": "onBlurAsyncDebounceMs",
-          "type": "number | undefined",
+          "name": "htmlFor",
+          "type": "string | undefined",
           "required": false,
           "description": ""
         },
         {
-          "name": "onChangeAsync",
-          "type": "((value: T) => void) | undefined",
-          "required": false,
-          "description": "异步值变化验证"
-        },
-        {
-          "name": "onChangeAsyncDebounceMs",
-          "type": "number | undefined",
+          "name": "label",
+          "type": "ReactNode",
           "required": false,
           "description": ""
         },
         {
-          "name": "onFocusAsync",
-          "type": "(() => void) | undefined",
+          "name": "legendMode",
+          "type": "boolean | undefined",
           "required": false,
-          "description": "异步聚焦验证"
-        },
-        {
-          "name": "onFocusAsyncDebounceMs",
-          "type": "number | undefined",
-          "required": false,
+          "defaultValue": "false",
           "description": ""
         }
       ]
+    },
+    {
+      "displayName": "filterFormProps",
+      "description": "过滤表单特定属性的工具函数",
+      "props": []
+    },
+    {
+      "displayName": "BaseAdapterProps",
+      "description": "基础适配器组件\n提供统一的表单字段布局和样式",
+      "props": []
     },
     {
       "displayName": "InputAdapter",
@@ -228,12 +143,6 @@
           "description": ""
         },
         {
-          "name": "variant",
-          "type": "enum",
-          "required": false,
-          "description": ""
-        },
-        {
           "name": "focusSelection",
           "type": "enum",
           "required": false,
@@ -242,6 +151,12 @@
         {
           "name": "onIsEditingChange",
           "type": "((isEditing: boolean) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "variant",
+          "type": "enum",
           "required": false,
           "description": ""
         },
@@ -332,12 +247,30 @@
       ]
     },
     {
-      "displayName": "RadioGroupAdapter",
-      "description": "RadioGroup 适配器 - 将 RadioGroup 组件适配到 Form 系统\n\n核心功能：\n1. 值绑定\n2. 事件处理\n3. 错误状态显示\n4. 样式适配",
+      "displayName": "createInputAdapter",
+      "description": "",
       "props": [
         {
-          "name": "readOnly",
+          "name": "selected",
           "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "focusSelection",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onIsEditingChange",
+          "type": "((isEditing: boolean) => void) | undefined",
           "required": false,
           "description": ""
         },
@@ -348,8 +281,170 @@
           "description": ""
         },
         {
-          "name": "options",
-          "type": "{ disabled?: boolean | undefined; label: string; value: string; }[] | undefined",
+          "name": "description",
+          "type": "ReactNode",
+          "required": false,
+          "description": "字段描述"
+        },
+        {
+          "name": "error",
+          "type": "ReactNode",
+          "required": false,
+          "description": "单个错误信息"
+        },
+        {
+          "name": "label",
+          "type": "ReactNode",
+          "required": false,
+          "description": "字段标签"
+        },
+        {
+          "name": "onBlur",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "失焦回调"
+        },
+        {
+          "name": "onBlurAsync",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "异步失焦验证"
+        },
+        {
+          "name": "onBlurAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "((value: T) => void) | undefined",
+          "required": false,
+          "description": "值变化回调"
+        },
+        {
+          "name": "onChangeAsync",
+          "type": "((value: T) => void) | undefined",
+          "required": false,
+          "description": "异步值变化验证"
+        },
+        {
+          "name": "onChangeAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onFocus",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "聚焦回调"
+        },
+        {
+          "name": "onFocusAsync",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "异步聚焦验证"
+        },
+        {
+          "name": "onFocusAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "size",
+          "type": "enum",
+          "required": false,
+          "description": "字段大小"
+        },
+        {
+          "name": "value",
+          "type": "string | undefined",
+          "required": false,
+          "description": "字段值"
+        }
+      ]
+    },
+    {
+      "displayName": "TextareaAdapter",
+      "description": "Textarea 适配器 - 将 Textarea 组件适配到 Form 系统",
+      "props": [
+        {
+          "name": "selected",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "focusSelection",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onIsEditingChange",
+          "type": "((isEditing: boolean) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "variant",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "allowNewline",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": "Whether to allow newline characters when pressing Enter. Default is true"
+        },
+        {
+          "name": "contentRef",
+          "type": "RefObject<HTMLDivElement> | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "lineHeight",
+          "type": "number | undefined",
+          "required": false,
+          "description": "Line height in pixels for calculating textarea height. Default is 16"
+        },
+        {
+          "name": "maxRows",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "minRows",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "padding",
+          "type": "number | undefined",
+          "required": false,
+          "description": "Padding in pixels (top/bottom) for calculating textarea height. Default is 4 (py-1)"
+        },
+        {
+          "name": "resize",
+          "type": "false | \"auto\" | \"handle\" | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "scrollRef",
+          "type": "RefObject<HTMLDivElement> | undefined",
           "required": false,
           "description": ""
         },
@@ -435,6 +530,174 @@
           "name": "value",
           "type": "string",
           "required": true,
+          "description": "字段值"
+        }
+      ]
+    },
+    {
+      "displayName": "createTextareaAdapter",
+      "description": "",
+      "props": [
+        {
+          "name": "selected",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "focusSelection",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onIsEditingChange",
+          "type": "((isEditing: boolean) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "variant",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "allowNewline",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": "Whether to allow newline characters when pressing Enter. Default is true"
+        },
+        {
+          "name": "contentRef",
+          "type": "RefObject<HTMLDivElement> | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "lineHeight",
+          "type": "number | undefined",
+          "required": false,
+          "description": "Line height in pixels for calculating textarea height. Default is 16"
+        },
+        {
+          "name": "maxRows",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "minRows",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "padding",
+          "type": "number | undefined",
+          "required": false,
+          "description": "Padding in pixels (top/bottom) for calculating textarea height. Default is 4 (py-1)"
+        },
+        {
+          "name": "resize",
+          "type": "false | \"auto\" | \"handle\" | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "scrollRef",
+          "type": "RefObject<HTMLDivElement> | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "description",
+          "type": "ReactNode",
+          "required": false,
+          "description": "字段描述"
+        },
+        {
+          "name": "error",
+          "type": "ReactNode",
+          "required": false,
+          "description": "单个错误信息"
+        },
+        {
+          "name": "label",
+          "type": "ReactNode",
+          "required": false,
+          "description": "字段标签"
+        },
+        {
+          "name": "onBlur",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "失焦回调"
+        },
+        {
+          "name": "onBlurAsync",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "异步失焦验证"
+        },
+        {
+          "name": "onBlurAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "((value: T) => void) | undefined",
+          "required": false,
+          "description": "值变化回调"
+        },
+        {
+          "name": "onChangeAsync",
+          "type": "((value: T) => void) | undefined",
+          "required": false,
+          "description": "异步值变化验证"
+        },
+        {
+          "name": "onChangeAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onFocus",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "聚焦回调"
+        },
+        {
+          "name": "onFocusAsync",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "异步聚焦验证"
+        },
+        {
+          "name": "onFocusAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "size",
+          "type": "enum",
+          "required": false,
+          "description": "字段大小"
+        },
+        {
+          "name": "value",
+          "type": "string | undefined",
+          "required": false,
           "description": "字段值"
         }
       ]
@@ -621,11 +884,23 @@
       ]
     },
     {
-      "displayName": "TextareaAdapter",
-      "description": "Textarea 适配器 - 将 Textarea 组件适配到 Form 系统",
+      "displayName": "createSelectAdapter",
+      "description": "",
       "props": [
         {
-          "name": "selected",
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "open",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "readOnly",
           "type": "boolean | undefined",
           "required": false,
           "description": ""
@@ -643,62 +918,410 @@
           "description": ""
         },
         {
-          "name": "focusSelection",
+          "name": "closeOnEscape",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "focusManagerProps",
+          "type": "Partial<FloatingFocusManagerProps> | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "matchTriggerWidth",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onOpenChange",
+          "type": "((open: boolean) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "placement",
           "type": "enum",
           "required": false,
           "description": ""
         },
         {
-          "name": "onIsEditingChange",
-          "type": "((isEditing: boolean) => void) | undefined",
+          "name": "portalId",
+          "type": "string | undefined",
           "required": false,
           "description": ""
         },
         {
-          "name": "allowNewline",
+          "name": "root",
+          "type": "HTMLElement | null | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "description",
+          "type": "ReactNode",
+          "required": false,
+          "description": "字段描述"
+        },
+        {
+          "name": "error",
+          "type": "ReactNode",
+          "required": false,
+          "description": "单个错误信息"
+        },
+        {
+          "name": "label",
+          "type": "ReactNode",
+          "required": false,
+          "description": "字段标签"
+        },
+        {
+          "name": "onBlur",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "失焦回调"
+        },
+        {
+          "name": "onBlurAsync",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "异步失焦验证"
+        },
+        {
+          "name": "onBlurAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "((value: T) => void) | undefined",
+          "required": false,
+          "description": "值变化回调"
+        },
+        {
+          "name": "onChangeAsync",
+          "type": "((value: T) => void) | undefined",
+          "required": false,
+          "description": "异步值变化验证"
+        },
+        {
+          "name": "onChangeAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onFocus",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "聚焦回调"
+        },
+        {
+          "name": "onFocusAsync",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "异步聚焦验证"
+        },
+        {
+          "name": "onFocusAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "size",
+          "type": "enum",
+          "required": false,
+          "description": "字段大小"
+        },
+        {
+          "name": "value",
+          "type": "string | undefined",
+          "required": false,
+          "description": "字段值"
+        },
+        {
+          "name": "name",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "options",
+          "type": "SelectOption<T>[] | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "placeholder",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "CheckboxAdapter",
+      "description": "Checkbox 适配器 - 将 Checkbox 组件适配到 Form 系统",
+      "props": [
+        {
+          "name": "value",
+          "type": "boolean | undefined",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "readOnly",
           "type": "boolean | undefined",
           "required": false,
-          "description": "Whether to allow newline characters when pressing Enter. Default is true"
+          "description": ""
         },
         {
-          "name": "contentRef",
-          "type": "RefObject<HTMLDivElement> | undefined",
+          "name": "className",
+          "type": "string | undefined",
           "required": false,
           "description": ""
         },
         {
-          "name": "lineHeight",
-          "type": "number | undefined",
+          "name": "variant",
+          "type": "enum",
           "required": false,
-          "description": "Line height in pixels for calculating textarea height. Default is 16"
+          "description": ""
         },
         {
-          "name": "maxRows",
+          "name": "focused",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "mixed",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "(value: T) => void",
+          "required": true,
+          "description": "值变化回调"
+        },
+        {
+          "name": "onBlur",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "失焦回调"
+        },
+        {
+          "name": "onFocus",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "聚焦回调"
+        },
+        {
+          "name": "label",
+          "type": "ReactNode",
+          "required": false,
+          "description": "字段标签"
+        },
+        {
+          "name": "size",
+          "type": "enum",
+          "required": false,
+          "description": "字段大小"
+        },
+        {
+          "name": "description",
+          "type": "ReactNode",
+          "required": false,
+          "description": "字段描述"
+        },
+        {
+          "name": "error",
+          "type": "ReactNode",
+          "required": false,
+          "description": "单个错误信息"
+        },
+        {
+          "name": "onBlurAsync",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "异步失焦验证"
+        },
+        {
+          "name": "onBlurAsyncDebounceMs",
           "type": "number | undefined",
           "required": false,
           "description": ""
         },
         {
-          "name": "minRows",
+          "name": "onChangeAsync",
+          "type": "((value: T) => void) | undefined",
+          "required": false,
+          "description": "异步值变化验证"
+        },
+        {
+          "name": "onChangeAsyncDebounceMs",
           "type": "number | undefined",
           "required": false,
           "description": ""
         },
         {
-          "name": "padding",
-          "type": "number | undefined",
+          "name": "onFocusAsync",
+          "type": "(() => void) | undefined",
           "required": false,
-          "description": "Padding in pixels (top/bottom) for calculating textarea height. Default is 4 (py-1)"
+          "description": "异步聚焦验证"
         },
         {
-          "name": "resize",
-          "type": "false | \"auto\" | \"handle\" | undefined",
+          "name": "onFocusAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "createCheckboxAdapter",
+      "description": "",
+      "props": [
+        {
+          "name": "value",
+          "type": "boolean | undefined",
           "required": false,
           "description": ""
         },
         {
-          "name": "scrollRef",
-          "type": "RefObject<HTMLDivElement> | undefined",
+          "name": "readOnly",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "variant",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "focused",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "mixed",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "((value: T) => void) | undefined",
+          "required": false,
+          "description": "值变化回调"
+        },
+        {
+          "name": "onBlur",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "失焦回调"
+        },
+        {
+          "name": "onFocus",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "聚焦回调"
+        },
+        {
+          "name": "label",
+          "type": "ReactNode",
+          "required": false,
+          "description": "字段标签"
+        },
+        {
+          "name": "size",
+          "type": "enum",
+          "required": false,
+          "description": "字段大小"
+        },
+        {
+          "name": "description",
+          "type": "ReactNode",
+          "required": false,
+          "description": "字段描述"
+        },
+        {
+          "name": "error",
+          "type": "ReactNode",
+          "required": false,
+          "description": "单个错误信息"
+        },
+        {
+          "name": "onBlurAsync",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "异步失焦验证"
+        },
+        {
+          "name": "onBlurAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChangeAsync",
+          "type": "((value: T) => void) | undefined",
+          "required": false,
+          "description": "异步值变化验证"
+        },
+        {
+          "name": "onChangeAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onFocusAsync",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "异步聚焦验证"
+        },
+        {
+          "name": "onFocusAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "RadioGroupAdapter",
+      "description": "RadioGroup 适配器 - 将 RadioGroup 组件适配到 Form 系统\n\n核心功能：\n1. 值绑定\n2. 事件处理\n3. 错误状态显示\n4. 样式适配",
+      "props": [
+        {
+          "name": "readOnly",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "variant",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "options",
+          "type": "{ disabled?: boolean | undefined; label: string; value: string; }[] | undefined",
           "required": false,
           "description": ""
         },
@@ -789,6 +1412,114 @@
       ]
     },
     {
+      "displayName": "createRadioGroupAdapter",
+      "description": "",
+      "props": [
+        {
+          "name": "readOnly",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "variant",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "options",
+          "type": "{ disabled?: boolean | undefined; label: string; value: string; }[] | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "description",
+          "type": "ReactNode",
+          "required": false,
+          "description": "字段描述"
+        },
+        {
+          "name": "error",
+          "type": "ReactNode",
+          "required": false,
+          "description": "单个错误信息"
+        },
+        {
+          "name": "label",
+          "type": "ReactNode",
+          "required": false,
+          "description": "字段标签"
+        },
+        {
+          "name": "onBlur",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "失焦回调"
+        },
+        {
+          "name": "onBlurAsync",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "异步失焦验证"
+        },
+        {
+          "name": "onBlurAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "((value: T) => void) | undefined",
+          "required": false,
+          "description": "值变化回调"
+        },
+        {
+          "name": "onChangeAsync",
+          "type": "((value: T) => void) | undefined",
+          "required": false,
+          "description": "异步值变化验证"
+        },
+        {
+          "name": "onChangeAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onFocus",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "聚焦回调"
+        },
+        {
+          "name": "onFocusAsync",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "异步聚焦验证"
+        },
+        {
+          "name": "onFocusAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "size",
+          "type": "enum",
+          "required": false,
+          "description": "字段大小"
+        },
+        {
+          "name": "value",
+          "type": "string | undefined",
+          "required": false,
+          "description": "字段值"
+        }
+      ]
+    },
+    {
       "displayName": "SwitchAdapter",
       "description": "Switch 适配器 - 将 Switch 组件适配到 Form 系统",
       "props": [
@@ -805,14 +1536,14 @@
           "description": ""
         },
         {
-          "name": "focused",
-          "type": "boolean | undefined",
+          "name": "variant",
+          "type": "enum",
           "required": false,
           "description": ""
         },
         {
-          "name": "variant",
-          "type": "enum",
+          "name": "focused",
+          "type": "boolean | undefined",
           "required": false,
           "description": ""
         },
@@ -898,6 +1629,120 @@
           "name": "value",
           "type": "boolean",
           "required": true,
+          "description": "字段值"
+        }
+      ]
+    },
+    {
+      "displayName": "createSwitchAdapter",
+      "description": "",
+      "props": [
+        {
+          "name": "readOnly",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "variant",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "focused",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "description",
+          "type": "ReactNode",
+          "required": false,
+          "description": "字段描述"
+        },
+        {
+          "name": "error",
+          "type": "ReactNode",
+          "required": false,
+          "description": "单个错误信息"
+        },
+        {
+          "name": "label",
+          "type": "ReactNode",
+          "required": false,
+          "description": "字段标签"
+        },
+        {
+          "name": "onBlur",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "失焦回调"
+        },
+        {
+          "name": "onBlurAsync",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "异步失焦验证"
+        },
+        {
+          "name": "onBlurAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "((value: T) => void) | undefined",
+          "required": false,
+          "description": "值变化回调"
+        },
+        {
+          "name": "onChangeAsync",
+          "type": "((value: T) => void) | undefined",
+          "required": false,
+          "description": "异步值变化验证"
+        },
+        {
+          "name": "onChangeAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onFocus",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "聚焦回调"
+        },
+        {
+          "name": "onFocusAsync",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "异步聚焦验证"
+        },
+        {
+          "name": "onFocusAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "size",
+          "type": "enum",
+          "required": false,
+          "description": "字段大小"
+        },
+        {
+          "name": "value",
+          "type": "boolean | undefined",
+          "required": false,
           "description": "字段值"
         }
       ]
@@ -1065,6 +1910,168 @@
       ]
     },
     {
+      "displayName": "createRangeAdapter",
+      "description": "",
+      "props": [
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "max",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "min",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "readOnly",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "step",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "defaultValue",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "connectsClassName",
+          "type": "{ negative?: string | undefined; positive?: string | undefined; } | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChangeEnd",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChangeStart",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "thumbSize",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "trackSize",
+          "type": "{ height?: number | undefined; width?: number | \"auto\" | undefined; } | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "description",
+          "type": "ReactNode",
+          "required": false,
+          "description": "字段描述"
+        },
+        {
+          "name": "error",
+          "type": "ReactNode",
+          "required": false,
+          "description": "单个错误信息"
+        },
+        {
+          "name": "label",
+          "type": "ReactNode",
+          "required": false,
+          "description": "字段标签"
+        },
+        {
+          "name": "onBlur",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "失焦回调"
+        },
+        {
+          "name": "onBlurAsync",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "异步失焦验证"
+        },
+        {
+          "name": "onBlurAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "((value: T) => void) | undefined",
+          "required": false,
+          "description": "值变化回调"
+        },
+        {
+          "name": "onChangeAsync",
+          "type": "((value: T) => void) | undefined",
+          "required": false,
+          "description": "异步值变化验证"
+        },
+        {
+          "name": "onChangeAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onFocus",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "聚焦回调"
+        },
+        {
+          "name": "onFocusAsync",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "异步聚焦验证"
+        },
+        {
+          "name": "onFocusAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "size",
+          "type": "enum",
+          "required": false,
+          "description": "字段大小"
+        },
+        {
+          "name": "value",
+          "type": "number | undefined",
+          "required": false,
+          "description": "字段值"
+        }
+      ]
+    },
+    {
       "displayName": "NumericInputAdapter",
       "description": "NumericInput 适配器 - 将 NumericInput 组件适配到 Form 系统",
       "props": [
@@ -1123,8 +2130,8 @@
           "description": ""
         },
         {
-          "name": "focused",
-          "type": "boolean | undefined",
+          "name": "onIsEditingChange",
+          "type": "((isEditing: boolean) => void) | undefined",
           "required": false,
           "description": ""
         },
@@ -1135,20 +2142,8 @@
           "description": ""
         },
         {
-          "name": "tooltip",
-          "type": "TooltipProps | undefined",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "decimal",
-          "type": "number | undefined",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "onIsEditingChange",
-          "type": "((isEditing: boolean) => void) | undefined",
+          "name": "focused",
+          "type": "boolean | undefined",
           "required": false,
           "description": ""
         },
@@ -1159,8 +2154,20 @@
           "description": ""
         },
         {
+          "name": "tooltip",
+          "type": "TooltipProps | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
           "name": "triggerRef",
           "type": "RefObject<HTMLDivElement> | ((el: HTMLDivElement | null) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "decimal",
+          "type": "number | undefined",
           "required": false,
           "description": ""
         },
@@ -1216,6 +2223,228 @@
           "name": "onChange",
           "type": "(value: T) => void",
           "required": true,
+          "description": "值变化回调"
+        },
+        {
+          "name": "onBlur",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "失焦回调"
+        },
+        {
+          "name": "onFocus",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "聚焦回调"
+        },
+        {
+          "name": "label",
+          "type": "ReactNode",
+          "required": false,
+          "description": "字段标签"
+        },
+        {
+          "name": "description",
+          "type": "ReactNode",
+          "required": false,
+          "description": "字段描述"
+        },
+        {
+          "name": "error",
+          "type": "ReactNode",
+          "required": false,
+          "description": "单个错误信息"
+        },
+        {
+          "name": "onBlurAsync",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "异步失焦验证"
+        },
+        {
+          "name": "onBlurAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChangeAsync",
+          "type": "((value: T) => void) | undefined",
+          "required": false,
+          "description": "异步值变化验证"
+        },
+        {
+          "name": "onChangeAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onFocusAsync",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "异步聚焦验证"
+        },
+        {
+          "name": "onFocusAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "createNumericInputAdapter",
+      "description": "",
+      "props": [
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "max",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "min",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "readOnly",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "selected",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "step",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "defaultValue",
+          "type": "NumericInputValue | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "id",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onIsEditingChange",
+          "type": "((isEditing: boolean) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "variant",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "focused",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "classNames",
+          "type": "{ container?: string | undefined; input?: string | undefined; } | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "tooltip",
+          "type": "TooltipProps | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "triggerRef",
+          "type": "RefObject<HTMLDivElement> | ((el: HTMLDivElement | null) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "decimal",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "expression",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "handlerPressed",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "handlerProps",
+          "type": "Record<string, unknown> | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onEmpty",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onPressEnd",
+          "type": "(((event: PressEvent) => void) & ((e: PointerEvent) => void)) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onPressStart",
+          "type": "(((event: PressEvent) => void) & ((e: PointerEvent) => void)) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "shiftStep",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "value",
+          "type": "number | undefined",
+          "required": false,
+          "description": "字段值"
+        },
+        {
+          "name": "onChange",
+          "type": "((value: T) => void) | undefined",
+          "required": false,
           "description": "值变化回调"
         },
         {
@@ -1522,6 +2751,240 @@
       ]
     },
     {
+      "displayName": "createMultiSelectAdapter",
+      "description": "",
+      "props": [
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "open",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "placeholder",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "readOnly",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "variant",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "focusManagerProps",
+          "type": "FloatingFocusManagerProps | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "matchTriggerWidth",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onOpenChange",
+          "type": "((open: boolean) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "placement",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "portalId",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "root",
+          "type": "HTMLElement | null | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "chipVariant",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "closeOnSelect",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "getDisplayValue",
+          "type": "((value: string) => string) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "i18n",
+          "type": "{ maxSelectionMessage?: ((maxSelection: number) => string) | undefined; minSelectionMessage?: ((minSelection: number) => string) | undefined; } | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "maxChips",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "maxSelection",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "minSelection",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "renderChip",
+          "type": "((props: { disabled?: boolean | undefined; displayValue: string; index: number; onRemove?: ((e: MouseEvent<HTMLButtonElement, MouseEvent>) => void) | undefined; value: string; }) => ReactNode) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "showValidationMessage",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "values",
+          "type": "string[] | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "description",
+          "type": "ReactNode",
+          "required": false,
+          "description": "字段描述"
+        },
+        {
+          "name": "error",
+          "type": "ReactNode",
+          "required": false,
+          "description": "单个错误信息"
+        },
+        {
+          "name": "label",
+          "type": "ReactNode",
+          "required": false,
+          "description": "字段标签"
+        },
+        {
+          "name": "onBlur",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "失焦回调"
+        },
+        {
+          "name": "onBlurAsync",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "异步失焦验证"
+        },
+        {
+          "name": "onBlurAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "((value: T[]) => void) | undefined",
+          "required": false,
+          "description": "值变化回调"
+        },
+        {
+          "name": "onChangeAsync",
+          "type": "((value: T[]) => void) | undefined",
+          "required": false,
+          "description": "异步值变化验证"
+        },
+        {
+          "name": "onChangeAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onFocus",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "聚焦回调"
+        },
+        {
+          "name": "onFocusAsync",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "异步聚焦验证"
+        },
+        {
+          "name": "onFocusAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "size",
+          "type": "enum",
+          "required": false,
+          "description": "字段大小"
+        },
+        {
+          "name": "value",
+          "type": "T[] | undefined",
+          "required": false,
+          "description": "字段值"
+        },
+        {
+          "name": "name",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "options",
+          "type": "SelectOption<T>[] | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
       "displayName": "SegmentedAdapter",
       "description": "Segmented 适配器 - 将 Segmented 组件适配到 Form 系统\n\n核心功能：\n1. 值绑定\n2. 事件处理\n3. 错误状态显示\n4. 样式适配",
       "props": [
@@ -1646,6 +3109,157 @@
           "description": ""
         }
       ]
+    },
+    {
+      "displayName": "createSegmentedAdapter",
+      "description": "",
+      "props": [
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "readOnly",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "variant",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "tooltip",
+          "type": "TooltipProps | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "description",
+          "type": "ReactNode",
+          "required": false,
+          "description": "字段描述"
+        },
+        {
+          "name": "error",
+          "type": "ReactNode",
+          "required": false,
+          "description": "单个错误信息"
+        },
+        {
+          "name": "label",
+          "type": "ReactNode",
+          "required": false,
+          "description": "字段标签"
+        },
+        {
+          "name": "onBlur",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "失焦回调"
+        },
+        {
+          "name": "onBlurAsync",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "异步失焦验证"
+        },
+        {
+          "name": "onBlurAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "((value: T) => void) | undefined",
+          "required": false,
+          "description": "值变化回调"
+        },
+        {
+          "name": "onChangeAsync",
+          "type": "((value: T) => void) | undefined",
+          "required": false,
+          "description": "异步值变化验证"
+        },
+        {
+          "name": "onChangeAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onFocus",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "聚焦回调"
+        },
+        {
+          "name": "onFocusAsync",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": "异步聚焦验证"
+        },
+        {
+          "name": "onFocusAsyncDebounceMs",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "size",
+          "type": "enum",
+          "required": false,
+          "description": "字段大小"
+        },
+        {
+          "name": "value",
+          "type": "string | undefined",
+          "required": false,
+          "description": "字段值"
+        },
+        {
+          "name": "options",
+          "type": "SegmentedOption<T>[] | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "InputAdapterProps",
+      "description": "文本输入类适配器 (Input, Textarea)",
+      "props": []
+    },
+    {
+      "displayName": "SelectAdapterProps",
+      "description": "选择类适配器 (Select, MultiSelect)",
+      "props": []
+    },
+    {
+      "displayName": "CheckboxAdapterProps",
+      "description": "布尔类适配器 (Checkbox, Switch)",
+      "props": []
+    },
+    {
+      "displayName": "RangeAdapterProps",
+      "description": "数字类适配器 (Range, NumericInput)",
+      "props": []
+    },
+    {
+      "displayName": "RadioGroupAdapterProps",
+      "description": "单选类适配器 (RadioGroup, Segmented)",
+      "props": []
     }
   ],
   "stories": [
@@ -1674,7 +3288,7 @@
       "id": "forms-form-adapters--multi-select",
       "name": "Multi Select",
       "exportName": "MultiSelect",
-      "description": "",
+      "description": "MultiSelect adapter",
       "source": "import { CheckboxAdapter } from \"@choice-ui/form\"\n\nexport default function App() {\n  return (\n    <>\n      <form\n        className=\"w-80 space-y-4\"\n        onSubmit={(e) => {\n          e.preventDefault()\n          e.stopPropagation()\n          form.handleSubmit()\n        }}\n      >\n        <form.Field\n          name=\"roles\"\n          validators={{\n            onChange: ({ value }) => {\n              if ((value as string[]).length < 1) {\n                return \"You must select at least one role\"\n              }\n            },\n          }}\n        >\n          {(field) => (\n            <form.MultiSelect\n              name={field.name}\n              label=\"MultiSelect\"\n              matchTriggerWidth\n              value={field.state.value as string[]}\n              onChange={field.handleChange}\n              onBlur={field.handleBlur}\n              placeholder=\"Select roles\"\n              options={[\n                { label: \"Admin\", value: \"admin\" },\n                { label: \"User\", value: \"user\" },\n                { label: \"Guest\", value: \"guest\" },\n                { divider: true },\n                { label: \"Manager\", value: \"manager\" },\n                { label: \"Viewer\", value: \"viewer\" },\n              ]}\n              error={<em role=\"alert\">{field.state.meta.errors.join(\", \")}</em>}\n            />\n          )}\n        </form.Field>\n\n        <form.Button type=\"submit\">Submit Form</form.Button>\n      </form>\n\n      <div className=\"bg-secondary-background mt-4 w-80 rounded-xl p-4\">\n        <strong>Form Result:</strong>\n        <CodeBlock language=\"json\">\n          <CodeBlock.Content code={result} />\n        </CodeBlock>\n      </div>\n    </>\n  );\n}"
     },
     {
@@ -1688,7 +3302,7 @@
       "id": "forms-form-adapters--radio-group",
       "name": "Radio Group",
       "exportName": "RadioGroup",
-      "description": "",
+      "description": "RadioGroup adapter",
       "source": "import { CheckboxAdapter } from \"@choice-ui/form\"\n\nexport default function App() {\n  return (\n    <>\n      <form\n        className=\"w-80 space-y-4\"\n        onSubmit={(e) => {\n          e.preventDefault()\n          e.stopPropagation()\n          form.handleSubmit()\n        }}\n      >\n        <form.Field\n          name=\"role\"\n          validators={{\n            onChange: ({ value }) => {\n              if (value !== \"admin\") {\n                return \"Role must be admin\"\n              }\n            },\n          }}\n        >\n          {(field) => (\n            <form.RadioGroup\n              name={field.name}\n              label=\"Role\"\n              value={field.state.value as string}\n              onChange={field.handleChange}\n              onBlur={field.handleBlur}\n              options={[\n                { label: \"Admin\", value: \"admin\" },\n                { label: \"User\", value: \"user\" },\n                { label: \"Guest\", value: \"guest\" },\n              ]}\n              error={<em role=\"alert\">{field.state.meta.errors.join(\", \")}</em>}\n            />\n          )}\n        </form.Field>\n\n        <form.Button type=\"submit\">Submit Form</form.Button>\n      </form>\n\n      <div className=\"bg-secondary-background mt-4 w-80 rounded-xl p-4\">\n        <strong>Form Result:</strong>\n        <CodeBlock language=\"json\">\n          <CodeBlock.Content code={result} />\n        </CodeBlock>\n      </div>\n    </>\n  );\n}"
     },
     {
@@ -1709,7 +3323,7 @@
       "id": "forms-form-adapters--numeric-input",
       "name": "Numeric Input",
       "exportName": "NumericInput",
-      "description": "",
+      "description": "NumericInput adapter",
       "source": "import { CheckboxAdapter } from \"@choice-ui/form\"\n\nexport default function App() {\n  return (\n    <>\n      <form\n        className=\"w-80 space-y-4\"\n        onSubmit={(e) => {\n          e.preventDefault()\n          e.stopPropagation()\n          form.handleSubmit()\n        }}\n      >\n        <form.Field\n          name=\"age\"\n          validators={{\n            onChange: ({ value }) => {\n              if ((value as number) < 18) {\n                return \"You must be at least 18 years old\"\n              } else if ((value as number) > 60) {\n                return \"You must be less than 60 years old\"\n              }\n            },\n          }}\n        >\n          {(field) => (\n            <form.NumericInput\n              name={field.name}\n              label=\"Age\"\n              value={field.state.value as number}\n              onChange={field.handleChange}\n              onBlur={field.handleBlur}\n              placeholder=\"Enter age\"\n              error={<em role=\"alert\">{field.state.meta.errors.join(\", \")}</em>}\n            >\n              <NI.Prefix>\n                <FillWidth />\n              </NI.Prefix>\n            </form.NumericInput>\n          )}\n        </form.Field>\n\n        <form.Button type=\"submit\">Submit Form</form.Button>\n      </form>\n\n      <div className=\"bg-secondary-background mt-4 rounded-xl p-4\">\n        <strong>Form Result:</strong>\n        <CodeBlock language=\"json\">\n          <CodeBlock.Content code={result} />\n        </CodeBlock>\n      </div>\n    </>\n  );\n}"
     },
     {
@@ -1719,5 +3333,8 @@
       "description": "Segmented adapter",
       "source": "import { CheckboxAdapter } from \"@choice-ui/form\"\n\nexport default function App() {\n  return (\n    <>\n      <form\n        className=\"w-80 space-y-4\"\n        onSubmit={(e) => {\n          e.preventDefault()\n          e.stopPropagation()\n          form.handleSubmit()\n        }}\n      >\n        <form.Field\n          name=\"role\"\n          validators={{\n            onChange: ({ value }) => {\n              if (value !== \"admin\") {\n                return \"Role must be admin\"\n              }\n            },\n          }}\n        >\n          {(field) => (\n            <form.Segmented\n              name={field.name}\n              label=\"Segmented\"\n              value={field.state.value as string}\n              onChange={field.handleChange}\n              onBlur={field.handleBlur}\n              options={[\n                { content: \"Admin\", value: \"admin\" },\n                { content: \"User\", value: \"user\" },\n                { content: \"Guest\", value: \"guest\" },\n              ]}\n              error={<em role=\"alert\">{field.state.meta.errors.join(\", \")}</em>}\n            />\n          )}\n        </form.Field>\n\n        <form.Button type=\"submit\">Submit Form</form.Button>\n      </form>\n\n      <div className=\"bg-secondary-background mt-4 w-80 rounded-xl p-4\">\n        <strong>Form Result:</strong>\n        <CodeBlock language=\"json\">\n          <CodeBlock.Content code={result} />\n        </CodeBlock>\n      </div>\n    </>\n  );\n}"
     }
+  ],
+  "tags": [
+    "beta"
   ]
 }

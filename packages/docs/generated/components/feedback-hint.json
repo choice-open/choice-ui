@@ -25,6 +25,88 @@
   ],
   "props": [
     {
+      "displayName": "HintTrigger",
+      "description": "",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean | undefined",
+          "required": false,
+          "defaultValue": "false",
+          "description": ""
+        },
+        {
+          "name": "icon",
+          "type": "ReactNode",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "HintContent",
+      "description": "",
+      "props": [
+        {
+          "name": "icon",
+          "type": "ReactNode",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "portalId",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "variant",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "useHint",
+      "description": "",
+      "props": [
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "defaultValue": "false",
+          "description": ""
+        },
+        {
+          "name": "initialOpen",
+          "type": "boolean | undefined",
+          "required": false,
+          "defaultValue": "false",
+          "description": ""
+        },
+        {
+          "name": "onOpenChange",
+          "type": "((open: boolean) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "open",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "placement",
+          "type": "enum",
+          "required": false,
+          "defaultValue": "right-start",
+          "description": ""
+        }
+      ]
+    },
+    {
       "displayName": "Hint",
       "description": "",
       "props": [
@@ -95,14 +177,14 @@
       "id": "feedback-hint--screenshot-match",
       "name": "Screenshot Match",
       "exportName": "ScreenshotMatch",
-      "description": "",
+      "description": "Screenshot Match - Reference implementation matching the design specification\n\nFeatures:\n- Right-start placement for optimal positioning\n- Clean layout with label and hint combination\n- Standard content formatting\n\nUsage:\n```tsx\n<Hint content=\"Optional reason\" placement=\"right-start\" />\n```",
       "source": "import { Hint } from \"@choice-ui/hint\"\n\nexport default function App() {\n  return (\n    <div className=\"flex items-center gap-2\">\n      <span className=\"font-strong\">Reason</span>\n      <Hint\n        content=\"Optional reason\"\n        placement=\"right-start\"\n      />\n    </div>\n  );\n}"
     },
     {
       "id": "feedback-hint--custom-icon",
       "name": "Custom Icon",
       "exportName": "CustomIcon",
-      "description": "",
+      "description": "Custom Icon - Demonstrates how to use custom icons in hint tooltips\n\nFeatures:\n- Custom icon replacement for default info icon\n- Maintains consistent tooltip behavior\n- Flexible icon system integration\n\nUsage:\n```tsx\n<Hint\n  icon={<CircleInfoLargeSolid />}\n  content=\"Optional reason\"\n/>\n```",
       "source": "import { Hint } from \"@choice-ui/hint\"\n\nexport default function App() {\n  return (\n    <div className=\"flex items-center gap-2\">\n      <span className=\"font-strong\">Reason</span>\n      <Hint\n        icon={<CircleInfoLargeSolid />}\n        content=\"Optional reason\"\n      />\n    </div>\n  );\n}"
     },
     {
@@ -123,7 +205,7 @@
       "id": "feedback-hint--long-content",
       "name": "Long Content",
       "exportName": "LongContent",
-      "description": "",
+      "description": "Long Content - Tests hint behavior with extensive text content\n\nFeatures:\n- Automatic text wrapping for long content\n- Maintains optimal width for readability\n- Preserves tooltip positioning with larger content\n- Responsive design adaptation\n\nUsage:\n```tsx\n<Hint\n  content=\"Very long explanatory text that demonstrates...\"\n  placement=\"right-start\"\n/>\n```",
       "source": "import { Hint } from \"@choice-ui/hint\"\n\nexport default function App() {\n  return (\n    <div className=\"flex items-center gap-2\">\n      <span>Complex field</span>\n      <Hint\n        content=\"This is a very long information tooltip content used to demonstrate the display effect when there is more content. The component will automatically wrap and maintain appropriate width to ensure content readability and aesthetics.\"\n        placement=\"right-start\"\n      />\n    </div>\n  );\n}"
     },
     {
@@ -137,8 +219,11 @@
       "id": "feedback-hint--dark-variant",
       "name": "Dark Variant",
       "exportName": "DarkVariant",
-      "description": "",
+      "description": "Dark Variant - Shows hint component in dark variant\n\nFeatures:\n- Dark background and text color\n- Visual consistency with dark theme\n- Maintains tooltip functionality in dark mode\n\nUsage:\n```tsx\n<Hint\n  content=\"Dark variant tooltip content\"\n  variant=\"dark\"\n/>\n```",
       "source": "import { Hint } from \"@choice-ui/hint\"\n\nexport default function App() {\n  return (\n    <div className=\"flex items-center gap-2\">\n      <span>Dark variant</span>\n      <Hint\n        content=\"Dark variant tooltip content\"\n        variant=\"dark\"\n      />\n    </div>\n  );\n}"
     }
+  ],
+  "tags": [
+    "new"
   ]
 }

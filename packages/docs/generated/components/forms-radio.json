@@ -29,7 +29,7 @@
   ],
   "props": [
     {
-      "displayName": "Radio",
+      "displayName": "RadioProps",
       "description": "",
       "props": [
         {
@@ -69,6 +69,54 @@
           "description": ""
         }
       ]
+    },
+    {
+      "displayName": "RadioGroupProps",
+      "description": "",
+      "props": [
+        {
+          "name": "onChange",
+          "type": "(value: string) => void",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "options",
+          "type": "{ disabled?: boolean | undefined; label: string; value: string; }[] | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "readOnly",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "variant",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "Radio.Label",
+      "description": "",
+      "props": [
+        {
+          "name": "ref",
+          "type": "((instance: HTMLLabelElement | null) => void) | RefObject<HTMLLabelElement> | null | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
     }
   ],
   "stories": [
@@ -97,7 +145,7 @@
       "id": "forms-radio--label-usage",
       "name": "Label Usage",
       "exportName": "LabelUsage",
-      "description": "",
+      "description": "Label Usage: Demonstrates two ways to use labels with Radio.\n- Simple string children: automatically wrapped with Radio.Label\n- Explicit Radio.Label: for more complex label content",
       "source": "import { Radio } from \"@choice-ui/radio\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <div>\n        <h4 className=\"font-strong mb-2\">Simple string label (auto-wrapped):</h4>\n        <Radio\n          value={simple}\n          onChange={setSimple}\n        >\n          Simple text label\n        </Radio>\n      </div>\n\n      <div>\n        <h4 className=\"font-strong mb-2\">Explicit Radio.Label (for complex content):</h4>\n        <Radio\n          value={explicit}\n          onChange={setExplicit}\n        >\n          <Radio.Label>\n            <span className=\"text-accent-foreground\">Complex</span> label with{\" \"}\n            <strong>formatting</strong>\n          </Radio.Label>\n        </Radio>\n      </div>\n    </div>\n  );\n}"
     },
     {
@@ -111,14 +159,14 @@
       "id": "forms-radio--group-variant",
       "name": "Group Variant",
       "exportName": "GroupVariant",
-      "description": "",
+      "description": "GroupVariant: Demonstrates applying visual variants to a RadioGroup.\n\nFeatures:\n- All RadioGroup.Items inherit the variant from the parent group\n- Consistent styling across all options in the group\n- Different variants affect the visual presentation of all radios\n\nUsage Guidelines:\n- Use the same variant across a logical group of options\n- Select variant based on the importance of the option group\n- Consider the visual hierarchy when choosing variants\n\nThis example shows how selecting different variants affects\nthe entire RadioGroup, and how the selected option itself\ncontrols which variant is applied.",
       "source": "import { RadioGroup } from \"@choice-ui/radio\"\n\nexport default function App() {\n  return (\n    <>\n      <RadioGroup\n        variant={variant as \"default\" | \"accent\" | \"outline\"}\n        value={variant}\n        onChange={(value) => setVariant(value)}\n      >\n        {groupOptions.map((option) => (\n          <RadioGroup.Item\n            key={option.value}\n            value={option.value}\n          >\n            {option.label}\n          </RadioGroup.Item>\n        ))}\n      </RadioGroup>\n    </>\n  );\n}"
     },
     {
       "id": "forms-radio--group-with-disabled-options",
       "name": "Group With Disabled Options",
       "exportName": "GroupWithDisabledOptions",
-      "description": "",
+      "description": "GroupWithDisabledOptions: Demonstrates a RadioGroup with some options disabled.\n\nFeatures:\n- Mix of enabled and disabled options in the same group\n- Disabled options maintain visual consistency but prevent interaction\n- Users can only select from available (enabled) options\n- Proper accessibility support for disabled options\n\nUsage Guidelines:\n- Use when certain options are conditionally unavailable\n- Maintain visual presence of disabled options for context\n- Ensure at least one option remains enabled for meaningful selection\n- Consider providing feedback about why options are disabled\n\nThis example shows two different approaches:\n1. Using the options prop with disabled property\n2. Using RadioGroup.Item with disabled prop for individual control",
       "source": "import { RadioGroup } from \"@choice-ui/radio\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-6\">\n      <div className=\"flex flex-col gap-2\">\n        <h4 className=\"font-strong\">Using options prop with disabled property:</h4>\n        <RadioGroup\n          options={optionsWithDisabled}\n          value={selectedValue1}\n          onChange={setSelectedValue1}\n        />\n      </div>\n\n      <div className=\"flex flex-col gap-2\">\n        <h4 className=\"font-strong\">Using RadioGroup.Item with individual disabled control:</h4>\n        <RadioGroup\n          value={selectedValue2}\n          onChange={setSelectedValue2}\n        >\n          <RadioGroup.Item value=\"custom1\">First Choice (Available)</RadioGroup.Item>\n          <RadioGroup.Item\n            value=\"custom2\"\n            disabled\n          >\n            Second Choice (Disabled)\n          </RadioGroup.Item>\n          <RadioGroup.Item value=\"custom3\">Third Choice (Available)</RadioGroup.Item>\n          <RadioGroup.Item\n            value=\"custom4\"\n            disabled\n          >\n            Fourth Choice (Disabled)\n          </RadioGroup.Item>\n        </RadioGroup>\n      </div>\n    </div>\n  );\n}"
     },
     {

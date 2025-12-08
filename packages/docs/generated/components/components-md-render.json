@@ -31,7 +31,7 @@
   ],
   "props": [
     {
-      "displayName": "MdRender",
+      "displayName": "MdRenderProps",
       "description": "",
       "props": [
         {
@@ -115,28 +115,28 @@
       "id": "components-mdrender--git-hub-flavored-markdown",
       "name": "Git Hub Flavored Markdown",
       "exportName": "GitHubFlavoredMarkdown",
-      "description": "",
+      "description": "Comprehensive GitHub Flavored Markdown demonstration.\n- All GFM features including tables, task lists, blockquotes\n- Code blocks with syntax highlighting\n- Complex nested structures",
       "source": ""
     },
     {
       "id": "components-mdrender--custom-color",
       "name": "Custom Color",
       "exportName": "CustomColor",
-      "description": "",
+      "description": "GitHub Flavored Markdown with custom color.\n- Demonstrates custom color options for the markdown renderer.",
       "source": "import { MdRender } from \"@choice-ui/md-render\"\n\nexport default function App() {\n  return (\n    <MdRender\n      className=\"p-4\"\n      content={GitHubFlavoredMarkdownContent}\n      customColor={customColor}\n    />\n  );\n}"
     },
     {
       "id": "components-mdrender--code-blocks",
       "name": "Code Blocks",
       "exportName": "CodeBlocks",
-      "description": "",
+      "description": "Code blocks with multiple programming languages.\n- Syntax highlighting powered by Shiki\n- Copy-to-clipboard functionality\n- Support for JavaScript, TypeScript, Python, JSON, and more",
       "source": ""
     },
     {
       "id": "components-mdrender--task-lists",
       "name": "Task Lists",
       "exportName": "TaskLists",
-      "description": "",
+      "description": "Task lists for todo items and checklists.\n- Interactive checkbox display\n- Mixed checked/unchecked states\n- Nested task lists support",
       "source": ""
     },
     {
@@ -150,42 +150,42 @@
       "id": "components-mdrender--nested-structures",
       "name": "Nested Structures",
       "exportName": "NestedStructures",
-      "description": "",
+      "description": "Nested and complex structures.\n- Nested lists with multiple levels\n- Blockquotes with formatted content\n- Mixed content types",
       "source": ""
     },
     {
       "id": "components-mdrender--with-mentions",
       "name": "With Mentions",
       "exportName": "WithMentions",
-      "description": "",
+      "description": "Basic mention rendering in markdown content.\n- Simple",
       "source": ""
     },
     {
       "id": "components-mdrender--custom-mention-rendering",
       "name": "Custom Mention Rendering",
       "exportName": "CustomMentionRendering",
-      "description": "",
+      "description": "Custom mention component with rich UI.\n- Avatar display in mentions\n- Tooltip with user details\n- Interactive hover states\n- Email link integration",
       "source": "import { MdRender } from \"@choice-ui/md-render\"\n\nexport default function App() {\n  return (\n    <span className=\"bg-secondary-background inline-flex items-center gap-1 rounded-md px-1 align-middle\">\n      @{mention}\n    </span>\n  );\n}"
     },
     {
       "id": "components-mdrender--mentions-in-various-contexts",
       "name": "Mentions In Various Contexts",
       "exportName": "MentionsInVariousContexts",
-      "description": "",
+      "description": "Mentions in various markdown contexts.\n- Mentions in headings, lists, and tables\n- Mentions with formatted text (bold, italic)\n- Mentions in blockquotes and links",
       "source": "import { MdRender } from \"@choice-ui/md-render\"\n\nexport default function App() {\n  return (\n    <span className=\"bg-accent text-accent-foreground inline-flex items-center rounded px-1.5 py-0.5\">\n      @{mention}\n    </span>\n  );\n}"
     },
     {
       "id": "components-mdrender--complex-document",
       "name": "Complex Document",
       "exportName": "ComplexDocument",
-      "description": "",
+      "description": "Complex real-world document example.\n- Project README structure\n- Mixed content types\n- Technical documentation format",
       "source": ""
     },
     {
       "id": "components-mdrender--empty-content",
       "name": "Empty Content",
       "exportName": "EmptyContent",
-      "description": "",
+      "description": "Empty content handling.\n- Shows how component behaves with empty string\n- Graceful handling of no content",
       "source": ""
     },
     {
@@ -206,7 +206,7 @@
       "id": "components-mdrender--long-document",
       "name": "Long Document",
       "exportName": "LongDocument",
-      "description": "",
+      "description": "Long document with extensive content.\n- Tests performance with large content\n- Multiple sections and subsections\n- Various content types mixed together",
       "source": ""
     },
     {
@@ -220,35 +220,35 @@
       "id": "components-mdrender--size-comparison",
       "name": "Size Comparison",
       "exportName": "SizeComparison",
-      "description": "",
+      "description": "Size Comparison: Shows all three sizing modes side by side.\n- Small (13px): Compact mode for space-constrained UIs\n- Default (14px): Standard mode for general content\n- Large (16px): Enhanced readability for long-form content\n- Demonstrates proportional scaling of headings and spacing",
       "source": "import { MdRender } from \"@choice-ui/md-render\"\n\nexport default function App() {\n  return (\n    <div className=\"flex gap-6 p-6\">\n      <div className=\"w-80 rounded-xl border bg-white p-4 dark:bg-gray-900\">\n        <h3 className=\"text-body-small font-strong mb-4 text-gray-500 uppercase\">Small (13px)</h3>\n        <MdRender\n          content={sizingContent}\n          size=\"small\"\n        />\n      </div>\n      <div className=\"w-80 rounded-xl border bg-white p-4 dark:bg-gray-900\">\n        <h3 className=\"text-body-small font-strong mb-4 text-gray-500 uppercase\">\n          Default (14px)\n        </h3>\n        <MdRender content={sizingContent} />\n      </div>\n      <div className=\"w-80 rounded-xl border bg-white p-4 dark:bg-gray-900\">\n        <h3 className=\"text-body-small font-strong mb-4 text-gray-500 uppercase\">Large (16px)</h3>\n        <MdRender\n          content={sizingContent}\n          size=\"large\"\n        />\n      </div>\n    </div>\n  );\n}"
     },
     {
       "id": "components-mdrender--large-mode-documentation",
       "name": "Large Mode Documentation",
       "exportName": "LargeModeDocumentation",
-      "description": "",
+      "description": "Large Mode for Documentation: Shows large mode with extensive documentation content.\n- 16px base font size for enhanced readability\n- Increased spacing between sections\n- Ideal for technical documentation and articles\n- Better visual hierarchy with larger headings",
       "source": "import { MdRender } from \"@choice-ui/md-render\"\n\nexport default function App() {\n  return (\n    <span className=\"custom-mention\">\n      @{mention}\n    </span>\n  );\n}"
     },
     {
       "id": "components-mdrender--github-variant",
       "name": "Github Variant",
       "exportName": "GithubVariant",
-      "description": "",
+      "description": "Github Variant: Shows the github variant of the markdown renderer.",
       "source": "import { MdRender } from \"@choice-ui/md-render\"\n\nexport default function App() {\n  return (\n    <div className=\"grid grid-cols-2 gap-6 p-6\">\n      <div className=\"w-full rounded-xl border bg-white p-4 dark:bg-gray-900\">\n        <h3 className=\"text-body-small font-strong mb-4 text-gray-500 uppercase\">Default</h3>\n        <MdRender\n          content={sizingContent}\n          variant=\"default\"\n        />\n      </div>\n\n      <div className=\"w-full rounded-xl border bg-white p-4 dark:bg-gray-900\">\n        <h3 className=\"text-body-small font-strong mb-4 text-gray-500 uppercase\">Github</h3>\n        <MdRender\n          content={sizingContent}\n          variant=\"github\"\n        />\n      </div>\n    </div>\n  );\n}"
     },
     {
       "id": "components-mdrender--streaming-markdown",
       "name": "Streaming Markdown",
       "exportName": "StreamingMarkdown",
-      "description": "",
+      "description": "Streaming Markdown: Simulates AI-generated markdown content with auto-scroll.\n- Uses useStickToBottom hook to keep scroll at bottom\n- Content appears chunk by chunk like streaming responses\n- Demonstrates how markdown renders progressively",
       "source": "import { MdRender } from \"@choice-ui/md-render\"\n\nexport default function App() {\n  return (\n    <div className=\"flex h-[600px] w-[700px] flex-col gap-4\">\n      <div className=\"flex items-center gap-2\">\n        <button\n          onClick={addChunk}\n          disabled={isStreaming || chunkIndexRef.current >= streamingMarkdownChunks.length}\n          className=\"rounded bg-blue-500 px-3 py-1.5 text-sm text-white hover:bg-blue-600 disabled:opacity-50\"\n        >\n          Add Chunk\n        </button>\n        <button\n          onClick={startStreaming}\n          disabled={isStreaming || chunkIndexRef.current >= streamingMarkdownChunks.length}\n          className=\"rounded bg-green-500 px-3 py-1.5 text-sm text-white hover:bg-green-600 disabled:opacity-50\"\n        >\n          {isStreaming ? \"Streaming...\" : \"Auto Stream\"}\n        </button>\n        <button\n          onClick={reset}\n          className=\"rounded bg-gray-500 px-3 py-1.5 text-sm text-white hover:bg-gray-600\"\n        >\n          Reset\n        </button>\n        {!isAtBottom && (\n          <button\n            onClick={() => scrollToBottom()}\n            className=\"rounded bg-orange-500 px-3 py-1.5 text-sm text-white hover:bg-orange-600\"\n          >\n            Scroll to Bottom\n          </button>\n        )}\n      </div>\n\n      <div className=\"text-body-small text-fg-subtle\">\n        Chunks: {chunkIndexRef.current}/{streamingMarkdownChunks.length} | At bottom:{\" \"}\n        {isAtBottom ? \"Yes\" : \"No\"}\n      </div>\n\n      <ScrollArea className=\"flex-1 rounded-lg border\">\n        <ScrollArea.Viewport ref={scrollRef}>\n          <ScrollArea.Content\n            ref={contentRef}\n            className=\"w-full min-w-0 p-4\"\n          >\n            {content ? (\n              <MdRender content={content} />\n            ) : (\n              <div className=\"text-body-small text-fg-subtle py-8 text-center\">\n                Click &quot;Add Chunk&quot; or &quot;Auto Stream&quot; to start\n              </div>\n            )}\n          </ScrollArea.Content>\n        </ScrollArea.Viewport>\n      </ScrollArea>\n    </div>\n  );\n}"
     },
     {
       "id": "components-mdrender--character-streaming-markdown",
       "name": "Character Streaming Markdown",
       "exportName": "CharacterStreamingMarkdown",
-      "description": "",
+      "description": "Character-by-character streaming markdown simulation.\n- Content appears gradually like typing effect\n- Auto-scroll follows the content\n- Demonstrates real-time markdown parsing",
       "source": ""
     }
   ]

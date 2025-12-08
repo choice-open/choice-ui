@@ -93,6 +93,192 @@
           "description": ""
         }
       ]
+    },
+    {
+      "displayName": "AlertDialogProvider",
+      "description": "",
+      "props": [
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "outsidePress",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "overlay",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "portalId",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "normalizeConfirmConfig",
+      "description": "",
+      "props": [
+        {
+          "name": "cancelText",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "cancelVariant",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "confirmText",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "confirmVariant",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "closeOnEscape",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "closeOnOverlayClick",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "content",
+          "type": "ReactNode",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "description",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "showCloseButton",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "size",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "title",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "variant",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "normalizeAlertConfig",
+      "description": "",
+      "props": [
+        {
+          "name": "confirmText",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "confirmVariant",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "closeOnEscape",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "closeOnOverlayClick",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "content",
+          "type": "ReactNode",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "description",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "showCloseButton",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "size",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "title",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "variant",
+          "type": "enum",
+          "required": false,
+          "description": ""
+        }
+      ]
     }
   ],
   "stories": [
@@ -100,7 +286,7 @@
       "id": "overlays-alert-dialog--basic-confirm",
       "name": "Basic Confirm",
       "exportName": "BasicConfirm",
-      "description": "",
+      "description": "`AlertDialog` is a global dialog system for displaying alerts, confirmations, and custom dialogs.\n\nFeatures:\n- Global access via hooks - no need to manage dialog state\n- Promise-based API with async/await support\n- Queue system for multiple dialogs\n- Built-in confirm, alert, and custom dialog types\n- Keyboard navigation (ESC to close, Enter to confirm)\n- Accessible with proper ARIA attributes\n- Customizable styling and buttons\n- TypeScript support with strict typing\n\nUsage Guidelines:\n- Use for critical actions that require user confirmation\n- Keep dialog content concise and actionable\n- Use appropriate button variants for different actions\n- Consider using keyboard shortcuts for common actions\n\nAccessibility:\n- Manages focus properly when opened and closed\n- Traps focus within the dialog when open\n- Supports keyboard navigation and dismissal\n- Provides appropriate ARIA roles and attributes\n- Ensures adequate contrast for all elements\nBasic Confirm: Demonstrates the basic confirm dialog functionality.\nThis shows the most common use case - a simple confirmation dialog\nthat returns a boolean result based on user choice.",
       "source": "import { AlertDialog } from \"@choice-ui/alert-dialog\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <Button\n        variant=\"secondary\"\n        onClick={handleClick}\n      >\n        Show Confirm Dialog\n      </Button>\n      {result !== null && (\n        <p className=\"text-secondary-foreground text-body-small\">\n          Result: {result ? \"Confirmed\" : \"Cancelled\"}\n        </p>\n      )}\n    </div>\n  );\n}"
     },
     {
@@ -114,42 +300,42 @@
       "id": "overlays-alert-dialog--custom-confirm",
       "name": "Custom Confirm",
       "exportName": "CustomConfirm",
-      "description": "",
+      "description": "Custom Confirm: Demonstrates a customized confirm dialog with custom text and button variants.\nShows how to configure the dialog with specific titles, descriptions, and button styling.",
       "source": "import { AlertDialog } from \"@choice-ui/alert-dialog\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <Button\n        variant=\"secondary-destruct\"\n        onClick={handleClick}\n      >\n        Delete Account\n      </Button>\n\n      {result !== null && (\n        <p className=\"text-secondary-foreground text-body-small\">\n          Result: {result ? \"Account deleted\" : \"Cancelled\"}\n        </p>\n      )}\n    </div>\n  );\n}"
     },
     {
       "id": "overlays-alert-dialog--basic-alert",
       "name": "Basic Alert",
       "exportName": "BasicAlert",
-      "description": "",
+      "description": "Basic Alert: Demonstrates the basic alert dialog functionality.\nUsed for informational messages that only require acknowledgment.",
       "source": "import { AlertDialog } from \"@choice-ui/alert-dialog\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <Button onClick={handleClick}>Save Changes</Button>\n      {shown && (\n        <p className=\"text-secondary-foreground text-body-small\">Alert was acknowledged</p>\n      )}\n    </div>\n  );\n}"
     },
     {
       "id": "overlays-alert-dialog--custom-alert",
       "name": "Custom Alert",
       "exportName": "CustomAlert",
-      "description": "",
+      "description": "Custom Alert: Demonstrates a customized alert dialog with title and custom styling.\nShows how to enhance the alert with additional information and branding.",
       "source": "import { AlertDialog } from \"@choice-ui/alert-dialog\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <Button onClick={handleClick}>Update Profile</Button>\n      {shown && (\n        <p className=\"text-secondary-foreground text-body-small\">Alert was acknowledged</p>\n      )}\n    </div>\n  );\n}"
     },
     {
       "id": "overlays-alert-dialog--custom-dialog",
       "name": "Custom Dialog",
       "exportName": "CustomDialog",
-      "description": "",
+      "description": "Custom Dialog: Demonstrates the custom dialog functionality with multiple buttons.\nShows how to create dialogs with custom actions and handle different user choices.",
       "source": "import { AlertDialog } from \"@choice-ui/alert-dialog\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <Button onClick={handleClick}>Close Document</Button>\n      {result && (\n        <p className=\"text-secondary-foreground text-body-small\">User choice: {result}</p>\n      )}\n    </div>\n  );\n}"
     },
     {
       "id": "overlays-alert-dialog--queue-system",
       "name": "Queue System",
       "exportName": "QueueSystem",
-      "description": "",
+      "description": "Queue System: Demonstrates the dialog queue system with multiple dialogs.\nShows how dialogs are automatically queued and displayed in sequence.",
       "source": "import { AlertDialog } from \"@choice-ui/alert-dialog\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <Button onClick={handleMultipleDialogs}>Show Multiple Dialogs</Button>\n      {results.length > 0 && (\n        <div className=\"text-secondary-foreground text-body-small\">\n          <p>Results:</p>\n          <ul className=\"list-inside list-disc\">\n            {results.map((result, i) => (\n              <li key={i}>{result}</li>\n            ))}\n          </ul>\n        </div>\n      )}\n    </div>\n  );\n}"
     },
     {
       "id": "overlays-alert-dialog--with-content",
       "name": "With Content",
       "exportName": "WithContent",
-      "description": "",
+      "description": "With Content: Demonstrates using custom React content in dialogs.\nShows how to render complex content beyond simple text descriptions.",
       "source": "import { AlertDialog } from \"@choice-ui/alert-dialog\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <Button onClick={handleClick}>Check Limits</Button>\n      {result && (\n        <p className=\"text-secondary-foreground text-body-small\">User choice: {result}</p>\n      )}\n    </div>\n  );\n}"
     },
     {
@@ -163,50 +349,53 @@
       "id": "overlays-alert-dialog--with-overlay",
       "name": "With Overlay",
       "exportName": "WithOverlay",
-      "description": "",
+      "description": "With Overlay: Demonstrates the overlay functionality.\nShows how to enable the background overlay for better visual separation.",
       "source": "import { AlertDialog } from \"@choice-ui/alert-dialog\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <Button onClick={handleClick}>Show Dialog with Overlay</Button>\n      {result !== null && (\n        <p className=\"text-secondary-foreground text-body-small\">\n          Result: {result ? \"Confirmed\" : \"Cancelled\"}\n        </p>\n      )}\n    </div>\n  );\n}"
     },
     {
       "id": "overlays-alert-dialog--outside-press-enabled",
       "name": "Outside Press Enabled",
       "exportName": "OutsidePressEnabled",
-      "description": "",
+      "description": "Outside Press Enabled: Demonstrates enabling outside press functionality.\nShows how to enable clicking outside the dialog to close it.",
       "source": "import { AlertDialog } from \"@choice-ui/alert-dialog\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <Button onClick={handleClick}>Show Dialog with Outside Press Enabled</Button>\n      <p className=\"text-secondary-foreground text-body-small\">\n        💡 Tip: Click outside the dialog to close it\n      </p>\n      {result !== null && (\n        <p className=\"text-secondary-foreground text-body-small\">\n          Result: {result ? \"Confirmed\" : \"Cancelled\"}\n        </p>\n      )}\n    </div>\n  );\n}"
     },
     {
       "id": "overlays-alert-dialog--outside-press-disabled",
       "name": "Outside Press Disabled",
       "exportName": "OutsidePressDisabled",
-      "description": "",
+      "description": "Outside Press Disabled: Demonstrates disabling outside press functionality.\nShows that clicking outside the dialog will NOT close it.",
       "source": "import { AlertDialog } from \"@choice-ui/alert-dialog\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <Button onClick={handleClick}>Show Dialog with Outside Press Disabled</Button>\n      <p className=\"text-secondary-foreground text-body-small\">\n        💡 Tip: Clicking outside will NOT close the dialog\n      </p>\n      {result !== null && (\n        <p className=\"text-secondary-foreground text-body-small\">\n          Result: {result ? \"Confirmed\" : \"Cancelled\"}\n        </p>\n      )}\n    </div>\n  );\n}"
     },
     {
       "id": "overlays-alert-dialog--full-featured",
       "name": "Full Featured",
       "exportName": "FullFeatured",
-      "description": "",
+      "description": "Full Featured: Demonstrates both overlay and outside press together.\nShows the complete dialog experience with all features enabled.",
       "source": "import { AlertDialog } from \"@choice-ui/alert-dialog\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <div className=\"flex gap-4\">\n        <Button\n          onClick={showDangerDialog}\n          variant=\"destructive\"\n        >\n          Delete Account\n        </Button>\n        <Button\n          onClick={showSuccessDialog}\n          variant=\"success\"\n        >\n          Create Account\n        </Button>\n      </div>\n\n      <div className=\"text-secondary-foreground text-body-small space-y-1\">\n        <p>💡 Features enabled:</p>\n        <ul className=\"ml-4 list-inside list-disc\">\n          <li>Dark background overlay</li>\n          <li>Click outside to close</li>\n          <li>ESC key to close</li>\n          <li>Variant styling</li>\n        </ul>\n      </div>\n\n      {Object.keys(results).length > 0 && (\n        <div className=\"text-secondary-foreground text-body-small\">\n          <p>Results:</p>\n          <ul className=\"list-inside list-disc\">\n            {Object.entries(results).map(([variant, result]) => (\n              <li key={variant}>\n                {variant}:{\" \"}\n                {typeof result === \"boolean\"\n                  ? result\n                    ? \"Confirmed\"\n                    : \"Cancelled\"\n                  : \"Acknowledged\"}\n              </li>\n            ))}\n          </ul>\n        </div>\n      )}\n    </div>\n  );\n}"
     },
     {
       "id": "overlays-alert-dialog--event-propagation",
       "name": "Event Propagation",
       "exportName": "EventPropagation",
-      "description": "",
+      "description": "EventPropagation: Verifies that ESC key events do not propagate to window.\nPress ESC outside alert dialog to increment counter, then press ESC inside\nalert dialog to close it without incrementing the counter.",
       "source": ""
     },
     {
       "id": "overlays-alert-dialog--z-index-test",
       "name": "Z Index Test",
       "exportName": "ZIndexTest",
-      "description": "",
+      "description": "ZIndexTest: Tests z-index layering when alert dialog is shown inside a regular dialog.\n- Opens a regular dialog first, then shows an alert dialog inside it.\n- Verifies that the alert dialog appears above the regular dialog.\n- This tests the z-index stacking order between dialogs and alert dialogs.",
       "source": "import { AlertDialog } from \"@choice-ui/alert-dialog\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <div className=\"space-y-2\">\n        <h3 className=\"text-body-large-strong\">Z-Index Test</h3>\n      </div>\n\n      <Button\n        className=\"self-start\"\n        onClick={() => setDialogOpen(true)}\n      >\n        Open Dialog\n      </Button>\n\n      {dialogOpen && (\n        <Dialog\n          draggable\n          open={dialogOpen}\n          onOpenChange={setDialogOpen}\n        >\n          <Dialog.Header title=\"Regular Dialog\" />\n          <Dialog.Content className=\"flex flex-col gap-4 p-4\">\n            <div className=\"flex gap-2\">\n              <Button\n                variant=\"primary\"\n                onClick={handleShowAlertInDialog}\n              >\n                Show Alert in Dialog\n              </Button>\n              <Button\n                variant=\"secondary\"\n                onClick={handleShowConfirmInDialog}\n              >\n                Show Confirm in Dialog\n              </Button>\n            </div>\n          </Dialog.Content>\n          <Dialog.Footer>\n            <Button\n              variant=\"secondary\"\n              onClick={() => setDialogOpen(false)}\n            >\n              Close Dialog\n            </Button>\n          </Dialog.Footer>\n        </Dialog>\n      )}\n    </div>\n  );\n}"
     },
     {
       "id": "overlays-alert-dialog--popover-z-index-test",
       "name": "Popover Z Index Test",
       "exportName": "PopoverZIndexTest",
-      "description": "",
+      "description": "PopoverZIndexTest: Tests z-index layering when popover is shown inside a dialog.\n- Opens a regular dialog first, then shows a popover inside it.\n- Verifies that the popover appears above the dialog.\n- Also tests that alert dialogs appear above popovers.\n- This tests the z-index stacking order: dialog (810) < popover (820) < alert (830).",
       "source": "import { AlertDialog } from \"@choice-ui/alert-dialog\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <div className=\"space-y-2\">\n        <h3 className=\"text-body-large-strong\">Popover Z-Index Test</h3>\n      </div>\n\n      <Button\n        className=\"self-start\"\n        onClick={() => setDialogOpen(true)}\n      >\n        Open Dialog\n      </Button>\n\n      {dialogOpen && (\n        <Dialog\n          draggable\n          open={dialogOpen}\n          onOpenChange={setDialogOpen}\n        >\n          <Dialog.Header title=\"Regular Dialog\" />\n          <Dialog.Content className=\"flex flex-col gap-4 p-4\">\n            <Popover>\n              <Popover.Trigger>\n                <Button\n                  className=\"self-start\"\n                  variant=\"secondary\"\n                >\n                  Open Popover\n                </Button>\n              </Popover.Trigger>\n              <Popover.Content className=\"p-4\">\n                <div className=\"flex gap-2\">\n                  <Button\n                    variant=\"primary\"\n                    onClick={handleShowAlertInPopover}\n                  >\n                    Show Alert Above\n                  </Button>\n                  <Button\n                    variant=\"secondary\"\n                    onClick={handleShowConfirmInPopover}\n                  >\n                    Show Confirm Above\n                  </Button>\n                </div>\n              </Popover.Content>\n            </Popover>\n          </Dialog.Content>\n          <Dialog.Footer>\n            <Button\n              variant=\"secondary\"\n              onClick={() => setDialogOpen(false)}\n            >\n              Close Dialog\n            </Button>\n          </Dialog.Footer>\n        </Dialog>\n      )}\n    </div>\n  );\n}"
     }
+  ],
+  "tags": [
+    "new"
   ]
 }

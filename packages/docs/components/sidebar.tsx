@@ -1,6 +1,6 @@
 "use client"
 
-import { List, ScrollArea, tcx } from "@choice-ui/react"
+import { Badge, List, ScrollArea, tcx } from "@choice-ui/react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Fragment } from "react"
@@ -9,6 +9,7 @@ type NavItem = {
   title: string
   href?: string
   items?: NavItem[]
+  tags?: string[]
 }
 
 interface SidebarNavProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -54,7 +55,7 @@ function renderTree(
       return (
         <Fragment key={nodeId}>
           <List.SubTrigger
-            defaultOpen={level <= 0 || active}
+            defaultOpen={level <= 1 || active}
             id={nodeId}
             parentId={parentId ?? undefined}
           >
@@ -80,6 +81,15 @@ function renderTree(
           selected={active}
           parentId={parentId ?? undefined}
           className={tcx("text-body-large", active && "bg-selected-background")}
+          suffixElement={
+            item.tags?.length ? (
+              <div className="flex gap-1">
+                {item.tags.map((tag) => (
+                  <Badge key={tag}>{tag}</Badge>
+                ))}
+              </div>
+            ) : undefined
+          }
         >
           <List.Value>{item.title}</List.Value>
         </List.Item>

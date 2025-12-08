@@ -116,7 +116,7 @@
       "id": "forms-searchinput--not-clearable",
       "name": "Not Clearable",
       "exportName": "NotClearable",
-      "description": "",
+      "description": "NotClearable: Demonstrates SearchInput without the clear button.\n\nSetting `clearable={false}` hides the clear button even when there is text.\nThis is useful when:\n- You want a simpler UI without the clear action\n- The search is meant to be persistent\n- You're implementing custom clearing logic elsewhere\n- The use case doesn't require quick clearing",
       "source": "import { SearchInput } from \"@choice-ui/search-input\"\n\nexport default function App() {\n  return (\n    <SearchInput\n      value={value}\n      onChange={setValue}\n      clearable={false}\n    />\n  );\n}"
     },
     {
@@ -126,5 +126,8 @@
       "description": "Variants: Demonstrates different visual variants of the numeric input component.\n- default: Follows the page theme dynamically (light/dark mode)\n- light: Fixed light appearance regardless of theme\n- dark: Fixed dark appearance regardless of theme\n- reset: Removes variant styling, no variant settings applied",
       "source": "import { SearchInput } from \"@choice-ui/search-input\"\n\nexport default function App() {\n  return (\n    <div className=\"flex flex-col gap-2\">\n      <Checkbox\n        value={disabled}\n        onChange={(value) => setDisabled(value)}\n      >\n        Disabled\n      </Checkbox>\n      <div className=\"grid grid-cols-3 overflow-hidden rounded-xl border\">\n        <div className=\"bg-default-background flex aspect-square items-center justify-center p-8\">\n          <SearchInput\n            disabled={disabled}\n            value={value}\n            onChange={setValue}\n          />\n        </div>\n        <div className=\"flex aspect-square items-center justify-center bg-white p-8\">\n          <SearchInput\n            disabled={disabled}\n            value={value}\n            onChange={setValue}\n            variant=\"light\"\n          />\n        </div>\n        <div className=\"flex aspect-square items-center justify-center bg-gray-800 p-8\">\n          <SearchInput\n            disabled={disabled}\n            value={value}\n            onChange={setValue}\n            variant=\"dark\"\n          />\n        </div>\n      </div>\n    </div>\n  );\n}"
     }
+  ],
+  "tags": [
+    "new"
   ]
 }

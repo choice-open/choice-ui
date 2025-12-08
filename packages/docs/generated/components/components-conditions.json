@@ -129,7 +129,7 @@
   ],
   "props": [
     {
-      "displayName": "Conditions",
+      "displayName": "ConditionsTextField",
       "description": "",
       "props": [
         {
@@ -341,6 +341,1497 @@
           "description": ""
         }
       ]
+    },
+    {
+      "displayName": "FieldType",
+      "description": "字段类型枚举",
+      "props": []
+    },
+    {
+      "displayName": "LogicalOperator",
+      "description": "逻辑连接符",
+      "props": []
+    },
+    {
+      "displayName": "ComparisonOperator",
+      "description": "比较操作符",
+      "props": []
+    },
+    {
+      "displayName": "ConditionsFieldType",
+      "description": "字段类型枚举别名",
+      "props": []
+    },
+    {
+      "displayName": "DateRangePreset",
+      "description": "日期范围预设",
+      "props": []
+    },
+    {
+      "displayName": "getOperatorGroups",
+      "description": "",
+      "props": []
+    },
+    {
+      "displayName": "renderGroupedOperators",
+      "description": "",
+      "props": []
+    },
+    {
+      "displayName": "renderValueInput",
+      "description": "",
+      "props": [
+        {
+          "name": "condition",
+          "type": "Condition",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "field",
+          "type": "Field",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "(value: unknown) => void",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "onSecondValueChange",
+          "type": "((secondValue: unknown) => void) | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "renderSecondValueInput",
+      "description": "",
+      "props": [
+        {
+          "name": "condition",
+          "type": "Condition",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "field",
+          "type": "Field",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "(value: unknown) => void",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "onSecondValueChange",
+          "type": "((secondValue: unknown) => void) | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "OPERATOR_CONFIGS",
+      "description": "操作符配置映射",
+      "props": []
+    },
+    {
+      "displayName": "FIELD_OPERATOR_MAP",
+      "description": "字段类型支持的操作符映射",
+      "props": []
+    },
+    {
+      "displayName": "DEFAULT_LOCALIZATION",
+      "description": "默认本地化文本",
+      "props": []
+    },
+    {
+      "displayName": "DEFAULT_LOGICAL_OPERATOR",
+      "description": "默认的逻辑操作符",
+      "props": []
+    },
+    {
+      "displayName": "DEFAULT_COMPARISON_OPERATOR",
+      "description": "默认的比较操作符",
+      "props": []
+    },
+    {
+      "displayName": "DEFAULT_MAX_DEPTH",
+      "description": "默认最大嵌套深度",
+      "props": []
+    },
+    {
+      "displayName": "ID_PREFIXES",
+      "description": "生成唯一ID的前缀",
+      "props": []
+    },
+    {
+      "displayName": "generateId",
+      "description": "生成唯一ID",
+      "props": []
+    },
+    {
+      "displayName": "generateConditionId",
+      "description": "生成条件ID",
+      "props": []
+    },
+    {
+      "displayName": "generateGroupId",
+      "description": "生成条件组ID",
+      "props": []
+    },
+    {
+      "displayName": "generateGroupName",
+      "description": "生成默认组名称",
+      "props": []
+    },
+    {
+      "displayName": "generateRootId",
+      "description": "生成根容器ID",
+      "props": []
+    },
+    {
+      "displayName": "createCondition",
+      "description": "创建新的条件",
+      "props": []
+    },
+    {
+      "displayName": "createConditionGroup",
+      "description": "创建新的条件组",
+      "props": []
+    },
+    {
+      "displayName": "createConditionsRoot",
+      "description": "创建新的根容器",
+      "props": []
+    },
+    {
+      "displayName": "createEmptyConditions",
+      "description": "创建空的条件根容器",
+      "props": []
+    },
+    {
+      "displayName": "findCondition",
+      "description": "在条件树中查找条件",
+      "props": []
+    },
+    {
+      "displayName": "findGroup",
+      "description": "在条件树中查找条件组",
+      "props": []
+    },
+    {
+      "displayName": "getConditionPath",
+      "description": "获取条件的路径",
+      "props": []
+    },
+    {
+      "displayName": "getGroupPath",
+      "description": "获取条件组的路径",
+      "props": []
+    },
+    {
+      "displayName": "isOperatorValidForFieldType",
+      "description": "验证字段类型是否支持指定操作符",
+      "props": []
+    },
+    {
+      "displayName": "validateCondition",
+      "description": "验证条件",
+      "props": []
+    },
+    {
+      "displayName": "validateConditionGroup",
+      "description": "验证条件组",
+      "props": []
+    },
+    {
+      "displayName": "validateConditions",
+      "description": "验证完整的条件配置",
+      "props": []
+    },
+    {
+      "displayName": "getOperatorsForField",
+      "description": "获取字段支持的操作符",
+      "props": []
+    },
+    {
+      "displayName": "getOperatorConfig",
+      "description": "获取操作符配置",
+      "props": []
+    },
+    {
+      "displayName": "cloneConditions",
+      "description": "深拷贝条件配置",
+      "props": [
+        {
+          "name": "groups",
+          "type": "ConditionGroupType[]",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "isConditionsEmpty",
+      "description": "检查条件树是否为空",
+      "props": [
+        {
+          "name": "groups",
+          "type": "ConditionGroupType[]",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "getConditionsDepth",
+      "description": "计算条件树的深度",
+      "props": [
+        {
+          "name": "groups",
+          "type": "ConditionGroupType[]",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "getConditionsCount",
+      "description": "获取条件总数",
+      "props": [
+        {
+          "name": "groups",
+          "type": "ConditionGroupType[]",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "ConditionGroupType",
+      "description": "",
+      "props": [
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "defaultValue": "",
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "defaultValue": "false",
+          "description": ""
+        },
+        {
+          "name": "fields",
+          "type": "Field[]",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "group",
+          "type": "ConditionGroupType",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "level",
+          "type": "number | undefined",
+          "required": false,
+          "defaultValue": "0",
+          "description": ""
+        },
+        {
+          "name": "onAddCondition",
+          "type": "(parentGroupId: string) => void",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "onAddGroup",
+          "type": "(parentGroupId: string) => void",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "onDelete",
+          "type": "() => void",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "onUpdate",
+          "type": "(group: ConditionGroupType) => void",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "onUpdateCondition",
+          "type": "((conditionId: string, updates: Partial<Condition>) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "globalDragData",
+          "type": "{ item: ConditionGroupType | Condition; sourceGroupId: string; sourceIndex: number; type: \"group\" | \"condition\"; } | null | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "groupLogicalOperator",
+          "type": "enum",
+          "required": false,
+          "defaultValue": "LogicalOperator.And",
+          "description": ""
+        },
+        {
+          "name": "isFirstGroup",
+          "type": "boolean | undefined",
+          "required": false,
+          "defaultValue": "false",
+          "description": ""
+        },
+        {
+          "name": "isValidDropTarget",
+          "type": "((targetGroupId: string, dragInfo: { item: ConditionGroupType | Condition; sourceGroupId: string; sourceIndex: number; type: \"group\" | \"condition\"; }) => boolean) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "maxDepth",
+          "type": "number | undefined",
+          "required": false,
+          "defaultValue": "2",
+          "description": ""
+        },
+        {
+          "name": "onClearOtherGuides",
+          "type": "((currentGroupId: string) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onDragComplete",
+          "type": "((targetGroupId: string, targetIndex?: number | undefined, dragInfo?: { item: ConditionGroupType | Condition; sourceGroupId: string; sourceIndex: number; type: \"group\" | \"condition\"; } | undefined) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onDragEnd",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onDragStart",
+          "type": "((dragInfo: { item: ConditionGroupType | Condition; sourceGroupId: string; sourceIndex: number; type: \"group\" | \"condition\"; }) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onDuplicate",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onGroupDragEnd",
+          "type": "((e: DragEvent<Element>) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onGroupDragStart",
+          "type": "((e: DragEvent<Element>) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onRegisterGuideClear",
+          "type": "((groupId: string, clearFunction: () => void) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onUnregisterGuideClear",
+          "type": "((groupId: string) => void) | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "ConditionItemProps",
+      "description": "",
+      "props": [
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "defaultValue": "",
+          "description": ""
+        },
+        {
+          "name": "condition",
+          "type": "Condition",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "defaultValue": "false",
+          "description": ""
+        },
+        {
+          "name": "fields",
+          "type": "Field[]",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "onDelete",
+          "type": "() => void",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "onDuplicate",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onUpdate",
+          "type": "(condition: Condition) => void",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "level",
+          "type": "number | undefined",
+          "required": false,
+          "defaultValue": "0",
+          "description": ""
+        },
+        {
+          "name": "onDragEnd",
+          "type": "((e: DragEvent<Element>) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onDragStart",
+          "type": "((e: DragEvent<Element>) => void) | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "LogicalOperatorChip",
+      "description": "",
+      "props": [
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "(newOperator: LogicalOperator) => void",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "operator",
+          "type": "enum",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "AddConditionDropdown",
+      "description": "",
+      "props": [
+        {
+          "name": "canAddGroup",
+          "type": "boolean | undefined",
+          "required": false,
+          "defaultValue": "true",
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onAddCondition",
+          "type": "() => void",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "onAddGroup",
+          "type": "() => void",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "GroupActionsDropdown",
+      "description": "",
+      "props": [
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onDelete",
+          "type": "() => void",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "onDuplicate",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onOpenChange",
+          "type": "((open: boolean) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "open",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "DragGuide",
+      "description": "",
+      "props": [
+        {
+          "name": "dragGuideIndex",
+          "type": "number | null",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "index",
+          "type": "number",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "ArrayLengthInput",
+      "description": "",
+      "props": [
+        {
+          "name": "condition",
+          "type": "Condition",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "field",
+          "type": "Field",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "(value: unknown) => void",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "BooleanInput",
+      "description": "",
+      "props": [
+        {
+          "name": "condition",
+          "type": "Condition",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "field",
+          "type": "Field",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "(value: unknown) => void",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "ConditionDateInput",
+      "description": "",
+      "props": [
+        {
+          "name": "condition",
+          "type": "Condition",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "field",
+          "type": "Field",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "(value: unknown) => void",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "ConditionDateRangeInput",
+      "description": "",
+      "props": [
+        {
+          "name": "onSecondValueChange",
+          "type": "(value: unknown) => void",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "condition",
+          "type": "Condition",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "field",
+          "type": "Field",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "(value: unknown) => void",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "MultiSelectInput",
+      "description": "",
+      "props": [
+        {
+          "name": "condition",
+          "type": "Condition",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "field",
+          "type": "Field",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "(value: unknown) => void",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "NumberInput",
+      "description": "",
+      "props": [
+        {
+          "name": "condition",
+          "type": "Condition",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "field",
+          "type": "Field",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "(value: unknown) => void",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "NumberRangeInput",
+      "description": "",
+      "props": [
+        {
+          "name": "onSecondValueChange",
+          "type": "(value: unknown) => void",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "condition",
+          "type": "Condition",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "field",
+          "type": "Field",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "(value: unknown) => void",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "RegexInput",
+      "description": "",
+      "props": [
+        {
+          "name": "condition",
+          "type": "Condition",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "field",
+          "type": "Field",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "(value: unknown) => void",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "SelectInput",
+      "description": "",
+      "props": [
+        {
+          "name": "condition",
+          "type": "Condition",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "field",
+          "type": "Field",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "(value: unknown) => void",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "TagInput",
+      "description": "",
+      "props": [
+        {
+          "name": "condition",
+          "type": "Condition",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "field",
+          "type": "Field",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "(value: unknown) => void",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "TextInput",
+      "description": "",
+      "props": [
+        {
+          "name": "condition",
+          "type": "Condition",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "field",
+          "type": "Field",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "(value: unknown) => void",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "UserInput",
+      "description": "",
+      "props": [
+        {
+          "name": "condition",
+          "type": "Condition",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "field",
+          "type": "Field",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "(value: unknown) => void",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "useConditions",
+      "description": "useConditions Hook\n\n提供条件管理的完整功能，包括：\n- 条件的增删改查\n- 条件组的嵌套管理\n- 验证和路径追踪",
+      "props": []
+    },
+    {
+      "displayName": "useFieldOperators",
+      "description": "useFieldOperators Hook\n\n提供字段和操作符相关的工具函数，包括：\n- 获取字段支持的操作符列表\n- 验证操作符是否适用于字段\n- 获取操作符配置信息",
+      "props": []
+    },
+    {
+      "displayName": "getFieldTypeDisplayName",
+      "description": "获取字段类型的显示名称",
+      "props": []
+    },
+    {
+      "displayName": "isFieldWithOptions",
+      "description": "检查字段是否需要选项配置",
+      "props": [
+        {
+          "name": "multiline",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "type",
+          "type": "enum",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "description",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "key",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "placeholder",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "required",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "max",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "min",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "step",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "format",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "maxDate",
+          "type": "Date | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "minDate",
+          "type": "Date | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "falseLabel",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "trueLabel",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "creatable",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "options",
+          "type": "SelectOption[]",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "searchable",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "multiple",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "roles",
+          "type": "string[] | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "colorized",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "isMultiValueField",
+      "description": "检查字段是否支持多个值",
+      "props": [
+        {
+          "name": "multiline",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "type",
+          "type": "enum",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "description",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "key",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "placeholder",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "required",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "max",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "min",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "step",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "format",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "maxDate",
+          "type": "Date | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "minDate",
+          "type": "Date | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "falseLabel",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "trueLabel",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "creatable",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "options",
+          "type": "SelectOption[]",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "searchable",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "multiple",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "roles",
+          "type": "string[] | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "colorized",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "getDefaultValueForField",
+      "description": "获取字段的默认值",
+      "props": [
+        {
+          "name": "multiline",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "type",
+          "type": "enum",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "description",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "key",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "placeholder",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "required",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "max",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "min",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "step",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "format",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "maxDate",
+          "type": "Date | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "minDate",
+          "type": "Date | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "falseLabel",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "trueLabel",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "creatable",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "options",
+          "type": "SelectOption[]",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "searchable",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "multiple",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "roles",
+          "type": "string[] | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "colorized",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "isValidFieldValue",
+      "description": "验证字段值是否有效",
+      "props": []
+    },
+    {
+      "displayName": "useDragAndDrop",
+      "description": "",
+      "props": [
+        {
+          "name": "globalDragData",
+          "type": "{ item: Condition | ConditionGroupType; sourceGroupId: string; sourceIndex: number; type: \"condition\" | \"group\"; } | null | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "groupId",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "isValidDropTarget",
+          "type": "((targetGroupId: string, dragData: DragInfo) => boolean) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onClearOtherGuides",
+          "type": "((currentGroupId: string) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onDragComplete",
+          "type": "((targetGroupId: string, targetIndex?: number | undefined, dragInfo?: DragInfo | undefined) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onDragEnd",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onDragStart",
+          "type": "((dragInfo: DragInfo) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onRegisterGuideClear",
+          "type": "((groupId: string, clearFunction: () => void) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onUnregisterGuideClear",
+          "type": "((groupId: string) => void) | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
     }
   ],
   "stories": [
@@ -355,14 +1846,14 @@
       "id": "components-conditions--pre-configured",
       "name": "Pre Configured",
       "exportName": "PreConfigured",
-      "description": "",
+      "description": "Demonstrates the Conditions component with pre-configured complex nested conditions.\nShows how multiple condition groups can be combined with AND/OR logic.",
       "source": "import { Conditions } from \"@choice-ui/conditions\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-4\">\n      <div className=\"mb-4 rounded-xl border border-blue-200 bg-blue-50 p-3\">\n        <p className=\"text-body-small text-blue-800\">\n          <strong>Pre-configured example:</strong> High priority AND not completed\n        </p>\n      </div>\n\n      <Conditions\n        fields={sampleFields}\n        value={conditions}\n        onChange={setConditions}\n      />\n    </div>\n  );\n}"
     },
     {
       "id": "components-conditions--field-types",
       "name": "Field Types",
       "exportName": "FieldTypes",
-      "description": "",
+      "description": "Shows different field types and their corresponding operators.\nDemonstrates how operators change based on the selected field type.",
       "source": "import { Conditions } from \"@choice-ui/conditions\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-4\">\n      <div className=\"mb-4 rounded-xl border border-green-200 bg-green-50 p-3\">\n        <p className=\"text-body-small text-green-800\">\n          <strong>Field Types Demo:</strong> Each field type shows different available operators\n        </p>\n      </div>\n\n      <Conditions\n        fields={sampleFields}\n        value={conditions}\n        onChange={setConditions}\n      />\n    </div>\n  );\n}"
     },
     {
@@ -376,43 +1867,46 @@
       "id": "components-conditions--task-management",
       "name": "Task Management",
       "exportName": "TaskManagement",
-      "description": "",
+      "description": "Demonstrates real-world usage with a task management scenario.\nShows practical filtering conditions for a project management interface.",
       "source": "import { Conditions } from \"@choice-ui/conditions\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-4\">\n      <div className=\"mb-4 rounded-xl border border-indigo-200 bg-indigo-50 p-3\">\n        <p className=\"text-body-small text-indigo-800\">\n          <strong>Task Management:</strong> Filter tasks by priority, due date, and blocking\n          status\n        </p>\n      </div>\n\n      <Conditions\n        fields={taskFields}\n        value={conditions}\n        onChange={setConditions}\n      />\n\n      <div className=\"mt-6 rounded-xl bg-gray-50 p-4\">\n        <h4 className=\"text-body-small-strong mb-2 text-gray-700\">Filter Summary:</h4>\n        <div className=\"text-xs text-gray-600\">\n          {conditions.groups.length === 0 ? (\n            <p>No filters applied</p>\n          ) : (\n            <p>{conditions.groups[0].conditions.length} condition(s) active</p>\n          )}\n        </div>\n      </div>\n    </div>\n  );\n}"
     },
     {
       "id": "components-conditions--advanced-operators",
       "name": "Advanced Operators",
       "exportName": "AdvancedOperators",
-      "description": "",
+      "description": "Demonstrates advanced operators including exists/does not exist checks.\nShows how to filter based on field presence rather than specific values.",
       "source": "import { Conditions } from \"@choice-ui/conditions\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-4\">\n      <div className=\"mb-4 rounded-xl border border-purple-200 bg-purple-50 p-3\">\n        <p className=\"text-body-small text-purple-800\">\n          <strong>Advanced Operators:</strong> Filter by field existence, emptiness, and presence\n        </p>\n      </div>\n\n      <Conditions\n        fields={sampleFields}\n        value={conditions}\n        onChange={setConditions}\n      />\n    </div>\n  );\n}"
     },
     {
       "id": "components-conditions--regex-patterns",
       "name": "Regex Patterns",
       "exportName": "RegexPatterns",
-      "description": "",
+      "description": "Shows regular expression pattern matching capabilities.\nDemonstrates how to use regex patterns for advanced text filtering.",
       "source": "import { Conditions } from \"@choice-ui/conditions\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-4\">\n      <div className=\"mb-4 rounded-xl border border-orange-200 bg-orange-50 p-3\">\n        <p className=\"text-body-small text-orange-800\">\n          <strong>Regex Patterns:</strong> Use regular expressions for advanced text matching\n        </p>\n        <div className=\"mt-2 text-xs text-orange-700\">\n          <p>• Email pattern validates standard email formats</p>\n          <p>• Phone pattern matches various international phone formats</p>\n        </div>\n      </div>\n\n      <Conditions\n        fields={regexFields}\n        value={conditions}\n        onChange={setConditions}\n      />\n    </div>\n  );\n}"
     },
     {
       "id": "components-conditions--array-length-filters",
       "name": "Array Length Filters",
       "exportName": "ArrayLengthFilters",
-      "description": "",
+      "description": "Demonstrates array and text length filtering capabilities.\nShows how to filter based on the length of fields rather than their content.",
       "source": "import { Conditions } from \"@choice-ui/conditions\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-4\">\n      <div className=\"mb-4 rounded-xl border border-teal-200 bg-teal-50 p-3\">\n        <p className=\"text-body-small text-teal-800\">\n          <strong>Length Filters:</strong> Filter by text length or array item count\n        </p>\n        <div className=\"mt-2 text-xs text-teal-700\">\n          <p>• Description must be longer than 50 characters</p>\n          <p>• Categories limited to 3 or fewer</p>\n          <p>• Minimum 2 reviewers required</p>\n        </div>\n      </div>\n\n      <Conditions\n        fields={lengthFields}\n        value={conditions}\n        onChange={setConditions}\n      />\n    </div>\n  );\n}"
     },
     {
       "id": "components-conditions--boolean-logic",
       "name": "Boolean Logic",
       "exportName": "BooleanLogic",
-      "description": "",
+      "description": "Shows simplified boolean logic with dedicated true/false operators.\nDemonstrates cleaner boolean field handling without explicit value selection.",
       "source": "import { Conditions } from \"@choice-ui/conditions\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-4\">\n      <div className=\"mb-4 rounded-xl border border-blue-200 bg-blue-50 p-3\">\n        <p className=\"text-body-small text-blue-800\">\n          <strong>Boolean Logic:</strong> Simplified true/false operators for cleaner boolean\n          filtering\n        </p>\n        <div className=\"mt-2 text-xs text-blue-700\">\n          <p>• Uses dedicated IsTrue/IsFalse operators</p>\n          <p>• No need to select true/false values manually</p>\n          <p>• Supports complex nested boolean logic</p>\n        </div>\n      </div>\n\n      <Conditions\n        fields={booleanFields}\n        value={conditions}\n        onChange={setConditions}\n      />\n    </div>\n  );\n}"
     },
     {
       "id": "components-conditions--drag-and-drop-test",
       "name": "Drag And Drop Test",
       "exportName": "DragAndDropTest",
-      "description": "",
+      "description": "Test drag and drop functionality with debugging information.\nThis story includes nested groups to test cross-group dragging scenarios.",
       "source": "import { Conditions } from \"@choice-ui/conditions\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-4\">\n      <div className=\"mb-4 rounded-xl border border-red-200 bg-red-50 p-3\">\n        <p className=\"text-body-small text-red-800\">\n          <strong>Drag & Drop Test:</strong> Test dragging conditions between groups, within\n          groups, and in/out of nested groups. Open browser console to see debug logs.\n        </p>\n        <div className=\"mt-2 text-xs text-red-700\">\n          <p>• Try dragging conditions from main group to nested group</p>\n          <p>• Try dragging conditions from nested group to main group</p>\n          <p>• Try reordering conditions within the same group</p>\n        </div>\n      </div>\n\n      <Conditions\n        fields={sampleFields}\n        value={conditions}\n        onChange={setConditions}\n      />\n\n      <div className=\"mt-6 rounded-xl bg-gray-50 p-4\">\n        <h4 className=\"text-body-small-strong mb-2 text-gray-700\">\n          Current Structure (for debugging):\n        </h4>\n        <pre className=\"max-h-96 overflow-auto text-xs text-gray-600\">\n          {JSON.stringify(conditions, null, 2)}\n        </pre>\n      </div>\n    </div>\n  );\n}"
     }
+  ],
+  "tags": [
+    "beta"
   ]
 }

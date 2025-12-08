@@ -21,7 +21,7 @@
   ],
   "props": [
     {
-      "displayName": "Avatar",
+      "displayName": "AvatarProps",
       "description": "",
       "props": [
         {
@@ -105,5 +105,8 @@
       "description": "Rounded: Demonstrates different border radius options for the Avatar component.\n- Shows how to customize the rounded corners using className prop with rounded utilities.\n- Available options: rounded-sm, rounded-md, rounded-lg, rounded-xl, rounded-full.\n- Useful for adapting Avatar to different design styles or matching other UI elements.\n- The default Avatar uses rounded-full, but can be overridden with custom className.",
       "source": "import { Avatar } from \"@choice-ui/avatar\"\n\nexport default function App() {\n  return (\n    <div className=\"grid grid-cols-5 gap-6\">\n      {roundedClasses.map((rounded) => (\n        <div\n          className=\"flex flex-col items-center gap-2\"\n          key={rounded.class}\n        >\n          <Avatar\n            name=\"A\"\n            className={rounded.class}\n            photo=\"https://api.dicebear.com/7.x/avataaars/svg?seed=1\"\n            size=\"large\"\n          />\n          <p className=\"text-sm\">{rounded.label}</p>\n        </div>\n      ))}\n    </div>\n  );\n}"
     }
+  ],
+  "tags": [
+    "new"
   ]
 }

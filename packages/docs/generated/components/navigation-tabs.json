@@ -20,7 +20,38 @@
     "type TabsProps",
     "type TabItemProps"
   ],
-  "props": [],
+  "props": [
+    {
+      "displayName": "TabItemProps",
+      "description": "",
+      "props": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "as",
+          "type": "ElementType<any, keyof IntrinsicElements> | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "ref",
+          "type": "((instance: HTMLElement | null) => void) | RefObject<HTMLElement> | null | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    }
+  ],
   "stories": [
     {
       "id": "navigation-tabs--basic",
@@ -33,7 +64,7 @@
       "id": "navigation-tabs--default-value",
       "name": "Default Value",
       "exportName": "DefaultValue",
-      "description": "",
+      "description": "Tabs with default selected value.\n\nFeatures:\n- Set default value through initial state\n- No separate `defaultValue` prop (controlled component)\n- The selected tab is highlighted on mount",
       "source": "import { Tabs } from \"@choice-ui/tabs\"\n\nexport default function App() {\n  return (\n    <Tabs\n      value={selectedTab}\n      onChange={(value) => {\n        setSelectedTab(value)\n      }}\n    >\n      <Tabs.Item value=\"overview\">Overview</Tabs.Item>\n      <Tabs.Item value=\"settings\">Settings</Tabs.Item>\n      <Tabs.Item value=\"analytics\">Analytics</Tabs.Item>\n    </Tabs>\n  );\n}"
     },
     {
@@ -47,14 +78,14 @@
       "id": "navigation-tabs--icon-tabs",
       "name": "Icon Tabs",
       "exportName": "IconTabs",
-      "description": "",
+      "description": "Icon-only tabs for compact interfaces.\n\nFeatures:\n- Icons as tab content\n- Requires `aria-label` for accessibility\n- Ideal for theme switchers or view toggles\n- Maintains full keyboard navigation",
       "source": "import { Tabs } from \"@choice-ui/tabs\"\n\nexport default function App() {\n  return (\n    <Tabs\n      value={selectedTab}\n      onChange={(value) => setSelectedTab(value)}\n    >\n      <Tabs.Item\n        value=\"sun\"\n        aria-label=\"Sun\"\n      >\n        <ThemeSunBright />\n      </Tabs.Item>\n      <Tabs.Item\n        value=\"moon\"\n        aria-label=\"Moon\"\n      >\n        <ThemeMoonDark />\n      </Tabs.Item>\n      <Tabs.Item\n        value=\"system\"\n        aria-label=\"System\"\n      >\n        <ThemeSystem />\n      </Tabs.Item>\n    </Tabs>\n  );\n}"
     },
     {
       "id": "navigation-tabs--mixed-tabs",
       "name": "Mixed Tabs",
       "exportName": "MixedTabs",
-      "description": "",
+      "description": "Tabs with both icons and text labels.\n\nFeatures:\n- Combine icons with descriptive text\n- Better clarity than icon-only tabs\n- Use flexbox for alignment\n- Suitable for main navigation",
       "source": "import { Tabs } from \"@choice-ui/tabs\"\n\nexport default function App() {\n  return (\n    <Tabs\n      value={selectedTab}\n      onChange={(value) => setSelectedTab(value)}\n    >\n      <Tabs.Item\n        value=\"sun\"\n        aria-label=\"Sun\"\n      >\n        <div className=\"flex items-center gap-1\">\n          <ThemeSunBright />\n          <span>Sun</span>\n        </div>\n      </Tabs.Item>\n      <Tabs.Item\n        value=\"moon\"\n        aria-label=\"Moon\"\n      >\n        <div className=\"flex items-center gap-1\">\n          <ThemeMoonDark />\n          <span>Moon</span>\n        </div>\n      </Tabs.Item>\n      <Tabs.Item\n        value=\"system\"\n        aria-label=\"System\"\n      >\n        <div className=\"flex items-center gap-1\">\n          <ThemeSystem />\n          <span>System</span>\n        </div>\n      </Tabs.Item>\n    </Tabs>\n  );\n}"
     },
     {

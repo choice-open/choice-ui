@@ -25,7 +25,7 @@
   ],
   "props": [
     {
-      "displayName": "Skeleton",
+      "displayName": "SkeletonProps",
       "description": "Skeleton component for loading states",
       "props": [
         {
@@ -76,6 +76,47 @@
           "name": "ref",
           "type": "((instance: HTMLSpanElement | null) => void) | RefObject<HTMLSpanElement> | null | undefined",
           "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "useSkeleton",
+      "description": "",
+      "props": [
+        {
+          "name": "hasChildren",
+          "type": "boolean",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "height",
+          "type": "string | number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "width",
+          "type": "string | number | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "SkeletonContextValue",
+      "description": "Context lets components pass information deep down without explicitly\npassing props.\n\nCreated from {@link createContext}",
+      "props": []
+    },
+    {
+      "displayName": "SkeletonProviderProps",
+      "description": "",
+      "props": [
+        {
+          "name": "loading",
+          "type": "boolean",
+          "required": true,
           "description": ""
         }
       ]

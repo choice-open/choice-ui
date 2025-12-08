@@ -20,7 +20,7 @@
   ],
   "props": [
     {
-      "displayName": "Input",
+      "displayName": "InputProps",
       "description": "",
       "props": [
         {
@@ -93,7 +93,7 @@
       "id": "forms-input--read-only",
       "name": "Read Only",
       "exportName": "ReadOnly",
-      "description": "",
+      "description": "ReadOnly: Demonstrates the input in a read-only state.\n\nFeatures:\n- Prevents editing while still allowing focus and selection\n- Maintains normal visual appearance (unlike disabled)\n- Value is included in form submission\n\nUse read-only inputs when:\n- You want to display a value that shouldn't be edited\n- The value is calculated or provided by the system\n- You need the field to remain focusable (unlike disabled)",
       "source": "import { Input } from \"@choice-ui/input\"\n\nexport default function App() {\n  return (\n    <Input\n      readOnly\n      value={value}\n      onChange={(value) => setValue(value)}\n    />\n  );\n}"
     },
     {
@@ -128,7 +128,7 @@
       "id": "forms-input--focus-selection-modes",
       "name": "Focus Selection Modes",
       "exportName": "FocusSelectionModes",
-      "description": "",
+      "description": "FocusSelectionModes: Demonstrates different focus selection behaviors.\n\nFeatures:\n- \"all\": Selects all text on focus (default behavior)\n- \"end\": Moves cursor to end of text on focus\n- \"none\": No selection change on focus\n\nUsage:\n```tsx\n// Select all text on focus (default)\n<Input focusSelection=\"all\" />\n\n// Move cursor to end\n<Input focusSelection=\"end\" />\n\n// No selection change\n<Input focusSelection=\"none\" />\n```\n\nBest Practices:\n- Use \"all\" for fields where users typically replace the entire value\n- Use \"end\" for fields where users often append to existing content\n- Use \"none\" for fields where cursor position should be preserved",
       "source": "import { Input } from \"@choice-ui/input\"\n\nexport default function App() {\n  return (\n    <div className=\"space-y-6\">\n      <div>\n        <h3 className=\"text-body-small text-text-secondary mb-2\">Select All (Default)</h3>\n        <Input\n          value={value1}\n          onChange={setValue1}\n          focusSelection=\"all\"\n          placeholder=\"Click to select all text...\"\n          className=\"w-80\"\n        />\n        <p className=\"text-body-small text-text-tertiary mt-1\">\n          focusSelection=&quot;all&quot; - Selects all text when focused\n        </p>\n      </div>\n\n      <div>\n        <h3 className=\"text-body-small text-text-secondary mb-2\">Move to End</h3>\n        <Input\n          value={value2}\n          onChange={setValue2}\n          focusSelection=\"end\"\n          placeholder=\"Click to move cursor to end...\"\n          className=\"w-80\"\n        />\n        <p className=\"text-body-small text-text-tertiary mt-1\">\n          focusSelection=&quot;end&quot; - Moves cursor to end of text\n        </p>\n      </div>\n\n      <div>\n        <h3 className=\"text-body-small text-text-secondary mb-2\">No Selection</h3>\n        <Input\n          value={value3}\n          onChange={setValue3}\n          focusSelection=\"none\"\n          placeholder=\"Click anywhere to focus...\"\n          className=\"w-80\"\n        />\n        <p className=\"text-body-small text-text-tertiary mt-1\">\n          focusSelection=&quot;none&quot; - Maintains cursor position\n        </p>\n      </div>\n    </div>\n  );\n}"
     }
   ]
