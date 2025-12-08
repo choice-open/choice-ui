@@ -15,6 +15,7 @@
     "core:build": "pnpm --filter=\"@choice-ui/react\" run build",
     "core:lint": "eslint packages/core/app/**/*.{ts,tsx} --ext .ts,.tsx",
     "core:lint:fix": "eslint packages/core/app/**/*.{ts,tsx} --ext .ts,.tsx --fix",
+    "shared:build": "pnpm --filter=\"@choice-ui/shared\" run build",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",

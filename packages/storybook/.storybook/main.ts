@@ -1,5 +1,5 @@
 import type { StorybookConfig } from "@storybook/react-vite"
-import { createStorybookConfig } from "./create-storybook-config"
+import { createStorybookConfig } from "./create-storybook-config.ts"
 
 const config: StorybookConfig = createStorybookConfig({
   stories: ["../stories/**/*.mdx", "../stories/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
