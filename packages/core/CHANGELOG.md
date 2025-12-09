@@ -1,5 +1,11 @@
 # @choice-ui/react
 
+## 1.4.1
+
+### Patch Changes
+
+- Fix shared utility types (tcx, tcv, etc.) not exported in type declarations
+
 ## 1.4.0
 
 ### Minor Changes
