@@ -143,34 +143,58 @@ function createDtsPlugin(): PluginOption {
     copyDtsFiles: true,
     tsconfigPath: resolve(ROOT_DIR, "tsconfig.json"),
     afterBuild: async () => {
-      // 复制 shared 的类型文件到 dist/shared/
-      const sharedDtsSrc = resolve(ROOT_DIR, "../shared/dist/index.d.ts")
+      // 1. 复制 shared 已构建的类型文件
+      const sharedDistSrc = resolve(ROOT_DIR, "../shared/dist/index.d.ts")
       const sharedDestDir = resolve(DIST_DIR, "shared")
-      const sharedDtsDest = resolve(sharedDestDir, "index.d.ts")
-      
-      try {
-        await fs.mkdir(sharedDestDir, { recursive: true })
-        await fs.copyFile(sharedDtsSrc, sharedDtsDest)
-        console.log("✓ Shared types copied successfully")
-      } catch {
-        console.warn("⚠ Shared dist not found, run 'pnpm shared:build' first")
-      }
-    },
-    beforeWriteFile: (filePath, content) => {
-      // 修正 index.d.ts 中对 shared 的引用路径
-      let newContent = content
-      // 将 ../../shared/src/hooks 和 ../../shared/src/utils 都改为 ./shared
-      newContent = newContent.replace(
-        /export \* from ['"]\.\.\/\.\.\/shared\/src\/hooks['"];?\n?/g,
-        "",
+      await fs.mkdir(sharedDestDir, { recursive: true })
+      await fs.copyFile(sharedDistSrc, resolve(sharedDestDir, "index.d.ts"))
+      console.log("✓ Shared types copied")
+
+      // 2. 修复 index.d.ts 中的 shared 引用
+      const indexDts = resolve(DIST_DIR, "index.d.ts")
+      let content = await fs.readFile(indexDts, "utf-8")
+      content = content.replace(
+        /export \* from ['"]\.\.\/\.\.\/shared\/src\/hooks['"];?\nexport \* from ['"]\.\.\/\.\.\/shared\/src\/utils['"];?/g,
+        "export * from './shared';",
       )
-      newContent = newContent.replace(
-        /export \* from ['"]\.\.\/\.\.\/shared\/src\/utils['"];?/g,
-        'export * from "./shared"',
-      )
-      return { filePath, content: newContent }
+      content = content.replace(/from ['"]\.\.\/\.\.\/shared\/src\//g, "from './shared/")
+      await fs.writeFile(indexDts, content)
+
+      // 3. 修复组件类型文件中的 @choice-ui/* 引用
+      await fixDtsImports(resolve(DIST_DIR, "components"))
+      console.log("✓ Fixed type imports")
     },
   })
+}
+
+/**
+ * 递归修复 .d.ts 文件中的 @choice-ui/* 引用
+ */
+async function fixDtsImports(dir: string): Promise<void> {
+  const entries = await fs.readdir(dir, { withFileTypes: true })
+
+  for (const entry of entries) {
+    const fullPath = path.join(dir, entry.name)
+
+    if (entry.isDirectory()) {
+      await fixDtsImports(fullPath)
+    } else if (entry.name.endsWith(".d.ts")) {
+      let content = await fs.readFile(fullPath, "utf-8")
+      const original = content
+
+      // 计算从当前文件到 components 目录的相对路径深度
+      const relPath = path.relative(resolve(DIST_DIR, "components"), path.dirname(fullPath))
+      const depth = relPath ? relPath.split(path.sep).length : 0
+      const prefix = depth > 0 ? "../".repeat(depth) : "./"
+
+      // 替换 @choice-ui/xxx 为相对路径
+      content = content.replace(/@choice-ui\/([a-z-]+)/g, (_, pkg) => `${prefix}${pkg}/src`)
+
+      if (content !== original) {
+        await fs.writeFile(fullPath, content)
+      }
+    }
+  }
 }
 
 // ============================================================================
