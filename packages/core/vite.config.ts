@@ -134,7 +134,7 @@ function createCopyAssetsPlugin(): PluginOption {
  */
 function createDtsPlugin(): PluginOption {
   return dts({
-    include: ["app/**/*.ts", "app/**/*.tsx", "../shared/src/**/*.ts", "../shared/src/**/*.tsx"],
+    include: ["app/**/*.ts", "app/**/*.tsx"],
     exclude: ["app/routes", "**/*.stories.tsx", "**/*.test.tsx", "**/__tests__/**"],
     outDir: "dist",
     root: ROOT_DIR,
@@ -142,16 +142,32 @@ function createDtsPlugin(): PluginOption {
     rollupTypes: false,
     copyDtsFiles: true,
     tsconfigPath: resolve(ROOT_DIR, "tsconfig.json"),
-    beforeWriteFile: (filePath, content) => {
-      // 修正 shared 包的类型路径
-      if (filePath.includes("shared/src")) {
-        const newPath = filePath.replace(/.*shared\/src/, "dist/shared")
-        return { filePath: newPath, content }
+    afterBuild: async () => {
+      // 复制 shared 的类型文件到 dist/shared/
+      const sharedDtsSrc = resolve(ROOT_DIR, "../shared/dist/index.d.ts")
+      const sharedDestDir = resolve(DIST_DIR, "shared")
+      const sharedDtsDest = resolve(sharedDestDir, "index.d.ts")
+      
+      try {
+        await fs.mkdir(sharedDestDir, { recursive: true })
+        await fs.copyFile(sharedDtsSrc, sharedDtsDest)
+        console.log("✓ Shared types copied successfully")
+      } catch {
+        console.warn("⚠ Shared dist not found, run 'pnpm shared:build' first")
       }
+    },
+    beforeWriteFile: (filePath, content) => {
       // 修正 index.d.ts 中对 shared 的引用路径
       let newContent = content
-      newContent = newContent.replace(/from ['"]\.\.\/\.\.\/shared\/src\//g, "from './shared/")
-      newContent = newContent.replace(/from ['"]@choice-ui\/shared['"]/g, "from './shared'")
+      // 将 ../../shared/src/hooks 和 ../../shared/src/utils 都改为 ./shared
+      newContent = newContent.replace(
+        /export \* from ['"]\.\.\/\.\.\/shared\/src\/hooks['"];?\n?/g,
+        "",
+      )
+      newContent = newContent.replace(
+        /export \* from ['"]\.\.\/\.\.\/shared\/src\/utils['"];?/g,
+        'export * from "./shared"',
+      )
       return { filePath, content: newContent }
     },
   })

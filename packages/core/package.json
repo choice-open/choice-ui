@@ -36,7 +36,7 @@
     }
   },
   "scripts": {
-    "build": "pnpm run clean && vite build",
+    "build": "pnpm run clean && pnpm --filter @choice-ui/shared build && vite build",
     "build:watch": "vite build --watch",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,md}\"",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
