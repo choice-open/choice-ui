@@ -1,0 +1,6 @@
+generated/
+output/
+public/
+target/
+
+app/i18n/i18n-*

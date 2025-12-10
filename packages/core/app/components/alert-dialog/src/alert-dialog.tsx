@@ -1,6 +1,6 @@
 import { Button } from "@choice-ui/button"
-import { Modal } from "@choice-ui/modal"
 import { tcx } from "@choice-ui/shared"
+import { Modal } from "@choice-ui/modal"
 import {
   FloatingFocusManager,
   FloatingOverlay,
@@ -11,7 +11,7 @@ import { memo, useEffect, useMemo } from "react"
 import { useEventCallback } from "usehooks-ts"
 import { useAlertDialogContext } from "./context/alert-dialog-context"
 import { alertDialogTv } from "./tv"
-import type { AlertDialogCustomConfig } from "./types"
+import { AlertDialogCustomConfig } from "./types"
 import {
   getButtonsForDialog,
   getDialogTitle,
@@ -30,13 +30,7 @@ export interface AlertDialogProps {
 }
 
 export const AlertDialog = memo(function AlertDialog(props: AlertDialogProps) {
-  const {
-    className,
-    outsidePress,
-    overlay = false,
-    portalId = PORTAL_ROOT_ID,
-    root,
-  } = props
+  const { className, outsidePress, overlay = false, portalId = PORTAL_ROOT_ID, root } = props
   const { state, _handleAction } = useAlertDialogContext()
   const { isOpen, type, config } = state
 
@@ -82,8 +76,7 @@ export const AlertDialog = memo(function AlertDialog(props: AlertDialogProps) {
     }
 
     window.addEventListener("keydown", handleKeyDown, { capture: true })
-    return () =>
-      window.removeEventListener("keydown", handleKeyDown, { capture: true })
+    return () => window.removeEventListener("keydown", handleKeyDown, { capture: true })
   }, [isOpen, config, type, _handleAction])
 
   // 处理背景点击
@@ -173,7 +166,10 @@ export const AlertDialog = memo(function AlertDialog(props: AlertDialogProps) {
 
   // 对话框内容
   const dialogContent = shouldRenderContent && (
-    <FloatingFocusManager context={context} modal>
+    <FloatingFocusManager
+      context={context}
+      modal
+    >
       <Modal
         ref={refs.setFloating}
         className={tcx(tv.container(), className)}
@@ -194,7 +190,10 @@ export const AlertDialog = memo(function AlertDialog(props: AlertDialogProps) {
         )}
 
         {/* Content */}
-        <Modal.Content id="alert-dialog-description" className={tv.content()}>
+        <Modal.Content
+          id="alert-dialog-description"
+          className={tv.content()}
+        >
           {config.content || config.description}
         </Modal.Content>
 
@@ -219,7 +218,10 @@ export const AlertDialog = memo(function AlertDialog(props: AlertDialogProps) {
   )
 
   return (
-    <FloatingPortal id={portalId} root={root}>
+    <FloatingPortal
+      id={portalId}
+      root={root}
+    >
       {overlay ? (
         <>
           <Modal.Backdrop
@@ -239,7 +241,10 @@ export const AlertDialog = memo(function AlertDialog(props: AlertDialogProps) {
         </>
       ) : (
         dialogContent && (
-          <div className={tcx(tv.overlay())} onClick={handleOverlayClick}>
+          <div
+            className={tcx(tv.overlay())}
+            onClick={handleOverlayClick}
+          >
             {dialogContent}
           </div>
         )
