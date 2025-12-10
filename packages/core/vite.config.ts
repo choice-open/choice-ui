@@ -231,12 +231,12 @@ export default defineConfig(({ mode: _mode }: ConfigEnv): UserConfig => {
       rollupOptions: {
         external: isExternal,
         output: {
-          format: "es",
+            format: "es",
           dir: "dist",
-          preserveModules: true,
-          preserveModulesRoot: "app",
-          entryFileNames: ({ name: fileName }) => generateFileName(fileName, "js"),
-        },
+            preserveModules: true,
+            preserveModulesRoot: "app",
+            entryFileNames: ({ name: fileName }) => generateFileName(fileName, "js"),
+          },
       },
       sourcemap: false,
       minify: false,

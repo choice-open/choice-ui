@@ -1,4 +1,11 @@
-import type { FloatingContext, Placement, ReferenceType } from "@floating-ui/react"
+import { useMergedValue } from "@choice-ui/shared"
+import type {
+  FloatingContext,
+  OffsetOptions,
+  Placement,
+  ReferenceType,
+  UseTransitionStylesProps,
+} from "@floating-ui/react"
 import {
   flip,
   autoUpdate as floatingAutoUpdate,
@@ -13,10 +20,10 @@ import {
   useHover,
   useInteractions,
   useRole,
+  useTransitionStyles,
 } from "@floating-ui/react"
-import { useCallback, useEffect, useRef, useState, useMemo, type RefObject } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState, type RefObject } from "react"
 import { useEventCallback } from "usehooks-ts"
-import { useMergedValue } from "@choice-ui/shared"
 
 interface UseFloatingPopoverReturn {
   context: FloatingContext
@@ -30,6 +37,7 @@ interface UseFloatingPopoverReturn {
   handleTriggerRef: (triggerRef: RefObject<HTMLElement | null>) => void
   innerOpen: boolean
   isClosing: boolean
+  isMounted: boolean
   positionReady: boolean
   refs: {
     floating: React.MutableRefObject<HTMLElement | null>
@@ -44,6 +52,7 @@ interface UseFloatingPopoverReturn {
   }>
   x: number | null
   y: number | null
+  styles: React.CSSProperties
 }
 
 interface UseFloatingPopoverParams {
@@ -57,7 +66,7 @@ interface UseFloatingPopoverParams {
   matchTriggerWidth?: boolean
   maxWidth?: number
   nodeId: string | undefined
-  offset?: number
+  offset?: OffsetOptions
   onOpenChange?: (open: boolean) => void
   open?: boolean
   outsidePressIgnore?: string | string[] | boolean
@@ -65,6 +74,7 @@ interface UseFloatingPopoverParams {
   rememberPosition?: boolean
   resetDragState: () => void
   resetPosition: () => void
+  transitionStylesProps?: UseTransitionStylesProps
 }
 
 export function useFloatingPopover({
@@ -72,7 +82,7 @@ export function useFloatingPopover({
   defaultOpen,
   onOpenChange,
   placement = "bottom",
-  offset: offsetDistance = 8,
+  offset: offsetDistance = { mainAxis: 8, crossAxis: 0 },
   interactions = "click",
   outsidePressIgnore,
   delay,
@@ -86,6 +96,9 @@ export function useFloatingPopover({
   autoSize = true,
   maxWidth: maxWidthValue = 320,
   matchTriggerWidth = false,
+  transitionStylesProps = {
+    duration: 0,
+  },
 }: UseFloatingPopoverParams): UseFloatingPopoverReturn {
   const [isClosing, setIsClosing] = useState(false)
   const positionRef = useRef({ x: 0, y: 0 })
@@ -159,6 +172,8 @@ export function useFloatingPopover({
     middleware,
     whileElementsMounted: autoUpdate ? floatingAutoUpdate : undefined,
   })
+
+  const { isMounted, styles } = useTransitionStyles(context, transitionStylesProps)
 
   // 🔧 使用官方推荐的 isPositioned 来管理位置状态
   useEffect(() => {
@@ -308,5 +323,7 @@ export function useFloatingPopover({
     handleClose,
     handleTriggerRef,
     isClosing,
+    isMounted,
+    styles,
   }
 }

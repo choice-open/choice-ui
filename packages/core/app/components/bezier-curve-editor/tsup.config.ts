@@ -3,11 +3,11 @@ import { resolve } from "path"
 
 export default defineConfig({
   entry: ["src/index.ts"],
-  format: ["esm", "cjs"],
+  format: ["esm"],
   dts: true,
   clean: true,
-  external: ["react", "react-dom", "@choice-ui/shared", /^@choiceform\//],
   treeshake: true,
+  external: ["react", "react-dom", "react/jsx-runtime", /^@choice-ui\//, /^@choiceform\//],
   splitting: false,
   sourcemap: false,
   minify: false,

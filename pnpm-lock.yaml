@@ -90,6 +90,9 @@ importers:
       allotment:
         specifier: ^1.20.4
         version: 1.20.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      classnames:
+        specifier: ^2.5.1
+        version: 2.5.1
       date-fns:
         specifier: ^4.1.0
         version: 4.1.0
@@ -147,9 +150,21 @@ importers:
       sonner:
         specifier: ^2.0.7
         version: 2.0.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      tailwind-merge:
+        specifier: ^3.3.1
+        version: 3.4.0
+      tailwind-variants:
+        specifier: ^3.1.0
+        version: 3.2.2(tailwind-merge@3.4.0)(tailwindcss@4.1.13)
       tinycolor2:
         specifier: 1.6.0
         version: 1.6.0
+      ts-pattern:
+        specifier: ^5.6.0
+        version: 5.9.0
+      use-stick-to-bottom:
+        specifier: ^1.0.43
+        version: 1.1.1(react@18.3.1)
       usehooks-ts:
         specifier: ^3.1.0
         version: 3.1.1(react@18.3.1)
@@ -751,9 +766,6 @@ importers:
 
   packages/core/app/components/command:
     dependencies:
-      '@choice-ui/input':
-        specifier: workspace:*
-        version: link:../input
       '@choice-ui/kbd':
         specifier: workspace:*
         version: link:../kbd
@@ -766,6 +778,9 @@ importers:
       '@choice-ui/tabs':
         specifier: workspace:*
         version: link:../tabs
+      '@choice-ui/text-field':
+        specifier: workspace:*
+        version: link:../text-field
       usehooks-ts:
         specifier: ^3.1.0
         version: 3.1.1(react@18.3.1)
@@ -18392,6 +18407,12 @@ snapshots:
       tailwindcss: 4.1.13
     optionalDependencies:
       tailwind-merge: 2.6.0
+
+  tailwind-variants@3.2.2(tailwind-merge@3.4.0)(tailwindcss@4.1.13):
+    dependencies:
+      tailwindcss: 4.1.13
+    optionalDependencies:
+      tailwind-merge: 3.4.0
 
   tailwind-variants@3.2.2(tailwind-merge@3.4.0)(tailwindcss@4.1.17):
     dependencies:

@@ -280,7 +280,7 @@ export const Large: Story = {
     >
       <Command.Input
         variant="reset"
-        className="mx-0 mb-0 rounded-none"
+        className="mx-0 mb-0 rounded-none before:border-none"
         placeholder="Search commands..."
       />
       <Command.Divider alwaysRender />

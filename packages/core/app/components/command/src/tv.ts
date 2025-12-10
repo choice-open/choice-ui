@@ -21,16 +21,13 @@ export const commandTv = tcv({
 
 export const commandInputTv = tcv({
   slots: {
-    root: "m-2 flex items-center",
-    input: "w-full rounded-lg",
+    input: "m-2",
   },
   variants: {
     size: {
-      default: {
-        input: "text-body-medium h-8 px-2",
-      },
+      default: {},
       large: {
-        input: "leading-lg tracking-lg h-10 px-4 text-body-large",
+        input: "leading-lg tracking-lg px-4 text-body-large",
       },
     },
   },

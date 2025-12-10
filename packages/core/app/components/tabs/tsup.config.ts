@@ -2,10 +2,10 @@ import { defineConfig } from "tsup"
 
 export default defineConfig({
   entry: ["src/index.ts"],
-  format: ["cjs", "esm"],
+  format: ["esm"],
   dts: true,
   sourcemap: true,
   clean: true,
-  external: ["react", "react-dom", /^@choiceform\//],
   treeshake: true,
+  external: ["react", "react-dom", "react/jsx-runtime", /^@choice-ui\//, /^@choiceform\//],
 })

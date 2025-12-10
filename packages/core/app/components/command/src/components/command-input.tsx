@@ -1,11 +1,11 @@
 import { tcx } from "@choice-ui/shared"
-import { Input, type InputProps } from "@choice-ui/input"
+import { TextField, type TextFieldProps } from "@choice-ui/text-field"
 import { forwardRef, ReactNode, useEffect } from "react"
 import { useEventCallback } from "usehooks-ts"
 import { useCommand, useCommandState } from "../hooks"
 import { commandInputTv } from "../tv"
 
-export interface CommandInputProps extends Omit<InputProps, "value" | "onChange" | "type"> {
+export interface CommandInputProps extends Omit<TextFieldProps, "value" | "onChange" | "type"> {
   onChange?: (search: string) => void
   prefixElement?: ReactNode
   suffixElement?: ReactNode
@@ -36,30 +36,30 @@ export const CommandInput = forwardRef<HTMLInputElement, CommandInputProps>((pro
   const tv = commandInputTv({ size: context.size })
 
   return (
-    <div className={tcx(tv.root({ className }))}>
-      {prefixElement}
-      <Input
-        ref={ref}
-        {...rest}
-        className={tcx(tv.input({ className }))}
-        variant={props.variant || context.variant}
-        data-command-input=""
-        autoComplete="off"
-        autoCorrect="off"
-        spellCheck={false}
-        aria-autocomplete="list"
-        role="combobox"
-        aria-expanded={true}
-        aria-controls={context.listId}
-        aria-labelledby={context.labelId}
-        aria-activedescendant={selectedItemId}
-        id={context.inputId}
-        type="text"
-        value={isControlled ? value : search}
-        onChange={handleChange}
-      />
-      {suffixElement}
-    </div>
+    <TextField
+      ref={ref}
+      {...rest}
+      className={tcx(tv.input({ className }))}
+      size="large"
+      variant={props.variant || context.variant}
+      data-command-input=""
+      autoComplete="off"
+      autoCorrect="off"
+      spellCheck={false}
+      aria-autocomplete="list"
+      role="combobox"
+      aria-expanded={true}
+      aria-controls={context.listId}
+      aria-labelledby={context.labelId}
+      aria-activedescendant={selectedItemId}
+      id={context.inputId}
+      type="text"
+      value={isControlled ? value : search}
+      onChange={handleChange}
+    >
+      {prefixElement && <TextField.Prefix>{prefixElement}</TextField.Prefix>}
+      {suffixElement && <TextField.Suffix>{suffixElement}</TextField.Suffix>}
+    </TextField>
   )
 })
 

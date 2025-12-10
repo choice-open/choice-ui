@@ -3,7 +3,7 @@
   "title": "Slot",
   "package": {
     "name": "@choice-ui/slot",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "Slot component for Choiceform Design System",
     "dependencies": {},
     "peerDependencies": {

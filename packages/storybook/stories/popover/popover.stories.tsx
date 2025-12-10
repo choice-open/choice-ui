@@ -116,9 +116,46 @@ export const DefaultOpen: Story = {
 export const Offset: Story = {
   render: function OffsetStory() {
     return (
-      <Popover offset={16}>
+      <div className="flex gap-4">
+        <Popover offset={16}>
+          <Popover.Trigger>
+            <Button>Offset 16</Button>
+          </Popover.Trigger>
+          <Popover.Content className="w-64 p-3">{faker.lorem.paragraph(3)}</Popover.Content>
+        </Popover>
+        <Popover
+          placement="bottom-start"
+          offset={{ mainAxis: -24, crossAxis: 16 }}
+        >
+          <Popover.Trigger>
+            <Button>Main Axis -24, Cross Axis 16</Button>
+          </Popover.Trigger>
+          <Popover.Content className="w-64 p-3">{faker.lorem.paragraph(3)}</Popover.Content>
+        </Popover>
+      </div>
+    )
+  },
+}
+
+/**
+ * TransitionStylesProps: Demonstrates customizing the transition styles of the popover.
+ *
+ * Features:
+ * - Custom transition styles
+ * - Custom transition duration
+ * - Custom transition timing function
+ * - Custom transition delay
+ */
+export const TransitionStylesProps: Story = {
+  render: function TransitionStylesPropsStory() {
+    return (
+      <Popover
+        transitionStylesProps={{
+          duration: 1000,
+        }}
+      >
         <Popover.Trigger>
-          <Button>Open</Button>
+          <Button>Transition Styles Props</Button>
         </Popover.Trigger>
         <Popover.Content className="w-64 p-3">{faker.lorem.paragraph(3)}</Popover.Content>
       </Popover>

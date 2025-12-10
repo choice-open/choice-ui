@@ -1,6 +1,6 @@
 {
   "name": "@choiceform/design-system",
-  "version": "999.0.2",
+  "version": "999.0.4",
   "description": "⚠️ DEPRECATED: This package has been migrated to @choice-ui/react. Please use the new package name.",
   "deprecated": "This package has been migrated to @choice-ui/react. Please run: pnpm add @choice-ui/react",
   "main": "index.js",

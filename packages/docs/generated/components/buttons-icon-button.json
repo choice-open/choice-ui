@@ -3,7 +3,7 @@
   "title": "IconButton",
   "package": {
     "name": "@choice-ui/icon-button",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "description": "Icon Button component for Choiceform Design System",
     "dependencies": {
       "@choice-ui/shared": "workspace:*",

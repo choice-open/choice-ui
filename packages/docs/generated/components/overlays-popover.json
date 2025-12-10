@@ -82,12 +82,6 @@
           "description": ""
         },
         {
-          "name": "initialFocus",
-          "type": "number | MutableRefObject<HTMLElement | null> | undefined",
-          "required": false,
-          "description": "@deprecated use focusManagerProps.initialFocus instead"
-        },
-        {
           "name": "interactions",
           "type": "undefined | \"hover\" | \"click\" | \"focus\" | \"none\"",
           "required": false,
@@ -107,7 +101,7 @@
         },
         {
           "name": "offset",
-          "type": "number | undefined",
+          "type": "OffsetOptions | undefined",
           "required": false,
           "description": ""
         },
@@ -156,6 +150,12 @@
         {
           "name": "triggerRef",
           "type": "RefObject<HTMLElement> | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "transitionStylesProps",
+          "type": "UseTransitionStylesProps | undefined",
           "required": false,
           "description": ""
         }
@@ -220,12 +220,6 @@
           "description": ""
         },
         {
-          "name": "initialFocus",
-          "type": "number | MutableRefObject<HTMLElement | null> | undefined",
-          "required": false,
-          "description": "@deprecated use focusManagerProps.initialFocus instead"
-        },
-        {
           "name": "interactions",
           "type": "undefined | \"hover\" | \"click\" | \"focus\" | \"none\"",
           "required": false,
@@ -245,7 +239,7 @@
         },
         {
           "name": "offset",
-          "type": "number | undefined",
+          "type": "OffsetOptions | undefined",
           "required": false,
           "description": ""
         },
@@ -296,6 +290,12 @@
           "type": "RefObject<HTMLElement> | undefined",
           "required": false,
           "description": ""
+        },
+        {
+          "name": "transitionStylesProps",
+          "type": "UseTransitionStylesProps | undefined",
+          "required": false,
+          "description": ""
         }
       ]
     }
@@ -320,7 +320,14 @@
       "name": "Offset",
       "exportName": "Offset",
       "description": "Offset: Demonstrates customizing the distance between trigger and popover.\n\nFeatures:\n- Configurable spacing between trigger and content\n- Maintains proper positioning and alignment\n\nThis pattern is useful for:\n- Creating more space between the trigger and content\n- Avoiding overlap with nearby elements\n- Achieving specific design requirements",
-      "source": "import { Popover } from \"@choice-ui/popover\"\n\nexport default function App() {\n\n  return (\n    <Popover offset={16}>\n      <Popover.Trigger>\n        <Button>Open</Button>\n      </Popover.Trigger>\n      <Popover.Content className=\"w-64 p-3\">{faker.lorem.paragraph(3)}</Popover.Content>\n    </Popover>\n  )\n\n}"
+      "source": "import { Popover } from \"@choice-ui/popover\"\n\nexport default function App() {\n\n  return (\n    <div className=\"flex gap-4\">\n      <Popover offset={16}>\n        <Popover.Trigger>\n          <Button>Offset 16</Button>\n        </Popover.Trigger>\n        <Popover.Content className=\"w-64 p-3\">{faker.lorem.paragraph(3)}</Popover.Content>\n      </Popover>\n      <Popover\n        placement=\"bottom-start\"\n        offset={{ mainAxis: -24, crossAxis: 16 }}\n      >\n        <Popover.Trigger>\n          <Button>Main Axis -24, Cross Axis 16</Button>\n        </Popover.Trigger>\n        <Popover.Content className=\"w-64 p-3\">{faker.lorem.paragraph(3)}</Popover.Content>\n      </Popover>\n    </div>\n  )\n\n}"
+    },
+    {
+      "id": "overlays-popover--transition-styles-props",
+      "name": "Transition Styles Props",
+      "exportName": "TransitionStylesProps",
+      "description": "TransitionStylesProps: Demonstrates customizing the transition styles of the popover.\n\nFeatures:\n- Custom transition styles\n- Custom transition duration\n- Custom transition timing function\n- Custom transition delay",
+      "source": "import { Popover } from \"@choice-ui/popover\"\n\nexport default function App() {\n\n  return (\n    <Popover\n      transitionStylesProps={{\n        duration: 1000,\n      }}\n    >\n      <Popover.Trigger>\n        <Button>Transition Styles Props</Button>\n      </Popover.Trigger>\n      <Popover.Content className=\"w-64 p-3\">{faker.lorem.paragraph(3)}</Popover.Content>\n    </Popover>\n  )\n\n}"
     },
     {
       "id": "overlays-popover--interactions",

@@ -3,7 +3,7 @@
   "title": "Kbd",
   "package": {
     "name": "@choice-ui/kbd",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "Kbd component for Choiceform Design System",
     "dependencies": {
       "@choice-ui/shared": "workspace:*"

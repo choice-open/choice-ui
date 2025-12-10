@@ -59,7 +59,7 @@
       "name": "@choice-ui/button",
       "title": "Button",
       "description": "@default \"default\"",
-      "version": "0.0.4"
+      "version": "0.0.6"
     },
     {
       "slug": "forms/checkbox",
@@ -259,28 +259,28 @@
       "name": "@choice-ui/icon-button",
       "title": "IconButton",
       "description": "",
-      "version": "0.0.4"
+      "version": "0.0.5"
     },
     {
       "slug": "forms/input",
       "name": "@choice-ui/input",
       "title": "Input",
       "description": "",
-      "version": "0.0.4"
+      "version": "0.0.5"
     },
     {
       "slug": "data-display/kbd",
       "name": "@choice-ui/kbd",
       "title": "Kbd",
       "description": "",
-      "version": "0.0.2"
+      "version": "0.0.3"
     },
     {
       "slug": "forms/label",
       "name": "@choice-ui/label",
       "title": "Label",
       "description": "",
-      "version": "0.0.2",
+      "version": "0.0.3",
       "tags": [
         "new"
       ]
@@ -325,14 +325,14 @@
       "name": "@choice-ui/menus",
       "title": "MenuItem",
       "description": "",
-      "version": "0.1.0"
+      "version": "0.1.1"
     },
     {
       "slug": "collections/menus",
       "name": "@choice-ui/menus",
       "title": "Menus",
       "description": "",
-      "version": "0.1.0"
+      "version": "0.1.1"
     },
     {
       "slug": "overlays/modal",
@@ -471,7 +471,7 @@
       "name": "@choice-ui/scroll-area",
       "title": "ScrollArea",
       "description": "",
-      "version": "0.0.4",
+      "version": "0.0.5",
       "tags": [
         "new"
       ]
@@ -481,7 +481,7 @@
       "name": "@choice-ui/search-input",
       "title": "SearchInput",
       "description": "Whether to show the clear button when there is a value",
-      "version": "0.0.4",
+      "version": "0.0.5",
       "tags": [
         "new"
       ]
@@ -498,7 +498,7 @@
       "name": "@choice-ui/select",
       "title": "Select",
       "description": "Select - 高性能的选择组件，支持 macOS 风格定位",
-      "version": "0.0.7",
+      "version": "0.0.8",
       "tags": [
         "upgrade"
       ]
@@ -515,7 +515,7 @@
       "name": "@choice-ui/slot",
       "title": "Slot",
       "description": "优化的 Slot 组件实现",
-      "version": "0.0.2"
+      "version": "0.0.3"
     },
     {
       "slug": "layouts/panel/sortable",
@@ -604,7 +604,7 @@
       "name": "@choice-ui/text-field",
       "title": "TextField",
       "description": "",
-      "version": "0.0.5",
+      "version": "0.0.6",
       "tags": [
         "new"
       ]
@@ -658,7 +658,7 @@
       "name": "@choice-ui/tooltip",
       "title": "Tooltip",
       "description": "",
-      "version": "0.0.4"
+      "version": "0.0.5"
     },
     {
       "slug": "components/tree-list",

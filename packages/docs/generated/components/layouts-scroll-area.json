@@ -3,7 +3,7 @@
   "title": "ScrollArea",
   "package": {
     "name": "@choice-ui/scroll-area",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "description": "Scroll Area component for Choiceform Design System",
     "dependencies": {
       "@choice-ui/shared": "workspace:*"

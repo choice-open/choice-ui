@@ -1,5 +1,11 @@
 # @choice-ui/react
 
+## 1.4.3
+
+### Patch Changes
+
+- Add transitionStylesProps support to Popover component for custom transition animations
+
 ## 1.4.2
 
 ### Patch Changes

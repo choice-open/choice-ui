@@ -32,7 +32,7 @@
       "props": [
         {
           "name": "chipVariant",
-          "type": "undefined | \"default\" | \"rest\" | \"accent\" | \"success\"",
+          "type": "undefined | \"default\" | \"accent\" | \"success\" | \"rest\"",
           "required": false,
           "description": ""
         },
