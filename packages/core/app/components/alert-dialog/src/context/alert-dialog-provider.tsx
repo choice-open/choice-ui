@@ -1,7 +1,7 @@
-import { memo, ReactNode } from "react"
+import { memo, type ReactNode } from "react"
 import { AlertDialog } from "../alert-dialog"
-import { AlertDialogContext } from "./alert-dialog-context"
 import { useAlertDialogProvider } from "../hooks/use-alert-dialog"
+import { AlertDialogContext } from "./alert-dialog-context"
 
 export interface AlertDialogProviderProps {
   children: ReactNode

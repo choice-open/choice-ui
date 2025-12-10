@@ -1,12 +1,16 @@
 import { createContext, useContext } from "react"
-import { type AlertDialogContextType } from "../types"
+import type { AlertDialogContextType } from "../types"
 
-export const AlertDialogContext = createContext<AlertDialogContextType | null>(null)
+export const AlertDialogContext = createContext<AlertDialogContextType | null>(
+  null,
+)
 
 export const useAlertDialogContext = () => {
   const context = useContext(AlertDialogContext)
   if (!context) {
-    throw new Error("useAlertDialogContext must be used within an AlertDialogProvider")
+    throw new Error(
+      "useAlertDialogContext must be used within an AlertDialogProvider",
+    )
   }
   return context
 }
