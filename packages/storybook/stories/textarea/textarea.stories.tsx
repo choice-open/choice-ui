@@ -57,7 +57,7 @@ export const Default: Story = {
     return (
       <Textarea
         placeholder="Enter your text here..."
-        className="w-80"
+        className="w-64"
       />
     )
   },
@@ -83,7 +83,7 @@ export const WithValue: Story = {
         value={value}
         onChange={setValue}
         placeholder="Enter your text here..."
-        className="w-80"
+        className="w-64"
       />
     )
   },
@@ -159,7 +159,7 @@ export const Selected: Story = {
       <Textarea
         selected={true}
         value="This textarea is in selected state"
-        className="w-80"
+        className="w-64"
       />
     )
   },
@@ -183,7 +183,7 @@ export const Disabled: Story = {
       <Textarea
         disabled={true}
         value="This textarea is disabled"
-        className="w-80"
+        className="w-64"
       />
     )
   },
@@ -207,7 +207,7 @@ export const ReadOnly: Story = {
       <Textarea
         readOnly={true}
         value="This textarea is read-only"
-        className="w-80"
+        className="w-64"
       />
     )
   },
@@ -233,7 +233,7 @@ export const WithMinMaxRows: Story = {
         minRows={2}
         maxRows={8}
         placeholder="This textarea has minRows=2 and maxRows=8"
-        className="w-80"
+        className="w-64"
       />
     )
   },
@@ -256,7 +256,7 @@ export const WithoutAutosize: Story = {
   render: function WithoutAutosize() {
     return (
       <Textarea
-        className="w-80"
+        className="w-64"
         resize={false}
         rows={4}
         placeholder="This textarea does not auto-resize"
@@ -291,7 +291,7 @@ Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed 
         value={value}
         onChange={setValue}
         placeholder="This textarea has a lot of content to demonstrate scrolling behavior."
-        className="w-80"
+        className="w-64"
         maxRows={6}
       />
     )
@@ -323,7 +323,7 @@ export const Interactive: Story = {
           onChange={setValue}
           onIsEditingChange={setIsEditing}
           placeholder="Type something..."
-          className="w-80"
+          className="w-64"
         />
         <div className="text-secondary-foreground text-body-small">
           <p>Character count: {value.length}</p>
@@ -362,7 +362,7 @@ export const ResizeHandle: Story = {
 
     return (
       <Textarea
-        className="w-80"
+        className="w-64"
         resize="handle"
         minRows={3}
         maxRows={10}
@@ -395,7 +395,7 @@ export const SimpleUsage: Story = {
             value={value}
             onChange={setValue}
             placeholder="This textarea has a lot of content to demonstrate scrolling behavior."
-            className="w-80"
+            className="w-64"
             maxRows={6}
           />
         </div>
@@ -426,7 +426,7 @@ export const CompoundUsage: Story = {
             value={value}
             onChange={setValue}
             placeholder="This textarea has a lot of content to demonstrate scrolling behavior."
-            className="w-80"
+            className="w-64"
             maxRows={6}
           >
             <Textarea.Content className="font-mono" />
@@ -464,7 +464,7 @@ export const FocusSelectionModes: Story = {
             onChange={setValue1}
             focusSelection="all"
             placeholder="Click to select all text..."
-            className="w-80"
+            className="w-64"
             minRows={2}
             maxRows={4}
           />
@@ -480,7 +480,7 @@ export const FocusSelectionModes: Story = {
             onChange={setValue2}
             focusSelection="end"
             placeholder="Click to move cursor to end..."
-            className="w-80"
+            className="w-64"
             minRows={2}
             maxRows={4}
           />
@@ -496,7 +496,7 @@ export const FocusSelectionModes: Story = {
             onChange={setValue3}
             focusSelection="none"
             placeholder="Click anywhere to focus..."
-            className="w-80"
+            className="w-64"
             minRows={2}
             maxRows={4}
           />
@@ -531,7 +531,7 @@ export const NoNewlineMode: Story = {
             onChange={setValue}
             allowNewline={false}
             placeholder="Press Enter - it won't create a new line..."
-            className="w-80"
+            className="w-64"
             minRows={2}
             maxRows={4}
           />
@@ -545,7 +545,7 @@ export const NoNewlineMode: Story = {
             onChange={setValue}
             allowNewline={true}
             placeholder="Press Enter to create new lines..."
-            className="w-80"
+            className="w-64"
             minRows={2}
             maxRows={4}
           />
@@ -588,7 +588,7 @@ export const CustomLineHeight: Story = {
           onChange={setValue}
           minRows={3}
           maxRows={5}
-          className="w-80"
+          className="w-64"
           placeholder="Default line height..."
           lineHeight={size === "large" ? 22 : 16}
         >

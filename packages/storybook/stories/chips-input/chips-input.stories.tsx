@@ -42,7 +42,7 @@ export const Basic: Story = {
     return (
       <ChipsInput
         placeholder="Add tags..."
-        className="w-32"
+        className="w-64"
       />
     )
   },
@@ -58,7 +58,7 @@ export const Disabled: Story = {
     return (
       <ChipsInput
         placeholder="Add tags..."
-        className="w-80"
+        className="w-64"
         disabled
       />
     )
@@ -77,7 +77,7 @@ export const Controlled: Story = {
       return (
         <div className="flex flex-col gap-2">
           <ChipsInput
-            className="w-80"
+            className="w-64"
             value={tags}
             onChange={(newTags: string[]) => {
               setTags(newTags)
@@ -101,7 +101,7 @@ export const Empty: Story = {
     return (
       <ChipsInput
         placeholder="Add tags..."
-        className="w-80"
+        className="w-64"
       />
     )
   },
@@ -117,7 +117,7 @@ export const AllowDuplicates: Story = {
       <ChipsInput
         placeholder="Add tags (duplicates allowed)..."
         allowDuplicates
-        className="w-80"
+        className="w-64"
       />
     )
   },
@@ -186,7 +186,7 @@ export const CustomRenderChip: Story = {
       <ChipsInput
         placeholder="Add custom chips..."
         renderChip={customRenderChip}
-        className="w-80"
+        className="w-64"
       />
     )
   },
@@ -227,7 +227,7 @@ export const Readonly: Story = {
           value={chips}
           onChange={handleChange}
           placeholder="Add tags..."
-          className="w-80"
+          className="w-64"
         />
 
         <div className="text-body-small text-stone-600">

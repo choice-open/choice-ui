@@ -23,9 +23,9 @@ export const ParagraphMenu = (props: ParagraphMenuProps) => {
     update,
   } = props
 
-  // 当 isParagraphExpanded 变化时，强制更新位置
+  // Force update position when isParagraphExpanded changes
   useEffect(() => {
-    // 使用 requestAnimationFrame 确保 DOM 已更新
+    // Use requestAnimationFrame to ensure DOM is updated
     requestAnimationFrame(() => {
       update()
     })

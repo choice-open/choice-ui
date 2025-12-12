@@ -103,7 +103,7 @@ export const useEditorState = (): EditorStateType => {
     dispatch({ type: "SET_PARAGRAPH_EXPANDED", payload: value })
   }, [])
 
-  // 缓存返回的状态对象，避免每次渲染都创建新对象
+  // Cache returned state object to avoid creating new objects on each render
   return useMemo(
     () => ({
       characters: {

@@ -12,24 +12,24 @@ export const useEditorEffects = (props: UseEditorEffectsProps) => {
     setSwitchUrlInput,
   } = props
 
-  // 段落样式面板关闭时重置展开状态
+  // Reset expanded state when paragraph style panel closes
   useEffect(() => {
     if (!isParagraphStyleOpen) {
       setIsParagraphExpanded(false)
     }
   }, [isParagraphStyleOpen, setIsParagraphExpanded])
 
-  // 字符样式面板状态变化时的处理
+  // Handle character style panel state changes
   useEffect(() => {
     if (!isCharactersStyleOpen) {
       setSwitchUrlInput(false)
     }
 
-    // 保存原始方法
+    // Save original methods
     const originalInsertText = editor.insertText
     const originalInsertBreak = editor.insertBreak
 
-    // 覆盖方法
+    // Override methods
     editor.insertText = (text: string) => {
       if (text === " " || text === "\n") {
         Editor.removeMark(editor, "link")
@@ -42,15 +42,19 @@ export const useEditorEffects = (props: UseEditorEffectsProps) => {
       originalInsertBreak.call(editor)
     }
 
-    // 清理：恢复原始方法
+    // Cleanup: restore original methods
     return () => {
       editor.insertText = originalInsertText
       editor.insertBreak = originalInsertBreak
     }
   }, [editor, isCharactersStyleOpen, setSwitchUrlInput])
 
-  // 编辑器内容变化时重置格式
+  // Reset format when editor content changes
   useEffect(() => {
+    // Safety check for value array
+    if (!value || !Array.isArray(value) || value.length === 0) {
+      return
+    }
     const firstNode = value[0]
     if (SlateElement.isElement(firstNode) && firstNode.children.length > 0) {
       const firstChild = firstNode.children[0]
@@ -66,9 +70,9 @@ export const useEditorEffects = (props: UseEditorEffectsProps) => {
     }
   }, [editor, value])
 
-  // 滚动同步
+  // Scroll sync
   const updateFloating = useCallback(() => {
-    // 这个函数将在父组件中实现
+    // This function will be implemented in parent component
   }, [])
 
   return {

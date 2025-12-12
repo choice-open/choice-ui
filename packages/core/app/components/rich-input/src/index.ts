@@ -1,5 +1,3 @@
-export * from "./rich-input"
-export * from "./hooks"
-export * from "./utils"
-export * from "./components"
-export * from "./context/rich-input-context"
+export { RichInput } from "./rich-input"
+export type { RichInputProps } from "./types"
+export { slateToMarkdown } from "./utils"

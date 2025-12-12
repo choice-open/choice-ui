@@ -5,8 +5,8 @@ import { richInputTv } from "../tv"
 import { RichInputViewportProps } from "../types"
 
 /**
- * RichInput.Viewport - 富文本输入的视口容器
- * 使用 ScrollArea 提供滚动功能
+ * RichInput.Viewport - Rich text input viewport container
+ * Uses ScrollArea for scrolling functionality
  */
 export const RichInputViewport = forwardRef<HTMLDivElement, RichInputViewportProps>(
   ({ className, children }, ref) => {

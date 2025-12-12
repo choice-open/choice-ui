@@ -1,13 +1,15 @@
-import { debounce } from "lodash-es"
-import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { Descendant, Editor, Transforms } from "slate"
 import { ReactEditor } from "slate-react"
 import { useEventCallback } from "usehooks-ts"
 import type { UseRichInputProps, CustomEditor } from "../types"
 
+// Default empty paragraph structure
+const EMPTY_PARAGRAPH = [{ type: "paragraph", children: [{ text: "" }] }] as unknown as Descendant[]
+
 /**
- * Rich Input 受控组件逻辑处理
- * 参考 context-input 的实现，解决 Slate 非受控组件的问题
+ * Rich Input controlled component logic
+ * Based on context-input implementation to solve Slate uncontrolled component issues
  */
 export const useRichInput = ({
   value,
@@ -17,43 +19,56 @@ export const useRichInput = ({
   autoMoveToEnd,
 }: UseRichInputProps) => {
   const isUpdatingRef = useRef(false)
+  const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  // 内部状态 - 跟踪 Slate 编辑器的值
+  // Internal state - tracks Slate editor value
   const [slateValue, setSlateValue] = useState<Descendant[]>(() => {
-    return value || ([{ type: "paragraph", children: [{ text: "" }] }] as unknown as Descendant[])
+    return value && Array.isArray(value) && value.length > 0 ? value : EMPTY_PARAGRAPH
   })
 
-  // 监听外部 value 变化，同步到编辑器
+  // Watch external value changes and sync to editor
   useEffect(() => {
-    if (!editor || !value || isUpdatingRef.current) {
+    if (!editor || !value || !Array.isArray(value) || isUpdatingRef.current) {
       return
     }
 
-    // 检查是否需要更新（避免不必要的更新）
+    // Check if update is needed (avoid unnecessary updates)
     const needsUpdate = JSON.stringify(editor.children) !== JSON.stringify(value)
 
     if (needsUpdate) {
-      // 使用官方推荐的重置方法
-      Editor.withoutNormalizing(editor as CustomEditor, () => {
-        // 直接替换 editor.children
-        editor.children = value
+      try {
+        // Use official recommended reset method
+        Editor.withoutNormalizing(editor as CustomEditor, () => {
+          // Directly replace editor.children
+          editor.children = value
 
-        // 根据 autoMoveToEnd 决定光标位置
-        if (autoMoveToEnd) {
-          // 将光标移动到最后
-          const endPoint = Editor.end(editor as CustomEditor, [])
-          Transforms.select(editor as CustomEditor, endPoint)
-        }
+          // Determine cursor position based on autoMoveToEnd
+          if (autoMoveToEnd) {
+            try {
+              // Move cursor to end
+              const endPoint = Editor.end(editor as CustomEditor, [])
+              Transforms.select(editor as CustomEditor, endPoint)
+            } catch {
+              // Ignore cursor positioning errors
+            }
+          }
 
-        // 触发变化事件以更新视图
-        ;(editor as CustomEditor).onChange()
-      })
+          // Trigger change event to update view
+          ;(editor as CustomEditor).onChange()
+        })
+      } catch {
+        // Ignore editor operation errors
+      }
 
-      // 如果开启了 autoFocus，在更新后重新聚焦
+      // If autoFocus is enabled, refocus after update
       if (autoFocus) {
-        // 使用 setTimeout 确保 DOM 更新后再聚焦
+        // Use setTimeout to ensure DOM is updated before focusing
         setTimeout(() => {
-          ReactEditor.focus(editor)
+          try {
+            ReactEditor.focus(editor)
+          } catch {
+            // Ignore focus errors
+          }
         }, 0)
       }
 
@@ -61,27 +76,40 @@ export const useRichInput = ({
     }
   }, [value, editor, autoFocus, autoMoveToEnd])
 
-  // 防抖的 onChange 回调，避免频繁触发
-  const debouncedOnChange = useMemo(
-    () =>
-      debounce((newValue: Descendant[]) => {
+  // Cleanup debounce timer on unmount
+  useEffect(() => {
+    return () => {
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current)
+      }
+    }
+  }, [])
+
+  // Debounced onChange callback - manual implementation to avoid lodash
+  const debouncedOnChange = useCallback(
+    (newValue: Descendant[]) => {
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current)
+      }
+      debounceTimerRef.current = setTimeout(() => {
         onChange?.(newValue)
-      }, 100),
+      }, 100)
+    },
     [onChange],
   )
 
-  // 处理编辑器值变化
+  // Handle editor value changes
   const handleChange = useCallback(
     (newValue: Descendant[]) => {
-      // 防止循环更新
+      // Prevent circular updates
       isUpdatingRef.current = true
 
       setSlateValue(newValue)
 
-      // 调用外部 onChange
+      // Call external onChange
       debouncedOnChange(newValue)
 
-      // 重置更新标志
+      // Reset update flag
       setTimeout(() => {
         isUpdatingRef.current = false
       }, 0)
@@ -89,7 +117,7 @@ export const useRichInput = ({
     [debouncedOnChange],
   )
 
-  // 优化的 onChange 处理函数，使用 useEventCallback
+  // Optimized onChange handler using useEventCallback
   const optimizedHandleChange = useEventCallback((newValue: Descendant[]) => {
     handleChange(newValue)
   })

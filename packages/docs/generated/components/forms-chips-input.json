@@ -102,42 +102,42 @@
       "name": "Basic",
       "exportName": "Basic",
       "description": "`ChipsInput` is a multi-value input component for entering, displaying, and managing a list of chips (tags).\n\nFeatures:\n- Supports controlled and uncontrolled usage\n- Allows adding, removing, and selecting chips\n- Can be disabled or allow duplicate values\n- Customizable chip rendering via `renderChip` prop\n- Keyboard navigation and accessibility support\n\nUsage:\n- Use for tag inputs, multi-select fields, or any scenario where users need to enter multiple discrete values\n- Combine with custom chip rendering for advanced use cases (e.g., icons, avatars, custom actions)\n\nBest Practices:\n- Keep chip content concise and meaningful\n- Provide clear placeholder text to guide users\n- Use controlled mode for integration with forms or complex state\n- Ensure sufficient contrast and accessible focus indicators\n\nAccessibility:\n- Fully accessible to screen readers and keyboard users\n- Remove buttons and chip actions are keyboard accessible\n- Custom chip renderers should maintain accessibility for all interactive elements",
-      "source": "import { ChipsInput } from \"@choice-ui/chips-input\"\n\nexport default function App() {\n\n  return (\n    <ChipsInput\n      placeholder=\"Add tags...\"\n      className=\"w-32\"\n    />\n  )\n\n}"
+      "source": "import { ChipsInput } from \"@choice-ui/chips-input\"\n\nexport default function App() {\n\n  return (\n    <ChipsInput\n      placeholder=\"Add tags...\"\n      className=\"w-64\"\n    />\n  )\n\n}"
     },
     {
       "id": "forms-chipsinput--disabled",
       "name": "Disabled",
       "exportName": "Disabled",
       "description": "Disabled: Demonstrates a disabled ChipsInput.\n- Input and chip actions are not interactive.\n- Useful for read-only or unavailable states.",
-      "source": "import { ChipsInput } from \"@choice-ui/chips-input\"\n\nexport default function App() {\n\n  return (\n    <ChipsInput\n      placeholder=\"Add tags...\"\n      className=\"w-80\"\n      disabled\n    />\n  )\n\n}"
+      "source": "import { ChipsInput } from \"@choice-ui/chips-input\"\n\nexport default function App() {\n\n  return (\n    <ChipsInput\n      placeholder=\"Add tags...\"\n      className=\"w-64\"\n      disabled\n    />\n  )\n\n}"
     },
     {
       "id": "forms-chipsinput--controlled",
       "name": "Controlled",
       "exportName": "Controlled",
       "description": "Controlled: Demonstrates controlled usage of ChipsInput.\n- Value and onChange are managed by the parent component.\n- Useful for form integration and advanced state management.",
-      "source": "import { ChipsInput } from \"@choice-ui/chips-input\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const ControlledComponent = () => {\n    const [tags, setTags] = useState([\"Initial\", \"Controlled\"])\n    return (\n      <div className=\"flex flex-col gap-2\">\n        <ChipsInput\n          className=\"w-80\"\n          value={tags}\n          onChange={(newTags: string[]) => {\n            setTags(newTags)\n          }}\n          placeholder=\"Controlled tags input...\"\n        />\n        <div className=\"text-secondary-foreground\">Current Tags: {JSON.stringify(tags)}</div>\n      </div>\n    )\n  }\n  return <ControlledComponent />\n\n}"
+      "source": "import { ChipsInput } from \"@choice-ui/chips-input\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const ControlledComponent = () => {\n    const [tags, setTags] = useState([\"Initial\", \"Controlled\"])\n    return (\n      <div className=\"flex flex-col gap-2\">\n        <ChipsInput\n          className=\"w-64\"\n          value={tags}\n          onChange={(newTags: string[]) => {\n            setTags(newTags)\n          }}\n          placeholder=\"Controlled tags input...\"\n        />\n        <div className=\"text-secondary-foreground\">Current Tags: {JSON.stringify(tags)}</div>\n      </div>\n    )\n  }\n  return <ControlledComponent />\n\n}"
     },
     {
       "id": "forms-chipsinput--empty",
       "name": "Empty",
       "exportName": "Empty",
       "description": "Empty: Shows ChipsInput with no initial chips.\n- Useful for scenarios where the user starts with an empty list.",
-      "source": "import { ChipsInput } from \"@choice-ui/chips-input\"\n\nexport default function App() {\n\n  return (\n    <ChipsInput\n      placeholder=\"Add tags...\"\n      className=\"w-80\"\n    />\n  )\n\n}"
+      "source": "import { ChipsInput } from \"@choice-ui/chips-input\"\n\nexport default function App() {\n\n  return (\n    <ChipsInput\n      placeholder=\"Add tags...\"\n      className=\"w-64\"\n    />\n  )\n\n}"
     },
     {
       "id": "forms-chipsinput--allow-duplicates",
       "name": "Allow Duplicates",
       "exportName": "AllowDuplicates",
       "description": "AllowDuplicates: Demonstrates ChipsInput with duplicate values allowed.\n- Useful for cases where repeated tags are meaningful.",
-      "source": "import { ChipsInput } from \"@choice-ui/chips-input\"\n\nexport default function App() {\n\n  return (\n    <ChipsInput\n      placeholder=\"Add tags (duplicates allowed)...\"\n      allowDuplicates\n      className=\"w-80\"\n    />\n  )\n\n}"
+      "source": "import { ChipsInput } from \"@choice-ui/chips-input\"\n\nexport default function App() {\n\n  return (\n    <ChipsInput\n      placeholder=\"Add tags (duplicates allowed)...\"\n      allowDuplicates\n      className=\"w-64\"\n    />\n  )\n\n}"
     },
     {
       "id": "forms-chipsinput--custom-render-chip",
       "name": "Custom Render Chip",
       "exportName": "CustomRenderChip",
       "description": "CustomRenderChip: Demonstrates custom chip rendering using the renderChip prop.\n- Chips can display custom icons, styles, and remove buttons.\n- Useful for advanced UI requirements or branding.",
-      "source": "import { ChipsInput } from \"@choice-ui/chips-input\"\n\nexport default function App() {\n\n  const customRenderChip = ({\n    chip,\n    index,\n    isSelected,\n    disabled,\n    handleChipClick,\n    handleChipRemoveClick,\n  }: RenderChipProps) => {\n    return (\n      <div\n        style={{\n          padding: \"2px 8px\",\n          margin: \"2px\",\n          border: isSelected ? \"2px solid #007bff\" : \"1px solid #ced4da\",\n          borderRadius: \"12px\",\n          display: \"inline-flex\",\n          alignItems: \"center\",\n          opacity: disabled ? 0.5 : 1,\n          cursor: disabled ? \"not-allowed\" : \"pointer\",\n          backgroundColor: isSelected ? \"#cfe2ff\" : \"#f8f9fa\",\n          fontSize: \"0.875rem\",\n          transition: \"all 0.2s ease-in-out\",\n        }}\n        onClick={disabled ? undefined : () => handleChipClick(index)}\n      >\n        <span style={{ marginRight: \"4px\" }}>\n          {isSelected ? \"🌟\" : \"🏷️\"} {chip}\n        </span>\n        {!disabled && (\n          <button\n            onClick={(e) => {\n              e.stopPropagation() // Important!\n              handleChipRemoveClick(index)\n            }}\n            style={{\n              marginLeft: \"4px\",\n              border: \"none\",\n              background: \"none\",\n              cursor: \"pointer\",\n              padding: 0,\n              lineHeight: 1,\n            }}\n            aria-label={`Remove ${chip}`}\n            disabled={disabled}\n          >\n            <RemoveSmall />\n          </button>\n        )}\n      </div>\n    )\n  }\n\n  return (\n    <ChipsInput\n      placeholder=\"Add custom chips...\"\n      renderChip={customRenderChip}\n      className=\"w-80\"\n    />\n  )\n\n}"
+      "source": "import { ChipsInput } from \"@choice-ui/chips-input\"\n\nexport default function App() {\n\n  const customRenderChip = ({\n    chip,\n    index,\n    isSelected,\n    disabled,\n    handleChipClick,\n    handleChipRemoveClick,\n  }: RenderChipProps) => {\n    return (\n      <div\n        style={{\n          padding: \"2px 8px\",\n          margin: \"2px\",\n          border: isSelected ? \"2px solid #007bff\" : \"1px solid #ced4da\",\n          borderRadius: \"12px\",\n          display: \"inline-flex\",\n          alignItems: \"center\",\n          opacity: disabled ? 0.5 : 1,\n          cursor: disabled ? \"not-allowed\" : \"pointer\",\n          backgroundColor: isSelected ? \"#cfe2ff\" : \"#f8f9fa\",\n          fontSize: \"0.875rem\",\n          transition: \"all 0.2s ease-in-out\",\n        }}\n        onClick={disabled ? undefined : () => handleChipClick(index)}\n      >\n        <span style={{ marginRight: \"4px\" }}>\n          {isSelected ? \"🌟\" : \"🏷️\"} {chip}\n        </span>\n        {!disabled && (\n          <button\n            onClick={(e) => {\n              e.stopPropagation() // Important!\n              handleChipRemoveClick(index)\n            }}\n            style={{\n              marginLeft: \"4px\",\n              border: \"none\",\n              background: \"none\",\n              cursor: \"pointer\",\n              padding: 0,\n              lineHeight: 1,\n            }}\n            aria-label={`Remove ${chip}`}\n            disabled={disabled}\n          >\n            <RemoveSmall />\n          </button>\n        )}\n      </div>\n    )\n  }\n\n  return (\n    <ChipsInput\n      placeholder=\"Add custom chips...\"\n      renderChip={customRenderChip}\n      className=\"w-64\"\n    />\n  )\n\n}"
     }
   ],
   "tags": [

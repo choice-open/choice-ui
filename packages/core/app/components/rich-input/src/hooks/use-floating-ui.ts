@@ -11,7 +11,7 @@ import {
 import { useRef, useMemo, useCallback } from "react"
 import type { FloatingUIState, UseFloatingUIOptions } from "../types"
 
-// 缓存中间件配置以避免重复创建
+// Cache middleware config to avoid repeated creation
 const createMiddleware = (overflowOptions: object) => [
   inline(),
   flip(),
@@ -34,12 +34,12 @@ const createParagraphMiddleware = (overflowOptions: object, offsetValue: number)
 export const useFloatingUI = (options: UseFloatingUIOptions = {}): FloatingUIState => {
   const slateRef = useRef<HTMLDivElement>(null)
 
-  // 缓存容器边界计算，只在容器变化时重新计算
+  // Cache container bounds calculation, only recalculate when container changes
   const containerRect = useMemo(() => {
     return options.containerRect ?? slateRef.current?.getBoundingClientRect()
   }, [options.containerRect])
 
-  // 缓存溢出选项配置
+  // Cache overflow options config
   const overflowOptionsInSlateContainer = useMemo(
     () =>
       containerRect === undefined
@@ -55,7 +55,7 @@ export const useFloatingUI = (options: UseFloatingUIOptions = {}): FloatingUISta
     [containerRect],
   )
 
-  // 缓存中间件配置
+  // Cache middleware config
   const charactersMiddleware = useMemo(
     () => createMiddleware(overflowOptionsInSlateContainer),
     [overflowOptionsInSlateContainer],
@@ -99,7 +99,7 @@ export const useFloatingUI = (options: UseFloatingUIOptions = {}): FloatingUISta
     whileElementsMounted: autoUpdate,
   })
   const charactersDismiss = useDismiss(charactersContext, {
-    // 允许点击内部元素时不关闭
+    // Allow clicking internal elements without closing
     bubbles: false,
   })
   const { getFloatingProps: getCharactersFloatingProps } = useInteractions([charactersDismiss])
@@ -159,7 +159,7 @@ export const useFloatingUI = (options: UseFloatingUIOptions = {}): FloatingUISta
     paragraphExpandedDismiss,
   ])
 
-  // 批量更新函数，避免多次重复调用
+  // Batch update function to avoid multiple repeated calls
   const updateAllFloatingElements = useCallback(() => {
     charactersUpdate()
     urlUpdate()
@@ -167,7 +167,7 @@ export const useFloatingUI = (options: UseFloatingUIOptions = {}): FloatingUISta
     paragraphExpandedUpdate()
   }, [charactersUpdate, urlUpdate, paragraphCollapsedUpdate, paragraphExpandedUpdate])
 
-  // 缓存返回值，避免每次渲染都创建新对象
+  // Cache return value to avoid creating new objects on each render
   const floatingUIState = useMemo(
     () => ({
       slateRef,

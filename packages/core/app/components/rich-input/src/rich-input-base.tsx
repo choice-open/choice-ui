@@ -34,7 +34,7 @@ export interface RichInputComponent extends React.ForwardRefExoticComponent<
 }
 
 /**
- * RichInput 基础组件 - 支持复合组件模式
+ * RichInput Base Component - Supports compound component pattern
  */
 const RichInputBase = forwardRef<HTMLDivElement, RichInputProps>((props, ref) => {
   const {
@@ -63,24 +63,24 @@ const RichInputBase = forwardRef<HTMLDivElement, RichInputProps>((props, ref) =>
     ...divProps
   } = props
 
-  // 使用通用的 i18n Hook 处理国际化配置
+  // Use common i18n Hook for internationalization config
   const mergedI18n = useI18n(defaultI18n, i18n)
 
-  // UI状态管理
+  // UI state management
   const { ref: inViewRef, isIntersecting: editorInView } = useIntersectionObserver({})
   const viewportRef = useRef<HTMLDivElement>(null)
 
-  // 编辑器状态管理（先初始化，用于传给 editorConfig）
+  // Editor state management (initialized first for editorConfig)
   const editorState = useEditorState()
 
-  // 编辑器配置（包含 ESC 键处理）
+  // Editor config (includes ESC key handling)
   const editorConfig = useEditorConfig({
     disableTabFocus,
     isParagraphExpanded: editorState.paragraph.isExpanded,
     setIsParagraphExpanded: editorState.paragraph.setIsExpanded,
   })
 
-  // 受控组件逻辑 - 处理 Slate 非受控组件的问题
+  // Controlled component logic - handles Slate uncontrolled component issues
   const richInputState = useRichInput({
     value,
     onChange,
@@ -89,12 +89,12 @@ const RichInputBase = forwardRef<HTMLDivElement, RichInputProps>((props, ref) =>
     autoMoveToEnd,
   })
 
-  // 浮动UI管理
+  // Floating UI management
   const floatingUI = useFloatingUI()
   const mergedRef = useMergeRefs([ref, floatingUI.slateRef, inViewRef])
   const isHover = useHover(floatingUI.slateRef)
 
-  // 渲染函数
+  // Render functions
   const renderElement = useCallback((props: import("slate-react").RenderElementProps) => {
     const elementProps = props as ElementRenderProps
     return <ElementRender {...elementProps} />
@@ -104,10 +104,10 @@ const RichInputBase = forwardRef<HTMLDivElement, RichInputProps>((props, ref) =>
     return <LeafRender {...props} />
   }, [])
 
-  // 计算编辑器聚焦状态（实时计算，不缓存）
+  // Calculate editor focus state (real-time, not cached)
   const isFocused = ReactEditor.isFocused(editorConfig.editor)
 
-  // 转换事件处理器类型，确保与组件接口兼容
+  // Convert event handler types to ensure component interface compatibility
   const handleFocus = useCallback(() => {
     if (onFocus) {
       const mockEvent = {} as React.FocusEvent<HTMLDivElement>
@@ -142,7 +142,7 @@ const RichInputBase = forwardRef<HTMLDivElement, RichInputProps>((props, ref) =>
     [onCompositionEnd],
   )
 
-  // 编辑器副作用
+  // Editor side effects
   useEditorEffects({
     editor: editorConfig.editor,
     value: richInputState.slateValue,
@@ -152,7 +152,7 @@ const RichInputBase = forwardRef<HTMLDivElement, RichInputProps>((props, ref) =>
     setSwitchUrlInput: editorState.characters.setSwitchUrlInput,
   })
 
-  // 选择事件处理（包括鼠标和键盘）
+  // Selection event handling (includes mouse and keyboard)
   useSelectionEvents({
     editor: editorConfig.editor,
     charactersRefs: floatingUI.characters.refs,
@@ -167,15 +167,15 @@ const RichInputBase = forwardRef<HTMLDivElement, RichInputProps>((props, ref) =>
     isParagraphExpanded: editorState.paragraph.isExpanded,
   })
 
-  // 优化的滚动处理 - 使用批量更新
+  // Optimized scroll handling - use batch updates
   const updateFloating = useCallback(() => {
     if (floatingUI.updateAll) {
-      // 使用新的批量更新函数
+      // Use batch update function
       requestAnimationFrame(floatingUI.updateAll)
     }
   }, [floatingUI.updateAll])
 
-  // 准备 Context 值
+  // Prepare Context value
   const contextValue = {
     // Editor related
     editor: editorConfig.editor,
@@ -232,7 +232,7 @@ const RichInputBase = forwardRef<HTMLDivElement, RichInputProps>((props, ref) =>
           {children ? (
             children
           ) : (
-            // 默认渲染 - 向后兼容
+            // Default render - backward compatible
             <RichInputViewport>
               <RichInputEditableComponent />
             </RichInputViewport>
@@ -245,7 +245,7 @@ const RichInputBase = forwardRef<HTMLDivElement, RichInputProps>((props, ref) =>
 
 RichInputBase.displayName = "RichInput"
 
-// 创建复合组件
+// Create compound component
 const RichInput = RichInputBase as RichInputComponent
 RichInput.Viewport = RichInputViewport
 RichInput.Editable = RichInputEditableComponent

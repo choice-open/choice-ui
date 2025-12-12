@@ -7,15 +7,15 @@ import type { CustomEditor, UseEditorConfigProps } from "../types"
 import { useKeyboardShortcuts } from "./use-keyboard-shortcuts"
 
 /**
- * 编辑器配置Hook - 分离编辑器创建和事件处理逻辑
+ * Editor Config Hook - Separates editor creation and event handling logic
  */
 export const useEditorConfig = (props: UseEditorConfigProps) => {
   const { disableTabFocus, isParagraphExpanded, setIsParagraphExpanded } = props
 
-  // 创建编辑器实例，使用useMemo缓存避免重复创建
+  // Create editor instance, use useMemo to avoid recreating
   const editor = useMemo(() => withHtml(withReact(withHistory(createEditor()))) as CustomEditor, [])
 
-  // 使用键盘快捷键Hook
+  // Use keyboard shortcuts hook
   const { handleKeyDown } = useKeyboardShortcuts({
     editor,
     isParagraphExpanded,
@@ -23,7 +23,7 @@ export const useEditorConfig = (props: UseEditorConfigProps) => {
     disableTabFocus,
   })
 
-  // 渲染函数配置
+  // Render function config
   const renderElement = useCallback((props: import("slate-react").RenderElementProps) => {
     return React.createElement(ElementRender, props as ElementRenderProps)
   }, [])

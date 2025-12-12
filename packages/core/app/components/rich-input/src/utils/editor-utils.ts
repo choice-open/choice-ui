@@ -26,7 +26,7 @@ export const toggleBlock = (editor: Editor, format: keyof CustomElement) => {
   const isList = LIST_TYPES.includes(format)
   const isCheck = CHECK_TYPES.includes(format)
 
-  // 取消激活当前块类型
+  // Deactivate current block type
   Transforms.unwrapNodes(editor, {
     match: (n) =>
       !Editor.isEditor(n) &&
@@ -37,7 +37,7 @@ export const toggleBlock = (editor: Editor, format: keyof CustomElement) => {
   })
 
   let blockProperties: Partial<CustomElement>
-  // 切换块类型或者更改为段落
+  // Toggle block type or change to paragraph
   if (!isActive) {
     if (isList) {
       blockProperties = { type: "list_item" }
@@ -50,10 +50,10 @@ export const toggleBlock = (editor: Editor, format: keyof CustomElement) => {
     blockProperties = { type: "paragraph" }
   }
 
-  // 设置选中元素的新类型
+  // Set selected element's new type
   Transforms.setNodes(editor, blockProperties)
 
-  // 如果不是激活状态且是列表类型，默认包裹一个对应的列表块元素
+  // If not active and is list type, wrap with corresponding list block element
   if (!isActive && (isList || isCheck)) {
     const block = {
       type: isCheck ? "check_list" : format,

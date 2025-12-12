@@ -21,13 +21,13 @@ export const FloatingMenusContainer = memo(function FloatingMenusContainer(
     i18n,
   } = props
 
-  // 缓存显示条件，避免重复计算
+  // Cache display condition to avoid repeated calculation
   const shouldShowMenus = useMemo(
     () => enterFormatting && (isFocused || editorState.characters.switchUrlInput),
     [enterFormatting, isFocused, editorState.characters.switchUrlInput],
   )
 
-  // 缓存段落菜单配置，避免每次渲染时重新计算
+  // Cache paragraph menu config to avoid recalculation on each render
   const paragraphMenuConfig = useMemo(() => {
     const isExpanded = editorState.paragraph.isExpanded
     const config = isExpanded ? floatingUI.paragraphExpanded : floatingUI.paragraphCollapsed
@@ -45,7 +45,7 @@ export const FloatingMenusContainer = memo(function FloatingMenusContainer(
     floatingUI.paragraphCollapsed,
   ])
 
-  // 缓存字符菜单props，减少不必要的重新渲染
+  // Cache character menu props to reduce unnecessary re-renders
   const charactersMenuProps = useMemo(
     () => ({
       isHover,
@@ -82,7 +82,7 @@ export const FloatingMenusContainer = memo(function FloatingMenusContainer(
     ],
   )
 
-  // 缓存URL菜单props
+  // Cache URL menu props
   const urlMenuProps = useMemo(
     () => ({
       isOpen: editorState.url.isOpen,

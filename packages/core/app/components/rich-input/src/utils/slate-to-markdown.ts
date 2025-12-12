@@ -2,16 +2,22 @@ import { Descendant, Text } from "slate"
 import { CustomElement, CustomText } from "../types"
 
 /**
- * 将 Slate.js 的节点数据转换为 Markdown 格式
+ * Convert Slate.js node data to Markdown format
  */
 export function slateToMarkdown(nodes: Descendant[]): string {
+  if (!nodes || !Array.isArray(nodes)) {
+    return ""
+  }
   return nodes.map((node) => serializeNode(node)).join("\n")
 }
 
 /**
- * 序列化单个节点
+ * Serialize single node
  */
 function serializeNode(node: Descendant): string {
+  if (!node) {
+    return ""
+  }
   if (Text.isText(node)) {
     return serializeText(node as CustomText)
   }
@@ -81,22 +87,25 @@ function serializeNode(node: Descendant): string {
 }
 
 /**
- * 序列化子节点
+ * Serialize child nodes
  */
 function serializeChildren(children: Descendant[]): string {
+  if (!children || !Array.isArray(children)) {
+    return ""
+  }
   return children.map((child) => serializeNode(child)).join("")
 }
 
 /**
- * 序列化文本节点，应用格式化
+ * Serialize text node with formatting
  */
 function serializeText(text: CustomText): string {
   let content = text.text || ""
 
-  // 转义 Markdown 特殊字符
+  // Escape Markdown special characters
   content = escapeMarkdown(content)
 
-  // 应用文本格式
+  // Apply text formatting
   if (text.bold && text.italic) {
     content = `***${content}***`
   } else if (text.bold) {
@@ -110,7 +119,7 @@ function serializeText(text: CustomText): string {
   }
 
   if (text.underlined) {
-    // Markdown 不原生支持下划线，使用 HTML
+    // Markdown doesn't natively support underline, use HTML
     content = `<u>${content}</u>`
   }
 
@@ -126,10 +135,10 @@ function serializeText(text: CustomText): string {
 }
 
 /**
- * 转义 Markdown 特殊字符
+ * Escape Markdown special characters
  */
 function escapeMarkdown(text: string): string {
-  // 保留换行符，但转义其他特殊字符
+  // Preserve newlines but escape other special characters
   const specialChars: Record<string, string> = {
     "\\": "\\\\",
     "`": "\\`",
@@ -150,7 +159,7 @@ function escapeMarkdown(text: string): string {
   }
 
   return text.replace(/[\\`*_{}[\]()#+\-.!|]/g, (char) => {
-    // 如果是列表项开头的 - 或者数字后的 .，不转义
+    // Don't escape - at list item start or . after numbers
     const index = text.indexOf(char)
     if (char === "-" && (index === 0 || text[index - 1] === "\n")) {
       return char

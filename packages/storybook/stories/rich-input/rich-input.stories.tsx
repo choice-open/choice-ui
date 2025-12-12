@@ -1,11 +1,36 @@
 import type { CustomElement, CustomText } from "@choice-ui/react"
-import { Button, CodeBlock, MdRender, RichInput, slateToMarkdown } from "@choice-ui/react"
-import { faker } from "@faker-js/faker"
+import { Button, CodeBlock, MdInput, RichInput, slateToMarkdown, Tabs } from "@choice-ui/react"
 import type { Meta, StoryObj } from "@storybook/react"
 import { useState } from "react"
 import { Descendant } from "slate"
 
-// Basic rich text editor with formatting capabilities
+/**
+ * RichInput is a powerful WYSIWYG rich text editor built on Slate.js, designed for creating
+ * structured content with inline formatting and block-level elements.
+ *
+ * ## Use Cases
+ * - **Content Management**: Blog posts, articles, documentation editing
+ * - **Form Fields**: Rich text descriptions, comments with formatting
+ * - **Messaging**: Compose formatted messages with links and styling
+ * - **Note Taking**: Create structured notes with headings and lists
+ *
+ * ## Core Features
+ * - **Inline Formatting**: Bold, italic, underline, strikethrough, inline code
+ * - **Block Elements**: Headings (H1-H6), paragraphs, blockquotes, code blocks
+ * - **Lists**: Bulleted lists, numbered lists, task/check lists
+ * - **Links**: Add and edit hyperlinks within text
+ * - **Keyboard Shortcuts**: Full keyboard shortcut support for power users
+ * - **Markdown Export**: Convert content to Markdown format
+ * - **Compound Components**: Flexible API with RichInput.Viewport and RichInput.Editable
+ * - **i18n Support**: Customizable UI text for internationalization
+ *
+ * ## Data Structure
+ * RichInput uses Slate.js Descendant[] as its value format, enabling:
+ * - Nested block structures
+ * - Mixed inline formatting
+ * - Custom element types
+ * - Bidirectional data binding
+ */
 export default {
   component: RichInput,
   title: "Forms/RichInput",
@@ -14,95 +39,189 @@ export default {
     layout: "centered",
   },
   argTypes: {
-    isEditing: {
-      control: "boolean",
-      description: "Whether the editor is in editing mode",
+    value: {
+      description: "The Slate.js Descendant[] value representing the editor content",
+    },
+    onChange: {
+      description: "Callback fired when content changes, receives new Descendant[]",
     },
     enterFormatting: {
       control: "boolean",
-      description: "Enable formatting toolbar",
+      description: "Enable floating formatting toolbar on text selection",
     },
     readOnly: {
       control: "boolean",
-      description: "Make the editor read-only",
+      description: "Make the editor read-only, disabling all editing",
+    },
+    placeholder: {
+      control: "text",
+      description: "Placeholder text shown when editor is empty",
+    },
+    minHeight: {
+      control: "number",
+      description: "Minimum height of the editor in pixels",
+    },
+    autoFocus: {
+      control: "boolean",
+      description: "Auto-focus the editor on mount and value changes",
+    },
+    autoMoveToEnd: {
+      control: "boolean",
+      description: "Move cursor to end when value changes externally",
+    },
+    disableTabFocus: {
+      control: "boolean",
+      description: "Disable Tab key focus navigation within editor",
     },
     i18n: {
       control: "object",
-      description: "Internationalization configuration for UI text",
+      description: "Internationalization config for UI text (url.placeholder, url.doneButton)",
     },
   },
 } as Meta<typeof RichInput>
 
-const Template = () => {
-  const initialValue: Descendant[] = [
-    {
-      type: "paragraph",
-      children: [{ text: "A line of text in a paragraph." }],
-    } as CustomElement,
-  ]
-  const [value, setValue] = useState<Descendant[]>(initialValue)
-  return (
-    <RichInput
-      value={value}
-      onChange={setValue}
-      enterFormatting={true}
-      minHeight={120}
-      className="max-h-96 w-96 border"
-    />
-  )
-}
-
+/**
+ * Basic usage of RichInput with essential props. This demonstrates the simplest way to integrate
+ * a rich text editor into your application.
+ *
+ * ## Key Points
+ * - **Controlled Component**: Pass `value` and `onChange` for full state control
+ * - **Formatting Toolbar**: Enable with `enterFormatting={true}` to show floating toolbar on text selection
+ * - **Styling**: Use `className` for container styling, `minHeight` for editor area
+ *
+ * ## Getting Started
+ * ```tsx
+ * const [value, setValue] = useState<Descendant[]>([
+ *   { type: "paragraph", children: [{ text: "" }] }
+ * ])
+ *
+ * <RichInput
+ *   value={value}
+ *   onChange={setValue}
+ *   enterFormatting={true}
+ *   placeholder="Start typing..."
+ * />
+ * ```
+ *
+ * ## Tips
+ * - Always initialize with at least one paragraph element
+ * - Use `enterFormatting` to enable the floating formatting toolbar
+ * - Combine with ScrollArea (built-in) for long content handling
+ */
 export const Standard: StoryObj<typeof RichInput> = {
   args: {},
-  render: () => Template(),
-}
-
-/**
- * MinHeight example showing custom minimum height with ScrollArea integration
- */
-export const MinHeight: StoryObj<typeof RichInput> = {
-  render: function MinHeightTemplate() {
-    const initialValue: Descendant[] = [
+  render: function StandardTemplate() {
+    const [value, setValue] = useState<Descendant[]>([
       {
         type: "paragraph",
-        children: [
-          {
-            text: "This editor has a minimum height of 200px and uses ScrollArea for scrolling.",
-          },
-        ],
+        children: [{ text: "A line of text in a paragraph." }],
       } as CustomElement,
-    ]
-    const [value, setValue] = useState<Descendant[]>(initialValue)
+    ])
     return (
       <RichInput
         value={value}
         onChange={setValue}
         enterFormatting={true}
-        minHeight={200}
-        className="max-h-96 w-80 border"
+        minHeight={120}
+        className="max-h-96 w-96 rounded-lg border"
       />
     )
   },
 }
 
 /**
- * Internationalization example with Chinese text
+ * Demonstrates the `minHeight` prop for controlling editor dimensions. Essential for creating
+ * consistent form layouts where the editor needs a predictable size.
+ *
+ * ## Use Cases
+ * - **Form Fields**: Ensure editors have consistent height across forms
+ * - **Card Layouts**: Maintain uniform card heights with embedded editors
+ * - **Modal Dialogs**: Control editor size within constrained spaces
+ *
+ * ## Height Control
+ * - `minHeight`: Sets minimum editor height in pixels (default: 80)
+ * - `className` with `max-h-*`: Limits maximum height with built-in ScrollArea
+ *
+ * ## ScrollArea Integration
+ * RichInput includes ScrollArea by default, automatically enabling:
+ * - Smooth scrolling for overflow content
+ * - Scrollbar visibility control
+ * - Touch-friendly scroll behavior
+ *
+ * ```tsx
+ * <RichInput
+ *   minHeight={200}
+ *   className="max-h-96" // Limit max height, enable scrolling
+ * />
+ * ```
  */
-export const WithI18n: StoryObj<typeof RichInput> = {
-  render: function I18nTemplate() {
-    const initialValue: Descendant[] = [
+export const MinHeight: StoryObj<typeof RichInput> = {
+  render: function MinHeightTemplate() {
+    const [value, setValue] = useState<Descendant[]>([
       {
         type: "paragraph",
         children: [
-          {
-            text: "This editor demonstrates i18n support. Try adding a link to see localized text.",
-          },
+          { text: "Type here to see scrolling behavior when content exceeds max height." },
         ],
       } as CustomElement,
-    ]
-    const [value, setValue] = useState<Descendant[]>(initialValue)
+    ])
+    return (
+      <RichInput
+        value={value}
+        onChange={setValue}
+        enterFormatting={true}
+        minHeight={200}
+        className="max-h-96 w-80 rounded-lg border"
+      />
+    )
+  },
+}
 
-    // Custom Chinese i18n configuration
+/**
+ * Demonstrates the `i18n` prop for localizing UI text. Essential for multi-language applications
+ * that need to adapt editor UI to user's locale.
+ *
+ * ## Customizable Text
+ * The `i18n` prop accepts an object with the following structure:
+ * ```ts
+ * interface RichInputI18n {
+ *   url?: {
+ *     placeholder?: string  // Link input placeholder
+ *     doneButton?: string   // Confirm button text
+ *   }
+ * }
+ * ```
+ *
+ * ## Example: Chinese Localization
+ * ```tsx
+ * <RichInput
+ *   i18n={{
+ *     url: {
+ *       placeholder: "请输入链接地址",
+ *       doneButton: "完成",
+ *     },
+ *   }}
+ * />
+ * ```
+ *
+ * ## Default Values
+ * - `url.placeholder`: "Enter link url"
+ * - `url.doneButton`: "Done"
+ *
+ * ## Testing Localization
+ * 1. Select some text in the editor below
+ * 2. Click the link icon in the formatting toolbar
+ * 3. Observe the localized placeholder and button text
+ */
+export const WithInternationalization: StoryObj<typeof RichInput> = {
+  render: function InternationalizationTemplate() {
+    const [value, setValue] = useState<Descendant[]>([
+      {
+        type: "paragraph",
+        children: [{ text: "Select text and click the link icon to see localized UI." }],
+      } as CustomElement,
+    ])
+
     const chineseI18n = {
       url: {
         placeholder: "请输入链接地址",
@@ -117,35 +236,54 @@ export const WithI18n: StoryObj<typeof RichInput> = {
         enterFormatting={true}
         i18n={chineseI18n}
         minHeight={200}
-        className="max-h-96 w-80 border"
+        className="max-h-96 w-80 rounded-lg border"
       />
     )
   },
 }
 
 /**
- * ControlledValue: Rich input with external value control.
- * - Demonstrates controlled value state management with Slate.js content
- * - External buttons can modify input content with rich text formatting
- * - Shows programmatic content insertion with bold, italic, and links
- * - Auto-focuses editor when value changes externally (when autoFocus is enabled)
- * - Cursor always moves to end position after value changes
- * - Useful for form integration and external state management
+ * Demonstrates programmatic value control for advanced use cases like form integration,
+ * template insertion, and external state management.
  *
+ * ## Use Cases
+ * - **Form Integration**: Sync editor content with form state (React Hook Form, Formik)
+ * - **Template Systems**: Insert pre-defined content templates
+ * - **AI Integration**: Programmatically insert AI-generated content
+ * - **Collaboration**: Sync content across multiple users
+ *
+ * ## Key Props
+ * - `value`: Slate.js Descendant[] - the controlled content
+ * - `onChange`: Callback receiving updated Descendant[]
+ * - `autoFocus`: Auto-focus editor when value changes externally
+ * - `autoMoveToEnd`: Move cursor to end after external value changes
+ *
+ * ## Programmatic Value Updates
  * ```tsx
- * const [value, setValue] = useState<Descendant[]>([...])
+ * // Set simple text
+ * setValue([{ type: "paragraph", children: [{ text: "Hello!" }] }])
  *
- * <RichInput
- *   value={value}
- *   autoFocus
- *   onChange={setValue}
- *   enterFormatting={true}
- * />
+ * // Set formatted text
+ * setValue([{
+ *   type: "paragraph",
+ *   children: [
+ *     { text: "Normal " },
+ *     { text: "bold", bold: true },
+ *     { text: " text" }
+ *   ]
+ * }])
  *
- * <Button onClick={() => setValue([{ type: "paragraph", children: [{ text: "New content!" }] }])}>
- *   Set Content
- * </Button>
+ * // Append to existing content
+ * setValue(prev => [...prev, { type: "paragraph", children: [{ text: "New paragraph" }] }])
  * ```
+ *
+ * ## Features Demonstrated
+ * - External buttons controlling rich text content
+ * - Programmatic formatting insertion (bold, italic, links)
+ * - Real-time character, word, and formatting statistics
+ * - Preset content templates with various formatting
+ * - Auto-focus and cursor positioning after value changes
+ * - Multi-paragraph content structure support
  */
 export const ControlledValue: StoryObj<typeof RichInput> = {
   render: function ControlledValue() {
@@ -382,7 +520,7 @@ export const ControlledValue: StoryObj<typeof RichInput> = {
                 setValue([
                   {
                     type: "paragraph",
-                    children: [{ text: faker.lorem.sentence() } as CustomText],
+                    children: [{ text: "Random text..." } as CustomText],
                   } as CustomElement,
                 ])
               }
@@ -432,45 +570,50 @@ export const ControlledValue: StoryObj<typeof RichInput> = {
           </div>
         </div>
 
-        <CodeBlock language="tsx">
+        <CodeBlock language="json">
           <CodeBlock.Content code={JSON.stringify(value, null, 2)} />
         </CodeBlock>
-
-        <div className="bg-secondary-background rounded-xl p-4">
-          <p className="font-strong mb-2">Controlled Value Features:</p>
-          <ul className="text-secondary-foreground text-body-small space-y-1">
-            <li>• External buttons control rich text content</li>
-            <li>• Programmatic formatting insertion (bold, italic, links)</li>
-            <li>• Real-time character, word, and formatting counts</li>
-            <li>• Preset rich text content examples</li>
-            <li>• Full bidirectional data binding with Slate.js</li>
-            <li>
-              • <strong>Auto-focus:</strong> Editor auto-focuses when autoFocus is enabled
-            </li>
-            <li>
-              • <strong>Cursor positioning:</strong> Always moves to end after value changes
-            </li>
-            <li>• Support for multi-paragraph content structures</li>
-          </ul>
-        </div>
       </div>
     )
   },
 }
 
 /**
- * CompositeUsage: Demonstrates the new composite component API.
- * - Shows the flexible RichInput.Viewport and RichInput.Editable structure
- * - Allows for custom layouts and styling of individual parts
- * - Maintains full functionality while providing greater control
- * - Backwards compatible with the simple usage pattern
+ * Demonstrates the compound component API for advanced layout customization. Use this pattern
+ * when you need fine-grained control over editor structure and styling.
  *
+ * ## Compound Component Structure
  * ```tsx
  * <RichInput value={value} onChange={setValue}>
- *   <RichInput.Viewport>
- *     <RichInput.Editable />
+ *   <RichInput.Viewport className="custom-viewport">
+ *     <RichInput.Editable className="custom-editable" />
  *   </RichInput.Viewport>
  * </RichInput>
+ * ```
+ *
+ * ## Components
+ * - **RichInput**: Root component, provides context and state management
+ * - **RichInput.Viewport**: Scroll container, wraps the editable area
+ * - **RichInput.Editable**: Core editing surface, handles text input and rendering
+ *
+ * ## Use Cases
+ * - **Custom Toolbars**: Add toolbars between Viewport and Editable
+ * - **Split Layouts**: Place editor alongside preview panels
+ * - **Custom Scroll Behavior**: Override default ScrollArea styling
+ * - **Theming**: Apply different styles to viewport and editable areas
+ *
+ * ## Benefits
+ * - Greater flexibility in component composition
+ * - Independent styling of Viewport and Editable
+ * - Full feature parity with simple usage
+ * - Backwards compatible - simple usage still works
+ * - Context-based state sharing between parts
+ * - Easier integration with complex layouts
+ *
+ * ## Backwards Compatibility
+ * Simple usage without children still works:
+ * ```tsx
+ * <RichInput value={value} onChange={setValue} /> // Uses default structure
  * ```
  */
 export const CompositeUsage: StoryObj<typeof RichInput> = {
@@ -478,23 +621,12 @@ export const CompositeUsage: StoryObj<typeof RichInput> = {
     const [value, setValue] = useState<Descendant[]>([
       {
         type: "paragraph",
-        children: [
-          {
-            text: "This demonstrates the new composite API structure!",
-          } as CustomText,
-        ],
+        children: [{ text: "Edit this text using the compound component API!" } as CustomText],
       } as CustomElement,
     ])
 
     return (
       <div className="w-80 space-y-4">
-        <div className="space-y-2">
-          <h4 className="font-strong">Composite Component Usage</h4>
-          <p className="text-secondary-foreground text-body-small">
-            This example uses the new RichInput.Viewport and RichInput.Editable structure
-          </p>
-        </div>
-
         <RichInput
           value={value}
           onChange={setValue}
@@ -508,261 +640,215 @@ export const CompositeUsage: StoryObj<typeof RichInput> = {
           </RichInput.Viewport>
         </RichInput>
 
-        <div className="space-y-2">
-          <h4 className="font-strong">Quick Actions</h4>
-          <div className="flex flex-wrap gap-2">
-            <Button
-              variant="secondary"
-              size="default"
-              onClick={() =>
-                setValue([
-                  {
-                    type: "paragraph",
-                    children: [
-                      { text: "Welcome to the " } as CustomText,
-                      { text: "new composite API", bold: true } as CustomText,
-                      { text: "!" } as CustomText,
-                    ],
-                  } as CustomElement,
-                ])
-              }
-            >
-              Set Welcome Text
-            </Button>
-            <Button
-              variant="secondary"
-              size="default"
-              onClick={() =>
-                setValue([
-                  {
-                    type: "paragraph",
-                    children: [{ text: "" } as CustomText],
-                  } as CustomElement,
-                ])
-              }
-            >
-              Clear
-            </Button>
-          </div>
-        </div>
-
-        <div className="bg-secondary-background rounded-xl p-4">
-          <p className="font-strong mb-2">New Composite API Benefits:</p>
-          <ul className="text-secondary-foreground text-body-small space-y-1">
-            <li>• Greater flexibility in component composition</li>
-            <li>• Custom styling of Viewport and Editable separately</li>
-            <li>• Maintains full rich text editing capabilities</li>
-            <li>• Backwards compatible with simple usage</li>
-            <li>• Context-based state management</li>
-            <li>• Easier to integrate with custom layouts</li>
-          </ul>
+        <div className="flex flex-wrap gap-2">
+          <Button
+            variant="secondary"
+            size="default"
+            onClick={() =>
+              setValue([
+                {
+                  type: "paragraph",
+                  children: [
+                    { text: "Welcome to the " } as CustomText,
+                    { text: "compound API", bold: true } as CustomText,
+                    { text: "!" } as CustomText,
+                  ],
+                } as CustomElement,
+              ])
+            }
+          >
+            Set Welcome Text
+          </Button>
+          <Button
+            variant="secondary"
+            size="default"
+            onClick={() =>
+              setValue([
+                { type: "paragraph", children: [{ text: "" } as CustomText] } as CustomElement,
+              ])
+            }
+          >
+            Clear
+          </Button>
         </div>
       </div>
     )
   },
 }
 
-// Story demonstrating keyboard shortcuts
+/**
+ * Comprehensive keyboard shortcuts reference for power users. RichInput supports standard
+ * text editor shortcuts for efficient content creation without leaving the keyboard.
+ *
+ * ## Text Formatting Shortcuts
+ * | Shortcut | Action |
+ * |----------|--------|
+ * | ⌘/Ctrl + B | **Bold** |
+ * | ⌘/Ctrl + I | *Italic* |
+ * | ⌘/Ctrl + U | Underline |
+ * | ⌘/Ctrl + Shift + S | ~~Strikethrough~~ |
+ *
+ * ## Block Formatting Shortcuts
+ * | Shortcut | Action |
+ * |----------|--------|
+ * | ⌘/Ctrl + / | Code Block |
+ * | ⌘/Ctrl + 1-6 | Heading 1-6 |
+ * | ⌘/Ctrl + Shift + > | Block Quote |
+ *
+ * ## Navigation Shortcuts
+ * | Shortcut | Action |
+ * |----------|--------|
+ * | ESC | Close expanded paragraph menu |
+ * | Tab | Focus navigation (can be disabled) |
+ *
+ * ## Usage Tips
+ * - Select text first, then apply formatting shortcuts
+ * - Block shortcuts toggle the current block type
+ * - ESC is useful when the paragraph menu obscures content
+ * - Disable Tab focus with `disableTabFocus` prop for embedded editors
+ *
+ * ## Customizing Shortcuts
+ * Shortcuts are handled by the `useKeyboardShortcuts` hook internally.
+ * For custom shortcuts, extend the editor with Slate.js plugins.
+ */
 export const KeyboardShortcuts: StoryObj<typeof RichInput> = {
-  args: {
-    enterFormatting: true,
-    placeholder: "Try keyboard shortcuts here...",
-    value: [
-      {
-        type: "h1",
-        children: [{ text: "Keyboard Shortcuts Demo" } as CustomText],
-      } as unknown as CustomElement,
+  render: function KeyboardShortcutsStory() {
+    const [value, setValue] = useState<Descendant[]>([
+      { type: "h1", children: [{ text: "Keyboard Shortcuts Demo" }] } as unknown as CustomElement,
+      { type: "paragraph", children: [{ text: "" }] } as CustomElement,
+      { type: "h2", children: [{ text: "Text Formatting" }] } as unknown as CustomElement,
       {
         type: "paragraph",
-        children: [{ text: "" } as CustomText],
-      } as unknown as CustomElement,
-      {
-        type: "h2",
-        children: [{ text: "Available Shortcuts:" } as CustomText],
-      } as unknown as CustomElement,
+        children: [{ text: "• " }, { text: "Bold", bold: true }, { text: ": ⌘/Ctrl + B" }],
+      } as CustomElement,
       {
         type: "paragraph",
-        children: [{ text: "" } as CustomText],
-      } as unknown as CustomElement,
-      {
-        type: "h3",
-        children: [{ text: "Text Formatting" } as CustomText],
-      } as unknown as CustomElement,
+        children: [{ text: "• " }, { text: "Italic", italic: true }, { text: ": ⌘/Ctrl + I" }],
+      } as CustomElement,
       {
         type: "paragraph",
         children: [
-          { text: "• " } as CustomText,
-          { text: "Bold", bold: true } as CustomText,
-          { text: ": ⌘/Ctrl + B" } as CustomText,
+          { text: "• " },
+          { text: "Underline", underlined: true },
+          { text: ": ⌘/Ctrl + U" },
         ],
       } as CustomElement,
       {
         type: "paragraph",
         children: [
-          { text: "• " } as CustomText,
-          { text: "Italic", italic: true } as CustomText,
-          { text: ": ⌘/Ctrl + I" } as CustomText,
+          { text: "• " },
+          { text: "Strikethrough", strikethrough: true },
+          { text: ": ⌘/Ctrl + Shift + S" },
         ],
       } as CustomElement,
+      { type: "paragraph", children: [{ text: "" }] } as CustomElement,
+      { type: "h2", children: [{ text: "Block Formatting" }] } as unknown as CustomElement,
+      { type: "paragraph", children: [{ text: "• Code Block: ⌘/Ctrl + /" }] } as CustomElement,
+      { type: "paragraph", children: [{ text: "• Heading 1-6: ⌘/Ctrl + 1-6" }] } as CustomElement,
       {
         type: "paragraph",
-        children: [
-          { text: "• " } as CustomText,
-          { text: "Underline", underlined: true } as CustomText,
-          { text: ": ⌘/Ctrl + U" } as CustomText,
-        ],
+        children: [{ text: "• Block Quote: ⌘/Ctrl + Shift + >" }],
       } as CustomElement,
+      { type: "paragraph", children: [{ text: "" }] } as CustomElement,
       {
         type: "paragraph",
-        children: [
-          { text: "• " } as CustomText,
-          { text: "Strikethrough", strikethrough: true } as CustomText,
-          { text: ": ⌘/Ctrl + Shift + S" } as CustomText,
-        ],
+        children: [{ text: "Try selecting text and using shortcuts!" }],
       } as CustomElement,
-      {
-        type: "paragraph",
-        children: [{ text: "" } as CustomText],
-      } as CustomElement,
-      {
-        type: "h3",
-        children: [{ text: "Block Formatting" } as CustomText],
-      } as unknown as CustomElement,
-      {
-        type: "paragraph",
-        children: [{ text: "• Code Block: ⌘/Ctrl + /" } as CustomText],
-      } as CustomElement,
-      {
-        type: "paragraph",
-        children: [{ text: "• Heading 1-6: ⌘/Ctrl + 1-6" } as CustomText],
-      } as CustomElement,
-      {
-        type: "paragraph",
-        children: [{ text: "• Block Quote: ⌘/Ctrl + Shift + >" } as CustomText],
-      } as CustomElement,
-      {
-        type: "paragraph",
-        children: [{ text: "" } as CustomText],
-      } as CustomElement,
-      {
-        type: "paragraph",
-        children: [
-          {
-            text: "Try selecting text and using the shortcuts above!",
-          } as CustomText,
-        ],
-      } as CustomElement,
-    ],
-  },
-  render: function KeyboardShortcutsStory(args) {
-    const [value, setValue] = useState<Descendant[]>(args.value)
+    ])
 
     return (
-      <div className="w-80 space-y-4">
-        <div className="space-y-2">
-          <h3 className="text-body-large font-strong">Rich Input with Keyboard Shortcuts</h3>
-          <p className="text-secondary-foreground">
-            Focus the editor below and try the keyboard shortcuts
-          </p>
-        </div>
-
-        <RichInput
-          {...args}
-          value={value}
-          onChange={setValue}
-          className="min-h-96"
-        />
-
-        <div className="bg-secondary-background rounded-lg border p-3">
-          <p className="text-secondary-foreground text-body-small">
-            <strong>Tip:</strong> Press ESC to close the paragraph menu if it&apos;s open
-          </p>
-        </div>
-      </div>
+      <RichInput
+        value={value}
+        onChange={setValue}
+        enterFormatting={true}
+        className="min-h-96 w-80 rounded-lg border"
+      />
     )
   },
 }
 
-// Story demonstrating Markdown export functionality
+/**
+ * Demonstrates the `slateToMarkdown` utility for converting rich text content to Markdown format.
+ * Essential for exporting content to Markdown-based systems, documentation, or APIs.
+ *
+ * ## Use Cases
+ * - **CMS Integration**: Export content to Markdown-based CMS platforms
+ * - **Documentation**: Generate Markdown documentation from rich text
+ * - **API Export**: Send Markdown to APIs that expect text format
+ * - **Clipboard**: Copy content as Markdown for pasting elsewhere
+ *
+ * ## Supported Conversions
+ * | Slate Element | Markdown Output |
+ * |---------------|-----------------|
+ * | Bold | `**text**` |
+ * | Italic | `*text*` |
+ * | Underline | `<u>text</u>` |
+ * | Strikethrough | `~~text~~` |
+ * | Inline Code | `` `code` `` |
+ * | Links | `[text](url)` |
+ * | Headings | `# H1` to `###### H6` |
+ * | Block Quote | `> quoted text` |
+ * | Code Block | ``` fenced code ``` |
+ * | Bulleted List | `- item` |
+ * | Numbered List | `1. item` |
+ * | Task List | `- [x] checked` / `- [ ] unchecked` |
+ *
+ * ## Usage
+ * ```tsx
+ * import { slateToMarkdown } from "@choice-ui/react"
+ *
+ * const markdown = slateToMarkdown(value)
+ * // Returns Markdown string
+ * ```
+ *
+ * ## Bidirectional Conversion
+ * Use `markdownToSlate` for the reverse conversion:
+ * ```tsx
+ * import { markdownToSlate } from "@choice-ui/react"
+ *
+ * const slateValue = markdownToSlate(markdownString)
+ * ```
+ *
+ * ## Demo
+ * Edit content in the Editor tab, then switch to Markdown Output to see the conversion.
+ * The MdInput component shows both raw Markdown and rendered preview.
+ */
 export const MarkdownExport: StoryObj<typeof RichInput> = {
-  args: {
-    enterFormatting: true,
-    placeholder: "Type something and see the markdown output...",
-    value: [
-      {
-        type: "h1",
-        children: [{ text: "Markdown Export Demo" } as CustomText],
-      } as unknown as CustomElement,
+  render: function MarkdownExportStory() {
+    const [value, setValue] = useState<Descendant[]>([
+      { type: "h1", children: [{ text: "Markdown Export Demo" }] } as unknown as CustomElement,
       {
         type: "paragraph",
         children: [
-          { text: "This story demonstrates the " } as CustomText,
-          { text: "Slate to Markdown", bold: true } as CustomText,
-          { text: " conversion functionality." } as CustomText,
+          { text: "This demonstrates " },
+          { text: "Slate to Markdown", bold: true },
+          { text: " conversion." },
         ],
-      } as unknown as CustomElement,
-      {
-        type: "h2",
-        children: [{ text: "Features" } as CustomText],
-      } as unknown as CustomElement,
+      } as CustomElement,
+      { type: "h2", children: [{ text: "Formatting Examples" }] } as unknown as CustomElement,
       {
         type: "bulleted_list",
         children: [
           {
             type: "list_item",
             children: [
-              { text: "Convert " } as CustomText,
-              { text: "bold", bold: true } as CustomText,
-              { text: ", " } as CustomText,
-              { text: "italic", italic: true } as CustomText,
-              { text: ", and " } as CustomText,
-              { text: "underlined", underlined: true } as CustomText,
-              { text: " text" } as CustomText,
+              { text: "Text with " },
+              { text: "bold", bold: true },
+              { text: ", " },
+              { text: "italic", italic: true },
+              { text: ", " },
+              { text: "code", code: true },
             ],
           } as unknown as CustomElement,
           {
             type: "list_item",
-            children: [
-              { text: "Support for " } as CustomText,
-              { text: "code blocks", code: true } as CustomText,
-              { text: " and " } as CustomText,
-              { text: "strikethrough", strikethrough: true } as CustomText,
-            ],
+            children: [{ text: "Links like ", link: "https://example.com" }],
           } as unknown as CustomElement,
-          {
-            type: "list_item",
-            children: [
-              { text: "Handle " } as CustomText,
-              { text: "links", link: "https://example.com" } as CustomText,
-              { text: " properly" } as CustomText,
-            ],
-          } as unknown as CustomElement,
-        ],
-      } as unknown as CustomElement,
-      {
-        type: "h3",
-        children: [{ text: "Code Example" } as CustomText],
-      } as unknown as CustomElement,
-      {
-        type: "code",
-        children: [
-          {
-            text: "const markdown = slateToMarkdown(value);\nconsole.log(markdown);",
-          } as unknown as CustomText,
         ],
       } as unknown as CustomElement,
       {
         type: "block_quote",
-        children: [
-          {
-            type: "paragraph",
-            children: [{ text: "This is a blockquote example" } as CustomText],
-          } as unknown as CustomElement,
-        ],
-      } as unknown as CustomElement,
-      {
-        type: "h3",
-        children: [{ text: "Task List" } as CustomText],
+        children: [{ type: "paragraph", children: [{ text: "A blockquote" }] }],
       } as unknown as CustomElement,
       {
         type: "check_list",
@@ -770,78 +856,48 @@ export const MarkdownExport: StoryObj<typeof RichInput> = {
           {
             type: "check_item",
             checked: true,
-            children: [{ text: "Completed task" } as CustomText],
+            children: [{ text: "Completed task" }],
           } as unknown as CustomElement,
           {
             type: "check_item",
             checked: false,
-            children: [{ text: "Pending task" } as CustomText],
+            children: [{ text: "Pending task" }],
           } as unknown as CustomElement,
         ],
       } as unknown as CustomElement,
-    ],
-  },
-  render: function MarkdownExportStory(args) {
-    const [value, setValue] = useState<Descendant[]>(args.value)
+    ])
     const [showMarkdown, setShowMarkdown] = useState(false)
 
     const markdown = slateToMarkdown(value)
 
     return (
-      <div className="w-[800px] space-y-4">
-        <div className="space-y-2">
-          <h3 className="text-body-large font-strong">Rich Input with Markdown Export</h3>
-          <p className="text-secondary-foreground">
-            Edit the content and toggle to see the markdown output
-          </p>
-        </div>
-
-        <div className="flex gap-2">
-          <Button
-            variant={showMarkdown ? "secondary" : "primary"}
-            size="default"
-            onClick={() => setShowMarkdown(false)}
-          >
-            Editor
-          </Button>
-          <Button
-            variant={showMarkdown ? "primary" : "secondary"}
-            size="default"
-            onClick={() => setShowMarkdown(true)}
-          >
-            Markdown Output
-          </Button>
-        </div>
+      <div className="w-[400px] space-y-4">
+        <Tabs
+          value={showMarkdown ? "markdown" : "editor"}
+          onChange={(v) => setShowMarkdown(v === "markdown")}
+        >
+          <Tabs.Item value="editor">Editor</Tabs.Item>
+          <Tabs.Item value="markdown">Markdown Output</Tabs.Item>
+        </Tabs>
 
         {!showMarkdown ? (
           <RichInput
-            {...args}
             value={value}
             onChange={setValue}
-            className="min-h-[400px] rounded-lg border"
+            enterFormatting={true}
+            className="min-h-[300px] rounded-lg border"
           />
         ) : (
-          <div className="space-y-4">
-            <div className="bg-secondary-background rounded-lg border p-4">
-              <h4 className="text-body-medium font-strong mb-2">Markdown Output:</h4>
-              <MdRender content={markdown} />
-            </div>
-
-            <div className="rounded-lg border p-4">
-              <h4 className="text-body-medium font-strong mb-2">Raw Markdown Text:</h4>
-              <pre className="text-body-small bg-tertiary-background rounded p-3 font-mono whitespace-pre-wrap">
-                {markdown}
-              </pre>
-            </div>
-          </div>
+          <MdInput value={markdown}>
+            <MdInput.Header>
+              <MdInput.Tabs />
+            </MdInput.Header>
+            <MdInput.Container>
+              <MdInput.Editor />
+              <MdInput.Render />
+            </MdInput.Container>
+          </MdInput>
         )}
-
-        <div className="bg-info-background border-info-border rounded-lg border p-3">
-          <p className="text-info-foreground text-body-small">
-            <strong>Usage:</strong> Import {"`slateToMarkdown`"} from {"`./utils`"} and pass your
-            Slate value to convert it to Markdown format.
-          </p>
-        </div>
       </div>
     )
   },

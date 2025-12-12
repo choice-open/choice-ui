@@ -1,11 +1,21 @@
 import { Descendant } from "slate"
 import { CustomElement, CustomText } from "../types"
 
+// Default empty paragraph structure
+const EMPTY_PARAGRAPH: Descendant[] = [
+  { type: "paragraph", children: [{ text: "" }] } as unknown as Descendant,
+]
+
 /**
- * 将 Markdown 文本转换为 Slate.js 节点格式
- * 这是一个简化的实现，支持基本的 Markdown 语法
+ * Convert Markdown text to Slate.js node format
+ * A simplified implementation supporting basic Markdown syntax
  */
 export function markdownToSlate(markdown: string): Descendant[] {
+  // Handle empty or invalid input
+  if (!markdown || typeof markdown !== "string") {
+    return EMPTY_PARAGRAPH
+  }
+
   const lines = markdown.split("\n")
   const nodes: Descendant[] = []
   let i = 0
@@ -13,13 +23,13 @@ export function markdownToSlate(markdown: string): Descendant[] {
   while (i < lines.length) {
     const line = lines[i]
 
-    // 跳过空行
+    // Skip empty lines
     if (!line.trim()) {
       i++
       continue
     }
 
-    // 标题
+    // Headings
     const headingMatch = line.match(/^(#{1,6})\s+(.*)$/)
     if (headingMatch) {
       const level = headingMatch[1].length
@@ -32,7 +42,7 @@ export function markdownToSlate(markdown: string): Descendant[] {
       continue
     }
 
-    // 引用块
+    // Block quote
     if (line.startsWith("> ")) {
       const quoteLines: string[] = []
       while (i < lines.length && lines[i].startsWith("> ")) {
@@ -51,15 +61,15 @@ export function markdownToSlate(markdown: string): Descendant[] {
       continue
     }
 
-    // 代码块
+    // Code block
     if (line.startsWith("```")) {
       const codeLines: string[] = []
-      i++ // 跳过开始的 ```
+      i++ // Skip opening ```
       while (i < lines.length && !lines[i].startsWith("```")) {
         codeLines.push(lines[i])
         i++
       }
-      i++ // 跳过结束的 ```
+      i++ // Skip closing ```
       nodes.push({
         type: "code",
         children: [{ text: codeLines.join("\n") }],
@@ -67,7 +77,7 @@ export function markdownToSlate(markdown: string): Descendant[] {
       continue
     }
 
-    // 无序列表
+    // Unordered list
     if (line.match(/^[-*+]\s+/)) {
       const listItems: CustomElement[] = []
       while (i < lines.length && lines[i].match(/^[-*+]\s+/)) {
@@ -85,7 +95,7 @@ export function markdownToSlate(markdown: string): Descendant[] {
       continue
     }
 
-    // 有序列表
+    // Ordered list
     if (line.match(/^\d+\.\s+/)) {
       const listItems: CustomElement[] = []
       while (i < lines.length && lines[i].match(/^\d+\.\s+/)) {
@@ -103,7 +113,7 @@ export function markdownToSlate(markdown: string): Descendant[] {
       continue
     }
 
-    // 任务列表
+    // Task list
     if (line.match(/^-\s+\[[x\s]\]\s+/)) {
       const checkItems: CustomElement[] = []
       while (i < lines.length && lines[i].match(/^-\s+\[[x\s]\]\s+/)) {
@@ -123,7 +133,7 @@ export function markdownToSlate(markdown: string): Descendant[] {
       continue
     }
 
-    // 普通段落
+    // Plain paragraph
     nodes.push({
       type: "paragraph",
       children: parseInlineElements(line),
@@ -131,27 +141,29 @@ export function markdownToSlate(markdown: string): Descendant[] {
     i++
   }
 
-  // 如果没有内容，返回一个空段落
+  // If no content, return empty paragraph
   if (nodes.length === 0) {
-    nodes.push({
-      type: "paragraph",
-      children: [{ text: "" }],
-    } as unknown as Descendant)
+    return EMPTY_PARAGRAPH
   }
 
   return nodes
 }
 
 /**
- * 解析行内元素（粗体、斜体、链接等）
+ * Parse inline elements (bold, italic, links, etc.)
  */
 function parseInlineElements(text: string): (CustomText | CustomElement)[] {
+  // Handle empty text
+  if (!text) {
+    return [{ text: "" }]
+  }
+
   const elements: (CustomText | CustomElement)[] = []
 
-  // 用于存储已处理的文本片段
+  // Store processed text segments
   const segments: Array<{ end: number; node: CustomText; start: number }> = []
 
-  // 处理加粗斜体 ***text***
+  // Handle bold-italic ***text***
   const boldItalicRegex = /\*\*\*([^*]+)\*\*\*/g
   let match
   while ((match = boldItalicRegex.exec(text)) !== null) {
@@ -162,10 +174,10 @@ function parseInlineElements(text: string): (CustomText | CustomElement)[] {
     })
   }
 
-  // 处理加粗 **text**
+  // Handle bold **text**
   const boldRegex = /\*\*([^*]+)\*\*/g
   while ((match = boldRegex.exec(text)) !== null) {
-    // 检查是否已被处理
+    // Check if already processed
     if (!isOverlapping(segments, match.index, match.index + match[0].length)) {
       segments.push({
         start: match.index,
@@ -175,7 +187,7 @@ function parseInlineElements(text: string): (CustomText | CustomElement)[] {
     }
   }
 
-  // 处理斜体 *text*
+  // Handle italic *text*
   const italicRegex = /\*([^*]+)\*/g
   while ((match = italicRegex.exec(text)) !== null) {
     if (!isOverlapping(segments, match.index, match.index + match[0].length)) {
@@ -187,7 +199,7 @@ function parseInlineElements(text: string): (CustomText | CustomElement)[] {
     }
   }
 
-  // 处理删除线 ~~text~~
+  // Handle strikethrough ~~text~~
   const strikethroughRegex = /~~([^~]+)~~/g
   while ((match = strikethroughRegex.exec(text)) !== null) {
     if (!isOverlapping(segments, match.index, match.index + match[0].length)) {
@@ -199,7 +211,7 @@ function parseInlineElements(text: string): (CustomText | CustomElement)[] {
     }
   }
 
-  // 处理行内代码 `code`
+  // Handle inline code `code`
   const codeRegex = /`([^`]+)`/g
   while ((match = codeRegex.exec(text)) !== null) {
     if (!isOverlapping(segments, match.index, match.index + match[0].length)) {
@@ -211,7 +223,7 @@ function parseInlineElements(text: string): (CustomText | CustomElement)[] {
     }
   }
 
-  // 处理链接 [text](url)
+  // Handle links [text](url)
   const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g
   while ((match = linkRegex.exec(text)) !== null) {
     if (!isOverlapping(segments, match.index, match.index + match[0].length)) {
@@ -223,7 +235,7 @@ function parseInlineElements(text: string): (CustomText | CustomElement)[] {
     }
   }
 
-  // 处理下划线 <u>text</u>
+  // Handle underline <u>text</u>
   const underlineRegex = /<u>([^<]+)<\/u>/g
   while ((match = underlineRegex.exec(text)) !== null) {
     if (!isOverlapping(segments, match.index, match.index + match[0].length)) {
@@ -235,25 +247,25 @@ function parseInlineElements(text: string): (CustomText | CustomElement)[] {
     }
   }
 
-  // 按位置排序
+  // Sort by position
   segments.sort((a, b) => a.start - b.start)
 
-  // 构建最终的元素数组
+  // Build final elements array
   let currentIndex = 0
   for (const segment of segments) {
-    // 添加前面的普通文本
+    // Add plain text before this segment
     if (currentIndex < segment.start) {
       const plainText = text.substring(currentIndex, segment.start)
       if (plainText) {
         elements.push({ text: plainText })
       }
     }
-    // 添加格式化的文本
+    // Add formatted text
     elements.push(segment.node)
     currentIndex = segment.end
   }
 
-  // 添加剩余的文本
+  // Add remaining text
   if (currentIndex < text.length) {
     const remainingText = text.substring(currentIndex)
     if (remainingText) {
@@ -261,7 +273,7 @@ function parseInlineElements(text: string): (CustomText | CustomElement)[] {
     }
   }
 
-  // 如果没有元素，返回包含整个文本的单个元素
+  // If no elements, return single element with entire text
   if (elements.length === 0) {
     elements.push({ text })
   }
@@ -270,7 +282,7 @@ function parseInlineElements(text: string): (CustomText | CustomElement)[] {
 }
 
 /**
- * 检查是否与已处理的片段重叠
+ * Check if segment overlaps with already processed segments
  */
 function isOverlapping(
   segments: Array<{ end: number; start: number }>,

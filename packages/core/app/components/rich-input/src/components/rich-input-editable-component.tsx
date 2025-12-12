@@ -6,18 +6,18 @@ import type { RichInputEditableProps } from "../types"
 import { FloatingMenusContainer } from "./floating-menus-container"
 
 /**
- * RichInput.Editable - 富文本编辑器核心组件
- * 包含 Slate 编辑器和浮动菜单容器
+ * RichInput.Editable - Rich text editor core component
+ * Contains Slate editor and floating menu container
  */
 export const RichInputEditableComponent = forwardRef<HTMLDivElement, RichInputEditableProps>(
   ({ className }, ref) => {
     const context = useRichInputContext()
     const tv = useMemo(() => richInputTv(), [])
 
-    // 准备编辑器样式
+    // Prepare editor style
     const editableStyle = useMemo(() => ({ minHeight: context.minHeight }), [context.minHeight])
 
-    // 准备浮动菜单属性
+    // Prepare floating menu props
     const floatingMenuProps = useMemo(
       () => ({
         editor: context.editor,

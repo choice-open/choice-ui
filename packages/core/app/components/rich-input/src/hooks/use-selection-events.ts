@@ -18,18 +18,18 @@ export const useSelectionEvents = (props: UseSelectionEventsProps) => {
     isParagraphExpanded,
   } = props
 
-  // 跟踪用户是否正在进行拖拽选择
+  // Track if user is performing drag selection
   const isDraggingRef = useRef(false)
   const selectionTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  // 处理选择变化的核心逻辑
+  // Core logic for handling selection changes
   const handleSelectionChange = useEventCallback(() => {
-    // 如果用户正在拖拽选择，跳过处理
+    // Skip processing if user is drag selecting
     if (isDraggingRef.current) {
       return
     }
 
-    // 检查当前元素是否在浮动菜单内，如果是则跳过处理
+    // Check if active element is inside floating menu, skip if so
     const activeElement = document.activeElement
     if (
       charactersRefs.floating.current?.contains(activeElement) ||
@@ -47,12 +47,12 @@ export const useSelectionEvents = (props: UseSelectionEventsProps) => {
         : null
 
     if (selection?.isCollapsed) {
-      // 只有在光标位置时才隐藏字符样式选择器
+      // Only hide character style selector when cursor is collapsed
       setIsCharactersStyleOpen(false)
 
       if (range) {
-        // 如果没有文本被选中，但是光标在文本中，显示段落样式选择器
-        // 为两个状态都设置 reference，确保切换时位置正确
+        // If no text selected but cursor is in text, show paragraph style selector
+        // Set reference for both states to ensure correct position when toggling
         const referenceElement = {
           getBoundingClientRect: () => {
             const rect = slateRef.current?.getBoundingClientRect()
@@ -76,7 +76,7 @@ export const useSelectionEvents = (props: UseSelectionEventsProps) => {
           },
         }
 
-        // 同时设置两个 floating UI 的 reference
+        // Set reference for both floating UIs
         paragraphCollapsedRefs.setReference(referenceElement)
         paragraphExpandedRefs.setReference(referenceElement)
 
@@ -92,18 +92,18 @@ export const useSelectionEvents = (props: UseSelectionEventsProps) => {
           setIsUrlOpen(false)
         }
       } else {
-        // 如果光标不在文本中，隐藏所有样式选择器
+        // If cursor is not in text, hide all style selectors
         setIsParagraphStyleOpen(false)
         setIsUrlOpen(false)
       }
       return
     } else {
-      // 有文本选择时隐藏段落样式选择器
+      // Hide paragraph style selector when text is selected
       setIsParagraphStyleOpen(false)
     }
 
     if (range && !selection?.isCollapsed) {
-      // 只有在确实有文本被选中时才显示文本样式选择器
+      // Only show text style selector when text is actually selected
       charactersRefs.setReference({
         getBoundingClientRect: () => range.getBoundingClientRect(),
         getClientRects: () => range.getClientRects(),
@@ -113,24 +113,24 @@ export const useSelectionEvents = (props: UseSelectionEventsProps) => {
     }
   })
 
-  // 防抖处理选择变化
+  // Debounce selection change handling
   const debouncedHandleSelectionChange = useEventCallback(() => {
     if (selectionTimeoutRef.current) {
       clearTimeout(selectionTimeoutRef.current)
     }
     selectionTimeoutRef.current = setTimeout(() => {
       handleSelectionChange()
-    }, 50) // 50ms 防抖
+    }, 50) // 50ms debounce
   })
 
-  // 监听鼠标事件
+  // Listen for mouse events
   useEffect(() => {
     function handleMouseDown(event: MouseEvent) {
       if (charactersRefs.floating.current?.contains(event.target as Element | null)) {
         return
       }
 
-      // 检测用户开始拖拽选择
+      // Detect user starting drag selection
       const selection = window.getSelection()
       if (selection && !selection.isCollapsed) {
         isDraggingRef.current = true
@@ -146,17 +146,17 @@ export const useSelectionEvents = (props: UseSelectionEventsProps) => {
         return
       }
 
-      // 结束拖拽选择
+      // End drag selection
       isDraggingRef.current = false
 
-      // 立即处理选择变化（鼠标操作不使用防抖）
+      // Immediately handle selection change (no debounce for mouse operations)
       handleSelectionChange()
     }
 
     function handleMouseMove(event: MouseEvent) {
-      // 如果用户正在拖拽选择，设置标志
+      // Set flag if user is drag selecting
       if (event.buttons === 1) {
-        // 左键按下
+        // Left button pressed
         const selection = window.getSelection()
         if (selection && !selection.isCollapsed) {
           isDraggingRef.current = true
@@ -175,30 +175,30 @@ export const useSelectionEvents = (props: UseSelectionEventsProps) => {
     }
   }, [charactersRefs, handleSelectionChange, setIsCharactersStyleOpen])
 
-  // 监听选择变化事件（包括键盘导航） - 使用防抖
+  // Listen for selection change events (includes keyboard navigation) - with debounce
   useEffect(() => {
     function handleSelectionChangeEvent() {
-      // 对于 selectionchange 事件使用防抖处理，避免影响拖拽选择
+      // Use debounce for selectionchange events to avoid affecting drag selection
       debouncedHandleSelectionChange()
     }
 
     document.addEventListener("selectionchange", handleSelectionChangeEvent)
     return () => {
       document.removeEventListener("selectionchange", handleSelectionChangeEvent)
-      // 清理防抖定时器
+      // Clean up debounce timer
       if (selectionTimeoutRef.current) {
         clearTimeout(selectionTimeoutRef.current)
       }
     }
   }, [debouncedHandleSelectionChange])
 
-  // 监听编辑器 DOM 上的键盘事件
+  // Listen for keyboard events on editor DOM
   useEffect(() => {
     const slateElement = slateRef.current
     if (!slateElement) return
 
     function handleKeyUp(event: KeyboardEvent) {
-      // 对于可能改变光标位置的键，立即处理选择变化
+      // For keys that may change cursor position, immediately handle selection change
       const navigationKeys = [
         "ArrowUp",
         "ArrowDown",
@@ -210,7 +210,7 @@ export const useSelectionEvents = (props: UseSelectionEventsProps) => {
         "PageDown",
       ]
       if (navigationKeys.includes(event.key)) {
-        // 键盘导航不使用防抖，立即更新位置
+        // No debounce for keyboard navigation, update position immediately
         setTimeout(() => {
           handleSelectionChange()
         }, 0)

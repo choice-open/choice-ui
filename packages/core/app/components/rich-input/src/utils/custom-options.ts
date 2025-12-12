@@ -15,7 +15,7 @@ import {
 } from "@choiceform/icons-react"
 import React from "react"
 
-// 使用简单的 emoji 图标替代，实际使用时可以替换为真实图标
+// Character formatting options with icons
 export const charactersOptions = [
   {
     format: "bold",
