@@ -38,11 +38,15 @@ const fruits = [
 ]
 
 /**
- * Basic: Simple combobox with searchable fruit options.
+ * Basic: The simplest usage of Combobox.
+ *
+ * Features:
+ * - Searchable input with filtering
  * - Type to filter the list
  * - Use arrow keys to navigate
  * - Press Enter or click to select
  * - Selected value appears in the input
+ * - Multiple trigger types (click, focus, input)
  */
 export const Basic: Story = {
   render: function BasicStory() {
@@ -104,9 +108,219 @@ export const Basic: Story = {
 }
 
 /**
- * Clearable: Combobox with clearable input.
+ * Disabled: Demonstrates disabled Combobox functionality.
+ *
+ * Features:
+ * - Input and interactions are disabled
+ * - Visual feedback for unavailable state
+ * - Selected value remains visible
+ * - Useful for conditional availability
+ */
+export const Disabled: Story = {
+  render: function DisabledStory() {
+    return (
+      <div className="w-64">
+        <Combobox disabled>
+          <Combobox.Trigger
+            placeholder="Disabled combobox..."
+            value="Apple"
+          />
+          <Combobox.Content>
+            <Combobox.Item>
+              <Combobox.Value>Apple</Combobox.Value>
+            </Combobox.Item>
+          </Combobox.Content>
+        </Combobox>
+      </div>
+    )
+  },
+}
+
+/**
+ * LargeSize: Demonstrates Combobox with large size variant.
+ *
+ * Features:
+ * - Increased padding and font size
+ * - Large trigger and menu items
+ * - Better for touch interfaces
+ * - Consistent sizing across components
+ */
+export const LargeSize: Story = {
+  render: function LargeSizeStory() {
+    const [value, setValue] = useState("")
+
+    const filteredFruits = useMemo(() => {
+      if (!value.trim()) return []
+      return fruits.filter((fruit) => fruit.toLowerCase().startsWith(value.toLowerCase()))
+    }, [value])
+
+    return (
+      <div className="w-80">
+        <Combobox
+          value={value}
+          onChange={setValue}
+        >
+          <Combobox.Trigger
+            placeholder="Search fruits..."
+            size="large"
+          />
+          <Combobox.Content>
+            <Combobox.Label>Fruits</Combobox.Label>
+            {filteredFruits.map((fruit) => (
+              <Combobox.Item
+                key={fruit}
+                size="large"
+                onClick={() => setValue(fruit)}
+              >
+                <Combobox.Value>{fruit}</Combobox.Value>
+              </Combobox.Item>
+            ))}
+          </Combobox.Content>
+        </Combobox>
+      </div>
+    )
+  },
+}
+
+/**
+ * LightVariant: Demonstrates Combobox with light variant styling.
+ *
+ * Features:
+ * - Light variant visual style
+ * - Standard search and selection functionality
+ * - Multiple trigger types support
+ * - Consistent with light theme
+ */
+export const LightVariant: Story = {
+  render: function LightVariantStory() {
+    const [value, setValue] = useState("")
+    const [triggerType, setTriggerType] = useState<"click" | "focus" | "input">("input")
+
+    const itemsToShow = useMemo(() => {
+      if (triggerType === "click") {
+        // 点击trigger时显示所有items
+        return fruits
+      }
+      if (!value.trim()) {
+        return []
+      }
+      // 输入或focus时显示过滤后的items
+      return fruits.filter((fruit) => fruit.toLowerCase().startsWith(value.toLowerCase()))
+    }, [value, triggerType])
+
+    const handleChange = useEventCallback((newValue: string) => {
+      setValue(newValue)
+      setTriggerType("input")
+    })
+
+    const handleOpenChange = useEventCallback(
+      (open: boolean, trigger: "click" | "focus" | "input" = "input") => {
+        if (open) {
+          setTriggerType(trigger)
+        }
+      },
+    )
+
+    return (
+      <div className="w-64">
+        <Combobox
+          value={value}
+          onChange={handleChange}
+          onOpenChange={handleOpenChange}
+          variant="light"
+        >
+          <Combobox.Trigger placeholder="Search fruits..." />
+          {itemsToShow.length > 0 && (
+            <Combobox.Content>
+              <>
+                <Combobox.Label>Fruits</Combobox.Label>
+                {itemsToShow.map((fruit) => (
+                  <Combobox.Item
+                    key={fruit}
+                    onClick={() => setValue(fruit)}
+                  >
+                    <Combobox.Value>{fruit}</Combobox.Value>
+                  </Combobox.Item>
+                ))}
+              </>
+            </Combobox.Content>
+          )}
+        </Combobox>
+      </div>
+    )
+  },
+}
+
+/**
+ * LongList: Demonstrates Combobox with many options and scrolling behavior.
+ *
+ * Features:
+ * - Long list of options (100 items)
+ * - Efficient filtering
+ * - Scroll behavior in dropdown
+ * - Empty state when no matches found
+ * - Performance optimization for large lists
+ *
+ * Use cases:
+ * - City/region selectors
+ * - Long option lists
+ * - Large dataset selection
+ */
+export const LongList: Story = {
+  render: function LongListStory() {
+    const [value, setValue] = useState("")
+
+    const countries = useMemo(
+      () => Array.from({ length: 100 }, (_, index) => `Option ${index + 1}`),
+      [],
+    )
+
+    const filteredCountries = useMemo(() => {
+      if (!value.trim()) return []
+      return countries
+        .filter((country) => country.toLowerCase().startsWith(value.toLowerCase()))
+        .slice(0, 50) // Limit results for performance
+    }, [value, countries])
+
+    return (
+      <div className="w-64">
+        <Combobox
+          value={value}
+          onChange={setValue}
+        >
+          <Combobox.Trigger placeholder="Type Option..." />
+          <Combobox.Content>
+            <Combobox.Label>
+              Countries ({filteredCountries.length} {!value ? "shown" : "found"})
+            </Combobox.Label>
+            {filteredCountries.map((country, index) => (
+              <Combobox.Item
+                key={`${country}-${index}`}
+                onClick={() => setValue(country)}
+              >
+                <Combobox.Value>{country}</Combobox.Value>
+              </Combobox.Item>
+            ))}
+            {filteredCountries.length === 0 && value && (
+              <div className="p-4 text-center text-white/50">
+                No countries found for &ldquo;{value}&rdquo;
+              </div>
+            )}
+          </Combobox.Content>
+        </Combobox>
+      </div>
+    )
+  },
+}
+
+/**
+ * Clearable: Demonstrates Combobox with clearable input.
+ *
+ * Features:
  * - Shows clear button when value is not empty
  * - Clear button is hidden when value is empty
+ * - Quick value reset functionality
+ * - Better user experience for search scenarios
  */
 export const Clearable: Story = {
   render: function ClearableStory() {
@@ -149,9 +363,108 @@ export const Clearable: Story = {
 }
 
 /**
- * Controlled: Controlled combobox with external state management.
+ * Empty: Demonstrates Combobox with no initial value.
+ *
+ * Features:
+ * - Shows placeholder text
+ * - Filtered options visible when typing
+ * - Empty state handling
+ * - Standard search functionality
+ */
+export const Empty: Story = {
+  render: function EmptyStory() {
+    const [value, setValue] = useState("")
+
+    const filteredFruits = useMemo(() => {
+      if (!value.trim()) return []
+      return fruits.filter((fruit) => fruit.toLowerCase().startsWith(value.toLowerCase()))
+    }, [value])
+
+    return (
+      <div className="w-64">
+        <Combobox
+          value={value}
+          onChange={setValue}
+        >
+          <Combobox.Trigger placeholder="Choose a fruit..." />
+          <Combobox.Content>
+            <Combobox.Label>Popular Fruits</Combobox.Label>
+            {filteredFruits.map((fruit) => (
+              <Combobox.Item
+                key={fruit}
+                onClick={() => setValue(fruit)}
+              >
+                <Combobox.Value>{fruit}</Combobox.Value>
+              </Combobox.Item>
+            ))}
+          </Combobox.Content>
+        </Combobox>
+      </div>
+    )
+  },
+}
+
+/**
+ * CustomWidth: Demonstrates Combobox with custom width that doesn't match trigger.
+ *
+ * Features:
+ * - Dropdown width independent of trigger
+ * - Custom width via className
+ * - Flexible layout options
+ * - Useful for compact triggers with wider options
+ *
+ * Use cases:
+ * - Space-constrained layouts
+ * - Wide option content
+ * - Custom design requirements
+ */
+export const CustomWidth: Story = {
+  render: function CustomWidthStory() {
+    const [value, setValue] = useState("")
+
+    const filteredFruits = useMemo(() => {
+      if (!value.trim()) return []
+      return fruits.filter((fruit) => fruit.toLowerCase().startsWith(value.toLowerCase()))
+    }, [value])
+
+    return (
+      <div className="w-48">
+        <Combobox
+          value={value}
+          onChange={setValue}
+          matchTriggerWidth={false}
+        >
+          <Combobox.Trigger placeholder="Fruit..." />
+          <Combobox.Content className="w-80">
+            <Combobox.Label>Available Fruits (Custom Width)</Combobox.Label>
+            {filteredFruits.map((fruit) => (
+              <Combobox.Item
+                key={fruit}
+                onClick={() => setValue(fruit)}
+              >
+                <Combobox.Value>{fruit}</Combobox.Value>
+              </Combobox.Item>
+            ))}
+          </Combobox.Content>
+        </Combobox>
+      </div>
+    )
+  },
+}
+
+/**
+ * Controlled: Demonstrates controlled Combobox with external state management.
+ *
+ * Features:
  * - Value is controlled by parent component
+ * - Separate search value and selected value
  * - Demonstrates integration with forms
+ * - External state synchronization
+ *
+ * Use cases:
+ * - Form integration
+ * - Complex state management
+ * - Multi-step workflows
  */
 export const Controlled: Story = {
   render: function ControlledStory() {
@@ -208,204 +521,20 @@ export const Controlled: Story = {
 }
 
 /**
- * Empty: Combobox with no initial value.
- * - Shows placeholder text
- * - All options visible when opened
- */
-export const Empty: Story = {
-  render: function EmptyStory() {
-    const [value, setValue] = useState("")
-
-    const filteredFruits = useMemo(() => {
-      if (!value.trim()) return []
-      return fruits.filter((fruit) => fruit.toLowerCase().startsWith(value.toLowerCase()))
-    }, [value])
-
-    return (
-      <div className="w-64">
-        <Combobox
-          value={value}
-          onChange={setValue}
-        >
-          <Combobox.Trigger placeholder="Choose a fruit..." />
-          <Combobox.Content>
-            <Combobox.Label>Popular Fruits</Combobox.Label>
-            {filteredFruits.map((fruit) => (
-              <Combobox.Item
-                key={fruit}
-                onClick={() => setValue(fruit)}
-              >
-                <Combobox.Value>{fruit}</Combobox.Value>
-              </Combobox.Item>
-            ))}
-          </Combobox.Content>
-        </Combobox>
-      </div>
-    )
-  },
-}
-
-/**
- * Large: Large size variant of the combobox.
- * - Increased padding and font size
- * - Better for touch interfaces
- */
-export const Large: Story = {
-  render: function LargeStory() {
-    const [value, setValue] = useState("")
-
-    const filteredFruits = useMemo(() => {
-      if (!value.trim()) return []
-      return fruits.filter((fruit) => fruit.toLowerCase().startsWith(value.toLowerCase()))
-    }, [value])
-
-    return (
-      <div className="w-80">
-        <Combobox
-          value={value}
-          onChange={setValue}
-        >
-          <Combobox.Trigger
-            placeholder="Search fruits..."
-            size="large"
-          />
-          <Combobox.Content>
-            <Combobox.Label>Fruits</Combobox.Label>
-            {filteredFruits.map((fruit) => (
-              <Combobox.Item
-                key={fruit}
-                size="large"
-                onClick={() => setValue(fruit)}
-              >
-                <Combobox.Value>{fruit}</Combobox.Value>
-              </Combobox.Item>
-            ))}
-          </Combobox.Content>
-        </Combobox>
-      </div>
-    )
-  },
-}
-
-/**
- * Disabled: Disabled combobox state.
- * - Input and interactions are disabled
- * - Visual feedback for unavailable state
- */
-export const Disabled: Story = {
-  render: function DisabledStory() {
-    return (
-      <div className="w-64">
-        <Combobox disabled>
-          <Combobox.Trigger
-            placeholder="Disabled combobox..."
-            value="Apple"
-          />
-          <Combobox.Content>
-            <Combobox.Item>
-              <Combobox.Value>Apple</Combobox.Value>
-            </Combobox.Item>
-          </Combobox.Content>
-        </Combobox>
-      </div>
-    )
-  },
-}
-
-/**
- * LongList: Combobox with many options demonstrating scrolling.
- * - Generated list of countries
- * - Efficient filtering
- * - Scroll behavior in dropdown
- */
-export const LongList: Story = {
-  render: function LongListStory() {
-    const [value, setValue] = useState("")
-
-    const countries = useMemo(
-      () => Array.from({ length: 100 }, (_, index) => `Option ${index + 1}`),
-      [],
-    )
-
-    const filteredCountries = useMemo(() => {
-      if (!value.trim()) return []
-      return countries
-        .filter((country) => country.toLowerCase().startsWith(value.toLowerCase()))
-        .slice(0, 50) // Limit results for performance
-    }, [value, countries])
-
-    return (
-      <div className="w-64">
-        <Combobox
-          value={value}
-          onChange={setValue}
-        >
-          <Combobox.Trigger placeholder="Search countries..." />
-          <Combobox.Content>
-            <Combobox.Label>
-              Countries ({filteredCountries.length} {!value ? "shown" : "found"})
-            </Combobox.Label>
-            {filteredCountries.map((country, index) => (
-              <Combobox.Item
-                key={`${country}-${index}`}
-                onClick={() => setValue(country)}
-              >
-                <Combobox.Value>{country}</Combobox.Value>
-              </Combobox.Item>
-            ))}
-            {filteredCountries.length === 0 && value && (
-              <div className="p-4 text-center text-white/50">
-                No countries found for &ldquo;{value}&rdquo;
-              </div>
-            )}
-          </Combobox.Content>
-        </Combobox>
-      </div>
-    )
-  },
-}
-
-/**
- * CustomWidth: Combobox with custom width that doesn't match trigger.
- * - Dropdown width independent of trigger
- * - Useful for compact triggers with wider options
- */
-export const CustomWidth: Story = {
-  render: function CustomWidthStory() {
-    const [value, setValue] = useState("")
-
-    const filteredFruits = useMemo(() => {
-      if (!value.trim()) return []
-      return fruits.filter((fruit) => fruit.toLowerCase().startsWith(value.toLowerCase()))
-    }, [value])
-
-    return (
-      <div className="w-48">
-        <Combobox
-          value={value}
-          onChange={setValue}
-          matchTriggerWidth={false}
-        >
-          <Combobox.Trigger placeholder="Fruit..." />
-          <Combobox.Content className="w-80">
-            <Combobox.Label>Available Fruits (Custom Width)</Combobox.Label>
-            {filteredFruits.map((fruit) => (
-              <Combobox.Item
-                key={fruit}
-                onClick={() => setValue(fruit)}
-              >
-                <Combobox.Value>{fruit}</Combobox.Value>
-              </Combobox.Item>
-            ))}
-          </Combobox.Content>
-        </Combobox>
-      </div>
-    )
-  },
-}
-
-/**
- * Coordinate mode - Combobox positioned at specific coordinates for mentions
+ * CoordinateMode: Demonstrates Combobox in coordinate mode positioned at specific coordinates.
+ *
+ * Features:
+ * - No trigger element required
+ * - Positioned at specific x/y coordinates
+ * - Auto-selection support
+ * - Perfect for mentions and autocomplete
+ * - User search and filtering
+ *
+ * Use cases:
+ * - Context menus at cursor position
+ * - Mention dropdowns in editors
+ * - Custom positioned autocomplete
+ * - Rich text editor integrations
  */
 export const CoordinateMode: Story = {
   render: function CoordinateModeStory() {
@@ -544,7 +673,22 @@ export const CoordinateMode: Story = {
 }
 
 /**
- * Mentions with Slate.js - Combobox integrated with rich text editor for mentions
+ * MentionsWithSlate: Demonstrates Combobox integrated with Slate.js rich text editor for mentions.
+ *
+ * Features:
+ * - Type @ to trigger mentions menu
+ * - Combobox positioned at cursor location
+ * - Integration with Slate.js editor
+ * - User selection and insertion
+ * - Real-time text updates
+ * - Keyboard navigation support
+ * - Filtering based on @ query
+ *
+ * Use cases:
+ * - Rich text editors with mentions
+ * - Comment systems
+ * - Collaborative editing features
+ * - Social media style inputs
  */
 export const MentionsWithSlate: Story = {
   render: function MentionsWithSlateStory() {
@@ -840,13 +984,19 @@ export const MentionsWithSlate: Story = {
 }
 
 /**
- * [TEST] Combobox component in readOnly state.
+ * [TEST] Readonly: Demonstrates Combobox in readOnly state.
  *
- * In readOnly mode:
+ * Features:
  * - The input field is read-only and cannot be edited
  * - Clicking on menu items will not change the value
  * - The menu can still be opened and closed normally
+ * - Clear button is disabled
  * - Useful for displaying a value without allowing changes
+ *
+ * Use cases:
+ * - Preview mode interfaces
+ * - Read-only user permissions
+ * - Display-only selection scenarios
  */
 export const Readonly: Story = {
   render: function ReadonlyStory() {
@@ -897,69 +1047,6 @@ export const Readonly: Story = {
           💡 Try typing in the input, clicking on menu items, or using the clear button - the value
           should not change and the change count should remain at 0. The input field is read-only.
         </div>
-      </div>
-    )
-  },
-}
-
-/**
- * Combobox component in light variant.
- */
-export const Light: Story = {
-  render: function LightStory() {
-    const [value, setValue] = useState("")
-    const [triggerType, setTriggerType] = useState<"click" | "focus" | "input">("input")
-
-    const itemsToShow = useMemo(() => {
-      if (triggerType === "click") {
-        // 点击trigger时显示所有items
-        return fruits
-      }
-      if (!value.trim()) {
-        return []
-      }
-      // 输入或focus时显示过滤后的items
-      return fruits.filter((fruit) => fruit.toLowerCase().startsWith(value.toLowerCase()))
-    }, [value, triggerType])
-
-    const handleChange = useEventCallback((newValue: string) => {
-      setValue(newValue)
-      setTriggerType("input")
-    })
-
-    const handleOpenChange = useEventCallback(
-      (open: boolean, trigger: "click" | "focus" | "input" = "input") => {
-        if (open) {
-          setTriggerType(trigger)
-        }
-      },
-    )
-
-    return (
-      <div className="w-64">
-        <Combobox
-          value={value}
-          onChange={handleChange}
-          onOpenChange={handleOpenChange}
-          variant="light"
-        >
-          <Combobox.Trigger placeholder="Search fruits..." />
-          {itemsToShow.length > 0 && (
-            <Combobox.Content>
-              <>
-                <Combobox.Label>Fruits</Combobox.Label>
-                {itemsToShow.map((fruit) => (
-                  <Combobox.Item
-                    key={fruit}
-                    onClick={() => setValue(fruit)}
-                  >
-                    <Combobox.Value>{fruit}</Combobox.Value>
-                  </Combobox.Item>
-                ))}
-              </>
-            </Combobox.Content>
-          )}
-        </Combobox>
       </div>
     )
   },

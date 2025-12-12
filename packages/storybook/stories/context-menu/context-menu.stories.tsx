@@ -1,4 +1,4 @@
-import { Button, Checkbox, ContextMenu, Dropdown, Popover } from "@choice-ui/react"
+import { Button, Checkbox, ContextMenu, Dropdown, Label, Popover } from "@choice-ui/react"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { useRef, useState } from "react"
 
@@ -57,49 +57,95 @@ export const Basic: Story = {
 }
 
 /**
- * WithSelection: Demonstrates selection functionality with visual indicators.
+ * WithDisabled: Demonstrates disabled ContextMenu functionality.
  *
  * Features:
- * - Visual selection indicator (check mark)
- * - Controlled selection state
- * - Selection persists between menu opens
- * - Automatic menu closure on selection
+ * - Shows how to disable the entire context menu
+ * - Right-click events are prevented when disabled=true
+ * - Visual feedback through data attributes for styling
+ * - Useful for conditional menu availability
+ * - Supports both ContextMenu.Trigger and triggerRef approaches
  *
- * Usage:
- * - Set `selection={true}` on the ContextMenu
- * - Use `selected` prop on items to indicate selection state
- * - Handle selection via `onMouseUp` callback
+ * Implementation:
+ * - Set disabled={true} to prevent context menu activation
+ * - Can use CSS selectors like [data-disabled] for styling
+ * - Both Trigger and triggerRef approaches support disabled state
  */
-export const WithSelection: Story = {
-  render: function WithSelectionStory() {
-    const [selected, setSelected] = useState<string | null>("option1")
-
-    const options = [
-      { id: "option1", label: "Option 1" },
-      { id: "option2", label: "Option 2" },
-      { id: "option3", label: "Option 3" },
-    ]
+export const WithDisabled: Story = {
+  render: function WithDisabledStory() {
+    const [isDisabled, setIsDisabled] = useState(false)
+    const triggerRef = useRef<HTMLDivElement>(null)
 
     return (
-      <ContextMenu selection={true}>
-        <ContextMenu.Trigger>
-          <div className="bg-secondary-background select-none rounded-xl border border-dashed p-8">
-            Right click me for selection menu
+      <div className="space-y-4">
+        <Checkbox
+          value={isDisabled}
+          onChange={setIsDisabled}
+        >
+          Disable context menu
+        </Checkbox>
+
+        <div className="flex gap-8">
+          {/* Using ContextMenu.Trigger */}
+          <div className="flex flex-col gap-2">
+            <Label>Using ContextMenu.Trigger</Label>
+            <ContextMenu disabled={isDisabled}>
+              <ContextMenu.Trigger>
+                <div className="bg-secondary-background rounded-xl border border-dashed p-8">
+                  {isDisabled ? "Context menu disabled" : "Right click me"}
+                </div>
+              </ContextMenu.Trigger>
+              <ContextMenu.Content>
+                <ContextMenu.Item>
+                  <ContextMenu.Value>Copy</ContextMenu.Value>
+                </ContextMenu.Item>
+                <ContextMenu.Item>
+                  <ContextMenu.Value>Cut</ContextMenu.Value>
+                </ContextMenu.Item>
+                <ContextMenu.Item>
+                  <ContextMenu.Value>Paste</ContextMenu.Value>
+                </ContextMenu.Item>
+                <ContextMenu.Divider />
+                <ContextMenu.Item variant="danger">
+                  <ContextMenu.Value>Delete</ContextMenu.Value>
+                </ContextMenu.Item>
+              </ContextMenu.Content>
+            </ContextMenu>
           </div>
-        </ContextMenu.Trigger>
-        <ContextMenu.Content>
-          <ContextMenu.Label>Select an option</ContextMenu.Label>
-          {options.map((option) => (
-            <ContextMenu.Item
-              key={option.id}
-              selected={selected === option.id}
-              onMouseUp={() => setSelected(option.id)}
+
+          {/* Using triggerRef */}
+          <div className="flex flex-col gap-2">
+            <Label>Using triggerRef</Label>
+            <div
+              ref={triggerRef}
+              className="bg-secondary-background rounded-xl border border-dashed p-8"
             >
-              <ContextMenu.Value>{option.label}</ContextMenu.Value>
-            </ContextMenu.Item>
-          ))}
-        </ContextMenu.Content>
-      </ContextMenu>
+              {isDisabled ? "Context menu disabled" : "Right click me"}
+            </div>
+
+            <ContextMenu
+              disabled={isDisabled}
+              triggerRef={triggerRef}
+            >
+              <ContextMenu.Content>
+                <ContextMenu.Item>
+                  <ContextMenu.Value>Copy</ContextMenu.Value>
+                </ContextMenu.Item>
+                <ContextMenu.Item>
+                  <ContextMenu.Value>Cut</ContextMenu.Value>
+                </ContextMenu.Item>
+                <ContextMenu.Item>
+                  <ContextMenu.Value>Paste</ContextMenu.Value>
+                </ContextMenu.Item>
+                <ContextMenu.Divider />
+                <ContextMenu.Item variant="danger">
+                  <ContextMenu.Value>Delete</ContextMenu.Value>
+                </ContextMenu.Item>
+              </ContextMenu.Content>
+            </ContextMenu>
+          </div>
+        </div>
+      </div>
     )
   },
 }
@@ -143,75 +189,42 @@ export const WithDisabledItems: Story = {
 }
 
 /**
- * SharedMenuContent: Demonstrates how to share menu content between Dropdown and ContextMenu.
- *
- * This is the key business value of ContextMenu - complete component reuse.
+ * LightVariant: Demonstrates ContextMenu with light variant styling.
  *
  * Features:
- * - Same menu content works in both Dropdown and ContextMenu
- * - Uses Dropdown components (Content, Item, etc.) for compatibility
- * - Reduces code duplication and ensures consistency
- * - Demonstrates the "write once, use everywhere" approach
- *
- * Technical implementation:
- * - ContextMenu internally reuses all Dropdown sub-components
- * - Content is defined as JSX variable (not function component) for better compatibility
- * - Both components share the same interaction patterns
+ * - Light variant visual style
+ * - Standard menu items
+ * - Divider separation
+ * - Danger variant item support
  */
-export const SharedMenuContent: Story = {
-  render: function SharedMenuContentStory() {
-    // Shared menu content - uses Dropdown components for compatibility
-    const sharedMenuContent = (
-      <Dropdown.Content>
-        <Dropdown.Item>
-          <Dropdown.Value>New File</Dropdown.Value>
-        </Dropdown.Item>
-        <Dropdown.Item>
-          <Dropdown.Value>New Folder</Dropdown.Value>
-        </Dropdown.Item>
-        <Dropdown.Divider />
-        <Dropdown.Item>
-          <Dropdown.Value>Import</Dropdown.Value>
-        </Dropdown.Item>
-        <Dropdown.Item>
-          <Dropdown.Value>Export</Dropdown.Value>
-        </Dropdown.Item>
-      </Dropdown.Content>
-    )
-
+export const LightVariant: Story = {
+  render: function LightVariantStory() {
     return (
-      <div className="flex flex-col gap-8">
-        {/* Dropdown using shared menu content */}
-        <div>
-          <p className="mb-2">Dropdown with shared menu content</p>
-
-          <Dropdown>
-            <Dropdown.Trigger>
-              <Dropdown.Value>Click for Dropdown Menu</Dropdown.Value>
-            </Dropdown.Trigger>
-            {sharedMenuContent}
-          </Dropdown>
-        </div>
-
-        {/* ContextMenu using the same content */}
-        <div>
-          <p className="mb-2">Context menu with same content</p>
-          <ContextMenu>
-            <ContextMenu.Trigger>
-              <div className="bg-secondary-background rounded-xl border border-dashed p-8">
-                Right click me for context menu (same content)
-              </div>
-            </ContextMenu.Trigger>
-            {sharedMenuContent}
-          </ContextMenu>
-        </div>
-      </div>
+      <ContextMenu variant="light">
+        <ContextMenu.Trigger>
+          <div className="bg-secondary-background rounded-xl border border-dashed p-8">
+            Right click for light variant context menu
+          </div>
+        </ContextMenu.Trigger>
+        <ContextMenu.Content>
+          <ContextMenu.Item>
+            <ContextMenu.Value>Copy</ContextMenu.Value>
+          </ContextMenu.Item>
+          <ContextMenu.Item>
+            <ContextMenu.Value>Cut</ContextMenu.Value>
+          </ContextMenu.Item>
+          <ContextMenu.Divider />
+          <ContextMenu.Item variant="danger">
+            <ContextMenu.Value>Delete</ContextMenu.Value>
+          </ContextMenu.Item>
+        </ContextMenu.Content>
+      </ContextMenu>
     )
   },
 }
 
 /**
- * WithDividers: Shows complex menu structure with dividers and labels.
+ * Shows complex menu structure with labels and dividers.
  *
  * Features:
  * - Section labels for grouping
@@ -224,8 +237,8 @@ export const SharedMenuContent: Story = {
  * - Complex application menus
  * - Settings and configuration menus
  */
-export const WithDividers: Story = {
-  render: function WithDividersStory() {
+export const WithLabelsAndDividers: Story = {
+  render: function WithLabelsAndDividersStory() {
     return (
       <ContextMenu>
         <ContextMenu.Trigger>
@@ -263,78 +276,49 @@ export const WithDividers: Story = {
 }
 
 /**
- * [TEST] FileManagerExample: Real-world example showing menu sharing in a file manager scenario.
- *
- * Business scenario:
- * - Same file operations available in toolbar dropdown and right-click menu
- * - Ensures consistent user experience across interaction methods
- * - Reduces development and maintenance overhead
+ * WithSelection: Demonstrates selection functionality with visual indicators.
  *
  * Features:
- * - Identical functionality in both interaction patterns
- * - Dynamic menu content based on data
- * - Action callbacks with logging
- * - Demonstrates practical component reuse
+ * - Visual selection indicator (check mark)
+ * - Controlled selection state
+ * - Selection persists between menu opens
+ * - Automatic menu closure on selection
+ *
+ * Use cases:
+ * - Radio button-like selection in menus
+ * - Theme or preference selection
+ * - Single-choice menu scenarios
  */
-export const FileManagerExample: Story = {
-  render: function FileManagerExampleStory() {
-    const fileOperations = [
-      { id: "open", label: "Open" },
-      { id: "rename", label: "Rename" },
-      { id: "copy", label: "Copy" },
-      { id: "move", label: "Move" },
-      { id: "delete", label: "Delete", variant: "danger" as const },
+export const WithSelection: Story = {
+  render: function WithSelectionStory() {
+    const [selected, setSelected] = useState<string | null>("option1")
+
+    const options = [
+      { id: "option1", label: "Option 1" },
+      { id: "option2", label: "Option 2" },
+      { id: "option3", label: "Option 3" },
     ]
 
-    // File operations menu - reusable in both dropdown and context menu
-    const fileOperationsMenu = (
-      <Dropdown.Content>
-        <Dropdown.Label>File Operations</Dropdown.Label>
-        {fileOperations.map((operation) => (
-          <Dropdown.Item
-            key={operation.id}
-            variant={operation.variant}
-            onClick={() => console.log(`Executing ${operation.label} operation`)}
-          >
-            <Dropdown.Value>{operation.label}</Dropdown.Value>
-          </Dropdown.Item>
-        ))}
-      </Dropdown.Content>
-    )
-
     return (
-      <div className="space-y-8 p-8">
-        <h2 className="text-body-large-strong">File Manager Example</h2>
-
-        <div className="flex gap-4">
-          <div>
-            <p className="mb-2">Toolbar Button</p>
-            <Dropdown>
-              <Dropdown.Trigger>
-                <Dropdown.Value>File Operations</Dropdown.Value>
-              </Dropdown.Trigger>
-              {fileOperationsMenu}
-            </Dropdown>
+      <ContextMenu selection={true}>
+        <ContextMenu.Trigger>
+          <div className="bg-secondary-background select-none rounded-xl border border-dashed p-8">
+            Right click me for selection menu
           </div>
-
-          <div>
-            <p className="mb-2">Right-click Menu</p>
-            <ContextMenu>
-              <ContextMenu.Trigger>
-                <div className="bg-secondary-background rounded-lg border border-dashed p-4">
-                  📁 Folder (right-click)
-                </div>
-              </ContextMenu.Trigger>
-              {fileOperationsMenu}
-            </ContextMenu>
-          </div>
-        </div>
-
-        <div className="bg-secondary-background rounded-xl p-4">
-          <strong>Business Value:</strong> Same menu logic works in both toolbar dropdown and
-          right-click menu, reducing code duplication and ensuring interaction consistency.
-        </div>
-      </div>
+        </ContextMenu.Trigger>
+        <ContextMenu.Content>
+          <ContextMenu.Label>Select an option</ContextMenu.Label>
+          {options.map((option) => (
+            <ContextMenu.Item
+              key={option.id}
+              selected={selected === option.id}
+              onMouseUp={() => setSelected(option.id)}
+            >
+              <ContextMenu.Value>{option.label}</ContextMenu.Value>
+            </ContextMenu.Item>
+          ))}
+        </ContextMenu.Content>
+      </ContextMenu>
     )
   },
 }
@@ -473,18 +457,18 @@ export const NestedSubmenus: Story = {
 }
 
 /**
- * ContextMenuNestedDropdown: Fixed implementation using triggerRef to avoid component conflicts.
- *
- * This story demonstrates the solution to the original nesting problem:
- * - ContextMenu.Target was interfering with Dropdown's Slot mechanism
- * - Using triggerRef bypasses the wrapper issue entirely
- * - Both components now work perfectly together
+ * ContextMenuNestedDropdown: Demonstrates ContextMenu and Dropdown working together using triggerRef.
  *
  * Features:
  * - Left-click opens Dropdown menu
  * - Right-click opens ContextMenu
+ * - Both menus share the same trigger element
  * - No component wrapping conflicts
- * - Clean, working implementation
+ * - Uses triggerRef to avoid nesting issues
+ *
+ * Use cases:
+ * - Elements that need both click and right-click menus
+ * - Complex UI interactions requiring multiple menu types
  */
 export const ContextMenuNestedDropdown: Story = {
   render: function ContextMenuNestedDropdownStory() {
@@ -536,22 +520,20 @@ export const ContextMenuNestedDropdown: Story = {
 }
 
 /**
- * NestedSubmenuWithLongList: Tests scrolling functionality in nested submenus.
+ * NestedSubmenuWithLongList: Demonstrates scrolling functionality in nested submenus with long lists.
  *
- * This story specifically tests the fix for nested menu scrolling:
- * - First level menu with many items
+ * Features:
+ * - First level menu with standard items
  * - Nested submenu with a long list that exceeds screen height
- * - Verifies scroll arrows appear correctly
- * - Verifies scrolling works properly in nested menus
- * - Tests height constraints are properly applied
+ * - Scroll arrows appear when content exceeds available height
+ * - Scrolling works properly in nested menus
+ * - Height constraints are properly applied
+ * - Multiple nested submenus with long lists
  *
- * Expected behavior:
- * - Nested submenu should show scroll arrows when content exceeds available height
- * - Users should be able to scroll through all items in the nested menu
- * - Menu should not overflow beyond screen boundaries
- * - Scroll arrows should appear/disappear based on scroll position
- *
- * This story validates the fix for nested menu scrolling issues.
+ * Use cases:
+ * - File explorer with many files/folders
+ * - Long category lists in nested menus
+ * - Any scenario requiring scrollable nested menus
  */
 export const NestedSubmenuWithLongList: Story = {
   render: function NestedSubmenuWithLongListStory() {
@@ -623,6 +605,72 @@ export const NestedSubmenuWithLongList: Story = {
           </ContextMenu.Item>
         </ContextMenu.Content>
       </ContextMenu>
+    )
+  },
+}
+
+/**
+ * NestedContextMenuInPopover: Demonstrates ContextMenu nested inside a Popover component.
+ *
+ * Features:
+ * - ContextMenu works within Popover content
+ * - Uses triggerRef to bind context menu to element
+ * - disabledNested prop prevents nested menu conflicts
+ * - Right-click opens context menu inside popover
+ *
+ * Use cases:
+ * - Rich popover content with context menu support
+ * - Complex UI interactions within modal/popover contexts
+ */
+export const NestedContextMenuInPopover: Story = {
+  render: function NestedContextMenuInPopoverStory() {
+    const triggerRef = useRef<HTMLDivElement>(null)
+
+    const Item = () => {
+      return (
+        <>
+          <div
+            ref={triggerRef}
+            className="p-8"
+          >
+            Right click me for selection menu
+          </div>
+          <ContextMenu
+            disabledNested
+            triggerRef={triggerRef}
+          >
+            <ContextMenu.Content>
+              <ContextMenu.Item>
+                <ContextMenu.Value>Copy</ContextMenu.Value>
+              </ContextMenu.Item>
+              <ContextMenu.Item>
+                <ContextMenu.Value>Cut</ContextMenu.Value>
+              </ContextMenu.Item>
+              <ContextMenu.Item>
+                <ContextMenu.Value>Paste</ContextMenu.Value>
+              </ContextMenu.Item>
+              <ContextMenu.Divider />
+              <ContextMenu.Item variant="danger">
+                <ContextMenu.Value>Delete</ContextMenu.Value>
+              </ContextMenu.Item>
+            </ContextMenu.Content>
+          </ContextMenu>
+        </>
+      )
+    }
+
+    return (
+      <>
+        <Popover>
+          <Popover.Trigger>
+            <Button>Open Popover</Button>
+          </Popover.Trigger>
+
+          <Popover.Content>
+            <Item />
+          </Popover.Content>
+        </Popover>
+      </>
     )
   },
 }
@@ -704,15 +752,15 @@ export const WithTriggerRef: Story = {
 /**
  * WithTriggerSelector: Demonstrates using triggerSelector (CSS selector) instead of triggerRef.
  *
- * This approach is useful when:
- * - You cannot access the element via ref (e.g., third-party components)
- * - The trigger element is rendered elsewhere in the DOM
- * - You prefer a simpler, selector-based approach
- *
  * Features:
  * - Supports any valid CSS selector (#id, .class, [data-*], etc.)
  * - Same functionality as triggerRef
  * - triggerRef takes priority if both are provided
+ *
+ * Use cases:
+ * - When you cannot access the element via ref (e.g., third-party components)
+ * - When the trigger element is rendered elsewhere in the DOM
+ * - When you prefer a simpler, selector-based approach
  */
 export const WithTriggerSelector: Story = {
   render: function WithTriggerSelectorStory() {
@@ -786,127 +834,84 @@ export const WithTriggerSelector: Story = {
 }
 
 /**
- * WithDisabled: Demonstrates disabled ContextMenu functionality.
+ * SharedMenuContent: Demonstrates how to share menu content between Dropdown and ContextMenu.
  *
  * Features:
- * - Shows how to disable the entire context menu
- * - Right-click events are prevented when disabled=true
- * - Visual feedback through data attributes for styling
- * - Useful for conditional menu availability
+ * - Same menu content works in both Dropdown and ContextMenu
+ * - Uses Dropdown components (Content, Item, etc.) for compatibility
+ * - Reduces code duplication and ensures consistency
+ * - Demonstrates the "write once, use everywhere" approach
  *
- * Implementation:
- * - Set disabled={true} to prevent context menu activation
- * - Can use CSS selectors like [data-disabled] for styling
- * - Both Target and triggerRef approaches support disabled state
+ * Business value:
+ * - Complete component reuse between Dropdown and ContextMenu
+ * - ContextMenu internally reuses all Dropdown sub-components
+ * - Both components share the same interaction patterns
  */
-export const WithDisabled: Story = {
-  render: function WithDisabledStory() {
-    const [isDisabled, setIsDisabled] = useState(false)
+export const SharedMenuContent: Story = {
+  render: function SharedMenuContentStory() {
+    // Shared menu content - uses Dropdown components for compatibility
+    const sharedMenuContent = (
+      <Dropdown.Content>
+        <Dropdown.Item>
+          <Dropdown.Value>New File</Dropdown.Value>
+        </Dropdown.Item>
+        <Dropdown.Item>
+          <Dropdown.Value>New Folder</Dropdown.Value>
+        </Dropdown.Item>
+        <Dropdown.Divider />
+        <Dropdown.Item>
+          <Dropdown.Value>Import</Dropdown.Value>
+        </Dropdown.Item>
+        <Dropdown.Item>
+          <Dropdown.Value>Export</Dropdown.Value>
+        </Dropdown.Item>
+      </Dropdown.Content>
+    )
 
     return (
-      <div className="space-y-8 p-8">
-        <Checkbox
-          value={isDisabled}
-          onChange={setIsDisabled}
-        >
-          Disable context menu
-        </Checkbox>
+      <div className="flex flex-col gap-8">
+        {/* Dropdown using shared menu content */}
+        <div>
+          <p className="mb-2">Dropdown with shared menu content</p>
 
-        <div className="flex gap-8">
-          {/* Using ContextMenu.Trigger */}
-          <div>
-            <p className="text-body-small-strong mb-2">Using ContextMenu.Trigger</p>
-            <ContextMenu disabled={isDisabled}>
-              <ContextMenu.Trigger>
-                <div className="bg-secondary-background rounded-xl border border-dashed p-8">
-                  {isDisabled ? "Context menu disabled" : "Right click me"}
-                </div>
-              </ContextMenu.Trigger>
-              <ContextMenu.Content>
-                <ContextMenu.Item>
-                  <ContextMenu.Value>Copy</ContextMenu.Value>
-                </ContextMenu.Item>
-                <ContextMenu.Item>
-                  <ContextMenu.Value>Cut</ContextMenu.Value>
-                </ContextMenu.Item>
-                <ContextMenu.Item>
-                  <ContextMenu.Value>Paste</ContextMenu.Value>
-                </ContextMenu.Item>
-                <ContextMenu.Divider />
-                <ContextMenu.Item variant="danger">
-                  <ContextMenu.Value>Delete</ContextMenu.Value>
-                </ContextMenu.Item>
-              </ContextMenu.Content>
-            </ContextMenu>
-          </div>
-
-          {/* Using triggerRef */}
-          <div>
-            <p className="text-body-small-strong mb-2">Using triggerRef</p>
-            <DisabledWithTriggerRef disabled={isDisabled} />
-          </div>
+          <Dropdown>
+            <Dropdown.Trigger>
+              <Dropdown.Value>Click for Dropdown Menu</Dropdown.Value>
+            </Dropdown.Trigger>
+            {sharedMenuContent}
+          </Dropdown>
         </div>
 
-        <div className="bg-secondary-background rounded-xl p-4">
-          <strong>Tip:</strong> When disabled=true, the context menu will not open on right-click.
-          You can style disabled states using CSS selectors like <code>[data-disabled]</code> or
-          <code>[data-context-menu-disabled]</code>.
+        {/* ContextMenu using the same content */}
+        <div>
+          <p className="mb-2">Context menu with same content</p>
+          <ContextMenu>
+            <ContextMenu.Trigger>
+              <div className="bg-secondary-background rounded-xl border border-dashed p-8">
+                Right click me for context menu (same content)
+              </div>
+            </ContextMenu.Trigger>
+            {sharedMenuContent}
+          </ContextMenu>
         </div>
       </div>
     )
   },
 }
 
-// Helper component for triggerRef example
-function DisabledWithTriggerRef({ disabled }: { disabled: boolean }) {
-  const triggerRef = useRef<HTMLDivElement>(null)
-
-  return (
-    <>
-      <div
-        ref={triggerRef}
-        className="bg-secondary-background rounded-xl border border-dashed p-8"
-      >
-        {disabled ? "Context menu disabled" : "Right click me"}
-      </div>
-
-      <ContextMenu
-        disabled={disabled}
-        triggerRef={triggerRef}
-      >
-        <ContextMenu.Content>
-          <ContextMenu.Item>
-            <ContextMenu.Value>Copy</ContextMenu.Value>
-          </ContextMenu.Item>
-          <ContextMenu.Item>
-            <ContextMenu.Value>Cut</ContextMenu.Value>
-          </ContextMenu.Item>
-          <ContextMenu.Item>
-            <ContextMenu.Value>Paste</ContextMenu.Value>
-          </ContextMenu.Item>
-          <ContextMenu.Divider />
-          <ContextMenu.Item variant="danger">
-            <ContextMenu.Value>Delete</ContextMenu.Value>
-          </ContextMenu.Item>
-        </ContextMenu.Content>
-      </ContextMenu>
-    </>
-  )
-}
-
 /**
- * [TEST] SimpleDropdownNested: A simple example with a div trigger containing a dropdown menu.
+ * [TEST] SimpleDropdownNested: Demonstrates ContextMenu and Dropdown nested together with a shared trigger.
  *
  * Features:
- * - Simple div as ContextMenu trigger
+ * - Simple div as shared trigger element
  * - Contains a Dropdown Menu inside the trigger area
  * - Left-click opens Dropdown, right-click opens ContextMenu
- * - Clean and minimal implementation
- *
- * Usage:
- * - Left-click on the trigger to open dropdown menu
- * - Right-click on the trigger to open context menu
  * - Both menus work independently without conflicts
+ * - Clean and minimal implementation using triggerRef
+ *
+ * Use cases:
+ * - Elements that need both click and right-click menus
+ * - Simple nested menu scenarios
  */
 export const SimpleDropdownNested: Story = {
   render: function SimpleDropdownNestedStory() {
@@ -963,70 +968,96 @@ export const SimpleDropdownNested: Story = {
 }
 
 /**
- * Nested context menu in popover
+ * [TEST] FileManagerExample: Real-world example showing menu sharing in a file manager scenario.
  *
- **/
+ * Features:
+ * - Same file operations available in toolbar dropdown and right-click menu
+ * - Identical functionality in both interaction patterns
+ * - Dynamic menu content based on data
+ * - Action callbacks with logging
+ * - Demonstrates practical component reuse
+ *
+ * Business value:
+ * - Ensures consistent user experience across interaction methods
+ * - Reduces development and maintenance overhead
+ * - Write once, use everywhere approach
+ */
+export const FileManagerExample: Story = {
+  render: function FileManagerExampleStory() {
+    const fileOperations = [
+      { id: "open", label: "Open" },
+      { id: "rename", label: "Rename" },
+      { id: "copy", label: "Copy" },
+      { id: "move", label: "Move" },
+      { id: "delete", label: "Delete", variant: "danger" as const },
+    ]
 
-export const NestedContextMenuInPopover: Story = {
-  render: function NestedContextMenuInPopoverStory() {
-    const triggerRef = useRef<HTMLDivElement>(null)
-
-    const Item = () => {
-      return (
-        <>
-          <div
-            ref={triggerRef}
-            className="p-8"
+    // File operations menu - reusable in both dropdown and context menu
+    const fileOperationsMenu = (
+      <Dropdown.Content>
+        <Dropdown.Label>File Operations</Dropdown.Label>
+        {fileOperations.map((operation) => (
+          <Dropdown.Item
+            key={operation.id}
+            variant={operation.variant}
+            onClick={() => console.log(`Executing ${operation.label} operation`)}
           >
-            Right click me for selection menu
-          </div>
-          <ContextMenu
-            disabledNested
-            triggerRef={triggerRef}
-          >
-            <ContextMenu.Content>
-              <ContextMenu.Item>
-                <ContextMenu.Value>Copy</ContextMenu.Value>
-              </ContextMenu.Item>
-              <ContextMenu.Item>
-                <ContextMenu.Value>Cut</ContextMenu.Value>
-              </ContextMenu.Item>
-              <ContextMenu.Item>
-                <ContextMenu.Value>Paste</ContextMenu.Value>
-              </ContextMenu.Item>
-              <ContextMenu.Divider />
-              <ContextMenu.Item variant="danger">
-                <ContextMenu.Value>Delete</ContextMenu.Value>
-              </ContextMenu.Item>
-            </ContextMenu.Content>
-          </ContextMenu>
-        </>
-      )
-    }
+            <Dropdown.Value>{operation.label}</Dropdown.Value>
+          </Dropdown.Item>
+        ))}
+      </Dropdown.Content>
+    )
 
     return (
-      <>
-        <Popover>
-          <Popover.Trigger>
-            <Button>Open Popover</Button>
-          </Popover.Trigger>
+      <div className="space-y-8 p-8">
+        <h2 className="text-body-large-strong">File Manager Example</h2>
 
-          <Popover.Content>
-            <Item />
-          </Popover.Content>
-        </Popover>
-      </>
+        <div className="flex gap-4">
+          <div>
+            <p className="mb-2">Toolbar Button</p>
+            <Dropdown>
+              <Dropdown.Trigger>
+                <Dropdown.Value>File Operations</Dropdown.Value>
+              </Dropdown.Trigger>
+              {fileOperationsMenu}
+            </Dropdown>
+          </div>
+
+          <div>
+            <p className="mb-2">Right-click Menu</p>
+            <ContextMenu>
+              <ContextMenu.Trigger>
+                <div className="bg-secondary-background rounded-lg border border-dashed p-4">
+                  📁 Folder (right-click)
+                </div>
+              </ContextMenu.Trigger>
+              {fileOperationsMenu}
+            </ContextMenu>
+          </div>
+        </div>
+
+        <div className="bg-secondary-background rounded-xl p-4">
+          <strong>Business Value:</strong> Same menu logic works in both toolbar dropdown and
+          right-click menu, reducing code duplication and ensuring interaction consistency.
+        </div>
+      </div>
     )
   },
 }
 
 /**
- * [TEST] ContextMenu component in readOnly state.
+ * [TEST] Readonly: Demonstrates ContextMenu in readOnly state.
  *
- * In readOnly mode:
+ * Features:
  * - The menu can be opened and closed normally
  * - Clicking on menu items will not execute their onClick handlers
+ * - Visual feedback remains intact
  * - Useful for displaying menu options without allowing actions
+ *
+ * Use cases:
+ * - Preview mode interfaces
+ * - Read-only user permissions
+ * - Display-only menu scenarios
  */
 export const Readonly: Story = {
   render: function ReadonlyStory() {
@@ -1069,33 +1100,6 @@ export const Readonly: Story = {
           menu can still be opened and closed normally.
         </div>
       </div>
-    )
-  },
-}
-
-/**
- * ContextMenu component in light variant.
- */
-export const Light: Story = {
-  render: function LightStory() {
-    return (
-      <ContextMenu variant="light">
-        <ContextMenu.Trigger className="rounded-lg border p-8">
-          <ContextMenu.Value>Right click me for context menu</ContextMenu.Value>
-        </ContextMenu.Trigger>
-        <ContextMenu.Content>
-          <ContextMenu.Item>
-            <ContextMenu.Value>Copy</ContextMenu.Value>
-          </ContextMenu.Item>
-          <ContextMenu.Item>
-            <ContextMenu.Value>Cut</ContextMenu.Value>
-          </ContextMenu.Item>
-        </ContextMenu.Content>
-        <ContextMenu.Divider />
-        <ContextMenu.Item variant="danger">
-          <ContextMenu.Value>Delete</ContextMenu.Value>
-        </ContextMenu.Item>
-      </ContextMenu>
     )
   },
 }

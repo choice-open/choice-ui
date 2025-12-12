@@ -19,13 +19,14 @@ export default meta
 type Story = StoryObj<typeof MultiSelect>
 
 /**
- * Basic multiple selection component.
+ * Basic: The simplest usage of MultiSelect.
  *
  * Features:
  * - Multiple selection with chip-based display
  * - Individual item removal
  * - Keyboard navigation support
  * - Standard dropdown positioning
+ * - Controlled selection state
  */
 export const Basic: Story = {
   render: function BasicStory() {
@@ -91,15 +92,21 @@ export const Basic: Story = {
 }
 
 /**
- * Multi-select with maximum and minimum selection limits.
+ * Disabled: Demonstrates disabled MultiSelect functionality.
+ *
+ * Features:
+ * - Disabled component prevents interaction
+ * - Visual feedback for disabled state
+ * - Selected values remain visible
+ * - Useful for conditional availability
  */
-export const WithLimits: Story = {
-  render: function WithLimitsStory() {
-    const [values, setValues] = useState<string[]>(["option-2"])
+export const Disabled: Story = {
+  render: function DisabledStory() {
+    const [values] = useState<string[]>(["option-2", "option-4"])
 
     const options = useMemo(
       () =>
-        Array.from({ length: 8 }, (_, i) => ({
+        Array.from({ length: 5 }, (_, i) => ({
           value: `option-${i + 1}`,
           label: `Option ${i + 1}`,
         })),
@@ -116,15 +123,13 @@ export const WithLimits: Story = {
     return (
       <div className="space-y-4">
         <div className="flex flex-col gap-2">
-          <Label>Multi-Select with Limits (Max 3, Min 1)</Label>
+          <Label>Disabled Multi-Select</Label>
           <MultiSelect
             values={values}
-            onChange={setValues}
-            maxSelection={3}
-            minSelection={1}
+            disabled
           >
             <MultiSelect.Trigger
-              placeholder="Select 1-3 options..."
+              placeholder="Select options..."
               getDisplayValue={getDisplayValue}
               className="w-80"
             />
@@ -143,16 +148,13 @@ export const WithLimits: Story = {
         </div>
 
         <div className="w-80 rounded-xl border p-4">
-          <h3 className="font-strong mb-2">Selection Status</h3>
+          <h3 className="font-strong mb-2">Component State</h3>
           <div className="space-y-1">
             <div>
-              Count: <span className="font-mono">{values.length}</span>
+              Status: <span className="font-mono text-red-600">Disabled</span>
             </div>
             <div>
-              Can add more: <span className="font-mono">{values.length < 3 ? "Yes" : "No"}</span>
-            </div>
-            <div>
-              Can remove: <span className="font-mono">{values.length > 1 ? "Yes" : "No"}</span>
+              Selected: <span className="font-mono">{values.join(", ")}</span>
             </div>
           </div>
         </div>
@@ -162,7 +164,187 @@ export const WithLimits: Story = {
 }
 
 /**
- * Multi-select with icons and complex data.
+ * DisabledItems: Demonstrates disabled items in MultiSelect.
+ *
+ * Features:
+ * - Individual items can be disabled
+ * - Disabled items cannot be selected
+ * - Visual feedback for disabled items
+ * - Maintains keyboard navigation flow
+ */
+export const DisabledItems: Story = {
+  render: function DisabledItemsStory() {
+    const [values, setValues] = useState<string[]>(["option-1", "option-3"])
+
+    const options = useMemo(
+      () =>
+        Array.from({ length: 6 }, (_, i) => ({
+          value: `option-${i + 1}`,
+          label: `Option ${i + 1}`,
+          disabled: i === 2,
+        })),
+      [],
+    )
+
+    const getDisplayValue = useCallback(
+      (value: string) => {
+        return options.find((opt) => opt.value === value)?.label || value
+      },
+      [options],
+    )
+
+    return (
+      <div className="space-y-4">
+        <div className="flex flex-col gap-2">
+          <Label>Disabled Items</Label>
+          <MultiSelect
+            values={values}
+            onChange={setValues}
+          >
+            <MultiSelect.Trigger
+              placeholder="Select options..."
+              getDisplayValue={getDisplayValue}
+              className="w-80"
+            />
+            <MultiSelect.Content>
+              {options.map((option) => (
+                <MultiSelect.Item
+                  key={option.value}
+                  value={option.value}
+                  disabled={option.disabled}
+                >
+                  {option.label}
+                </MultiSelect.Item>
+              ))}
+            </MultiSelect.Content>
+          </MultiSelect>
+        </div>
+      </div>
+    )
+  },
+}
+
+/**
+ * LargeSize: Demonstrates MultiSelect with large size variant.
+ *
+ * Features:
+ * - Large trigger size
+ * - Large menu items
+ * - Consistent sizing across components
+ * - Better visibility and touch targets
+ */
+export const LargeSize: Story = {
+  render: function LargeSizeStory() {
+    const [values, setValues] = useState<string[]>(["option-1", "option-3"])
+
+    const options = useMemo(
+      () =>
+        Array.from({ length: 6 }, (_, i) => ({
+          value: `option-${i + 1}`,
+          label: `Large Option ${i + 1}`,
+        })),
+      [],
+    )
+
+    const getDisplayValue = useCallback(
+      (value: string) => {
+        return options.find((opt) => opt.value === value)?.label || value
+      },
+      [options],
+    )
+
+    return (
+      <div className="space-y-4">
+        <div className="flex flex-col gap-2">
+          <Label>Large Multi-Select</Label>
+          <MultiSelect
+            values={values}
+            onChange={setValues}
+            size="large"
+          >
+            <MultiSelect.Trigger
+              placeholder="Select options..."
+              getDisplayValue={getDisplayValue}
+              className="w-80"
+            />
+            <MultiSelect.Content>
+              <MultiSelect.Label>Available Options</MultiSelect.Label>
+              {options.map((option) => (
+                <MultiSelect.Item
+                  key={option.value}
+                  value={option.value}
+                >
+                  {option.label}
+                </MultiSelect.Item>
+              ))}
+            </MultiSelect.Content>
+          </MultiSelect>
+        </div>
+
+        <div className="w-80 rounded-xl border p-4">
+          <h3 className="font-strong mb-2">Selected Values</h3>
+          <div className="space-y-1">
+            <div>
+              Size: <span className="font-mono">Large</span>
+            </div>
+            <div>
+              Count: <span className="font-mono">{values.length}</span>
+            </div>
+            <div>
+              Values: <span className="font-mono">[{values.join(", ")}]</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  },
+}
+
+/**
+ * LightVariant: Demonstrates MultiSelect with light variant styling.
+ *
+ * Features:
+ * - Light variant visual style
+ * - Standard selection functionality
+ * - Chip-based display
+ * - Consistent with light theme
+ */
+export const LightVariant: Story = {
+  render: function LightVariantStory() {
+    const [values, setValues] = useState<string[]>([])
+    return (
+      <MultiSelect
+        values={values}
+        onChange={setValues}
+        variant="light"
+      >
+        <MultiSelect.Trigger className="w-80" />
+        <MultiSelect.Content>
+          <MultiSelect.Item value="apple">Apple</MultiSelect.Item>
+          <MultiSelect.Item value="banana">Banana</MultiSelect.Item>
+          <MultiSelect.Item value="orange">Orange</MultiSelect.Item>
+          <MultiSelect.Item value="grape">Grape</MultiSelect.Item>
+          <MultiSelect.Item value="strawberry">Strawberry</MultiSelect.Item>
+          <MultiSelect.Item value="kiwi">Kiwi</MultiSelect.Item>
+        </MultiSelect.Content>
+      </MultiSelect>
+    )
+  },
+}
+
+/**
+ * WithIcons: Demonstrates MultiSelect with icons and complex data.
+ *
+ * Features:
+ * - Icons displayed in menu items
+ * - Icons shown in selected chips
+ * - Complex data structures support
+ * - Maximum selection limit
+ *
+ * Use cases:
+ * - Field type selection
+ * - Category selection with icons
+ * - Visual option identification
  */
 export const WithIcons: Story = {
   render: function WithIconsStory() {
@@ -249,10 +431,21 @@ export const WithIcons: Story = {
 }
 
 /**
- * Multi-select with dividers and labels for better organization.
+ * WithLabelsAndDividers: Demonstrates MultiSelect with labels and dividers for organization.
+ *
+ * Features:
+ * - Section labels for grouping
+ * - Visual dividers for separation
+ * - Better menu organization
+ * - Hierarchical menu structure
+ *
+ * Use cases:
+ * - Plan selection with categories
+ * - Grouped option lists
+ * - Complex menu structures
  */
-export const WithDividers: Story = {
-  render: function WithDividersStory() {
+export const WithLabelsAndDividers: Story = {
+  render: function WithLabelsAndDividersStory() {
     const [values, setValues] = useState<string[]>(["basic-1", "premium-1"])
 
     const getDisplayValue = useCallback((value: string) => {
@@ -318,7 +511,6 @@ export const WithDividers: Story = {
   },
 }
 
-// 固定的城市名称列表，确保 SSR 和客户端渲染一致
 const CITY_NAMES_MULTI = [
   "New York",
   "Los Angeles",
@@ -435,7 +627,19 @@ const CITY_NAMES_MULTI = [
 ]
 
 /**
- * Multi-select with long list of options for performance testing.
+ * LongList: Demonstrates MultiSelect with a long list of options and performance optimization.
+ *
+ * Features:
+ * - Long list of options (100 items)
+ * - Automatic scrolling when content exceeds height
+ * - Scroll arrows for navigation
+ * - Performance optimization for large lists
+ * - Maximum selection limit
+ *
+ * Use cases:
+ * - City/region selectors
+ * - Long option lists
+ * - Large dataset selection
  */
 export const LongList: Story = {
   render: function LongListStory() {
@@ -511,15 +715,26 @@ export const LongList: Story = {
 }
 
 /**
- * Disabled multi-select component.
+ * WithLimits: Demonstrates MultiSelect with maximum and minimum selection limits.
+ *
+ * Features:
+ * - Maximum selection limit (prevents selecting more)
+ * - Minimum selection limit (prevents removing below threshold)
+ * - Visual feedback for limit constraints
+ * - Selection state validation
+ *
+ * Use cases:
+ * - Required field selection
+ * - Limited choice scenarios
+ * - Form validation requirements
  */
-export const Disabled: Story = {
-  render: function DisabledStory() {
-    const [values] = useState<string[]>(["option-2", "option-4"])
+export const WithLimits: Story = {
+  render: function WithLimitsStory() {
+    const [values, setValues] = useState<string[]>(["option-2"])
 
     const options = useMemo(
       () =>
-        Array.from({ length: 5 }, (_, i) => ({
+        Array.from({ length: 8 }, (_, i) => ({
           value: `option-${i + 1}`,
           label: `Option ${i + 1}`,
         })),
@@ -536,13 +751,15 @@ export const Disabled: Story = {
     return (
       <div className="space-y-4">
         <div className="flex flex-col gap-2">
-          <Label>Disabled Multi-Select</Label>
+          <Label>Multi-Select with Limits (Max 3, Min 1)</Label>
           <MultiSelect
             values={values}
-            disabled
+            onChange={setValues}
+            maxSelection={3}
+            minSelection={1}
           >
             <MultiSelect.Trigger
-              placeholder="Select options..."
+              placeholder="Select 1-3 options..."
               getDisplayValue={getDisplayValue}
               className="w-80"
             />
@@ -561,138 +778,16 @@ export const Disabled: Story = {
         </div>
 
         <div className="w-80 rounded-xl border p-4">
-          <h3 className="font-strong mb-2">Component State</h3>
+          <h3 className="font-strong mb-2">Selection Status</h3>
           <div className="space-y-1">
-            <div>
-              Status: <span className="font-mono text-red-600">Disabled</span>
-            </div>
-            <div>
-              Selected: <span className="font-mono">{values.join(", ")}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  },
-}
-
-/**
- * Disabled items
- */
-export const DisabledItems: Story = {
-  render: function DisabledItemsStory() {
-    const [values, setValues] = useState<string[]>(["option-1", "option-3"])
-
-    const options = useMemo(
-      () =>
-        Array.from({ length: 6 }, (_, i) => ({
-          value: `option-${i + 1}`,
-          label: `Option ${i + 1}`,
-          disabled: i === 2,
-        })),
-      [],
-    )
-
-    const getDisplayValue = useCallback(
-      (value: string) => {
-        return options.find((opt) => opt.value === value)?.label || value
-      },
-      [options],
-    )
-
-    return (
-      <div className="space-y-4">
-        <div className="flex flex-col gap-2">
-          <Label>Disabled Items</Label>
-          <MultiSelect
-            values={values}
-            onChange={setValues}
-          >
-            <MultiSelect.Trigger
-              placeholder="Select options..."
-              getDisplayValue={getDisplayValue}
-              className="w-80"
-            />
-            <MultiSelect.Content>
-              {options.map((option) => (
-                <MultiSelect.Item
-                  key={option.value}
-                  value={option.value}
-                  disabled={option.disabled}
-                >
-                  {option.label}
-                </MultiSelect.Item>
-              ))}
-            </MultiSelect.Content>
-          </MultiSelect>
-        </div>
-      </div>
-    )
-  },
-}
-
-/**
- * Large size multi-select component.
- */
-export const Large: Story = {
-  render: function LargeStory() {
-    const [values, setValues] = useState<string[]>(["option-1", "option-3"])
-
-    const options = useMemo(
-      () =>
-        Array.from({ length: 6 }, (_, i) => ({
-          value: `option-${i + 1}`,
-          label: `Large Option ${i + 1}`,
-        })),
-      [],
-    )
-
-    const getDisplayValue = useCallback(
-      (value: string) => {
-        return options.find((opt) => opt.value === value)?.label || value
-      },
-      [options],
-    )
-
-    return (
-      <div className="space-y-4">
-        <div className="flex flex-col gap-2">
-          <Label>Large Multi-Select</Label>
-          <MultiSelect
-            values={values}
-            onChange={setValues}
-            size="large"
-          >
-            <MultiSelect.Trigger
-              placeholder="Select options..."
-              getDisplayValue={getDisplayValue}
-              className="w-80"
-            />
-            <MultiSelect.Content>
-              <MultiSelect.Label>Available Options</MultiSelect.Label>
-              {options.map((option) => (
-                <MultiSelect.Item
-                  key={option.value}
-                  value={option.value}
-                >
-                  {option.label}
-                </MultiSelect.Item>
-              ))}
-            </MultiSelect.Content>
-          </MultiSelect>
-        </div>
-
-        <div className="w-80 rounded-xl border p-4">
-          <h3 className="font-strong mb-2">Selected Values</h3>
-          <div className="space-y-1">
-            <div>
-              Size: <span className="font-mono">Large</span>
-            </div>
             <div>
               Count: <span className="font-mono">{values.length}</span>
             </div>
             <div>
-              Values: <span className="font-mono">[{values.join(", ")}]</span>
+              Can add more: <span className="font-mono">{values.length < 3 ? "Yes" : "No"}</span>
+            </div>
+            <div>
+              Can remove: <span className="font-mono">{values.length > 1 ? "Yes" : "No"}</span>
             </div>
           </div>
         </div>
@@ -702,14 +797,15 @@ export const Large: Story = {
 }
 
 /**
- * Exclusive options demonstration.
+ * ExclusiveOptions: Demonstrates exclusive options with group and global exclusivity.
  *
  * Features:
- * - exclusiveIndex > 0: Group exclusive (groups mutually exclusive, multiple within group allowed)
- * - exclusiveIndex = -1: Global exclusive (clears all other options)
- * - exclusiveIndex = undefined: No exclusive constraint (but cleared when selecting constrained options)
+ * - Group exclusive (exclusiveIndex > 0): Groups mutually exclusive, multiple within group allowed
+ * - Global exclusive (exclusiveIndex = -1): Clears all other options
+ * - No constraint (exclusiveIndex = undefined): No exclusive constraint
+ * - Automatic clearing of conflicting selections
  *
- * **Exclusive Options Rules:**
+ * Exclusive Options Rules:
  * - Group 1 (A, B, C): Can select multiple within group
  * - Group 2 (D, E, F): Can select multiple within group
  * - Groups are mutually exclusive (selecting Group 2 clears Group 1)
@@ -820,11 +916,17 @@ export const ExclusiveOptions: Story = {
 }
 
 /**
- * Control whether the menu closes when selecting options.
+ * CloseOnSelect: Demonstrates controlling whether the menu closes when selecting options.
  *
  * Features:
- * - closeOnSelect=false: Menu stays open (default behavior) - Menu stays open after selecting options
+ * - closeOnSelect=false: Menu stays open after selecting options (default behavior)
  * - closeOnSelect=true: Menu closes after each selection
+ * - Side-by-side comparison of both behaviors
+ * - Better UX for multiple selections
+ *
+ * Use cases:
+ * - Quick multi-selection (keep open)
+ * - Single selection scenarios (close on select)
  */
 export const CloseOnSelect: Story = {
   render: function CloseOnSelectStory() {
@@ -908,19 +1010,19 @@ export const CloseOnSelect: Story = {
 }
 
 /**
- * Validation messages for constraints.
+ * ValidationMessages: Demonstrates validation messages for selection constraints.
  *
  * Features:
  * - Shows validation messages when constraints are violated
  * - Customizable messages via i18n prop
  * - Auto-dismiss after 3 seconds
  * - showValidationMessage prop to control display
+ * - Custom vs default message comparison
  *
- * **Instructions:**
- * - Try selecting more than the maximum allowed items
- * - Try removing items below the minimum required
- * - Notice how messages auto-dismiss after 3 seconds
- * - Compare custom vs default messages
+ * Use cases:
+ * - Form validation feedback
+ * - User guidance for constraints
+ * - Internationalization support
  */
 export const ValidationMessages: Story = {
   render: function ValidationMessagesStory() {
@@ -1037,8 +1139,18 @@ export const ValidationMessages: Story = {
 }
 
 /**
- * MaxChips
+ * MaxChips: Demonstrates limiting the number of visible chips in the trigger.
  *
+ * Features:
+ * - Maximum number of visible chips
+ * - Overflow indicator when limit exceeded
+ * - Compact display for many selections
+ * - Better UI for space-constrained layouts
+ *
+ * Use cases:
+ * - Narrow input fields
+ * - Mobile interfaces
+ * - Space-efficient designs
  */
 export const MaxChips: Story = {
   render: function MaxChipsStory() {
@@ -1066,7 +1178,18 @@ export const MaxChips: Story = {
 }
 
 /**
- * ChipVariant
+ * ChipVariant: Demonstrates different chip visual variants.
+ *
+ * Features:
+ * - Multiple chip variants (default, accent, success)
+ * - Dynamic variant selection
+ * - Visual distinction for selected items
+ * - Consistent styling across variants
+ *
+ * Use cases:
+ * - Status-based selection
+ * - Category differentiation
+ * - Visual hierarchy
  */
 export const ChipVariant: Story = {
   render: function VariantStory() {
@@ -1109,12 +1232,18 @@ export const ChipVariant: Story = {
 }
 
 /**
- * Custom chip rendering example.
+ * CustomChip: Demonstrates custom chip rendering with personalized styling.
  *
  * Features:
  * - Custom chip appearance with custom colors
  * - Custom delete button styling
+ * - Emoji-based visual indicators
  * - Maintains all standard functionality
+ *
+ * Use cases:
+ * - Branded interfaces
+ * - Themed applications
+ * - Enhanced visual appeal
  */
 export const CustomChip: Story = {
   render: function CustomChipExample() {
@@ -1198,9 +1327,9 @@ export const CustomChip: Story = {
 }
 
 /**
- * [TEST] MultiSelect component in readOnly state.
+ * [TEST] Readonly: Demonstrates MultiSelect in readOnly state.
  *
- * In readOnly mode:
+ * Features:
  * - The menu can be opened and closed normally
  * - Clicking on options will not change the current selection
  * - The menu will remain open after clicking an option
@@ -1208,10 +1337,10 @@ export const CustomChip: Story = {
  * - Backspace key cannot remove chips
  * - Useful for displaying options without allowing changes
  *
- * **How to test:**
- * - Try clicking on different options - the selection should not change and the change count should remain at 0
- * - The menu can still be opened and closed normally
- * - Try clicking the remove button on chips or pressing Backspace - chips should not be removable in readonly mode
+ * Use cases:
+ * - Preview mode interfaces
+ * - Read-only user permissions
+ * - Display-only selection scenarios
  */
 export const Readonly: Story = {
   render: function ReadonlyStory() {
@@ -1252,32 +1381,6 @@ export const Readonly: Story = {
           </MultiSelect.Content>
         </MultiSelect>
       </div>
-    )
-  },
-}
-
-/**
- * MultiSelect component in light variant.
- */
-export const Light: Story = {
-  render: function LightStory() {
-    const [values, setValues] = useState<string[]>([])
-    return (
-      <MultiSelect
-        values={values}
-        onChange={setValues}
-        variant="light"
-      >
-        <MultiSelect.Trigger className="w-80" />
-        <MultiSelect.Content>
-          <MultiSelect.Item value="apple">Apple</MultiSelect.Item>
-          <MultiSelect.Item value="banana">Banana</MultiSelect.Item>
-          <MultiSelect.Item value="orange">Orange</MultiSelect.Item>
-          <MultiSelect.Item value="grape">Grape</MultiSelect.Item>
-          <MultiSelect.Item value="strawberry">Strawberry</MultiSelect.Item>
-          <MultiSelect.Item value="kiwi">Kiwi</MultiSelect.Item>
-        </MultiSelect.Content>
-      </MultiSelect>
     )
   },
 }

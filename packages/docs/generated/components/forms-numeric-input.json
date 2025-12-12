@@ -28,6 +28,7 @@
     "type NumericInputMenuTriggerProps",
     "type NumericInputVariableProps",
     "type NumberResult",
+    "type NumericChangeDetail",
     "type NumericInputValue"
   ],
   "props": [

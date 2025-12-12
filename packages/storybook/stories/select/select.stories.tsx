@@ -18,13 +18,13 @@ export default meta
 type Story = StoryObj<typeof Select>
 
 /**
- * Basic select component using the new MenuContext system.
+ * Basic: The simplest usage of Select.
  *
  * Features:
- * - Enhanced MenuContextItem components
- * - Unified interaction handling with useEventCallback
- * - Improved keyboard navigation and selection
- * - Better ref management for floating UI
+ * - Single selection dropdown
+ * - Controlled value state
+ * - Keyboard navigation support
+ * - Automatic menu dismissal on selection
  */
 export const Basic: Story = {
   render: function BasicStory() {
@@ -54,7 +54,13 @@ export const Basic: Story = {
 }
 
 /**
- * Select component in disabled state.
+ * Disabled: Demonstrates disabled Select functionality.
+ *
+ * Features:
+ * - Disabled component prevents interaction
+ * - Visual feedback for disabled state
+ * - Selected value remains visible
+ * - Useful for conditional availability
  */
 export const Disabled: Story = {
   render: function DisabledStory() {
@@ -85,7 +91,13 @@ export const Disabled: Story = {
 }
 
 /**
- * Select with individual disabled options.
+ * DisabledOptions: Demonstrates disabled options in Select.
+ *
+ * Features:
+ * - Individual options can be disabled
+ * - Disabled options cannot be selected
+ * - Visual feedback for disabled options
+ * - Maintains keyboard navigation flow
  */
 export const DisabledOptions: Story = {
   render: function DisabledOptionsStory() {
@@ -128,14 +140,65 @@ export const DisabledOptions: Story = {
 }
 
 /**
- * Select with dividers for grouping options.
+ * LargeSize: Demonstrates Select with large size variant.
+ *
+ * Features:
+ * - Large trigger size
+ * - Large menu items
+ * - Prefix icon support
+ * - Consistent sizing across components
  */
-export const WithDivider: Story = {
-  render: function WithDividerStory() {
-    const [value, setValue] = useState<string>("Category A - Option 1")
+export const LargeSize: Story = {
+  render: function LargeSizeStory() {
+    const [value, setValue] = useState<string>("option-1")
+    const options = Array.from({ length: 8 }, (_, i) => ({
+      value: `option-${i + 1}`,
+      label: `Option ${i + 1}`,
+    }))
 
     return (
       <Select
+        size="large"
+        value={value}
+        onChange={setValue}
+      >
+        <Select.Trigger
+          prefixElement={<Settings />}
+          className="w-48"
+        >
+          <Select.Value>
+            {value ? options.find((option) => option.value === value)?.label : "Select song..."}
+          </Select.Value>
+        </Select.Trigger>
+        <Select.Content>
+          {options.map((option) => (
+            <Select.Item
+              key={option.value}
+              value={option.value}
+            >
+              <Select.Value>{option.label}</Select.Value>
+            </Select.Item>
+          ))}
+        </Select.Content>
+      </Select>
+    )
+  },
+}
+
+/**
+ * LightVariant: Demonstrates Select with light variant styling.
+ *
+ * Features:
+ * - Light variant visual style
+ * - Standard selection functionality
+ * - Consistent with light theme
+ */
+export const LightVariant: Story = {
+  render: function LightVariantStory() {
+    const [value, setValue] = useState<string>("Option 2")
+    return (
+      <Select
+        variant="light"
         value={value}
         onChange={setValue}
       >
@@ -143,22 +206,57 @@ export const WithDivider: Story = {
           <Select.Value>{value || "Select an option..."}</Select.Value>
         </Select.Trigger>
         <Select.Content>
-          <Select.Item value="Category A - Option 1">
-            <Select.Value>Category A - Option 1</Select.Value>
+          {Array.from({ length: 5 }, (_, i) => (
+            <Select.Item
+              key={i}
+              value={`Option ${i + 1}`}
+            >
+              <Select.Value>Option {i + 1}</Select.Value>
+            </Select.Item>
+          ))}
+        </Select.Content>
+      </Select>
+    )
+  },
+}
+
+/**
+ * WithIcons: Demonstrates Select with icons for visual recognition.
+ *
+ * Features:
+ * - Icons displayed in menu items
+ * - Better visual recognition
+ * - Enhanced user experience
+ *
+ * Use cases:
+ * - Field type selection
+ * - Category selection with icons
+ * - Visual option identification
+ */
+export const WithIcons: Story = {
+  render: function WithIconsStory() {
+    const [value, setValue] = useState<string>("Attachment Field")
+
+    return (
+      <Select
+        value={value}
+        onChange={setValue}
+      >
+        <Select.Trigger>
+          <Select.Value>{value || "Select field type..."}</Select.Value>
+        </Select.Trigger>
+        <Select.Content>
+          <Select.Item value="Attachment Field">
+            <FieldTypeAttachment />
+            <Select.Value>Attachment Field</Select.Value>
           </Select.Item>
-          <Select.Item value="Category A - Option 2">
-            <Select.Value>Category A - Option 2</Select.Value>
+          <Select.Item value="Checkbox Field">
+            <FieldTypeCheckbox />
+            <Select.Value>Checkbox Field</Select.Value>
           </Select.Item>
-          <Select.Divider />
-          <Select.Item value="Category B - Option 1">
-            <Select.Value>Category B - Option 1</Select.Value>
-          </Select.Item>
-          <Select.Item value="Category B - Option 2">
-            <Select.Value>Category B - Option 2</Select.Value>
-          </Select.Item>
-          <Select.Divider />
-          <Select.Item value="Category C - Option 1">
-            <Select.Value>Category C - Option 1</Select.Value>
+          <Select.Item value="Count Field">
+            <FieldTypeCount />
+            <Select.Value>Count Field</Select.Value>
           </Select.Item>
         </Select.Content>
       </Select>
@@ -167,10 +265,21 @@ export const WithDivider: Story = {
 }
 
 /**
- * Select with labels for better organization.
+ * WithLabelsAndDividers: Demonstrates Select with labels and dividers for organization.
+ *
+ * Features:
+ * - Section labels for grouping
+ * - Visual dividers for separation
+ * - Better menu organization
+ * - Hierarchical menu structure
+ *
+ * Use cases:
+ * - Plan selection with categories
+ * - Grouped option lists
+ * - Complex menu structures
  */
-export const WithLabels: Story = {
-  render: function WithLabelsStory() {
+export const WithLabelsAndDividers: Story = {
+  render: function WithLabelsAndDividersStory() {
     const [value, setValue] = useState<string>("Starter")
 
     return (
@@ -213,11 +322,21 @@ export const WithLabels: Story = {
 }
 
 /**
- * Select with icons for better visual recognition.
+ * WithDivider: Demonstrates Select with dividers for grouping options.
+ *
+ * Features:
+ * - Visual dividers for separation
+ * - Grouped option categories
+ * - Better menu organization
+ *
+ * Use cases:
+ * - Category-based selection
+ * - Grouped option lists
+ * - Visual separation of options
  */
-export const WithIcons: Story = {
-  render: function WithIconsStory() {
-    const [value, setValue] = useState<string>("Attachment Field")
+export const WithDivider: Story = {
+  render: function WithDividerStory() {
+    const [value, setValue] = useState<string>("Category A - Option 1")
 
     return (
       <Select
@@ -225,20 +344,25 @@ export const WithIcons: Story = {
         onChange={setValue}
       >
         <Select.Trigger>
-          <Select.Value>{value || "Select field type..."}</Select.Value>
+          <Select.Value>{value || "Select an option..."}</Select.Value>
         </Select.Trigger>
         <Select.Content>
-          <Select.Item value="Attachment Field">
-            <FieldTypeAttachment />
-            <Select.Value>Attachment Field</Select.Value>
+          <Select.Item value="Category A - Option 1">
+            <Select.Value>Category A - Option 1</Select.Value>
           </Select.Item>
-          <Select.Item value="Checkbox Field">
-            <FieldTypeCheckbox />
-            <Select.Value>Checkbox Field</Select.Value>
+          <Select.Item value="Category A - Option 2">
+            <Select.Value>Category A - Option 2</Select.Value>
           </Select.Item>
-          <Select.Item value="Count Field">
-            <FieldTypeCount />
-            <Select.Value>Count Field</Select.Value>
+          <Select.Divider />
+          <Select.Item value="Category B - Option 1">
+            <Select.Value>Category B - Option 1</Select.Value>
+          </Select.Item>
+          <Select.Item value="Category B - Option 2">
+            <Select.Value>Category B - Option 2</Select.Value>
+          </Select.Item>
+          <Select.Divider />
+          <Select.Item value="Category C - Option 1">
+            <Select.Value>Category C - Option 1</Select.Value>
           </Select.Item>
         </Select.Content>
       </Select>
@@ -246,7 +370,6 @@ export const WithIcons: Story = {
   },
 }
 
-// 固定的城市名称列表，确保 SSR 和客户端渲染一致
 const CITY_NAMES = [
   "New York",
   "Los Angeles",
@@ -363,7 +486,18 @@ const CITY_NAMES = [
 ]
 
 /**
- * Select with a large number of options demonstrating scroll performance.
+ * LongList: Demonstrates Select with a long list of options and scroll performance.
+ *
+ * Features:
+ * - Long list of options (100 items)
+ * - Automatic scrolling when content exceeds height
+ * - Scroll arrows for navigation
+ * - Performance optimization for large lists
+ *
+ * Use cases:
+ * - City/region selectors
+ * - Long option lists
+ * - Large dataset selection
  */
 export const LongList: Story = {
   render: function LongListStory() {
@@ -405,48 +539,13 @@ export const LongList: Story = {
 }
 
 /**
- * Select that matches the trigger width for consistent layout.
- */
-export const MatchTriggerWidth: Story = {
-  render: function MatchTriggerWidthStory() {
-    const [value, setValue] = useState<string>("medium")
-
-    const options = [
-      { value: "small", label: "Small" },
-      { value: "medium", label: "Medium" },
-      { value: "large", label: "Large" },
-      { value: "extra-large", label: "Extra Large" },
-    ]
-
-    return (
-      <Select
-        value={value}
-        onChange={setValue}
-        matchTriggerWidth
-      >
-        <Select.Trigger className="w-80">
-          <Select.Value>
-            {value ? options.find((opt) => opt.value === value)?.label : "Select a song..."}
-          </Select.Value>
-        </Select.Trigger>
-        <Select.Content>
-          <Select.Label>Songs</Select.Label>
-          {options.map((option) => (
-            <Select.Item
-              key={option.value}
-              value={option.value}
-            >
-              <Select.Value>{option.label}</Select.Value>
-            </Select.Item>
-          ))}
-        </Select.Content>
-      </Select>
-    )
-  },
-}
-
-/**
- * Select with different placement options.
+ * Placement: Demonstrates Select with different placement options.
+ *
+ * Features:
+ * - Multiple placement options (bottom-start, bottom-end, etc.)
+ * - Automatic positioning adjustments
+ * - Prevents overflow beyond viewport
+ * - Flexible menu positioning
  */
 export const Placement: Story = {
   render: function PlacementStory() {
@@ -519,7 +618,227 @@ export const Placement: Story = {
 }
 
 /**
- * Compound component pattern demonstration.
+ * MatchTriggerWidth: Demonstrates Select menu matching trigger width.
+ *
+ * Features:
+ * - Menu width matches trigger width
+ * - Consistent visual alignment
+ * - Useful for narrow triggers
+ * - Better visual consistency
+ */
+export const MatchTriggerWidth: Story = {
+  render: function MatchTriggerWidthStory() {
+    const [value, setValue] = useState<string>("medium")
+
+    const options = [
+      { value: "small", label: "Small" },
+      { value: "medium", label: "Medium" },
+      { value: "large", label: "Large" },
+      { value: "extra-large", label: "Extra Large" },
+    ]
+
+    return (
+      <Select
+        value={value}
+        onChange={setValue}
+        matchTriggerWidth
+      >
+        <Select.Trigger className="w-80">
+          <Select.Value>
+            {value ? options.find((opt) => opt.value === value)?.label : "Select a song..."}
+          </Select.Value>
+        </Select.Trigger>
+        <Select.Content>
+          <Select.Label>Songs</Select.Label>
+          {options.map((option) => (
+            <Select.Item
+              key={option.value}
+              value={option.value}
+            >
+              <Select.Value>{option.label}</Select.Value>
+            </Select.Item>
+          ))}
+        </Select.Content>
+      </Select>
+    )
+  },
+}
+
+/**
+ * ItemActive: Demonstrates Select.Item with custom onClick action handling.
+ *
+ * Features:
+ * - Items with onClick behave as action items, not selection items
+ * - Clicking executes onClick handler instead of changing Select value
+ * - Menu closes after onClick handler executes
+ * - Current selection value remains unchanged
+ * - Integration with Popover for complex actions
+ *
+ * Use cases:
+ * - Adding action buttons within Select menus
+ * - Settings or configuration options
+ * - Secondary actions within selection menus
+ */
+export const ItemActive: Story = {
+  render: function ItemActiveStory() {
+    const [open, setOpen] = useState(false)
+    const [selectOpen, setSelectOpen] = useState(false)
+    const itemRef = useRef<HTMLDivElement>(null)
+    const [value, setValue] = useState<string | null>(null)
+
+    const options = [
+      { value: "option-1", label: "Option 1" },
+      { value: "option-2", label: "Option 2" },
+      { value: "option-3", label: "Option 3" },
+    ]
+
+    return (
+      <>
+        <Select
+          value={value}
+          onChange={setValue}
+          open={selectOpen}
+          onOpenChange={setSelectOpen}
+        >
+          <Select.Trigger>
+            <Select.Value ref={itemRef}>
+              {value ? options.find((option) => option.value === value)?.label : "Select song..."}
+            </Select.Value>
+          </Select.Trigger>
+          <Select.Content>
+            <Select.Label>Music Library</Select.Label>
+            {options.map((option) => (
+              <Select.Item
+                key={option.value}
+                value={option.value}
+              >
+                <Select.Value>{option.label}</Select.Value>
+              </Select.Item>
+            ))}
+            <Select.Divider />
+            <Select.Label>Actions</Select.Label>
+            <Select.Item
+              onClick={() => {
+                setOpen(true)
+                setSelectOpen(false)
+              }}
+            >
+              <Settings />
+              <Select.Value>Open Music Settings</Select.Value>
+            </Select.Item>
+          </Select.Content>
+        </Select>
+
+        <Popover
+          open={open}
+          onOpenChange={setOpen}
+          triggerRef={itemRef}
+        >
+          <Popover.Content className="w-80 space-y-4 p-4">
+            <h3 className="font-strong">Music Settings</h3>
+            <p className="text-secondary-foreground">
+              Configure your music playback preferences and library settings.
+            </p>
+          </Popover.Content>
+          <Popover.Footer className="flex justify-end gap-2">
+            <Button
+              variant="secondary"
+              onClick={() => setOpen(false)}
+            >
+              Cancel
+            </Button>
+            <Button onClick={() => setOpen(false)}>Save</Button>
+          </Popover.Footer>
+        </Popover>
+      </>
+    )
+  },
+}
+
+/**
+ * CloseOnEscape: Demonstrates ESC key behavior control and event propagation.
+ *
+ * Features:
+ * - closeOnEscape prop controls ESC key behavior
+ * - When enabled (default): Pressing ESC closes menu and prevents event propagation
+ * - When disabled: Pressing ESC does NOT close menu, allowing event to propagate
+ * - Event propagation verification with counter
+ *
+ * Use cases:
+ * - Custom ESC key handling
+ * - Nested menu scenarios
+ * - Event propagation control
+ */
+export const CloseOnEscape: Story = {
+  render: function CloseOnEscapeStory() {
+    const [value, setValue] = useState<string>("Option 2")
+    const [closeOnEscape, setCloseOnEscape] = useState(true)
+    const [escCount, setEscCount] = useState(0)
+
+    React.useEffect(() => {
+      const handleEscape = (e: KeyboardEvent) => {
+        if (e.key === "Escape") {
+          setEscCount((prev) => prev + 1)
+        }
+      }
+
+      window.addEventListener("keydown", handleEscape)
+      return () => window.removeEventListener("keydown", handleEscape)
+    }, [])
+
+    return (
+      <div className="flex flex-col gap-4">
+        <Checkbox
+          value={closeOnEscape}
+          onChange={setCloseOnEscape}
+        >
+          <Checkbox.Label>Close on ESC key</Checkbox.Label>
+        </Checkbox>
+
+        <div className="bg-secondary-background w-64 rounded-xl p-4">
+          <p className="mb-2">
+            Window ESC count: <strong>{escCount}</strong>
+          </p>
+          <p className="text-secondary-foreground">
+            {closeOnEscape
+              ? "When select is open, pressing ESC will close it but NOT increment the counter (event is stopped)."
+              : "When select is open, pressing ESC will increment the counter (event propagates)."}
+          </p>
+        </div>
+
+        <Select
+          matchTriggerWidth
+          value={value}
+          onChange={setValue}
+          closeOnEscape={closeOnEscape}
+        >
+          <Select.Trigger>
+            <Select.Value>{value || "Select an option..."}</Select.Value>
+          </Select.Trigger>
+          <Select.Content>
+            {Array.from({ length: 5 }, (_, i) => (
+              <Select.Item
+                key={i}
+                value={`Option ${i + 1}`}
+              >
+                <Select.Value>Option {i + 1}</Select.Value>
+              </Select.Item>
+            ))}
+          </Select.Content>
+        </Select>
+      </div>
+    )
+  },
+}
+
+/**
+ * [TEST] CompoundComponent: Demonstrates compound component pattern.
+ *
+ * Features:
+ * - Compound component structure (Trigger, Content, Item, etc.)
+ * - Labels and dividers for organization
+ * - Disabled items support
+ * - Controlled selection state
  */
 export const CompoundComponent: Story = {
   render: function CompoundComponentStory() {
@@ -564,7 +883,68 @@ export const CompoundComponent: Story = {
 }
 
 /**
- * [TEST] Select positioned at edge cases for testing placement behavior.
+ * [TEST] Readonly: Demonstrates Select in readOnly state.
+ *
+ * Features:
+ * - The menu can be opened and closed normally
+ * - Clicking on options will not change the current selection
+ * - The menu will remain open after clicking an option
+ * - Useful for displaying options without allowing changes
+ *
+ * Use cases:
+ * - Preview mode interfaces
+ * - Read-only user permissions
+ * - Display-only selection scenarios
+ */
+export const Readonly: Story = {
+  render: function ReadonlyStory() {
+    const [value, setValue] = useState<string>("option-2")
+    const [changeCount, setChangeCount] = useState(0)
+
+    const handleChange = (newValue: string) => {
+      setValue(newValue)
+      setChangeCount((prev) => prev + 1)
+    }
+
+    return (
+      <div className="flex flex-col gap-4">
+        <div className="bg-secondary-background w-64 rounded-xl p-4">
+          <p>Current Selection: {value}</p>
+          <p>Change Count: {changeCount}</p>
+        </div>
+
+        <Select
+          readOnly
+          value={value}
+          onChange={handleChange}
+        >
+          <Select.Trigger>
+            <Select.Value>{value || "Select an option..."}</Select.Value>
+          </Select.Trigger>
+          <Select.Content>
+            {Array.from({ length: 5 }, (_, i) => (
+              <Select.Item
+                key={i}
+                value={`option-${i + 1}`}
+              >
+                <Select.Value>Option {i + 1}</Select.Value>
+              </Select.Item>
+            ))}
+          </Select.Content>
+        </Select>
+      </div>
+    )
+  },
+}
+
+/**
+ * [TEST] MarginalConditions: Demonstrates Select positioned at edge cases for testing placement behavior.
+ *
+ * Features:
+ * - Edge position testing
+ * - Placement behavior verification
+ * - Automatic positioning adjustments
+ * - Overflow prevention
  */
 export const MarginalConditions: Story = {
   render: function MarginalConditionsStory() {
@@ -597,7 +977,14 @@ export const MarginalConditions: Story = {
 }
 
 /**
- * [TEST]Multiple selects testing proper event handling and switching.
+ * [TEST] Multiple: Demonstrates multiple Select components testing proper event handling and switching.
+ *
+ * Features:
+ * - Multiple Select components on same page
+ * - Proper event handling between components
+ * - Switching between selects
+ * - Different placement options
+ * - Icons and disabled items support
  */
 export const Multiple: Story = {
   render: function MultipleStory() {
@@ -726,289 +1113,6 @@ export const Multiple: Story = {
             <li>Third: {value3}</li>
           </ul>
         </div>
-      </div>
-    )
-  },
-}
-
-/**
- * Select.Item with custom onClick action handling.
- *
- * When a Select.Item has an onClick prop, it behaves as an action item rather than a selection item:
- * - Clicking the item executes the onClick handler instead of changing the Select value
- * - The Select menu will close after the onClick handler executes
- * - The current selection value remains unchanged
- * - Useful for adding action buttons within Select menus (e.g., "Settings", "More options", etc.)
- *
- * In this example:
- * - The first three items are normal selection items that update the Select value
- * - The "Open Music Settings" item has an onClick handler that opens a Popover
- * - The item with onClick does not require a value prop, as it won't be selected
- */
-export const ItemActive: Story = {
-  render: function ItemActiveStory() {
-    const [open, setOpen] = useState(false)
-    const [selectOpen, setSelectOpen] = useState(false)
-    const itemRef = useRef<HTMLDivElement>(null)
-    const [value, setValue] = useState<string | null>(null)
-
-    const options = [
-      { value: "option-1", label: "Option 1" },
-      { value: "option-2", label: "Option 2" },
-      { value: "option-3", label: "Option 3" },
-    ]
-
-    return (
-      <>
-        <Select
-          value={value}
-          onChange={setValue}
-          open={selectOpen}
-          onOpenChange={setSelectOpen}
-        >
-          <Select.Trigger>
-            <Select.Value ref={itemRef}>
-              {value ? options.find((option) => option.value === value)?.label : "Select song..."}
-            </Select.Value>
-          </Select.Trigger>
-          <Select.Content>
-            <Select.Label>Music Library</Select.Label>
-            {options.map((option) => (
-              <Select.Item
-                key={option.value}
-                value={option.value}
-              >
-                <Select.Value>{option.label}</Select.Value>
-              </Select.Item>
-            ))}
-            <Select.Divider />
-            <Select.Label>Actions</Select.Label>
-            <Select.Item
-              onClick={() => {
-                setOpen(true)
-                setSelectOpen(false)
-              }}
-            >
-              <Settings />
-              <Select.Value>Open Music Settings</Select.Value>
-            </Select.Item>
-          </Select.Content>
-        </Select>
-
-        <Popover
-          open={open}
-          onOpenChange={setOpen}
-          triggerRef={itemRef}
-        >
-          <Popover.Content className="w-80 space-y-4 p-4">
-            <h3 className="font-strong">Music Settings</h3>
-            <p className="text-secondary-foreground">
-              Configure your music playback preferences and library settings.
-            </p>
-          </Popover.Content>
-          <Popover.Footer className="flex justify-end gap-2">
-            <Button
-              variant="secondary"
-              onClick={() => setOpen(false)}
-            >
-              Cancel
-            </Button>
-            <Button onClick={() => setOpen(false)}>Save</Button>
-          </Popover.Footer>
-        </Popover>
-      </>
-    )
-  },
-}
-
-/**
- * Select component in large size.
- */
-export const Large: Story = {
-  render: function LargeStory() {
-    const [value, setValue] = useState<string>("option-1")
-    const options = Array.from({ length: 8 }, (_, i) => ({
-      value: `option-${i + 1}`,
-      label: `Option ${i + 1}`,
-    }))
-
-    return (
-      <Select
-        size="large"
-        value={value}
-        onChange={setValue}
-      >
-        <Select.Trigger
-          prefixElement={<Settings />}
-          className="w-48"
-        >
-          <Select.Value>
-            {value ? options.find((option) => option.value === value)?.label : "Select song..."}
-          </Select.Value>
-        </Select.Trigger>
-        <Select.Content>
-          {options.map((option) => (
-            <Select.Item
-              key={option.value}
-              value={option.value}
-            >
-              <Select.Value>{option.label}</Select.Value>
-            </Select.Item>
-          ))}
-        </Select.Content>
-      </Select>
-    )
-  },
-}
-
-/**
- * ESC key behavior control and event propagation verification.
- *
- * Use the checkbox to toggle closeOnEscape behavior:
- * - When enabled (default): Pressing ESC closes the select menu and prevents event propagation
- * - When disabled: Pressing ESC does NOT close the select menu, allowing event to propagate
- *
- * The ESC counter tracks window-level ESC events. When closeOnEscape is true and the select is open,
- * pressing ESC will close the menu but NOT increment the counter (event is stopped).
- * When closeOnEscape is false, pressing ESC will increment the counter.
- */
-export const CloseOnEscape: Story = {
-  render: function CloseOnEscapeStory() {
-    const [value, setValue] = useState<string>("Option 2")
-    const [closeOnEscape, setCloseOnEscape] = useState(true)
-    const [escCount, setEscCount] = useState(0)
-
-    React.useEffect(() => {
-      const handleEscape = (e: KeyboardEvent) => {
-        if (e.key === "Escape") {
-          setEscCount((prev) => prev + 1)
-        }
-      }
-
-      window.addEventListener("keydown", handleEscape)
-      return () => window.removeEventListener("keydown", handleEscape)
-    }, [])
-
-    return (
-      <div className="flex flex-col gap-4">
-        <Checkbox
-          value={closeOnEscape}
-          onChange={setCloseOnEscape}
-        >
-          <Checkbox.Label>Close on ESC key</Checkbox.Label>
-        </Checkbox>
-
-        <div className="bg-secondary-background w-64 rounded-xl p-4">
-          <p className="mb-2">
-            Window ESC count: <strong>{escCount}</strong>
-          </p>
-          <p className="text-secondary-foreground">
-            {closeOnEscape
-              ? "When select is open, pressing ESC will close it but NOT increment the counter (event is stopped)."
-              : "When select is open, pressing ESC will increment the counter (event propagates)."}
-          </p>
-        </div>
-
-        <Select
-          matchTriggerWidth
-          value={value}
-          onChange={setValue}
-          closeOnEscape={closeOnEscape}
-        >
-          <Select.Trigger>
-            <Select.Value>{value || "Select an option..."}</Select.Value>
-          </Select.Trigger>
-          <Select.Content>
-            {Array.from({ length: 5 }, (_, i) => (
-              <Select.Item
-                key={i}
-                value={`Option ${i + 1}`}
-              >
-                <Select.Value>Option {i + 1}</Select.Value>
-              </Select.Item>
-            ))}
-          </Select.Content>
-        </Select>
-      </div>
-    )
-  },
-}
-
-/**
- * Select component in light variant.
- */
-export const Light: Story = {
-  render: function LightStory() {
-    const [value, setValue] = useState<string>("Option 2")
-    return (
-      <Select
-        variant="light"
-        value={value}
-        onChange={setValue}
-      >
-        <Select.Trigger>
-          <Select.Value>{value || "Select an option..."}</Select.Value>
-        </Select.Trigger>
-        <Select.Content>
-          {Array.from({ length: 5 }, (_, i) => (
-            <Select.Item
-              key={i}
-              value={`Option ${i + 1}`}
-            >
-              <Select.Value>Option {i + 1}</Select.Value>
-            </Select.Item>
-          ))}
-        </Select.Content>
-      </Select>
-    )
-  },
-}
-
-/**
- * [TEST] Select component in readOnly state.
- *
- * In readOnly mode:
- * - The menu can be opened and closed normally
- * - Clicking on options will not change the current selection
- * - The menu will remain open after clicking an option
- * - Useful for displaying options without allowing changes
- */
-export const Readonly: Story = {
-  render: function ReadonlyStory() {
-    const [value, setValue] = useState<string>("option-2")
-    const [changeCount, setChangeCount] = useState(0)
-
-    const handleChange = (newValue: string) => {
-      setValue(newValue)
-      setChangeCount((prev) => prev + 1)
-    }
-
-    return (
-      <div className="flex flex-col gap-4">
-        <div className="bg-secondary-background w-64 rounded-xl p-4">
-          <p>Current Selection: {value}</p>
-          <p>Change Count: {changeCount}</p>
-        </div>
-
-        <Select
-          readOnly
-          value={value}
-          onChange={handleChange}
-        >
-          <Select.Trigger>
-            <Select.Value>{value || "Select an option..."}</Select.Value>
-          </Select.Trigger>
-          <Select.Content>
-            {Array.from({ length: 5 }, (_, i) => (
-              <Select.Item
-                key={i}
-                value={`option-${i + 1}`}
-              >
-                <Select.Value>Option {i + 1}</Select.Value>
-              </Select.Item>
-            ))}
-          </Select.Content>
-        </Select>
       </div>
     )
   },

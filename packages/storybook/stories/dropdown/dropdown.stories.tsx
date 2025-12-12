@@ -16,14 +16,13 @@ export default meta
 type Story = StoryObj<typeof Dropdown>
 
 /**
- * Basic dropdown with simple menu items using the new MenuContext system.
+ * Basic: The simplest usage of Dropdown.
  *
  * Features:
- * - Enhanced MenuContextItem components
- * - Unified interaction handling
- * - Improved keyboard navigation
- * - Better event handling with useEventCallback
- *
+ * - Click-triggered dropdown menu
+ * - Standard menu items
+ * - Keyboard navigation support
+ * - Automatic dismissal on click outside
  */
 export const Basic: Story = {
   render: function BasicStory() {
@@ -53,7 +52,119 @@ export const Basic: Story = {
 }
 
 /**
- * Dropdown with prefix icons for better visual recognition.
+ * Disabled: Demonstrates disabled Dropdown functionality.
+ *
+ * Features:
+ * - Disabled trigger prevents menu opening
+ * - Disabled items prevent interaction
+ * - Visual feedback for disabled states
+ * - Useful for conditional menu availability
+ */
+export const Disabled: Story = {
+  render: function DisabledStory() {
+    return (
+      <div className="flex gap-4">
+        <Dropdown>
+          <Dropdown.Trigger disabled>
+            <Dropdown.Value>Disabled Trigger</Dropdown.Value>
+          </Dropdown.Trigger>
+          <Dropdown.Content>
+            <Dropdown.Item>
+              <Dropdown.Value>Option 1</Dropdown.Value>
+            </Dropdown.Item>
+            <Dropdown.Item>
+              <Dropdown.Value>Option 2</Dropdown.Value>
+            </Dropdown.Item>
+          </Dropdown.Content>
+        </Dropdown>
+
+        <Dropdown>
+          <Dropdown.Trigger>
+            <Dropdown.Value>Disabled Items</Dropdown.Value>
+          </Dropdown.Trigger>
+          <Dropdown.Content>
+            <Dropdown.Item>
+              <Dropdown.Value>Available Option</Dropdown.Value>
+            </Dropdown.Item>
+            <Dropdown.Item disabled>
+              <Dropdown.Value>Disabled Option</Dropdown.Value>
+            </Dropdown.Item>
+            <Dropdown.Item>
+              <Dropdown.Value>Another Available</Dropdown.Value>
+            </Dropdown.Item>
+          </Dropdown.Content>
+        </Dropdown>
+      </div>
+    )
+  },
+}
+
+/**
+ * LargeSize: Demonstrates Dropdown with large size variant.
+ *
+ * Features:
+ * - Large trigger size
+ * - Large menu items
+ * - Consistent sizing across components
+ */
+export const LargeSize: Story = {
+  render: function LargeSizeStory() {
+    return (
+      <Dropdown>
+        <Dropdown.Trigger size="large">
+          <Dropdown.Value>Large</Dropdown.Value>
+        </Dropdown.Trigger>
+        <Dropdown.Content>
+          <Dropdown.Item size="large">Option 1</Dropdown.Item>
+          <Dropdown.Item size="large">Option 2</Dropdown.Item>
+          <Dropdown.Item size="large">Option 3</Dropdown.Item>
+        </Dropdown.Content>
+      </Dropdown>
+    )
+  },
+}
+
+/**
+ * LightVariant: Demonstrates Dropdown with light variant styling.
+ *
+ * Features:
+ * - Light variant visual style
+ * - Standard menu items
+ * - Divider separation
+ * - Danger variant item support
+ */
+export const LightVariant: Story = {
+  render: function LightVariantStory() {
+    return (
+      <Dropdown variant="light">
+        <Dropdown.Trigger>
+          <Dropdown.Value>Click to open menu (light mode)</Dropdown.Value>
+        </Dropdown.Trigger>
+        <Dropdown.Content>
+          <Dropdown.Item>
+            <Dropdown.Value>Copy</Dropdown.Value>
+          </Dropdown.Item>
+          <Dropdown.Item>
+            <Dropdown.Value>Cut</Dropdown.Value>
+          </Dropdown.Item>
+          <Dropdown.Divider />
+          <Dropdown.Item variant="danger">
+            <Dropdown.Value>Delete</Dropdown.Value>
+          </Dropdown.Item>
+        </Dropdown.Content>
+      </Dropdown>
+    )
+  },
+}
+
+/**
+ * WithPrefix: Demonstrates Dropdown with prefix icons.
+ *
+ * Features:
+ * - Prefix icons on trigger
+ * - Prefix icons on menu items
+ * - Better visual recognition
+ * - Enhanced user experience
  */
 export const WithPrefix: Story = {
   render: function WithPrefixStory() {
@@ -80,8 +191,316 @@ export const WithPrefix: Story = {
 }
 
 /**
- * Custom trigger using asChild pattern for complete control.
+ * WithShortcuts: Demonstrates Dropdown with keyboard shortcuts.
  *
+ * Features:
+ * - Keyboard shortcuts displayed on menu items
+ * - Supports modifier keys (Command, Shift, etc.)
+ * - Visual shortcut indicators
+ * - Common editor shortcuts pattern
+ */
+export const WithShortcuts: Story = {
+  render: function WithShortcutsStory() {
+    return (
+      <Dropdown>
+        <Dropdown.Trigger>
+          <Dropdown.Value>Editor Menu</Dropdown.Value>
+        </Dropdown.Trigger>
+        <Dropdown.Content>
+          <Dropdown.Item
+            shortcut={{
+              modifier: "command",
+              keys: "N",
+            }}
+          >
+            <Dropdown.Value>New File</Dropdown.Value>
+          </Dropdown.Item>
+          <Dropdown.Item
+            shortcut={{
+              modifier: "command",
+              keys: "O",
+            }}
+          >
+            <Dropdown.Value>Open File</Dropdown.Value>
+          </Dropdown.Item>
+          <Dropdown.Item
+            shortcut={{
+              modifier: "command",
+              keys: "S",
+            }}
+          >
+            <Dropdown.Value>Save</Dropdown.Value>
+          </Dropdown.Item>
+          <Dropdown.Divider />
+          <Dropdown.Item
+            shortcut={{
+              modifier: "command",
+              keys: "Z",
+            }}
+          >
+            <Dropdown.Value>Undo</Dropdown.Value>
+          </Dropdown.Item>
+          <Dropdown.Item
+            shortcut={{
+              modifier: ["shift", "command"],
+              keys: "Z",
+            }}
+          >
+            <Dropdown.Value>Redo</Dropdown.Value>
+          </Dropdown.Item>
+        </Dropdown.Content>
+      </Dropdown>
+    )
+  },
+}
+
+/**
+ * WithLabelsAndDividers: Demonstrates Dropdown with labels and dividers for organization.
+ *
+ * Features:
+ * - Section labels for grouping
+ * - Visual dividers for separation
+ * - Better menu organization
+ * - Hierarchical menu structure
+ *
+ * Use cases:
+ * - File manager menus
+ * - Complex application menus
+ * - Settings and configuration menus
+ */
+export const WithLabelsAndDividers: Story = {
+  render: function WithLabelsAndDividersStory() {
+    return (
+      <Dropdown>
+        <Dropdown.Trigger>
+          <Dropdown.Value>Application Menu</Dropdown.Value>
+        </Dropdown.Trigger>
+        <Dropdown.Content>
+          <Dropdown.Label>File Operations</Dropdown.Label>
+          <Dropdown.Item>
+            <Dropdown.Value>New Document</Dropdown.Value>
+          </Dropdown.Item>
+          <Dropdown.Item>
+            <Dropdown.Value>Open File</Dropdown.Value>
+          </Dropdown.Item>
+          <Dropdown.Item>
+            <Dropdown.Value>Save</Dropdown.Value>
+          </Dropdown.Item>
+
+          <Dropdown.Divider />
+
+          <Dropdown.Label>Edit Operations</Dropdown.Label>
+          <Dropdown.Item>
+            <Dropdown.Value>Cut</Dropdown.Value>
+          </Dropdown.Item>
+          <Dropdown.Item>
+            <Dropdown.Value>Copy</Dropdown.Value>
+          </Dropdown.Item>
+          <Dropdown.Item>
+            <Dropdown.Value>Paste</Dropdown.Value>
+          </Dropdown.Item>
+
+          <Dropdown.Divider />
+
+          <Dropdown.Label>Tools</Dropdown.Label>
+          <Dropdown.Item>
+            <Dropdown.Value>Settings</Dropdown.Value>
+          </Dropdown.Item>
+        </Dropdown.Content>
+      </Dropdown>
+    )
+  },
+}
+
+/**
+ * LongList: Demonstrates Dropdown with a long list of items and scrolling behavior.
+ *
+ * Features:
+ * - Long list of items (100 items)
+ * - Automatic scrolling when content exceeds height
+ * - Scroll arrows for navigation
+ * - Performance optimization for large lists
+ *
+ * Use cases:
+ * - Country/region selectors
+ * - Long option lists
+ * - Searchable dropdowns with many results
+ */
+export const LongList: Story = {
+  render: function LongListStory() {
+    return (
+      <Dropdown>
+        <Dropdown.Trigger>
+          <Dropdown.Value>Long List (100 items)</Dropdown.Value>
+        </Dropdown.Trigger>
+        <Dropdown.Content>
+          <Dropdown.Label>Countries</Dropdown.Label>
+          {Array.from({ length: 100 }, (_, i) => (
+            <Dropdown.Item key={i}>
+              <Dropdown.Value>
+                {faker.location.country()} {i + 1}
+              </Dropdown.Value>
+            </Dropdown.Item>
+          ))}
+        </Dropdown.Content>
+      </Dropdown>
+    )
+  },
+}
+
+/**
+ * Placement: Demonstrates Dropdown with different placement options.
+ *
+ * Features:
+ * - Multiple placement options (bottom-start, bottom-end, right-start, etc.)
+ * - Automatic positioning adjustments
+ * - Prevents overflow beyond viewport
+ * - Flexible menu positioning
+ */
+export const Placement: Story = {
+  render: function PlacementStory() {
+    return (
+      <div className="flex flex-wrap gap-4">
+        <Dropdown placement="bottom-start">
+          <Dropdown.Trigger>
+            <Dropdown.Value>Bottom Start</Dropdown.Value>
+          </Dropdown.Trigger>
+          <Dropdown.Content>
+            <Dropdown.Item>Option 1</Dropdown.Item>
+            <Dropdown.Item>Option 2</Dropdown.Item>
+            <Dropdown.Item>Option 3</Dropdown.Item>
+          </Dropdown.Content>
+        </Dropdown>
+
+        <Dropdown placement="bottom-end">
+          <Dropdown.Trigger>
+            <Dropdown.Value>Bottom End</Dropdown.Value>
+          </Dropdown.Trigger>
+          <Dropdown.Content>
+            <Dropdown.Item>Option 1</Dropdown.Item>
+            <Dropdown.Item>Option 2</Dropdown.Item>
+            <Dropdown.Item>Option 3</Dropdown.Item>
+          </Dropdown.Content>
+        </Dropdown>
+
+        <Dropdown placement="right-start">
+          <Dropdown.Trigger>
+            <Dropdown.Value>Right Start</Dropdown.Value>
+          </Dropdown.Trigger>
+          <Dropdown.Content>
+            <Dropdown.Item>Option 1</Dropdown.Item>
+            <Dropdown.Item>Option 2</Dropdown.Item>
+            <Dropdown.Item>Option 3</Dropdown.Item>
+          </Dropdown.Content>
+        </Dropdown>
+      </div>
+    )
+  },
+}
+
+/**
+ * MatchTriggerWidth: Demonstrates Dropdown menu matching trigger width.
+ *
+ * Features:
+ * - Menu width matches trigger width
+ * - Consistent visual alignment
+ * - Useful for narrow triggers
+ * - Better visual consistency
+ */
+export const MatchTriggerWidth: Story = {
+  render: function MatchTriggerWidthStory() {
+    return (
+      <Dropdown matchTriggerWidth>
+        <Dropdown.Trigger className="w-64">
+          <Dropdown.Value>Match Trigger Width</Dropdown.Value>
+        </Dropdown.Trigger>
+        <Dropdown.Content>
+          <Dropdown.Item>Option 1</Dropdown.Item>
+          <Dropdown.Item>Option 2</Dropdown.Item>
+          <Dropdown.Item>Option 3</Dropdown.Item>
+        </Dropdown.Content>
+      </Dropdown>
+    )
+  },
+}
+
+/**
+ * [TEST] Readonly: Demonstrates Dropdown in readOnly state.
+ *
+ * Features:
+ * - The menu can be opened and closed normally
+ * - Clicking on menu items will not execute their onClick handlers
+ * - Visual feedback remains intact
+ * - Useful for displaying menu options without allowing actions
+ *
+ * Use cases:
+ * - Preview mode interfaces
+ * - Read-only user permissions
+ * - Display-only menu scenarios
+ */
+export const Readonly: Story = {
+  render: function ReadonlyStory() {
+    const [clickCount, setClickCount] = useState(0)
+    const [isOpen, setIsOpen] = useState(false)
+
+    const handleClick = () => {
+      setClickCount((prev) => prev + 1)
+    }
+
+    return (
+      <div className="flex flex-col gap-4">
+        <div className="rounded-xl border bg-stone-50 p-4">
+          <div className="text-body-small-strong mb-2 text-stone-700">Click Count:</div>
+          <div className="text-body-small font-mono text-stone-600">{clickCount}</div>
+        </div>
+
+        <Dropdown
+          readOnly
+          open={isOpen}
+          onOpenChange={setIsOpen}
+        >
+          <Dropdown.Trigger>
+            <Dropdown.Value>Click to open menu (readOnly mode)</Dropdown.Value>
+          </Dropdown.Trigger>
+          <Dropdown.Content>
+            <Dropdown.Item onClick={handleClick}>
+              <Dropdown.Value>New File</Dropdown.Value>
+            </Dropdown.Item>
+            <Dropdown.Item onClick={handleClick}>
+              <Dropdown.Value>Open File</Dropdown.Value>
+            </Dropdown.Item>
+            <Dropdown.Item onClick={handleClick}>
+              <Dropdown.Value>Save</Dropdown.Value>
+            </Dropdown.Item>
+            <Dropdown.Divider />
+            <Dropdown.Item onClick={handleClick}>
+              <Dropdown.Value>Exit</Dropdown.Value>
+            </Dropdown.Item>
+          </Dropdown.Content>
+        </Dropdown>
+
+        <div className="text-body-small text-stone-600">
+          💡 Try clicking on menu items - the click count should not change. The menu can still be
+          opened and closed normally.
+        </div>
+      </div>
+    )
+  },
+}
+
+/**
+ * TriggerAsChild: Demonstrates custom trigger using asChild pattern.
+ *
+ * Features:
+ * - Use any element as trigger via asChild prop
+ * - Complete control over trigger element
+ * - No wrapper elements
+ * - Flexible trigger customization
+ *
+ * Use cases:
+ * - Icon buttons as triggers
+ * - Custom styled buttons
+ * - Third-party component integration
  */
 export const TriggerAsChild: Story = {
   render: function TriggerAsChildStory() {
@@ -110,14 +529,19 @@ export const TriggerAsChild: Story = {
 }
 
 /**
- * Nested dropdown menus showcasing the enhanced FloatingTree support.
+ * Nested: Demonstrates nested dropdown menus with multiple levels.
  *
  * Features:
  * - Multiple levels of nesting
  * - Automatic submenu positioning
  * - Hover-based submenu activation
  * - Tree event management for proper closing
+ * - Keyboard navigation across nested levels
  *
+ * Use cases:
+ * - File explorer menus
+ * - Complex application menus
+ * - Hierarchical command structures
  */
 export const Nested: Story = {
   render: function NestedStory() {
@@ -173,11 +597,17 @@ export const Nested: Story = {
 }
 
 /**
- * Nested dropdown in `Popover` or `Dialog`
+ * NestedInPopover: Demonstrates Dropdown nested inside a Popover or Dialog.
  *
- * Note: When using Dropdown nested inside a Popover or Dialog, you must pass the
- * `disabledNested={true}` prop to ensure proper rendering.
+ * Features:
+ * - Dropdown works within Popover content
+ * - Requires disabledNested prop for proper rendering
+ * - Prevents nested menu conflicts
+ * - Proper event handling in nested contexts
  *
+ * Important:
+ * - When using Dropdown nested inside a Popover or Dialog, you must pass the
+ *   `disabledNested={true}` prop to ensure proper rendering.
  */
 export const NestedInPopover: Story = {
   render: function NestedInPopoverStory() {
@@ -214,7 +644,104 @@ export const NestedInPopover: Story = {
 }
 
 /**
- * Selection dropdown with visual indicators using the MenuContext system.
+ * NestedSubmenuWithLongList: Demonstrates scrolling functionality in nested submenus with long lists.
+ *
+ * Features:
+ * - First level menu with standard items
+ * - Nested submenu with a long list that exceeds screen height
+ * - Scroll arrows appear when content exceeds available height
+ * - Scrolling works properly in nested menus
+ * - Height constraints are properly applied
+ * - Multiple nested submenus with long lists
+ *
+ * Use cases:
+ * - File explorer with many files/folders
+ * - Long category lists in nested menus
+ * - Any scenario requiring scrollable nested menus
+ */
+export const NestedSubmenuWithLongList: Story = {
+  render: function NestedSubmenuWithLongListStory() {
+    // Generate a long list of items for testing scrolling
+    const longListItems = Array.from({ length: 30 }, (_, i) => ({
+      id: `item-${i + 1}`,
+      label: `Menu Item ${i + 1}`,
+    }))
+
+    return (
+      <div className="flex items-center justify-center">
+        <Dropdown>
+          <Dropdown.Trigger>
+            <Dropdown.Value>Menu with long nested submenu</Dropdown.Value>
+          </Dropdown.Trigger>
+          <Dropdown.Content>
+            <Dropdown.Item>
+              <Dropdown.Value>Cut</Dropdown.Value>
+            </Dropdown.Item>
+            <Dropdown.Item>
+              <Dropdown.Value>Copy</Dropdown.Value>
+            </Dropdown.Item>
+            <Dropdown.Item>
+              <Dropdown.Value>Paste</Dropdown.Value>
+            </Dropdown.Item>
+            <Dropdown.Divider />
+
+            {/* Nested submenu with long list - this should scroll */}
+            <Dropdown>
+              <Dropdown.SubTrigger>
+                <Dropdown.Value>Long List</Dropdown.Value>
+              </Dropdown.SubTrigger>
+              <Dropdown.Content>
+                <Dropdown.Label>Scrollable Items</Dropdown.Label>
+                {longListItems.map((item) => (
+                  <Dropdown.Item key={item.id}>
+                    <Dropdown.Value>{item.label}</Dropdown.Value>
+                  </Dropdown.Item>
+                ))}
+              </Dropdown.Content>
+            </Dropdown>
+
+            {/* Another nested submenu with long list for comparison */}
+            <Dropdown>
+              <Dropdown.SubTrigger>
+                <Dropdown.Value>Another Long List</Dropdown.Value>
+              </Dropdown.SubTrigger>
+              <Dropdown.Content>
+                <Dropdown.Label>Another Scrollable List</Dropdown.Label>
+                {longListItems.slice(0, 25).map((item) => (
+                  <Dropdown.Item key={item.id}>
+                    <Dropdown.Value>{item.label}</Dropdown.Value>
+                  </Dropdown.Item>
+                ))}
+              </Dropdown.Content>
+            </Dropdown>
+
+            <Dropdown.Divider />
+            <Dropdown.Item>
+              <Dropdown.Value>Properties</Dropdown.Value>
+            </Dropdown.Item>
+            <Dropdown.Item variant="danger">
+              <Dropdown.Value>Delete</Dropdown.Value>
+            </Dropdown.Item>
+          </Dropdown.Content>
+        </Dropdown>
+      </div>
+    )
+  },
+}
+
+/**
+ * Selection: Demonstrates selection functionality with visual indicators.
+ *
+ * Features:
+ * - Visual selection indicator (check mark)
+ * - Controlled selection state
+ * - Selection persists between menu opens
+ * - Automatic menu closure on selection
+ *
+ * Use cases:
+ * - Radio button-like selection in menus
+ * - Theme or preference selection
+ * - Single-choice menu scenarios
  */
 export const Selection: Story = {
   render: function SelectionStory() {
@@ -244,7 +771,18 @@ export const Selection: Story = {
 }
 
 /**
- * Nested dropdown with selection functionality in submenus.
+ * NestedSelection: Demonstrates nested dropdown with selection functionality in submenus.
+ *
+ * Features:
+ * - Selection works across nested levels
+ * - Unified state management for all options
+ * - Visual selection indicators in nested menus
+ * - Proper selection handling in submenus
+ *
+ * Use cases:
+ * - Multi-level preference selection
+ * - Hierarchical option selection
+ * - Complex configuration menus
  */
 export const NestedSelection: Story = {
   render: function NestedSelectionStory() {
@@ -295,107 +833,19 @@ export const NestedSelection: Story = {
 }
 
 /**
- * Dropdown with keyboard shortcuts displayed.
- */
-export const WithShortcuts: Story = {
-  render: function WithShortcutsStory() {
-    return (
-      <Dropdown>
-        <Dropdown.Trigger>
-          <Dropdown.Value>Editor Menu</Dropdown.Value>
-        </Dropdown.Trigger>
-        <Dropdown.Content>
-          <Dropdown.Item
-            shortcut={{
-              modifier: "command",
-              keys: "N",
-            }}
-          >
-            <Dropdown.Value>New File</Dropdown.Value>
-          </Dropdown.Item>
-          <Dropdown.Item
-            shortcut={{
-              modifier: "command",
-              keys: "O",
-            }}
-          >
-            <Dropdown.Value>Open File</Dropdown.Value>
-          </Dropdown.Item>
-          <Dropdown.Item
-            shortcut={{
-              modifier: "command",
-              keys: "S",
-            }}
-          >
-            <Dropdown.Value>Save</Dropdown.Value>
-          </Dropdown.Item>
-          <Dropdown.Divider />
-          <Dropdown.Item
-            shortcut={{
-              modifier: "command",
-              keys: "Z",
-            }}
-          >
-            <Dropdown.Value>Undo</Dropdown.Value>
-          </Dropdown.Item>
-          <Dropdown.Item
-            shortcut={{
-              modifier: "shift",
-              keys: "Command+Z",
-            }}
-          >
-            <Dropdown.Value>Redo</Dropdown.Value>
-          </Dropdown.Item>
-        </Dropdown.Content>
-      </Dropdown>
-    )
-  },
-}
-
-/**
- * Dropdown with disabled states for both trigger and items.
- */
-export const Disabled: Story = {
-  render: function DisabledStory() {
-    return (
-      <div className="flex gap-4">
-        <Dropdown>
-          <Dropdown.Trigger disabled>
-            <Dropdown.Value>Disabled Trigger</Dropdown.Value>
-          </Dropdown.Trigger>
-          <Dropdown.Content>
-            <Dropdown.Item>
-              <Dropdown.Value>Option 1</Dropdown.Value>
-            </Dropdown.Item>
-            <Dropdown.Item>
-              <Dropdown.Value>Option 2</Dropdown.Value>
-            </Dropdown.Item>
-          </Dropdown.Content>
-        </Dropdown>
-
-        <Dropdown>
-          <Dropdown.Trigger>
-            <Dropdown.Value>Disabled Items</Dropdown.Value>
-          </Dropdown.Trigger>
-          <Dropdown.Content>
-            <Dropdown.Item>
-              <Dropdown.Value>Available Option</Dropdown.Value>
-            </Dropdown.Item>
-            <Dropdown.Item disabled>
-              <Dropdown.Value>Disabled Option</Dropdown.Value>
-            </Dropdown.Item>
-            <Dropdown.Item>
-              <Dropdown.Value>Another Available</Dropdown.Value>
-            </Dropdown.Item>
-          </Dropdown.Content>
-        </Dropdown>
-      </div>
-    )
-  },
-}
-
-/**
- * Dropdown with search functionality and empty states.
+ * WithSearch: Demonstrates Dropdown with search functionality and empty states.
+ *
+ * Features:
+ * - Built-in search input
+ * - Real-time filtering of options
+ * - Empty state when no results found
+ * - Clear search functionality
+ * - Multi-selection support
+ *
+ * Use cases:
+ * - Large option lists
+ * - Searchable selectors
+ * - Tag/multi-select scenarios
  */
 export const WithSearch: Story = {
   render: function WithSearchStory() {
@@ -490,233 +940,19 @@ export const WithSearch: Story = {
 }
 
 /**
- * Dropdown with labels and organized sections.
- */
-export const WithLabels: Story = {
-  render: function WithLabelsStory() {
-    return (
-      <Dropdown>
-        <Dropdown.Trigger>
-          <Dropdown.Value>Application Menu</Dropdown.Value>
-        </Dropdown.Trigger>
-        <Dropdown.Content>
-          <Dropdown.Label>File Operations</Dropdown.Label>
-          <Dropdown.Item>
-            <Dropdown.Value>New Document</Dropdown.Value>
-          </Dropdown.Item>
-          <Dropdown.Item>
-            <Dropdown.Value>Open File</Dropdown.Value>
-          </Dropdown.Item>
-          <Dropdown.Item>
-            <Dropdown.Value>Save</Dropdown.Value>
-          </Dropdown.Item>
-
-          <Dropdown.Divider />
-
-          <Dropdown.Label>Edit Operations</Dropdown.Label>
-          <Dropdown.Item>
-            <Dropdown.Value>Cut</Dropdown.Value>
-          </Dropdown.Item>
-          <Dropdown.Item>
-            <Dropdown.Value>Copy</Dropdown.Value>
-          </Dropdown.Item>
-          <Dropdown.Item>
-            <Dropdown.Value>Paste</Dropdown.Value>
-          </Dropdown.Item>
-
-          <Dropdown.Divider />
-
-          <Dropdown.Label>Tools</Dropdown.Label>
-          <Dropdown.Item>
-            <Dropdown.Value>Settings</Dropdown.Value>
-          </Dropdown.Item>
-        </Dropdown.Content>
-      </Dropdown>
-    )
-  },
-}
-
-/**
- * Long list demonstrating scrolling behavior and performance.
- */
-export const LongList: Story = {
-  render: function LongListStory() {
-    return (
-      <Dropdown>
-        <Dropdown.Trigger>
-          <Dropdown.Value>Long List (100 items)</Dropdown.Value>
-        </Dropdown.Trigger>
-        <Dropdown.Content>
-          <Dropdown.Label>Countries</Dropdown.Label>
-          {Array.from({ length: 100 }, (_, i) => (
-            <Dropdown.Item key={i}>
-              <Dropdown.Value>
-                {faker.location.country()} {i + 1}
-              </Dropdown.Value>
-            </Dropdown.Item>
-          ))}
-        </Dropdown.Content>
-      </Dropdown>
-    )
-  },
-}
-
-/**
- * [TEST] Multiple dropdowns testing proper event handling and switching.
- */
-export const MultipleDropdowns: Story = {
-  render: function MultipleDropdownsStory() {
-    const [dropdown1Open, setDropdown1Open] = useState(false)
-    const [dropdown2Open, setDropdown2Open] = useState(false)
-    const [dropdown3Open, setDropdown3Open] = useState(false)
-
-    return (
-      <div className="w-80 space-y-4">
-        <div className="rounded-xl border p-4">
-          <h3 className="font-strong mb-2">🔄 Multiple Dropdown Switching Test</h3>
-          <p className="text-secondary-foreground">
-            Test scenario: When one dropdown is open, clicking another should close the first and
-            open the second in one click.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-3 gap-4">
-          <div>
-            <h4 className="font-strong">Dropdown 1</h4>
-            <div className="text-secondary-foreground">
-              Status: {dropdown1Open ? "Open" : "Closed"}
-            </div>
-            <Dropdown
-              open={dropdown1Open}
-              onOpenChange={setDropdown1Open}
-            >
-              <Dropdown.Trigger>
-                <Dropdown.Value>Menu 1 {dropdown1Open ? "(Open)" : ""}</Dropdown.Value>
-              </Dropdown.Trigger>
-              <Dropdown.Content>
-                <Dropdown.Label>Menu 1 Content</Dropdown.Label>
-                <Dropdown.Item>Option A</Dropdown.Item>
-                <Dropdown.Item>Option B</Dropdown.Item>
-                <Dropdown.Item>Option C</Dropdown.Item>
-                <Dropdown.Divider />
-                <Dropdown.Button onClick={() => setDropdown1Open(false)}>
-                  Close Menu
-                </Dropdown.Button>
-              </Dropdown.Content>
-            </Dropdown>
-          </div>
-
-          <div>
-            <h4 className="font-strong">Dropdown 2</h4>
-            <div className="text-secondary-foreground">
-              Status: {dropdown2Open ? "Open" : "Closed"}
-            </div>
-            <Dropdown
-              open={dropdown2Open}
-              onOpenChange={setDropdown2Open}
-            >
-              <Dropdown.Trigger>
-                <Dropdown.Value>Menu 2 {dropdown2Open ? "(Open)" : ""}</Dropdown.Value>
-              </Dropdown.Trigger>
-              <Dropdown.Content>
-                <Dropdown.Label>Menu 2 Content</Dropdown.Label>
-                <Dropdown.Item>Item X</Dropdown.Item>
-                <Dropdown.Item>Item Y</Dropdown.Item>
-                <Dropdown.Item>Item Z</Dropdown.Item>
-                <Dropdown.Divider />
-                <Dropdown.Button onClick={() => setDropdown2Open(false)}>
-                  Close Menu
-                </Dropdown.Button>
-              </Dropdown.Content>
-            </Dropdown>
-          </div>
-
-          <div>
-            <h4 className="font-strong">Dropdown 3</h4>
-            <div className="text-secondary-foreground">
-              Status: {dropdown3Open ? "Open" : "Closed"}
-            </div>
-            <Dropdown
-              open={dropdown3Open}
-              onOpenChange={setDropdown3Open}
-            >
-              <Dropdown.Trigger>
-                <Dropdown.Value>Menu 3 {dropdown3Open ? "(Open)" : ""}</Dropdown.Value>
-              </Dropdown.Trigger>
-              <Dropdown.Content>
-                <Dropdown.Label>Menu 3 Content</Dropdown.Label>
-                <Dropdown.Item>Choice 1</Dropdown.Item>
-                <Dropdown.Item>Choice 2</Dropdown.Item>
-                <Dropdown.Item>Choice 3</Dropdown.Item>
-                <Dropdown.Divider />
-                <Dropdown.Button onClick={() => setDropdown3Open(false)}>
-                  Close Menu
-                </Dropdown.Button>
-              </Dropdown.Content>
-            </Dropdown>
-          </div>
-        </div>
-
-        <div className="rounded-xl border p-4">
-          <h4 className="font-strong mb-2">Test Instructions:</h4>
-          <ol className="text-secondary-foreground list-inside list-decimal space-y-1">
-            <li>Click &quot;Menu 1&quot; to open the first dropdown</li>
-            <li>While keeping Menu 1 open, click &quot;Menu 2&quot;</li>
-            <li>Verify Menu 1 closes and Menu 2 opens with a single click</li>
-            <li>Test switching between Menu 2 → Menu 3 and Menu 3 → Menu 1</li>
-          </ol>
-        </div>
-      </div>
-    )
-  },
-}
-
-/**
- * Dropdown with different placement options.
- */
-export const Placement: Story = {
-  render: function PlacementStory() {
-    return (
-      <div className="flex flex-wrap gap-4">
-        <Dropdown placement="bottom-start">
-          <Dropdown.Trigger>
-            <Dropdown.Value>Bottom Start</Dropdown.Value>
-          </Dropdown.Trigger>
-          <Dropdown.Content>
-            <Dropdown.Item>Option 1</Dropdown.Item>
-            <Dropdown.Item>Option 2</Dropdown.Item>
-            <Dropdown.Item>Option 3</Dropdown.Item>
-          </Dropdown.Content>
-        </Dropdown>
-
-        <Dropdown placement="bottom-end">
-          <Dropdown.Trigger>
-            <Dropdown.Value>Bottom End</Dropdown.Value>
-          </Dropdown.Trigger>
-          <Dropdown.Content>
-            <Dropdown.Item>Option 1</Dropdown.Item>
-            <Dropdown.Item>Option 2</Dropdown.Item>
-            <Dropdown.Item>Option 3</Dropdown.Item>
-          </Dropdown.Content>
-        </Dropdown>
-
-        <Dropdown placement="right-start">
-          <Dropdown.Trigger>
-            <Dropdown.Value>Right Start</Dropdown.Value>
-          </Dropdown.Trigger>
-          <Dropdown.Content>
-            <Dropdown.Item>Option 1</Dropdown.Item>
-            <Dropdown.Item>Option 2</Dropdown.Item>
-            <Dropdown.Item>Option 3</Dropdown.Item>
-          </Dropdown.Content>
-        </Dropdown>
-      </div>
-    )
-  },
-}
-
-/**
- * Advanced example showing complex menu structure with mixed features.
+ * ComplexMenu: Advanced example showing complex menu structure with mixed features.
+ *
+ * Features:
+ * - Mixed menu features (labels, dividers, shortcuts)
+ * - Nested submenus with selection
+ * - Prefix icons
+ * - Keyboard shortcuts
+ * - Danger variant items
+ *
+ * Use cases:
+ * - Application settings menus
+ * - Complex preference panels
+ * - Feature-rich application menus
  */
 export const ComplexMenu: Story = {
   render: function ComplexMenuStory() {
@@ -792,48 +1028,20 @@ export const ComplexMenu: Story = {
   },
 }
 
-export const Large: Story = {
-  render: function LargeStory() {
-    return (
-      <Dropdown>
-        <Dropdown.Trigger size="large">
-          <Dropdown.Value>Large</Dropdown.Value>
-        </Dropdown.Trigger>
-        <Dropdown.Content>
-          <Dropdown.Item size="large">Option 1</Dropdown.Item>
-          <Dropdown.Item size="large">Option 2</Dropdown.Item>
-          <Dropdown.Item size="large">Option 3</Dropdown.Item>
-        </Dropdown.Content>
-      </Dropdown>
-    )
-  },
-}
-
 /**
- * Match trigger width
- */
-export const MatchTriggerWidth: Story = {
-  render: function MatchTriggerWidthStory() {
-    return (
-      <Dropdown matchTriggerWidth>
-        <Dropdown.Trigger className="w-64">
-          <Dropdown.Value>Match Trigger Width</Dropdown.Value>
-        </Dropdown.Trigger>
-        <Dropdown.Content>
-          <Dropdown.Item>Option 1</Dropdown.Item>
-          <Dropdown.Item>Option 2</Dropdown.Item>
-          <Dropdown.Item>Option 3</Dropdown.Item>
-        </Dropdown.Content>
-      </Dropdown>
-    )
-  },
-}
-
-/**
- * Coordinate mode - Dropdown without trigger, positioned at specific coordinates
- * This mode replaces the deprecated CoordinateMenu component
- * - This demonstrates the Dropdown component in coordinate mode - no trigger element,
- * - Positioned at specific x/y coordinates. Perfect for context menus, mentions, etc.
+ * CoordinateMode: Demonstrates Dropdown in coordinate mode without a trigger element.
+ *
+ * Features:
+ * - No trigger element required
+ * - Positioned at specific x/y coordinates
+ * - Auto-select first item option
+ * - Perfect for context menus and mentions
+ *
+ * Use cases:
+ * - Context menus at cursor position
+ * - Mention dropdowns in editors
+ * - Custom positioned menus
+ * - Replaces deprecated CoordinateMenu component
  */
 export const CoordinateMode: Story = {
   render: function CoordinateModeStory() {
@@ -904,8 +1112,19 @@ export const CoordinateMode: Story = {
 }
 
 /**
- * Mentions example using coordinate mode with Slate.js editor
- * - Type @ to trigger the mentions menu. This uses a simple Slate.js editor with Dropdown in coordinate mode.
+ * MentionsWithCoordinateMode: Demonstrates mentions functionality using coordinate mode with Slate.js editor.
+ *
+ * Features:
+ * - Type @ to trigger mentions menu
+ * - Dropdown positioned at cursor location
+ * - Integration with Slate.js editor
+ * - User selection and insertion
+ * - Real-time text updates
+ *
+ * Use cases:
+ * - Rich text editors with mentions
+ * - Comment systems
+ * - Collaborative editing features
  */
 export const MentionsWithCoordinateMode: Story = {
   render: function MentionsStory() {
@@ -1083,6 +1302,270 @@ export const MentionsWithCoordinateMode: Story = {
         {/* 显示当前值用于调试 */}
         <div className="bg-secondary-background text-secondary-foreground rounded-lg p-2">
           Current text: &ldquo;{getEditorText()}&rdquo;
+        </div>
+      </div>
+    )
+  },
+}
+
+/**
+ * WithTriggerRef: Demonstrates using triggerRef to bind dropdown to an external element.
+ *
+ * Features:
+ * - Attach dropdown to any element via ref
+ * - No need for Dropdown.Trigger wrapper
+ * - More control over trigger element
+ * - Flexible integration with existing components
+ *
+ * Use cases:
+ * - Attaching dropdown to existing elements
+ * - Third-party component integration
+ * - Custom trigger implementations
+ */
+export const WithTriggerRef: Story = {
+  render: function WithTriggerRefStory() {
+    const triggerRef = useRef<HTMLButtonElement>(null)
+    const [isOpen, setIsOpen] = useState(false)
+
+    return (
+      <div className="flex items-center justify-center gap-8">
+        <div>
+          <p className="text-body-small-strong mb-2">Using triggerRef</p>
+          <button
+            ref={triggerRef}
+            className="bg-secondary-background rounded-lg border border-dashed px-4 py-2"
+          >
+            Click me (via triggerRef)
+          </button>
+          <Dropdown
+            triggerRef={triggerRef}
+            open={isOpen}
+            onOpenChange={setIsOpen}
+          >
+            <Dropdown.Content>
+              <Dropdown.Label>TriggerRef Menu</Dropdown.Label>
+              <Dropdown.Item>
+                <Dropdown.Value>Option 1</Dropdown.Value>
+              </Dropdown.Item>
+              <Dropdown.Item>
+                <Dropdown.Value>Option 2</Dropdown.Value>
+              </Dropdown.Item>
+              <Dropdown.Divider />
+              <Dropdown.Item variant="danger">
+                <Dropdown.Value>Delete</Dropdown.Value>
+              </Dropdown.Item>
+            </Dropdown.Content>
+          </Dropdown>
+        </div>
+      </div>
+    )
+  },
+}
+
+/**
+ * WithTriggerSelector: Demonstrates using triggerSelector (CSS selector) to bind dropdown to an element.
+ *
+ * Features:
+ * - Supports any valid CSS selector (#id, .class, [data-*], etc.)
+ * - Same functionality as triggerRef
+ * - triggerRef takes priority if both are provided
+ *
+ * Use cases:
+ * - When you cannot access the element via ref (e.g., third-party components)
+ * - When the trigger element is rendered elsewhere in the DOM
+ * - When you prefer a simpler, selector-based approach
+ */
+export const WithTriggerSelector: Story = {
+  render: function WithTriggerSelectorStory() {
+    const [isOpen1, setIsOpen1] = useState(false)
+    const [isOpen2, setIsOpen2] = useState(false)
+    const [isOpen3, setIsOpen3] = useState(false)
+
+    return (
+      <div className="flex gap-8">
+        {/* Using id selector */}
+        <div>
+          <p className="text-body-small-strong mb-2">Using #id selector</p>
+          <button
+            id="dropdown-trigger-by-id"
+            className="bg-secondary-background rounded-lg border border-dashed px-4 py-2"
+          >
+            Click me (id selector)
+          </button>
+          <Dropdown
+            triggerSelector="#dropdown-trigger-by-id"
+            open={isOpen1}
+            onOpenChange={setIsOpen1}
+          >
+            <Dropdown.Content>
+              <Dropdown.Label>ID Selector Menu</Dropdown.Label>
+              <Dropdown.Item>
+                <Dropdown.Value>Action 1</Dropdown.Value>
+              </Dropdown.Item>
+              <Dropdown.Item>
+                <Dropdown.Value>Action 2</Dropdown.Value>
+              </Dropdown.Item>
+            </Dropdown.Content>
+          </Dropdown>
+        </div>
+
+        {/* Using class selector */}
+        <div>
+          <p className="text-body-small-strong mb-2">Using .class selector</p>
+          <button className="dropdown-trigger-by-class bg-secondary-background rounded-lg border border-dashed px-4 py-2">
+            Click me (class selector)
+          </button>
+          <Dropdown
+            triggerSelector=".dropdown-trigger-by-class"
+            open={isOpen2}
+            onOpenChange={setIsOpen2}
+          >
+            <Dropdown.Content>
+              <Dropdown.Label>Class Selector Menu</Dropdown.Label>
+              <Dropdown.Item>
+                <Dropdown.Value>Option A</Dropdown.Value>
+              </Dropdown.Item>
+              <Dropdown.Item>
+                <Dropdown.Value>Option B</Dropdown.Value>
+              </Dropdown.Item>
+            </Dropdown.Content>
+          </Dropdown>
+        </div>
+
+        {/* Using data attribute selector */}
+        <div>
+          <p className="text-body-small-strong mb-2">Using [data-*] selector</p>
+          <button
+            data-dropdown-trigger="custom"
+            className="bg-secondary-background rounded-lg border border-dashed px-4 py-2"
+          >
+            Click me (data-* selector)
+          </button>
+          <Dropdown
+            triggerSelector="[data-dropdown-trigger='custom']"
+            open={isOpen3}
+            onOpenChange={setIsOpen3}
+          >
+            <Dropdown.Content>
+              <Dropdown.Label>Data Attribute Menu</Dropdown.Label>
+              <Dropdown.Item>
+                <Dropdown.Value>Item X</Dropdown.Value>
+              </Dropdown.Item>
+              <Dropdown.Item>
+                <Dropdown.Value>Item Y</Dropdown.Value>
+              </Dropdown.Item>
+            </Dropdown.Content>
+          </Dropdown>
+        </div>
+      </div>
+    )
+  },
+}
+
+/**
+ * [TEST] Multiple dropdowns testing proper event handling and switching.
+ */
+export const MultipleDropdowns: Story = {
+  render: function MultipleDropdownsStory() {
+    const [dropdown1Open, setDropdown1Open] = useState(false)
+    const [dropdown2Open, setDropdown2Open] = useState(false)
+    const [dropdown3Open, setDropdown3Open] = useState(false)
+
+    return (
+      <div className="w-80 space-y-4">
+        <div className="rounded-xl border p-4">
+          <h3 className="font-strong mb-2">🔄 Multiple Dropdown Switching Test</h3>
+          <p className="text-secondary-foreground">
+            Test scenario: When one dropdown is open, clicking another should close the first and
+            open the second in one click.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-3 gap-4">
+          <div>
+            <h4 className="font-strong">Dropdown 1</h4>
+            <div className="text-secondary-foreground">
+              Status: {dropdown1Open ? "Open" : "Closed"}
+            </div>
+            <Dropdown
+              open={dropdown1Open}
+              onOpenChange={setDropdown1Open}
+            >
+              <Dropdown.Trigger>
+                <Dropdown.Value>Menu 1 {dropdown1Open ? "(Open)" : ""}</Dropdown.Value>
+              </Dropdown.Trigger>
+              <Dropdown.Content>
+                <Dropdown.Label>Menu 1 Content</Dropdown.Label>
+                <Dropdown.Item>Option A</Dropdown.Item>
+                <Dropdown.Item>Option B</Dropdown.Item>
+                <Dropdown.Item>Option C</Dropdown.Item>
+                <Dropdown.Divider />
+                <Dropdown.Button onClick={() => setDropdown1Open(false)}>
+                  Close Menu
+                </Dropdown.Button>
+              </Dropdown.Content>
+            </Dropdown>
+          </div>
+
+          <div>
+            <h4 className="font-strong">Dropdown 2</h4>
+            <div className="text-secondary-foreground">
+              Status: {dropdown2Open ? "Open" : "Closed"}
+            </div>
+            <Dropdown
+              open={dropdown2Open}
+              onOpenChange={setDropdown2Open}
+            >
+              <Dropdown.Trigger>
+                <Dropdown.Value>Menu 2 {dropdown2Open ? "(Open)" : ""}</Dropdown.Value>
+              </Dropdown.Trigger>
+              <Dropdown.Content>
+                <Dropdown.Label>Menu 2 Content</Dropdown.Label>
+                <Dropdown.Item>Item X</Dropdown.Item>
+                <Dropdown.Item>Item Y</Dropdown.Item>
+                <Dropdown.Item>Item Z</Dropdown.Item>
+                <Dropdown.Divider />
+                <Dropdown.Button onClick={() => setDropdown2Open(false)}>
+                  Close Menu
+                </Dropdown.Button>
+              </Dropdown.Content>
+            </Dropdown>
+          </div>
+
+          <div>
+            <h4 className="font-strong">Dropdown 3</h4>
+            <div className="text-secondary-foreground">
+              Status: {dropdown3Open ? "Open" : "Closed"}
+            </div>
+            <Dropdown
+              open={dropdown3Open}
+              onOpenChange={setDropdown3Open}
+            >
+              <Dropdown.Trigger>
+                <Dropdown.Value>Menu 3 {dropdown3Open ? "(Open)" : ""}</Dropdown.Value>
+              </Dropdown.Trigger>
+              <Dropdown.Content>
+                <Dropdown.Label>Menu 3 Content</Dropdown.Label>
+                <Dropdown.Item>Choice 1</Dropdown.Item>
+                <Dropdown.Item>Choice 2</Dropdown.Item>
+                <Dropdown.Item>Choice 3</Dropdown.Item>
+                <Dropdown.Divider />
+                <Dropdown.Button onClick={() => setDropdown3Open(false)}>
+                  Close Menu
+                </Dropdown.Button>
+              </Dropdown.Content>
+            </Dropdown>
+          </div>
+        </div>
+
+        <div className="rounded-xl border p-4">
+          <h4 className="font-strong mb-2">Test Instructions:</h4>
+          <ol className="text-secondary-foreground list-inside list-decimal space-y-1">
+            <li>Click &quot;Menu 1&quot; to open the first dropdown</li>
+            <li>While keeping Menu 1 open, click &quot;Menu 2&quot;</li>
+            <li>Verify Menu 1 closes and Menu 2 opens with a single click</li>
+            <li>Test switching between Menu 2 → Menu 3 and Menu 3 → Menu 1</li>
+          </ol>
         </div>
       </div>
     )
@@ -1302,322 +1785,6 @@ export const NestedMenuClickTest: Story = {
             <p>• The root Dropdown listens for this event and closes when triggered</p>
             <p>• This ensures all nested menus close together</p>
           </div>
-        </div>
-      </div>
-    )
-  },
-}
-
-/**
- * NestedSubmenuWithLongList: Tests scrolling functionality in nested submenus.
- *
- * This story specifically tests the fix for nested menu scrolling:
- * - First level menu with many items
- * - Nested submenu with a long list that exceeds screen height
- * - Verifies scroll arrows appear correctly
- * - Verifies scrolling works properly in nested menus
- * - Tests height constraints are properly applied
- *
- * Expected behavior:
- * - Nested submenu should show scroll arrows when content exceeds available height
- * - Users should be able to scroll through all items in the nested menu
- * - Menu should not overflow beyond screen boundaries
- * - Scroll arrows should appear/disappear based on scroll position
- *
- * This story validates the fix for nested menu scrolling issues.
- */
-export const NestedSubmenuWithLongList: Story = {
-  render: function NestedSubmenuWithLongListStory() {
-    // Generate a long list of items for testing scrolling
-    const longListItems = Array.from({ length: 30 }, (_, i) => ({
-      id: `item-${i + 1}`,
-      label: `Menu Item ${i + 1}`,
-    }))
-
-    return (
-      <div className="flex items-center justify-center">
-        <Dropdown>
-          <Dropdown.Trigger>
-            <Dropdown.Value>Menu with long nested submenu</Dropdown.Value>
-          </Dropdown.Trigger>
-          <Dropdown.Content>
-            <Dropdown.Item>
-              <Dropdown.Value>Cut</Dropdown.Value>
-            </Dropdown.Item>
-            <Dropdown.Item>
-              <Dropdown.Value>Copy</Dropdown.Value>
-            </Dropdown.Item>
-            <Dropdown.Item>
-              <Dropdown.Value>Paste</Dropdown.Value>
-            </Dropdown.Item>
-            <Dropdown.Divider />
-
-            {/* Nested submenu with long list - this should scroll */}
-            <Dropdown>
-              <Dropdown.SubTrigger>
-                <Dropdown.Value>Long List</Dropdown.Value>
-              </Dropdown.SubTrigger>
-              <Dropdown.Content>
-                <Dropdown.Label>Scrollable Items</Dropdown.Label>
-                {longListItems.map((item) => (
-                  <Dropdown.Item key={item.id}>
-                    <Dropdown.Value>{item.label}</Dropdown.Value>
-                  </Dropdown.Item>
-                ))}
-              </Dropdown.Content>
-            </Dropdown>
-
-            {/* Another nested submenu with long list for comparison */}
-            <Dropdown>
-              <Dropdown.SubTrigger>
-                <Dropdown.Value>Another Long List</Dropdown.Value>
-              </Dropdown.SubTrigger>
-              <Dropdown.Content>
-                <Dropdown.Label>Another Scrollable List</Dropdown.Label>
-                {longListItems.slice(0, 25).map((item) => (
-                  <Dropdown.Item key={item.id}>
-                    <Dropdown.Value>{item.label}</Dropdown.Value>
-                  </Dropdown.Item>
-                ))}
-              </Dropdown.Content>
-            </Dropdown>
-
-            <Dropdown.Divider />
-            <Dropdown.Item>
-              <Dropdown.Value>Properties</Dropdown.Value>
-            </Dropdown.Item>
-            <Dropdown.Item variant="danger">
-              <Dropdown.Value>Delete</Dropdown.Value>
-            </Dropdown.Item>
-          </Dropdown.Content>
-        </Dropdown>
-      </div>
-    )
-  },
-}
-
-/**
- * [TEST] Dropdown component in readOnly state.
- *
- * In readOnly mode:
- * - The menu can be opened and closed normally
- * - Clicking on menu items will not execute their onClick handlers
- * - Useful for displaying menu options without allowing actions
- */
-export const Readonly: Story = {
-  render: function ReadonlyStory() {
-    const [clickCount, setClickCount] = useState(0)
-    const [isOpen, setIsOpen] = useState(false)
-
-    const handleClick = () => {
-      setClickCount((prev) => prev + 1)
-    }
-
-    return (
-      <div className="flex flex-col gap-4">
-        <div className="rounded-xl border bg-stone-50 p-4">
-          <div className="text-body-small-strong mb-2 text-stone-700">Click Count:</div>
-          <div className="text-body-small font-mono text-stone-600">{clickCount}</div>
-        </div>
-
-        <Dropdown
-          readOnly
-          open={isOpen}
-          onOpenChange={setIsOpen}
-        >
-          <Dropdown.Trigger>
-            <Dropdown.Value>Click to open menu (readOnly mode)</Dropdown.Value>
-          </Dropdown.Trigger>
-          <Dropdown.Content>
-            <Dropdown.Item onClick={handleClick}>
-              <Dropdown.Value>New File</Dropdown.Value>
-            </Dropdown.Item>
-            <Dropdown.Item onClick={handleClick}>
-              <Dropdown.Value>Open File</Dropdown.Value>
-            </Dropdown.Item>
-            <Dropdown.Item onClick={handleClick}>
-              <Dropdown.Value>Save</Dropdown.Value>
-            </Dropdown.Item>
-            <Dropdown.Divider />
-            <Dropdown.Item onClick={handleClick}>
-              <Dropdown.Value>Exit</Dropdown.Value>
-            </Dropdown.Item>
-          </Dropdown.Content>
-        </Dropdown>
-
-        <div className="text-body-small text-stone-600">
-          💡 Try clicking on menu items - the click count should not change. The menu can still be
-          opened and closed normally.
-        </div>
-      </div>
-    )
-  },
-}
-
-/**
- * Dropdown component in light variant.
- */
-export const Light: Story = {
-  render: function LightStory() {
-    return (
-      <Dropdown variant="light">
-        <Dropdown.Trigger>
-          <Dropdown.Value>Click to open menu (light mode)</Dropdown.Value>
-        </Dropdown.Trigger>
-        <Dropdown.Content>
-          <Dropdown.Item>
-            <Dropdown.Value>Copy</Dropdown.Value>
-          </Dropdown.Item>
-          <Dropdown.Item>
-            <Dropdown.Value>Cut</Dropdown.Value>
-          </Dropdown.Item>
-        </Dropdown.Content>
-        <Dropdown.Divider />
-        <Dropdown.Item variant="danger">
-          <Dropdown.Value>Delete</Dropdown.Value>
-        </Dropdown.Item>
-      </Dropdown>
-    )
-  },
-}
-
-/**
- * Using triggerRef to bind dropdown to an external element.
- *
- * This is useful when:
- * - You need to attach a dropdown to an existing element
- * - You want to avoid using Dropdown.Trigger wrapper
- * - You need more control over the trigger element
- */
-export const WithTriggerRef: Story = {
-  render: function WithTriggerRefStory() {
-    const triggerRef = useRef<HTMLButtonElement>(null)
-    const [isOpen, setIsOpen] = useState(false)
-
-    return (
-      <div className="flex items-center justify-center gap-8">
-        <div>
-          <p className="text-body-small-strong mb-2">Using triggerRef</p>
-          <button
-            ref={triggerRef}
-            className="bg-secondary-background rounded-lg border border-dashed px-4 py-2"
-          >
-            Click me (via triggerRef)
-          </button>
-          <Dropdown
-            triggerRef={triggerRef}
-            open={isOpen}
-            onOpenChange={setIsOpen}
-          >
-            <Dropdown.Content>
-              <Dropdown.Label>TriggerRef Menu</Dropdown.Label>
-              <Dropdown.Item>
-                <Dropdown.Value>Option 1</Dropdown.Value>
-              </Dropdown.Item>
-              <Dropdown.Item>
-                <Dropdown.Value>Option 2</Dropdown.Value>
-              </Dropdown.Item>
-              <Dropdown.Divider />
-              <Dropdown.Item variant="danger">
-                <Dropdown.Value>Delete</Dropdown.Value>
-              </Dropdown.Item>
-            </Dropdown.Content>
-          </Dropdown>
-        </div>
-      </div>
-    )
-  },
-}
-
-/**
- * Using triggerSelector (CSS selector) to bind dropdown to an element.
- *
- * This is useful when:
- * - You cannot access the element via ref (e.g., third-party components)
- * - The trigger element is rendered elsewhere in the DOM
- * - You prefer a simpler, selector-based approach
- */
-export const WithTriggerSelector: Story = {
-  render: function WithTriggerSelectorStory() {
-    const [isOpen1, setIsOpen1] = useState(false)
-    const [isOpen2, setIsOpen2] = useState(false)
-    const [isOpen3, setIsOpen3] = useState(false)
-
-    return (
-      <div className="flex gap-8">
-        {/* Using id selector */}
-        <div>
-          <p className="text-body-small-strong mb-2">Using #id selector</p>
-          <button
-            id="dropdown-trigger-by-id"
-            className="bg-secondary-background rounded-lg border border-dashed px-4 py-2"
-          >
-            Click me (id selector)
-          </button>
-          <Dropdown
-            triggerSelector="#dropdown-trigger-by-id"
-            open={isOpen1}
-            onOpenChange={setIsOpen1}
-          >
-            <Dropdown.Content>
-              <Dropdown.Label>ID Selector Menu</Dropdown.Label>
-              <Dropdown.Item>
-                <Dropdown.Value>Action 1</Dropdown.Value>
-              </Dropdown.Item>
-              <Dropdown.Item>
-                <Dropdown.Value>Action 2</Dropdown.Value>
-              </Dropdown.Item>
-            </Dropdown.Content>
-          </Dropdown>
-        </div>
-
-        {/* Using class selector */}
-        <div>
-          <p className="text-body-small-strong mb-2">Using .class selector</p>
-          <button className="dropdown-trigger-by-class bg-secondary-background rounded-lg border border-dashed px-4 py-2">
-            Click me (class selector)
-          </button>
-          <Dropdown
-            triggerSelector=".dropdown-trigger-by-class"
-            open={isOpen2}
-            onOpenChange={setIsOpen2}
-          >
-            <Dropdown.Content>
-              <Dropdown.Label>Class Selector Menu</Dropdown.Label>
-              <Dropdown.Item>
-                <Dropdown.Value>Option A</Dropdown.Value>
-              </Dropdown.Item>
-              <Dropdown.Item>
-                <Dropdown.Value>Option B</Dropdown.Value>
-              </Dropdown.Item>
-            </Dropdown.Content>
-          </Dropdown>
-        </div>
-
-        {/* Using data attribute selector */}
-        <div>
-          <p className="text-body-small-strong mb-2">Using [data-*] selector</p>
-          <button
-            data-dropdown-trigger="custom"
-            className="bg-secondary-background rounded-lg border border-dashed px-4 py-2"
-          >
-            Click me (data-* selector)
-          </button>
-          <Dropdown
-            triggerSelector="[data-dropdown-trigger='custom']"
-            open={isOpen3}
-            onOpenChange={setIsOpen3}
-          >
-            <Dropdown.Content>
-              <Dropdown.Label>Data Attribute Menu</Dropdown.Label>
-              <Dropdown.Item>
-                <Dropdown.Value>Item X</Dropdown.Value>
-              </Dropdown.Item>
-              <Dropdown.Item>
-                <Dropdown.Value>Item Y</Dropdown.Value>
-              </Dropdown.Item>
-            </Dropdown.Content>
-          </Dropdown>
         </div>
       </div>
     )
