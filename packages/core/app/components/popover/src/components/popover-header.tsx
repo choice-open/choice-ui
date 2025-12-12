@@ -4,7 +4,7 @@ import { usePopoverContext } from "../popover-context"
 
 export const PopoverHeader = memo(
   forwardRef<HTMLDivElement, ModalHeaderProps>((props, ref) => {
-    const { children, className, ...rest } = props
+    const { children, ...rest } = props
     const { titleId, onCloseClick } = usePopoverContext()
 
     return (

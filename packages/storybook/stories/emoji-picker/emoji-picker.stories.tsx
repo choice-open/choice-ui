@@ -36,7 +36,7 @@ export const Basic: Story = {
               Selected emoji: {selectedEmoji.emoji} ({selectedEmoji.name})
             </div>
           ) : (
-            <div className="text-gray-500">Please select an emoji</div>
+            <div className="text-secondary-foreground">Please select an emoji</div>
           )}
         </div>
 
@@ -92,12 +92,16 @@ export const Variants: Story = {
 }
 
 /**
- * Emoji picker without frequently used feature.
+ * Emoji picker with `showFrequentlyUsed={false}`.
  *
- * Features:
- * - Disabled frequently used emoji tracking
- * - No "Frequently used" category shown
- * - Category navigation excludes frequently used option
+ * ### When to Use
+ * - Privacy-sensitive applications
+ * - Single-use emoji selection (no need to track habits)
+ * - Simplified UI without history tracking
+ *
+ * ### Behavior
+ * - No "Frequently used" category displayed
+ * - Category navigation excludes frequently used icon
  * - Emoji selections are not saved to local storage
  */
 export const WithoutFrequentlyUsed: Story = {
@@ -107,13 +111,12 @@ export const WithoutFrequentlyUsed: Story = {
     return (
       <div className="flex flex-col gap-4">
         <div className="text-center">
-          <h3 className="text-body-large-strong mb-2">Frequently Used Feature Disabled</h3>
           {selectedEmoji ? (
             <div className="text-body-large">
               Selected emoji: {selectedEmoji.emoji} ({selectedEmoji.name})
             </div>
           ) : (
-            <div className="text-gray-500">Please select an emoji</div>
+            <div className="text-secondary-foreground">Please select an emoji</div>
           )}
         </div>
 
@@ -124,81 +127,24 @@ export const WithoutFrequentlyUsed: Story = {
           variant="dark"
           showFrequentlyUsed={false}
         />
-
-        <div className="text-body-small max-w-md text-center text-gray-500">
-          <p>This example shows disabled frequently used feature:</p>
-          <ul className="mt-2 space-y-1 text-left">
-            <li>• No &quot;Frequently used&quot; category displayed</li>
-            <li>• Category navigation has no frequently used icon</li>
-            <li>• Emoji selections are not saved to local storage</li>
-            <li>• Suitable for scenarios where user habits tracking is not needed</li>
-          </ul>
-        </div>
       </div>
     )
   },
 }
 
 /**
- * Controlled emoji picker inside a popover.
+ * Multiple independent emoji pickers on the same page.
  *
- * Features:
- * - External state management for selected emoji
- * - Popover container provides floating layer experience
- * - Auto-closes popover after emoji selection
- * - Shows current selected emoji in trigger button
- */
-export const ControlledWithPopover: Story = {
-  render: function ControlledWithPopoverStory() {
-    const [open, setOpen] = useState(false)
-    const [selectedEmoji, setSelectedEmoji] = useState<EmojiData | null>(null)
-
-    const handleEmojiSelect = (emoji: EmojiData) => {
-      setSelectedEmoji(emoji)
-      setOpen(false) // 选择后关闭 popover
-    }
-
-    return (
-      <div className="flex flex-col items-center gap-4">
-        <div className="text-center">
-          {selectedEmoji ? (
-            <div className="text-body-large">
-              Current selection: {selectedEmoji.emoji} {selectedEmoji.name}
-            </div>
-          ) : (
-            <div className="text-gray-500">No emoji selected</div>
-          )}
-        </div>
-
-        <Popover
-          open={open}
-          onOpenChange={setOpen}
-          placement="bottom-start"
-        >
-          <Popover.Trigger>
-            <Button active={open}>{selectedEmoji?.emoji || "😀"} Select Emoji</Button>
-          </Popover.Trigger>
-
-          <Popover.Header title="Select Emoji" />
-
-          <Popover.Content className="p-0">
-            <EmojiPicker
-              value={selectedEmoji}
-              onChange={handleEmojiSelect}
-              height={400}
-              variant="dark"
-            />
-          </Popover.Content>
-        </Popover>
-      </div>
-    )
-  },
-}
-
-/**
- * Multiple controlled emoji pickers.
+ * ### Key Points
+ * - Each picker has its own state (`emoji1`, `emoji2`)
+ * - Each picker has its own open state (`open1`, `open2`)
+ * - Combined with `Popover` for dropdown behavior
+ * - Auto-close popover after selection
  *
- * Shows how to use multiple independent emoji pickers on the same page.
+ * ### Popover Integration
+ * - Use `Popover.Header` with custom styling to match picker variant
+ * - Set `className="overflow-hidden"` on Popover for clean edges
+ * - Set `className="p-0"` on `Popover.Content` to remove padding
  */
 export const MultipleControlled: Story = {
   render: function MultipleControlledStory() {
@@ -210,8 +156,7 @@ export const MultipleControlled: Story = {
     return (
       <div className="flex flex-col items-center gap-6">
         <div className="text-center">
-          <h3 className="text-body-large-strong mb-2">Multiple Emoji Pickers</h3>
-          <p className="text-gray-500">
+          <p className="text-secondary-foreground">
             Picker 1: {emoji1?.emoji || "Not selected"} | Picker 2:{" "}
             {emoji2?.emoji || "Not selected"}
           </p>
@@ -219,9 +164,11 @@ export const MultipleControlled: Story = {
 
         <div className="flex gap-4">
           <Popover
+            draggable
             open={open1}
             onOpenChange={setOpen1}
             placement="bottom-start"
+            className="overflow-hidden"
           >
             <Popover.Trigger>
               <Button active={open1}>{emoji1?.emoji || "😀"} Picker 1</Button>
@@ -237,21 +184,29 @@ export const MultipleControlled: Story = {
                   setOpen1(false)
                 }}
                 height={350}
-                variant="dark"
+                variant="light"
               />
             </Popover.Content>
           </Popover>
 
           <Popover
+            draggable
             open={open2}
             onOpenChange={setOpen2}
             placement="bottom-end"
+            className="overflow-hidden"
           >
             <Popover.Trigger>
               <Button active={open2}>{emoji2?.emoji || "🎉"} Picker 2</Button>
             </Popover.Trigger>
 
-            <Popover.Header title="Emoji Picker 2" />
+            <Popover.Header
+              title="Emoji Picker 2"
+              className="bg-menu-background border-menu-boundary text-white"
+              closeButtonProps={{
+                variant: "dark",
+              }}
+            />
 
             <Popover.Content className="p-0">
               <EmojiPicker
@@ -272,90 +227,42 @@ export const MultipleControlled: Story = {
 }
 
 /**
- * Draggable emoji picker popover.
+ * Control emoji picker value from external components.
  *
- * Features:
- * - Users can drag the popover position
- * - Remember position feature
- * - Larger selection area
- */
-export const DraggablePopover: Story = {
-  render: function DraggablePopoverStory() {
-    const [open, setOpen] = useState(false)
-    const [selectedEmoji, setSelectedEmoji] = useState<EmojiData | null>(null)
-
-    return (
-      <div className="flex flex-col items-center gap-4">
-        <div className="text-center">
-          <p className="mb-2 text-gray-500">Draggable Emoji Picker</p>
-          {selectedEmoji ? (
-            <div className="text-body-large">
-              {selectedEmoji.emoji} {selectedEmoji.name}
-            </div>
-          ) : (
-            <div className="text-gray-500">No emoji selected</div>
-          )}
-        </div>
-
-        <Popover
-          open={open}
-          onOpenChange={setOpen}
-          draggable
-          rememberPosition
-          placement="bottom-start"
-        >
-          <Popover.Trigger>
-            <Button active={open}>{selectedEmoji?.emoji || "🎯"} Draggable Picker</Button>
-          </Popover.Trigger>
-
-          <Popover.Header title="Drag me! Select Emoji" />
-
-          <Popover.Content className="p-0">
-            <EmojiPicker
-              value={selectedEmoji}
-              onChange={(emoji) => {
-                setSelectedEmoji(emoji)
-                setOpen(false)
-              }}
-              height={450}
-              columns={10}
-              variant="dark"
-            />
-          </Popover.Content>
-        </Popover>
-      </div>
-    )
-  },
-}
-
-/**
- * External value control example.
+ * ### Features Demonstrated
+ * - Set default value on mount using `emojis.find()`
+ * - Quick select buttons to change value externally
+ * - Custom "recently used" list managed in parent state
+ * - Clear selection and history
  *
- * Shows how to set and reset emoji picker value through external controls.
+ * ### Using `emojis` Array
+ * ```tsx
+ * import { emojis } from "@choice-ui/react"
+ *
+ * // Find emoji by character
+ * const emoji = emojis.find((e) => e.emoji === "😀")
+ *
+ * // Set as initial value
+ * const [selected, setSelected] = useState(emoji || null)
+ * ```
  */
 export const ExternalValueControl: Story = {
   render: function ExternalValueControlStory() {
     const [open, setOpen] = useState(false)
-    // Default select an emoji (smiley face) - using real data
     const [selectedEmoji, setSelectedEmoji] = useState<EmojiData | null>(
       emojis.find((e) => e.emoji === "😀") || null,
     )
     const [recentEmojis, setRecentEmojis] = useState<EmojiData[]>([])
 
-    // When emoji is selected, record to recently used
     const handleEmojiSelect = (emoji: EmojiData) => {
       setSelectedEmoji(emoji)
-
-      // Add to recently used, avoid duplicates
       setRecentEmojis((prev) => {
         const filtered = prev.filter((e) => e.id !== emoji.id)
-        return [emoji, ...filtered].slice(0, 5) // Keep only the last 5
+        return [emoji, ...filtered].slice(0, 5)
       })
-
       setOpen(false)
     }
 
-    // Find real data based on emoji character
     const findEmojiByChar = (emojiChar: string): EmojiData | null => {
       return emojis.find((e) => e.emoji === emojiChar) || null
     }
@@ -363,107 +270,82 @@ export const ExternalValueControl: Story = {
     return (
       <div className="flex flex-col items-center gap-4">
         <div className="text-center">
-          <h3 className="text-body-large-strong mb-2">External Value Control</h3>
           {selectedEmoji ? (
             <div className="text-body-large">
-              Current selection: {selectedEmoji.emoji} {selectedEmoji.name}
+              Current: {selectedEmoji.emoji} {selectedEmoji.name}
             </div>
           ) : (
-            <div className="text-gray-500">No emoji selected</div>
+            <div className="text-secondary-foreground">No emoji selected</div>
           )}
         </div>
 
-        {/* 最近使用的 emoji 快速选择 */}
+        {/* Recently used */}
         {recentEmojis.length > 0 && (
-          <div className="text-center">
-            <p className="text-body-small mb-2 text-gray-500">Recently used:</p>
-            <div className="flex justify-center gap-2">
-              {recentEmojis.map((emoji) => (
-                <Button
-                  key={emoji.id}
-                  variant="secondary"
-                  onClick={() => setSelectedEmoji(emoji)}
-                  title={emoji.name}
-                >
-                  {emoji.emoji}
-                </Button>
-              ))}
+          <div className="flex items-center gap-2">
+            <span className="text-secondary-foreground">Recent:</span>
+            {recentEmojis.map((emoji) => (
               <Button
+                key={emoji.id}
                 variant="secondary"
-                onClick={() => {
-                  setSelectedEmoji(null)
-                  setRecentEmojis([])
-                }}
-                title="Clear all"
+                onClick={() => setSelectedEmoji(emoji)}
+                title={emoji.name}
               >
-                Clear
+                {emoji.emoji}
               </Button>
-            </div>
+            ))}
+            <Button
+              variant="secondary"
+              onClick={() => {
+                setSelectedEmoji(null)
+                setRecentEmojis([])
+              }}
+            >
+              Clear
+            </Button>
           </div>
         )}
 
-        {/* 预设的一些常用 emoji 用于快速切换 */}
-        <div className="text-center">
-          <p className="text-body-small mb-2 text-gray-500">Quick select:</p>
-          <div className="flex justify-center gap-2">
-            {[
-              "😀", // Grinning Face
-              "🎉", // Party Popper
-              "❤️️", // Red Heart - 使用正确的格式
-              "👍", // Thumbs Up
-              "🔥", // Fire
-            ]
-              .map((emojiChar) => {
-                const emojiData = findEmojiByChar(emojiChar)
-                if (!emojiData) return null
-
-                return (
-                  <Button
-                    key={emojiData.id}
-                    variant="secondary"
-                    onClick={() => setSelectedEmoji(emojiData)}
-                    title={emojiData.name}
-                  >
-                    {emojiData.emoji}
-                  </Button>
-                )
-              })
-              .filter(Boolean)}
-          </div>
+        {/* Quick select */}
+        <div className="flex items-center gap-2">
+          <span className="text-secondary-foreground">Quick:</span>
+          {["😀", "🎉", "❤️️", "👍", "🔥"]
+            .map((emojiChar) => {
+              const emojiData = findEmojiByChar(emojiChar)
+              if (!emojiData) return null
+              return (
+                <Button
+                  key={emojiData.id}
+                  variant="secondary"
+                  onClick={() => setSelectedEmoji(emojiData)}
+                  title={emojiData.name}
+                >
+                  {emojiData.emoji}
+                </Button>
+              )
+            })
+            .filter(Boolean)}
         </div>
 
         <Popover
+          draggable
           open={open}
           onOpenChange={setOpen}
           placement="bottom-start"
+          className="overflow-hidden"
         >
           <Popover.Trigger>
             <Button active={open}>{selectedEmoji?.emoji || "🎨"} Open Picker</Button>
           </Popover.Trigger>
-
           <Popover.Header title="Emoji Picker" />
-
           <Popover.Content className="p-0">
             <EmojiPicker
               value={selectedEmoji}
               onChange={handleEmojiSelect}
               height={400}
-              variant="dark"
+              variant="light"
             />
           </Popover.Content>
         </Popover>
-
-        {/* 说明文字 */}
-        <div className="text-body-small max-w-md text-center text-gray-500">
-          <p>This example shows external value control:</p>
-          <ul className="mt-2 space-y-1 text-left">
-            <li>• Default selected emoji (😀)</li>
-            <li>• Can switch preset emojis via quick select buttons</li>
-            <li>• Selected emojis are automatically recorded to recently used list</li>
-            <li>• When setting value externally, picker auto-scrolls to position</li>
-            <li>• Supports clearing current selection and history</li>
-          </ul>
-        </div>
       </div>
     )
   },

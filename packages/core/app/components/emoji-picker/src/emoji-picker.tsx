@@ -19,7 +19,7 @@ import type { EmojiCategory, EmojiData } from "./hooks"
 import { useEmojiData, useEmojiScroll } from "./hooks"
 import { emojiTv } from "./tv"
 
-interface EmojiPickerProps {
+export interface EmojiPickerProps {
   children?: React.ReactNode
   className?: string
   columns?: number
@@ -33,7 +33,7 @@ interface EmojiPickerProps {
   variant?: "default" | "dark" | "light"
 }
 
-// 分类配置（带图标）
+// category configuration (with icons)
 const categoriesWithIcons = [
   { id: "frequently_used", name: "Frequently used", icon: <EmojiFrequentlyUsed /> },
   { id: "smileys_people", name: "Smileys & People", icon: <EmojiSmileysPeople /> },
@@ -64,7 +64,7 @@ export const EmojiPicker = memo(function EmojiPicker({
 
   const tv = emojiTv({ variant })
 
-  // 数据管理
+  // data management
   const {
     categorizedData,
     categoryIndexMap,
@@ -77,7 +77,7 @@ export const EmojiPicker = memo(function EmojiPicker({
     showFrequentlyUsed,
   })
 
-  // 滚动管理
+  // scroll management
   const {
     scrollRef,
     virtualizer,
@@ -95,7 +95,7 @@ export const EmojiPicker = memo(function EmojiPicker({
     columns,
   })
 
-  // 根据配置过滤分类
+  // filter categories by configuration (with icons)
   const availableCategories = useMemo(() => {
     return categoriesWithIcons.filter((category) => {
       if (category.id === "frequently_used") {
@@ -105,20 +105,20 @@ export const EmojiPicker = memo(function EmojiPicker({
     })
   }, [showFrequentlyUsed])
 
-  // 处理 emoji 选择
+  // handle emoji select
   const handleEmojiSelect = useEventCallback((emoji: EmojiData) => {
-    // 标记为内部更新，避免触发自动滚动
+    // mark as internal update, avoid triggering auto scroll
     markInternalUpdate()
     addToFrequentlyUsed(emoji.id)
     onChange?.(emoji)
   })
 
-  // 处理 emoji hover
+  // handle emoji hover
   const handleEmojiHover = useEventCallback((emoji: EmojiData | null) => {
     setHoveredEmoji(emoji)
   })
 
-  // 处理分类点击（仅滚动定位）
+  // handle category click (only scroll to position)
   const handleCategoryClick = useEventCallback((category: EmojiCategory) => {
     scrollToCategory(category)
   })
@@ -170,6 +170,7 @@ export const EmojiPicker = memo(function EmojiPicker({
       <ScrollArea
         variant={variant}
         className={tv.scroll()}
+        hoverBoundary="none"
       >
         <ScrollArea.Viewport
           ref={scrollRef}
@@ -200,7 +201,7 @@ export const EmojiPicker = memo(function EmojiPicker({
                   )
                 }
 
-                // emoji 行
+                // emoji row
                 const style = {
                   height: `${virtualItem.size}px`,
                   transform: `translateY(${virtualItem.start + PADDING}px)`,

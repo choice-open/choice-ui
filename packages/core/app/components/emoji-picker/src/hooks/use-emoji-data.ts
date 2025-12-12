@@ -32,7 +32,7 @@ export type VirtualItem =
       type: "emojis"
     }
 
-// 分类配置
+// category configuration
 export const categories = [
   { id: "frequently_used", name: "Frequently used" },
   { id: "smileys_people", name: "Smileys & People", range: [1, 460] },
@@ -47,7 +47,7 @@ export const categories = [
 
 const STORAGE_KEY = "emoji-picker-frequently-used"
 
-// 根据 ID 获取分类
+// get category by id
 export function getEmojiCategory(id: number): EmojiCategory {
   for (const category of categories) {
     if (
@@ -86,7 +86,7 @@ function saveFrequentlyUsedEmoji(emojiId: number) {
 
     localStorage.setItem(STORAGE_KEY, JSON.stringify(ids))
   } catch {
-    // 忽略存储错误
+    // ignore storage error
   }
 }
 
@@ -99,14 +99,14 @@ interface UseEmojiDataProps {
 export function useEmojiData({ searchQuery, columns, showFrequentlyUsed }: UseEmojiDataProps) {
   const [frequentlyUsed, setFrequentlyUsed] = useState<EmojiData[]>([])
 
-  // 加载 frequently used emojis (仅在启用时)
+  // load frequently used emojis (only when enabled)
   useEffect(() => {
     if (showFrequentlyUsed) {
       setFrequentlyUsed(getFrequentlyUsedEmojis())
     }
   }, [showFrequentlyUsed])
 
-  // 搜索时的过滤数据
+  // filter data when searching
   const searchResults = useMemo(() => {
     if (!searchQuery.trim()) return []
 
@@ -119,9 +119,9 @@ export function useEmojiData({ searchQuery, columns, showFrequentlyUsed }: UseEm
     )
   }, [searchQuery])
 
-  // 按分类组织的虚拟化数据
+  // virtualized data organized by category
   const categorizedData = useMemo((): VirtualItem[] => {
-    // 搜索模式时，只显示搜索结果
+    // when in search mode, only show search results
     if (searchQuery.trim()) {
       const items: VirtualItem[] = []
       for (let i = 0; i < searchResults.length; i += columns) {
@@ -133,10 +133,10 @@ export function useEmojiData({ searchQuery, columns, showFrequentlyUsed }: UseEm
       return items
     }
 
-    // 正常模式：显示所有分类
+    // normal mode: show all categories
     const items: VirtualItem[] = []
 
-    // 1. Frequently Used (仅在启用时显示)
+    // 1. Frequently Used (only when enabled)
     if (showFrequentlyUsed && frequentlyUsed.length > 0) {
       items.push({
         type: "header",
@@ -152,7 +152,7 @@ export function useEmojiData({ searchQuery, columns, showFrequentlyUsed }: UseEm
       }
     }
 
-    // 2. 其他分类
+    // 2. other categories
     categories.slice(1).forEach((category) => {
       if (!("range" in category) || !category.range) return
 
@@ -179,7 +179,7 @@ export function useEmojiData({ searchQuery, columns, showFrequentlyUsed }: UseEm
     return items
   }, [searchQuery, searchResults, frequentlyUsed, columns, showFrequentlyUsed])
 
-  // 分类索引映射
+  // category index mapping
   const categoryIndexMap = useMemo(() => {
     const map = new Map<EmojiCategory, number>()
 
@@ -192,7 +192,7 @@ export function useEmojiData({ searchQuery, columns, showFrequentlyUsed }: UseEm
     return map
   }, [categorizedData])
 
-  // 添加到常用 (仅在启用时)
+  // add to frequently used (only when enabled)
   const addToFrequentlyUsed = (emojiId: number) => {
     if (showFrequentlyUsed) {
       saveFrequentlyUsedEmoji(emojiId)
@@ -200,7 +200,7 @@ export function useEmojiData({ searchQuery, columns, showFrequentlyUsed }: UseEm
     }
   }
 
-  // 根据 emoji 查找其在数据中的位置
+  // find the position of the emoji in the data
   const findEmojiPosition = (
     emoji: EmojiData,
   ): { emojiIndex: number; itemIndex: number } | null => {
@@ -216,7 +216,7 @@ export function useEmojiData({ searchQuery, columns, showFrequentlyUsed }: UseEm
     return null
   }
 
-  // 根据 emoji 字符查找对应的 EmojiData
+  // find the corresponding EmojiData by emoji character
   const findEmojiByChar = (emojiChar: string): EmojiData | null => {
     return emojis.find((emoji) => emoji.emoji === emojiChar) || null
   }

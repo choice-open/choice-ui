@@ -8,12 +8,6 @@ const meta: Meta<typeof Pagination> = {
   component: Pagination,
   parameters: {
     layout: "centered",
-    docs: {
-      description: {
-        component:
-          "An advanced pagination component with multiple display options, page size selection, and jump-to-page functionality.",
-      },
-    },
   },
   tags: ["autodocs", "new"],
 }
@@ -21,7 +15,7 @@ const meta: Meta<typeof Pagination> = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-// Helper component for controlled stories - using default layout
+// Helper component for controlled stories
 const PaginationWrapper = (props: Partial<PaginationRootProps> & { totalItems: number }) => {
   const [currentPage, setCurrentPage] = useState(1)
   const [itemsPerPage, setItemsPerPage] = useState(props.itemsPerPage || 10)
@@ -42,10 +36,40 @@ const PaginationWrapper = (props: Partial<PaginationRootProps> & { totalItems: n
   )
 }
 
+/**
+ * Pagination is a **compound component** for navigating through paginated data.
+ *
+ * ### Core Components
+ * - **Pagination**: Root container, manages state and configuration
+ * - **Pagination.Spinner**: Displays current page info (e.g., "1-10 of 100")
+ * - **Pagination.Navigation**: Page number buttons and prev/next controls
+ * - **Pagination.ItemsPerPage**: Dropdown to change items per page
+ *
+ * ### Required Props
+ * - `currentPage`: Current active page number
+ * - `totalItems`: Total number of items to paginate
+ * - `itemsPerPage`: Number of items displayed per page
+ * - `onPageChange`: Callback when page changes
+ */
 export const Default: Story = {
   render: () => <PaginationWrapper totalItems={100} />,
 }
 
+/**
+ * A complete example showing Pagination integrated with a data table.
+ *
+ * ### Key Features Demonstrated
+ * - Displaying paginated list items
+ * - Dynamic content updates when page changes
+ * - Custom `pageSizeOptions` for items per page selector
+ *
+ * ### Usage Pattern
+ * ```tsx
+ * const startIndex = (currentPage - 1) * itemsPerPage
+ * const endIndex = Math.min(startIndex + itemsPerPage, totalItems)
+ * const currentItems = data.slice(startIndex, endIndex)
+ * ```
+ */
 export const RealWorldExample: Story = {
   render: function Render() {
     const [currentPage, setCurrentPage] = useState(1)
@@ -101,6 +125,21 @@ export const RealWorldExample: Story = {
   },
 }
 
+/**
+ * Demonstrates how to adapt Pagination for different screen sizes.
+ *
+ * ### Desktop vs Mobile
+ * - **Desktop**: Show all features (spinner, navigation, items per page)
+ * - **Mobile**: Use `maxPageButtons` to limit visible page numbers
+ *
+ * ### Configuration Options
+ * - `maxPageButtons`: Limits the number of page buttons shown (default: 7)
+ * - `showPageSizeSelector`: Toggle items-per-page dropdown visibility
+ *
+ * ### Tips
+ * - Omit `Pagination.ItemsPerPage` on mobile for a cleaner UI
+ * - Use smaller `maxPageButtons` values (3-5) on narrow screens
+ */
 export const ResponsiveExample: Story = {
   render: function Render() {
     const [currentPage, setCurrentPage] = useState(1)
@@ -145,6 +184,27 @@ export const ResponsiveExample: Story = {
   },
 }
 
+/**
+ * Shows how to handle loading states during page transitions.
+ *
+ * ### Loading Behavior
+ * - Pass `loading={true}` to disable controls during data fetching
+ * - The spinner component shows a loading indicator
+ * - Prevents users from clicking multiple times during API calls
+ *
+ * ### Implementation Pattern
+ * ```tsx
+ * const handlePageChange = (page: number) => {
+ *   setIsLoading(true)
+ *   setCurrentPage(page)
+ *   fetchData(page).finally(() => setIsLoading(false))
+ * }
+ * ```
+ *
+ * ### Best Practices
+ * - Reset to page 1 when `itemsPerPage` changes
+ * - Show skeleton loaders in the content area during loading
+ */
 export const LoadingState: Story = {
   render: function Render() {
     const [isLoading, setIsLoading] = useState(true)
@@ -223,11 +283,5 @@ export const LoadingState: Story = {
   },
   parameters: {
     layout: "padded",
-    docs: {
-      description: {
-        story:
-          "Demonstrates pagination in loading state. Click pagination controls to see loading behavior, or use the 'Toggle Loading' button to manually control the loading state.",
-      },
-    },
   },
 }

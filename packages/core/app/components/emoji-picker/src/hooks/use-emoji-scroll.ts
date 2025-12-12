@@ -31,7 +31,7 @@ export function useEmojiScroll({
   const isScrollingToTarget = useRef(false)
   const isInternalUpdate = useRef(false)
 
-  // 虚拟化配置
+  // virtualizer configuration
   const virtualizer = useVirtualizer({
     count: categorizedData.length,
     getScrollElement: () => scrollRef.current,
@@ -45,7 +45,7 @@ export function useEmojiScroll({
     overscan: 5,
   })
 
-  // 监听滚动事件，更新当前可见分类
+  // listen to scroll event, update current visible category
   useEffect(() => {
     if (searchQuery.trim()) return
     if (isScrollingToTarget.current) return
@@ -63,7 +63,7 @@ export function useEmojiScroll({
     let currentCategory: EmojiCategory = "frequently_used"
     let minDistance = Infinity
 
-    // 找到最接近视口中心的分类
+    // find the category closest to the viewport center
     for (const item of visibleItems) {
       const data = categorizedData[item.index]
       if (data?.type === "header") {
@@ -78,7 +78,7 @@ export function useEmojiScroll({
       }
     }
 
-    // 如果没有找到分类头，根据内容推断
+    // if no category header is found, infer from content
     if (minDistance === Infinity) {
       for (const item of visibleItems) {
         const data = categorizedData[item.index]
@@ -96,15 +96,15 @@ export function useEmojiScroll({
       }
     }
 
-    // 立即更新状态，不使用防抖
+    // immediately update state, without using debounce
     if (currentCategory !== currentVisibleCategory) {
       setCurrentVisibleCategory(currentCategory)
     }
   }, [virtualizer.getVirtualItems(), categorizedData, searchQuery, currentVisibleCategory])
 
-  // 滚动到指定分类
+  // scroll to specified category
   const scrollToCategory = useEventCallback((category: EmojiCategory) => {
-    // 立即更新当前可见分类，给用户即时反馈
+    // immediately update current visible category, give user immediate feedback
     setCurrentVisibleCategory(category)
 
     const categoryIndex = categoryIndexMap.get(category)
@@ -122,7 +122,7 @@ export function useEmojiScroll({
     }
   })
 
-  // 滚动到指定 emoji
+  // scroll to specified emoji
   const scrollToEmoji = useEventCallback((emoji: EmojiData) => {
     const position = findEmojiPosition(emoji)
     if (position) {
@@ -139,23 +139,23 @@ export function useEmojiScroll({
     }
   })
 
-  // 标记内部更新
+  // mark internal update
   const markInternalUpdate = useEventCallback(() => {
     isInternalUpdate.current = true
-    // 短暂标记后重置，避免影响后续的外部更新
+    // briefly mark and reset, avoid affecting subsequent external updates
     setTimeout(() => {
       isInternalUpdate.current = false
     }, 50)
   })
 
-  // 当外部 value 变化时，自动滚动到对应位置（排除内部更新）
+  // when external value changes, automatically scroll to corresponding position (excluding internal updates)
   useEffect(() => {
     if (value && !searchQuery.trim() && !isInternalUpdate.current) {
       scrollToEmoji(value)
     }
   }, [value, scrollToEmoji, searchQuery])
 
-  // 内容样式
+  // content style
   const contentStyle = useMemo(() => {
     return {
       height: `${virtualizer.getTotalSize() + PADDING * 2}px`,

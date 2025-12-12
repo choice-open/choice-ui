@@ -1,16 +1,17 @@
 import { tcx } from "@choice-ui/shared"
-import { IconButton } from "@choice-ui/icon-button"
+import { IconButton, type IconButtonProps } from "@choice-ui/icon-button"
 import { Remove } from "@choiceform/icons-react"
 import { forwardRef, HTMLProps, isValidElement, ReactNode, useMemo } from "react"
 import { ModalHeaderTv } from "../tv"
 
 export interface ModalHeaderProps extends Omit<HTMLProps<HTMLDivElement>, "title"> {
-  onClose?: () => void
   title?: ReactNode
+  closeButtonProps?: IconButtonProps
+  onClose?: () => void
 }
 
 export const ModalHeader = forwardRef<HTMLDivElement, ModalHeaderProps>((props, ref) => {
-  const { className, children, title, onClose, ...rest } = props
+  const { className, children, title, onClose, closeButtonProps, ...rest } = props
 
   const validElement = useMemo(() => {
     return isValidElement(title)
@@ -34,7 +35,10 @@ export const ModalHeader = forwardRef<HTMLDivElement, ModalHeaderProps>((props, 
 
       {onClose && (
         <div className={tv.close()}>
-          <IconButton onClick={onClose}>
+          <IconButton
+            onClick={onClose}
+            {...closeButtonProps}
+          >
             <Remove />
           </IconButton>
         </div>

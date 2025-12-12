@@ -1,3 +1,7 @@
 export { EmojiPicker } from "./emoji-picker"
-export { emojis } from "./utils"
+export type { EmojiPickerProps } from "./emoji-picker"
+
+export { useEmojiData } from "./hooks"
 export type { EmojiData } from "./hooks"
+
+export { emojis } from "./utils"

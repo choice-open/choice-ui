@@ -49,6 +49,12 @@
           "description": ""
         },
         {
+          "name": "closeButtonProps",
+          "type": "IconButtonProps | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
           "name": "onClose",
           "type": "(() => void) | undefined",
           "required": false,
