@@ -15,7 +15,7 @@ export const StackflowItem = forwardRef<HTMLDivElement, StackflowItemProps>(
     const { id, children, className, style, ...rest } = props
     const { registerItem, current, direction, isInitial } = useStackflowContext()
 
-    // 注册这个 item 到 stackflow
+    // Register this item to stackflow
     useEffect(() => {
       registerItem(id, children)
     }, [id, children, registerItem])

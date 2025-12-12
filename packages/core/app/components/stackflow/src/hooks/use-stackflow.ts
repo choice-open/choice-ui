@@ -40,7 +40,7 @@ export function useStackflow(items: StackflowItem[], initialId?: string): Stackf
       if (!item) return
 
       setState((prev) => {
-        // 如果要跳转的页面就是当前页面，不执行任何操作
+        // If the page to be jumped to is the current page, do nothing
         if (prev.currentId === id) return prev
 
         return {
@@ -59,7 +59,7 @@ export function useStackflow(items: StackflowItem[], initialId?: string): Stackf
       if (prev.history.length <= 1) return prev
 
       const newHistory = [...prev.history]
-      newHistory.pop() // 移除当前页面
+      newHistory.pop() // Remove current page
       const previousId = newHistory[newHistory.length - 1]
 
       return {

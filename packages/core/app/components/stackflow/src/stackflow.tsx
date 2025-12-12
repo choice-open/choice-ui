@@ -37,20 +37,20 @@ const StackflowRoot = forwardRef<HTMLDivElement, StackflowProps>(function Stackf
     setItems((prev) => {
       const exists = prev.find((item) => item.id === id)
       if (exists) {
-        // 更新已存在的 item
+        // Update existing item
         return prev.map((item) => (item.id === id ? { ...item, content } : item))
       } else {
-        // 添加新的 item
+        // Add new item
         return [...prev, { id, content }]
       }
     })
   }, [])
 
-  // defaultId 优先级高于 initialId
+  // defaultId priority is higher than initialId
   const controls = useStackflow(items, defaultId || initialId)
   const tv = stackflowTv()
 
-  // 递归处理子组件，包括 Fragment
+  // Recursively process children, including Fragment
   const processChildren = (
     children: ReactNode,
   ): {
@@ -66,7 +66,7 @@ const StackflowRoot = forwardRef<HTMLDivElement, StackflowProps>(function Stackf
       if (!isValidElement(child)) return
 
       if (child.type === Fragment) {
-        // 递归处理 Fragment 内的子组件
+        // Recursively process children inside Fragment
         const fragmentResult = processChildren(child.props.children)
         prefixElements.push(...fragmentResult.prefixElements)
         suffixElements.push(...fragmentResult.suffixElements)
