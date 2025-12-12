@@ -8,4 +8,4 @@ export type {
   NumericInputVariableProps,
 } from "./components"
 
-export type { NumberResult, NumericInputValue } from "./types"
+export type { NumberResult, NumericChangeDetail, NumericInputValue } from "./types"
