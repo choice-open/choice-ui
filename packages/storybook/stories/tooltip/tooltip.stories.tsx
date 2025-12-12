@@ -81,7 +81,7 @@ export const Placements: Story = {
       {/* Row 1 */}
       <div />
       <Tooltip
-        content="top-start"
+        content="Tooltip at top-start position"
         placement="top-start"
       >
         <Button
@@ -92,7 +92,7 @@ export const Placements: Story = {
         </Button>
       </Tooltip>
       <Tooltip
-        content="top"
+        content="Tooltip at top position"
         placement="top"
       >
         <Button
@@ -103,7 +103,7 @@ export const Placements: Story = {
         </Button>
       </Tooltip>
       <Tooltip
-        content="top-end"
+        content="Tooltip at top-end position"
         placement="top-end"
       >
         <Button
@@ -117,12 +117,12 @@ export const Placements: Story = {
 
       {/* Row 2 */}
       <Tooltip
-        content="left-start"
+        content="Tooltip at left-start position"
         placement="left-start"
       >
         <Button
           variant="secondary"
-          className="w-full"
+          className="h-12 w-full"
         >
           left-start
         </Button>
@@ -131,12 +131,12 @@ export const Placements: Story = {
       <div />
       <div />
       <Tooltip
-        content="right-start"
+        content="Tooltip at right-start position"
         placement="right-start"
       >
         <Button
           variant="secondary"
-          className="w-full"
+          className="h-12 w-full"
         >
           right-start
         </Button>
@@ -144,12 +144,12 @@ export const Placements: Story = {
 
       {/* Row 3 */}
       <Tooltip
-        content="left"
+        content="Tooltip at left position"
         placement="left"
       >
         <Button
           variant="secondary"
-          className="w-full"
+          className="h-12 w-full"
         >
           left
         </Button>
@@ -158,12 +158,12 @@ export const Placements: Story = {
       <div />
       <div />
       <Tooltip
-        content="right"
+        content="Tooltip at right position"
         placement="right"
       >
         <Button
           variant="secondary"
-          className="w-full"
+          className="h-12 w-full"
         >
           right
         </Button>
@@ -171,12 +171,12 @@ export const Placements: Story = {
 
       {/* Row 4 */}
       <Tooltip
-        content="left-end"
+        content="Tooltip at left-end position"
         placement="left-end"
       >
         <Button
           variant="secondary"
-          className="w-full"
+          className="h-12 w-full"
         >
           left-end
         </Button>
@@ -185,12 +185,12 @@ export const Placements: Story = {
       <div />
       <div />
       <Tooltip
-        content="right-end"
+        content="Tooltip at right-end position"
         placement="right-end"
       >
         <Button
           variant="secondary"
-          className="w-full"
+          className="h-12 w-full"
         >
           right-end
         </Button>
@@ -199,7 +199,7 @@ export const Placements: Story = {
       {/* Row 5 */}
       <div />
       <Tooltip
-        content="bottom-start"
+        content="Tooltip at bottom-start position"
         placement="bottom-start"
       >
         <Button
@@ -210,7 +210,7 @@ export const Placements: Story = {
         </Button>
       </Tooltip>
       <Tooltip
-        content="bottom"
+        content="Tooltip at bottom position"
         placement="bottom"
       >
         <Button
@@ -221,7 +221,7 @@ export const Placements: Story = {
         </Button>
       </Tooltip>
       <Tooltip
-        content="bottom-end"
+        content="Tooltip at bottom-end position"
         placement="bottom-end"
       >
         <Button

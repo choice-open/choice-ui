@@ -4,7 +4,7 @@ import {
   flip,
   offset,
   shift,
-  useDelayGroupContext,
+  useDelayGroup,
   useDismiss,
   useFloating,
   useFocus,
@@ -30,9 +30,7 @@ export function useTooltip({
 
   const arrowRef = useRef<HTMLElement>(null)
 
-  const { delay } = useDelayGroupContext()
-
-  // 缓存 middleware 配置，避免每次重新创建
+  // Cache middleware to avoid recreating on every render
   const middleware = useMemo(
     () => [
       offset(offsetValue),
@@ -40,7 +38,7 @@ export function useTooltip({
       shift({ padding: 8 }),
       arrow({
         element: arrowRef,
-        padding: 8, // 圆角保护：确保箭头距离容器边缘至少8px
+        padding: 8, // Corner protection: ensure arrow is at least 8px from container edge
       }),
     ],
     [offsetValue],
@@ -55,6 +53,9 @@ export function useTooltip({
   })
 
   const context = data.context
+
+  // Use useDelayGroup instead of deprecated useDelayGroupContext
+  const { delay } = useDelayGroup(context)
 
   const hover = useHover(context, {
     move: false,
@@ -71,7 +72,7 @@ export function useTooltip({
 
   const interactions = useInteractions([hover, focus, dismiss, role])
 
-  // 优化 memoization，只依赖真正变化的值
+  // Optimize memoization, only depend on values that actually change
   return useMemo<TooltipContextValue>(
     () => ({
       open,
