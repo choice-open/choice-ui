@@ -1,9 +1,9 @@
 import { Editor, Transforms } from "slate"
 
 /**
- * 检查是否需要在当前位置前面添加空格
- * @param editor - SlateJS 编辑器实例
- * @returns 是否需要添加前导空格
+ * Check if a space should be inserted before the current position
+ * @param editor - SlateJS editor instance
+ * @returns Whether a leading space should be added
  */
 export function shouldInsertSpaceBefore(editor: Editor): boolean {
   const { selection } = editor
@@ -17,11 +17,11 @@ export function shouldInsertSpaceBefore(editor: Editor): boolean {
     if (before) {
       const beforeRange = Editor.range(editor, before, selection.anchor)
       const beforeText = Editor.string(editor, beforeRange)
-      // 如果前一个字符不是空格或换行，需要添加空格
+      // If previous character is not space or newline, need to add space
       return beforeText !== "" && beforeText !== " " && beforeText !== "\n"
     }
   } catch {
-    // 如果出错，安全地假设不需要空格
+    // If error occurs, safely assume no space is needed
     return false
   }
 
@@ -29,15 +29,15 @@ export function shouldInsertSpaceBefore(editor: Editor): boolean {
 }
 
 /**
- * 检查是否需要在当前位置后面添加空格
- * @param editor - SlateJS 编辑器实例
- * @returns 是否需要添加后导空格
+ * Check if a space should be inserted after the current position
+ * @param editor - SlateJS editor instance
+ * @returns Whether a trailing space should be added
  */
 export function shouldInsertSpaceAfter(editor: Editor): boolean {
   const { selection } = editor
 
   if (!selection) {
-    return true // 默认在结尾添加空格
+    return true // Default to add space at the end
   }
 
   try {
@@ -45,21 +45,21 @@ export function shouldInsertSpaceAfter(editor: Editor): boolean {
     if (after) {
       const afterRange = Editor.range(editor, selection.anchor, after)
       const afterText = Editor.string(editor, afterRange)
-      // 如果后一个字符不是空格或换行，需要添加空格
+      // If next character is not space or newline, need to add space
       return afterText !== "" && afterText !== " " && afterText !== "\n"
     }
   } catch {
-    // 如果出错，安全地假设需要空格
+    // If error occurs, safely assume space is needed
     return true
   }
 
-  return true // 默认在结尾添加空格
+  return true // Default to add space at the end
 }
 
 /**
- * 在当前位置智能插入空格（前导空格）
- * @param editor - SlateJS 编辑器实例
- * @returns 是否插入了空格
+ * Smartly insert space at current position (leading space)
+ * @param editor - SlateJS editor instance
+ * @returns Whether a space was inserted
  */
 export function insertSpaceBeforeIfNeeded(editor: Editor): boolean {
   if (shouldInsertSpaceBefore(editor)) {
@@ -70,9 +70,9 @@ export function insertSpaceBeforeIfNeeded(editor: Editor): boolean {
 }
 
 /**
- * 在当前位置智能插入空格（后导空格）
- * @param editor - SlateJS 编辑器实例
- * @returns 是否插入了空格
+ * Smartly insert space at current position (trailing space)
+ * @param editor - SlateJS editor instance
+ * @returns Whether a space was inserted
  */
 export function insertSpaceAfterIfNeeded(editor: Editor): boolean {
   if (shouldInsertSpaceAfter(editor)) {
@@ -83,24 +83,24 @@ export function insertSpaceAfterIfNeeded(editor: Editor): boolean {
 }
 
 /**
- * 为 mention 插入智能间距
- * 这个函数会在插入 mention 前后根据上下文智能添加空格
- * @param editor - SlateJS 编辑器实例
- * @param beforeInsertion - 在插入内容前执行的回调
+ * Insert smart spacing for mention
+ * This function intelligently adds spaces before/after mention insertion based on context
+ * @param editor - SlateJS editor instance
+ * @param beforeInsertion - Callback to execute before content insertion
  */
 export function insertWithSmartSpacing(editor: Editor, beforeInsertion: () => void): void {
-  // 在插入内容前检查是否需要前导空格
+  // Check if leading space is needed before inserting content
   const needsSpaceBefore = shouldInsertSpaceBefore(editor)
 
-  // 插入前导空格（如果需要）
+  // Insert leading space (if needed)
   if (needsSpaceBefore) {
     Transforms.insertText(editor, " ")
   }
 
-  // 执行实际的插入操作
+  // Execute actual insertion operation
   beforeInsertion()
 
-  // 参考官方案例：总是在 mention 后面插入空格
-  // 官方案例的 onChange 逻辑期望 mention 后面有空格：afterText.match(/^(\s|$)/)
+  // Reference official example: always insert space after mention
+  // Official example's onChange logic expects space after mention: afterText.match(/^(\s|$)/)
   Transforms.insertText(editor, " ")
 }

@@ -19,16 +19,16 @@ export const InsertMentionsButton = memo(function InsertMentionsButton({
 
   const handleInsertMention = () => {
     try {
-      // 确保编辑器有焦点
+      // Ensure editor has focus
       ReactEditor.focus(editor)
 
-      // 检查并插入前导空格（如果需要）
+      // Check and insert leading space (if needed)
       insertSpaceBeforeIfNeeded(editor)
 
-      // 在当前光标位置插入 @ 符号
+      // Insert @ symbol at current cursor position
       Transforms.insertText(editor, "@")
 
-      // 触发回调
+      // Trigger callback
       onClick?.()
     } catch (error) {
       console.warn("Failed to insert mention trigger:", error)

@@ -72,19 +72,19 @@ const SlateEditorComponent = React.forwardRef<HTMLDivElement, SlateEditorProps>(
     },
     ref,
   ) {
-    // 缓存样式计算
+    // Cache style calculations
     const tv = useMemo(
       () => contextInputTv({ variant, disabled, hasHeader, hasFooter, size }),
       [variant, disabled, hasHeader, hasFooter, size],
     )
 
-    // 渲染 Mention 元素
+    // Render Mention element
     const renderElement = useCallback(
       (props: RenderElementProps) => {
         const { attributes, children, element } = props
 
         if ((element as unknown as { type: string }).type === "mention") {
-          // 使用自定义 Mention 组件或默认的 Mention 组件
+          // Use custom Mention component or default Mention component
           const MentionComponent = customMentionComponent || Mention
           return (
             <MentionComponent
@@ -101,21 +101,21 @@ const SlateEditorComponent = React.forwardRef<HTMLDivElement, SlateEditorProps>(
       [customMentionComponent, renderMention, mentionPrefix, variant],
     )
 
-    // 渲染叶子节点
+    // Render leaf nodes
     const renderLeaf = useCallback((props: RenderLeafProps) => {
       return <span {...props.attributes}>{props.children}</span>
     }, [])
 
-    // 缓存 placeholder 渲染函数以避免重复创建
+    // Cache placeholder render function to avoid repeated creation
     const renderPlaceholder = useCallback(
       ({ children }: RenderPlaceholderProps) => <p className={tv.placeholder()}>{children}</p>,
       [tv],
     )
 
-    // 键盘事件处理
+    // Keyboard event handler
     const handleKeyDown = useCallback(
       (event: React.KeyboardEvent) => {
-        // 先让父组件处理 mentions 相关逻辑
+        // Let parent component handle mentions-related logic first
         onKeyDown(event)
       },
       [onKeyDown],
@@ -138,6 +138,7 @@ const SlateEditorComponent = React.forwardRef<HTMLDivElement, SlateEditorProps>(
               <Editable
                 ref={ref}
                 spellCheck={false}
+                suppressHydrationWarning
                 className={tv.editor()}
                 placeholder={placeholder}
                 renderPlaceholder={renderPlaceholder}
@@ -162,12 +163,13 @@ const SlateEditorComponent = React.forwardRef<HTMLDivElement, SlateEditorProps>(
   },
 )
 
-// 使用 React.memo 优化渲染性能
+// Use React.memo to optimize render performance
+// Note: Don't compare slateValue because Slate's initialValue is only used on first render
+// Subsequent editor state is managed internally by Slate, no need to re-render on slateValue changes
 export const SlateEditor = React.memo(SlateEditorComponent, (prevProps, nextProps) => {
-  // 自定义比较逻辑以优化性能
   return (
     prevProps.editor === nextProps.editor &&
-    prevProps.slateValue === nextProps.slateValue &&
+    // Don't compare slateValue - Slate manages state internally
     prevProps.placeholder === nextProps.placeholder &&
     prevProps.disabled === nextProps.disabled &&
     prevProps.readOnly === nextProps.readOnly &&

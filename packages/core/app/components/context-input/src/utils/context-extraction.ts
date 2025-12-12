@@ -1,4 +1,4 @@
-// 提取 mention 上下文的工具函数
+// Utility function to extract mention context
 export const extractMentionContext = (
   text: string,
   startIndex: number,

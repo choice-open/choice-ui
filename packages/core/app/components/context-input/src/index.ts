@@ -1,6 +1,11 @@
 export { ContextInput } from "./context-input"
-export * from "./components"
-export * from "./hooks"
-export * from "./utils"
-export type * from "./types"
-export { contextInputTv } from "./tv"
+export { InsertMentionsButton, CopyButton } from "./components"
+
+export type {
+  ContextInputProps,
+  ContextInputValue,
+  ContextMentionElement,
+  ContextInputRef,
+  MentionProps,
+  MentionItemProps,
+} from "./types"

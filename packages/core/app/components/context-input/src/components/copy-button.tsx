@@ -25,23 +25,23 @@ const CopyButtonComponent = function CopyButton({
     }
 
     try {
-      // 转换SlateJS内容为字符串
+      // Convert SlateJS content to string
       const textContent = convertSlateToText(editor.children)
 
-      // 复制到剪贴板
+      // Copy to clipboard
       if (typeof navigator === "undefined" || !navigator.clipboard) {
         console.warn("Clipboard API not available")
         return
       }
       await navigator.clipboard.writeText(textContent)
 
-      // 设置成功状态
+      // Set success state
       setCopied(true)
 
-      // 触发回调
+      // Trigger callback
       onClick?.(textContent)
 
-      // 重置状态
+      // Reset state
       setTimeout(() => setCopied(false), successDuration)
     } catch (error) {
       console.error("Failed to copy content:", error)
@@ -59,5 +59,5 @@ const CopyButtonComponent = function CopyButton({
   )
 }
 
-// 使用 React.memo 优化渲染性能
+// Use React.memo to optimize render performance
 export const CopyButton = React.memo(CopyButtonComponent)

@@ -1,39 +1,54 @@
 import { Combobox } from "@choice-ui/combobox"
 import React, { forwardRef, memo, useImperativeHandle } from "react"
-import { contextInputTv } from "../tv"
-import type { MentionItem } from "../types"
+import type { MentionItemProps } from "../types"
 
-// 坐标位置类型
+// Focus management disabled config - as constant to avoid creating new object on each render
+const FOCUS_MANAGER_PROPS = {
+  initialFocus: -1,
+  returnFocus: false,
+  modal: false,
+  guards: false,
+} as const
+
+// Coordinate position type
 export interface MentionMenuPosition {
   x: number
   y: number
 }
 
-// MentionMenu 的 ref 接口
+// MentionMenu ref interface
 export interface MentionMenuRef {
   handleKeyDown: (event: React.KeyboardEvent) => boolean
 }
 
-// Mentions 菜单组件 - 使用 Combobox 的坐标模式
+// Mentions menu component - uses Combobox coordinate mode
 interface MentionMenuProps {
   isOpen: boolean
   loading: boolean
   onClose: () => void
-  onSelect: (mention: MentionItem, index: number) => void
+  onSelect: (mention: MentionItemProps, index: number) => void
   position: MentionMenuPosition | null
-  renderSuggestion?: (item: MentionItem, isSelected: boolean) => React.ReactNode
+  renderSuggestion?: (item: MentionItemProps, isSelected: boolean) => React.ReactNode
   root?: HTMLElement | null
-  suggestions: MentionItem[]
+  suggestions: MentionItemProps[]
+  disabled?: boolean
 }
 
 export const MentionMenu = memo(
   forwardRef<MentionMenuRef, MentionMenuProps>(function MentionMenu(props, ref) {
-    const { isOpen, loading, position, onSelect, renderSuggestion, suggestions, onClose, root } =
-      props
+    const {
+      isOpen,
+      loading,
+      position,
+      onSelect,
+      renderSuggestion,
+      suggestions,
+      onClose,
+      root,
+      disabled = false,
+    } = props
 
-    const tv = contextInputTv()
-
-    // 暴露键盘处理方法 - 使用与 MentionsWithSlate story 相同的方式
+    // Expose keyboard handler method - same approach as MentionsWithSlate story
     useImperativeHandle(
       ref,
       () => ({
@@ -42,7 +57,7 @@ export const MentionMenu = memo(
             return false
           }
 
-          // 如果菜单打开，拦截上下箭头和回车键
+          // If menu is open, intercept arrow up/down and enter keys
           if (
             event.key === "ArrowDown" ||
             event.key === "ArrowUp" ||
@@ -53,10 +68,10 @@ export const MentionMenu = memo(
             event.preventDefault()
             event.stopPropagation()
 
-            // 获取菜单元素并分发键盘事件 - 与 MentionsWithSlate 相同的方式
+            // Get menu element and dispatch keyboard event - same approach as MentionsWithSlate
             const menuElement = document.querySelector('[role="listbox"]') as HTMLElement
             if (menuElement) {
-              // 直接在菜单元素上触发键盘事件
+              // Directly trigger keyboard event on menu element
               const keyEvent = new KeyboardEvent("keydown", {
                 key: event.key,
                 code: event.code || event.key,
@@ -78,7 +93,7 @@ export const MentionMenu = memo(
       [isOpen, suggestions.length],
     )
 
-    return loading ? null : (
+    return loading || disabled ? null : (
       <Combobox
         trigger="coordinate"
         position={position}
@@ -87,8 +102,9 @@ export const MentionMenu = memo(
         placement="bottom-start"
         autoSelection={true}
         value=""
-        onChange={() => {}} // 不需要处理值变化
+        onChange={() => {}}
         root={root}
+        focusManagerProps={FOCUS_MANAGER_PROPS}
       >
         {suggestions.length > 0 && (
           <Combobox.Content>

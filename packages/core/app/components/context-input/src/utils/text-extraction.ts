@@ -1,7 +1,7 @@
 import { Descendant, Element as SlateElement, Node, Text } from "slate"
 import type { ContextMentionElement, MentionMatch } from "../types"
 
-// 自定义文本提取函数：将 mention 替换为其 label
+// Custom text extraction function: replace mention with its label
 export const extractTextWithMentions = (nodes: Descendant[]) => {
   let text = ""
   const mentionsData: Array<{
@@ -18,7 +18,7 @@ export const extractTextWithMentions = (nodes: Descendant[]) => {
         const element = node as unknown as ContextMentionElement
         const startIndex = text.length
         const label = element.mentionLabel
-        text += label // 将 mention 替换为其 label
+        text += label // Replace mention with its label
         const endIndex = text.length
 
         mentionsData.push({
@@ -27,7 +27,7 @@ export const extractTextWithMentions = (nodes: Descendant[]) => {
           endIndex,
         })
       } else if ((node as unknown as { children?: Node[] }).children) {
-        // 递归处理子节点
+        // Recursively process child nodes
         for (const child of (node as unknown as { children: Node[] }).children) {
           processNode(child)
         }
@@ -47,20 +47,30 @@ export const extractTextWithMentions = (nodes: Descendant[]) => {
   return { text, mentionsData }
 }
 
-// 解析文本和 mentions，生成 Slate 节点
+// Default empty paragraph structure
+const EMPTY_PARAGRAPH: Descendant[] = [
+  { type: "paragraph", children: [{ text: "" }] },
+] as unknown as Descendant[]
+
+// Parse text and mentions, generate Slate nodes
 export const parseTextWithMentions = (text: string, mentions: MentionMatch[]): Descendant[] => {
-  if (!mentions || mentions.length === 0) {
-    return [{ type: "paragraph", children: [{ text }] }] as unknown as Descendant[]
+  // Handle empty or undefined text
+  if (!text && text !== "") {
+    return EMPTY_PARAGRAPH
   }
 
-  // 按起始位置排序 mentions
+  if (!mentions || mentions.length === 0) {
+    return [{ type: "paragraph", children: [{ text: text || "" }] }] as unknown as Descendant[]
+  }
+
+  // Sort mentions by start position
   const sortedMentions = [...mentions].sort((a, b) => a.startIndex - b.startIndex)
 
   const children: ({ text: string } | ContextMentionElement)[] = []
   let currentIndex = 0
 
   for (const mention of sortedMentions) {
-    // 添加 mention 前的文本
+    // Add text before mention
     if (mention.startIndex > currentIndex) {
       const beforeText = text.slice(currentIndex, mention.startIndex)
       if (beforeText) {
@@ -68,7 +78,7 @@ export const parseTextWithMentions = (text: string, mentions: MentionMatch[]): D
       }
     }
 
-    // 添加 mention 元素
+    // Add mention element
     const mentionElement: ContextMentionElement = {
       type: "mention" as const,
       mentionType: mention.item.type,
@@ -82,7 +92,7 @@ export const parseTextWithMentions = (text: string, mentions: MentionMatch[]): D
     currentIndex = mention.endIndex
   }
 
-  // 添加剩余的文本
+  // Add remaining text
   if (currentIndex < text.length) {
     const remainingText = text.slice(currentIndex)
     if (remainingText) {
@@ -90,7 +100,7 @@ export const parseTextWithMentions = (text: string, mentions: MentionMatch[]): D
     }
   }
 
-  // 确保至少有一个文本节点
+  // Ensure at least one text node
   if (children.length === 0) {
     children.push({ text: "" })
   }

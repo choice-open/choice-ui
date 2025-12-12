@@ -45,7 +45,7 @@
         },
         {
           "name": "focusManagerProps",
-          "type": "FloatingFocusManagerProps | undefined",
+          "type": "Partial<Omit<FloatingFocusManagerProps, \"children\" | \"context\">> | undefined",
           "required": false,
           "defaultValue": "{ returnFocus: true, modal: false }",
           "description": ""

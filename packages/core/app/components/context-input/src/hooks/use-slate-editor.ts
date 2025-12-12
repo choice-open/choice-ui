@@ -12,7 +12,7 @@ export const useSlateEditor = (maxLength?: number): ContextEditor => {
     editor = withHistory(editor)
     editor = withMentions(editor)
 
-    // 如果设置了 maxLength，应用长度限制插件
+    // If maxLength is set, apply length limit plugin
     if (maxLength) {
       editor = withMaxLength(maxLength)(editor)
     }

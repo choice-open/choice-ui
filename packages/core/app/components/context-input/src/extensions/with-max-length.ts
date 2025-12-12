@@ -1,6 +1,6 @@
-import { Editor, Node, Descendant } from "slate"
-import { ReactEditor } from "slate-react"
+import { Editor, Node } from "slate"
 import { HistoryEditor } from "slate-history"
+import { ReactEditor } from "slate-react"
 
 type CustomEditor = Editor & ReactEditor & HistoryEditor
 
@@ -10,10 +10,10 @@ export const withMaxLength =
     const customEditor = editor as unknown as CustomEditor
     const { insertText, insertData, insertFragment } = customEditor
 
-    // 获取当前文本长度的辅助函数
+    // Helper function to get current text length
     const getCurrentLength = () => Editor.string(customEditor, []).length
 
-    // 拦截普通文本插入
+    // Intercept normal text insertion
     customEditor.insertText = (text: string) => {
       const currentLength = getCurrentLength()
       const newLength = currentLength + text.length
@@ -28,7 +28,7 @@ export const withMaxLength =
       }
     }
 
-    // 拦截粘贴操作
+    // Intercept paste operation
     customEditor.insertData = (data: DataTransfer) => {
       const text = data.getData("text/plain")
 
@@ -41,26 +41,26 @@ export const withMaxLength =
         } else {
           const remainingLength = maxLength - currentLength
           if (remainingLength > 0) {
-            // 只插入允许长度的文本
+            // Only insert text up to allowed length
             customEditor.insertText(text.slice(0, remainingLength))
           }
         }
       } else {
-        // 如果不是文本数据，检查插入后是否超过限制
+        // If not text data, check if insertion exceeds limit
         const currentLength = getCurrentLength()
 
-        // 临时插入以检查长度
+        // Temporarily insert to check length
         insertData(data)
 
         const newLength = getCurrentLength()
         if (newLength > maxLength) {
-          // 如果超过限制，撤销并截断
+          // If exceeds limit, undo and truncate
           customEditor.undo()
 
-          // 计算允许插入的文本长度
+          // Calculate allowed text length
           const remainingLength = maxLength - currentLength
           if (remainingLength > 0) {
-            // 尝试从数据中提取文本并截断插入
+            // Try to extract text from data and insert truncated
             const fallbackText = data.getData("text/plain") || ""
             if (fallbackText) {
               customEditor.insertText(fallbackText.slice(0, remainingLength))
@@ -70,7 +70,7 @@ export const withMaxLength =
       }
     }
 
-    // 拦截 fragment 插入
+    // Intercept fragment insertion
     customEditor.insertFragment = (fragment: Node[]) => {
       const fragmentText = fragment.map((value: Node) => Node.string(value)).join("")
       const currentLength = getCurrentLength()
@@ -81,7 +81,7 @@ export const withMaxLength =
       } else {
         const remainingLength = maxLength - currentLength
         if (remainingLength > 0) {
-          // 将 fragment 转换为文本并截断
+          // Convert fragment to text and truncate
           customEditor.insertText(fragmentText.slice(0, remainingLength))
         }
       }

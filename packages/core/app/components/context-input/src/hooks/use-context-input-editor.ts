@@ -1,10 +1,10 @@
 import { createContext, useContext } from "react"
 import type { ContextEditor } from "../types/editor"
 
-// 创建编辑器上下文
+// Create editor context
 export const ContextInputEditorContext = createContext<ContextEditor | null>(null)
 
-// 使用编辑器的 hook
+// Hook to use the editor
 export const useContextInputEditor = (): ContextEditor => {
   const editor = useContext(ContextInputEditorContext)
   if (!editor) {

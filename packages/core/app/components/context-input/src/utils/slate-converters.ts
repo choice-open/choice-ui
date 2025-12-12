@@ -2,8 +2,8 @@ import type { Descendant } from "slate"
 import type { ContextMentionElement, ContextParagraphElement, ContextInputText } from "../types"
 
 /**
- * 将SlateJS节点数组转换为字符串
- * mention节点转换为 {{#context#}}{{#id.text#}} 格式
+ * Convert SlateJS node array to string
+ * Mention nodes are converted to {{#context#}}{{#id.text#}} format
  */
 export function convertSlateToText(nodes: Descendant[]): string {
   if (!nodes || nodes.length === 0) return ""
@@ -15,8 +15,8 @@ export function convertSlateToText(nodes: Descendant[]): string {
 }
 
 /**
- * 将字符串转换为SlateJS节点数组
- * 支持解析 {{#context#}}{{#id.text#}} 格式为mention节点
+ * Convert string to SlateJS node array
+ * Supports parsing {{#context#}}{{#id.text#}} format to mention nodes
  */
 export function convertTextToSlate(text: string): Descendant[] {
   if (!text || text.trim() === "") {
@@ -35,18 +35,18 @@ export function convertTextToSlate(text: string): Descendant[] {
 }
 
 /**
- * 递归转换单个节点为文本
+ * Recursively convert single node to text
  */
 function convertNodeToText(node: Descendant): string {
   const nodeAny = node as unknown as Record<string, unknown>
 
-  // 如果是mention节点
+  // If mention node
   if (isMentionElement(node)) {
     const mentionId = (nodeAny.mentionId as string) || "unknown"
 
-    // 根据 mentionId 决定格式：
-    // - 如果是纯数字或包含数字，使用 {{#id.text#}} 格式
-    // - 如果是文字（如 context），使用 {{#id#}} 格式
+    // Determine format based on mentionId:
+    // - If pure number or contains number, use {{#id.text#}} format
+    // - If text (like context), use {{#id#}} format
     if (/^\d+$/.test(mentionId) || mentionId.includes(".")) {
       return `{{#${mentionId}.text#}}`
     } else {
@@ -54,29 +54,29 @@ function convertNodeToText(node: Descendant): string {
     }
   }
 
-  // 如果是普通文本节点
+  // If plain text node
   if (isTextNode(node)) {
     return node.text
   }
 
-  // 如果是段落元素，递归处理所有子节点
+  // If paragraph element, recursively process all child nodes
   if (isParagraphElement(node)) {
-    // 段落的children可能包含文本节点和mention节点，需要递归处理
+    // Paragraph children may contain text nodes and mention nodes, need recursive processing
     const result: string[] = []
     for (const child of node.children) {
       const childNode = child as unknown as Record<string, unknown>
-      // 如果是mention节点
+      // If mention node
       if (childNode.type === "mention") {
         const mentionId = (childNode.mentionId as string) || "unknown"
 
-        // 同样的格式判断逻辑
+        // Same format determination logic
         if (/^\d+$/.test(mentionId) || mentionId.includes(".")) {
           result.push(`{{#${mentionId}.text#}}`)
         } else {
           result.push(`{{#${mentionId}#}}`)
         }
       }
-      // 如果是文本节点
+      // If text node
       else if (typeof childNode.text === "string") {
         result.push(childNode.text)
       }
@@ -88,12 +88,12 @@ function convertNodeToText(node: Descendant): string {
 }
 
 /**
- * 解析一行文本为节点数组，处理mention格式
+ * Parse a line of text into node array, handling mention format
  */
 function parseLineToNodes(line: string): (ContextInputText | ContextMentionElement)[] {
-  // 支持两种 mention 格式：
-  // 1. {{#id#}} - 简单格式（如：{{#context#}}）
-  // 2. {{#id.text#}} - 带 .text 后缀格式（如：{{#1739416889031.text#}}）
+  // Support two mention formats:
+  // 1. {{#id#}} - simple format (e.g., {{#context#}})
+  // 2. {{#id.text#}} - format with .text suffix (e.g., {{#1739416889031.text#}})
   const mentionRegex = /\{\{#([^}]+?)(?:\.text)?#\}\}/g
   const nodes: (ContextInputText | ContextMentionElement)[] = []
   let lastIndex = 0
@@ -104,7 +104,7 @@ function parseLineToNodes(line: string): (ContextInputText | ContextMentionEleme
     const matchStart = match.index
     const matchEnd = match.index + fullMatch.length
 
-    // 添加mention前的普通文本
+    // Add plain text before mention
     if (matchStart > lastIndex) {
       const textBefore = line.slice(lastIndex, matchStart)
       if (textBefore) {
@@ -112,12 +112,12 @@ function parseLineToNodes(line: string): (ContextInputText | ContextMentionEleme
       }
     }
 
-    // 创建mention节点
+    // Create mention node
     const mentionNode: ContextMentionElement = {
       type: "mention",
-      mentionType: "user", // 默认类型，可能需要根据实际情况调整
+      mentionType: "user", // Default type, may need adjustment based on actual use
       mentionId: mentionId,
-      mentionLabel: `User ${mentionId}`, // 默认标签，实际使用时可能需要查找真实标签
+      mentionLabel: `User ${mentionId}`, // Default label, actual use may need to look up real label
       mentionData: {},
       children: [{ text: "" }],
     }
@@ -126,7 +126,7 @@ function parseLineToNodes(line: string): (ContextInputText | ContextMentionEleme
     lastIndex = matchEnd
   }
 
-  // 添加剩余的普通文本
+  // Add remaining plain text
   if (lastIndex < line.length) {
     const textAfter = line.slice(lastIndex)
     if (textAfter) {
@@ -134,7 +134,7 @@ function parseLineToNodes(line: string): (ContextInputText | ContextMentionEleme
     }
   }
 
-  // 如果没有任何内容，返回空文本节点
+  // If no content, return empty text node
   if (nodes.length === 0) {
     nodes.push({ text: line })
   }
@@ -143,12 +143,12 @@ function parseLineToNodes(line: string): (ContextInputText | ContextMentionEleme
 }
 
 /**
- * 创建段落元素 - 返回原生对象而不是类型化对象
+ * Create paragraph element - return native object instead of typed object
  */
 function createParagraphElement(
   children: (ContextInputText | ContextMentionElement)[],
 ): Record<string, unknown> {
-  // 如果没有任何子节点，创建一个空的文本节点
+  // If no child nodes, create an empty text node
   if (children.length === 0) {
     return {
       type: "paragraph",
@@ -156,7 +156,7 @@ function createParagraphElement(
     }
   }
 
-  // 保留所有子节点（包括文本节点和 mention 节点）
+  // Keep all child nodes (including text nodes and mention nodes)
   return {
     type: "paragraph",
     children: children,
@@ -164,7 +164,7 @@ function createParagraphElement(
 }
 
 /**
- * 类型守卫：检查是否为文本节点
+ * Type guard: check if node is text node
  */
 function isTextNode(node: Descendant): node is ContextInputText {
   const nodeAny = node as unknown as Record<string, unknown>
@@ -172,7 +172,7 @@ function isTextNode(node: Descendant): node is ContextInputText {
 }
 
 /**
- * 类型守卫：检查是否为段落元素
+ * Type guard: check if node is paragraph element
  */
 function isParagraphElement(node: Descendant): boolean {
   const nodeAny = node as unknown as Record<string, unknown>
@@ -180,7 +180,7 @@ function isParagraphElement(node: Descendant): boolean {
 }
 
 /**
- * 类型守卫：检查是否为mention元素
+ * Type guard: check if node is mention element
  */
 function isMentionElement(node: Descendant): boolean {
   const nodeAny = node as unknown as Record<string, unknown>
@@ -188,7 +188,7 @@ function isMentionElement(node: Descendant): boolean {
 }
 
 /**
- * 创建mention查找函数的接口
+ * Interface for mention resolver function
  */
 export interface MentionResolver {
   (mentionId: string): Promise<{
@@ -199,7 +199,7 @@ export interface MentionResolver {
 }
 
 /**
- * 高级版本：支持异步解析mention信息
+ * Advanced version: supports async mention info resolution
  */
 export async function convertTextToSlateWithResolver(
   text: string,
@@ -222,33 +222,33 @@ export async function convertTextToSlateWithResolver(
 }
 
 /**
- * 解析一行文本，支持异步mention解析
+ * Parse a line of text with async mention resolution support
  */
 async function parseLineToNodesWithResolver(
   line: string,
   mentionResolver?: MentionResolver,
 ): Promise<(ContextInputText | ContextMentionElement)[]> {
-  // 支持两种 mention 格式：
-  // 1. {{#id#}} - 简单格式（如：{{#context#}}）
-  // 2. {{#id.text#}} - 带 .text 后缀格式（如：{{#1739416889031.text#}}）
+  // Support two mention formats:
+  // 1. {{#id#}} - simple format (e.g., {{#context#}})
+  // 2. {{#id.text#}} - format with .text suffix (e.g., {{#1739416889031.text#}})
   const mentionRegex = /\{\{#([^}]+?)(?:\.text)?#\}\}/g
   const nodes: (ContextInputText | ContextMentionElement)[] = []
   let lastIndex = 0
   const matches: RegExpExecArray[] = []
   let match: RegExpExecArray | null
 
-  // 收集所有匹配
+  // Collect all matches
   while ((match = mentionRegex.exec(line)) !== null) {
     matches.push({ ...match } as RegExpExecArray)
   }
 
-  // 异步解析mention信息
+  // Async resolve mention info
   for (const match of matches) {
     const [fullMatch, mentionId] = match
     const matchStart = match.index
     const matchEnd = match.index + fullMatch.length
 
-    // 添加mention前的普通文本
+    // Add plain text before mention
     if (matchStart > lastIndex) {
       const textBefore = line.slice(lastIndex, matchStart)
       if (textBefore) {
@@ -256,7 +256,7 @@ async function parseLineToNodesWithResolver(
       }
     }
 
-    // 解析mention信息
+    // Resolve mention info
     let mentionInfo: {
       label: string
       metadata?: Record<string, unknown>
@@ -274,7 +274,7 @@ async function parseLineToNodesWithResolver(
       }
     }
 
-    // 创建mention节点
+    // Create mention node
     const mentionNode: ContextMentionElement = {
       type: "mention",
       mentionType: mentionInfo.type as "user" | "channel" | "tag" | "custom",
@@ -288,7 +288,7 @@ async function parseLineToNodesWithResolver(
     lastIndex = matchEnd
   }
 
-  // 添加剩余的普通文本
+  // Add remaining plain text
   if (lastIndex < line.length) {
     const textAfter = line.slice(lastIndex)
     if (textAfter) {
@@ -296,7 +296,7 @@ async function parseLineToNodesWithResolver(
     }
   }
 
-  // 如果没有任何内容，返回空文本节点
+  // If no content, return empty text node
   if (nodes.length === 0) {
     nodes.push({ text: line })
   }

@@ -2,10 +2,9 @@ import type {
   ContextInputRef,
   ContextInputValue,
   ContextMentionElement,
-  MentionItem,
+  MentionItemProps,
 } from "@choice-ui/react"
 import {
-  AlertDialogProvider,
   Avatar,
   Button,
   Checkbox,
@@ -13,10 +12,8 @@ import {
   ContextInput,
   IconButton,
   tcx,
-  useAlertDialog,
 } from "@choice-ui/react"
 import { AddSmall, ArrowUp, ExpandSmall, Image } from "@choiceform/icons-react"
-import { faker } from "@faker-js/faker"
 import type { Meta, StoryObj } from "@storybook/react"
 import React, { useRef, useState } from "react"
 
@@ -32,26 +29,56 @@ const meta: Meta<typeof ContextInput> = {
 export default meta
 type Story = StoryObj<typeof ContextInput>
 
-// Mock data for testing
-const users: MentionItem[] = Array.from({ length: 12 }, (_, i) => ({
+// Mock data for testing - 使用固定数据避免 SSR hydration 问题
+const userNames = [
+  "John Doe",
+  "Jane Smith",
+  "Alice Johnson",
+  "Bob Williams",
+  "Charlie Brown",
+  "Diana Prince",
+  "Edward Norton",
+  "Fiona Apple",
+  "George Lucas",
+  "Helen Troy",
+  "Ivan Petrov",
+  "Julia Roberts",
+]
+
+const users: MentionItemProps[] = userNames.map((name, i) => ({
   id: i.toString(),
   type: "user",
-  label: faker.person.fullName(),
+  label: name,
   prefix: (
     <Avatar
-      photo={`https://api.dicebear.com/7.x/avataaars/svg?seed=${faker.string.uuid()}`}
-      name={faker.person.fullName()}
+      photo={`https://api.dicebear.com/7.x/avataaars/svg?seed=${name.replace(/\s/g, "")}`}
+      name={name}
       size="small"
     />
   ),
-  description: faker.lorem.sentence(),
+  description: `${name}'s profile`,
 }))
 
-const channels: MentionItem[] = Array.from({ length: 12 }, (_, i) => ({
+const channelNames = [
+  "general",
+  "random",
+  "announcements",
+  "development",
+  "design",
+  "marketing",
+  "support",
+  "feedback",
+  "ideas",
+  "offtopic",
+  "team",
+  "projects",
+]
+
+const channels: MentionItemProps[] = channelNames.map((name, i) => ({
   id: i.toString(),
   type: "channel",
-  label: faker.lorem.word(),
-  description: faker.lorem.sentence(),
+  label: name,
+  description: `#${name} channel`,
 }))
 
 /**
@@ -90,7 +117,7 @@ export const Basic: Story = {
     })
 
     return (
-      <div className="w-full max-w-md">
+      <div className="flex w-80 flex-col gap-4">
         <ContextInput
           value={value}
           placeholder="Type @ to mention someone..."
@@ -106,13 +133,10 @@ export const Basic: Story = {
             },
           ]}
           onChange={setValue}
-          onMentionSelect={(mention, trigger) => {
-            console.log("Mention selected:", mention, trigger)
-          }}
         />
 
-        <CodeBlock language="tsx">
-          <CodeBlock.Content code={value.text} />
+        <CodeBlock language="json">
+          <CodeBlock.Content code={JSON.stringify(value, null, 2)} />
         </CodeBlock>
       </div>
     )
@@ -138,12 +162,25 @@ export const Basic: Story = {
 export const Disabled: Story = {
   render: function Basic() {
     const [value, setValue] = useState<ContextInputValue>({
-      text: "",
-      mentions: [],
+      text: "Hello @alice and @bob!",
+      mentions: [
+        {
+          item: { id: "1", label: "alice", type: "user" },
+          startIndex: 6,
+          endIndex: 12,
+          text: "alice",
+        },
+        {
+          item: { id: "2", label: "bob", type: "user" },
+          startIndex: 17,
+          endIndex: 21,
+          text: "bob",
+        },
+      ],
     })
 
     return (
-      <div className="w-full max-w-md">
+      <div className="flex w-80 flex-col gap-4">
         <ContextInput
           disabled
           value={value}
@@ -160,13 +197,10 @@ export const Disabled: Story = {
             },
           ]}
           onChange={setValue}
-          onMentionSelect={(mention, trigger) => {
-            console.log("Mention selected:", mention, trigger)
-          }}
         />
 
-        <CodeBlock language="tsx">
-          <CodeBlock.Content code={value.text} />
+        <CodeBlock language="json">
+          <CodeBlock.Content code={JSON.stringify(value, null, 2)} />
         </CodeBlock>
       </div>
     )
@@ -198,76 +232,33 @@ export const ReadOnly: Story = {
         },
       ],
     })
-    const [changeCount, setChangeCount] = useState(0)
 
     const handleChange = (newValue: ContextInputValue) => {
       setValue(newValue)
-      setChangeCount((prev) => prev + 1)
     }
 
     return (
-      <div className="flex flex-col gap-4">
-        <div className="rounded-xl border bg-stone-50 p-4">
-          <div className="text-body-small-strong mb-2 text-stone-700">Current Value:</div>
-          <div className="text-body-small font-mono text-stone-600">{value.text || "(empty)"}</div>
-          <div className="text-body-small-strong mt-2 text-stone-700">Mentions Count:</div>
-          <div className="text-body-small font-mono text-stone-600">{value.mentions.length}</div>
-          <div className="text-body-small-strong mt-2 text-stone-700">Change Count:</div>
-          <div className="text-body-small font-mono text-stone-600">{changeCount}</div>
-        </div>
-        <div className="w-full max-w-md">
-          <ContextInput
-            readOnly
-            value={value}
-            placeholder="Type @ to mention someone..."
-            className="max-h-96 w-80"
-            triggers={[
-              {
-                char: "@",
-                onSearch: async (query) => {
-                  return users.filter((user) =>
-                    user.label.toLowerCase().includes(query.toLowerCase()),
-                  )
-                },
+      <div className="flex w-80 flex-col gap-4">
+        <ContextInput
+          readOnly
+          value={value}
+          placeholder="Type @ to mention someone..."
+          className="max-h-96 w-80"
+          triggers={[
+            {
+              char: "@",
+              onSearch: async (query) => {
+                return users.filter((user) =>
+                  user.label.toLowerCase().includes(query.toLowerCase()),
+                )
               },
-            ]}
-            onChange={handleChange}
-            onMentionSelect={(mention, trigger) => {
-              console.log("Mention selected:", mention, trigger)
-            }}
-          />
-          <CodeBlock language="tsx">
-            <CodeBlock.Content code={value.text} />
-          </CodeBlock>
-        </div>
-        <div className="w-full max-w-md">
-          <ContextInput
-            value={value}
-            placeholder="Type @ to mention someone..."
-            className="max-h-96 w-80"
-            triggers={[
-              {
-                char: "@",
-                onSearch: async (query) => {
-                  return users.filter((user) =>
-                    user.label.toLowerCase().includes(query.toLowerCase()),
-                  )
-                },
-              },
-            ]}
-            onChange={handleChange}
-            onMentionSelect={(mention, trigger) => {
-              console.log("Mention selected:", mention, trigger)
-            }}
-          />
-          <CodeBlock language="tsx">
-            <CodeBlock.Content code={value.text} />
-          </CodeBlock>
-        </div>
-        <div className="text-body-small text-stone-600">
-          💡 Try editing the readonly context input - the value should not change and the change
-          count should remain at 0. Only the normal input will change the value.
-        </div>
+            },
+          ]}
+          onChange={handleChange}
+        />
+        <CodeBlock language="json">
+          <CodeBlock.Content code={JSON.stringify(value, null, 2)} />
+        </CodeBlock>
       </div>
     )
   },
@@ -313,14 +304,14 @@ export const Variants: Story = {
         >
           Disabled
         </Checkbox>
-        <div className="w-160 grid grid-cols-3 overflow-hidden rounded-xl border">
-          <div className="bg-default-background p-8">
+        <div className="flex flex-wrap gap-4">
+          <div className="bg-default-background rounded-lg border p-4">
             <ContextInput
               disabled={disabled}
               variant="default"
               value={defaultValue}
               placeholder="Type @ to mention someone..."
-              className="max-h-96 w-full"
+              className="max-h-96 w-48"
               triggers={[
                 {
                   char: "@",
@@ -337,13 +328,13 @@ export const Variants: Story = {
               }}
             />
           </div>
-          <div className="bg-white p-8">
+          <div className="rounded-lg border bg-white p-4">
             <ContextInput
               disabled={disabled}
               variant="light"
               value={lightValue}
               placeholder="Type @ to mention someone..."
-              className="max-h-96 w-full"
+              className="max-h-96 w-48"
               triggers={[
                 {
                   char: "@",
@@ -360,13 +351,13 @@ export const Variants: Story = {
               }}
             />
           </div>
-          <div className="bg-gray-800 p-8">
+          <div className="rounded-lg border bg-gray-800 p-4">
             <ContextInput
               disabled={disabled}
               variant="dark"
               value={darkValue}
               placeholder="Type @ to mention someone..."
-              className="max-h-96 w-full"
+              className="max-h-96 w-48"
               triggers={[
                 {
                   char: "@",
@@ -378,9 +369,6 @@ export const Variants: Story = {
                 },
               ]}
               onChange={setDarkValue}
-              onMentionSelect={(mention, trigger) => {
-                console.log("Mention selected:", mention, trigger)
-              }}
             />
           </div>
         </div>
@@ -405,15 +393,15 @@ export const Variants: Story = {
  * />
  * ```
  */
-export const Large: Story = {
-  render: function Large() {
+export const LargeSize: Story = {
+  render: function LargeSize() {
     const [value, setValue] = useState<ContextInputValue>({
       text: "",
       mentions: [],
     })
 
     return (
-      <div className="w-full max-w-md">
+      <div className="flex w-80 flex-col gap-4">
         <ContextInput
           size="large"
           value={value}
@@ -430,12 +418,10 @@ export const Large: Story = {
             },
           ]}
           onChange={setValue}
-          onMentionSelect={(mention, trigger) => {
-            console.log("Mention selected:", mention, trigger)
-          }}
         />
 
-        <CodeBlock language="tsx">
+        <CodeBlock language="json">
+          <CodeBlock.Content code={JSON.stringify(value, null, 2)} />
           <CodeBlock.Content code={value.text} />
         </CodeBlock>
       </div>
@@ -468,7 +454,7 @@ export const MinHeight: Story = {
     })
 
     return (
-      <div className="w-full max-w-md">
+      <div className="flex w-80 flex-col gap-4">
         <ContextInput
           minHeight={128}
           size="large"
@@ -486,12 +472,10 @@ export const MinHeight: Story = {
             },
           ]}
           onChange={setValue}
-          onMentionSelect={(mention, trigger) => {
-            console.log("Mention selected:", mention, trigger)
-          }}
         />
 
-        <CodeBlock language="tsx">
+        <CodeBlock language="json">
+          <CodeBlock.Content code={JSON.stringify(value, null, 2)} />
           <CodeBlock.Content code={value.text} />
         </CodeBlock>
       </div>
@@ -519,12 +503,12 @@ export const MinHeight: Story = {
 export const WithHeader: Story = {
   render: function Basic() {
     const [value, setValue] = useState<ContextInputValue>({
-      text: faker.lorem.sentence(),
+      text: "Hello world, this is a sample message with header.",
       mentions: [],
     })
 
     return (
-      <div className="w-full max-w-md">
+      <div className="flex w-80 flex-col gap-4">
         <ContextInput
           size="large"
           value={value}
@@ -541,9 +525,6 @@ export const WithHeader: Story = {
             },
           ]}
           onChange={setValue}
-          onMentionSelect={(mention, trigger) => {
-            console.log("Mention selected:", mention, trigger)
-          }}
         >
           <ContextInput.Header>
             <h3 className="font-strong">Header</h3>
@@ -557,7 +538,8 @@ export const WithHeader: Story = {
           </ContextInput.Header>
         </ContextInput>
 
-        <CodeBlock language="tsx">
+        <CodeBlock language="json">
+          <CodeBlock.Content code={JSON.stringify(value, null, 2)} />
           <CodeBlock.Content code={value.text} />
         </CodeBlock>
       </div>
@@ -930,7 +912,7 @@ export const WithPasteButton: Story = {
       },
     ]
     const [value, setValue] = useState<ContextInputValue>({
-      text: faker.lorem.paragraphs(),
+      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
       mentions: [
         {
           startIndex: 6,
@@ -986,7 +968,8 @@ export const WithPasteButton: Story = {
  * - Use @ to mention users and / to mention channels
  * - Different search functions for each trigger type
  * - Demonstrates versatile mention system
- * - Clear visual instructions for users
+ * - Use arrow keys to navigate suggestions
+ * - Press Enter or Tab to select
  *
  * ```tsx
  * <ContextInput
@@ -1014,59 +997,42 @@ export const MultipleTriggers: Story = {
     })
 
     return (
-      <div className="w-full max-w-md">
-        <ContextInput
-          className="max-h-96 w-80"
-          value={value}
-          placeholder="Try @ for users, / for channels..."
-          triggers={[
-            {
-              char: "@",
-              onSearch: async (query) => {
-                return users.filter((user) =>
-                  user.label.toLowerCase().includes(query.toLowerCase()),
-                )
-              },
+      <ContextInput
+        className="max-h-96 w-80"
+        value={value}
+        placeholder="Try @ for users, / for channels..."
+        triggers={[
+          {
+            char: "@",
+            onSearch: async (query) => {
+              return users.filter((user) => user.label.toLowerCase().includes(query.toLowerCase()))
             },
-            {
-              char: "/",
-              onSearch: async (query) => {
-                return channels.filter((channel) =>
-                  channel.label.toLowerCase().includes(query.toLowerCase()),
-                )
-              },
+          },
+          {
+            char: "/",
+            onSearch: async (query) => {
+              return channels.filter((channel) =>
+                channel.label.toLowerCase().includes(query.toLowerCase()),
+              )
             },
-          ]}
-          onChange={setValue}
-          onMentionSelect={(mention, trigger) => {
-            console.log("Selected:", mention.label, "via", trigger)
-          }}
-        />
-
-        <div className="bg-secondary-background mt-4 rounded-xl p-4">
-          <p className="font-strong">Instructions:</p>
-          <ul className="text-secondary-foreground mt-2 space-y-1">
-            <li>
-              • Type <code>@</code> to mention users
-            </li>
-            <li>
-              • Type <code>/</code> to mention channels
-            </li>
-            <li>• Use arrow keys to navigate</li>
-            <li>• Press Enter or Tab to select</li>
-          </ul>
-        </div>
-      </div>
+          },
+        ]}
+        onChange={setValue}
+        onMentionSelect={(mention, trigger) => {
+          console.log("Selected:", mention.label, "via", trigger)
+        }}
+      />
     )
   },
 }
 
 /**
  * CustomMentionPrefix: Demonstrates customizable mention prefix.
- * - Use # instead of @ for mentions
+ * - Use # instead of @ for mentions display
  * - Configurable via mentionPrefix prop
  * - Supports any string as prefix (e.g., "+", "~", "#", etc.)
  * - Useful for different contexts like hashtags or custom notations
+ * - Mentions will appear as `#JohnDoe` instead of `@JohnDoe`
  *
  * ```tsx
  * <ContextInput
@@ -1089,7 +1055,7 @@ export const CustomMentionPrefix: Story = {
     })
 
     return (
-      <div className="w-full max-w-md space-y-4">
+      <div className="flex w-80 flex-col gap-4">
         <ContextInput
           value={value}
           mentionPrefix="#"
@@ -1108,14 +1074,8 @@ export const CustomMentionPrefix: Story = {
           onChange={setValue}
         />
 
-        <div className="bg-secondary-background rounded-xl p-4">
-          <p className="font-strong">Custom Prefix: #</p>
-          <p className="text-secondary-foreground mt-2">
-            Mentions will appear as <code>#JohnDoe</code> instead of <code>@JohnDoe</code>
-          </p>
-        </div>
-
-        <CodeBlock language="tsx">
+        <CodeBlock language="json">
+          <CodeBlock.Content code={JSON.stringify(value, null, 2)} />
           <CodeBlock.Content code={value.text} />
         </CodeBlock>
       </div>
@@ -1124,10 +1084,16 @@ export const CustomMentionPrefix: Story = {
 }
 
 /**
- * **Clear Function Test**
- * - Test the clear function of the context input
+ * ClearFunctionTest: Test the clear function of the context input.
  * - Click the clear button to clear the input
  * - The input should be cleared and the value should be an empty object
+ * - Demonstrates programmatic clearing of content and mentions
+ *
+ * ```tsx
+ * const handleClear = () => {
+ *   setValue({ text: "", mentions: [] })
+ * }
+ * ```
  */
 export const ClearFunctionTest: Story = {
   render: function ClearFunctionTest() {
@@ -1148,10 +1114,6 @@ export const ClearFunctionTest: Story = {
         >
           Clear
         </Button>
-
-        <div className="text-secondary-foreground">
-          Input some content and click the clear button to test the clear function
-        </div>
 
         <ContextInput
           className="max-h-96 w-80 rounded-lg border border-gray-300"
@@ -1176,9 +1138,6 @@ export const ClearFunctionTest: Story = {
             },
           ]}
           onChange={setValue}
-          onMentionSelect={(mention, trigger) => {
-            console.log("Selected:", mention.label, "via", trigger)
-          }}
         />
       </div>
     )
@@ -1193,6 +1152,9 @@ export const ClearFunctionTest: Story = {
  * - Auto-focuses editor when value changes externally (when autoFocus is enabled)
  * - Cursor always moves to end position after value changes
  * - Useful for form integration and external state management
+ * - Real-time character and mention counts
+ * - Preset content examples for quick testing
+ * - Full bidirectional data binding
  *
  * ```tsx
  * const [value, setValue] = useState<ContextInputValue>({ text: "", mentions: [] })
@@ -1295,7 +1257,7 @@ export const ControlledValue: Story = {
     }
 
     return (
-      <div className="w-full max-w-md space-y-4">
+      <div className="flex w-80 flex-col gap-4">
         <div className="space-y-2">
           <h4 className="font-strong">Value Control Buttons</h4>
           <div className="flex flex-wrap gap-2">
@@ -1376,9 +1338,11 @@ export const ControlledValue: Story = {
             <Button
               variant="secondary"
               size="default"
-              onClick={() => setValue({ text: faker.lorem.sentence(), mentions: [] })}
+              onClick={() =>
+                setValue({ text: "The quick brown fox jumps over the lazy dog.", mentions: [] })
+              }
             >
-              Random Text
+              Sample Text
             </Button>
             <Button
               variant="secondary"
@@ -1447,9 +1411,6 @@ export const ControlledValue: Story = {
             },
           ]}
           onChange={setValue}
-          onMentionSelect={(mention, trigger) => {
-            console.log("Mention selected:", mention, trigger)
-          }}
         >
           <ContextInput.Footer>
             <div className="flex items-center gap-2">
@@ -1470,33 +1431,35 @@ export const ControlledValue: Story = {
           </ContextInput.Footer>
         </ContextInput>
 
-        <CodeBlock language="tsx">
-          <CodeBlock.Content code={value.text} />
+        <CodeBlock language="json">
+          <CodeBlock.Content code={JSON.stringify(value, null, 2)} />
         </CodeBlock>
-
-        <div className="bg-secondary-background rounded-xl p-4">
-          <p className="font-strong mb-2">Controlled Value Features:</p>
-          <ul className="text-secondary-foreground text-body-small space-y-1">
-            <li>• External buttons control input content</li>
-            <li>• Programmatic mention insertion</li>
-            <li>• Real-time character and mention counts</li>
-            <li>• Preset content examples</li>
-            <li>• Full bidirectional data binding</li>
-            <li>
-              • <strong>Auto-focus:</strong> Editor auto-focuses when autoFocus is enabled
-            </li>
-            <li>
-              • <strong>Cursor positioning:</strong> Always moves to end after value changes
-            </li>
-          </ul>
-        </div>
       </div>
     )
   },
 }
 
 /**
- * Custom Mention Component example showing how to use ContextInput.Mention for customization
+ * CustomMentionComponent: Example showing how to use customMentionComponent for customization.
+ * - Create custom Mention component with different styling
+ * - Custom component has gradient background and emoji decoration
+ * - Passed via `customMentionComponent` prop
+ * - Receives same props as default Mention component
+ * - Useful for branding or visual differentiation
+ *
+ * ```tsx
+ * const CustomMention = (props) => {
+ *   const { attributes, children, element, mentionPrefix } = props
+ *   return (
+ *     <span {...attributes} contentEditable={false} className="custom-styles">
+ *       {children}
+ *       {mentionPrefix}{element.mentionLabel}
+ *     </span>
+ *   )
+ * }
+ *
+ * <ContextInput customMentionComponent={CustomMention} />
+ * ```
  */
 export const CustomMentionComponent: Story = {
   render: function CustomMentionComponent() {
@@ -1505,9 +1468,8 @@ export const CustomMentionComponent: Story = {
       mentions: [],
     })
 
-    // Create a custom Mention component with different styling
     const CustomMention: React.FC<React.ComponentProps<typeof ContextInput.Mention>> = (props) => {
-      const { attributes, children, element, mentionPrefix = "@", variant } = props
+      const { attributes, children, element, mentionPrefix = "@" } = props
       const mentionElement = element as unknown as ContextMentionElement
 
       return (
@@ -1529,57 +1491,40 @@ export const CustomMentionComponent: Story = {
     }
 
     return (
-      <div className="w-96 space-y-4">
-        <div className="space-y-2">
-          <h3 className="text-sm font-medium">Custom Mention Styling</h3>
-          <p className="text-xs text-gray-600">
-            This example shows how to create a custom Mention component with gradient background and
-            emoji.
-          </p>
-        </div>
-
-        <ContextInput
-          value={value}
-          onChange={setValue}
-          placeholder="Try typing @john to see custom mention styling..."
-          customMentionComponent={CustomMention}
-          triggers={[
-            {
-              char: "@",
-              onSearch: async (query: string) => {
-                return users.filter((user) =>
-                  user.label.toLowerCase().includes(query.toLowerCase()),
-                )
-              },
+      <ContextInput
+        value={value}
+        onChange={setValue}
+        placeholder="Try typing @john to see custom mention styling..."
+        className="w-80"
+        customMentionComponent={CustomMention}
+        triggers={[
+          {
+            char: "@",
+            onSearch: async (query: string) => {
+              return users.filter((user) => user.label.toLowerCase().includes(query.toLowerCase()))
             },
-          ]}
-        >
-          <ContextInput.Header>
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-medium">Custom Mention Demo</span>
-            </div>
-          </ContextInput.Header>
-        </ContextInput>
-
-        <div className="rounded-md bg-gray-50 p-3 text-xs">
-          <p className="mb-1 font-medium">How it works:</p>
-          <ul className="space-y-1 text-gray-600">
-            <li>• Custom Mention component has gradient styling and emoji</li>
-            <li>
-              • Passed via <code>customMentionComponent</code> prop
-            </li>
-            <li>• Receives same props as default Mention component</li>
-          </ul>
-        </div>
-      </div>
+          },
+        ]}
+      />
     )
   },
 }
 
 /**
- * Imperative Focus: Demonstrates how to programmatically focus the input using ref.
+ * ImperativeFocus: Demonstrates how to programmatically focus the input using ref.
  * - Use ref to get access to the focus method
  * - Call ref.current.focus() to focus the input from outside
+ * - Useful for keyboard shortcuts or external button triggers
+ *
+ * ```tsx
+ * const inputRef = useRef<ContextInputRef>(null)
+ *
+ * <ContextInput ref={inputRef} />
+ *
+ * <Button onClick={() => inputRef.current?.focus()}>
+ *   Focus Input
+ * </Button>
+ * ```
  */
 export const ImperativeFocus: Story = {
   render: function ImperativeFocus() {
@@ -1590,19 +1535,14 @@ export const ImperativeFocus: Story = {
     }
 
     return (
-      <div className="flex w-[500px] flex-col gap-4">
-        <div className="flex items-center gap-2">
-          <Button
-            variant="secondary"
-            size="default"
-            onClick={handleFocusClick}
-          >
-            Focus Input
-          </Button>
-          <span className="text-body-small text-fg-subtle">
-            Click button to focus the input below
-          </span>
-        </div>
+      <div className="flex w-80 flex-col gap-4">
+        <Button
+          variant="secondary"
+          size="default"
+          onClick={handleFocusClick}
+        >
+          Focus Input
+        </Button>
 
         <ContextInput
           ref={inputRef}
@@ -1617,15 +1557,7 @@ export const ImperativeFocus: Story = {
               },
             },
           ]}
-        >
-          <ContextInput.Footer>
-            <div className="flex items-center justify-between">
-              <span className="text-body-small text-fg-subtle">
-                Use ref.current.focus() to focus programmatically
-              </span>
-            </div>
-          </ContextInput.Footer>
-        </ContextInput>
+        />
       </div>
     )
   },

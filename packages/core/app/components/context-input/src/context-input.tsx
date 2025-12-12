@@ -13,7 +13,10 @@ import {
 } from "./components"
 import { ContextInputEditorContext, useContextInput, useMentions, useSlateEditor } from "./hooks"
 import { contextInputTv } from "./tv"
-import type { ContextInputProps, ContextInputRef, MentionItem } from "./types"
+import type { ContextInputProps, ContextInputRef, MentionItemProps, MentionTrigger } from "./types"
+
+// Empty array constant to avoid creating new references on each render
+const EMPTY_TRIGGERS: MentionTrigger[] = []
 
 interface ContextInputComponent extends React.ForwardRefExoticComponent<
   ContextInputProps & React.RefAttributes<ContextInputRef>
@@ -25,7 +28,7 @@ interface ContextInputComponent extends React.ForwardRefExoticComponent<
   Mention: typeof Mention
 }
 
-// 主要的 ContextInput 组件
+// Main ContextInput component
 const ContextInputBase = forwardRef<ContextInputRef, ContextInputProps>(function ContextInputBase(
   {
     value,
@@ -36,7 +39,7 @@ const ContextInputBase = forwardRef<ContextInputRef, ContextInputProps>(function
     autoFocus = false,
     className,
     customMentionComponent,
-    triggers = [],
+    triggers = EMPTY_TRIGGERS,
     maxSuggestions = 10,
     variant = "default",
     mentionPrefix = "@",
@@ -59,24 +62,32 @@ const ContextInputBase = forwardRef<ContextInputRef, ContextInputProps>(function
   },
   ref,
 ) {
-  // 创建编辑器实例
+  // Create editor instance
   const editor = useSlateEditor(maxLength)
 
   // MentionMenu ref
   const mentionMenuRef = useRef<MentionMenuRef>(null)
 
-  // 暴露 focus 方法给外部
+  // Expose focus method to external components
   useImperativeHandle(ref, () => ({
     focus: () => {
-      ReactEditor.focus(editor)
+      try {
+        ReactEditor.focus(editor)
+      } catch {
+        // Editor may not be mounted or already unmounted, ignore error
+      }
     },
   }))
 
   const handleFocusClick = useEventCallback(() => {
-    ReactEditor.focus(editor)
+    try {
+      ReactEditor.focus(editor)
+    } catch {
+      // Editor may not be mounted or already unmounted, ignore error
+    }
   })
 
-  // 分离 header 和 footer children - 使用 useMemo 优化性能
+  // Separate header and footer children - optimized with useMemo
   const { header, footer, otherChildren } = useMemo(() => {
     let header: React.ReactNode = null
     let footer: React.ReactNode = null
@@ -91,7 +102,7 @@ const ContextInputBase = forwardRef<ContextInputRef, ContextInputProps>(function
             handleClick: handleFocusClick,
           })
         } else if (child.type === ContextInputFooter) {
-          // 自动传递 size 属性给 footer
+          // Automatically pass size prop to footer
           footer = React.cloneElement(child, {
             ...child.props,
             size: size as "default" | "large",
@@ -110,17 +121,8 @@ const ContextInputBase = forwardRef<ContextInputRef, ContextInputProps>(function
   const hasHeader = !!header
   const hasFooter = !!footer
 
-  // Context input 状态管理
-  const { slateValue, handleChange } = useContextInput({
-    value,
-    onChange: readOnly ? undefined : onChange,
-    editor,
-    autoFocus,
-  })
-
-  // 处理 mention 搜索关闭
+  // Handle mention search close
   const handleSearchClose = useEventCallback(() => {
-    // 关闭时重新 focus 编辑器
     ReactEditor.focus(editor)
   })
 
@@ -134,26 +136,40 @@ const ContextInputBase = forwardRef<ContextInputRef, ContextInputProps>(function
     onSearchClose: handleSearchClose,
   })
 
-  // 键盘事件处理
+  // Context input state management
+  const { slateValue, handleChange: baseHandleChange } = useContextInput({
+    value,
+    onChange: readOnly ? undefined : onChange,
+    editor,
+    autoFocus,
+  })
+
+  // Wrap handleChange to check mention on content change
+  const handleChange = useEventCallback((newValue: import("slate").Descendant[]) => {
+    baseHandleChange(newValue)
+    // Defer mention check to avoid multiple state updates in same render cycle causing focus loss
+    requestAnimationFrame(() => {
+      mentions.checkMentionSearch()
+    })
+  })
+
+  // Keyboard event handler
   const handleKeyDown = useEventCallback((event: React.KeyboardEvent) => {
-    // 先尝试让 MentionMenu 处理键盘事件
+    // First try to let MentionMenu handle keyboard events
     if (mentionMenuRef.current?.handleKeyDown(event)) {
       return
     }
 
-    // 处理其他键盘事件
+    // Handle other keyboard events
     onKeyDown?.(event)
   })
 
-  // 处理建议选择
-  const handleSuggestionSelect = useEventCallback((mention: MentionItem, index: number) => {
+  // Handle suggestion selection
+  const handleSuggestionSelect = useEventCallback((mention: MentionItemProps, index: number) => {
     mentions.selectMention(index)
   })
 
-  // 获取建议位置 - 缓存计算结果以优化性能
-  const suggestionPosition = useMemo(() => mentions.getSuggestionPosition(), [mentions])
-
-  // 样式对象缓存
+  // Cache style object
   const tv = useMemo(
     () => contextInputTv({ hasHeader, hasFooter, size, disabled, variant }),
     [hasHeader, hasFooter, size, disabled, variant],
@@ -195,11 +211,12 @@ const ContextInputBase = forwardRef<ContextInputRef, ContextInputProps>(function
       {afterElement}
       <MentionMenu
         ref={mentionMenuRef}
-        isOpen={mentions.searchState.isSearching && !!suggestionPosition}
+        disabled={disabled}
+        isOpen={mentions.searchState.isSearching && !!mentions.searchState.position}
         onClose={mentions.closeMentionSearch}
         suggestions={mentions.searchState.suggestions}
         loading={mentions.searchState.loading}
-        position={suggestionPosition}
+        position={mentions.searchState.position}
         onSelect={handleSuggestionSelect}
         renderSuggestion={renderSuggestion}
       />

@@ -67,7 +67,7 @@ export interface ComboboxProps {
   /**
    * @default { returnFocus: true, modal: false }
    */
-  focusManagerProps?: FloatingFocusManagerProps
+  focusManagerProps?: Partial<Omit<FloatingFocusManagerProps, "children" | "context">>
   /**
    * @default true
    */

@@ -1,6 +1,5 @@
-import { debounce } from "lodash-es"
-import { useCallback, useEffect, useMemo, useRef, useState } from "react"
-import { Descendant, Editor, Transforms } from "slate"
+import { useCallback, useEffect, useRef, useState } from "react"
+import { Descendant, Editor, Point, Transforms } from "slate"
 import { ReactEditor } from "slate-react"
 import type { ContextInputValue, MentionMatch } from "../types"
 import { extractMentionContext, extractTextWithMentions, parseTextWithMentions } from "../utils"
@@ -16,104 +15,160 @@ interface UseContextInputProps {
 export const useContextInput = ({ value, onChange, editor, autoFocus }: UseContextInputProps) => {
   const isUpdatingRef = useRef(false)
 
-  // 内部状态
+  // Default empty paragraph structure
+  const emptyParagraph = [
+    { type: "paragraph", children: [{ text: "" }] },
+  ] as unknown as Descendant[]
+
+  // Internal state
   const [slateValue, setSlateValue] = useState<Descendant[]>(() => {
-    // 从 value 初始化 Slate 值
-    if (value?.text) {
-      return parseTextWithMentions(value.text, value.mentions || [])
+    // Initialize Slate value from value prop
+    if (value?.text != null && value.text !== "") {
+      try {
+        return parseTextWithMentions(value.text, value.mentions || [])
+      } catch {
+        return emptyParagraph
+      }
     }
-    return [{ type: "paragraph", children: [{ text: "" }] }] as unknown as Descendant[]
+    return emptyParagraph
   })
 
-  // 监听外部 value 变化，同步到编辑器
+  // Timeout ref for autoFocus
+  const autoFocusTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  // Watch external value changes and sync to editor
   useEffect(() => {
     if (!editor || !value || isUpdatingRef.current) {
       return
     }
 
-    const newSlateValue = value.text
-      ? parseTextWithMentions(value.text, value.mentions || [])
-      : ([{ type: "paragraph", children: [{ text: "" }] }] as unknown as Descendant[])
+    let newSlateValue: Descendant[]
+    try {
+      newSlateValue =
+        value.text != null && value.text !== ""
+          ? parseTextWithMentions(value.text, value.mentions || [])
+          : emptyParagraph
+    } catch {
+      newSlateValue = emptyParagraph
+    }
 
-    // 检查是否需要更新（避免不必要的更新）
+    // Check if update is needed (avoid unnecessary updates)
     const currentText = extractTextWithMentions(editor.children).text
     if (currentText !== value.text) {
-      // 使用官方推荐的重置方法
-      Editor.withoutNormalizing(editor, () => {
-        // 直接替换 editor.children
-        editor.children = newSlateValue as Descendant[]
+      try {
+        // Use official recommended reset method
+        Editor.withoutNormalizing(editor, () => {
+          // Directly replace editor.children
+          editor.children = newSlateValue as Descendant[]
 
-        // 受控 value 改变后，始终将光标移动到最后
-        const endPoint = Editor.end(editor, [])
-        Transforms.select(editor, endPoint)
+          // After controlled value changes, always move cursor to end
+          let endPoint: Point
+          try {
+            endPoint = Editor.end(editor, [])
+          } catch {
+            // If getting end position fails, use default position
+            endPoint = { path: [0, 0], offset: 0 }
+          }
+          Transforms.select(editor, endPoint)
 
-        // 触发变化事件以更新视图
-        editor.onChange()
-      })
+          // Trigger change event to update view
+          editor.onChange()
+        })
 
-      // 如果开启了 autoFocus，在更新后重新聚焦
-      if (autoFocus) {
-        // 使用 setTimeout 确保 DOM 更新后再聚焦
-        setTimeout(() => {
-          ReactEditor.focus(editor)
-        }, 0)
+        // If autoFocus is enabled, refocus after update
+        if (autoFocus) {
+          // Clear previous timeout
+          if (autoFocusTimeoutRef.current) {
+            clearTimeout(autoFocusTimeoutRef.current)
+          }
+          // Use setTimeout to ensure DOM is updated before focusing
+          autoFocusTimeoutRef.current = setTimeout(() => {
+            try {
+              ReactEditor.focus(editor)
+            } catch {
+              // Editor may not be mounted, ignore error
+            }
+          }, 0)
+        }
+
+        setSlateValue(newSlateValue as Descendant[])
+      } catch {
+        // Editor operation failed, ignore error
       }
-
-      setSlateValue(newSlateValue as Descendant[])
     }
   }, [value, editor, autoFocus])
 
-  // 防抖的 onChange 回调
-  const debouncedOnChange = useMemo(
-    () =>
-      debounce((newValue: ContextInputValue) => {
-        onChange?.(newValue)
-      }, 100),
-    [onChange],
-  )
+  // Cleanup all timeouts
+  useEffect(() => {
+    return () => {
+      if (autoFocusTimeoutRef.current) {
+        clearTimeout(autoFocusTimeoutRef.current)
+      }
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current)
+      }
+    }
+  }, [])
 
-  // 处理编辑器值变化
+  // Ref for debounce
+  const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const pendingValueRef = useRef<Descendant[] | null>(null)
+
+  // Handle editor value changes
   const handleChange = useCallback(
     (newValue: Descendant[]) => {
-      // 防止循环更新
+      // Prevent circular updates
       isUpdatingRef.current = true
 
+      // Immediately update UI state
       setSlateValue(newValue)
 
-      // 使用自定义提取函数
-      const { text, mentionsData } = extractTextWithMentions(newValue)
-      const mentions: MentionMatch[] = []
+      // Save pending value
+      pendingValueRef.current = newValue
 
-      // 处理 mentions 数据
-      for (const { element, startIndex, endIndex } of mentionsData) {
-        // 提取上下文
-        const context = extractMentionContext(text, startIndex, endIndex)
-
-        mentions.push({
-          item: {
-            id: element.mentionId,
-            type: element.mentionType,
-            label: element.mentionLabel,
-            metadata: element.mentionData,
-          },
-          startIndex,
-          endIndex,
-          text: element.mentionLabel,
-          context: {
-            fullContext: context.fullContext,
-            mentionText: context.mentionText,
-          },
-        })
+      // Clear previous timer
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current)
       }
 
-      debouncedOnChange({ text, mentions })
+      // Debounce text extraction and onChange callback
+      debounceTimerRef.current = setTimeout(() => {
+        const valueToProcess = pendingValueRef.current
+        if (!valueToProcess || !onChange) {
+          isUpdatingRef.current = false
+          return
+        }
 
-      // 重置更新标志
-      setTimeout(() => {
+        // Use custom extraction function
+        const { text, mentionsData } = extractTextWithMentions(valueToProcess)
+        const mentions: MentionMatch[] = []
+
+        // Process mentions data
+        for (const { element, startIndex, endIndex } of mentionsData) {
+          const context = extractMentionContext(text, startIndex, endIndex)
+
+          mentions.push({
+            item: {
+              id: element.mentionId,
+              type: element.mentionType,
+              label: element.mentionLabel,
+              metadata: element.mentionData,
+            },
+            startIndex,
+            endIndex,
+            text: element.mentionLabel,
+            context: {
+              fullContext: context.fullContext,
+              mentionText: context.mentionText,
+            },
+          })
+        }
+
+        onChange({ text, mentions })
         isUpdatingRef.current = false
-      }, 0)
+      }, 100)
     },
-    [debouncedOnChange],
+    [onChange],
   )
 
   return {

@@ -4,24 +4,24 @@ import type { ContextMentionElement, MentionMatch, MentionProps } from "../types
 import { mentionElementTv } from "./tv"
 
 /**
- * 默认的 Mention 组件
- * 用户可以通过 ContextInput.Mention 自定义这个组件
+ * Default Mention component
+ * Users can customize this component via ContextInput.Mention
  */
 const MentionComponent = (props: MentionProps) => {
   const { attributes, children, element, renderMention, mentionPrefix = "@", variant } = props
   const selected = useSelected()
   const focused = useFocused()
 
-  // 缓存 mentionElement 转换
+  // Cache mentionElement conversion
   const mentionElement = useMemo(() => element as unknown as ContextMentionElement, [element])
 
-  // 缓存样式计算
+  // Cache style calculations
   const tv = useMemo(
     () => mentionElementTv({ selected: selected && focused, variant }),
     [selected, focused, variant],
   )
 
-  // 缓存 MentionMatch 对象以避免重复创建
+  // Cache MentionMatch object to avoid repeated creation
   const mentionMatch = useMemo(
     (): MentionMatch => ({
       item: {
@@ -42,7 +42,7 @@ const MentionComponent = (props: MentionProps) => {
     ],
   )
 
-  // 如果有自定义渲染函数，使用自定义渲染
+  // If custom render function exists, use custom rendering
   if (renderMention) {
     return (
       <span
@@ -68,9 +68,9 @@ const MentionComponent = (props: MentionProps) => {
   )
 }
 
-// 使用 React.memo 优化渲染性能，只在 props 真正变化时重新渲染
+// Use React.memo to optimize render performance, only re-render when props actually change
 export const Mention = React.memo(MentionComponent, (prevProps, nextProps) => {
-  // 自定义比较逻辑，确保深度比较 element 对象的相关属性
+  // Custom comparison logic to ensure deep comparison of element object's relevant properties
   const prevElement = prevProps.element as unknown as ContextMentionElement
   const nextElement = nextProps.element as unknown as ContextMentionElement
 
