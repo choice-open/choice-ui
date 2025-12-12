@@ -34,7 +34,7 @@ function HintRoot({
     placement,
   })
 
-  // 检测 Trigger 和提取 icon
+  // Detect Trigger and extract icon
   const childrenArray = Children.toArray(children)
   const triggerElement = childrenArray.find((child) => {
     if (!isValidElement(child)) return false
@@ -42,7 +42,7 @@ function HintRoot({
     return type === HintTrigger || type.displayName === "HintTrigger"
   }) as ReactElement | undefined
 
-  // 从 Trigger 的 children 获取 icon，默认使用 InfoCircle
+  // Get icon from Trigger's children, default using InfoCircle
   const icon = triggerElement?.props?.children || <InfoCircle />
 
   const contextValue = useMemo(() => ({ ...hint, icon }), [hint, icon])

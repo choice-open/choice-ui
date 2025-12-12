@@ -14,14 +14,14 @@ export const CheckboxLabel = memo(
   forwardRef<HTMLLabelElement, CheckboxLabelProps>(function CheckboxLabel(props, ref) {
     const { children, className, ...rest } = props
     const { id, descriptionId, disabled } = useCheckboxContext()
-    const styles = checkboxTv({ disabled })
+    const tv = checkboxTv({ disabled })
 
     return (
       <label
         ref={ref}
         id={descriptionId}
         htmlFor={id}
-        className={tcx(styles.label(), className)}
+        className={tcx(tv.label(), className)}
         {...rest}
       >
         {children}

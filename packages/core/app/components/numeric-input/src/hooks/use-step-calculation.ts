@@ -1,12 +1,12 @@
 import { useCallback } from "react"
 
 /**
- * 计算数值步进大小的钩子
- * @param shiftPressed Shift键是否按下
- * @param metaPressed Meta/Alt键是否按下
- * @param shiftStep Shift按下时的步进值
- * @param step 正常步进值
- * @returns 计算步进值的函数
+ * Hook to calculate the step size of numeric input
+ * @param shiftPressed Whether Shift key is pressed
+ * @param metaPressed Whether Meta/Alt key is pressed
+ * @param shiftStep Step size when Shift key is pressed
+ * @param step Normal step size
+ * @returns Function to calculate step size
  */
 export function useStepCalculation(
   shiftPressed: boolean,

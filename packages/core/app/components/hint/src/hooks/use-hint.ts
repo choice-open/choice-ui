@@ -63,7 +63,7 @@ export function useHint({
 
   const arrowRef = useRef<HTMLElement>(null)
 
-  // 缓存 middleware 配置，避免每次重新创建
+  // Cache middleware configuration, avoid recreating each time
   const middleware = useMemo(
     () => [
       offset({ mainAxis: -24, crossAxis: 0 }),
@@ -92,7 +92,7 @@ export function useHint({
       open: delay,
       close: 0,
     },
-    // 允许 hover 到 floating content 上时保持显示
+    // Allow hover to floating content to keep display
     handleClose: safePolygon(),
   })
 
@@ -103,7 +103,7 @@ export function useHint({
 
   const interactions = useInteractions([hover, dismiss, role])
 
-  // 优化 memoization，只依赖真正变化的值
+  // Optimize memoization, only depend on truly changing values
   return useMemo<UseHintReturn>(
     () => ({
       open,

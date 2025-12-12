@@ -11,7 +11,7 @@ export function extractItemElements(children: React.ReactNode) {
 
   const childrenArray = Children.toArray(children)
 
-  // 递归函数处理Fragment内的子元素
+  // Recursive function to handle child elements inside Fragment
   const extractItems = (children: React.ReactNode[]): React.ReactNode[] => {
     const result: React.ReactNode[] = []
 
@@ -50,7 +50,7 @@ export function processOptions(itemElements: React.ReactNode[]) {
       return { label: true, children: child.props.children }
     }
 
-    // 从 MenuContextItem 元素提取属性
+    // Extract props from MenuContextItem element
     const {
       value: itemValue,
       children: itemChildren,

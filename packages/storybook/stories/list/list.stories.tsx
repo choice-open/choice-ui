@@ -34,7 +34,7 @@ type Story = StoryObj<typeof List>
  */
 export const Basic: Story = {
   render: () => (
-    <List className="w-80">
+    <List className="w-64">
       <List.Content>
         <List.Item>
           <List.Value>Home</List.Value>
@@ -57,7 +57,7 @@ export const Basic: Story = {
  */
 export const WithIcons: Story = {
   render: () => (
-    <List className="w-80">
+    <List className="w-64">
       <List.Content>
         <List.Item prefixElement={<House />}>
           <List.Value>Home</List.Value>
@@ -85,7 +85,7 @@ export const WithIcons: Story = {
 export const Variant: Story = {
   render: () => (
     <List
-      className="w-80"
+      className="w-64"
       variant="primary"
     >
       <List.Content>
@@ -120,7 +120,7 @@ export const Variant: Story = {
  */
 export const WithLabelsAndDividers: Story = {
   render: () => (
-    <List className="w-80">
+    <List className="w-64">
       <List.Label>Navigation</List.Label>
       <List.Content>
         <List.Item prefixElement={<House />}>
@@ -165,7 +165,7 @@ export const WithLabelsAndDividers: Story = {
  */
 export const NestedList: Story = {
   render: () => (
-    <List className="w-80">
+    <List className="w-64">
       <List.Content>
         <List.Item prefixElement={<House />}>
           <List.Value>Home</List.Value>
@@ -210,7 +210,7 @@ export const NestedList: Story = {
 export const Size: Story = {
   render: () => (
     <List
-      className="w-80"
+      className="w-64"
       size="large"
     >
       <List.Label>Navigation</List.Label>
@@ -257,7 +257,7 @@ export const Size: Story = {
  */
 export const DefaultOpenNestedList: Story = {
   render: () => (
-    <List className="w-80">
+    <List className="w-64">
       <List.Content>
         <List.Item prefixElement={<House />}>
           <List.Value>Home</List.Value>
@@ -353,7 +353,7 @@ export const WithReferenceLines: Story = {
 
     return (
       <List
-        className="w-80"
+        className="w-64"
         shouldShowReferenceLine
       >
         <List.Content>
@@ -396,7 +396,7 @@ export const WithReferenceLines: Story = {
  */
 export const WithShortcuts: Story = {
   render: () => (
-    <List className="w-80">
+    <List className="w-64">
       <List.Content>
         <List.Item
           prefixElement={<House />}
@@ -457,7 +457,7 @@ export const WithSelectionEnabled: Story = {
           Selected item: {selectedId || "None"}
         </div>
         {/* Do not enable the built-in selection functionality, completely controlled by external state */}
-        <List className="w-80">
+        <List className="w-64">
           <List.Label>Radio-like selection with toggle</List.Label>
           <List.Content>
             <List.Item
@@ -505,7 +505,7 @@ export const WithSelectionEnabled: Story = {
  */
 export const WithDisabledItems: Story = {
   render: () => (
-    <List className="w-80">
+    <List className="w-64">
       <List.Content>
         <List.Item prefixElement={<House />}>
           <List.Value>Home</List.Value>
@@ -542,7 +542,7 @@ export const WithDisabledItems: Story = {
  */
 export const NonCollapsibleNestedList: Story = {
   render: () => (
-    <List className="w-80">
+    <List className="w-64">
       <List.Content>
         <List.Item prefixElement={<House />}>
           <List.Value>Home</List.Value>
@@ -638,7 +638,7 @@ export const MultiLevelNestedList: Story = {
 
     return (
       <List
-        className="w-80"
+        className="w-64"
         size="large"
         shouldShowReferenceLine
       >
@@ -696,7 +696,7 @@ export const NestedListWithSelection: Story = {
           ))}
         </div>
         <List
-          className="w-80"
+          className="w-64"
           shouldShowReferenceLine
         >
           <List.Content>
@@ -778,7 +778,7 @@ export const NestedListWithSelection: Story = {
  */
 export const WithAsProp: Story = {
   render: () => (
-    <List className="w-80">
+    <List className="w-64">
       <List.Label>As div:</List.Label>
       <List.Content>
         <List.Item as="div">
@@ -804,7 +804,7 @@ export const WithAsProp: Story = {
 export const NonInteractive: Story = {
   render: () => (
     <List
-      className="w-80"
+      className="w-64"
       interactive={false}
     >
       <List.Content>

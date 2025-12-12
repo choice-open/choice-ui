@@ -55,7 +55,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
 
   const Button = asChild ? Slot : "button"
 
-  const style = buttonTv({ variant, size, active, disabled, loading, focused, className })
+  const tv = buttonTv({ variant, size, active, disabled, loading, focused, className })
 
   const content = isValidElement(children) ? (
     cloneElement(children as React.ReactElement, {
@@ -63,10 +63,10 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
     })
   ) : loading ? (
     <>
-      <div className={tcx(style.spinner())}>
+      <div className={tcx(tv.spinner())}>
         <LoaderCircle className="animate-spin" />
       </div>
-      <span className={tcx(style.content())}>{children}</span>
+      <span className={tcx(tv.content())}>{children}</span>
     </>
   ) : (
     children
@@ -80,7 +80,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
     return props["aria-label"]
   }, [children, props])
 
-  // 在 readOnly 模式下阻止 onClick 事件
+  // In readOnly mode, prevent onClick event
   const handleClick = readOnly ? undefined : onClick
 
   const button = (
@@ -90,7 +90,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
       type={(rest.type as "button" | "submit" | "reset" | undefined) || "button"}
       disabled={disabled || loading}
       onClick={handleClick}
-      className={tcx(style.button(), className)}
+      className={tcx(tv.button(), className)}
       data-multi-element={isMultiElement(content)}
       aria-disabled={disabled || loading}
       aria-busy={loading}

@@ -580,19 +580,19 @@
           "name": "disabled",
           "type": "boolean | undefined",
           "required": false,
-          "description": "是否禁用"
+          "description": "Whether to disable"
         },
         {
           "name": "onOpenChange",
           "type": "((open: boolean) => void) | undefined",
           "required": false,
-          "description": "打开状态变化回调"
+          "description": "Open state change callback"
         },
         {
           "name": "open",
           "type": "boolean | undefined",
           "required": false,
-          "description": "受控的打开状态"
+          "description": "Controlled open state"
         }
       ]
     },
@@ -604,7 +604,7 @@
           "name": "isSelect",
           "type": "boolean | undefined",
           "required": false,
-          "description": "是否为 Select 类型（需要额外的选择相关引用）"
+          "description": "Whether to use Select type (requires additional selection related references)"
         }
       ]
     },
@@ -616,13 +616,13 @@
           "name": "setTouch",
           "type": "(touch: boolean) => void",
           "required": true,
-          "description": "设置触摸状态"
+          "description": "Set touch state"
         },
         {
           "name": "touch",
           "type": "boolean",
           "required": true,
-          "description": "触摸状态"
+          "description": "Touch state"
         }
       ]
     },
@@ -634,49 +634,49 @@
           "name": "fallback",
           "type": "boolean | undefined",
           "required": false,
-          "description": "Select 专用：fallback 模式"
+          "description": "Select specific: fallback mode"
         },
         {
           "name": "isSelect",
           "type": "boolean | undefined",
           "required": false,
-          "description": "是否是 Select 类型（使用不同的滚动逻辑）"
+          "description": "Whether to use Select type (uses different scroll logic)"
         },
         {
           "name": "scrollRef",
           "type": "RefObject<HTMLDivElement>",
           "required": true,
-          "description": "滚动容器引用"
+          "description": "Scroll container reference"
         },
         {
           "name": "scrollTop",
           "type": "number",
           "required": true,
-          "description": "滚动位置状态"
+          "description": "Scroll position state"
         },
         {
           "name": "selectTimeoutRef",
           "type": "RefObject<number | undefined>",
           "required": true,
-          "description": "定时器引用"
+          "description": "Timer reference"
         },
         {
           "name": "setInnerOffset",
           "type": "((offset: number | ((prev: number) => number)) => void) | undefined",
           "required": false,
-          "description": "Select 专用：设置内部偏移"
+          "description": "Select specific: set internal offset"
         },
         {
           "name": "setScrollTop",
           "type": "(scrollTop: number) => void",
           "required": true,
-          "description": "设置滚动位置"
+          "description": "Set scroll position"
         },
         {
           "name": "touch",
           "type": "boolean",
           "required": true,
-          "description": "触摸状态"
+          "description": "Touch state"
         }
       ]
     },
@@ -688,31 +688,31 @@
           "name": "ContentComponent",
           "type": "ElementType<any, keyof IntrinsicElements>",
           "required": true,
-          "description": "Content 组件类型"
+          "description": "Content component type"
         },
         {
           "name": "SubTriggerComponent",
           "type": "ElementType<any, keyof IntrinsicElements> | undefined",
           "required": false,
-          "description": "SubTrigger 组件类型（仅 Dropdown 使用）"
+          "description": "SubTrigger component type (only used for Dropdown)"
         },
         {
           "name": "TriggerComponent",
           "type": "ElementType<any, keyof IntrinsicElements>",
           "required": true,
-          "description": "Trigger 组件类型"
+          "description": "Trigger component type"
         },
         {
           "name": "children",
           "type": "ReactNode",
           "required": false,
-          "description": "子元素"
+          "description": "Children"
         },
         {
           "name": "componentName",
           "type": "string",
           "required": true,
-          "description": "组件类型名称，用于错误提示"
+          "description": "Component type name, for error提示"
         }
       ]
     },
@@ -730,7 +730,7 @@
           "name": "currentSelectedIndex",
           "type": "number | undefined",
           "required": false,
-          "description": "当前选中索引（Select 专用）"
+          "description": "Current selected index (Select specific)"
         },
         {
           "name": "elementsRef",
@@ -742,31 +742,31 @@
           "name": "fallback",
           "type": "boolean | undefined",
           "required": false,
-          "description": "是否为 fallback 模式（Select 专用）"
+          "description": "Whether to use fallback mode (Select specific)"
         },
         {
           "name": "handleOpenChange",
           "type": "(open: boolean) => void",
           "required": true,
-          "description": "状态变化回调"
+          "description": "State change callback"
         },
         {
           "name": "innerOffset",
           "type": "number | undefined",
           "required": false,
-          "description": "内部偏移（Select 专用）"
+          "description": "Internal offset (Select specific)"
         },
         {
           "name": "isControlledOpen",
           "type": "boolean",
           "required": true,
-          "description": "当前打开状态"
+          "description": "Current open state"
         },
         {
           "name": "isNested",
           "type": "boolean | undefined",
           "required": false,
-          "description": "是否为嵌套模式（仅 Dropdown 使用）"
+          "description": "Whether to use nested mode (only used for Dropdown)"
         },
         {
           "name": "labelsRef",
@@ -778,31 +778,31 @@
           "name": "matchTriggerWidth",
           "type": "boolean | undefined",
           "required": false,
-          "description": "是否匹配触发器宽度"
+          "description": "Whether to match trigger width"
         },
         {
           "name": "nodeId",
           "type": "string | undefined",
           "required": false,
-          "description": "节点 ID（仅 Dropdown 使用）"
+          "description": "Node ID (only used for Dropdown)"
         },
         {
           "name": "offsetDistance",
           "type": "number | undefined",
           "required": false,
-          "description": "偏移距离"
+          "description": "Offset distance"
         },
         {
           "name": "overflowRef",
           "type": "RefObject<SideObject | null> | undefined",
           "required": false,
-          "description": "overflow 引用（Select 专用）"
+          "description": "overflow reference (Select specific)"
         },
         {
           "name": "placement",
           "type": "undefined | \"top\" | \"right\" | \"bottom\" | \"left\" | \"top-start\" | \"top-end\" | \"right-start\" | \"right-end\" | \"bottom-start\" | \"bottom-end\" | \"left-start\" | \"left-end\"",
           "required": false,
-          "description": "位置配置"
+          "description": "Position configuration"
         },
         {
           "name": "scrollRef",
@@ -820,25 +820,25 @@
           "name": "setFallback",
           "type": "((fallback: boolean) => void) | undefined",
           "required": false,
-          "description": "设置 fallback（Select 专用）"
+          "description": "Set fallback (Select specific)"
         },
         {
           "name": "setInnerOffset",
           "type": "((offset: number) => void) | undefined",
           "required": false,
-          "description": "设置内部偏移（Select 专用）"
+          "description": "Set internal offset (Select specific)"
         },
         {
           "name": "touch",
           "type": "boolean | undefined",
           "required": false,
-          "description": "触摸状态"
+          "description": "Touch state"
         },
         {
           "name": "type",
           "type": "\"select\" | \"dropdown\"",
           "required": true,
-          "description": "组件类型"
+          "description": "Component type"
         }
       ]
     },
@@ -850,49 +850,49 @@
           "name": "disabledNested",
           "type": "boolean | undefined",
           "required": false,
-          "description": "是否禁用嵌套功能"
+          "description": "Whether to disable nested functionality"
         },
         {
           "name": "handleOpenChange",
           "type": "(open: boolean) => void",
           "required": true,
-          "description": "打开状态变化处理函数"
+          "description": "Open state change handling function"
         },
         {
           "name": "isControlledOpen",
           "type": "boolean",
           "required": true,
-          "description": "当前打开状态"
+          "description": "Current open state"
         }
       ]
     },
     {
       "displayName": "useMenuScrollHeight",
-      "description": "设置滚动容器高度\n这个 hook 会在菜单打开且定位完成后，确保滚动容器正确设置高度",
+      "description": "Set scroll container height\nThis hook will ensure the scroll container is correctly set to the parent element height after opening and positioning",
       "props": [
         {
           "name": "isControlledOpen",
           "type": "boolean",
           "required": true,
-          "description": "是否打开"
+          "description": "Whether to open"
         },
         {
           "name": "isPositioned",
           "type": "boolean",
           "required": true,
-          "description": "是否已定位"
+          "description": "Whether to be positioned"
         },
         {
           "name": "scrollRef",
           "type": "RefObject<HTMLDivElement>",
           "required": true,
-          "description": "滚动容器引用"
+          "description": "Scroll container reference"
         }
       ]
     },
     {
       "displayName": "useMenuBaseRefs",
-      "description": "创建菜单基础引用",
+      "description": "Create menu base refs",
       "props": []
     },
     {
@@ -903,87 +903,87 @@
           "name": "handleOpenChange",
           "type": "(open: boolean) => void",
           "required": true,
-          "description": "关闭菜单回调"
+          "description": "Close menu callback"
         },
         {
           "name": "isControlledOpen",
           "type": "boolean",
           "required": true,
-          "description": "是否控制打开状态"
+          "description": "Whether to control the open state"
         },
         {
           "name": "onChange",
           "type": "((value: string) => void) | undefined",
           "required": false,
-          "description": "值变化回调"
+          "description": "Value change callback"
         },
         {
           "name": "options",
           "type": "{ [key: string]: unknown; disabled?: boolean | undefined; divider?: boolean | undefined; value?: string | undefined; }[]",
           "required": true,
-          "description": "选项列表"
+          "description": "Option list"
         },
         {
           "name": "value",
           "type": "string | null | undefined",
           "required": false,
-          "description": "当前值"
+          "description": "Current value"
         }
       ]
     },
     {
       "displayName": "MenuStateConfig",
-      "description": "基础菜单状态管理 Hook\n\n处理所有菜单组件的通用状态：\n- open/close 状态及受控逻辑\n- activeIndex 状态\n- touch 交互状态\n- scrollTop 状态\n- 唯一ID生成\n- 状态变化回调",
+      "description": "Basic menu state management Hook\n\nHandle common state for all menu components:\n- open/close state and controlled logic\n- activeIndex state\n- touch interaction state\n- scrollTop state\n- Unique ID generation\n- State change callback",
       "props": []
     },
     {
       "displayName": "MenuRefsConfig",
-      "description": "菜单引用管理 Hook\n\n统一管理菜单组件中所有需要的引用：\n- 滚动容器引用\n- 列表项引用数组\n- 列表内容引用数组\n- 定时器引用\n- Select 专用引用（overflow, allowSelect 等）",
+      "description": "Menu reference management Hook\n\nUnify the management of all references needed in menu components:\n- Scroll container reference\n- List item reference array\n- List content reference array\n- Timer reference\n- Select specific reference (overflow, allowSelect, etc.)",
       "props": []
     },
     {
       "displayName": "MenuTouchConfig",
-      "description": "菜单触摸交互 Hook\n\n处理菜单组件的触摸交互逻辑：\n- 触摸状态检测\n- 触摸开始事件处理\n- 指针移动事件处理\n- 触摸相关的事件处理器",
+      "description": "Menu touch interaction Hook\n\nHandle menu component touch interaction logic:\n- Touch state detection\n- Touch start event handling\n- Pointer move event handling\n- Touch-related event handlers",
       "props": []
     },
     {
       "displayName": "MenuScrollConfig",
-      "description": "菜单滚动处理 Hook\n\n处理菜单组件的滚动相关逻辑：\n- 滚动位置管理\n- 箭头滚动处理\n- 滚动事件处理\n- 触摸相关的滚动隐藏逻辑",
+      "description": "Menu scroll handling Hook\n\nHandle scroll related logic in menu components:\n- Scroll position management\n- Arrow scroll handling\n- Scroll event handling\n- Touch-related scroll hiding logic",
       "props": []
     },
     {
       "displayName": "MenuChildrenConfig",
-      "description": "菜单子元素解析 Hook\n\n处理菜单组件的子元素解析逻辑：\n- 从 children 中提取 trigger 元素\n- 从 children 中提取 content 元素\n- 支持 Select 和 Dropdown 的不同子元素类型\n- 错误处理和警告",
+      "description": "Menu children parsing Hook\n\nHandle menu component child element parsing logic:\n- Extract trigger element from children\n- Extract content element from children\n- Support different child element types for Select and Dropdown\n- Error handling and warnings",
       "props": []
     },
     {
       "displayName": "MenuFloatingConfig",
-      "description": "菜单 FloatingUI 配置 Hook\n\n为 Select 和 Dropdown 提供不同的 floating 配置：\n- Select: 使用 inner 中间件 + 虚拟滚动\n- Dropdown: 使用标准中间件 + 嵌套支持",
+      "description": "Menu FloatingUI configuration Hook\n\nProvide different floating configurations for Select and Dropdown:\n- Select: use inner middleware + virtual scrolling\n- Dropdown: use standard middleware + nested support",
       "props": []
     },
     {
       "displayName": "MenuTreeConfig",
-      "description": "菜单 FloatingTree 集成 Hook\n\n专用于 Dropdown 组件的 FloatingTree 支持：\n- 管理 nodeId 和 parentId\n- 处理树形结构的事件通信\n- 支持嵌套菜单的打开/关闭协调\n- 处理父子菜单的焦点管理",
+      "description": "Menu FloatingTree integration Hook\n\nSpecialized for FloatingTree support for Dropdown component:\n- Manage nodeId and parentId\n- Handle event communication for tree structure\n- Support opening/closing coordination for nested menus\n- Handle focus management for parent and child menus",
       "props": []
     },
     {
       "displayName": "MenuSelectionConfig",
-      "description": "菜单选择状态管理 Hook\n\n专用于 Select 组件的选择逻辑：\n- 管理选中索引和值的映射\n- 处理选择延迟和阻止机制\n- 处理鼠标和键盘选择\n- 支持受控和非受控值",
+      "description": "Menu selection state management Hook\n\nSpecialized for Select component selection logic:\n- Manage the mapping of selected index and value\n- Handle selection delay and blocking mechanism\n- Handle mouse and keyboard selection\n- Support controlled and uncontrolled values",
       "props": []
     },
     {
       "displayName": "MenuScrollHeightConfig",
-      "description": "菜单滚动容器高度设置 Hook\n\n确保滚动容器正确设置高度，作为 size middleware 的补充\n在所有菜单组件中都有类似的逻辑，统一抽取到这里\n\n功能：\n- 在菜单打开且定位完成后，确保滚动容器正确继承父元素高度\n- 使用 requestAnimationFrame 确保 DOM 已更新，避免与 size middleware 的时序冲突",
+      "description": "Menu scroll container height setting Hook\n\nEnsure the scroll container is correctly set to the parent element height, as a complement to the size middleware\nSimilar logic exists in all menu components, unified extraction here\n\nFeatures:\n- Ensure the scroll container is correctly inherited from the parent element height after opening and positioning\n- Use requestAnimationFrame to ensure the DOM is updated, avoiding timing conflicts with the size middleware",
       "props": []
     },
     {
       "displayName": "MenuBaseRefsResult",
-      "description": "菜单基础引用管理 Hook\n\n统一管理所有菜单组件需要的基础 refs：\n- scrollRef: 滚动容器引用\n- elementsRef: 菜单项元素引用数组\n- labelsRef: 菜单项标签引用数组（用于 typeahead）\n- selectTimeoutRef: 选择延迟定时器引用\n\n这些 refs 在多个组件中都有使用，统一管理可以保持一致性",
+      "description": "Menu base refs management Hook\n\nUnified management of all base refs needed by menu components:\n- scrollRef: scroll container reference\n- elementsRef: menu item element reference array\n- labelsRef: menu item label reference array (for typeahead)\n- selectTimeoutRef: select delay timer reference\n\nThese refs are used in multiple components, unified management can maintain consistency",
       "props": []
     },
     {
       "displayName": "MenuContextItemProps",
-      "description": "通用菜单项组件\n\n供 Select 和 Dropdown 共用，统一所有交互逻辑：\n- touch 事件处理\n- 选择逻辑\n- 键盘导航\n- 视觉状态管理",
+      "description": "Generic menu item component\n\nShared by Select and Dropdown, unify all interaction logic:\n- touch event handling\n- selection logic\n- keyboard navigation\n- visual state management",
       "props": [
         {
           "name": "customActive",

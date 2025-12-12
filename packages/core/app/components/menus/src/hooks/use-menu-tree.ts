@@ -8,65 +8,65 @@ import {
 import { useEventCallback } from "usehooks-ts"
 
 /**
- * 菜单 FloatingTree 集成 Hook
+ * Menu FloatingTree integration Hook
  *
- * 专用于 Dropdown 组件的 FloatingTree 支持：
- * - 管理 nodeId 和 parentId
- * - 处理树形结构的事件通信
- * - 支持嵌套菜单的打开/关闭协调
- * - 处理父子菜单的焦点管理
+ * Specialized for FloatingTree support for Dropdown component:
+ * - Manage nodeId and parentId
+ * - Handle event communication for tree structure
+ * - Support opening/closing coordination for nested menus
+ * - Handle focus management for parent and child menus
  */
 
 export interface MenuTreeConfig {
-  /** 是否禁用嵌套功能 */
+  /** Whether to disable nested functionality */
   disabledNested?: boolean
-  /** 打开状态变化处理函数 */
+  /** Open state change handling function */
   handleOpenChange: (open: boolean) => void
-  /** 当前打开状态 */
+  /** Current open state */
   isControlledOpen: boolean
 }
 
 export interface MenuTreeResult {
-  /** 清理 tree 事件监听 */
+  /** Clean up tree event listening */
   cleanupTreeEvents: () => void
-  /** 是否为嵌套模式 */
+  /** Whether to be nested mode */
   isNested: boolean
-  /** 列表项实例 */
+  /** List item instance */
   item: ReturnType<typeof useListItem>
-  /** 当前节点 ID */
+  /** Current node ID */
   nodeId: string | undefined
-  /** 父节点 ID */
+  /** Parent node ID */
   parentId: string | null
-  /** FloatingTree 实例 */
+  /** FloatingTree instance */
   tree: ReturnType<typeof useFloatingTree>
 }
 
 export function useMenuTree(config: MenuTreeConfig): MenuTreeResult {
   const { disabledNested = false, handleOpenChange, isControlledOpen } = config
 
-  // FloatingTree 相关 hooks
+  // FloatingTree related hooks
   const tree = useFloatingTree()
   const nodeId = useFloatingNodeId()
   const parentId = useFloatingParentNodeId()
   const item = useListItem()
 
-  // 确定是否为嵌套模式
+  // Determine whether to be nested mode
   const isNested = !disabledNested && parentId != null
 
-  // 处理 tree 点击事件
+  // Handle tree click event
   const handleTreeClick = useEventCallback(() => {
     handleOpenChange(false)
   })
 
-  // 处理子菜单打开事件
+  // Handle submenu open event
   const handleSubMenuOpen = useEventCallback((event: { nodeId: string; parentId: string }) => {
-    // 如果不是当前节点且有相同父节点，则关闭自己
+    // If it is not the current node and has the same parent node, close yourself
     if (event.nodeId !== nodeId && event.parentId === parentId) {
       handleOpenChange(false)
     }
   })
 
-  // 清理事件监听
+  // Clean up event listening
   const cleanupTreeEvents = useEventCallback(() => {
     if (tree) {
       tree.events.off("click", handleTreeClick)
@@ -74,7 +74,7 @@ export function useMenuTree(config: MenuTreeConfig): MenuTreeResult {
     }
   })
 
-  // 监听 tree 事件
+  // Listen to tree events
   useEffect(() => {
     if (!tree) return
 
@@ -84,7 +84,7 @@ export function useMenuTree(config: MenuTreeConfig): MenuTreeResult {
     return cleanupTreeEvents
   }, [tree, nodeId, parentId, handleTreeClick, handleSubMenuOpen, cleanupTreeEvents])
 
-  // 当菜单打开时，发送 menuopen 事件
+  // When the menu is opened, send the menuopen event
   useEffect(() => {
     if (isControlledOpen && tree) {
       tree.events.emit("menuopen", { parentId, nodeId })

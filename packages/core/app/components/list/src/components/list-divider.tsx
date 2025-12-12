@@ -6,16 +6,16 @@ export const ListDivider = forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivEle
   (props, ref) => {
     const { className, ...rest } = props
 
-    const styles = ListDividerTv()
+    const tv = ListDividerTv()
 
     return (
       <div
         ref={ref}
         role="separator"
         {...rest}
-        className={tcx(styles.root(), className)}
+        className={tcx(tv.root(), className)}
       >
-        <div className={styles.divider()} />
+        <div className={tv.divider()} />
       </div>
     )
   },

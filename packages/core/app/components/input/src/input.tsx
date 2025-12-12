@@ -38,7 +38,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(pro
     onIsEditingChange?.(false)
   })
 
-  const styles = InputTv({ variant, selected, disabled, readOnly, size })
+  const tv = InputTv({ variant, selected, disabled, readOnly, size })
 
   const inputProps = useCallback(() => {
     return {
@@ -51,7 +51,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(pro
       value,
       disabled,
       readOnly,
-      className: tcx(styles, className),
+      className: tcx(tv, className),
       onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
         onChange?.(e.target.value)
       },
@@ -83,7 +83,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(pro
     value,
     disabled,
     readOnly,
-    styles,
+    tv,
     className,
     focusSelection,
     onChange,

@@ -3,42 +3,42 @@ import { useEventCallback } from "usehooks-ts"
 import { flushSync } from "react-dom"
 
 /**
- * 菜单滚动处理 Hook
+ * Menu scroll handling Hook
  *
- * 处理菜单组件的滚动相关逻辑：
- * - 滚动位置管理
- * - 箭头滚动处理
- * - 滚动事件处理
- * - 触摸相关的滚动隐藏逻辑
+ * Handle scroll related logic in menu components:
+ * - Scroll position management
+ * - Arrow scroll handling
+ * - Scroll event handling
+ * - Touch-related scroll hiding logic
  */
 
 export interface MenuScrollConfig {
-  /** Select 专用：fallback 模式 */
+  /** Select specific: fallback mode */
   fallback?: boolean
-  /** 是否是 Select 类型（使用不同的滚动逻辑） */
+  /** Whether to use Select type (uses different scroll logic) */
   isSelect?: boolean
-  /** 滚动容器引用 */
+  /** Scroll container reference */
   scrollRef: React.RefObject<HTMLDivElement>
-  /** 滚动位置状态 */
+  /** Scroll position state */
   scrollTop: number
-  /** 定时器引用 */
+  /** Timer reference */
   selectTimeoutRef: React.RefObject<ReturnType<typeof setTimeout> | undefined>
-  /** Select 专用：设置内部偏移 */
+  /** Select specific: set internal offset */
   setInnerOffset?: (offset: number | ((prev: number) => number)) => void
-  /** 设置滚动位置 */
+  /** Set scroll position */
   setScrollTop: (scrollTop: number) => void
-  /** 触摸状态 */
+  /** Touch state */
   touch: boolean
 }
 
 export interface MenuScrollResult {
-  /** 箭头隐藏处理器 */
+  /** Arrow hide handler */
   handleArrowHide: () => void
-  /** 箭头滚动处理器 */
+  /** Arrow scroll handler */
   handleArrowScroll: (amount: number) => void
-  /** 滚动事件处理器 */
+  /** Scroll event handler */
   handleScroll: (event: React.UIEvent) => void
-  /** 滚动相关的属性对象（已缓存，避免每次渲染都创建新对象） */
+  /** Scroll-related property object (cached to avoid creating new objects on every render) */
   scrollProps: {
     onScroll: (event: React.UIEvent) => void
   }
@@ -56,26 +56,26 @@ export function useMenuScroll(config: MenuScrollConfig): MenuScrollResult {
     fallback = false,
   } = config
 
-  // 箭头滚动处理 - 使用 useEventCallback 确保引用稳定
+  // Arrow scroll handling - use useEventCallback to ensure stable references
   const handleArrowScroll = useEventCallback((amount: number) => {
     if (isSelect) {
-      // Select 组件的滚动处理
+      // Select component scroll handling
       requestAnimationFrame(() => {
         if (fallback) {
-          // fallback 模式：直接滚动容器
+          // fallback mode: scroll container directly
           if (scrollRef.current) {
             scrollRef.current.scrollTop -= amount
             flushSync(() => setScrollTop(scrollRef.current?.scrollTop ?? 0))
           }
         } else {
-          // 正常模式：更新内部偏移
+          // normal mode: update internal offset
           if (setInnerOffset) {
             flushSync(() => setInnerOffset((value) => value - amount))
           }
         }
       })
     } else {
-      // Dropdown 组件的滚动处理
+      // Dropdown component scroll handling
       if (scrollRef.current) {
         scrollRef.current.scrollTop -= amount
         flushSync(() => setScrollTop(scrollRef.current?.scrollTop ?? 0))
@@ -83,21 +83,21 @@ export function useMenuScroll(config: MenuScrollConfig): MenuScrollResult {
     }
   })
 
-  // 箭头隐藏处理 - 触摸相关的逻辑
+  // Arrow hide handling - touch-related logic
   const handleArrowHide = useEventCallback(() => {
     if (touch && selectTimeoutRef.current) {
       clearTimeout(selectTimeoutRef.current)
     }
   })
 
-  // 滚动事件处理
+  // Scroll event handling
   const handleScroll = useEventCallback((event: React.UIEvent) => {
     const target = event.currentTarget
     flushSync(() => setScrollTop(target.scrollTop))
   })
 
-  // 缓存滚动属性对象，避免每次渲染都创建新对象
-  // 使用 useMemo 确保 handleScroll 引用变化时才重新创建
+  // Cache scroll property object, avoid creating new objects on every render
+  // Use useMemo to ensure handleScroll reference changes before creating a new one
   const scrollProps = useMemo(
     () => ({
       onScroll: handleScroll,

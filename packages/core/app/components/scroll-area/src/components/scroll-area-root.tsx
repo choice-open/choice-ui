@@ -37,7 +37,7 @@ export const ScrollAreaRoot = forwardRef<HTMLDivElement, ScrollAreaProps>(
     const [thumbX, setThumbX] = useState<HTMLDivElement | null>(null)
     const [thumbY, setThumbY] = useState<HTMLDivElement | null>(null)
 
-    // 使用 React useId 生成 SSR 安全的唯一 ID
+    // Use React useId to generate SSR-safe unique ID
     const reactId = useId()
     const rootId = id || `scroll-area${reactId}`
     const viewportId = `scroll-viewport${reactId}`
@@ -47,7 +47,7 @@ export const ScrollAreaRoot = forwardRef<HTMLDivElement, ScrollAreaProps>(
     const { scrollState, isHovering, isScrolling, handleMouseEnter, handleMouseLeave } =
       useScrollStateAndVisibility(viewport)
 
-    // 缓存静态配置，避免每次渲染重新创建
+    // Cache static configuration, avoid recreating on each render
     const staticConfig = useMemo(
       () => ({
         orientation,
@@ -59,7 +59,7 @@ export const ScrollAreaRoot = forwardRef<HTMLDivElement, ScrollAreaProps>(
       [orientation, scrollbarMode, hoverBoundary, variant, type],
     )
 
-    // 缓存Context值，只在相关状态变化时才更新
+    // Cache Context values, only update when related states change
     const contextValue: ScrollAreaContextType = useMemo(
       () => ({
         content,
@@ -82,7 +82,7 @@ export const ScrollAreaRoot = forwardRef<HTMLDivElement, ScrollAreaProps>(
         type: staticConfig.type,
         isHovering,
         isScrolling,
-        // 添加 ID 相关的值
+        // Add ID-related values
         rootId,
         viewportId,
         scrollbarXId,
@@ -106,8 +106,8 @@ export const ScrollAreaRoot = forwardRef<HTMLDivElement, ScrollAreaProps>(
       ],
     )
 
-    // 缓存TV配置
-    const tvConfig = useMemo(
+    // Cache TV configuration
+    const tv = useMemo(
       () =>
         ScrollTv({
           variant,
@@ -118,7 +118,7 @@ export const ScrollAreaRoot = forwardRef<HTMLDivElement, ScrollAreaProps>(
       [variant, scrollbarMode, orientation, hoverBoundary],
     )
 
-    // 缓存render prop的位置计算，只在scrollState变化时重新计算
+    // Cache render prop position calculation, only recalculate when scrollState changes
     const scrollPosition = useMemo<ScrollPosition>(() => {
       const maxScrollTop = Math.max(0, scrollState.scrollHeight - scrollState.clientHeight)
       const maxScrollLeft = Math.max(0, scrollState.scrollWidth - scrollState.clientWidth)
@@ -136,19 +136,19 @@ export const ScrollAreaRoot = forwardRef<HTMLDivElement, ScrollAreaProps>(
       scrollState.clientWidth,
     ])
 
-    // 判断children是否是函数（render prop）
+    // Check if children is a function (render prop)
     const isRenderProp = typeof children === "function"
 
-    // 如果是render prop，调用函数；否则直接使用children
+    // If it is a render prop, call the function; otherwise, use children directly
     const renderedChildren = isRenderProp
       ? (children as ScrollAreaRenderProp)(scrollPosition)
       : children
 
-    // 自动渲染滚动条组件
+    // Automatically render scrollbar components
     const autoScrollbars = useMemo(() => {
       const scrollbars = []
 
-      // 根据 orientation 自动添加对应的滚动条
+      // Automatically add the corresponding scrollbar based on orientation
       if (orientation === "vertical" || orientation === "both") {
         scrollbars.push(
           <ScrollAreaScrollbar
@@ -171,7 +171,7 @@ export const ScrollAreaRoot = forwardRef<HTMLDivElement, ScrollAreaProps>(
         )
       }
 
-      // 如果是双向滚动，添加 Corner
+      // If it is dual scroll, add Corner
       if (orientation === "both") {
         scrollbars.push(<ScrollAreaCorner key="corner" />)
       }
@@ -184,10 +184,10 @@ export const ScrollAreaRoot = forwardRef<HTMLDivElement, ScrollAreaProps>(
         <div
           ref={ref}
           id={rootId}
-          className={tcx(tvConfig.root(), className)}
+          className={tcx(tv.root(), className)}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
-          // WAI-ARIA 属性
+          // WAI-ARIA attributes
           aria-label={ariaLabel}
           aria-labelledby={ariaLabelledBy}
           {...props}

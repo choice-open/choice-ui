@@ -21,21 +21,21 @@
   "props": [
     {
       "displayName": "SeparatorProps",
-      "description": "Separator - 分隔符组件\n\n用于在内容之间创建视觉分隔，支持水平和垂直两种方向。\n对屏幕阅读器友好，使用正确的 ARIA 属性。",
+      "description": "Separator - Separator component\n\nUsed to create visual separation between content, supports horizontal and vertical directions.\nScreen reader friendly, uses correct ARIA attributes.",
       "props": [
         {
           "name": "orientation",
           "type": "undefined | \"horizontal\" | \"vertical\"",
           "required": false,
           "defaultValue": "\"horizontal\"",
-          "description": "分隔符的方向"
+          "description": "Separator direction"
         },
         {
           "name": "decorative",
           "type": "boolean | undefined",
           "required": false,
           "defaultValue": "false",
-          "description": "是否为装饰性分隔符（不需要被屏幕阅读器读取）"
+          "description": "Whether to use decorative separator (not read by screen readers)"
         },
         {
           "name": "variant",

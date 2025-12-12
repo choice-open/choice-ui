@@ -2,9 +2,9 @@ import { Button } from "@choice-ui/button"
 import { tcx } from "@choice-ui/shared"
 import { EllipsisSmall } from "@choiceform/icons-react"
 import { forwardRef } from "react"
+import { usePaginationContext } from "../context"
 import { paginationTv } from "../tv"
 import type { PaginationNavigationProps } from "../types"
-import { usePaginationContext } from "./pagination-context"
 
 export const PaginationNavigation = forwardRef<HTMLDivElement, PaginationNavigationProps>(
   (props, ref) => {
@@ -13,12 +13,12 @@ export const PaginationNavigation = forwardRef<HTMLDivElement, PaginationNavigat
     const { currentPage, pageNumbers, handlePageChange, labels, disabled, loading } =
       usePaginationContext()
 
-    const styles = paginationTv()
+    const tv = paginationTv()
 
     return (
       <div
         ref={ref}
-        className={tcx(styles.pages(), className)}
+        className={tcx(tv.pages(), className)}
         {...rest}
       >
         {pageNumbers.map((pageNumber, index) => {
@@ -26,7 +26,7 @@ export const PaginationNavigation = forwardRef<HTMLDivElement, PaginationNavigat
             return (
               <div
                 key={`ellipsis-${index}`}
-                className={styles.ellipsis()}
+                className={tv.ellipsis()}
               >
                 <EllipsisSmall />
               </div>
@@ -43,7 +43,7 @@ export const PaginationNavigation = forwardRef<HTMLDivElement, PaginationNavigat
               onClick={() => handlePageChange(pageNumber)}
               aria-label={`${labels.page} ${pageNumber}`}
               aria-current={isActive ? "page" : undefined}
-              className={styles.pageButton({ active: isActive })}
+              className={tv.pageButton({ active: isActive })}
             >
               {pageNumber}
             </Button>

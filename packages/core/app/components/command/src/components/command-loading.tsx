@@ -22,7 +22,7 @@ export const CommandLoading = forwardRef<HTMLDivElement, CommandLoadingProps>((p
   return (
     <div
       ref={ref}
-      {...props}
+      {...rest}
       className={tcx(tv.root({ className }))}
       role="progressbar"
       aria-valuenow={progress}

@@ -19,7 +19,7 @@ export const NumericInputElement = memo(
     const context = useNumericInputContext()
     const handlerProps = context.handlerProps
 
-    const elementClassName = NumericInputElementTv({
+    const tv = NumericInputElementTv({
       type,
       position,
       disabled: context.disabled,
@@ -34,7 +34,7 @@ export const NumericInputElement = memo(
     return (
       <div
         ref={ref}
-        className={tcx(elementClassName, className)}
+        className={tcx(tv, className)}
         data-element-position={position}
         data-element-type={type}
         {...elementProps}

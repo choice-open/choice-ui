@@ -8,8 +8,8 @@ export const ScrollAreaCorner = forwardRef<HTMLDivElement, React.ComponentPropsW
   ({ className, ...props }, ref) => {
     const { scrollState, scrollbarMode, variant } = useScrollAreaContext()
 
-    // 缓存TV配置
-    const tvConfig = useMemo(
+    // Cache TV configuration
+    const tv = useMemo(
       () =>
         ScrollTv({
           variant,
@@ -19,7 +19,7 @@ export const ScrollAreaCorner = forwardRef<HTMLDivElement, React.ComponentPropsW
       [variant, scrollbarMode],
     )
 
-    // 缓存样式对象
+    // Cache style object
     const cornerStyle = useMemo(
       () => ({
         position: "absolute" as const,
@@ -36,9 +36,9 @@ export const ScrollAreaCorner = forwardRef<HTMLDivElement, React.ComponentPropsW
     return (
       <div
         ref={ref}
-        className={tcx(tvConfig.corner(), className)}
+        className={tcx(tv.corner(), className)}
         style={cornerStyle}
-        // WAI-ARIA 属性
+        // WAI-ARIA attributes
         role="presentation"
         aria-hidden="true"
         {...props}

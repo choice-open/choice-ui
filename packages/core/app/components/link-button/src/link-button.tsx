@@ -1,7 +1,6 @@
 import { tcv, tcx } from "@choice-ui/shared"
 import { forwardRef } from "react"
 
-// 基础 props 接口
 interface BaseLinkButtonProps {
   children?: React.ReactNode
   className?: string
@@ -10,7 +9,7 @@ interface BaseLinkButtonProps {
   variant?: "default" | "subtle"
 }
 
-// 条件类型：有 href 时是链接，无 href 时是按钮
+// Conditional type: if href exists, it's a link, if not, it's a button
 export type LinkButtonProps = BaseLinkButtonProps &
   (
     | (React.AnchorHTMLAttributes<HTMLAnchorElement> & {
@@ -21,7 +20,7 @@ export type LinkButtonProps = BaseLinkButtonProps &
       })
   )
 
-// 样式变体定义
+// Style variant definition
 const linkButtonTv = tcv({
   base: [
     "cursor-default",
@@ -57,14 +56,14 @@ export const LinkButton = forwardRef<HTMLAnchorElement | HTMLButtonElement, Link
       ...rest
     } = props
 
-    const styles = linkButtonTv({ variant, disabled })
+    const tv = linkButtonTv({ variant, disabled })
 
-    // 如果有 href，渲染为链接
+    // If href exists, render as link
     if ("href" in props && props.href) {
       const { href, target, rel, ...anchorProps } =
         rest as React.AnchorHTMLAttributes<HTMLAnchorElement> & { href: string }
 
-      // 安全性处理：外部链接自动添加安全属性
+      // Security handling: external links automatically add safe attributes
       const isExternal = href.startsWith("http") || href.startsWith("//")
       const safeRel = isExternal
         ? rel
@@ -73,7 +72,7 @@ export const LinkButton = forwardRef<HTMLAnchorElement | HTMLButtonElement, Link
         : rel
       const safeTarget = isExternal && !target ? "_blank" : target
 
-      // 在 readOnly 模式下阻止 onClick 事件
+      // Prevent onClick event when in readOnly mode
       const handleClick = readOnly
         ? undefined
         : (onClick as React.MouseEventHandler<HTMLAnchorElement> | undefined)
@@ -84,7 +83,7 @@ export const LinkButton = forwardRef<HTMLAnchorElement | HTMLButtonElement, Link
           href={disabled || readOnly ? undefined : href}
           target={safeTarget}
           rel={safeRel}
-          className={tcx(styles, className)}
+          className={tcx(tv, className)}
           aria-disabled={disabled || readOnly}
           tabIndex={disabled || readOnly ? -1 : undefined}
           onClick={handleClick}
@@ -95,9 +94,9 @@ export const LinkButton = forwardRef<HTMLAnchorElement | HTMLButtonElement, Link
       )
     }
 
-    // 否则渲染为按钮
+    // Otherwise render as button
     const buttonProps = rest as React.ButtonHTMLAttributes<HTMLButtonElement>
-    // 在 readOnly 模式下阻止 onClick 事件
+    // Prevent onClick event when in readOnly mode
     const handleClick = readOnly
       ? undefined
       : (onClick as React.MouseEventHandler<HTMLButtonElement> | undefined)
@@ -107,7 +106,7 @@ export const LinkButton = forwardRef<HTMLAnchorElement | HTMLButtonElement, Link
         ref={ref as React.ForwardedRef<HTMLButtonElement>}
         type="button"
         disabled={disabled || readOnly}
-        className={tcx(styles, className)}
+        className={tcx(tv, className)}
         onClick={handleClick}
         {...buttonProps}
       >

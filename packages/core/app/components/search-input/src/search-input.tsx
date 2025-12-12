@@ -35,7 +35,7 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>((props
     onChange?.("")
   })
 
-  const style = searchInputTv({ variant, disabled })
+  const tv = searchInputTv({ variant, disabled })
 
   return (
     <TextField
@@ -47,13 +47,13 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>((props
       disabled={disabled}
       {...rest}
     >
-      <TextField.Prefix className={style.icon()}>
+      <TextField.Prefix className={tv.icon()}>
         <Search />
       </TextField.Prefix>
       {value && clearable && (
         <TextField.Suffix>
           <IconButton
-            className={style.action()}
+            className={tv.action()}
             variant="ghost"
             tooltip={{ content: i18n.clear }}
             onClick={handleClear}

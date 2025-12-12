@@ -1,13 +1,13 @@
 import React, { Children, isValidElement, useMemo } from "react"
 
 /**
- * 菜单子元素解析 Hook
+ * Menu children parsing Hook
  *
- * 处理菜单组件的子元素解析逻辑：
- * - 从 children 中提取 trigger 元素
- * - 从 children 中提取 content 元素
- * - 支持 Select 和 Dropdown 的不同子元素类型
- * - 错误处理和警告
+ * Handle menu component child element parsing logic:
+ * - Extract trigger element from children
+ * - Extract content element from children
+ * - Support different child element types for Select and Dropdown
+ * - Error handling and warnings
  */
 
 export interface MenuChildrenConfig<
@@ -15,28 +15,28 @@ export interface MenuChildrenConfig<
   C extends React.ElementType = React.ElementType,
   S extends React.ElementType = React.ElementType,
 > {
-  /** Content 组件类型 */
+  /** Content component type */
   ContentComponent: C
-  /** SubTrigger 组件类型（仅 Dropdown 使用） */
+  /** SubTrigger component type (only used for Dropdown) */
   SubTriggerComponent?: S
-  /** Trigger 组件类型 */
+  /** Trigger component type */
   TriggerComponent: T
-  /** 子元素 */
+  /** Children */
   children?: React.ReactNode
-  /** 组件类型名称，用于错误提示 */
+  /** Component type name, for error提示 */
   componentName: string
 }
 
 export interface MenuChildrenResult {
-  /** 内容元素 */
+  /** Content element */
   contentElement: React.ReactElement | null
-  /** 错误信息 */
+  /** Error message */
   error?: string
-  /** 是否有必需的元素 */
+  /** Whether there are required elements */
   hasRequiredElements: boolean
-  /** 子触发器元素（仅 Dropdown 使用） */
+  /** Sub-trigger element (only used for Dropdown) */
   subTriggerElement?: React.ReactElement | null
-  /** 触发器元素 */
+  /** Trigger element */
   triggerElement: React.ReactElement | null
 }
 
@@ -48,7 +48,7 @@ export function useMenuChildren<
   const { children, TriggerComponent, ContentComponent, SubTriggerComponent, componentName } =
     config
 
-  // 解析子元素
+  // Parse children elements
   const parsedElements = useMemo(() => {
     if (!children) {
       return {
@@ -62,27 +62,27 @@ export function useMenuChildren<
 
     const childrenArray = Children.toArray(children)
 
-    // 查找 trigger 元素
+    // Find trigger element
     const trigger = childrenArray.find(
       (child) => isValidElement(child) && child.type === TriggerComponent,
     ) as React.ReactElement | null
 
-    // 查找 content 元素
+    // Find content element
     const content = childrenArray.find(
       (child) => isValidElement(child) && child.type === ContentComponent,
     ) as React.ReactElement | null
 
-    // 查找 sub-trigger 元素（仅 Dropdown 使用）
+    // Find sub-trigger element (only used for Dropdown)
     const subTrigger = SubTriggerComponent
       ? (childrenArray.find(
           (child) => isValidElement(child) && child.type === SubTriggerComponent,
         ) as React.ReactElement | null)
       : null
 
-    // 检查必需元素
+    // Check required elements
     const hasRequiredElements = trigger !== null && content !== null
 
-    // 生成错误信息
+    // Generate error message
     let error: string | undefined
     if (!hasRequiredElements) {
       if (!trigger && !content) {
@@ -103,7 +103,7 @@ export function useMenuChildren<
     }
   }, [children, TriggerComponent, ContentComponent, SubTriggerComponent, componentName])
 
-  // 输出错误信息
+  // Output error message
   if (parsedElements.error) {
     console.error(parsedElements.error)
   }

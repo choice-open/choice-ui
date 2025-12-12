@@ -5,7 +5,6 @@ import { useTooltipState } from "../context/tooltip-context"
 import type { TooltipArrowProps } from "../types"
 import { tooltipContentVariants } from "../tv"
 
-// 常量提取
 const ARROW_SIZE = 6
 const STATIC_SIDE_MAP = {
   top: "bottom",
@@ -22,18 +21,18 @@ export const TooltipArrow = forwardRef<HTMLDivElement, TooltipArrowProps>(functi
 ) {
   const state = useTooltipState()
 
-  // 使用 useMergeRefs 合并 refs
+  // Use useMergeRefs to merge refs
   const ref = useMergeRefs([state.arrowRef, propRef])
 
-  // 从 middlewareData 获取箭头位置数据
+  // Get arrow position data from middlewareData
   const { x, y } = state.middlewareData.arrow || {}
   const placement = state.placement
   const side = placement.split("-")[0] as Side
 
-  // 缓存计算结果
+  // Cache calculation results
   const staticSide = useMemo(() => STATIC_SIDE_MAP[side], [side])
 
-  // 箭头样式，按照官方示例
+  // Arrow style, according to the official example
   const arrowStyles = useMemo(() => {
     const offset = `${-ARROW_SIZE / 2}px`
 
@@ -42,14 +41,14 @@ export const TooltipArrow = forwardRef<HTMLDivElement, TooltipArrowProps>(functi
       width: `${ARROW_SIZE}px`,
       height: `${ARROW_SIZE}px`,
       transform: "rotate(45deg)",
-      // floating-ui 会自动计算正确的位置并避免圆角冲突
+      // floating-ui will automatically calculate the correct position and avoid corner conflicts
       top: y != null ? `${y}px` : undefined,
       left: x != null ? `${x}px` : undefined,
       right: undefined,
       bottom: undefined,
     }
 
-    // 设置静态位置，让箭头伸出容器外
+    // Set static position, so the arrow protrudes from the container
     switch (staticSide) {
       case "top":
         baseStyle.top = offset
@@ -68,7 +67,7 @@ export const TooltipArrow = forwardRef<HTMLDivElement, TooltipArrowProps>(functi
     return baseStyle
   }, [x, y, staticSide])
 
-  // 缓存样式变体计算
+  // Cache style variant calculation
   const tv = useMemo(() => tooltipContentVariants({ variant, placement: side }), [variant, side])
 
   return (

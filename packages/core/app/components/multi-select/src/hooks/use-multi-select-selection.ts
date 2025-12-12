@@ -31,7 +31,7 @@ export function useMultiSelectSelection({
   setValidationMessage,
   handleOpenChange,
 }: UseMultiSelectSelectionProps) {
-  // 处理选择 - 多选逻辑（支持排他选项）
+  // Handle selection - multi-select logic (supports exclusive options)
   const handleSelect = useEventCallback((index: number) => {
     const selectedOption = selectableOptions[index]
     if (!selectedOption) return
@@ -43,50 +43,50 @@ export function useMultiSelectSelection({
     let newValues: string[]
 
     if (isSelected) {
-      // 移除选项
+      // Remove option
       if (minSelection && values.length <= minSelection) {
         setValidationMessage(
           i18n?.minSelectionMessage?.(minSelection) || `Select at least ${minSelection} options`,
         )
-        return // 不能再移除了
+        return // Cannot remove more
       }
       newValues = values.filter((v) => v !== resultValue)
     } else {
-      // 添加选项
+      // Add option
       if (maxSelection && values.length >= maxSelection) {
         setValidationMessage(
           i18n?.maxSelectionMessage?.(maxSelection) || `Select up to ${maxSelection} options`,
         )
-        return // 不能再添加了
+        return // Cannot add more
       }
 
-      // 处理排他逻辑
+      // Handle exclusive logic
       if (exclusiveIndex === -1) {
-        // 全局互斥：选择后清空所有其他选项
+        // Global exclusion: clear all other options after selection
         newValues = [resultValue]
       } else if (exclusiveIndex && exclusiveIndex > 0) {
-        // 组间互斥：清空其他组的选项，保留同组选项
+        // Group exclusion: clear options from other groups, keep same group options
         const filteredValues = values.filter((value) => {
           const option = selectableOptions.find((opt) => opt.value === value)
           const valueExclusiveIndex = (option?.element?.props as MenuContextItemProps)
             ?.exclusiveIndex
-          // 保留同组选项和无约束选项
+          // Keep same group options and unconstrained options
           return valueExclusiveIndex === exclusiveIndex || valueExclusiveIndex === undefined
         })
         newValues = [...filteredValues, resultValue]
       } else {
-        // 无排他约束：正常添加
-        // 但需要检查是否有全局互斥选项已选中
+        // No exclusive constraint: add normally
+        // But need to check if global exclusive option is already selected
         const hasGlobalExclusive = values.some((value) => {
           const option = selectableOptions.find((opt) => opt.value === value)
           return (option?.element?.props as MenuContextItemProps)?.exclusiveIndex === -1
         })
 
         if (hasGlobalExclusive) {
-          // 如果已有全局互斥选项，清空后添加当前选项
+          // If global exclusive option exists, clear and add current option
           newValues = [resultValue]
         } else {
-          // 清空有排他约束的选项，保留无约束选项
+          // Clear exclusive constrained options, keep unconstrained options
           const filteredValues = values.filter((value) => {
             const option = selectableOptions.find((opt) => opt.value === value)
             const valueExclusiveIndex = (option?.element?.props as MenuContextItemProps)
@@ -100,16 +100,16 @@ export function useMultiSelectSelection({
 
     onChange?.(newValues)
 
-    // 清空验证消息
+    // Clear validation message
     setValidationMessage(null)
 
-    // 根据 closeOnSelect 决定是否关闭菜单
+    // Close menu based on closeOnSelect
     if (closeOnSelect) {
       handleOpenChange(false)
     }
   })
 
-  // 处理移除选项
+  // Handle remove option
   const handleRemove = useEventCallback((valueToRemove: string) => {
     const newValues = values.filter((v) => v !== valueToRemove)
     onChange?.(newValues)

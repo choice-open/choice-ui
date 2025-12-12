@@ -105,14 +105,14 @@ export function useFloatingPopover({
     changed: false,
   })
 
-  // 🔧 使用官方推荐的受控/非受控状态管理
+  // Use official recommended controlled/uncontrolled state management
   const [innerOpen, setInnerOpen] = useMergedValue({
     value: open,
     defaultValue: defaultOpen,
     onChange: onOpenChange,
   })
 
-  // 🔧 使用 useMemo 缓存 middleware 数组，避免每次渲染重新创建
+  // Use useMemo to cache middleware array, avoid creating them again on each render
   const middleware = useMemo(() => {
     return [
       offset(offsetDistance),
@@ -133,18 +133,18 @@ export function useFloatingPopover({
             padding: 16,
           })
         : undefined,
-    ].filter(Boolean) // 过滤掉 undefined
+    ].filter(Boolean) // Filter out undefined
   }, [offsetDistance, autoSize, maxWidthValue, matchTriggerWidth])
 
-  // 🔧 缓存 onOpenChange 回调，避免每次渲染重新创建
+  // Cache onOpenChange callback, avoid creating them again on each render
   const handleOpenChange = useEventCallback((nextOpen: boolean) => {
     if (!nextOpen) {
-      // 关闭逻辑
+      // Close logic
       setIsClosing(true)
       resetDragState()
       setInnerOpen(false)
 
-      // 如果不记住位置，重置位置
+      // If not remembering position, reset position
       if (!rememberPosition) {
         requestAnimationFrame(() => {
           resetPosition()
@@ -154,26 +154,26 @@ export function useFloatingPopover({
         setIsClosing(false)
       }
     } else {
-      // 开启逻辑
+      // Open logic
       setIsClosing(false)
       setInnerOpen(nextOpen)
     }
   })
 
-  // 🔧 使用官方推荐的 useFloating 模式
+  // Use official recommended useFloating mode
   const { refs, floatingStyles, context, x, y, isPositioned } = useFloating({
     nodeId,
-    open: innerOpen, // 直接传递状态
+    open: innerOpen, // Pass state directly
     onOpenChange: handleOpenChange,
     placement,
     middleware,
     whileElementsMounted: autoUpdate ? floatingAutoUpdate : undefined,
   })
 
-  // 🔧 使用官方推荐的 isPositioned 来管理位置状态
+  // Use official recommended isPositioned to manage position state
   useEffect(() => {
     if (innerOpen && isPositioned && x !== null && y !== null) {
-      // 保存位置信息
+      // Save position information
       positionRef.current = { x, y }
     }
   }, [innerOpen, isPositioned, x, y])
@@ -187,9 +187,9 @@ export function useFloatingPopover({
 
   const click = useClick(context, {
     enabled: interactions === "click",
-    // 🔧 使用 mousedown 事件而不是 click，提前处理，避免与 dismiss 冲突
+    // Use mousedown event instead of click, handle early, avoid conflict with dismiss
     event: "mousedown",
-    // 🔧 如果已经有其他 Popover 打开，点击时保持逻辑一致
+    // If another Popover is already open, keep logic consistent when clicking
     stickIfOpen: false,
   })
 
@@ -247,7 +247,7 @@ export function useFloatingPopover({
 
   const getStyles = useCallback(
     (dragPosition: { x: number; y: number } | null, isDragging: boolean) => {
-      // 如果存在拖拽位置且拖拽功能开启，使用 fixed 定位（与 Dialog 一致）
+      // If drag position exists and drag functionality is enabled, use fixed positioning (same as Dialog)
       if (dragPosition && draggable) {
         return {
           ...floatingStyles,
@@ -259,7 +259,7 @@ export function useFloatingPopover({
         } as React.CSSProperties
       }
 
-      // 默认使用 floating-ui 的 transform 定位
+      // Default use floating-ui's transform positioning
       return {
         ...floatingStyles,
         transform: `translate(${x}px, ${y}px)`,
@@ -275,14 +275,14 @@ export function useFloatingPopover({
   }, [innerOpen, context])
 
   useEffect(() => {
-    // 只有在 popover 打开且允许 Escape 关闭时才监听
+    // Only listen when popover is open and Escape close is allowed
     if (!innerOpen || !closeOnEscape) {
       return
     }
 
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        // 只有在确实要处理这个事件时才阻止传播
+        // Only stop propagation when actually handling this event
         e.stopPropagation()
         e.preventDefault()
         handleClose()
@@ -297,9 +297,9 @@ export function useFloatingPopover({
 
   const handleTriggerRef = useCallback(
     (triggerRef: RefObject<HTMLElement | null>) => {
-      // 只有在触发器实际变化时才更新引用
+      // Only update reference when trigger actually changes
       if (triggerRef?.current && triggerRef.current !== triggerRefs.current.last) {
-        // 标记此次触发器变化
+        // Mark this trigger change
         triggerRefs.current.changed = true
         triggerRefs.current.last = triggerRef.current
         refs.setReference(triggerRef.current)
@@ -312,7 +312,7 @@ export function useFloatingPopover({
     refs,
     triggerRefs,
     context,
-    positionReady: isPositioned, // 🔧 使用官方的 isPositioned
+    positionReady: isPositioned,
     innerOpen,
     setInnerOpen,
     x,

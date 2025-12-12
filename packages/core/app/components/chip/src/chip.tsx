@@ -49,7 +49,7 @@ export const Chip = memo(
       ...rest
     } = props
 
-    const style = chipTv({
+    const tv = chipTv({
       size,
       variant,
       prefix: !!prefixElement,
@@ -64,25 +64,25 @@ export const Chip = memo(
       <Component
         {...rest}
         ref={ref}
-        className={tcx(style.root(), classNames?.root, className)}
+        className={tcx(tv.root(), classNames?.root, className)}
         onClick={(e: React.MouseEvent<HTMLDivElement>) => {
           e.stopPropagation()
           onClick?.(e)
         }}
       >
         {prefixElement && (
-          <span className={tcx(style.prefix(), classNames?.prefix)}>{prefixElement}</span>
+          <span className={tcx(tv.prefix(), classNames?.prefix)}>{prefixElement}</span>
         )}
 
-        <span className={tcx(style.text(), classNames?.text)}>{children}</span>
+        <span className={tcx(tv.text(), classNames?.text)}>{children}</span>
 
         {suffixElement && (
-          <span className={tcx(style.suffix(), classNames?.suffix)}>{suffixElement}</span>
+          <span className={tcx(tv.suffix(), classNames?.suffix)}>{suffixElement}</span>
         )}
 
         {!disabled && onRemove && (
           <IconButton
-            className={tcx(style.closeButton(), classNames?.closeButton)}
+            className={tcx(tv.closeButton(), classNames?.closeButton)}
             aria-label={i18n.remove + (typeof children === "string" ? children : i18n.chip)}
             disabled={disabled}
             size="reset"

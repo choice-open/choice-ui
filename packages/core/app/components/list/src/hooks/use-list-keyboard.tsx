@@ -16,29 +16,29 @@ export function useListKeyboard() {
     const visibleItems: string[] = []
     const seen = new Set<string>()
 
-    // 使用深度优先搜索检索可见项目
+    // Use depth-first search to retrieve visible items
     const dfs = (itemId: string, isVisible: boolean) => {
       if (seen.has(itemId)) return
       seen.add(itemId)
 
-      // 如果项目可见，则添加到结果中
+      // If item is visible, add it to the result
       if (isVisible) {
         visibleItems.push(itemId)
       }
 
-      // 查找所有直接子项目
+      // Find all direct child items
       const childItems = Array.from(itemsMap.entries())
         .filter(([_, data]) => data.parentId === itemId)
         .map(([id]) => id)
 
-      // 递归处理子项目，仅当当前项目展开时才显示子项目
+      // Recursively process child items, only show child items when current item is expanded
       const isExpanded = isSubListExpanded(itemId)
       childItems.forEach((childId) => {
         dfs(childId, isVisible && isExpanded)
       })
     }
 
-    // 处理所有顶级项目（没有父级的项目）
+    // Process all top-level items (items without parent)
     const rootItems = Array.from(itemsMap.entries())
       .filter(([_, data]) => !data.parentId)
       .map(([id]) => id)
@@ -54,14 +54,14 @@ export function useListKeyboard() {
       if (!visibleItems.length) return
 
       if (!activeItem) {
-        // 如果没有激活项，激活第一个可见项
+        // If no active item, activate the first visible item
         setActiveItem(visibleItems[0])
         return
       }
 
       const currentIndex = visibleItems.indexOf(activeItem)
       if (currentIndex === -1) {
-        // 如果当前活动项不在可见项目中，重置为第一个可见项
+        // If current active item is not in visible items, reset to the first visible item
         setActiveItem(visibleItems[0])
         return
       }
@@ -81,12 +81,12 @@ export function useListKeyboard() {
           }
           break
 
-          // 移除 Enter 和 Space 的处理，交由 Item 自行处理
+          // Remove Enter and Space processing, let Item handle it
           break
 
         case "ArrowRight":
           e.preventDefault()
-          // 只有当项目是子列表触发器时才展开
+          // Only expand when item is a sub-list trigger
           toggleSubList(activeItem)
           break
 

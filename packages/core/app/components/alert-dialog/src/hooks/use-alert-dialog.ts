@@ -14,22 +14,19 @@ import {
   normalizeConfirmConfig,
 } from "../utils"
 
-// 主要的 Alert Dialog hook
+// Main Alert Dialog hook
 export const useAlertDialog = (): UseAlertDialogReturn => {
   const context = useAlertDialogContext()
   return context
 }
 
-// 内部使用的 Alert Dialog provider hook
+// Internal Alert Dialog provider hook
 export const useAlertDialogProvider = () => {
   const [state, dispatch] = useReducer(alertDialogReducer, initialState)
 
-  const handleAction = useCallback(
-    (action: Parameters<typeof alertDialogReducer>[1]) => {
-      dispatch(action)
-    },
-    [],
-  )
+  const handleAction = useCallback((action: Parameters<typeof alertDialogReducer>[1]) => {
+    dispatch(action)
+  }, [])
 
   const confirm = useCallback(
     (config: string | AlertDialogConfirmConfig): Promise<boolean> => {

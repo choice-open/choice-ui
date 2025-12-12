@@ -31,32 +31,32 @@ const TextFieldContent = ({
   prefixNode,
   suffixNode,
   inputProps,
-  styles,
+  tv,
   inputRef,
 }: {
   className?: string
   inputProps: InputProps
   inputRef: React.Ref<HTMLInputElement>
   prefixNode: ReactElement | null
-  styles: ReturnType<typeof TextFieldTv>
+  tv: ReturnType<typeof TextFieldTv>
   suffixNode: ReactElement | null
 }) => (
-  <div className={tcx(styles.root(), className)}>
+  <div className={tcx(tv.root(), className)}>
     {prefixNode &&
       cloneElement(prefixNode, {
-        className: tcx(styles.prefix(), prefixNode.props.className),
+        className: tcx(tv.prefix(), prefixNode.props.className),
       })}
 
     <Input
       ref={inputRef}
       variant="reset"
-      className={styles.input()}
+      className={tv.input()}
       {...inputProps}
     />
 
     {suffixNode &&
       cloneElement(suffixNode, {
-        className: tcx(styles.suffix(), suffixNode.props.className),
+        className: tcx(tv.suffix(), suffixNode.props.className),
       })}
   </div>
 )
@@ -87,7 +87,7 @@ const TextFieldBase = forwardRef<HTMLInputElement, TextFieldProps>((props, ref) 
   const labelNode = labelElements[0] || null
   const descriptionNode = descriptionElements[0] || null
 
-  const styles = TextFieldTv({
+  const tv = TextFieldTv({
     variant,
     size,
     hasPrefix: !!prefixNode,
@@ -100,7 +100,7 @@ const TextFieldBase = forwardRef<HTMLInputElement, TextFieldProps>((props, ref) 
   const uuid = props.id ?? generatedId
 
   return labelNode || descriptionNode ? (
-    <div className={tcx(styles.container(), className)}>
+    <div className={tcx(tv.container(), className)}>
       {labelNode &&
         cloneElement(labelNode, {
           variant,
@@ -111,14 +111,14 @@ const TextFieldBase = forwardRef<HTMLInputElement, TextFieldProps>((props, ref) 
         className={className}
         prefixNode={prefixNode}
         suffixNode={suffixNode}
-        styles={styles}
+        tv={tv}
         inputRef={ref}
         inputProps={{ ...rest, id: uuid, size, disabled }}
       />
 
       {descriptionNode &&
         cloneElement(descriptionNode, {
-          className: tcx(styles.description(), descriptionNode.props.className),
+          className: tcx(tv.description(), descriptionNode.props.className),
         })}
     </div>
   ) : (
@@ -126,7 +126,7 @@ const TextFieldBase = forwardRef<HTMLInputElement, TextFieldProps>((props, ref) 
       className={className}
       prefixNode={prefixNode}
       suffixNode={suffixNode}
-      styles={styles}
+      tv={tv}
       inputRef={ref}
       inputProps={{ ...rest, id: uuid, size, disabled }}
     />

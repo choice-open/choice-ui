@@ -30,9 +30,9 @@ interface UseNumericInputProps<T extends NumericInputValue> extends Omit<
 }
 
 /**
- * 数值输入控件的主钩子，整合各种交互功能
- * @param props 配置选项
- * @returns 处理状态和事件处理器
+ * Main hook for numeric input component, integrating various interaction features
+ * @param props Configuration options
+ * @returns State management and event handlers
  */
 export function useNumericInput<T extends NumericInputValue>(props: UseNumericInputProps<T>) {
   const {
@@ -57,7 +57,7 @@ export function useNumericInput<T extends NumericInputValue>(props: UseNumericIn
   const [isFocused, setIsFocused] = useState(false)
   const [displayValue, setDisplayValue] = useState("")
 
-  // 1. 使用子钩子处理不同关注点
+  // 1. Use sub-hooks to handle different focus points
   const { shiftPressed, metaPressed } = useModifierKeys(disabled)
   const getCurrentStep = useStepCalculation(shiftPressed, metaPressed, shiftStep, step)
   const { valuePre, defaultValuePre, expressionRef } = useNumericValueProcessing({
@@ -69,21 +69,21 @@ export function useNumericInput<T extends NumericInputValue>(props: UseNumericIn
     decimal,
   })
 
-  // 2. 状态管理和合并
+  // 2. State management and merging
   const [innerValue, setValue] = useMergedValue({
     value: valuePre,
     defaultValue: defaultValuePre,
     allowEmpty: true,
   })
 
-  // 3. 更新显示值并同步到 input
+  // 3. Update display value and synchronize to input
   useEffect(() => {
     if (!innerValue) {
       setDisplayValue("")
       return
     }
 
-    // 处理表达式变化，但避免循环依赖
+    // Handle expression change, but avoid circular dependency
     const valuePre = dealWithNumericInputValue({
       input: innerValue.object,
       pattern: expression,
@@ -92,7 +92,7 @@ export function useNumericInput<T extends NumericInputValue>(props: UseNumericIn
       decimal,
     })
 
-    // 只有当表达式导致实际值变化时才更新内部值
+    // Only update internal value when expression causes actual value change
     if (JSON.stringify(valuePre.object) !== JSON.stringify(innerValue.object)) {
       setValue(valuePre)
     }
@@ -100,14 +100,14 @@ export function useNumericInput<T extends NumericInputValue>(props: UseNumericIn
     setDisplayValue(valuePre.string)
   }, [innerValue, expression, max, min, decimal, setValue])
 
-  // 4. 值更新处理
+  // 4. Value update processing
   const updateValue = useCallback(
     (updateFn?: (value: number) => number) => {
       if (disabled || readOnly) return
 
       setValue((prev) => {
         if (!prev) {
-          // 处理 prev 为空的情况，创建一个基于 0 的初始值
+          // Handle prev is empty case, create an initial value based on 0
           const initialValue = dealWithNumericInputValue({
             input: 0,
             pattern: expressionRef.current,
@@ -140,26 +140,26 @@ export function useNumericInput<T extends NumericInputValue>(props: UseNumericIn
           decimal,
         })
 
-        // 深度比较对象值是否发生变化
+        // Deep compare object values to see if they have changed
         const hasChanged = (() => {
-          // 如果是基本类型值，使用字符串比较
+          // If it's a basic type value, use string comparison
           if (typeof value === "string" || typeof value === "number" || Array.isArray(value)) {
             return JSON.stringify(valuePre.object) !== JSON.stringify(prev.object)
           }
 
-          // 对于对象类型，比较每个键值对
+          // For object type, compare each key-value pair
           if (typeof value === "object" && value !== null) {
             const prevKeys = Object.keys(prev.object)
             const newKeys = Object.keys(valuePre.object)
 
-            // 键的数量不同，肯定有变化
+            // The number of keys is different, definitely has changed
             if (prevKeys.length !== newKeys.length) return true
 
-            // 比较每个键值对
+            // Compare each key-value pair
             return prevKeys.some((key) => prev.object[key] !== valuePre.object[key])
           }
 
-          return true // 默认认为有变化
+          return true // Default to认为有变化
         })()
 
         if (hasChanged) {
@@ -180,7 +180,7 @@ export function useNumericInput<T extends NumericInputValue>(props: UseNumericIn
     [disabled, readOnly, setValue, max, min, decimal, onChange, value],
   )
 
-  // 5. 输入交互处理
+  // 5. Input interaction processing
   const { inputHandlers } = useInputInteractions({
     inputRef: innerRef,
     displayValue,
@@ -202,17 +202,17 @@ export function useNumericInput<T extends NumericInputValue>(props: UseNumericIn
     value,
   })
 
-  // 6. 拖拽交互处理
+  // 6. Drag interaction processing
   const { isPressed: handlerPressed, pressMoveProps } = usePressMove({
     disabled,
     onPressStart: (e) => {
-      // 保存当前 focus 状态
+      // Save current focus state
       const wasFocused = isFocused
       if (onPressStart && "nativeEvent" in e) {
         onPressStart(e.nativeEvent as PointerEvent)
       }
 
-      // 如果之前是 focused，在 requestPointerLock 后重新聚焦并选中
+      // If previously focused, refocus and select after requestPointerLock
       if (wasFocused && innerRef.current) {
         requestAnimationFrame(() => {
           innerRef.current?.focus()
@@ -223,7 +223,7 @@ export function useNumericInput<T extends NumericInputValue>(props: UseNumericIn
       onPressStart?.(e as PointerEvent)
     },
     onPressEnd: (e) => {
-      // 如果之前是 focused，在 exitPointerLock 后重新聚焦并选中
+      // If previously focused, refocus and select after exitPointerLock
       if (isFocused && innerRef.current) {
         requestAnimationFrame(() => {
           innerRef.current?.focus()
@@ -244,7 +244,7 @@ export function useNumericInput<T extends NumericInputValue>(props: UseNumericIn
     },
   })
 
-  // 7. 组合最终结果
+  // 7. Combine final result
   const inputProps = {
     ref: mergeRefs(innerRef, ref),
     disabled,

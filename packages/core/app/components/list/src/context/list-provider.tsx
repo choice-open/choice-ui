@@ -15,7 +15,7 @@ interface ListProviderProps {
   variant?: "default" | "primary"
 }
 
-// 使用reducer管理复杂状态，减少重渲染
+// Use reducer to manage complex state, reduce re-rendering
 type ExpandAction = { id: string; type: "TOGGLE_SUBLIST" }
 
 function expandReducer(state: Set<string>, action: ExpandAction): Set<string> {
@@ -118,7 +118,7 @@ export function ListProvider({
     dispatchStructure({ type: "UNREGISTER_ITEM", id })
   }, [])
 
-  // 为每个Context创建独立的值对象，减少不必要的重渲染
+  // Create independent value objects for each Context to reduce unnecessary re-rendering
   const activeItemValue = useMemo(
     () => ({
       activeItem,
@@ -159,7 +159,7 @@ export function ListProvider({
     [registerItem, unregisterItem, itemsMap, interactive, shouldShowReferenceLine, variant, size],
   )
 
-  // 使用嵌套Provider模式，允许组件选择性地订阅最小所需Context
+  // Use nested Provider pattern, allowing components to selectively subscribe to the minimum required Context
   return (
     <StructureContext.Provider value={structureValue}>
       <ActiveItemContext.Provider value={activeItemValue}>

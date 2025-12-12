@@ -29,7 +29,6 @@ export function Tooltip(props: TooltipProps) {
     offset,
   })
 
-  // 如果有 content prop，使用简化 API
   if (content) {
     return (
       <TooltipContext.Provider value={tooltip}>
@@ -54,6 +53,5 @@ export function Tooltip(props: TooltipProps) {
     )
   }
 
-  // 复合组件 API
   return <TooltipContext.Provider value={tooltip}>{children}</TooltipContext.Provider>
 }

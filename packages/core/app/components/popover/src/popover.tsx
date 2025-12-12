@@ -29,10 +29,6 @@ export interface PopoverProps {
   delay?: { close?: number; open?: number }
   draggable?: boolean
   focusManagerProps?: Partial<FloatingFocusManagerProps>
-  /**
-   * @deprecated use focusManagerProps.initialFocus instead
-   */
-  initialFocus?: number | React.MutableRefObject<HTMLElement | null>
   interactions?: "hover" | "click" | "focus" | "none"
   matchTriggerWidth?: boolean
   maxWidth?: number
@@ -52,7 +48,7 @@ export interface PopoverProps {
   triggerRef?: React.RefObject<HTMLElement>
 }
 
-// Popover 组件实现
+// Popover component implementation
 export const DragPopover = memo(function DragPopover({
   className,
   children,
@@ -68,7 +64,6 @@ export const DragPopover = memo(function DragPopover({
   closeOnEscape = true,
   contentRef,
   delay,
-  initialFocus,
   focusManagerProps = {
     returnFocus: true,
     guards: false,
@@ -86,7 +81,7 @@ export const DragPopover = memo(function DragPopover({
   const descriptionId = useId()
   const nodeId = useFloatingNodeId()
 
-  // 🔧 移除不必要的 useMemo，简单对象不需要缓存
+  // Remove unnecessary useMemo, simple objects do not need to be cached
   const floatingRefMutable = useRef<HTMLElement | null>(null)
 
   const {
@@ -128,12 +123,12 @@ export const DragPopover = memo(function DragPopover({
     }
   }, [externalTriggerRef, floating])
 
-  // 🔧 缓存样式计算函数
+  // Cache style calculation function
   const combinedStyles = useMemo(() => {
     return floating.getStyles(dragState.position, dragState.isDragging)
   }, [floating, dragState.position, dragState.isDragging])
 
-  // 🔧 缓存内联函数，避免每次渲染重新创建
+  // Cache inline functions, to avoid creating them again on each render
   const handleFloatingRef = useCallback(
     (node: HTMLElement | null) => {
       floating.refs.setFloating(node)
@@ -166,7 +161,7 @@ export const DragPopover = memo(function DragPopover({
     )
   }, [children, draggable, handleDragStart])
 
-  // 🔧 contentContent 的依赖项优化
+  // Optimize contentContent dependencies
   const contentContent = useMemo(() => {
     const contentChild = findChildByType(children, ModalContent)
 
@@ -188,7 +183,7 @@ export const DragPopover = memo(function DragPopover({
     return footerChild
   }, [children])
 
-  // 🔧 优化 Context value，减少不必要的依赖项
+  // Optimize Context value, reduce unnecessary dependencies
   const contextValue = useMemo(
     () => ({
       open: floating.innerOpen,
@@ -215,7 +210,7 @@ export const DragPopover = memo(function DragPopover({
       externalTriggerRef,
       draggable,
       handleDragStart,
-      // titleId, descriptionId, dragContentRef 是稳定的，移除
+      // titleId, descriptionId, dragContentRef are stable, remove
     ],
   )
 
@@ -224,7 +219,6 @@ export const DragPopover = memo(function DragPopover({
       <PopoverContext.Provider value={contextValue}>
         {triggerContent}
         <FloatingFocusManager
-          initialFocus={initialFocus}
           {...focusManagerProps}
           context={floating.context}
         >

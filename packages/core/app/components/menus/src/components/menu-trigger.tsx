@@ -33,7 +33,7 @@ export const MenuTrigger = memo(
       ...rest
     } = props
 
-    const styles = MenuTriggerTv({
+    const tv = MenuTriggerTv({
       hasPrefix: !!prefixElement,
       hasSuffix: !!suffixElement,
       isEmpty: empty,
@@ -71,7 +71,7 @@ export const MenuTrigger = memo(
     ) : (
       <Button
         ref={ref}
-        className={tcx(styles.root(), className)}
+        className={tcx(tv.root(), className)}
         variant="secondary"
         active={active}
         selected={selected}
@@ -79,13 +79,11 @@ export const MenuTrigger = memo(
         size={size}
         {...rest}
       >
-        {prefixElement && (
-          <div className={tcx(styles.icon(), prefixClassName)}>{prefixElement}</div>
-        )}
+        {prefixElement && <div className={tcx(tv.icon(), prefixClassName)}>{prefixElement}</div>}
 
         {typeof children === "function" ? children(active ?? false) : children}
 
-        {suffixElement && <div className={styles.icon()}>{suffixElement}</div>}
+        {suffixElement && <div className={tv.icon()}>{suffixElement}</div>}
       </Button>
     )
   }),

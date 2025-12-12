@@ -33,9 +33,9 @@ interface MenusComponentProps extends React.ForwardRefExoticComponent<
 export const MenusBase = forwardRef<HTMLDivElement, MenusProps>((props, ref) => {
   const { children, className, matchTriggerWidth, variant, ...rest } = props
 
-  const styles = MenusTv({ matchTriggerWidth, variant })
+  const tv = MenusTv({ matchTriggerWidth, variant })
 
-  // 递归处理子组件，展开所有 Fragment
+  // Recursively process child components, expand all Fragments
   const processChildren = (children: React.ReactNode): React.ReactNode => {
     return Children.map(children, (child) => {
       if (isValidElement(child)) {
@@ -61,7 +61,7 @@ export const MenusBase = forwardRef<HTMLDivElement, MenusProps>((props, ref) => 
       ref={ref}
       role="menu"
       {...rest}
-      className={tcx(styles, className)}
+      className={tcx(tv, className)}
       data-variant={variant}
     >
       {processedChildren}

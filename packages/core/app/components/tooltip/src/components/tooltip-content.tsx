@@ -21,7 +21,7 @@ export const TooltipContent = forwardRef<HTMLDivElement, TooltipContentProps>(
 
     useDelayGroup(state.context, { id: state.context.floatingId })
 
-    // 常量提取，避免重复定义
+    // Constants extraction, to avoid duplicate definitions
     const INSTANT_DURATION = 0
     const ANIMATION_DURATION = 100
 
@@ -36,7 +36,7 @@ export const TooltipContent = forwardRef<HTMLDivElement, TooltipContentProps>(
         opacity: 0,
         transform: "scale(0.96)",
       },
-      // 使用 common 选项设置正确的 transformOrigin
+      // Use common option to set the correct transformOrigin
       common: ({ side }) => ({
         transformOrigin: {
           top: "bottom",
@@ -47,10 +47,10 @@ export const TooltipContent = forwardRef<HTMLDivElement, TooltipContentProps>(
       }),
     })
 
-    // 缓存样式变体计算
+    // Cache style variant calculation
     const tv = useMemo(() => tooltipContentVariants({ variant }), [variant])
 
-    // 如果被禁用或未挂载，不渲染 tooltip
+    // If disabled or not mounted, do not render tooltip
     if (state.disabled || !isMounted) return null
 
     return (

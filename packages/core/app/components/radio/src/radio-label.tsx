@@ -14,14 +14,14 @@ export const RadioLabel = memo(
   forwardRef<HTMLLabelElement, RadioLabelProps>(function RadioLabel(props, ref) {
     const { children, className, ...rest } = props
     const { id, descriptionId, disabled } = useRadioContext()
-    const styles = radioTv({ disabled })
+    const tv = radioTv({ disabled })
 
     return (
       <label
         ref={ref}
         id={descriptionId}
         htmlFor={id}
-        className={tcx(styles.label(), className)}
+        className={tcx(tv.label(), className)}
         {...rest}
       >
         {children}

@@ -35,7 +35,7 @@ const RadioBase = forwardRef<HTMLInputElement, RadioProps>(function Radio(props,
   const id = useId()
   const descriptionId = useId()
 
-  const styles = radioTv({
+  const tv = radioTv({
     type: "radio",
     variant,
     disabled,
@@ -57,7 +57,7 @@ const RadioBase = forwardRef<HTMLInputElement, RadioProps>(function Radio(props,
     onKeyDown?.(e)
   })
 
-  // 自动将字符串类型的 children 包装成 RadioLabel
+  // Automatically wrap string-type children into RadioLabel
   const renderChildren = () => {
     if (typeof children === "string" || typeof children === "number") {
       return <RadioLabel>{children}</RadioLabel>
@@ -67,11 +67,11 @@ const RadioBase = forwardRef<HTMLInputElement, RadioProps>(function Radio(props,
 
   return (
     <RadioContext.Provider value={{ id, descriptionId, disabled }}>
-      <div className={tcx(styles.root(), className)}>
+      <div className={tcx(tv.root(), className)}>
         <div className="pointer-events-none relative">
           <input
             ref={ref}
-            className={styles.input()}
+            className={tv.input()}
             type="radio"
             id={id}
             name={name}
@@ -86,7 +86,7 @@ const RadioBase = forwardRef<HTMLInputElement, RadioProps>(function Radio(props,
             onKeyDown={handleKeyDown}
             {...rest}
           />
-          <div className={styles.box()}>{value && <Dot />}</div>
+          <div className={tv.box()}>{value && <Dot />}</div>
         </div>
 
         {renderChildren()}

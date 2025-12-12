@@ -6,14 +6,14 @@ import { MenuButtonTv } from "../tv"
 export const MenuButton = memo(
   forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
     const { className, ...rest } = props
-    const styles = MenuButtonTv()
+    const tv = MenuButtonTv()
 
     return (
       <Button
         {...rest}
         ref={ref}
         variant="secondary"
-        className={tcx(styles, className)}
+        className={tcx(tv, className)}
       />
     )
   }),

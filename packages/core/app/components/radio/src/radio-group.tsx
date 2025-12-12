@@ -90,7 +90,7 @@ const RadioGroupBase = forwardRef<HTMLDivElement, RadioGroupProps>(function Radi
     [id, value, handleChange, disabled, readOnly, variant],
   )
 
-  // 渲染基于选项的单选按钮
+  // Render radios based on options
   const renderOptionsRadios = useMemo(() => {
     if (!options) return null
 
@@ -122,7 +122,7 @@ const RadioGroupBase = forwardRef<HTMLDivElement, RadioGroupProps>(function Radi
   )
 })
 
-// 使用 memo 包装组件以避免不必要的重渲染
+// Use memo to wrap component to avoid unnecessary re-rendering
 const MemoizedRadioGroup = memo(RadioGroupBase) as unknown as RadioGroupType
 
 interface RadioGroupType {

@@ -59,7 +59,7 @@ export const Range = forwardRef<HTMLDivElement, RangeProps>(function Range(props
     },
     thumbSize = 14,
   } = props
-  // 🔥 使用状态存储动态计算的宽度
+  // Use state to store dynamically calculated width
   const [actualTrackWidth, setActualTrackWidth] = useState<number | undefined>()
 
   const valueToPosition = useCallback((val: number) => (val - min) / (max - min), [min, max])
@@ -102,7 +102,7 @@ export const Range = forwardRef<HTMLDivElement, RangeProps>(function Range(props
     return trackSize?.width
   }, [trackSize?.width, actualTrackWidth])
 
-  // 🔥 使用 useIsomorphicLayoutEffect 在 DOM 更新后获取实际尺寸
+  // Use useIsomorphicLayoutEffect to get the actual size after DOM update
   useIsomorphicLayoutEffect(() => {
     if (trackSize?.width === "auto" && sliderRef.current) {
       const updateWidth = () => {
@@ -114,10 +114,10 @@ export const Range = forwardRef<HTMLDivElement, RangeProps>(function Range(props
         }
       }
 
-      // 初始获取尺寸
+      // Initial get size
       updateWidth()
 
-      // 监听尺寸变化
+      // Listen for size changes
       const resizeObserver = new ResizeObserver(() => {
         updateWidth()
       })
@@ -283,7 +283,7 @@ export const Range = forwardRef<HTMLDivElement, RangeProps>(function Range(props
     }
   }, [disabled])
 
-  const styles = useMemo(
+  const tv = useMemo(
     () =>
       rangeTv({
         currentDefaultValue: defaultStepValue === currentStepValue,
@@ -358,7 +358,7 @@ export const Range = forwardRef<HTMLDivElement, RangeProps>(function Range(props
   useEffect(() => {
     const noop = () => {}
     return () => {
-      // 组件卸载时清理可能残留的事件监听器
+      // Clean up possible leftover event listeners when component unmounts
       if (typeof window !== "undefined") {
         window.removeEventListener("pointermove", noop)
         window.removeEventListener("pointerup", noop)
@@ -371,7 +371,7 @@ export const Range = forwardRef<HTMLDivElement, RangeProps>(function Range(props
     <div
       ref={mergeRefs(sliderRef, ref)}
       onPointerDown={handleSliderPointerDown}
-      className={tcx(styles.container(), className)}
+      className={tcx(tv.container(), className)}
       style={
         {
           "--width": `${trackWidth}px`,
@@ -380,12 +380,12 @@ export const Range = forwardRef<HTMLDivElement, RangeProps>(function Range(props
       }
     >
       <div
-        className={tcx(styles.connect(), connectsClass)}
+        className={tcx(tv.connect(), connectsClass)}
         style={connectStyle}
       />
 
       {step > 1 || defaultValue !== undefined ? (
-        <div className={styles.dotContainer()}>{renderDots()}</div>
+        <div className={tv.dotContainer()}>{renderDots()}</div>
       ) : (
         ""
       )}
@@ -393,7 +393,7 @@ export const Range = forwardRef<HTMLDivElement, RangeProps>(function Range(props
       <div
         ref={thumbRef}
         onPointerDown={handlePointerDown}
-        className={styles.thumb()}
+        className={tv.thumb()}
         style={{
           width: thumbSize,
           height: thumbSize,
@@ -405,7 +405,7 @@ export const Range = forwardRef<HTMLDivElement, RangeProps>(function Range(props
           ref={inputRef}
           type="text"
           onKeyDown={handleKeyDown}
-          className={styles.input()}
+          className={tv.input()}
           tabIndex={disabled || readOnly ? -1 : 0}
           readOnly
         />

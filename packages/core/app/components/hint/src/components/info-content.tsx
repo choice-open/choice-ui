@@ -20,19 +20,19 @@ export const HintContent = forwardRef<HTMLDivElement, HintContentProps>(
       initial: {
         opacity: 0,
       },
-      // 使用 common 选项设置正确的 transformOrigin
+      // Use common option to set correct transformOrigin
       common: ({ side }) => ({
         transformOrigin: side === "left" ? "right center" : "left center",
       }),
     })
 
-    // 缓存样式变体计算
+    // Cache style variant calculation
     const tv = useMemo(
       () => hintVariants({ placement: state.placement as "left-start" | "right-start" }),
       [state.placement],
     )
 
-    // 如果被禁用或未挂载，不渲染
+    // If disabled or not mounted, don't render
     if (state.disabled || !isMounted) return null
 
     return (

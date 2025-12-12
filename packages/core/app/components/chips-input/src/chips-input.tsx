@@ -75,6 +75,7 @@ export const ChipsInput = forwardRef<HTMLDivElement, ChipsInputProps>((props, re
   const [isComposing, setIsComposing] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
+
   const tv = chipsInputTv({ size, disabled, hasValue: chips.length > 0 })
 
   const addChip = useCallback(

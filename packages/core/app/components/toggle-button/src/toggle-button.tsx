@@ -46,7 +46,7 @@ export const ToggleButton = forwardRef<HTMLInputElement, ToggleButtonProps>(
     const id = useId()
     const descriptionId = useId()
 
-    const styles = toggleButtonTv({
+    const tv = toggleButtonTv({
       checked: value,
       disabled,
       variant,
@@ -58,7 +58,7 @@ export const ToggleButton = forwardRef<HTMLInputElement, ToggleButtonProps>(
 
     const button = (
       <div
-        className={tcx(styles.root(), className)}
+        className={tcx(tv.root(), className)}
         role="presentation"
         onContextMenu={onContextMenu}
       >
@@ -67,7 +67,7 @@ export const ToggleButton = forwardRef<HTMLInputElement, ToggleButtonProps>(
         <input
           ref={ref}
           id={id}
-          className={styles.input()}
+          className={tv.input()}
           tabIndex={0}
           type="checkbox"
           checked={value}
@@ -87,7 +87,7 @@ export const ToggleButton = forwardRef<HTMLInputElement, ToggleButtonProps>(
         <label
           htmlFor={id}
           id={descriptionId}
-          className={styles.label()}
+          className={tv.label()}
           onMouseDown={(e) => {
             if (readOnly) return
 

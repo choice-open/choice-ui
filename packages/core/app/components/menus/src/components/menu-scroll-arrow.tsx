@@ -60,15 +60,15 @@ export const MenuScrollArrow = function MenuScrollArrow(props: MenuScrollArrowPr
   const rafRef = useRef<number | null>(null)
   const lastScrollHeightRef = useRef<number>(0)
 
-  // 保持 ref 与最新值同步
+  // Keep ref synchronized with latest value
   useIsomorphicLayoutEffect(() => {
     isPositionedRef.current = isPositioned
     dirRef.current = dir
   }, [isPositioned, dir])
 
-  const styles = MenuScrollArrowTv({ dir, visible: show, variant })
+  const tv = MenuScrollArrowTv({ dir, visible: show, variant })
 
-  // 初始化时检查
+  // Check when initializing
   useIsomorphicLayoutEffect(() => {
     if (isPositioned && scrollRef.current) {
       lastScrollHeightRef.current = scrollRef.current.scrollHeight
@@ -78,16 +78,16 @@ export const MenuScrollArrow = function MenuScrollArrow(props: MenuScrollArrowPr
     }
   }, [isPositioned, innerOffset, scrollTop, scrollRef, dir])
 
-  // 使用 ResizeObserver 监听内容高度变化（如 filter 后 item 减少）
-  // 使用 RAF 防抖优化，避免频繁更新和 flushSync
+  // Use ResizeObserver to listen for content height changes (e.g. after filtering items)
+  // Use RAF debounce to optimize, avoid frequent updates and flushSync
   useIsomorphicLayoutEffect(() => {
     if (!isPositioned || !scrollRef.current) {
       return
     }
 
-    // 创建 ResizeObserver 监听 scrollHeight 和 clientHeight 的变化
+    // Create ResizeObserver to listen for changes in scrollHeight and clientHeight
     resizeObserverRef.current = new ResizeObserver(() => {
-      // 使用 RAF 防抖，避免同一帧内多次触发
+      // Use RAF debounce, avoid triggering multiple times within the same frame
       if (rafRef.current !== null) {
         return
       }
@@ -95,12 +95,12 @@ export const MenuScrollArrow = function MenuScrollArrow(props: MenuScrollArrowPr
         rafRef.current = null
         if (isPositionedRef.current && scrollRef.current) {
           const currentScrollHeight = scrollRef.current.scrollHeight
-          // 只在 scrollHeight 真正变化时才使用 flushSync，避免不必要的同步更新
+          // Only use flushSync when scrollHeight truly changes, avoid unnecessary synchronous updates
           if (currentScrollHeight !== lastScrollHeightRef.current) {
             lastScrollHeightRef.current = currentScrollHeight
             flushSync(() => setShow(shouldShowArrow(scrollRef, dirRef.current)))
           } else {
-            // scrollHeight 没变化，但 scrollTop 可能变化了，异步更新即可
+            // scrollHeight didn't change, but scrollTop may have changed, so update asynchronously
             setShow(shouldShowArrow(scrollRef, dirRef.current))
           }
         }
@@ -178,7 +178,7 @@ export const MenuScrollArrow = function MenuScrollArrow(props: MenuScrollArrowPr
     frameRef.current = -1
   }
 
-  // 组件卸载时清理所有动画帧
+  // Clean up all animation frames when component unmounts
   useIsomorphicLayoutEffect(() => {
     return () => {
       if (frameRef.current !== -1) {
@@ -190,7 +190,7 @@ export const MenuScrollArrow = function MenuScrollArrow(props: MenuScrollArrowPr
 
   return (
     <div
-      className={tcx(styles, className)}
+      className={tcx(tv, className)}
       data-dir={dir}
       ref={ref}
       aria-hidden

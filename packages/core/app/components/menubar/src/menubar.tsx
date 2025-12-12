@@ -200,8 +200,7 @@ const MenubarInner = memo(
       ],
     )
 
-    // Styles
-    const styles = menubarTv({ disabled })
+    const tv = menubarTv({ disabled })
 
     return (
       <MenubarContext.Provider value={contextValue}>
@@ -209,7 +208,7 @@ const MenubarInner = memo(
           ref={ref}
           role="menubar"
           data-disabled={disabled ? "" : undefined}
-          className={tcx(styles.root(), className)}
+          className={tcx(tv.root(), className)}
           onKeyDown={handleKeyDown}
           {...rest}
         >

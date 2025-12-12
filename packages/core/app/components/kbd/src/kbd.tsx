@@ -11,7 +11,7 @@ export interface KbdProps extends DetailedHTMLProps<HTMLAttributes<HTMLElement>,
 export const Kbd = (props: KbdProps) => {
   const { className, keys, children, ...rest } = props
 
-  const style = kbdTv()
+  const tv = kbdTv()
 
   const keysContent = useMemo(() => {
     const keysToRender = typeof keys === "string" ? [keys] : Array.isArray(keys) ? keys : []
@@ -19,18 +19,18 @@ export const Kbd = (props: KbdProps) => {
     return keysToRender.map((key) => (
       <abbr
         key={key}
-        className={style.abbr()}
+        className={tv.abbr()}
         title={kbdKeysLabelMap[key]}
       >
         {kbdKeysMap[key]}
       </abbr>
     ))
-  }, [keys, style])
+  }, [keys, tv])
 
   return (
     <kbd
       {...rest}
-      className={tcx(style.base(), className)}
+      className={tcx(tv.base(), className)}
     >
       {keysContent}
       {children && <span>{children}</span>}

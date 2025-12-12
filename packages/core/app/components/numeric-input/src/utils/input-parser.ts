@@ -2,9 +2,9 @@ import { NumericInputValue } from "../types"
 import { evaluate } from "./expression-evaluator"
 
 /**
- * 解析输入值，支持字符串、数字、数组和对象类型
- * @param input 输入值
- * @returns 解析后的数字数组
+ * Parse input value, support string, number, array and object types
+ * @param input Input value
+ * @returns Parsed number array
  */
 export function parseInputValue(input: NumericInputValue): {
   values: number[]
@@ -17,32 +17,32 @@ export function parseInputValue(input: NumericInputValue): {
 
   try {
     if (typeof input === "string" || typeof input === "number") {
-      // 字符串或数字输入处理
+      // String or number input processing
       values = String(input)
         .split(",")
         .map((char) => evaluate(char))
       isInputNumber = values.length > 0
     } else if (Array.isArray(input)) {
-      // 数组输入处理
+      // Array input processing
       values = input.map((item) => evaluate(String(item)))
       isInputNumber = values.length > 0
     } else if (typeof input === "object" && input !== null) {
-      // 对象输入处理
+      // Object input processing
       isObjectNumber = true
     }
   } catch (_error) {
-    // 解析错误时返回空数组
+    // Return empty array when parsing error occurs
   }
 
   return { values, isInputNumber, isObjectNumber }
 }
 
 /**
- * 从输入字符串中提取变量值
- * @param input 输入字符串
- * @param regex 匹配正则表达式
- * @param keys 变量键数组
- * @returns 提取的变量值
+ * Extract variable values from input string
+ * @param input Input string
+ * @param regex Matching regular expression
+ * @param keys Variable key array
+ * @returns Extracted variable values
  */
 export function extractValuesFromString(
   input: string,

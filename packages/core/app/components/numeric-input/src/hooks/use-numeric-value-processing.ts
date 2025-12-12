@@ -12,9 +12,9 @@ interface UseNumericValueProcessingProps<T extends NumericInputValue> {
 }
 
 /**
- * 处理数值输入和转换的钩子
- * @param props 数值处理配置
- * @returns 处理后的值和表达式引用
+ * Hook to handle numeric input and conversion
+ * @param props Numeric processing configuration
+ * @returns Processed value and expression reference
  */
 export function useNumericValueProcessing<T extends NumericInputValue>({
   value,
@@ -24,14 +24,14 @@ export function useNumericValueProcessing<T extends NumericInputValue>({
   max,
   decimal,
 }: UseNumericValueProcessingProps<T>) {
-  // 保存当前表达式的引用，避免不必要的依赖
+  // Save current expression reference, avoid unnecessary dependencies
   const expressionRef = useRef(expression)
 
   useEffect(() => {
     expressionRef.current = expression
   }, [expression])
 
-  // 处理默认值（只计算一次）
+  // Process default value (only calculate once)
   const defaultValuePre = useMemo(
     () =>
       defaultValue !== undefined && defaultValue !== null && defaultValue !== ""
@@ -47,7 +47,7 @@ export function useNumericValueProcessing<T extends NumericInputValue>({
     [],
   )
 
-  // 处理当前值
+  // Process current value
   const valuePre = useMemo(
     () =>
       value !== undefined && value !== null && value !== ""

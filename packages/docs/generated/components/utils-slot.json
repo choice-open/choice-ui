@@ -20,22 +20,22 @@
   "props": [
     {
       "displayName": "useSlot",
-      "description": "Hook 版本的 Slot 逻辑\n用于需要更细粒度控制的场景",
+      "description": "Hook version of Slot logic\nUsed for scenarios that require more granular control",
       "props": []
     },
     {
       "displayName": "useAsChild",
-      "description": "性能优化的 asChild 模式 Hook\n用于替代 `const Component = asChild ? Slot : \"button\"` 模式",
+      "description": "Performance optimized asChild mode Hook\nUsed to replace `const Component = asChild ? Slot : \"button\"` mode",
       "props": []
     },
     {
       "displayName": "SlotProps",
-      "description": "优化的 Slot 组件实现\n\n相比",
+      "description": "Optimized Slot component implementation\n\nCompared to performance optimization of",
       "props": []
     },
     {
       "displayName": "SlotClone",
-      "description": "SlotClone 组件 - 用于深度克隆\n当需要处理嵌套结构时使用",
+      "description": "SlotClone component - used for deep cloning\nWhen nested structures need to be processed",
       "props": []
     }
   ],

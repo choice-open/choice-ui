@@ -16,7 +16,7 @@ const HintTriggerInner = forwardRef<HTMLButtonElement, HintTriggerProps>(functio
   const state = useHintState()
   const ref = useMergeRefs([state.refs.setReference, propRef])
 
-  // 如果使用自定义子元素
+  // If using custom child element
   if (asChild && children) {
     return cloneElement(children as ReactElement, {
       ref,

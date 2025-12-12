@@ -6,7 +6,7 @@ export const ScrollAreaViewport = forwardRef<HTMLDivElement, React.ComponentProp
   ({ className, children, ...props }, ref) => {
     const { setViewport, orientation, viewportId } = useScrollAreaContext()
 
-    // 缓存滚动类名
+    // Cache scroll class name
     const scrollClass = useMemo(() => {
       switch (orientation) {
         case "horizontal":
@@ -18,7 +18,7 @@ export const ScrollAreaViewport = forwardRef<HTMLDivElement, React.ComponentProp
       }
     }, [orientation])
 
-    // 优化ref设置，避免函数重新创建
+    // Optimize ref setting, avoid function recreation
     const setRef = useCallback(
       (node: HTMLDivElement | null) => {
         setViewport(node)

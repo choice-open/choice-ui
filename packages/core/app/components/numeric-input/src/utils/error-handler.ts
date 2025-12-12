@@ -1,5 +1,5 @@
 /**
- * 自定义错误类型
+ * Custom error type
  */
 export class NumericInputError extends Error {
   code: string
@@ -12,7 +12,7 @@ export class NumericInputError extends Error {
 }
 
 /**
- * 表达式解析错误
+ * Expression parsing error
  */
 export class ExpressionParseError extends NumericInputError {
   constructor(expression: string, details?: string) {
@@ -25,7 +25,7 @@ export class ExpressionParseError extends NumericInputError {
 }
 
 /**
- * 模式解析错误
+ * Pattern parsing error
  */
 export class PatternParseError extends NumericInputError {
   constructor(pattern: string, details?: string) {
@@ -38,7 +38,7 @@ export class PatternParseError extends NumericInputError {
 }
 
 /**
- * 输入值类型错误
+ * Input value type error
  */
 export class InvalidInputTypeError extends NumericInputError {
   constructor(input: any, expectedType?: string) {
@@ -51,10 +51,10 @@ export class InvalidInputTypeError extends NumericInputError {
 }
 
 /**
- * 安全的错误处理封装
- * @param fn 要执行的函数
- * @param fallback 出错时的默认返回值
- * @returns 函数执行结果或默认值
+ * Safe error handling wrapper
+ * @param fn Function to execute
+ * @param fallback Default return value when error occurs
+ * @returns Function execution result or default value
  */
 export function safeExecute<T, R>(fn: (arg: T) => R, arg: T, fallback: R): R {
   try {

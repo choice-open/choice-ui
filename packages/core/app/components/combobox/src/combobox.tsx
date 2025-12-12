@@ -85,10 +85,10 @@ export interface ComboboxProps {
   readOnly?: boolean
   root?: HTMLElement | null
   /**
+   * Trigger type: "input" for input mode, "coordinate" for coordinate mode
    * @default "input"
    */
   trigger?: "input" | "coordinate"
-  // 新增：明确指定触发器类型
   value?: string
   /**
    * @default "default"
@@ -123,7 +123,7 @@ const ComboboxComponent = memo(function ComboboxComponent(props: ComboboxProps) 
     onOpenChange,
     position,
     readOnly = false,
-    trigger = "input", // 默认为输入模式
+    trigger = "input",
     value: controlledValue = "",
     focusManagerProps = {
       returnFocus: true,
@@ -133,21 +133,21 @@ const ComboboxComponent = memo(function ComboboxComponent(props: ComboboxProps) 
     variant = "default",
   } = props
 
-  // References - 使用统一的 refs 管理
+  // References
   const { scrollRef, elementsRef, labelsRef, selectTimeoutRef } = useMenuBaseRefs()
   const inputRef = useRef<HTMLInputElement>(null)
 
-  // 状态管理
+  // State management
   const [isOpen, setIsOpen] = useState(false)
   const [inputValue, setInputValue] = useState(controlledValue)
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
   const [scrollTop, setScrollTop] = useState(0)
   const [touch, setTouch] = useState(false)
 
-  // 坐标模式检测 - 基于明确的 trigger prop
+  // Coordinate mode detection
   const isCoordinateMode = trigger === "coordinate"
 
-  // 受控/非受控状态处理 - 坐标模式下强制使用受控模式
+  // Controlled/uncontrolled state handling - coordinate mode forces controlled mode
   const isControlledOpen = isCoordinateMode
     ? (controlledOpen ?? false)
     : controlledOpen === undefined
@@ -159,16 +159,16 @@ const ComboboxComponent = memo(function ComboboxComponent(props: ComboboxProps) 
   const nodeId = useFloatingNodeId()
   const parentId = useFloatingParentNodeId()
 
-  // 生成唯一 ID
+  // Generate unique ID
   const baseId = useId()
   const listboxId = `combobox-listbox-${baseId}`
 
-  // 同步外部 value
+  // Sync external value
   useEffect(() => {
     setInputValue(controlledValue)
   }, [controlledValue])
 
-  // 内部状态更新逻辑
+  // Internal state update logic
   const updateInputState = useEventCallback((value: string, triggerCallback = true) => {
     if (readOnly) return
 
@@ -193,43 +193,40 @@ const ComboboxComponent = memo(function ComboboxComponent(props: ComboboxProps) 
     }
   })
 
-  // 值变化处理 - 对外回调
+  // Value change handler - external callback
   const handleValueChange = useEventCallback((value: string) => {
     updateInputState(value, true)
   })
 
-  // 处理trigger点击
+  // Handle trigger click
   const handleTriggerClick = useEventCallback(() => {
     if (disabled) return
 
-    // 当点击trigger时，强制打开菜单
+    // Force open menu when clicking trigger
     if (controlledOpen === undefined) {
       setIsOpen(!isOpen)
     }
     onOpenChange?.(true, "click")
   })
 
-  // DOM 事件处理器
+  // DOM event handlers
   const handleInputChange = useEventCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     if (readOnly) return
     const value = event.target.value
     handleValueChange(value)
   })
 
-  // Focus 处理 - 有值时显示菜单
+  // Focus handler - show menu when there's a value
   const handleInputFocus = useEventCallback((event: React.FocusEvent<HTMLInputElement>) => {
     const activeIndex = autoSelection ? 0 : null
-    // 如果有值，focus时也应该显示菜单
+    // Show menu on focus if there's a value
     if (inputValue.trim()) {
-      // if (controlledOpen === undefined) {
-      //   setIsOpen(true)
-      // }
       onOpenChange?.(true, "focus")
       setActiveIndex(activeIndex)
     }
   })
 
-  // 虚拟定位函数 - 用于坐标模式
+  // Virtual positioning function - for coordinate mode
   const setVirtualPosition = useEventCallback((pos: { x: number; y: number }) => {
     refs.setPositionReference({
       getBoundingClientRect() {
@@ -248,10 +245,10 @@ const ComboboxComponent = memo(function ComboboxComponent(props: ComboboxProps) 
     })
   })
 
-  // 使用 ref 避免重复设置虚拟位置
+  // Use ref to avoid redundant virtual position updates
   const lastPositionRef = useRef<{ x: number; y: number } | null>(null)
 
-  // Floating UI 配置 - 使用 useMemo 缓存 middleware 数组，避免每次渲染都创建新数组
+  // Floating UI configuration - memoize middleware array to avoid recreating on each render
   const middleware = useMemo(
     () => [
       offset({ mainAxis: DEFAULT_OFFSET, alignmentAxis: 0 }),
@@ -261,14 +258,14 @@ const ComboboxComponent = memo(function ComboboxComponent(props: ComboboxProps) 
         padding: 4,
         apply(args) {
           const { elements, availableHeight, rects } = args
-          // 优先使用 floating 元素的 scrollHeight，因为 scrollRef 在内容重新渲染时可能还没更新
-          // 这样可以避免从无匹配状态恢复到有匹配状态时高度计算错误的问题
+          // Prefer floating element's scrollHeight as scrollRef may not be updated yet on re-render
+          // This avoids height calculation errors when recovering from no-match to match state
           const floatingScrollHeight = elements.floating.scrollHeight
           const scrollRefHeight = scrollRef.current?.scrollHeight || 0
           const contentHeight = Math.max(floatingScrollHeight, scrollRefHeight)
 
-          // 根据内容实际高度和可用空间计算合适的高度
-          // 当 contentHeight 为 0 时（内容还没渲染），使用 availableHeight 避免设置 maxHeight: 0
+          // Calculate appropriate height based on actual content height and available space
+          // When contentHeight is 0 (content not yet rendered), use availableHeight to avoid maxHeight: 0
           const maxHeight =
             contentHeight > 0 ? Math.min(contentHeight, availableHeight) : availableHeight
 
@@ -278,13 +275,13 @@ const ComboboxComponent = memo(function ComboboxComponent(props: ComboboxProps) 
             flexDirection: "column",
           })
 
-          // 确保滚动容器能够正确继承高度并滚动
+          // Ensure scroll container properly inherits height and can scroll
           if (scrollRef.current) {
             scrollRef.current.style.height = "100%"
             scrollRef.current.style.maxHeight = "100%"
           }
 
-          // 只在非坐标模式且需要匹配trigger宽度时设置宽度
+          // Only set width in non-coordinate mode when matching trigger width
           if (!isCoordinateMode && matchTriggerWidth && rects.reference.width > 0) {
             elements.floating.style.width = `${rects.reference.width}px`
           }
@@ -302,7 +299,7 @@ const ComboboxComponent = memo(function ComboboxComponent(props: ComboboxProps) 
         setIsOpen(newOpen)
       }
 
-      // 根据事件类型确定触发方式
+      // Determine trigger type based on event type
       let trigger: "click" | "focus" | "input" = "click"
       if (reason === "outside-press" || reason === "escape-key") {
         trigger = "click"
@@ -318,7 +315,7 @@ const ComboboxComponent = memo(function ComboboxComponent(props: ComboboxProps) 
     whileElementsMounted: autoUpdate,
   })
 
-  // 交互处理器
+  // Interaction handlers
   const role = useRole(context, { role: "listbox" })
   const dismiss = useDismiss(context)
   const listNavigation = useListNavigation(context, {
@@ -327,8 +324,7 @@ const ComboboxComponent = memo(function ComboboxComponent(props: ComboboxProps) 
     onNavigate: setActiveIndex,
     virtual: true,
     loop: true,
-    allowEscape: !isCoordinateMode, // 官方案例中有这个设置
-    // selectedIndex: isCoordinateMode ? null : activeIndex, // 确保选中状态同步
+    allowEscape: !isCoordinateMode,
   })
 
   const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions([
@@ -337,10 +333,10 @@ const ComboboxComponent = memo(function ComboboxComponent(props: ComboboxProps) 
     listNavigation,
   ])
 
-  // 同步设置虚拟位置 - 坐标模式下使用
+  // Sync virtual position - used in coordinate mode
   useIsomorphicLayoutEffect(() => {
     if (position && isCoordinateMode) {
-      // 只要有position就设置虚拟定位，不管是否open
+      // Set virtual position whenever position is available, regardless of open state
       if (
         !lastPositionRef.current ||
         lastPositionRef.current.x !== position.x ||
@@ -352,21 +348,21 @@ const ComboboxComponent = memo(function ComboboxComponent(props: ComboboxProps) 
     }
   }, [position, isCoordinateMode, setVirtualPosition])
 
-  // 坐标模式下自动选择第一项
+  // Auto-select first item in coordinate mode
   useEffect(() => {
     if (isCoordinateMode && isControlledOpen && autoSelection) {
-      // 稍微延迟确保元素已经渲染
+      // Slight delay to ensure elements are rendered
       const timer = setTimeout(() => {
         if (elementsRef.current.length > 0 && activeIndex === null) {
           setActiveIndex(0)
         }
-      }, 16) // 使用 16ms 确保在下一帧渲染后执行
+      }, 16) // Use 16ms to ensure execution after next frame render
 
       return () => clearTimeout(timer)
     }
   }, [isCoordinateMode, isControlledOpen, autoSelection, activeIndex, elementsRef])
 
-  // 坐标模式下，当过滤结果变化时重新自动选择第一项
+  // Re-select first item when filter results change in coordinate mode
   useEffect(() => {
     if (isCoordinateMode && isControlledOpen && autoSelection && elementsRef.current.length > 0) {
       if (activeIndex === null || activeIndex >= elementsRef.current.length) {
@@ -375,7 +371,7 @@ const ComboboxComponent = memo(function ComboboxComponent(props: ComboboxProps) 
     }
   }, [isCoordinateMode, isControlledOpen, autoSelection, activeIndex, elementsRef])
 
-  // 坐标模式下，菜单打开时将焦点转移到第一个 item
+  // Transfer focus to first item when menu opens in coordinate mode
   useEffect(() => {
     if (isCoordinateMode && isControlledOpen && elementsRef.current.length > 0) {
       const timer = setTimeout(() => {
@@ -389,26 +385,26 @@ const ComboboxComponent = memo(function ComboboxComponent(props: ComboboxProps) 
     }
   }, [isCoordinateMode, isControlledOpen, elementsRef])
 
-  // 确保滚动容器正确设置高度
+  // Ensure scroll container has correct height
   useMenuScrollHeight({
     isControlledOpen,
     isPositioned,
     scrollRef,
   })
 
-  // 使用共享的滚动逻辑
+  // Use shared scroll logic
   const { handleArrowScroll, handleArrowHide, scrollProps } = useMenuScroll({
     scrollRef,
     selectTimeoutRef,
     scrollTop,
     setScrollTop,
     touch,
-    isSelect: false, // Combobox 不是 Select
-    fallback: false, // Combobox 没有 fallback 机制
-    setInnerOffset: undefined, // Combobox 不使用 innerOffset
+    isSelect: false, // Combobox is not a Select
+    fallback: false, // Combobox does not have fallback mechanism
+    setInnerOffset: undefined, // Combobox does not use innerOffset
   })
 
-  // 触摸处理
+  // Touch handling
   const handleTouchStart = useEventCallback(() => {
     setTouch(true)
   })
@@ -419,7 +415,7 @@ const ComboboxComponent = memo(function ComboboxComponent(props: ComboboxProps) 
     }
   })
 
-  // Tree 事件处理
+  // Tree event handling
   useEffect(() => {
     if (!tree) return
 
@@ -437,7 +433,7 @@ const ComboboxComponent = memo(function ComboboxComponent(props: ComboboxProps) 
     }
   }, [tree, controlledOpen, onOpenChange])
 
-  // 发送菜单打开事件
+  // Emit menu open event
   useEffect(() => {
     if (isControlledOpen && tree) {
       tree.events.emit("menuopen", { parentId, nodeId })
@@ -457,7 +453,7 @@ const ComboboxComponent = memo(function ComboboxComponent(props: ComboboxProps) 
     },
   )
 
-  // 创建关闭方法
+  // Create close handler
   const handleClose = useEventCallback(() => {
     if (controlledOpen === undefined) {
       setIsOpen(false)
@@ -465,7 +461,7 @@ const ComboboxComponent = memo(function ComboboxComponent(props: ComboboxProps) 
     onOpenChange?.(false)
   })
 
-  // 处理子元素
+  // Process children
   const { triggerElement, contentElement } = useMemo(() => {
     const childrenArray = Children.toArray(children)
 
@@ -483,7 +479,7 @@ const ComboboxComponent = memo(function ComboboxComponent(props: ComboboxProps) 
     }
   }, [children])
 
-  // 创建 MenuContext 值
+  // Create MenuContext value
   const contextValue = useMemo(
     () => ({
       activeIndex,
@@ -558,7 +554,7 @@ const ComboboxComponent = memo(function ComboboxComponent(props: ComboboxProps) 
                     onContextMenu(e: React.MouseEvent) {
                       e.preventDefault()
                     },
-                    // 坐标模式下添加键盘事件处理
+                    // Add keyboard event handling in coordinate mode
                     ...(isCoordinateMode && {
                       tabIndex: 0,
                       onKeyDown: handleKeyDown,
@@ -575,14 +571,14 @@ const ComboboxComponent = memo(function ComboboxComponent(props: ComboboxProps) 
                       })}
                   </MenuContext.Provider>
 
-                  {/* 滚动箭头 */}
+                  {/* Scroll arrows */}
                   {["up", "down"].map((dir) => (
                     <MenuScrollArrow
                       key={dir}
                       dir={dir as "up" | "down"}
                       scrollTop={scrollTop}
                       scrollRef={scrollRef}
-                      innerOffset={0} // Combobox 不使用 innerOffset
+                      innerOffset={0} // Combobox does not use innerOffset
                       isPositioned={isPositioned}
                       onScroll={handleArrowScroll}
                       onHide={handleArrowHide}
@@ -599,7 +595,7 @@ const ComboboxComponent = memo(function ComboboxComponent(props: ComboboxProps) 
   )
 })
 
-// 基础 Combobox 组件 - 参考 Dropdown 结构
+// Base Combobox component
 const BaseCombobox = memo(function Combobox(props: ComboboxProps) {
   const { children, ...rest } = props
   const parentId = useFloatingParentNodeId()
@@ -615,7 +611,7 @@ const BaseCombobox = memo(function Combobox(props: ComboboxProps) {
   return <ComboboxComponent {...props}>{children}</ComboboxComponent>
 })
 
-// 导出带有静态属性的组件
+// Export component with static properties
 export const Combobox = Object.assign(BaseCombobox, {
   displayName: "Combobox",
   Trigger: ComboboxTrigger,

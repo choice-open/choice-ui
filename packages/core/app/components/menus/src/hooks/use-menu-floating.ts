@@ -20,61 +20,61 @@ import {
 import { useMemo } from "react"
 
 /**
- * 菜单 FloatingUI 配置 Hook
+ * Menu FloatingUI configuration Hook
  *
- * 为 Select 和 Dropdown 提供不同的 floating 配置：
- * - Select: 使用 inner 中间件 + 虚拟滚动
- * - Dropdown: 使用标准中间件 + 嵌套支持
+ * Provide different floating configurations for Select and Dropdown:
+ * - Select: use inner middleware + virtual scrolling
+ * - Dropdown: use standard middleware + nested support
  */
 
 export interface MenuFloatingConfig {
   activeIndex: number | null
-  // Select 专用配置
-  /** 当前选中索引（Select 专用） */
+  // Select specific configuration
+  /** Current selected index (Select specific) */
   currentSelectedIndex?: number
-  // 引用配置
+  // Reference configuration
   elementsRef: React.RefObject<Array<HTMLElement | null>>
-  /** 是否为 fallback 模式（Select 专用） */
+  /** Whether to use fallback mode (Select specific) */
   fallback?: boolean
-  /** 状态变化回调 */
+  /** State change callback */
   handleOpenChange: (open: boolean) => void
-  /** 内部偏移（Select 专用） */
+  /** Internal offset (Select specific) */
   innerOffset?: number
-  /** 当前打开状态 */
+  /** Current open state */
   isControlledOpen: boolean
-  /** 是否为嵌套模式（仅 Dropdown 使用） */
+  /** Whether to use nested mode (only used for Dropdown) */
   isNested?: boolean
   labelsRef: React.RefObject<Array<string | null>>
 
-  /** 是否匹配触发器宽度 */
+  /** Whether to match trigger width */
   matchTriggerWidth?: boolean
-  /** 节点 ID（仅 Dropdown 使用） */
+  /** Node ID (only used for Dropdown) */
   nodeId?: string
-  /** 偏移距离 */
+  /** Offset distance */
   offsetDistance?: number
-  /** overflow 引用（Select 专用） */
+  /** overflow reference (Select specific) */
   overflowRef?: React.RefObject<SideObject | null>
-  /** 位置配置 */
+  /** Position configuration */
   placement?: Placement
   scrollRef: React.RefObject<HTMLDivElement>
 
   setActiveIndex: (index: number | null) => void
-  /** 设置 fallback（Select 专用） */
+  /** Set fallback (Select specific) */
   setFallback?: (fallback: boolean) => void
-  /** 设置内部偏移（Select 专用） */
+  /** Set internal offset (Select specific) */
   setInnerOffset?: (offset: number) => void
-  /** 触摸状态 */
+  /** Touch state */
   touch?: boolean
-  /** 组件类型 */
+  /** Component type */
   type: "select" | "dropdown"
 }
 
 export interface MenuFloatingResult {
-  /** floating 上下文和样式 */
+  /** floating context and styles */
   floating: ReturnType<typeof useFloating>
-  /** hover 处理器（仅 Dropdown 使用） */
+  /** hover handler (only used for Dropdown) */
   hover?: ReturnType<typeof useHover>
-  /** 交互处理器 */
+  /** Interaction handler */
   interactions: ReturnType<typeof useInteractions>
 }
 
@@ -102,10 +102,10 @@ export function useMenuFloating(config: MenuFloatingConfig): MenuFloatingResult 
     setActiveIndex,
   } = config
 
-  // 根据组件类型配置中间件
+  // Configure middleware based on component type
   const middleware = useMemo(() => {
     if (type === "select") {
-      // Select 组件：使用 inner 中间件
+      // Select component: use inner middleware
       return fallback
         ? [
             offset(8),
@@ -145,7 +145,7 @@ export function useMenuFloating(config: MenuFloatingConfig): MenuFloatingResult 
             }),
           ]
     } else {
-      // Dropdown 组件：使用标准中间件
+      // Dropdown component: use standard middleware
       return [
         offset({ mainAxis: isNested ? 10 : offsetDistance, alignmentAxis: isNested ? -4 : 0 }),
         flip(),
@@ -180,7 +180,7 @@ export function useMenuFloating(config: MenuFloatingConfig): MenuFloatingResult 
     offsetDistance,
   ])
 
-  // 配置 floating
+  // Configure floating
   const floating = useFloating({
     nodeId,
     placement: isNested ? "right-start" : placement,
@@ -191,14 +191,14 @@ export function useMenuFloating(config: MenuFloatingConfig): MenuFloatingResult 
     transform: type === "select" ? false : undefined,
   })
 
-  // 配置 hover（总是调用，但根据类型启用/禁用）
+  // Configure hover (always called, but enabled/disabled based on type)
   const hover = useHover(floating.context, {
     enabled: type === "dropdown" && isNested,
     delay: { open: 75 },
     handleClose: safePolygon({ blockPointerEvents: true, requireIntent: false, buffer: 10 }),
   })
 
-  // 配置 click
+  // Configure click
   const click = useClick(floating.context, {
     event: "mousedown",
     toggle: type === "dropdown" ? !isNested : true,
@@ -206,18 +206,18 @@ export function useMenuFloating(config: MenuFloatingConfig): MenuFloatingResult 
     stickIfOpen: false,
   })
 
-  // 配置 dismiss
+  // Configure dismiss
   const dismiss = useDismiss(floating.context, {
     bubbles: true,
     escapeKey: true,
   })
 
-  // 配置 role
+  // Configure role
   const role = useRole(floating.context, {
     role: type === "select" ? "listbox" : "menu",
   })
 
-  // 配置 listNavigation
+  // Configure listNavigation
   const listNavigation = useListNavigation(floating.context, {
     listRef: elementsRef as React.MutableRefObject<Array<HTMLElement | null>>,
     activeIndex,
@@ -228,7 +228,7 @@ export function useMenuFloating(config: MenuFloatingConfig): MenuFloatingResult 
     loop: type === "dropdown",
   })
 
-  // 配置 typeahead
+  // Configure typeahead
   const typeahead = useTypeahead(floating.context, {
     listRef: labelsRef as React.MutableRefObject<Array<string | null>>,
     onMatch:
@@ -244,11 +244,11 @@ export function useMenuFloating(config: MenuFloatingConfig): MenuFloatingResult 
     activeIndex,
   })
 
-  // 组合交互处理器
+  // Combine interaction handlers
   const interactionHandlers = useMemo(() => {
     const handlers = [click, dismiss, role, listNavigation, typeahead]
 
-    // 只在相关类型时包含特定处理器
+    // Only include specific handlers for related types
     if (type === "dropdown") {
       handlers.unshift(hover)
     }

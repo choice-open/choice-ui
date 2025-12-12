@@ -14,11 +14,11 @@ export const MenuLabel = memo(function MenuLabel({
   selection,
   ...props
 }: MenuLabelProps & Omit<React.HTMLProps<HTMLDivElement>, "label">) {
-  const styles = MenuLabelTv({ selection })
+  const tv = MenuLabelTv({ selection })
 
   return (
     <div
-      className={tcx(styles, className)}
+      className={tcx(tv, className)}
       {...props}
     >
       {children}

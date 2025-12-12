@@ -101,16 +101,16 @@ interface DropdownComponentType extends React.ForwardRefExoticComponent<
 }
 
 /**
- * Dropdown - 支持嵌套的下拉菜单组件
+ * Dropdown - Nested dropdown menu component
  *
- * 核心特性：
- * - 支持无限层级嵌套子菜单
- * - hover 和 click 交互支持
- * - 使用新的 MenuContext 统一组件
- * - 优化的性能和代码质量
- * - 完整的键盘导航支持
- * - 触摸设备兼容性
- * - 支持坐标定位模式（可替代 CoordinateMenu）
+ * Core features:
+ * - Support for infinite nested submenus
+ * - Hover and click interaction support
+ * - Unified MenuContext components
+ * - Optimized performance and code quality
+ * - Complete keyboard navigation support
+ * - Touch device compatibility
+ * - Coordinate positioning mode support
  */
 const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) {
   const {
@@ -131,19 +131,19 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
     focusManagerProps = {
       returnFocus: false,
       modal: position ? false : true,
-      ...(position && { disabled: true }), // 坐标模式下禁用焦点管理
+      ...(position && { disabled: true }), // Disable focus management in coordinate mode
     },
     root,
     variant = "default",
   } = props
 
-  // 是否使用外部触发器（triggerRef 或 triggerSelector）
+  // Whether using external trigger (triggerRef or triggerSelector)
   const hasExternalTrigger = Boolean(triggerRef || triggerSelector)
 
-  // References - 使用统一的 refs 管理
+  // References
   const { scrollRef, elementsRef, labelsRef, selectTimeoutRef } = useMenuBaseRefs()
 
-  // 状态管理
+  // State management
   const [isOpen, setIsOpen] = useState(false)
   const [hasFocusInside, setHasFocusInside] = useState(false)
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
@@ -151,24 +151,24 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
   const [touch, setTouch] = useState(false)
   const [isMouseOverMenu, setIsMouseOverMenu] = useState(false)
 
-  // 坐标模式检测
+  // Coordinate mode detection
   const isCoordinateMode = position !== null && position !== undefined
 
-  // 受控/非受控状态处理 - 坐标模式下强制使用受控模式
+  // Controlled/uncontrolled state handling - coordinate mode forces controlled mode
   const isControlledOpen = isCoordinateMode
     ? controlledOpen || false
     : controlledOpen === undefined
       ? isOpen
       : controlledOpen
 
-  // 生成唯一 ID
+  // Generate unique ID
   const baseId = useId()
   const menuId = `menu-${baseId}`
 
-  // 上下文和 hooks
+  // Context and hooks
   const parent = useContext(MenuContext)
 
-  // 处理开关状态变化（需要在 useMenuTree 之前定义）
+  // Handle open state change (must be defined before useMenuTree)
   const handleOpenChange = useEventCallback((newOpen: boolean) => {
     if (!isCoordinateMode && controlledOpen === undefined) {
       setIsOpen(newOpen)
@@ -176,14 +176,14 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
     onOpenChange?.(newOpen)
   })
 
-  // 使用统一的 tree 管理
+  // Use unified tree management
   const { nodeId, item, isNested } = useMenuTree({
     disabledNested,
     handleOpenChange,
     isControlledOpen,
   })
 
-  // 虚拟定位函数 - 用于坐标模式
+  // Virtual positioning function - for coordinate mode
   const setVirtualPosition = useEventCallback((pos: { x: number; y: number }) => {
     refs.setPositionReference({
       getBoundingClientRect() {
@@ -202,10 +202,10 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
     })
   })
 
-  // 使用 ref 避免重复设置虚拟位置
+  // Use ref to avoid redundant virtual position updates
   const lastPositionRef = useRef<{ x: number; y: number } | null>(null)
 
-  // Floating UI 配置 - 使用 useMemo 缓存 middleware 数组，避免每次渲染都创建新数组
+  // Floating UI configuration - memoize middleware array to avoid recreating on each render
   const middleware = useMemo(
     () => [
       offset({ mainAxis: isNested ? 10 : offsetDistance, alignmentAxis: isNested ? -4 : 0 }),
@@ -214,13 +214,13 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
       size({
         padding: 4,
         apply({ elements, availableHeight, rects }) {
-          // 优先使用 floating 元素的 scrollHeight，因为 scrollRef 在内容重新渲染时可能还没更新
+          // Prefer floating element's scrollHeight as scrollRef may not be updated yet on re-render
           const floatingScrollHeight = elements.floating.scrollHeight
           const scrollRefHeight = scrollRef.current?.scrollHeight || 0
           const contentHeight = Math.max(floatingScrollHeight, scrollRefHeight)
 
-          // 根据内容实际高度和可用空间计算合适的高度
-          // 当 contentHeight 为 0 时（内容还没渲染），使用 availableHeight 避免设置 maxHeight: 0
+          // Calculate appropriate height based on actual content height and available space
+          // When contentHeight is 0 (content not yet rendered), use availableHeight to avoid maxHeight: 0
           const maxHeight =
             contentHeight > 0 ? Math.min(contentHeight, availableHeight) : availableHeight
 
@@ -230,13 +230,13 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
             flexDirection: "column",
           })
 
-          // 确保 MenusBase (通过 scrollRef) 能够正确继承高度并滚动
+          // Ensure scroll container properly inherits height and can scroll
           if (scrollRef.current) {
             scrollRef.current.style.height = "100%"
             scrollRef.current.style.maxHeight = "100%"
           }
 
-          // 如果需要匹配触发器宽度
+          // Match trigger width if needed
           if (matchTriggerWidth) {
             elements.floating.style.width = `${rects.reference.width}px`
           }
@@ -255,7 +255,7 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
     whileElementsMounted: autoUpdate,
   })
 
-  // 同步设置虚拟位置 - 坐标模式下使用
+  // Sync virtual position - used in coordinate mode
   useIsomorphicLayoutEffect(() => {
     if (
       position &&
@@ -270,25 +270,25 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
     }
   }, [position, isCoordinateMode, isControlledOpen, setVirtualPosition])
 
-  // 坐标模式下，菜单打开时自动激活第一个选项（仅当鼠标不在菜单上时）
+  // Auto-activate first option when menu opens in coordinate mode (only when mouse not over menu)
   useEffect(() => {
     if (isCoordinateMode && isControlledOpen && activeIndex === null && !isMouseOverMenu) {
       setActiveIndex(autoSelectFirstItem ? 0 : null)
     }
   }, [isCoordinateMode, isControlledOpen, activeIndex, isMouseOverMenu, autoSelectFirstItem])
 
-  // 坐标模式下，菜单关闭时重置 activeIndex
+  // Reset activeIndex when menu closes in coordinate mode
   useEffect(() => {
     if (isCoordinateMode && !isControlledOpen) {
       setActiveIndex(null)
     }
   }, [isCoordinateMode, isControlledOpen])
 
-  // 用 ref 存储当前 open 状态，避免 useEffect 依赖 isControlledOpen
+  // Store current open state in ref to avoid useEffect dependency on isControlledOpen
   const isOpenRef = useRef(isControlledOpen)
   isOpenRef.current = isControlledOpen
 
-  // 处理 triggerRef 和 triggerSelector
+  // Handle triggerRef and triggerSelector
   useEffect(() => {
     if (isCoordinateMode || (!triggerRef && !triggerSelector)) return
 
@@ -311,7 +311,7 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
     }
   }, [triggerRef, triggerSelector, refs, handleOpenChange, isCoordinateMode])
 
-  // 交互处理器配置
+  // Interaction handlers configuration
   const hover = useHover(context, {
     enabled: isNested && !isCoordinateMode,
     delay: { open: 75 },
@@ -323,7 +323,7 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
     toggle: !isNested && !isCoordinateMode,
     ignoreMouse: isNested,
     stickIfOpen: false,
-    enabled: !isCoordinateMode, // 坐标模式下禁用点击交互
+    enabled: !isCoordinateMode, // Disable click interaction in coordinate mode
   })
 
   const role = useRole(context, { role: "menu" })
@@ -355,28 +355,28 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
     typeahead,
   ])
 
-  // Tree 事件处理已由 useMenuTree 统一管理
+  // Tree event handling is managed by useMenuTree
 
-  // 确保滚动容器正确设置高度
+  // Ensure scroll container has correct height
   useMenuScrollHeight({
     isControlledOpen,
     isPositioned,
     scrollRef,
   })
 
-  // 使用共享的滚动逻辑
+  // Use shared scroll logic
   const { handleArrowScroll, handleArrowHide, scrollProps } = useMenuScroll({
     scrollRef,
     selectTimeoutRef,
     scrollTop,
     setScrollTop,
     touch,
-    isSelect: false, // Dropdown 不是 Select
-    fallback: false, // Dropdown 没有 fallback 机制
-    setInnerOffset: undefined, // Dropdown 不使用 innerOffset
+    isSelect: false, // Dropdown is not a Select
+    fallback: false, // Dropdown does not have fallback mechanism
+    setInnerOffset: undefined, // Dropdown does not use innerOffset
   })
 
-  // 触摸处理
+  // Touch handling
   const handleTouchStart = useEventCallback(() => {
     setTouch(true)
   })
@@ -387,26 +387,26 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
     }
   })
 
-  // 处理鼠标进入菜单
+  // Handle mouse enter menu
   const handleMouseEnterMenu = useEventCallback(() => {
     if (isCoordinateMode) {
       setIsMouseOverMenu(true)
     }
   })
 
-  // 处理鼠标离开菜单
+  // Handle mouse leave menu
   const handleMouseLeaveMenu = useEventCallback(() => {
     if (isCoordinateMode) {
       setIsMouseOverMenu(false)
     }
   })
 
-  // 处理键盘事件 - 用于触发 SubTrigger 打开子菜单
+  // Handle keyboard events - for triggering SubTrigger to open submenu
   const handleFloatingKeyDown = useEventCallback((e: React.KeyboardEvent) => {
     if (activeIndex !== null && (e.key === "Enter" || e.key === "ArrowRight")) {
       const activeElement = elementsRef.current[activeIndex]
       if (activeElement) {
-        // 检查是否是 SubTrigger（有 aria-haspopup 属性）
+        // Check if it's a SubTrigger (has aria-haspopup attribute)
         if (activeElement.getAttribute("aria-haspopup") === "menu") {
           e.preventDefault()
           e.stopPropagation()
@@ -416,9 +416,9 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
     }
   })
 
-  // 焦点处理
+  // Focus handling
   const handleFocus = useEventCallback(() => {
-    // 坐标模式下不执行嵌套焦点管理，避免干扰输入框焦点
+    // Don't execute nested focus management in coordinate mode to avoid interfering with input focus
     if (isCoordinateMode) {
       return
     }
@@ -426,16 +426,16 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
     parent?.setHasFocusInside(true)
   })
 
-  // 创建关闭方法
+  // Create close handler
   const handleClose = useEventCallback(() => {
     handleOpenChange(false)
   })
 
-  // 处理子元素
+  // Process children
   const { triggerElement, subTriggerElement, contentElement } = useMemo(() => {
     const childrenArray = Children.toArray(children)
 
-    // 找到触发器元素
+    // Find trigger element
     const trigger = childrenArray.find(
       (child) => isValidElement(child) && child.type === MenuTrigger,
     ) as React.ReactElement | null
@@ -444,7 +444,7 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
       (child) => isValidElement(child) && child.type === MenuContextSubTrigger,
     ) as React.ReactElement | null
 
-    // 找到内容包装元素
+    // Find content wrapper element
     const content = childrenArray.find(
       (child) => isValidElement(child) && child.type === MenuContextContent,
     ) as React.ReactElement | null
@@ -456,14 +456,14 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
     }
   }, [children])
 
-  // 确保 contentElement 存在
+  // Ensure contentElement exists
   if (!contentElement && isControlledOpen) {
     console.error(
       "Dropdown requires a Dropdown.Content component as a child. Example: <Dropdown><Dropdown.Trigger>Trigger</Dropdown.Trigger><Dropdown.Content>{items}</Dropdown.Content></Dropdown>",
     )
   }
 
-  // 创建 MenuContext 值
+  // Create MenuContext value
   const contextValue = useMemo(
     () => ({
       activeIndex,
@@ -481,7 +481,7 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
 
   return (
     <FloatingNode id={nodeId}>
-      {/* 不在坐标模式且没有外部触发器时渲染内置 Slot */}
+      {/* Render built-in Slot when not in coordinate mode and no external trigger */}
       {!isCoordinateMode && !hasExternalTrigger && (
         <Slot
           ref={refs.setReference}
@@ -553,14 +553,14 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
                       })}
                   </MenuContext.Provider>
 
-                  {/* 滚动箭头 */}
+                  {/* Scroll arrows */}
                   {["up", "down"].map((dir) => (
                     <MenuScrollArrow
                       key={dir}
                       dir={dir as "up" | "down"}
                       scrollTop={scrollTop}
                       scrollRef={scrollRef}
-                      innerOffset={0} // Dropdown 不使用 innerOffset
+                      innerOffset={0} // Dropdown does not use innerOffset
                       isPositioned={isPositioned}
                       onScroll={handleArrowScroll}
                       onHide={handleArrowHide}
@@ -576,7 +576,7 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
   )
 })
 
-// 基础 Dropdown 组件
+// Base Dropdown component
 const BaseDropdown = memo(function Dropdown(props: DropdownProps) {
   const { children, ...rest } = props
   const parentId = useFloatingParentNodeId()
@@ -592,7 +592,7 @@ const BaseDropdown = memo(function Dropdown(props: DropdownProps) {
   return <DropdownComponent {...props}>{children}</DropdownComponent>
 })
 
-// 导出带有静态属性的组件
+// Export component with static properties
 export const Dropdown = Object.assign(BaseDropdown, {
   displayName: "Dropdown",
   Trigger: MenuTrigger,

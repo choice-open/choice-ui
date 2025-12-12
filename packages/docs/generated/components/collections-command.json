@@ -121,7 +121,7 @@
     },
     {
       "displayName": "useScheduleLayoutEffect",
-      "description": "在下一个 layout effect 周期内以命令式方式运行函数。",
+      "description": "Run functions imperatively in the next layout effect cycle.",
       "props": []
     },
     {
@@ -158,6 +158,12 @@
           "required": false,
           "defaultValue": "false",
           "description": "Whether the group is hidden."
+        },
+        {
+          "name": "ref",
+          "type": "((instance: HTMLDivElement | null) => void) | RefObject<HTMLDivElement> | null | undefined",
+          "required": false,
+          "description": ""
         }
       ]
     },
@@ -210,6 +216,12 @@
         {
           "name": "suffixElement",
           "type": "ReactNode",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "ref",
+          "type": "((instance: HTMLDivElement | null) => void) | RefObject<HTMLDivElement> | null | undefined",
           "required": false,
           "description": ""
         }

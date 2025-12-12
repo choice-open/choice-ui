@@ -2,13 +2,13 @@ import { useMemo } from "react"
 import type { ScrollState, ScrollbarVisibilityType } from "../types"
 
 /**
- * 缓存的溢出检查 hook
+ * Cached overflow check hook
  */
 export function useHasOverflow(scrollState: ScrollState, orientation: "vertical" | "horizontal") {
   return useMemo(() => {
-    // 🔧 添加更严格的检查，避免在DOM未完全初始化时出现错误判断
+    // 🔧 Add stricter checks to avoid error judgment when DOM is not fully initialized
     if (orientation === "vertical") {
-      // 确保两个值都是有效的正数
+      // Ensure both values are valid positive numbers
       const hasValidDimensions =
         scrollState.scrollHeight > 0 &&
         scrollState.clientHeight > 0 &&
@@ -19,10 +19,10 @@ export function useHasOverflow(scrollState: ScrollState, orientation: "vertical"
         return false
       }
 
-      // 允许1px的容差，避免浮点数精度问题
+      // Allow 1px tolerance, avoid floating point precision issues
       return scrollState.scrollHeight > scrollState.clientHeight + 1
     } else {
-      // 确保两个值都是有效的正数
+      // Ensure both values are valid positive numbers
       const hasValidDimensions =
         scrollState.scrollWidth > 0 &&
         scrollState.clientWidth > 0 &&
@@ -33,7 +33,7 @@ export function useHasOverflow(scrollState: ScrollState, orientation: "vertical"
         return false
       }
 
-      // 允许1px的容差，避免浮点数精度问题
+      // Allow 1px tolerance, avoid floating point precision issues
       return scrollState.scrollWidth > scrollState.clientWidth + 1
     }
   }, [
@@ -46,7 +46,7 @@ export function useHasOverflow(scrollState: ScrollState, orientation: "vertical"
 }
 
 /**
- * 缓存的滚动条显示判断 hook
+ * Cached scrollbar display judgment hook
  */
 export function useScrollbarShouldShow(
   type: ScrollbarVisibilityType,

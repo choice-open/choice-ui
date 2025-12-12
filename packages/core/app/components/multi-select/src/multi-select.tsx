@@ -108,15 +108,15 @@ interface MultiSelectComponentType extends React.ForwardRefExoticComponent<
 }
 
 /**
- * MultiSelect - 多选组件，支持标准下拉定位
+ * MultiSelect - Multi-select component with standard dropdown positioning
  *
- * 核心特性：
- * - 使用 Dropdown 的定位逻辑
- * - 支持最大/最小选择数量限制
- * - 支持多选状态管理
- * - 支持排他选项（组间互斥、全局互斥）
- * - 支持控制选择后是否关闭菜单（closeOnSelect）
- * - Trigger 不是 button，避免嵌套问题
+ * Core features:
+ * - Uses Dropdown positioning logic
+ * - Supports max/min selection limits
+ * - Supports multi-select state management
+ * - Supports exclusive options (group mutual exclusion, global exclusion)
+ * - Controls whether to close menu after selection (closeOnSelect)
+ * - Trigger is not a button to avoid nesting issues
  */
 const MultiSelectComponent = memo(
   forwardRef<HTMLDivElement, MultiSelectProps>(function MultiSelectComponent(props, ref) {
@@ -153,23 +153,23 @@ const MultiSelectComponent = memo(
 
     const tv = multiSelectTv()
 
-    // 提取子元素
+    // Extract children elements
     const [itemElements, triggerElement, contentElement] = useMemo(() => {
       if (!children) return [[], null, null]
 
       const childrenArray = Children.toArray(children)
 
-      // 找到 MultiSelectTrigger 元素
+      // Find MultiSelectTrigger element
       const trigger = childrenArray.find(
         (child) => isValidElement(child) && child.type === MultiSelectTrigger,
       ) as React.ReactElement | null
 
-      // 找到 MenuContextContent 元素
+      // Find MenuContextContent element
       const content = childrenArray.find(
         (child) => isValidElement(child) && child.type === MenuContextContent,
       ) as React.ReactElement | null
 
-      // 必须使用 MenuContextContent，从其子元素中收集选项
+      // Must use MenuContextContent, collect options from its children
       if (!content) {
         return [[], trigger, null]
       }
@@ -179,13 +179,13 @@ const MultiSelectComponent = memo(
       return [items, trigger, content]
     }, [children])
 
-    // 从 MenuContextItem 元素中提取选项数据
+    // Extract option data from MenuContextItem elements
     const options = useMemo(() => processOptions(itemElements), [itemElements])
 
-    // 创建只包含可选择items的数组（不包含divider和label）
+    // Create array containing only selectable items (excluding divider and label)
     const selectableOptions = useMemo(() => filterSelectableOptions(options), [options])
 
-    // References - 使用统一的 refs 管理
+    // References
     const {
       scrollRef,
       elementsRef: listRef,
@@ -194,7 +194,7 @@ const MultiSelectComponent = memo(
     } = useMenuBaseRefs()
     const allowSelectRef = useRef(false)
 
-    // 状态管理
+    // State management
     const {
       open,
       setOpen,
@@ -209,16 +209,16 @@ const MultiSelectComponent = memo(
       isControlledOpen,
     } = useMultiSelectState({ controlledOpen, onOpenChange })
 
-    // 生成唯一 ID
+    // Generate unique ID
     const baseId = useId()
     const menuId = `menu-${baseId}`
     const nodeId = useFloatingNodeId()
     const tree = useFloatingTree()
     const parentId = useFloatingParentNodeId()
 
-    // 处理打开状态变化
+    // Handle open state change
     const handleOpenChange = useEventCallback((newOpen: boolean) => {
-      // 当组件被禁用时，不允许打开菜单
+      // Don't allow opening menu when component is disabled
       if (disabled && newOpen) {
         return
       }
@@ -229,7 +229,7 @@ const MultiSelectComponent = memo(
       onOpenChange?.(newOpen)
     })
 
-    // Floating UI 配置 - 使用 useMemo 缓存 middleware 数组，避免每次渲染都创建新数组
+    // Floating UI configuration - memoize middleware array to avoid recreating on each render
     const middleware = useMemo(
       () => [
         offset(8),
@@ -239,13 +239,13 @@ const MultiSelectComponent = memo(
           padding: 4,
           apply(args) {
             const { elements, availableHeight, rects } = args
-            // 优先使用 floating 元素的 scrollHeight，因为 scrollRef 在内容重新渲染时可能还没更新
+            // Prefer floating element's scrollHeight as scrollRef may not be updated yet on re-render
             const floatingScrollHeight = elements.floating.scrollHeight
             const scrollRefHeight = scrollRef.current?.scrollHeight || 0
             const contentHeight = Math.max(floatingScrollHeight, scrollRefHeight)
 
-            // 根据内容实际高度和可用空间计算合适的高度
-            // 当 contentHeight 为 0 时（内容还没渲染），使用 availableHeight 避免设置 maxHeight: 0
+            // Calculate appropriate height based on actual content height and available space
+            // When contentHeight is 0 (content not yet rendered), use availableHeight to avoid maxHeight: 0
             const maxHeight =
               contentHeight > 0 ? Math.min(contentHeight, availableHeight) : availableHeight
 
@@ -255,7 +255,7 @@ const MultiSelectComponent = memo(
               flexDirection: "column",
             })
 
-            // 确保 MenusBase (通过 scrollRef) 能够正确继承高度并滚动
+            // Ensure scroll container properly inherits height and can scroll
             if (scrollRef.current) {
               scrollRef.current.style.height = "100%"
               scrollRef.current.style.maxHeight = "100%"
@@ -279,7 +279,7 @@ const MultiSelectComponent = memo(
       whileElementsMounted: autoUpdate,
     })
 
-    // 交互处理器配置
+    // Interaction handlers configuration
     const click = useClick(context, {
       event: "click",
       stickIfOpen: false,
@@ -312,7 +312,7 @@ const MultiSelectComponent = memo(
       typeahead,
     ])
 
-    // 菜单打开时的效果
+    // Effect when menu opens
     useEffect(() => {
       if (isControlledOpen) {
         selectTimeoutRef.current = setTimeout(() => {
@@ -329,18 +329,18 @@ const MultiSelectComponent = memo(
       }
     }, [isControlledOpen, selectTimeoutRef])
 
-    // 使用共享的滚动逻辑
+    // Use shared scroll logic
     const { handleArrowScroll, handleArrowHide, scrollProps } = useMenuScroll({
       scrollRef,
       selectTimeoutRef,
       scrollTop,
       setScrollTop,
       touch,
-      isSelect: false, // 使用 dropdown 的滚动逻辑
+      isSelect: false, // Use dropdown scroll logic
       fallback: false,
     })
 
-    // 选择逻辑
+    // Selection logic
     const { handleSelect: baseHandleSelect, handleRemove: baseHandleRemove } =
       useMultiSelectSelection({
         values,
@@ -354,7 +354,7 @@ const MultiSelectComponent = memo(
         handleOpenChange,
       })
 
-    // 处理选择 - 添加允许选择的检查
+    // Handle selection - add allow select check
     const handleSelect = useEventCallback((index: number) => {
       if (readOnly) return
 
@@ -363,18 +363,18 @@ const MultiSelectComponent = memo(
       }
     })
 
-    // 处理移除 - 添加 readOnly 检查
+    // Handle remove - add readOnly check
     const handleRemove = useEventCallback((value: string) => {
       if (readOnly) return
       baseHandleRemove(value)
     })
 
-    // Tree 事件处理
+    // Tree event handling
     useEffect(() => {
       if (!tree) return
 
       const handleTreeClick = () => {
-        // 根据 closeOnSelect 决定是否关闭菜单
+        // Close menu based on closeOnSelect
         if (closeOnSelect) {
           handleOpenChange(false)
         }
@@ -395,24 +395,24 @@ const MultiSelectComponent = memo(
       }
     }, [tree, nodeId, parentId, handleOpenChange, closeOnSelect])
 
-    // 发送菜单打开事件
+    // Emit menu open event
     useEffect(() => {
       if (isControlledOpen && tree) {
         tree.events.emit("menuopen", { parentId, nodeId })
       }
     }, [tree, isControlledOpen, nodeId, parentId])
 
-    // 确保滚动容器正确设置高度
+    // Ensure scroll container has correct height
     useMenuScrollHeight({
       isControlledOpen,
       isPositioned,
       scrollRef,
     })
 
-    // 处理焦点状态
+    // Handle focus state
     const [hasFocusInside, setHasFocusInside] = useState(false)
 
-    // 创建 MenuContext 值
+    // Create MenuContext value
     const menuContextValue = useMemo(
       () => ({
         activeIndex,
@@ -436,40 +436,40 @@ const MultiSelectComponent = memo(
       ],
     )
 
-    // 注册列表项
+    // Register list item
     const registerItem = useEventCallback((index: number, node: HTMLElement | null) => {
       listRef.current[index] = node
       const option = selectableOptions[index]
       listContentRef.current[index] = option ? option.value || null : null
     })
 
-    // 渲染菜单项
+    // Render menu items
     const menuItems = useMemo(() => {
       let selectableIndex = 0
 
       return options.map((option, index) => {
-        // 分隔符
+        // Divider
         if (option.divider) {
           return <MenuDivider key={`divider-${index}`} />
         }
 
-        // 标签
+        // Label
         if (option.label) {
           return <MenuContextLabel key={`label-${index}`}>{option.children}</MenuContextLabel>
         }
 
-        // 选项项
+        // Option item
         const currentSelectableIndex = selectableIndex
-        selectableIndex++ // 递增可选择项目索引
+        selectableIndex++ // Increment selectable item index
 
         const isSelected = values.includes(option.value || "")
         const isDisabled = !!option.disabled
 
-        // 检查是否有自定义的 onClick
+        // Check if custom onClick exists
         const childProps = option.element?.props as MenuContextItemProps
         const customActive = childProps?.onClick
 
-        // 事件处理器
+        // Event handlers
         const eventHandlers = {
           onTouchStart: () => {
             if (customActive) return
@@ -505,7 +505,7 @@ const MultiSelectComponent = memo(
       })
     }, [options, values, sizeProp, handleSelect, registerItem])
 
-    // 增强触发器元素
+    // Enhance trigger element
     const valueDisabledMap = useMemo(() => {
       const map: Record<string, boolean> = {}
       values.forEach((v) => {
@@ -549,7 +549,7 @@ const MultiSelectComponent = memo(
       valueDisabledMap,
     ])
 
-    // 错误处理
+    // Error handling
     if (!triggerElement || !contentElement) {
       console.error(
         "MultiSelect requires both MultiSelect.Trigger and MultiSelect.Content components as children",
@@ -622,7 +622,7 @@ const MultiSelectComponent = memo(
                       })}
                     </MenuContext.Provider>
 
-                    {/* 滚动箭头 */}
+                    {/* Scroll arrows */}
                     {["up", "down"].map((dir) => (
                       <MenuScrollArrow
                         key={dir}
@@ -664,7 +664,6 @@ const BaseMultiSelect = memo(function MultiSelect(props: MultiSelectProps) {
   return <MultiSelectComponent {...props}>{children}</MultiSelectComponent>
 })
 
-// 创建并导出带有静态属性的 MultiSelect 组件
 export const MultiSelect = Object.assign(BaseMultiSelect, {
   Item: MenuContextItem,
   Trigger: MultiSelectTrigger,

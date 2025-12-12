@@ -1,9 +1,9 @@
 import { createContext, useContext } from "react"
 
 /**
- * 通用菜单上下文接口
+ * Generic menu context interface
  *
- * 用于 Select 和 Dropdown 组件的统一上下文
+ * Used for unified context of Select and Dropdown components
  */
 export interface MenuContextType {
   activeIndex: number | null

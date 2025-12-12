@@ -80,7 +80,7 @@ const SwitchBase = forwardRef<HTMLInputElement, SwitchProps>(function Switch(pro
   const internalId = useId()
   const descriptionId = useId()
 
-  const styles = switchTv({ size, variant, disabled, checked: value, focused })
+  const tv = switchTv({ size, variant, disabled, checked: value, focused })
 
   const style = {
     "--thumb-translate":
@@ -111,13 +111,13 @@ const SwitchBase = forwardRef<HTMLInputElement, SwitchProps>(function Switch(pro
 
   return (
     <label
-      className={tcx(styles.root(), className)}
+      className={tcx(tv.root(), className)}
       htmlFor={props.id || internalId}
     >
       <span className="sr-only">{value ? "Enabled" : "Disabled"}</span>
       <input
         ref={ref}
-        className={styles.input()}
+        className={tv.input()}
         type="checkbox"
         id={props.id || internalId}
         checked={value}
@@ -133,11 +133,11 @@ const SwitchBase = forwardRef<HTMLInputElement, SwitchProps>(function Switch(pro
         {...rest}
       />
       <div
-        className={styles.track()}
+        className={tv.track()}
         style={style}
       >
         <motion.div
-          className={styles.thumb()}
+          className={tv.thumb()}
           initial={false}
           animate={{ x: value ? "var(--thumb-translate)" : 0 }}
           transition={{ duration: 0.1 }}

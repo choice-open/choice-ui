@@ -18,15 +18,15 @@ interface UseDragOptions {
 }
 
 // Constants
-const MIN_VISIBLE_RATIO = 0.25 // 至少保留25%在可视范围内
-const HEADER_HEIGHT = 40 // header高度
+const MIN_VISIBLE_RATIO = 0.25 // At least 25% of the window width should be visible
+const HEADER_HEIGHT = 40 // Header height
 
 /**
- * 调整位置以确保元素在视窗内可见
- * @param position 当前位置
- * @param dialogRect 元素的矩形信息
- * @param viewportWidth 视窗宽度
- * @param viewportHeight 视窗高度
+ * Adjust position to ensure element is visible in viewport
+ * @param position current position
+ * @param dialogRect element's bounding rectangle
+ * @param viewportWidth viewport width
+ * @param viewportHeight viewport height
  */
 function adjustPosition(
   position: Position,
@@ -36,12 +36,12 @@ function adjustPosition(
 ): Position {
   const vw = viewportWidth ?? (typeof window !== "undefined" ? window.innerWidth : 0)
   const vh = viewportHeight ?? (typeof window !== "undefined" ? window.innerHeight : 0)
-  // 确保至少 25% 的窗口宽度在可视范围内
+  // Ensure at least 25% of the window width is visible
   const minVisibleWidth = dialogRect.width * MIN_VISIBLE_RATIO
   const maxLeft = vw - minVisibleWidth
   const minLeft = minVisibleWidth - dialogRect.width
 
-  // 确保 header 始终在可视范围内
+  // Ensure header is always visible
   const maxTop = vh - HEADER_HEIGHT
   const minTop = 0
 
@@ -52,18 +52,18 @@ function adjustPosition(
 }
 
 /**
- * 拖拽功能 Hook
- * @param options 配置选项
- * @returns 拖拽状态和控制方法
+ * Drag functionality Hook
+ * @param options configuration options
+ * @returns drag state and control methods
  */
 export function useDrag({ draggable, floatingRef, rememberPosition = false }: UseDragOptions) {
-  // 使用useState管理活跃状态
+  // Use useState to manage active state
   const [state, setState] = useState<DragState>({
     isDragging: false,
     position: null,
   })
 
-  // 使用useRef存储位置，避免不必要的重渲染
+  // Use useRef to store position, avoid unnecessary re-rendering
   const positionRef = useRef<Position | null>(null)
   const initialPositionRef = useRef<Position | null>(null)
   const dragOriginRef = useRef({ x: 0, y: 0 })
@@ -71,7 +71,7 @@ export function useDrag({ draggable, floatingRef, rememberPosition = false }: Us
   const rafIdRef = useRef<number | null>(null)
   const pendingRef = useRef(false)
 
-  // 开始拖拽
+  // Start drag
   const handleDragStart = useEventCallback((e: React.MouseEvent) => {
     if (!draggable) return
     if (contentRef.current?.contains(e.target as Node)) return
@@ -83,7 +83,7 @@ export function useDrag({ draggable, floatingRef, rememberPosition = false }: Us
     e.preventDefault()
     e.stopPropagation()
 
-    // 记录初始位置(只在首次记录)
+    // Record initial position (only on first record)
     if (!initialPositionRef.current) {
       initialPositionRef.current = {
         x: rect.left,
@@ -91,13 +91,13 @@ export function useDrag({ draggable, floatingRef, rememberPosition = false }: Us
       }
     }
 
-    // 记录拖拽起始点
+    // Record drag origin
     dragOriginRef.current = {
       x: e.clientX - rect.left,
       y: e.clientY - rect.top,
     }
 
-    // 设置初始位置 - 优先使用当前位置
+    // Set initial position - use current position first
     const currentPosition = positionRef.current || {
       x: rect.left,
       y: rect.top,
@@ -109,17 +109,17 @@ export function useDrag({ draggable, floatingRef, rememberPosition = false }: Us
     })
   })
 
-  // 拖拽过程
+  // Drag process
   const handleDrag = useCallback(
     (e: MouseEvent) => {
       if (!draggable || !state.isDragging || !floatingRef.current) return
 
-      // 计算新位置
+      // Calculate new position
       const x = e.clientX - dragOriginRef.current.x
       const y = e.clientY - dragOriginRef.current.y
       positionRef.current = { x, y }
 
-      // 使用 rAF 合并同一帧内的多次 mousemove 更新
+      // Use rAF to merge multiple mousemove updates within the same frame
       if (pendingRef.current) return
       pendingRef.current = true
 
@@ -134,11 +134,11 @@ export function useDrag({ draggable, floatingRef, rememberPosition = false }: Us
     [draggable, state.isDragging, floatingRef],
   )
 
-  // 结束拖拽
+  // End drag
   const handleDragEnd = useCallback(() => {
     if (!draggable) return
 
-    // 结束时取消未执行的 rAF
+    // Cancel pending rAF when ending
     if (rafIdRef.current != null) {
       cancelAnimationFrame(rafIdRef.current)
       rafIdRef.current = null
@@ -149,7 +149,7 @@ export function useDrag({ draggable, floatingRef, rememberPosition = false }: Us
       const dialogRect = floatingRef.current.getBoundingClientRect()
       const adjustedPosition = adjustPosition(state.position, dialogRect)
 
-      // 更新ref中存储的位置
+      // Update position in ref
       positionRef.current = adjustedPosition
 
       setState({
@@ -164,7 +164,7 @@ export function useDrag({ draggable, floatingRef, rememberPosition = false }: Us
     }
   }, [draggable, state.position, floatingRef])
 
-  // 重置拖拽状态
+  // Reset drag state
   const resetDragState = useCallback(() => {
     setState({
       isDragging: false,
@@ -172,7 +172,7 @@ export function useDrag({ draggable, floatingRef, rememberPosition = false }: Us
     })
   }, [])
 
-  // 重置位置到初始状态 - 只在不记住位置时调用
+  // Reset position to initial state - only when not remembering position
   const resetPosition = useCallback(() => {
     if (!rememberPosition) {
       setState((prev) => ({
@@ -182,7 +182,7 @@ export function useDrag({ draggable, floatingRef, rememberPosition = false }: Us
     }
   }, [rememberPosition])
 
-  // 添加和移除事件监听
+  // Add and remove event listeners
   useEffect(() => {
     if (draggable && state.isDragging) {
       document.addEventListener("mousemove", handleDrag)
@@ -194,7 +194,7 @@ export function useDrag({ draggable, floatingRef, rememberPosition = false }: Us
     }
   }, [draggable, state.isDragging, handleDrag, handleDragEnd])
 
-  // 监听 floatingRef.current 变化，重置初始位置和拖拽状态。
+  // Listen for floatingRef.current changes, reset initial position and drag state.
   useEffect(() => {
     if (rememberPosition) return
     initialPositionRef.current = null
@@ -206,15 +206,15 @@ export function useDrag({ draggable, floatingRef, rememberPosition = false }: Us
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [floatingRef.current])
 
-  // 当rememberPosition变化时
+  // When rememberPosition changes
   useEffect(() => {
     if (!rememberPosition) {
-      // 如果关闭了记住位置，重置位置到初始状态
+      // If remembering position is closed, reset position to initial state
       resetPosition()
     }
   }, [rememberPosition, resetPosition])
 
-  // 组件卸载时清理 rAF
+  // Clean up rAF when component unmounts
   useEffect(() => {
     return () => {
       if (rafIdRef.current != null) {

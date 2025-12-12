@@ -39,7 +39,7 @@ export const MenuItem = memo(
       ...rest
     } = props
 
-    const styles = MenuItemTv({
+    const tv = MenuItemTv({
       active,
       disabled,
       selected,
@@ -57,26 +57,26 @@ export const MenuItem = memo(
         ref={ref}
         type="button"
         role="menuitem"
-        className={tcx(styles.root(), className)}
+        className={tcx(tv.root(), className)}
         tabIndex={active ? 0 : -1}
         disabled={disabled}
         aria-disabled={disabled}
         aria-selected={selected}
       >
-        {prefixElement && <div className={styles.icon()}>{prefixElement}</div>}
+        {prefixElement && <div className={tv.icon()}>{prefixElement}</div>}
 
         {children}
 
         {hasValidShortcut && (
           <Kbd
-            className={styles.shortcut()}
+            className={tv.shortcut()}
             keys={shortcut!.modifier}
           >
             {shortcut!.keys}
           </Kbd>
         )}
 
-        {suffixElement && <div className={styles.icon()}>{suffixElement}</div>}
+        {suffixElement && <div className={tv.icon()}>{suffixElement}</div>}
       </button>
     )
   }),

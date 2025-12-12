@@ -2,75 +2,75 @@ import { useState, useMemo, useEffect } from "react"
 import { useEventCallback } from "usehooks-ts"
 
 /**
- * 菜单选择状态管理 Hook
+ * Menu selection state management Hook
  *
- * 专用于 Select 组件的选择逻辑：
- * - 管理选中索引和值的映射
- * - 处理选择延迟和阻止机制
- * - 处理鼠标和键盘选择
- * - 支持受控和非受控值
+ * Specialized for Select component selection logic:
+ * - Manage the mapping of selected index and value
+ * - Handle selection delay and blocking mechanism
+ * - Handle mouse and keyboard selection
+ * - Support controlled and uncontrolled values
  */
 
 export interface MenuSelectionConfig {
-  /** 关闭菜单回调 */
+  /** Close menu callback */
   handleOpenChange: (open: boolean) => void
-  /** 是否控制打开状态 */
+  /** Whether to control the open state */
   isControlledOpen: boolean
-  /** 值变化回调 */
+  /** Value change callback */
   onChange?: (value: string) => void
-  /** 选项列表 */
+  /** Option list */
   options: Array<{
     [key: string]: unknown
     disabled?: boolean
     divider?: boolean
     value?: string
   }>
-  /** 当前值 */
+  /** Current value */
   value?: string | null
 }
 
 export interface MenuSelectionResult {
-  /** 允许鼠标抬起状态 */
+  /** Allow mouse up state */
   allowMouseUp: boolean
-  /** 允许选择状态 */
+  /** Allow select state */
   allowSelect: boolean
-  /** 阻止选择状态 */
+  /** Block select state */
   blockSelection: boolean
-  /** 当前选中索引（基于 value 计算） */
+  /** Current selected index (based on value calculation) */
   currentSelectedIndex: number
-  /** 处理选择 */
+  /** Handle selection */
   handleSelect: (index: number) => void
-  /** 当前选中索引 */
+  /** Current selected index */
   selectedIndex: number
-  /** 设置允许鼠标抬起状态 */
+  /** Set allow mouse up state */
   setAllowMouseUp: (allow: boolean) => void
-  /** 设置允许选择状态 */
+  /** Set allow select state */
   setAllowSelect: (allow: boolean) => void
-  /** 设置阻止选择状态 */
+  /** Set block select state */
   setBlockSelection: (block: boolean) => void
-  /** 设置选中索引 */
+  /** Set selected index */
   setSelectedIndex: (index: number) => void
 }
 
 export function useMenuSelection(config: MenuSelectionConfig): MenuSelectionResult {
   const { value, onChange, options, isControlledOpen, handleOpenChange } = config
 
-  // 选择状态
+  // Selection state
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [blockSelection, setBlockSelection] = useState(false)
   const [allowSelect, setAllowSelect] = useState(false)
   const [allowMouseUp, setAllowMouseUp] = useState(true)
 
-  // 确定当前选中索引 - 基于 value 计算
+  // Determine current selected index - based on value calculation
   const currentSelectedIndex = useMemo(() => {
     if (value === undefined) return selectedIndex
 
-    // 如果有值，找到对应的索引
+    // If there is a value, find the corresponding index
     const index = options.findIndex((option) => !option.divider && option.value === value)
     return index === -1 ? selectedIndex : index
   }, [value, selectedIndex, options])
 
-  // 菜单打开时的选择处理
+  // Selection handling when menu is opened
   useEffect(() => {
     if (isControlledOpen) {
       const timeout = setTimeout(() => {
@@ -86,9 +86,9 @@ export function useMenuSelection(config: MenuSelectionConfig): MenuSelectionResu
     }
   }, [isControlledOpen])
 
-  // 处理选择逻辑
+  // Handle selection logic
   const handleSelect = useEventCallback((index: number) => {
-    // 检查是否允许选择
+    // Check if selection is allowed
     if (allowSelect) {
       setSelectedIndex(index)
       handleOpenChange(false)

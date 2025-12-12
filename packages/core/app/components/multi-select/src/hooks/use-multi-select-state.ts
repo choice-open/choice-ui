@@ -12,7 +12,7 @@ export function useMultiSelectState({ controlledOpen, onOpenChange }: UseMultiSe
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
   const [validationMessage, setValidationMessage] = useState<string | null>(null)
 
-  // 自动清空验证消息
+  // Auto clear validation message
   useEffect(() => {
     if (validationMessage) {
       const timeout = setTimeout(() => {
@@ -22,7 +22,7 @@ export function useMultiSelectState({ controlledOpen, onOpenChange }: UseMultiSe
     }
   }, [validationMessage])
 
-  // 合并受控与非受控打开状态
+  // Merge controlled and uncontrolled open state
   const isControlledOpen = controlledOpen !== undefined ? controlledOpen : open
 
   return {

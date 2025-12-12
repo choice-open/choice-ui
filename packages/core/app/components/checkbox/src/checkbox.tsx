@@ -37,7 +37,7 @@ const CheckboxBase = forwardRef<HTMLInputElement, CheckboxProps>(function Checkb
   const internalId = useId()
   const descriptionId = useId()
 
-  const styles = checkboxTv({
+  const tv = checkboxTv({
     type: "checkbox",
     variant,
     disabled,
@@ -59,7 +59,7 @@ const CheckboxBase = forwardRef<HTMLInputElement, CheckboxProps>(function Checkb
     onKeyDown?.(e)
   })
 
-  // 自动将字符串类型的 children 包装成 CheckboxLabel
+  // Automatically wrap string-type children into CheckboxLabel
   const renderChildren = () => {
     if (typeof children === "string" || typeof children === "number") {
       return <CheckboxLabel>{children}</CheckboxLabel>
@@ -79,11 +79,11 @@ const CheckboxBase = forwardRef<HTMLInputElement, CheckboxProps>(function Checkb
         mixed,
       }}
     >
-      <div className={tcx(styles.root(), className)}>
+      <div className={tcx(tv.root(), className)}>
         <div className="pointer-events-none relative">
           <input
             ref={ref}
-            className={styles.input()}
+            className={tv.input()}
             type="checkbox"
             id={id || internalId}
             checked={value}
@@ -98,7 +98,7 @@ const CheckboxBase = forwardRef<HTMLInputElement, CheckboxProps>(function Checkb
             {...rest}
           />
 
-          <div className={styles.box()}>{value && (mixed ? <Indeterminate /> : <Check />)}</div>
+          <div className={tv.box()}>{value && (mixed ? <Indeterminate /> : <Check />)}</div>
         </div>
 
         {renderChildren()}

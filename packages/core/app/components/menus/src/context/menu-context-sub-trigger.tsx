@@ -24,7 +24,7 @@ export const MenuContextSubTrigger = memo(
     const tree = useFloatingTree()
     const buttonRef = useRef<HTMLButtonElement | null>(null)
 
-    // 如果没有 menu context，抛出错误
+    // If there is no menu context, throw an error
     if (!menu) {
       throw new Error("MenuContextSubTrigger must be used within a MenuContext component")
     }
@@ -94,11 +94,11 @@ export const MenuContextSubTrigger = memo(
       [item, forwardedRef],
     )
 
-    // 前缀配置 - 支持选中状态显示
+    // Prefix configuration - support selected state display
     const prefixConfig = useMemo(() => {
       if (prefixElement) return prefixElement
       if (menu.selection && selected) {
-        // 当处于 selection 模式且被选中时，显示选中标记
+        // When in selection mode and selected, display selected marker
         return <Check />
       }
       if (menu.selection) return <></>
@@ -115,8 +115,8 @@ export const MenuContextSubTrigger = memo(
         aria-haspopup="menu"
         {...menu.getItemProps({
           ...rest,
-          // 在 selection 模式下，如果 selected 属性存在（说明是可选的），则使用 handleClick 关闭菜单
-          // 否则保持默认行为（打开子菜单）
+          // In selection mode, if the selected property exists (indicates it is selectable), use handleClick to close the menu
+          // Otherwise keep default behavior (open submenu)
           onClick: menu.selection && selected !== undefined ? handleClick : undefined,
           onMouseUp: menu.selection && selected !== undefined ? handleMouseUp : undefined,
           onPointerUp: menu.selection && selected !== undefined ? handlePointerUp : undefined,

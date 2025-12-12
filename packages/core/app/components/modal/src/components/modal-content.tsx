@@ -4,12 +4,12 @@ import { ModalContentTv } from "../tv"
 
 export const ModalContent = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElement>>((props, ref) => {
   const { className, ...rest } = props
-  const styles = ModalContentTv()
+  const tv = ModalContentTv()
 
   return (
     <div
       ref={ref}
-      className={tcx(styles.root(), className)}
+      className={tcx(tv.root(), className)}
       {...rest}
     />
   )

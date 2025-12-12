@@ -12,14 +12,14 @@ export interface MenubarDividerProps extends React.HTMLAttributes<HTMLDivElement
 export const MenubarDivider = memo(
   forwardRef<HTMLDivElement, MenubarDividerProps>((props, ref) => {
     const { className, ...rest } = props
-    const styles = MenubarDividerTv()
+    const tv = MenubarDividerTv()
 
     return (
       <div
         ref={ref}
         role="separator"
         aria-orientation="vertical"
-        className={tcx(styles.root(), className)}
+        className={tcx(tv.root(), className)}
         {...rest}
       />
     )

@@ -17,7 +17,7 @@ export const Badge = memo(
         Array.isArray((children as React.ReactElement).props.children)) ||
       (Array.isArray(children) && children.length > 1)
 
-    const style = BadgeTV({ variant, strong, multiElement: isMultiElement })
+    const tv = BadgeTV({ variant, strong, multiElement: isMultiElement })
 
     const Component = as ?? "div"
 
@@ -25,7 +25,7 @@ export const Badge = memo(
       <Component
         ref={ref}
         {...rest}
-        className={tcx(style.root(), className)}
+        className={tcx(tv.root(), className)}
       >
         {children}
       </Component>

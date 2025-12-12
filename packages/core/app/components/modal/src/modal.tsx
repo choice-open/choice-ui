@@ -31,12 +31,12 @@ interface ModalComponent extends React.ForwardRefExoticComponent<
 
 const ModalBase = forwardRef<HTMLDivElement, ModalProps>((props, ref) => {
   const { className, title, onClose, ...rest } = props
-  const styles = ModalTv()
+  const tv = ModalTv()
 
   return (
     <div
       ref={ref}
-      className={tcx(styles.root(), className)}
+      className={tcx(tv.root(), className)}
       {...rest}
     />
   )

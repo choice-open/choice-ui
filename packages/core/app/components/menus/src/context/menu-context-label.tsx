@@ -5,7 +5,7 @@ import { MenuContext } from "./menu-context"
 export const MenuContextLabel = memo(function MenuContextLabel(props: MenuLabelProps) {
   const menu = useContext(MenuContext)
 
-  // 如果没有 menu context，抛出错误
+  // If there is no menu context, throw an error
   if (!menu) {
     throw new Error("MenuContextLabel must be used within a MenuContext component")
   }

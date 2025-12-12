@@ -9,16 +9,16 @@ import type {
   AlertDialogType,
 } from "../types"
 
-// 默认按钮文本
+// Default button text
 export const DEFAULT_CONFIRM_TEXT = "Confirm"
 export const DEFAULT_CANCEL_TEXT = "Cancel"
 export const DEFAULT_ALERT_TEXT = "OK"
 
-// 默认按钮变体
+// Default button variants
 export const DEFAULT_CONFIRM_VARIANT: AlertDialogButtonVariant = "primary"
 export const DEFAULT_CANCEL_VARIANT: AlertDialogButtonVariant = "secondary"
 
-// 初始状态
+// Initial state
 export const initialState: AlertDialogState = {
   isOpen: false,
   type: null,
@@ -27,7 +27,7 @@ export const initialState: AlertDialogState = {
   queue: [],
 }
 
-// 状态管理 reducer
+// State management reducer
 export const alertDialogReducer = (
   state: AlertDialogState,
   action: AlertDialogAction,
@@ -36,7 +36,7 @@ export const alertDialogReducer = (
     case "SHOW": {
       const { dialogType, config, resolve } = action.payload
 
-      // 如果当前已经有对话框打开，添加到队列
+      // If dialog is already open, add to queue
       if (state.isOpen) {
         return {
           ...state,
@@ -44,7 +44,7 @@ export const alertDialogReducer = (
         }
       }
 
-      // 否则直接显示
+      // Otherwise show directly
       return {
         ...state,
         isOpen: true,
@@ -57,12 +57,12 @@ export const alertDialogReducer = (
     case "HIDE": {
       const { value } = action.payload
 
-      // 解析当前的 Promise
+      // Resolve current Promise
       if (state.resolve) {
         state.resolve(value)
       }
 
-      // 如果队列中有等待的对话框，显示下一个
+      // If there are dialogs waiting in queue, show next one
       if (state.queue.length > 0) {
         const next = state.queue[0]
         return {
@@ -74,7 +74,7 @@ export const alertDialogReducer = (
         }
       }
 
-      // 否则关闭对话框
+      // Otherwise close dialog
       return {
         ...state,
         isOpen: false,
@@ -85,7 +85,7 @@ export const alertDialogReducer = (
     }
 
     case "NEXT": {
-      // 处理队列中的下一个对话框
+      // Handle next dialog in queue
       if (state.queue.length > 0) {
         const next = state.queue[0]
         return {
@@ -97,7 +97,7 @@ export const alertDialogReducer = (
         }
       }
 
-      // 如果没有队列，关闭对话框
+      // If no queue, close dialog
       return {
         ...state,
         isOpen: false,
@@ -108,7 +108,7 @@ export const alertDialogReducer = (
     }
 
     case "CLEAR_QUEUE": {
-      // 清空队列并关闭对话框
+      // Clear queue and close dialog
       return {
         ...state,
         isOpen: false,
@@ -124,7 +124,7 @@ export const alertDialogReducer = (
   }
 }
 
-// 规范化确认对话框配置
+// Normalize confirm dialog config
 export const normalizeConfirmConfig = (
   config: string | AlertDialogConfirmConfig,
 ): AlertDialogConfirmConfig => {
@@ -147,7 +147,7 @@ export const normalizeConfirmConfig = (
   }
 }
 
-// 规范化提示对话框配置
+// Normalize alert dialog config
 export const normalizeAlertConfig = (
   config: string | AlertDialogAlertConfig,
 ): AlertDialogAlertConfig => {
@@ -166,7 +166,7 @@ export const normalizeAlertConfig = (
   }
 }
 
-// 根据对话框类型生成按钮配置
+// Generate button configuration based on dialog type
 export const getButtonsForDialog = (
   type: AlertDialogType,
   config: AlertDialogConfirmConfig | AlertDialogAlertConfig,
@@ -203,7 +203,7 @@ export const getButtonsForDialog = (
   return []
 }
 
-// 处理按钮点击结果
+// Process button click result
 export const processButtonResult = (
   type: AlertDialogType,
   buttonValue: string,
@@ -219,7 +219,7 @@ export const processButtonResult = (
   return buttonValue
 }
 
-// 生成对话框标题
+// Generate dialog title
 export const getDialogTitle = (
   type: AlertDialogType,
   config: AlertDialogConfirmConfig | AlertDialogAlertConfig,
@@ -238,16 +238,16 @@ export const getDialogTitle = (
   }
 }
 
-// 检查是否应该显示关闭按钮
+// Check if close button should be shown
 export const shouldShowCloseButton = (
   type: AlertDialogType,
   config: AlertDialogConfirmConfig | AlertDialogAlertConfig,
 ): boolean => {
-  // 如果明确设置了 showCloseButton，使用该设置
+  // If showCloseButton is explicitly set, use that value
   if (config.showCloseButton !== undefined) {
     return config.showCloseButton
   }
 
-  // 默认只有 confirm 类型显示关闭按钮
+  // By default, only confirm type shows close button
   return type === "confirm"
 }

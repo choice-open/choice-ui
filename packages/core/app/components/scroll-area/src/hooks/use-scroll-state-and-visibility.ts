@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react"
 import type { ScrollState } from "../types"
 
 /**
- * 合并的滚动状态和可见性管理 hook - 避免重复监听滚动事件
+ * Merged scroll state and visibility management hook - avoid duplicate scroll event listening
  */
 export function useScrollStateAndVisibility(viewport: HTMLDivElement | null) {
   const [scrollState, setScrollState] = useState<ScrollState>({
@@ -22,18 +22,18 @@ export function useScrollStateAndVisibility(viewport: HTMLDivElement | null) {
   const mutationObserverRef = useRef<MutationObserver>()
   const mutationTimeoutRef = useRef<number>()
 
-  // 🚀 性能优化：防止重复更新的状态缓存
+  // 🚀 Performance optimization: prevent duplicate state caching
   const lastUpdateTimeRef = useRef<number>(0)
   const minUpdateIntervalRef = useRef<number>(16) // ~60fps
 
-  // 🚀 性能优化：智能更新策略 - 根据滚动速度调整更新频率
+  // 🚀 Performance optimization: smart update strategy - adjust update frequency based on scroll speed
   const updateScrollState = useCallback(() => {
     if (!viewport) return
 
     const now = performance.now()
     const timeSinceLastUpdate = now - lastUpdateTimeRef.current
 
-    // 防止过于频繁的更新
+    // Prevent too frequent updates
     if (timeSinceLastUpdate < minUpdateIntervalRef.current) {
       if (rafRef.current) {
         cancelAnimationFrame(rafRef.current)
@@ -58,9 +58,9 @@ export function useScrollStateAndVisibility(viewport: HTMLDivElement | null) {
         clientHeight: viewport.clientHeight,
       }
 
-      // 🚀 性能优化：使用更精确的浅比较，只在真正有变化时更新状态
+      // 🚀 Performance optimization: use more precise shallow comparison, only update state when there is a real change
       setScrollState((prevState) => {
-        // 使用更严格的比较，避免浮点数精度问题
+        // Use stricter comparison, avoid floating point precision issues
         const scrollLeftChanged = Math.abs(prevState.scrollLeft - newState.scrollLeft) > 0.5
         const scrollTopChanged = Math.abs(prevState.scrollTop - newState.scrollTop) > 0.5
         const scrollWidthChanged = prevState.scrollWidth !== newState.scrollWidth
@@ -86,38 +86,38 @@ export function useScrollStateAndVisibility(viewport: HTMLDivElement | null) {
     })
   }, [viewport])
 
-  // 延迟更新滚动状态，用于处理 dialog/popover 初始化时的布局延迟
+  // Delay updating scroll state, used to handle layout delay when initializing dialog/popover
   const delayedUpdateScrollState = useCallback(() => {
-    // 使用 setTimeout 确保在 DOM 布局完成后更新
+    // Use setTimeout to ensure update after DOM layout is complete
     setTimeout(() => {
       updateScrollState()
     }, 0)
   }, [updateScrollState])
 
-  // 🚀 性能优化：智能滚动检测 - 根据滚动速度调整检测灵敏度
+  // 🚀 Performance optimization: smart scroll detection - adjust detection sensitivity based on scroll speed
   const handleScroll = useCallback(() => {
     const now = performance.now()
     const timeSinceLastScroll = now - (lastUpdateTimeRef.current || 0)
 
-    // 根据滚动频率动态调整更新间隔
+    // Dynamically adjust update interval based on scroll frequency
     if (timeSinceLastScroll < 8) {
-      // 快速滚动时降低更新频率
+      // Reduce update frequency when fast scrolling
       minUpdateIntervalRef.current = 32 // ~30fps
     } else if (timeSinceLastScroll > 100) {
-      // 慢速滚动时提高更新精度
+      // Increase update precision when slow scrolling
       minUpdateIntervalRef.current = 16 // ~60fps
     }
 
     updateScrollState()
 
-    // 处理滚动状态
+    // Handle scroll state
     setIsScrolling(true)
     if (scrollTimeoutRef.current) {
       clearTimeout(scrollTimeoutRef.current)
     }
     scrollTimeoutRef.current = window.setTimeout(() => {
       setIsScrolling(false)
-      // 重置更新间隔
+      // Reset update interval
       minUpdateIntervalRef.current = 16
     }, 1000)
   }, [updateScrollState])
@@ -129,15 +129,15 @@ export function useScrollStateAndVisibility(viewport: HTMLDivElement | null) {
       updateScrollState()
     }
 
-    // 🚀 性能优化：使用AbortController和被动事件监听器
+    // 🚀 Performance optimization: use AbortController and passive event listeners
     const abortController = new AbortController()
     const signal = abortController.signal
 
-    // 使用被动事件监听器提升滚动性能
+    // Use passive event listeners to improve scroll performance
     viewport.addEventListener("scroll", handleScroll, {
       passive: true,
       signal,
-      capture: false, // 避免不必要的事件捕获
+      capture: false, // Avoid unnecessary event capture
     })
 
     window.addEventListener("resize", handleResize, {
@@ -145,12 +145,12 @@ export function useScrollStateAndVisibility(viewport: HTMLDivElement | null) {
       signal,
     })
 
-    // 🔧 ResizeObserver 监听viewport尺寸变化
+    // 🔧 ResizeObserver listen to viewport size changes
     if (window.ResizeObserver) {
       resizeObserverRef.current = new ResizeObserver((entries) => {
-        // 🚀 性能优化：批量处理 ResizeObserver 回调
+        // 🚀 Performance optimization: batch process ResizeObserver callbacks
         for (const entry of entries) {
-          // 只处理我们关心的元素
+          // Only process elements we care about
           if (entry.target === viewport) {
             updateScrollState()
             break
@@ -160,10 +160,10 @@ export function useScrollStateAndVisibility(viewport: HTMLDivElement | null) {
       resizeObserverRef.current.observe(viewport)
     }
 
-    // 🔧 MutationObserver 监听内容变化（节流处理）
+    // 🔧 MutationObserver listen to content changes (throttling)
     if (window.MutationObserver) {
       mutationObserverRef.current = new MutationObserver((mutations) => {
-        // 🚀 性能优化：智能变化检测 - 只对影响布局的变化响应
+        // 🚀 Performance optimization: smart change detection - only respond to changes that affect layout
         const hasLayoutChanges = mutations.some((mutation) => {
           if (mutation.type === "childList") {
             return mutation.addedNodes.length > 0 || mutation.removedNodes.length > 0
@@ -177,34 +177,34 @@ export function useScrollStateAndVisibility(viewport: HTMLDivElement | null) {
 
         if (!hasLayoutChanges) return
 
-        // 节流处理，避免过于频繁的更新
+        // Throttling to avoid too frequent updates
         if (mutationTimeoutRef.current) {
           clearTimeout(mutationTimeoutRef.current)
         }
         mutationTimeoutRef.current = window.setTimeout(() => {
           updateScrollState()
-        }, 16) // 约60fps的更新频率
+        }, 16) // ~60fps update frequency
       })
 
       mutationObserverRef.current.observe(viewport, {
         childList: true,
         subtree: true,
         attributes: true,
-        attributeFilter: ["style", "class"], // 只监听影响布局的属性
+        attributeFilter: ["style", "class"], // Only listen to attributes that affect layout
         characterData: true,
-        characterDataOldValue: false, // 不需要旧值，提升性能
+        characterDataOldValue: false, // No need for old value, improve performance
         attributeOldValue: false,
       })
     }
 
-    // 🔧 初始化时使用延迟更新，处理dialog/popover布局延迟问题
+    // 🔧 Use delayed update when initializing, handle dialog/popover layout delay
     delayedUpdateScrollState()
 
     return () => {
-      // 统一清理所有资源
+      // Clean up all resources
       abortController.abort()
 
-      // 清理定时器
+      // Clean up timers
       if (scrollTimeoutRef.current) {
         clearTimeout(scrollTimeoutRef.current)
         scrollTimeoutRef.current = undefined
@@ -215,13 +215,13 @@ export function useScrollStateAndVisibility(viewport: HTMLDivElement | null) {
         mutationTimeoutRef.current = undefined
       }
 
-      // 清理RAF
+      // Clean up RAF
       if (rafRef.current) {
         cancelAnimationFrame(rafRef.current)
         rafRef.current = undefined
       }
 
-      // 🔧 清理观察者
+      // 🔧 Clean up observers
       if (resizeObserverRef.current) {
         resizeObserverRef.current.disconnect()
         resizeObserverRef.current = undefined

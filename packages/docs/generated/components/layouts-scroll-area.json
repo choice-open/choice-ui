@@ -34,19 +34,19 @@
           "name": "aria-label",
           "type": "string | undefined",
           "required": false,
-          "description": "可访问名称"
+          "description": "Accessible name"
         },
         {
           "name": "aria-labelledby",
           "type": "string | undefined",
           "required": false,
-          "description": "引用提供标签的元素ID"
+          "description": "Reference to the element ID providing the label"
         },
         {
           "name": "children",
           "type": "ReactNode | ScrollAreaRenderProp",
           "required": false,
-          "description": "标准children或render prop函数"
+          "description": "Standard children or render prop function"
         },
         {
           "name": "hoverBoundary",
@@ -82,32 +82,32 @@
     },
     {
       "displayName": "useScrollStateAndVisibility",
-      "description": "合并的滚动状态和可见性管理 hook - 避免重复监听滚动事件",
+      "description": "Merged scroll state and visibility management hook - avoid duplicate scroll event listening",
       "props": []
     },
     {
       "displayName": "useThumbStyle",
-      "description": "缓存的 thumb 样式计算 hook",
+      "description": "Cached thumb style calculation hook",
       "props": []
     },
     {
       "displayName": "useThumbDrag",
-      "description": "🚀 高性能 thumb 拖拽 hook - 优化拖拽响应性和性能",
+      "description": "🚀 High-performance thumb drag hook - optimize drag responsiveness and performance",
       "props": []
     },
     {
       "displayName": "useHasOverflow",
-      "description": "缓存的溢出检查 hook",
+      "description": "Cached overflow check hook",
       "props": []
     },
     {
       "displayName": "useScrollbarShouldShow",
-      "description": "缓存的滚动条显示判断 hook",
+      "description": "Cached scrollbar display judgment hook",
       "props": []
     },
     {
       "displayName": "useScrollPerformanceMonitor",
-      "description": "🔍 ScrollArea 性能监控 Hook\n\n用于监控和诊断滚动性能问题，包括：\n- 帧率监控\n- 事件频率统计\n- 性能瓶颈检测\n- 实时性能报告",
+      "description": "🔍 ScrollArea performance monitoring Hook\n\nUsed to monitor and diagnose scroll performance issues, including:\n- Frame rate monitoring\n- Event frequency statistics\n- Performance bottleneck detection\n- Real-time performance reporting",
       "props": []
     }
   ],

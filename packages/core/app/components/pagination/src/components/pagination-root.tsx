@@ -1,10 +1,10 @@
 import { tcx } from "@choice-ui/shared"
 import { forwardRef } from "react"
+import { PaginationContext } from "../context"
 import { usePagination } from "../hooks"
 import { paginationTv } from "../tv"
 import type { PaginationRootProps } from "../types"
 import { getDefaultLabels } from "../utils"
-import { PaginationContext } from "./pagination-context"
 
 export const PaginationRoot = forwardRef<HTMLDivElement, PaginationRootProps>((props, ref) => {
   const {
@@ -45,7 +45,7 @@ export const PaginationRoot = forwardRef<HTMLDivElement, PaginationRootProps>((p
     disabled,
   })
 
-  const styles = paginationTv()
+  const tv = paginationTv()
 
   // Don't render if no items
   if (totalItems === 0) {
@@ -75,7 +75,7 @@ export const PaginationRoot = forwardRef<HTMLDivElement, PaginationRootProps>((p
     <PaginationContext.Provider value={contextValue}>
       <div
         ref={ref}
-        className={tcx(styles.root(), className)}
+        className={tcx(tv.root(), className)}
         {...rest}
       >
         {children}

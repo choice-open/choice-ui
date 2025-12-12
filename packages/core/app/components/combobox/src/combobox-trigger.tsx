@@ -1,7 +1,7 @@
 import { tcx } from "@choice-ui/shared"
 import { IconButton } from "@choice-ui/icon-button"
 import { ChevronDownSmall, RemoveSmall } from "@choiceform/icons-react"
-import React, { forwardRef, ReactNode, useState, type HTMLProps } from "react"
+import React, { forwardRef, memo, ReactNode, useState, type HTMLProps } from "react"
 import { useEventCallback } from "usehooks-ts"
 import { comboboxTriggerTv } from "./tv"
 
@@ -27,8 +27,8 @@ export interface ComboboxTriggerProps extends Omit<
   variant?: "default" | "dark" | "reset"
 }
 
-export const ComboboxTrigger = forwardRef<HTMLInputElement, ComboboxTriggerProps>(
-  function ComboboxTrigger(props, ref) {
+export const ComboboxTrigger = memo(
+  forwardRef<HTMLInputElement, ComboboxTriggerProps>(function ComboboxTrigger(props, ref) {
     const {
       active = false,
       className,
@@ -130,5 +130,7 @@ export const ComboboxTrigger = forwardRef<HTMLInputElement, ComboboxTriggerProps
         )}
       </div>
     )
-  },
+  }),
 )
+
+ComboboxTrigger.displayName = "ComboboxTrigger"

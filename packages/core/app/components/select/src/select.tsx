@@ -84,13 +84,13 @@ interface SelectComponentType extends React.ForwardRefExoticComponent<
 }
 
 /**
- * Select - 高性能的选择组件，支持 macOS 风格定位
+ * Select - High-performance select component with macOS-style positioning
  *
- * 核心特性：
- * - 使用 inner middleware 实现 macOS 风格定位
- * - 当前选中项会显示在触发器附近
- * - 支持 fallback 机制
- * - 优化的性能和代码质量
+ * Core features:
+ * - Uses inner middleware for macOS-style positioning
+ * - Currently selected item displays near the trigger
+ * - Supports fallback mechanism
+ * - Optimized performance and code quality
  */
 const SelectComponent = memo(function SelectComponent(props: SelectProps) {
   const {
@@ -115,30 +115,30 @@ const SelectComponent = memo(function SelectComponent(props: SelectProps) {
     variant = "default",
   } = props
 
-  // 提取子元素 - 从原来的 Select 复制逻辑
+  // Extract children elements
   const [itemElements, triggerElement, contentElement] = useMemo(() => {
     if (!children) return [[], null, null]
 
     const childrenArray = Children.toArray(children)
 
-    // 找到第一个 MenuTrigger 元素
+    // Find first MenuTrigger element
     const trigger = childrenArray.find(
       (child) => isValidElement(child) && child.type === MenuTrigger,
     ) as React.ReactElement | null
 
-    // 找到 MenuContextContent 元素
+    // Find MenuContextContent element
     const content = childrenArray.find(
       (child) => isValidElement(child) && child.type === MenuContextContent,
     ) as React.ReactElement | null
 
-    // 必须使用 MenuContextContent，从其子元素中收集选项
+    // Must use MenuContextContent, collect options from its children
     if (!content) {
       return [[], trigger, null]
     }
 
     const contentChildren = Children.toArray(content.props.children)
 
-    // 递归函数处理Fragment内的子元素
+    // Recursive function to handle child elements inside Fragment
     const extractSelectItems = (children: React.ReactNode[]): React.ReactNode[] => {
       const result: React.ReactNode[] = []
 
@@ -164,7 +164,7 @@ const SelectComponent = memo(function SelectComponent(props: SelectProps) {
     return [items, trigger, content]
   }, [children])
 
-  // 从 SelectItem 元素中提取选项数据
+  // Extract option data from SelectItem elements
   const options = useMemo(() => {
     if (itemElements.length === 0) return []
 
@@ -179,7 +179,7 @@ const SelectComponent = memo(function SelectComponent(props: SelectProps) {
         return { label: true, children: child.props.children }
       }
 
-      // 从 MenuContextItem 元素提取属性
+      // Extract props from MenuContextItem element
       const {
         value: itemValue,
         children: itemChildren,
@@ -196,7 +196,7 @@ const SelectComponent = memo(function SelectComponent(props: SelectProps) {
     })
   }, [itemElements])
 
-  // 创建只包含可选择items的数组（不包含divider和label）
+  // Create array containing only selectable items (excluding divider and label)
   const selectableOptions = useMemo(() => {
     return options.filter((option) => !option.divider && !option.label)
   }, [options])
@@ -210,7 +210,7 @@ const SelectComponent = memo(function SelectComponent(props: SelectProps) {
   const selectTimeoutRef = useRef<ReturnType<typeof setTimeout>>()
   const scrollRef = useRef<HTMLDivElement>(null)
 
-  // 将所有 refs 组合到一个对象中，用 useMemo 包装以避免重新创建
+  // Combine all refs into one object, wrapped with useMemo to avoid recreation
   const refs = useMemo(
     () => ({
       list: listRef,
@@ -221,27 +221,27 @@ const SelectComponent = memo(function SelectComponent(props: SelectProps) {
       selectTimeout: selectTimeoutRef,
       scroll: scrollRef,
     }),
-    [], // refs 是稳定的引用，不需要依赖项
+    [], // refs are stable references, no dependencies needed
   )
 
-  // 状态管理
+  // State management
   const [open, setOpen] = useState(false)
-  const [fallback, setFallback] = useState(false) // 关键：fallback 机制
+  const [fallback, setFallback] = useState(false) // Key: fallback mechanism
   const [touch, setTouch] = useState(false)
   const [scrollTop, setScrollTop] = useState(0)
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
-  const [innerOffset, setInnerOffset] = useState(0) // 关键：内部偏移
+  const [innerOffset, setInnerOffset] = useState(0) // Key: inner offset
 
-  // 合并受控与非受控打开状态
+  // Merge controlled and uncontrolled open state
   const isControlledOpen = controlledOpen !== undefined ? controlledOpen : open
 
-  // 生成唯一 ID
+  // Generate unique ID
   const baseId = useId()
   const menuId = `menu-${baseId}`
   const nodeId = useFloatingNodeId()
 
-  // 处理打开状态变化
+  // Handle open state change
   const handleOpenChange = useEventCallback((newOpen: boolean) => {
     if (controlledOpen === undefined) {
       setOpen(newOpen)
@@ -249,22 +249,22 @@ const SelectComponent = memo(function SelectComponent(props: SelectProps) {
     onOpenChange?.(newOpen)
   })
 
-  // 确定当前选中索引
+  // Determine current selected index
   const currentSelectedIndex = useMemo(() => {
     if (value === undefined) return selectedIndex
 
-    // 在可选择的options中找到索引
+    // Find index in selectable options
     const index = selectableOptions.findIndex((option) => option.value === value)
     return index === -1 ? selectedIndex : index
   }, [value, selectedIndex, selectableOptions])
 
-  // 重置状态 - 当菜单关闭时
+  // Reset state when menu closes
   if (!open) {
     if (innerOffset !== 0) setInnerOffset(0)
     if (fallback) setFallback(false)
   }
 
-  // 核心：macOS 风格的 floating 配置
+  // Core: macOS-style floating configuration
   const floating = useFloating({
     nodeId,
     placement,
@@ -276,10 +276,10 @@ const SelectComponent = memo(function SelectComponent(props: SelectProps) {
       })
     },
     transform: false,
-    // 关键：两套 middleware 配置
+    // Key: two middleware configurations
     middleware: fallback
       ? [
-          // Fallback 模式：普通下拉菜单
+          // Fallback mode: standard dropdown menu
           offset(8),
           touch ? shift({ crossAxis: true, padding: 16 }) : flip({ padding: 16 }),
           size({
@@ -295,7 +295,7 @@ const SelectComponent = memo(function SelectComponent(props: SelectProps) {
           }),
         ]
       : [
-          // 正常模式：macOS 风格 inner positioning
+          // Normal mode: macOS-style inner positioning
           inner({
             listRef: refs.list,
             overflowRef: refs.overflow,
@@ -319,7 +319,7 @@ const SelectComponent = memo(function SelectComponent(props: SelectProps) {
         ],
   })
 
-  // 交互处理器配置 - 统一写法，与 DropdownV2 保持一致
+  // Interaction handlers configuration
   const click = useClick(floating.context, {
     event: "mousedown",
     stickIfOpen: false,
@@ -331,7 +331,7 @@ const SelectComponent = memo(function SelectComponent(props: SelectProps) {
 
   const role = useRole(floating.context, { role: "listbox" })
 
-  // 关键：useInnerOffset 用于处理内部偏移 (Select 特有)
+  // Key: useInnerOffset for handling inner offset (Select-specific)
   const innerOffsetInteraction = useInnerOffset(floating.context, {
     enabled: !fallback,
     onChange: (offset) => setInnerOffset(offset as number),
@@ -365,7 +365,7 @@ const SelectComponent = memo(function SelectComponent(props: SelectProps) {
     typeahead,
   ])
 
-  // 菜单打开时的效果
+  // Effect when menu opens
   useEffect(() => {
     if (isControlledOpen) {
       refs.selectTimeout.current = setTimeout(() => {
@@ -383,7 +383,7 @@ const SelectComponent = memo(function SelectComponent(props: SelectProps) {
     }
   }, [isControlledOpen])
 
-  // 使用共享的滚动逻辑
+  // Use shared scroll logic
   const { handleArrowScroll, handleArrowHide, scrollProps } = useMenuScroll({
     scrollRef: refs.scroll,
     selectTimeoutRef: refs.selectTimeout,
@@ -395,7 +395,7 @@ const SelectComponent = memo(function SelectComponent(props: SelectProps) {
     setInnerOffset,
   })
 
-  // 处理选择
+  // Handle selection
   const handleSelect = useEventCallback((index: number) => {
     if (readOnly) return
 
@@ -415,10 +415,10 @@ const SelectComponent = memo(function SelectComponent(props: SelectProps) {
     }
   })
 
-  // 处理焦点状态
+  // Handle focus state
   const [hasFocusInside, setHasFocusInside] = useState(false)
 
-  // 创建 MenuContext 值
+  // Create MenuContext value
   const menuContextValue = useMemo(
     () => ({
       activeIndex,
@@ -434,40 +434,40 @@ const SelectComponent = memo(function SelectComponent(props: SelectProps) {
     [activeIndex, getItemProps, isControlledOpen, readOnly, variant, handleOpenChange],
   )
 
-  // 注册列表项
+  // Register list item
   const registerItem = useEventCallback((index: number, node: HTMLElement | null) => {
     refs.list.current[index] = node
     const option = selectableOptions[index]
     refs.listContent.current[index] = option ? option.value || null : null
   })
 
-  // 渲染菜单项
+  // Render menu items
   const menuItems = useMemo(() => {
     let selectableIndex = 0
 
     return options.map((option, index) => {
-      // 分隔符
+      // Divider
       if (option.divider) {
         return <MenuDivider key={`divider-${index}`} />
       }
 
-      // 标签
+      // Label
       if (option.label) {
         return <MenuContextLabel key={`label-${index}`}>{option.children}</MenuContextLabel>
       }
 
-      // 选项项
+      // Option item
       const currentSelectableIndex = selectableIndex
-      selectableIndex++ // 递增可选择项目索引
+      selectableIndex++ // Increment selectable item index
 
       const isSelected = currentSelectedIndex === currentSelectableIndex
       const isDisabled = !!option.disabled
 
-      // 检查是否有自定义的 onClick
+      // Check if custom onClick exists
       const childProps = option.element?.props as MenuContextItemProps
       const customActive = childProps?.onClick
 
-      // 事件处理器
+      // Event handlers
       const eventHandlers = {
         onTouchStart: () => {
           if (customActive) return
@@ -492,7 +492,7 @@ const SelectComponent = memo(function SelectComponent(props: SelectProps) {
             handleSelect(currentSelectableIndex)
           }
 
-          // 重置选择延迟
+          // Reset selection delay
           if (refs.selectTimeout.current) {
             clearTimeout(refs.selectTimeout.current)
           }
@@ -537,7 +537,7 @@ const SelectComponent = memo(function SelectComponent(props: SelectProps) {
     })
   }, [triggerElement, isControlledOpen, sizeProp])
 
-  // 错误处理
+  // Error handling
   if (!triggerElement || !contentElement) {
     console.error("Select requires both Select.Trigger and Select.Content components as children")
     return null
@@ -612,7 +612,7 @@ const SelectComponent = memo(function SelectComponent(props: SelectProps) {
                     })}
                   </MenuContext.Provider>
 
-                  {/* 滚动箭头 */}
+                  {/* Scroll arrows */}
                   {["up", "down"].map((dir) => (
                     <MenuScrollArrow
                       key={dir}
@@ -650,7 +650,6 @@ const BaseSelect = memo(function Select(props: SelectProps) {
   return <SelectComponent {...props}>{children}</SelectComponent>
 })
 
-// 创建并导出带有静态属性的 Select 组件
 export const Select = Object.assign(BaseSelect, {
   Item: MenuContextItem,
   Trigger: MenuTrigger,

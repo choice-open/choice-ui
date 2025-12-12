@@ -1,4 +1,4 @@
-import { DialogPosition } from "../types"
+import type { DialogPosition } from "../types"
 
 export function calculateInitialPosition(
   preset: DialogPosition,
@@ -10,9 +10,9 @@ export function calculateInitialPosition(
 ): { x: number; y: number } {
   const vw = viewportWidth ?? (typeof window !== "undefined" ? window.innerWidth : 0)
   const vh = viewportHeight ?? (typeof window !== "undefined" ? window.innerHeight : 0)
-  const padding = positionPadding // 边距
+  const padding = positionPadding // Padding
 
-  // 计算水平位置
+  // Calculate horizontal position
   let x = 0
   if (preset.includes("left")) {
     x = padding
@@ -22,7 +22,7 @@ export function calculateInitialPosition(
     x = (vw - dialogWidth) / 2
   }
 
-  // 计算垂直位置
+  // Calculate vertical position
   let y = 0
   if (preset.includes("top")) {
     y = padding

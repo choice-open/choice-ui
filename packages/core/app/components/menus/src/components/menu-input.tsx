@@ -1,11 +1,10 @@
 import { Input, type InputProps } from "@choice-ui/input"
-
 import { forwardRef, useCallback } from "react"
 
 export const MenuInput = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   const { className, onKeyDown, ...rest } = props
 
-  // 阻止键盘事件冒泡，防止被 useTypeahead 截获
+  // Prevent keyboard event bubbling, prevent useTypeahead from intercepting
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
       onKeyDown?.(e)

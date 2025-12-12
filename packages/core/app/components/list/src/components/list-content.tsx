@@ -17,10 +17,10 @@ export const ListContent = forwardRef<HTMLDivElement, ListContentProps>((props, 
   const level = useMemo(() => {
     if (!parentId) return 0
 
-    // 使用迭代而非递归计算层级，避免潜在的调用栈溢出
+    // Use iteration instead of recursion to calculate level, avoid potential call stack overflow
     let currentLevel = 1
     let currentParentId = parentId
-    const visitedIds = new Set<string>() // 避免循环引用导致的无限循环
+    const visitedIds = new Set<string>() // Avoid infinite loop caused by circular references
 
     while (currentParentId && !visitedIds.has(currentParentId)) {
       visitedIds.add(currentParentId)
@@ -33,22 +33,22 @@ export const ListContent = forwardRef<HTMLDivElement, ListContentProps>((props, 
         break
       }
 
-      // 安全检查，防止超过最大嵌套层级
+      // Safe check to prevent exceeding maximum nested levels
       if (currentLevel > 5) break
     }
 
     return currentLevel
   }, [parentId, itemsMap])
 
-  // 早期返回，避免不必要的样式计算
+  // Early return to avoid unnecessary style calculations
   if (parentId && !isSubListExpanded(parentId)) {
     return null
   }
 
-  // 类型安全：确保level值在1-5范围内
+  // Type safety: ensure level value is in the range of 1-5
   const safeLevel = level > 5 ? 5 : ((level < 0 ? 0 : level) as 0 | 1 | 2 | 3 | 4 | 5)
 
-  const styles = ListContentTv({
+  const tv = ListContentTv({
     showReferenceLine: shouldShowReferenceLine,
     level: safeLevel,
     size,
@@ -60,7 +60,7 @@ export const ListContent = forwardRef<HTMLDivElement, ListContentProps>((props, 
         ref={ref}
         role="group"
         data-level={safeLevel}
-        className={tcx(styles, className)}
+        className={tcx(tv, className)}
         {...rest}
       >
         {children}

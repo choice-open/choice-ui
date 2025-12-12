@@ -117,7 +117,7 @@
           "type": "undefined | \"input\" | \"coordinate\"",
           "required": false,
           "defaultValue": "\"input\"",
-          "description": ""
+          "description": "Trigger type: \"input\" for input mode, \"coordinate\" for coordinate mode"
         },
         {
           "name": "value",
@@ -213,6 +213,12 @@
         {
           "name": "variant",
           "type": "undefined | \"default\" | \"dark\" | \"reset\"",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "ref",
+          "type": "((instance: HTMLInputElement | null) => void) | RefObject<HTMLInputElement> | null | undefined",
           "required": false,
           "description": ""
         }

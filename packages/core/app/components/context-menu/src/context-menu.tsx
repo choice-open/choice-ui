@@ -103,8 +103,11 @@ interface ContextMenuContextType {
 
 const ContextMenuContext = React.createContext<ContextMenuContextType | null>(null)
 
-// ContextMenu Target component
-const ContextMenuTrigger: React.FC<ContextMenuTriggerProps> = ({ children, ...props }) => {
+// ContextMenu Trigger component
+const ContextMenuTrigger = memo<ContextMenuTriggerProps>(function ContextMenuTrigger({
+  children,
+  ...props
+}) {
   const contextMenu = useContext(ContextMenuContext)
 
   const handleContextMenu = useCallback(
@@ -128,7 +131,9 @@ const ContextMenuTrigger: React.FC<ContextMenuTriggerProps> = ({ children, ...pr
       {children}
     </div>
   )
-}
+})
+
+ContextMenuTrigger.displayName = "ContextMenuTrigger"
 
 const ContextMenuComponent = memo(function ContextMenuComponent(props: ContextMenuProps) {
   const {
@@ -153,25 +158,25 @@ const ContextMenuComponent = memo(function ContextMenuComponent(props: ContextMe
     ...rest
   } = props
 
-  // References - 使用统一的 refs 管理
+  // References
   const { scrollRef, elementsRef, labelsRef, selectTimeoutRef } = useMenuBaseRefs()
   const allowMouseUpCloseRef = useRef(false)
 
-  // 状态管理 - 参考 dropdown.tsx
+  // State management
   const [isOpen, setIsOpen] = useState(false)
   const [hasFocusInside, setHasFocusInside] = useState(false)
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
   const [scrollTop, setScrollTop] = useState(0)
   const [touch, setTouch] = useState(false)
 
-  // 受控/非受控状态处理
+  // Controlled/uncontrolled state handling
   const isControlledOpen = controlledOpen === undefined ? isOpen : controlledOpen
 
-  // 生成唯一 ID
+  // Generate unique ID
   const baseId = useId()
   const menuId = `context-menu-${baseId}`
 
-  // 处理开关状态变化（需要在 useMenuTree 之前定义）
+  // Handle open state change (must be defined before useMenuTree)
   const handleOpenChange = useEventCallback((newOpen: boolean) => {
     if (disabled && newOpen) {
       return
@@ -183,15 +188,14 @@ const ContextMenuComponent = memo(function ContextMenuComponent(props: ContextMe
     onOpenChange?.(newOpen)
   })
 
-  // 使用统一的 tree 管理
+  // Use unified tree management
   const { tree, nodeId, parentId, item, isNested } = useMenuTree({
     disabledNested,
     handleOpenChange,
     isControlledOpen,
   })
 
-  // Floating UI 配置 - 参考 dropdown.tsx，但适配 ContextMenu 的特殊需求
-  // 使用 useMemo 缓存 middleware 数组，避免每次渲染都创建新数组
+  // Floating UI configuration - memoize middleware array to avoid recreating on each render
   const middleware = useMemo(
     () => [
       offset({ mainAxis: isNested ? 10 : offsetDistance, alignmentAxis: isNested ? -4 : 0 }),
@@ -201,13 +205,13 @@ const ContextMenuComponent = memo(function ContextMenuComponent(props: ContextMe
         padding: 4,
         apply(args) {
           const { elements, availableHeight } = args
-          // 优先使用 floating 元素的 scrollHeight，因为 scrollRef 在内容重新渲染时可能还没更新
+          // Prefer floating element's scrollHeight as scrollRef may not be updated yet on re-render
           const floatingScrollHeight = elements.floating.scrollHeight
           const scrollRefHeight = scrollRef.current?.scrollHeight || 0
           const contentHeight = Math.max(floatingScrollHeight, scrollRefHeight)
 
-          // 根据内容实际高度和可用空间计算合适的高度
-          // 当 contentHeight 为 0 时（内容还没渲染），使用 availableHeight 避免设置 maxHeight: 0
+          // Calculate appropriate height based on actual content height and available space
+          // When contentHeight is 0 (content not yet rendered), use availableHeight to avoid maxHeight: 0
           const maxHeight =
             contentHeight > 0 ? Math.min(contentHeight, availableHeight) : availableHeight
 
@@ -216,7 +220,7 @@ const ContextMenuComponent = memo(function ContextMenuComponent(props: ContextMe
             display: "flex",
             flexDirection: "column",
           })
-          // 确保 MenusBase (通过 scrollRef) 能够正确继承高度并滚动
+          // Ensure scroll container properly inherits height and can scroll
           if (scrollRef.current) {
             scrollRef.current.style.height = "100%"
             scrollRef.current.style.maxHeight = "100%"
@@ -236,7 +240,7 @@ const ContextMenuComponent = memo(function ContextMenuComponent(props: ContextMe
     whileElementsMounted: autoUpdate,
   })
 
-  // 交互处理器配置 - 参考 dropdown.tsx
+  // Interaction handlers configuration
   const hover = useHover(context, {
     enabled: isNested,
     delay: { open: 75 },
@@ -279,7 +283,7 @@ const ContextMenuComponent = memo(function ContextMenuComponent(props: ContextMe
     typeahead,
   ])
 
-  // ContextMenu 特有的右键菜单处理
+  // ContextMenu specific right-click handling
   const handleContextMenu = useEventCallback((e: MouseEvent) => {
     e.preventDefault()
 
@@ -287,7 +291,7 @@ const ContextMenuComponent = memo(function ContextMenuComponent(props: ContextMe
       return
     }
 
-    // 设置虚拟位置引用 - 基于鼠标位置
+    // Set virtual position reference based on mouse position
     refs.setPositionReference({
       getBoundingClientRect() {
         return {
@@ -305,7 +309,7 @@ const ContextMenuComponent = memo(function ContextMenuComponent(props: ContextMe
 
     handleOpenChange(true)
 
-    // 处理鼠标抬起关闭行为
+    // Handle mouse up close behavior
     allowMouseUpCloseRef.current = false
     const timeout = setTimeout(() => {
       allowMouseUpCloseRef.current = true
@@ -314,25 +318,25 @@ const ContextMenuComponent = memo(function ContextMenuComponent(props: ContextMe
     return () => clearTimeout(timeout)
   })
 
-  // Tree 事件处理已由 useMenuTree 统一管理
+  // Tree event handling is managed by useMenuTree
 
-  // 确保滚动容器正确设置高度
+  // Ensure scroll container has correct height
   useMenuScrollHeight({
     isControlledOpen,
     isPositioned,
     scrollRef,
   })
 
-  // 处理鼠标抬起关闭
+  // Handle mouse up close
   useEffect(() => {
     const handleMouseUp = (event: MouseEvent) => {
       if (allowMouseUpCloseRef.current) {
         const target = event.target as Node
-        // 检查是否点击在任何浮动菜单内部
+        // Check if clicked inside any floating menu
         const menuElements = document.querySelectorAll('[role="menu"]')
         for (const menuElement of menuElements) {
           if (menuElement.contains(target)) {
-            return // 如果点击在菜单内部，不关闭
+            return // Don't close if clicked inside menu
           }
         }
         handleOpenChange(false)
@@ -347,7 +351,7 @@ const ContextMenuComponent = memo(function ContextMenuComponent(props: ContextMe
 
   // Handle triggerRef and triggerSelector support
   useEffect(() => {
-    // 优先使用 triggerRef，其次使用 triggerSelector
+    // Prefer triggerRef, fallback to triggerSelector
     const element =
       triggerRef?.current ??
       (triggerSelector ? document.querySelector<HTMLElement>(triggerSelector) : null)
@@ -376,7 +380,7 @@ const ContextMenuComponent = memo(function ContextMenuComponent(props: ContextMe
     }
   }, [triggerRef, triggerSelector, refs, handleContextMenu, disabled])
 
-  // 使用共享的滚动逻辑 - 参考 dropdown.tsx
+  // Use shared scroll logic
   const { handleArrowScroll, handleArrowHide, scrollProps } = useMenuScroll({
     scrollRef,
     selectTimeoutRef,
@@ -388,7 +392,7 @@ const ContextMenuComponent = memo(function ContextMenuComponent(props: ContextMe
     setInnerOffset: undefined,
   })
 
-  // 触摸处理 - 参考 dropdown.tsx
+  // Touch handling
   const handleTouchStart = useEventCallback(() => {
     setTouch(true)
   })
@@ -399,17 +403,17 @@ const ContextMenuComponent = memo(function ContextMenuComponent(props: ContextMe
     }
   })
 
-  // 焦点处理
+  // Focus handling
   const handleFocus = useEventCallback((event: React.FocusEvent<HTMLButtonElement>) => {
     setHasFocusInside(false)
   })
 
-  // 创建关闭方法
+  // Create close handler
   const handleClose = useEventCallback(() => {
     handleOpenChange(false)
   })
 
-  // 处理子元素 - 参考 dropdown.tsx
+  // Process children
   const { targetElement, subTriggerElement, contentElement } = useMemo(() => {
     const childrenArray = React.Children.toArray(children)
 
@@ -432,14 +436,14 @@ const ContextMenuComponent = memo(function ContextMenuComponent(props: ContextMe
     }
   }, [children])
 
-  // 确保 contentElement 存在
+  // Ensure contentElement exists
   if (!contentElement && isControlledOpen) {
     console.error(
       "ContextMenu requires a ContextMenu.Content component as a child. Example: <ContextMenu><ContextMenu.Target>Target</ContextMenu.Target><ContextMenu.Content>{items}</ContextMenu.Content></ContextMenu>",
     )
   }
 
-  // 创建 MenuContext 值 - 参考 dropdown.tsx
+  // Create MenuContext value
   const contextValue = useMemo(
     () => ({
       activeIndex,
@@ -455,7 +459,7 @@ const ContextMenuComponent = memo(function ContextMenuComponent(props: ContextMe
     [activeIndex, getItemProps, handleClose, isControlledOpen, readOnly, selection, variant],
   )
 
-  // 创建 ContextMenu 上下文值
+  // Create ContextMenu context value
   const contextMenuContextValue = useMemo(
     () => ({
       handleContextMenu,
@@ -530,7 +534,7 @@ const ContextMenuComponent = memo(function ContextMenuComponent(props: ContextMe
                         })}
                     </MenuContext.Provider>
 
-                    {/* 滚动箭头 */}
+                    {/* Scroll arrows */}
                     {["up", "down"].map((dir) => (
                       <MenuScrollArrow
                         key={dir}

@@ -66,7 +66,7 @@ const ListRoot = forwardRef<HTMLDivElement, ListProps>((props, ref) => {
   const handleKeyDown = useListKeyboard()
   const { setActiveItem } = useActiveItemContext()
 
-  const styles = ListTv()
+  const tv = ListTv()
 
   return (
     <div
@@ -76,7 +76,7 @@ const ListRoot = forwardRef<HTMLDivElement, ListProps>((props, ref) => {
       onKeyDown={handleKeyDown}
       onMouseLeave={() => setActiveItem(null)}
       {...rest}
-      className={tcx(styles, className)}
+      className={tcx(tv, className)}
     >
       {children}
     </div>

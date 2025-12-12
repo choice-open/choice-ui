@@ -41,7 +41,7 @@ const SegmentedBase = forwardRef<HTMLDivElement, SegmentedProps>(
       onChange?.(value)
     })
 
-    // 计算子元素数量来设置网格列数
+    // Calculate the number of child elements to set the grid column count
     const itemCount = useMemo(() => Children.count(children), [children])
     const gridStyles = useMemo(
       () => ({
@@ -51,7 +51,7 @@ const SegmentedBase = forwardRef<HTMLDivElement, SegmentedProps>(
       [style, itemCount],
     )
 
-    const styles = segmentedControlTv({
+    const tv = segmentedControlTv({
       variant,
     })
 
@@ -73,7 +73,7 @@ const SegmentedBase = forwardRef<HTMLDivElement, SegmentedProps>(
       >
         <div
           ref={ref}
-          className={tcx(styles.root(), className)}
+          className={tcx(tv.root(), className)}
           style={gridStyles}
           role="radiogroup"
           {...ariaProps}

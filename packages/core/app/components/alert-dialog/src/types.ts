@@ -1,6 +1,6 @@
 import type { ReactNode } from "react"
 
-// 按钮变体类型
+// Button variant types
 export type AlertDialogButtonVariant =
   | "primary"
   | "secondary"
@@ -15,10 +15,10 @@ export type AlertDialogButtonVariant =
   | "dark"
   | "reset"
 
-// 对话框变体类型
+// Dialog variant types
 export type AlertDialogVariant = "default" | "danger" | "success" | "warning"
 
-// 按钮配置
+// Button configuration
 export interface AlertDialogButton {
   autoFocus?: boolean
   disabled?: boolean
@@ -27,7 +27,7 @@ export interface AlertDialogButton {
   variant?: AlertDialogButtonVariant
 }
 
-// 基础配置接口
+// Base configuration interface
 export interface AlertDialogBaseConfig {
   className?: string
   closeOnEscape?: boolean
@@ -40,7 +40,7 @@ export interface AlertDialogBaseConfig {
   variant?: AlertDialogVariant
 }
 
-// 确认对话框配置
+// Confirm dialog configuration
 export interface AlertDialogConfirmConfig extends AlertDialogBaseConfig {
   cancelText?: string
   cancelVariant?: AlertDialogButtonVariant
@@ -48,30 +48,30 @@ export interface AlertDialogConfirmConfig extends AlertDialogBaseConfig {
   confirmVariant?: AlertDialogButtonVariant
 }
 
-// 提示对话框配置
+// Alert dialog configuration
 export interface AlertDialogAlertConfig extends AlertDialogBaseConfig {
   confirmText?: string
   confirmVariant?: AlertDialogButtonVariant
 }
 
-// 自定义对话框配置
+// Custom dialog configuration
 export interface AlertDialogCustomConfig extends AlertDialogBaseConfig {
   buttons: AlertDialogButton[]
 }
 
-// 对话框配置联合类型
+// Dialog configuration union type
 export type AlertDialogConfig =
   | AlertDialogConfirmConfig
   | AlertDialogAlertConfig
   | AlertDialogCustomConfig
 
-// 对话框类型
+// Dialog type
 export type AlertDialogType = "confirm" | "alert" | "custom"
 
-// 对话框返回值类型
+// Dialog result type
 export type AlertDialogResult = boolean | void | string
 
-// 对话框状态
+// Dialog state
 export interface AlertDialogState {
   config: AlertDialogConfig | null
   isOpen: boolean
@@ -84,7 +84,7 @@ export interface AlertDialogState {
   type: AlertDialogType | null
 }
 
-// 对话框操作类型
+// Dialog action type
 export type AlertDialogAction =
   | {
       payload: {
@@ -98,51 +98,47 @@ export type AlertDialogAction =
   | { type: "NEXT" }
   | { type: "CLEAR_QUEUE" }
 
-// Hook 返回值类型
+// Hook return type
 export interface UseAlertDialogReturn {
   /**
-   * 显示提示对话框
-   * @param config 字符串或配置对象
-   * @returns Promise<void> 用户确认后resolve
+   * Show alert dialog
+   * @param config String or config object
+   * @returns Promise<void> Resolves when user confirms
    */
   alert: (config: string | AlertDialogAlertConfig) => Promise<void>
 
   /**
-   * 关闭所有对话框
+   * Close all dialogs
    */
   closeAll: () => void
 
   /**
-   * 显示确认对话框
-   * @param config 字符串或配置对象
-   * @returns Promise<boolean> 返回用户选择结果
+   * Show confirm dialog
+   * @param config String or config object
+   * @returns Promise<boolean> Returns user selection result
    */
   confirm: (config: string | AlertDialogConfirmConfig) => Promise<boolean>
 
   /**
-   * 显示自定义对话框
-   * @param config 自定义配置对象
-   * @returns Promise<string> 返回用户选择的按钮value
+   * Show custom dialog
+   * @param config Custom config object
+   * @returns Promise<string> Returns selected button value
    */
   show: (config: AlertDialogCustomConfig) => Promise<string>
 
   /**
-   * 当前对话框状态
+   * Current dialog state
    */
   state: AlertDialogState
 }
 
-// Context 类型
+// Context type
 export interface AlertDialogContextType extends UseAlertDialogReturn {
-  // 内部方法
+  // Internal method
   _handleAction: (action: AlertDialogAction) => void
 }
 
-// 简化的 confirm 和 alert 函数类型
-export type ConfirmFunction = (
-  config: string | AlertDialogConfirmConfig,
-) => Promise<boolean>
-export type AlertFunction = (
-  config: string | AlertDialogAlertConfig,
-) => Promise<void>
+// Simplified confirm and alert function types
+export type ConfirmFunction = (config: string | AlertDialogConfirmConfig) => Promise<boolean>
+export type AlertFunction = (config: string | AlertDialogAlertConfig) => Promise<void>
 export type ShowFunction = (config: AlertDialogCustomConfig) => Promise<string>

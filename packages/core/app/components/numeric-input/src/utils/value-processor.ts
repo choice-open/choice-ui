@@ -1,10 +1,10 @@
 /**
- * 应用数值约束（最小值、最大值、小数位数）
- * @param value 原始数值
- * @param min 最小值
- * @param max 最大值
- * @param decimal 小数位数
- * @returns 处理后的数值
+ * Apply numeric constraints (minimum value, maximum value, decimal places)
+ * @param value Original value
+ * @param min Minimum value
+ * @param max Maximum value
+ * @param decimal Decimal places
+ * @returns Processed value
  */
 export function applyConstraints(
   value: number,
@@ -12,19 +12,19 @@ export function applyConstraints(
   max: number = Infinity,
   decimal: number = 2,
 ): number {
-  // 应用小数位数限制
+  // Apply decimal places limit
   const roundedValue = parseFloat(value.toFixed(decimal))
 
-  // 应用范围限制
+  // Apply range limit
   return Math.min(Math.max(roundedValue, min), max)
 }
 
 /**
- * 批量应用约束到多个值
- * @param values 值对象
- * @param min 最小值
- * @param max 最大值
- * @param decimal 小数位数
+ * Batch apply constraints to multiple values
+ * @param values Value object
+ * @param min Minimum value
+ * @param max Maximum value
+ * @param decimal Decimal places
  */
 export function applyConstraintsToValues(
   values: Record<string, number>,
@@ -38,9 +38,9 @@ export function applyConstraintsToValues(
 }
 
 /**
- * 应用自定义转换函数到值
- * @param values 值对象
- * @param transformFn 转换函数
+ * Apply custom transformation function to values
+ * @param values Value object
+ * @param transformFn Transformation function
  */
 export function applyTransform(
   values: Record<string, number>,

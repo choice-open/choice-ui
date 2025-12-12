@@ -81,12 +81,6 @@
           "description": ""
         },
         {
-          "name": "initialFocus",
-          "type": "number | MutableRefObject<HTMLElement | null> | undefined",
-          "required": false,
-          "description": "@deprecated use focusManagerProps.initialFocus instead"
-        },
-        {
           "name": "interactions",
           "type": "undefined | \"hover\" | \"click\" | \"focus\" | \"none\"",
           "required": false,
@@ -217,12 +211,6 @@
           "type": "Partial<FloatingFocusManagerProps> | undefined",
           "required": false,
           "description": ""
-        },
-        {
-          "name": "initialFocus",
-          "type": "number | MutableRefObject<HTMLElement | null> | undefined",
-          "required": false,
-          "description": "@deprecated use focusManagerProps.initialFocus instead"
         },
         {
           "name": "interactions",

@@ -11,12 +11,12 @@ export interface MenuCheckboxProps extends HTMLProps<HTMLDivElement> {
 
 export const MenuCheckbox = memo(function MenuCheckbox(props: MenuCheckboxProps) {
   const { active, selected, disabled, indeterminate, ...rest } = props
-  const styles = MenuCheckboxTv({ active, selected })
+  const tv = MenuCheckboxTv({ active, selected })
 
   return (
-    <div className={styles.root()}>
+    <div className={tv.root()}>
       {selected && (
-        <div className={styles.checkbox()}>
+        <div className={tv.checkbox()}>
           <Check />
         </div>
       )}

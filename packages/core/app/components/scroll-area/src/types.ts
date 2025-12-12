@@ -21,17 +21,17 @@ export interface ScrollState {
 }
 
 /**
- * 滚动位置信息 - 简化版本，只提供核心数据
+ * Scroll position information - simplified version, only providing core data
  */
 export interface ScrollPosition {
-  /** 水平滚动位置（0-1） */
+  /** Horizontal scroll position (0-1) */
   left: number
-  /** 垂直滚动位置（0-1） */
+  /** Vertical scroll position (0-1) */
   top: number
 }
 
 /**
- * Render prop函数类型
+ * Render prop function type
  */
 export type ScrollAreaRenderProp = (position: ScrollPosition) => React.ReactNode
 
@@ -41,7 +41,7 @@ export interface ScrollAreaContextType {
   isHovering: boolean
   isScrolling: boolean
   orientation: ScrollOrientation
-  // ID 相关的属性
+  // ID related properties
   rootId: string
   scrollState: ScrollState
   scrollbarMode: ScrollbarMode
@@ -64,11 +64,11 @@ export interface ScrollAreaContextType {
 }
 
 export interface ScrollAreaProps extends Omit<React.ComponentPropsWithoutRef<"div">, "children"> {
-  /** 可访问名称 */
+  /** Accessible name */
   "aria-label"?: string
-  /** 引用提供标签的元素ID */
+  /** Reference to the element ID providing the label */
   "aria-labelledby"?: string
-  /** 标准children或render prop函数 */
+  /** Standard children or render prop function */
   children?: React.ReactNode | ScrollAreaRenderProp
   hoverBoundary?: HoverBoundary
   orientation?: ScrollOrientation

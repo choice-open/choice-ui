@@ -1,8 +1,7 @@
-import React from "react"
-import { render, screen, fireEvent, waitFor, act } from "@testing-library/react"
-import userEvent from "@testing-library/user-event"
 import "@testing-library/jest-dom"
-import { Dialog, DialogPosition } from "../dialog"
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react"
+import { Dialog } from "../dialog"
+import type { DialogPosition } from "../types"
 
 // Mock icons
 jest.mock("@choiceform/icons-react", () => ({

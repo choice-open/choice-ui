@@ -89,7 +89,7 @@ export function useFloatingDialog({
     },
   })
 
-  // 清理RAF
+  // Clean up RAF
   useEffect(() => {
     return () => {
       if (rafIdRef.current !== null) {
@@ -101,29 +101,29 @@ export function useFloatingDialog({
   const { refs, context, floatingStyles } = useFloating({
     open: innerOpen,
     onOpenChange: (open) => {
-      // 只处理关闭情况
+      // Only handle close case
       if (!open) {
-        // 设置正在关闭状态
+        // Set closing state
         setIsClosing(true)
-        // 先重置拖拽状态和调整尺寸状态，保持位置和尺寸不变
+        // Reset drag state and resize state, keep position and size
         resetDragState()
         resetResizeState()
         setIsReady(false)
-        // 关闭Dialog
+        // Close Dialog
         setInnerOpen(false)
 
-        // 如果不需要记住位置和尺寸，在下一帧重置它们
+        // If rememberPosition and rememberSize are false, reset them in the next frame
         const needReset = (!rememberPosition && resetPosition) || (!rememberSize && resetSize)
 
         if (needReset) {
-          // 清理可能存在的之前的RAF
+          // Clean up possible previous RAF
           if (rafIdRef.current !== null) {
             cancelAnimationFrame(rafIdRef.current)
           }
 
-          // 在下一帧重置位置和尺寸，确保UI先更新
+          // Reset position and size in the next frame, ensure UI updates first
           rafIdRef.current = requestAnimationFrame(() => {
-            // 分别处理位置和尺寸的重置
+            // Reset position and size separately
             if (!rememberPosition && resetPosition) {
               resetPosition()
             }
@@ -140,7 +140,7 @@ export function useFloatingDialog({
             }
           })
         } else {
-          // 不需要重置任何东西
+          // No need to reset anything
           if (afterOpenChange) {
             afterOpenChange(false)
           }
@@ -183,7 +183,7 @@ export function useFloatingDialog({
       resizeSize?: { height: number; width: number },
       elementRef?: React.RefObject<HTMLElement>,
     ) => {
-      // 如果存在拖拽位置，优先使用该位置
+      // If drag position exists, use it first
       if (dragPosition) {
         const dragStyles = {
           ...floatingStyles,
@@ -191,7 +191,7 @@ export function useFloatingDialog({
           top: `${dragPosition.y}px`,
           left: `${dragPosition.x}px`,
           transform: "none",
-          // 拖拽时移除过渡动画
+          // Remove transition animation when dragging
           transition: "none",
         } as React.CSSProperties
 
@@ -203,13 +203,13 @@ export function useFloatingDialog({
         return dragStyles
       }
 
-      // 如果没有拖拽位置但有初始位置设置，计算初始位置
+      // If there is no drag position but there is an initial position set, calculate initial position
       if (initialPosition && initialPosition !== "center") {
-        // 尝试获取实际的元素尺寸
+        // Try to get actual element size
         let dialogWidth = resizeSize?.width || 512
         let dialogHeight = resizeSize?.height || 384
 
-        // 如果有 elementRef，尝试获取实际尺寸
+        // If there is elementRef, try to get actual size
         if (elementRef?.current) {
           const rect = elementRef.current.getBoundingClientRect()
           if (rect.width > 0 && rect.height > 0) {
@@ -241,7 +241,7 @@ export function useFloatingDialog({
         return initialStyles
       }
 
-      // 默认居中样式
+      // Default center style
       const baseStyles = {
         ...floatingStyles,
         position: "fixed",
@@ -267,14 +267,14 @@ export function useFloatingDialog({
   }, [innerOpen, context])
 
   useEffect(() => {
-    // 只有在 dialog 打开且允许 Escape 关闭时才监听
+    // Only listen when dialog is open and Escape close is allowed
     if (!innerOpen || !closeOnEscape) {
       return
     }
 
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        // 只有在确实要处理这个事件时才阻止传播
+        // Only stop propagation when actually handling this event
         e.stopPropagation()
         e.preventDefault()
         handleClose()

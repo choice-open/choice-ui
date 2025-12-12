@@ -47,7 +47,7 @@ function adjustSize(
   }
 }
 
-// 根据调整方向获取对应的鼠标样式
+// Get corresponding cursor style based on adjustment direction
 function getCursorStyle(direction: ResizeDirection | null): string {
   if (!direction) return "default"
   if (direction.width && direction.height) return "nwse-resize"
@@ -78,29 +78,29 @@ export function useResize(
     size: null,
   })
 
-  // 使用Ref存储尺寸，避免不必要的重渲染
+  // Use Ref to store size, avoid unnecessary re-rendering
   const sizeRef = useRef<Size | null>(null)
-  // 记录初始尺寸，用于重置
+  // Record initial size for reset
   const initialSizeRef = useRef<Size | null>(null)
   const resizeOriginRef = useRef({ x: 0, y: 0, width: 0, height: 0 })
   const isInitializedRef = useRef(false)
   const resizeOffsetRef = useRef({ x: 0, y: 0 })
 
-  // 使用默认尺寸或者DOM尺寸初始化
+  // Use default size or DOM size to initialize
   useEffect(() => {
     if (!isInitializedRef.current && elementRef.current) {
       const rect = elementRef.current.getBoundingClientRect()
 
-      // 如果提供了默认尺寸，优先使用默认尺寸
+      // If default size is provided, use default size first
       const initialSize = {
         width: defaultWidth || rect.width,
         height: defaultHeight || rect.height,
       }
 
-      // 记录初始尺寸用于重置
+      // Record initial size for reset
       initialSizeRef.current = initialSize
 
-      // 仅在首次初始化或不记住尺寸时设置当前尺寸
+      // Only set current size on first initialization or when rememberSize is false
       if (!sizeRef.current || !rememberSize) {
         sizeRef.current = initialSize
         setState((prev) => ({ ...prev, size: initialSize }))
@@ -119,22 +119,22 @@ export function useResize(
     e.preventDefault()
     e.stopPropagation()
 
-    // 记录初始尺寸(只在首次记录)
+    // Record initial size(only on first record)
     if (!initialSizeRef.current) {
-      // 使用默认尺寸或当前尺寸
+      // Use default size or current size
       initialSizeRef.current = {
         width: defaultWidth || rect.width,
         height: defaultHeight || rect.height,
       }
     }
 
-    // 设置 body 的鼠标样式
+    // Set body cursor style
     document.body.style.cursor = getCursorStyle(direction)
 
     setState((prev) => ({ ...prev, isResizing: direction }))
     onResizeStart?.(e, direction)
 
-    // 计算鼠标相对于调整手柄的偏移量
+    // Calculate mouse offset relative to adjustment handle
     if (direction.width) {
       resizeOffsetRef.current.x = rect.right - e.clientX
     }
@@ -158,7 +158,7 @@ export function useResize(
       const rect = elementRef.current?.getBoundingClientRect()
       if (!rect) return
 
-      // 确保在拖拽过程中鼠标样式保持正确
+      // Ensure cursor style is correct during dragging
       document.body.style.cursor = getCursorStyle(direction)
 
       let newWidth = rect.width
@@ -177,7 +177,7 @@ export function useResize(
       }
 
       const adjustedSize = adjustSize(newSize, minWidth, maxWidth, minHeight, maxHeight)
-      // 更新Ref存储的尺寸
+      // Update Ref stored size
       sizeRef.current = adjustedSize
       setState((prev) => ({ ...prev, size: adjustedSize }))
     },
@@ -187,7 +187,7 @@ export function useResize(
   const handleResizeEnd = useCallback(() => {
     if (!enabled) return
 
-    // 恢复 body 的鼠标样式
+    // Restore body cursor style
     document.body.style.cursor = "default"
 
     if (sizeRef.current) {
@@ -197,9 +197,9 @@ export function useResize(
     setState((prev) => ({ ...prev, isResizing: null }))
   }, [enabled, onResizeEnd])
 
-  // 重置尺寸状态
+  // Reset size state
   const resetResizeState = useCallback(() => {
-    // 恢复 body 的鼠标样式
+    // Restore body cursor style
     document.body.style.cursor = "default"
 
     setState((prev) => ({
@@ -208,7 +208,7 @@ export function useResize(
     }))
   }, [])
 
-  // 重置尺寸到初始状态 - 只在不记住尺寸时调用
+  // Reset size to initial state - only call when rememberSize is false
   const resetSize = useCallback(() => {
     if (!rememberSize && initialSizeRef.current) {
       sizeRef.current = initialSizeRef.current
@@ -219,9 +219,9 @@ export function useResize(
     }
   }, [rememberSize])
 
-  // 完全重置，包括所有状态和引用
+  // Completely reset, including all states and references
   const reset = useCallback(() => {
-    // 恢复 body 的鼠标样式
+    // Restore body cursor style
     document.body.style.cursor = "default"
 
     if (!rememberSize) {
@@ -233,29 +233,29 @@ export function useResize(
       initialSizeRef.current = null
       isInitializedRef.current = false
     } else {
-      // 如果需要记住尺寸，只重置调整状态
+      // Reset resize state only when rememberSize is true
       resetResizeState()
     }
   }, [rememberSize, resetResizeState])
 
-  // 当rememberSize变化时
+  // When rememberSize changes
   useEffect(() => {
     if (!rememberSize) {
-      // 如果关闭了记住尺寸，重置尺寸到初始状态
+      // Reset size to initial state when rememberSize is false
       resetSize()
     }
   }, [rememberSize, resetSize])
 
   useEffect(() => {
     if (enabled && state.isResizing) {
-      // 添加键盘事件监听，按ESC取消调整
+      // Add keyboard event listener, press ESC to cancel adjustment
       const handleKeyDown = (e: KeyboardEvent) => {
         if (e.key === "Escape") {
           handleResizeEnd()
         }
       }
 
-      // 添加窗口失焦事件监听，防止用户切换窗口时调整状态未正确清理
+      // Add window blur event listener, prevent adjustment state from not being properly cleaned when user switches windows
       const handleWindowBlur = () => {
         handleResizeEnd()
       }
@@ -270,13 +270,13 @@ export function useResize(
         document.removeEventListener("mouseup", handleResizeEnd)
         document.removeEventListener("keydown", handleKeyDown)
         window.removeEventListener("blur", handleWindowBlur)
-        // 确保清理时恢复鼠标样式
+        // Ensure cursor style is restored when cleaning up
         document.body.style.cursor = "default"
       }
     }
   }, [enabled, state.isResizing, handleResize, handleResizeEnd])
 
-  // 组件卸载时清理
+  // Clean up when component unmounts
   useEffect(() => {
     return () => {
       document.body.style.cursor = "default"

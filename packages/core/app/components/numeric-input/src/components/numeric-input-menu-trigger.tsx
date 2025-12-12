@@ -15,7 +15,7 @@ export const NumericInputMenuTrigger = forwardRef<HTMLButtonElement, NumericInpu
     const { className, type = "menu", ...rest } = props
     const context = useNumericInputContext()
 
-    const style = NumericInputMenuTriggerTv({
+    const tv = NumericInputMenuTriggerTv({
       type,
       disabled: context.disabled,
       variant: context.variant,
@@ -25,7 +25,7 @@ export const NumericInputMenuTrigger = forwardRef<HTMLButtonElement, NumericInpu
       <IconButton
         ref={ref}
         variant={type === "menu" ? (context.disabled ? "ghost" : "solid") : undefined}
-        className={tcx(style, className)}
+        className={tcx(tv, className)}
         disabled={context.disabled}
         {...rest}
       >

@@ -183,11 +183,11 @@ const DialogComponent = memo(function DialogComponent({
 
     if (!backdropChild) return null
 
-    // 克隆 ModalBackdrop 并传递必要的 props
+    // Clone ModalBackdrop and pass necessary props
     return React.cloneElement(backdropChild, {
       isOpen: floating.innerOpen,
       onClose: floating.handleClose,
-      ...backdropChild.props, // 保留原有的 props
+      ...backdropChild.props,
     })
   }, [children, floating.innerOpen, floating.handleClose])
 

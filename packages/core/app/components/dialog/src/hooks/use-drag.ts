@@ -30,12 +30,12 @@ function adjustPosition(
 ): Position {
   const vw = viewportWidth ?? (typeof window !== "undefined" ? window.innerWidth : 0)
   const vh = viewportHeight ?? (typeof window !== "undefined" ? window.innerHeight : 0)
-  // 确保至少 25% 的窗口宽度在可视范围内
+  // Ensure at least 25% of the window width is visible
   const minVisibleWidth = dialogRect.width * MIN_VISIBLE_RATIO
   const maxLeft = vw - minVisibleWidth
   const minLeft = minVisibleWidth - dialogRect.width
 
-  // 确保 header 始终在可视范围内
+  // Ensure header is always visible
   const maxTop = vh - HEADER_HEIGHT
   const minTop = 0
 
@@ -48,13 +48,13 @@ function adjustPosition(
 export function useDrag(elementRef: React.RefObject<HTMLElement>, options: UseDragOptions = {}) {
   const { enabled = true, onDragStart, onDragEnd, rememberPosition = false } = options
 
-  // 使用useState管理活跃状态
+  // Use useState to manage active state
   const [state, setState] = useState<DragState>({
     isDragging: false,
     position: null,
   })
 
-  // 使用useRef存储位置，避免不必要的重渲染
+  // Use useRef to store position, avoid unnecessary re-rendering
   const positionRef = useRef<Position | null>(null)
   const initialPositionRef = useRef<Position | null>(null)
   const dragOriginRef = useRef({ x: 0, y: 0 })
@@ -68,10 +68,10 @@ export function useDrag(elementRef: React.RefObject<HTMLElement>, options: UseDr
       const rect = elementRef.current.getBoundingClientRect()
       const position = { x: rect.left, y: rect.top }
 
-      // 记录初始位置用于重置
+      // Record initial position for reset
       initialPositionRef.current = position
 
-      // 仅在首次初始化时设置当前位置
+      // Only set current position on first initialization
       if (!positionRef.current) {
         positionRef.current = position
         setState((prev) => ({ ...prev, position }))
@@ -80,7 +80,7 @@ export function useDrag(elementRef: React.RefObject<HTMLElement>, options: UseDr
       isInitializedRef.current = true
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []) // 仅在首次初始化时设置当前位置
+  }, []) // Only set current position on first initialization
 
   const handleDragStart = useEventCallback((e: React.MouseEvent) => {
     if (!enabled) return
@@ -91,7 +91,7 @@ export function useDrag(elementRef: React.RefObject<HTMLElement>, options: UseDr
     e.preventDefault()
     e.stopPropagation()
 
-    // 记录初始位置(只在首次记录)
+    // Record initial position(only on first record)
     if (!initialPositionRef.current) {
       initialPositionRef.current = {
         x: rect.left,
@@ -110,7 +110,7 @@ export function useDrag(elementRef: React.RefObject<HTMLElement>, options: UseDr
     setState((prev) => ({ ...prev, isDragging: true }))
     onDragStart?.(e)
 
-    // 设置初始位置 - 优先使用当前位置
+    // Set initial position - use current position first
     if (!positionRef.current) {
       const newPosition = { x: currentX, y: currentY }
       positionRef.current = newPosition
@@ -140,7 +140,7 @@ export function useDrag(elementRef: React.RefObject<HTMLElement>, options: UseDr
   const handleDragEnd = useCallback(() => {
     if (!enabled) return
 
-    // 结束拖拽前清理未执行的 rAF
+    // Clean up rAF that was not executed before dragging ends
     if (rafIdRef.current !== null) {
       cancelAnimationFrame(rafIdRef.current)
       rafIdRef.current = null
@@ -151,7 +151,7 @@ export function useDrag(elementRef: React.RefObject<HTMLElement>, options: UseDr
       const dialogRect = elementRef.current.getBoundingClientRect()
       const adjustedPosition = adjustPosition(positionRef.current, dialogRect)
 
-      // 更新位置状态
+      // Update position state
       positionRef.current = adjustedPosition
       setState((prev) => ({ ...prev, position: adjustedPosition, isDragging: false }))
       onDragEnd?.(adjustedPosition)
@@ -160,7 +160,7 @@ export function useDrag(elementRef: React.RefObject<HTMLElement>, options: UseDr
     }
   }, [elementRef, enabled, onDragEnd])
 
-  // 重置拖拽状态
+  // Reset drag state
   const resetDragState = useCallback(() => {
     setState({
       isDragging: false,
@@ -168,7 +168,7 @@ export function useDrag(elementRef: React.RefObject<HTMLElement>, options: UseDr
     })
   }, [])
 
-  // 重置位置到初始状态 - 只在不记住位置时调用
+  // Reset position to initial state - only call when rememberPosition is false
   const resetPosition = useCallback(() => {
     if (!rememberPosition) {
       positionRef.current = null
@@ -179,10 +179,10 @@ export function useDrag(elementRef: React.RefObject<HTMLElement>, options: UseDr
     }
   }, [rememberPosition])
 
-  // 完全重置，包括所有状态和引用
+  // Completely reset, including all states and references
   const reset = useCallback(() => {
     if (!rememberPosition) {
-      // 不记住位置时，完全重置
+      // Reset completely when rememberPosition is false
       positionRef.current = null
       isInitializedRef.current = false
       initialPositionRef.current = null
@@ -191,20 +191,20 @@ export function useDrag(elementRef: React.RefObject<HTMLElement>, options: UseDr
         position: null,
       })
     } else {
-      // 如果需要记住位置，只重置拖拽状态
+      // Reset drag state only when rememberPosition is true
       resetDragState()
     }
   }, [rememberPosition, resetDragState])
 
-  // 当rememberPosition变化时
+  // When rememberPosition changes
   useEffect(() => {
     if (!rememberPosition) {
-      // 如果关闭了记住位置，重置位置到初始状态
+      // Reset position to initial state when rememberPosition is false
       resetPosition()
     }
   }, [rememberPosition, resetPosition])
 
-  // 卸载时清理 rAF
+  // Clean up rAF when unmounting
   useEffect(() => {
     return () => {
       if (rafIdRef.current !== null) {

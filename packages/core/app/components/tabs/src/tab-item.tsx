@@ -1,13 +1,5 @@
 import { tcx } from "@choice-ui/shared"
-import {
-  forwardRef,
-  HTMLAttributes,
-  HTMLProps,
-  KeyboardEvent,
-  memo,
-  MouseEvent,
-  ReactNode,
-} from "react"
+import { forwardRef, HTMLProps, KeyboardEvent, memo, MouseEvent, ReactNode } from "react"
 import { useEventCallback } from "usehooks-ts"
 import { useTabsContext } from "./context"
 import { tabsTv } from "./tv"

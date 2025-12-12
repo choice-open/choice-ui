@@ -16,7 +16,7 @@ export const NumericInputVariable = forwardRef<HTMLDivElement, NumericInputVaria
     const { onClick, className, hasPrefixElement, value } = props
     const context = useNumericInputContext()
 
-    const styles = NumericInputVariableTv({
+    const tv = NumericInputVariableTv({
       prefixElement: hasPrefixElement,
       variant: context.variant,
       disabled: context.disabled,
@@ -24,10 +24,10 @@ export const NumericInputVariable = forwardRef<HTMLDivElement, NumericInputVaria
     })
 
     return (
-      <div className={tcx(styles.root(), className)}>
+      <div className={tcx(tv.root(), className)}>
         <Chip
           as="button"
-          className={styles.chip()}
+          className={tv.chip()}
           ref={ref}
           onClick={(e) => {
             e.stopPropagation()

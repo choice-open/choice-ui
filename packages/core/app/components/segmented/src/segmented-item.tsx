@@ -39,7 +39,8 @@ export const SegmentedItem = memo(
     const isActive = value === selectedValue
 
     const isDisabled = contextDisabled || disabled
-    const styles = segmentedControlTv({
+
+    const tv = segmentedControlTv({
       active: isActive,
       disabled: isDisabled,
       variant,
@@ -64,11 +65,11 @@ export const SegmentedItem = memo(
       onHoverChange?.(false)
     })
 
-    const optionClassName = tcx(styles.option(), className)
+    const optionClassName = tcx(tv.option(), className)
 
     const inputElement = (
       <input
-        className={styles.input()}
+        className={tv.input()}
         type="radio"
         id={optionId}
         name={groupId}

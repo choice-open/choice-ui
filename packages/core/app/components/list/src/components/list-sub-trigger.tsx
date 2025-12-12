@@ -50,7 +50,7 @@ export const ListSubTrigger = memo(
     const id = providedId || internalId
     const defaultOpenApplied = useRef(false)
 
-    // 使用分离的Context，减少重渲染
+    // Use separate Context to reduce re-rendering
     const { registerItem, unregisterItem, variant, size } = useStructureContext()
     const { activeItem, setActiveItem } = useActiveItemContext()
     const { toggleSubList, isSubListExpanded } = useExpandContext()
@@ -62,7 +62,7 @@ export const ListSubTrigger = memo(
 
     const defaultSuffixElement = isOpen ? <ChevronDownSmall /> : <ChevronRightSmall />
 
-    // 只在挂载/卸载时注册/注销项目
+    // Only register/unregister item when mounted/unmounted
     useEffect(() => {
       registerItem(id, parentId)
       return () => unregisterItem(id)
@@ -75,7 +75,7 @@ export const ListSubTrigger = memo(
       }
     }, [activeItem, id, disabled, isOpen])
 
-    // 处理默认打开状态
+    // Handle default open state
     useEffect(() => {
       if (defaultOpen && !defaultOpenApplied.current && !isOpen) {
         toggleSubList(id)
@@ -85,7 +85,7 @@ export const ListSubTrigger = memo(
 
     const safeLevel = level > 5 ? 5 : ((level < 0 ? 0 : level) as 0 | 1 | 2 | 3 | 4 | 5)
 
-    const styles = ListItemTv({
+    const tv = ListItemTv({
       active: (active || activeItem === id) && !disableCollapse,
       disabled,
       hasPrefix: !!prefixElement,
@@ -95,7 +95,7 @@ export const ListSubTrigger = memo(
       level: safeLevel,
     })
 
-    // 使用useEventCallback优化事件处理函数
+    // Use useEventCallback to optimize event handling functions
     const handleMouseEnter = useEventCallback((e: React.MouseEvent<HTMLButtonElement>) => {
       if (!disabled) {
         setActiveItem(id)
@@ -125,7 +125,7 @@ export const ListSubTrigger = memo(
         id={id}
         type="button"
         role="button"
-        className={tcx(styles.root(), className)}
+        className={tcx(tv.root(), className)}
         tabIndex={activeItem === id ? 0 : -1}
         disabled={disabled}
         aria-disabled={disabled}
@@ -139,14 +139,14 @@ export const ListSubTrigger = memo(
         onClick={handleClick}
       >
         {prefixElement && (
-          <div className={styles.icon()}>
+          <div className={tv.icon()}>
             {typeof prefixElement === "function" ? prefixElement(isOpen) : prefixElement}
           </div>
         )}
         {children}
 
         {!disableCollapse && (
-          <div className={styles.icon()}>
+          <div className={tv.icon()}>
             {typeof suffixElement === "function"
               ? suffixElement(isOpen)
               : suffixElement || defaultSuffixElement}

@@ -26,7 +26,7 @@ export function useValue(
           return valueRef.current
         }
       }
-      return undefined // 关键：和原始实现一致，找不到值时返回undefined
+        return undefined // Critical: consistent with original implementation, return undefined when value not found
     })()
 
     const keywords = aliases.map((alias) => alias.trim())
@@ -34,7 +34,7 @@ export function useValue(
     context.value(id, value || "", keywords)
     ref.current?.setAttribute(VALUE_ATTR, value || "")
     valueRef.current = value
-  }) // 和原始实现一致：故意不使用依赖数组
+  }) // Consistent with original implementation: intentionally no dependency array
 
   return valueRef
 }

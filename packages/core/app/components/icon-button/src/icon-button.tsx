@@ -40,7 +40,7 @@ export const IconButton = forwardRef<HTMLElement, IconButtonProps>(function Icon
 
   const As = asChild ? Slot : as
 
-  const style = iconButtonTv({
+  const tv = iconButtonTv({
     disabled,
     active,
     focused,
@@ -49,7 +49,7 @@ export const IconButton = forwardRef<HTMLElement, IconButtonProps>(function Icon
     size,
   })
 
-  // 在 readOnly 模式下阻止 onClick 事件
+  // Prevent onClick event when in readOnly mode
   const handleClick = readOnly ? undefined : onClick
 
   const button = (
@@ -57,7 +57,7 @@ export const IconButton = forwardRef<HTMLElement, IconButtonProps>(function Icon
       {...rest}
       ref={ref}
       type={(rest.type as "button" | "submit" | "reset" | undefined) || "button"}
-      className={tcx(style.button(), className)}
+      className={tcx(tv.button(), className)}
       disabled={disabled || loading}
       onClick={handleClick}
     >

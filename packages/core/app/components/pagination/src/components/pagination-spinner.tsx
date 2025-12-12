@@ -3,9 +3,9 @@ import { tcx } from "@choice-ui/shared"
 import { ChevronLeftMedium, ChevronRightMedium } from "@choiceform/icons-react"
 import { forwardRef, useEffect, useRef, useState } from "react"
 import { useEventCallback, useOnClickOutside } from "usehooks-ts"
+import { usePaginationContext } from "../context"
 import { paginationSpinnerTv } from "../tv"
 import type { PaginationSpinnerProps } from "../types"
-import { usePaginationContext } from "./pagination-context"
 
 export const PaginationSpinner = forwardRef<HTMLDivElement, PaginationSpinnerProps>(
   (props, ref) => {
@@ -25,7 +25,7 @@ export const PaginationSpinner = forwardRef<HTMLDivElement, PaginationSpinnerPro
 
     const { currentPage, totalPages, handlePageChange, disabled } = usePaginationContext()
 
-    const styles = paginationSpinnerTv()
+    const tv = paginationSpinnerTv()
 
     // Sync input value with current page when editing starts
     useEffect(() => {
@@ -99,7 +99,7 @@ export const PaginationSpinner = forwardRef<HTMLDivElement, PaginationSpinnerPro
     return (
       <div
         ref={ref}
-        className={tcx(styles.spinner(), className)}
+        className={tcx(tv.spinner(), className)}
         {...rest}
       >
         <Button
@@ -107,14 +107,14 @@ export const PaginationSpinner = forwardRef<HTMLDivElement, PaginationSpinnerPro
           disabled={currentPage === 1 || disabled}
           onClick={handlePrevious}
           aria-label="Previous page"
-          className={styles.button({ position: "left" })}
+          className={tv.button({ position: "left" })}
         >
           <ChevronLeftMedium />
         </Button>
 
         <div
           ref={inputWrapperRef}
-          className={styles.inputWrapper()}
+          className={tv.inputWrapper()}
           onClick={() => {
             if (!isEditing) {
               setIsEditing(true)
@@ -132,13 +132,13 @@ export const PaginationSpinner = forwardRef<HTMLDivElement, PaginationSpinnerPro
               min={1}
               max={totalPages}
               disabled={disabled}
-              className={styles.input()}
+              className={tv.input()}
               autoFocus
             />
           ) : (
-            <span className={tcx(styles.currentPage())}>{currentPage}</span>
+            <span className={tcx(tv.currentPage())}>{currentPage}</span>
           )}
-          <span className={styles.label()}>/ {totalPages}</span>
+          <span className={tv.label()}>/ {totalPages}</span>
         </div>
 
         <Button
@@ -146,7 +146,7 @@ export const PaginationSpinner = forwardRef<HTMLDivElement, PaginationSpinnerPro
           disabled={currentPage === totalPages || disabled}
           onClick={handleNext}
           aria-label="Next page"
-          className={styles.button({ position: "right" })}
+          className={tv.button({ position: "right" })}
         >
           <ChevronRightMedium />
         </Button>

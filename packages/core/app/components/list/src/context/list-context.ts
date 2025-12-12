@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react"
 
-// 1. 活跃项Context - 管理hover和focus状态
+// 1. Active Item Context - Manage hover and focus state
 interface ActiveItemContextValue {
   activeItem: string | null
   setActiveItem: (id: string | null) => void
@@ -16,7 +16,7 @@ export function useActiveItemContext() {
   return context
 }
 
-// 2. 展开/折叠Context - 管理子列表的展开状态
+// 2. Expand/Collapse Context - Manage the expanded state of sublists
 interface ExpandContextValue {
   expandedSubLists: Set<string>
   isSubListExpanded: (id: string) => boolean
@@ -33,12 +33,12 @@ export function useExpandContext() {
   return context
 }
 
-// 3. 选择Context - 管理选中状态
+// 3. Selection Context - Manage the selected state
 interface SelectionContextValue {
   isSelected: (id: string) => boolean
   selectedItems: Set<string>
   selection?: boolean
-  toggleSelection: (id: string) => void // 是否启用选择功能
+  toggleSelection: (id: string) => void // Whether to enable selection functionality
 }
 
 export const SelectionContext = createContext<SelectionContextValue | undefined>(undefined)
@@ -51,7 +51,7 @@ export function useSelectionContext() {
   return context
 }
 
-// 4. 结构Context - 管理列表项的结构关系
+// 4. Structure Context - Manage the structural relationship of list items
 interface StructureContextValue {
   interactive?: boolean
   itemsMap: Map<string, { parentId?: string }>
@@ -72,7 +72,7 @@ export function useStructureContext() {
   return context
 }
 
-// 5. 层级Context - 传递嵌套层级信息
+// 5. Level Context - Pass nested level information
 interface LevelContextValue {
   level: number
 }

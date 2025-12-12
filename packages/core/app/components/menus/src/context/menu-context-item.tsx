@@ -16,13 +16,13 @@ export interface MenuContextItemProps extends MenuItemProps {
 }
 
 /**
- * 通用菜单项组件
+ * Generic menu item component
  *
- * 供 Select 和 Dropdown 共用，统一所有交互逻辑：
- * - touch 事件处理
- * - 选择逻辑
- * - 键盘导航
- * - 视觉状态管理
+ * Shared by Select and Dropdown, unify all interaction logic:
+ * - touch event handling
+ * - selection logic
+ * - keyboard navigation
+ * - visual state management
  */
 export const MenuContextItem = memo(
   forwardRef<HTMLButtonElement, MenuContextItemProps>(
@@ -47,69 +47,69 @@ export const MenuContextItem = memo(
       const item = useListItem()
       const tree = useFloatingTree()
 
-      // 如果没有 menu context，抛出错误
+      // If there is no menu context, throw an error
       if (!menu) {
         throw new Error(
           "MenuContextItem must be used within a Menu component (SelectV2 or DropdownV2)",
         )
       }
 
-      // 计算激活状态
+      // Calculate active state
       const isActive = useMemo(
         () => item.index === menu.activeIndex,
         [item.index, menu.activeIndex],
       )
 
-      // 处理点击事件
+      // Handle click event
       const handleClick = useEventCallback((event: React.MouseEvent<HTMLButtonElement>) => {
         event.stopPropagation()
 
-        // 如果是 readOnly 模式，阻止 onClick 执行
+        // If in readOnly mode, prevent onClick from executing
         if (menu.readOnly) {
           return
         }
 
         onClick?.(event)
 
-        // 使用 startTransition 优化性能，避免 setTimeout
+        // Use startTransition to optimize performance, avoid setTimeout
         startTransition(() => {
           tree?.events.emit("click")
         })
       })
 
-      // 处理鼠标按下事件（防止事件冒泡）
+      // Handle mouse down event (prevent event bubbling)
       const handleMouseDown = useEventCallback((e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation()
       })
 
-      // 处理鼠标抬起事件
+      // Handle mouse up event
       const handleMouseUp = useEventCallback((event: React.MouseEvent<HTMLButtonElement>) => {
         event.stopPropagation()
         onMouseUp?.(event)
 
-        // 使用 startTransition 优化性能，避免 setTimeout
+        // Use startTransition to optimize performance, avoid setTimeout
         startTransition(() => {
           tree?.events.emit("click")
         })
       })
 
-      // 处理触摸开始事件
+      // Handle touch start event
       const handleTouchStart = useEventCallback((event: React.TouchEvent<HTMLButtonElement>) => {
         onTouchStart?.(event)
       })
 
-      // 处理键盘事件
+      // Handle keyboard event
       const handleKeyDown = useEventCallback((event: React.KeyboardEvent<HTMLButtonElement>) => {
         onKeyDown?.(event)
       })
 
-      // 处理焦点事件
+      // Handle focus event
       const handleFocus = useEventCallback((event: React.FocusEvent<HTMLButtonElement>) => {
         props.onFocus?.(event)
         menu.setHasFocusInside(true)
       })
 
-      // 前缀元素配置 - 使用复用的空 Fragment
+      // Prefix element configuration - use reusable empty Fragment
       const prefixConfig = useMemo(() => {
         if (prefixElement !== undefined) return prefixElement
         if (menu.selection && !customActive) {
@@ -118,7 +118,7 @@ export const MenuContextItem = memo(
         return undefined
       }, [prefixElement, menu.selection, selected, customActive])
 
-      // 快捷键配置
+      // Shortcut configuration
       const shortcutConfig = useMemo(
         () => ({
           modifier: shortcut?.modifier,
@@ -127,13 +127,13 @@ export const MenuContextItem = memo(
         [shortcut?.modifier, shortcut?.keys],
       )
 
-      // 组合 ref 处理器，同时处理 item.ref 和 forwardedRef
+      // Combine ref processor, handling both item.ref and forwardedRef
       const combinedRef = useCallback(
         (node: HTMLButtonElement | null) => {
-          // 总是需要调用 item.ref，用于 useListItem 的键盘导航
+          // Always need to call item.ref, for keyboard navigation of useListItem
           item.ref(node)
 
-          // 如果有 forwardedRef，也要调用它（用于 Select 的 registerItem）
+          // If there is forwardedRef, also call it (for registerItem of Select)
           if (forwardedRef) {
             if (typeof forwardedRef === "function") {
               forwardedRef(node)

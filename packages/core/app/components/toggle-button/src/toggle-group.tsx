@@ -166,7 +166,7 @@ const ToggleGroupBase = forwardRef<HTMLDivElement, ToggleGroupProps>(
       }
     })
 
-    const styles = toggleGroupTv({
+    const tv = toggleGroupTv({
       orientation,
       disabled,
       multiple,
@@ -188,7 +188,7 @@ const ToggleGroupBase = forwardRef<HTMLDivElement, ToggleGroupProps>(
       <ToggleGroupContext.Provider value={contextValue}>
         <div
           ref={setRefs}
-          className={tcx(styles.root(), className)}
+          className={tcx(tv.root(), className)}
           role="group"
           data-orientation={orientation}
           data-disabled={disabled ? "" : undefined}

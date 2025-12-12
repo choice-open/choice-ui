@@ -50,7 +50,7 @@ export const MultiSelectTrigger = memo(
 
     const containerRef = useRef<HTMLDivElement>(null)
 
-    const style = multiSelectTriggerTv({
+    const tv = multiSelectTriggerTv({
       size,
       disabled,
       hasValues: values.length > 0,
@@ -63,7 +63,7 @@ export const MultiSelectTrigger = memo(
 
     const handleContainerClick = useCallback(
       (e: React.MouseEvent) => {
-        // 检查是否点击了删除按钮或其子元素
+        // Check if clicked on remove button or its child elements
         const target = e.target as HTMLElement
         if (
           target.closest("[data-remove-button]") ||
@@ -97,7 +97,7 @@ export const MultiSelectTrigger = memo(
       if (!hasValues) return null
 
       return (
-        <div className={style.chips()}>
+        <div className={tv.chips()}>
           {displayValues.map((value, index) => {
             const chipDisabled = !!valueDisabledMap[value] || disabled
             const handleRemove =
@@ -111,7 +111,7 @@ export const MultiSelectTrigger = memo(
             const displayValue = getDisplayValue ? getDisplayValue(value) : value
             const chipSize = size === "large" ? "medium" : "default"
 
-            // 如果提供了自定义渲染函数，使用它
+            // If custom render function provided, use it
             if (renderChip) {
               return (
                 <div key={`${value}-${index}`}>
@@ -126,7 +126,7 @@ export const MultiSelectTrigger = memo(
               )
             }
 
-            // 否则使用默认的 Chip 组件
+            // Otherwise use default Chip component
             return (
               <Chip
                 key={`${value}-${index}`}
@@ -162,7 +162,7 @@ export const MultiSelectTrigger = memo(
       readOnly,
       onRemove,
       getDisplayValue,
-      style,
+      tv,
       renderChip,
       variant,
       valueDisabledMap,
@@ -171,13 +171,13 @@ export const MultiSelectTrigger = memo(
     const renderPlaceholder = useMemo(() => {
       if (hasValues) return null
 
-      return <span className={style.placeholder()}>{placeholder}</span>
-    }, [hasValues, placeholder, style])
+      return <span className={tv.placeholder()}>{placeholder}</span>
+    }, [hasValues, placeholder, tv])
 
     return (
       <div
         ref={mergeRefs(ref, containerRef)}
-        className={tcx(style.root(), className)}
+        className={tcx(tv.root(), className)}
         tabIndex={disabled ? -1 : 0}
         onClick={handleContainerClick}
         onKeyDown={handleKeyDown}
@@ -188,9 +188,9 @@ export const MultiSelectTrigger = memo(
         {...rest}
       >
         <div
-          className={style.content()}
+          className={tv.content()}
           onClick={(e) => {
-            // 阻止 chips 内部的点击事件冒泡到容器
+            // Prevent click events from chips from bubbling to container
             const target = e.target as HTMLElement
             if (
               target.closest("[data-remove-button]") ||
@@ -204,7 +204,7 @@ export const MultiSelectTrigger = memo(
           {renderPlaceholder}
         </div>
 
-        {suffixElement && <span className={style.suffix()}>{suffixElement}</span>}
+        {suffixElement && <span className={tv.suffix()}>{suffixElement}</span>}
       </div>
     )
   }),

@@ -25,9 +25,9 @@ interface UseInputInteractionsProps<T extends NumericInputValue> {
 }
 
 /**
- * 处理输入框交互的钩子
- * @param props 输入交互配置
- * @returns 输入处理器和初始值引用
+ * Hook to handle input box interactions
+ * @param props Input interaction configuration
+ * @returns Input handlers and initial value reference
  */
 export function useInputInteractions<T extends NumericInputValue>({
   inputRef,
@@ -74,12 +74,12 @@ export function useInputInteractions<T extends NumericInputValue>({
         decimal,
       })
 
-      // 使用抽离的比较逻辑
+      // Use separated comparison logic
       const isExpressionInputValue = isExpressionInput(displayValue, valuePre)
       const isSameValue = compareNumberResults(innerValue, valuePre)
 
       if (isSameValue) {
-        // 无论是否触发 onChange，都应该更新输入框显示值为计算结果
+        // Whether or not onChange is triggered, the input box display value should be updated to the calculated result
         setDisplayValue(valuePre.string)
         setValue(valuePre)
         return

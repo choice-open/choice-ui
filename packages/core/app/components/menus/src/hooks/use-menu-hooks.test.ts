@@ -1,18 +1,18 @@
 /**
- * 这是一个用于验证 hooks 基本功能的测试文件
+ * This is a test file for verifying the basic functionality of hooks
  *
- * 我们创建了以下通用 hooks：
- * 1. useMenuState - 基础状态管理
- * 2. useMenuRefs - 引用管理
- * 3. useMenuTouch - 触摸交互
- * 4. useMenuScroll - 滚动处理
- * 5. useMenuChildren - 子元素解析
+ * We created the following generic hooks:
+ * 1. useMenuState - basic state management
+ * 2. useMenuRefs - reference management
+ * 3. useMenuTouch - touch interaction
+ * 4. useMenuScroll - scroll handling
+ * 5. useMenuChildren - child element parsing
  *
- * 下一步需要：
- * 1. 创建 Dropdown 专用 hooks (useMenuTree, useMenuNested)
- * 2. 创建 Select 专用 hooks (useMenuSelection, useMenuInnerFloating)
- * 3. 创建基础 floating 配置 hook (useMenuFloating)
- * 4. 在 Select 和 Dropdown 组件中使用这些 hooks
+ * Next steps:
+ * 1. Create Dropdown specific hooks (useMenuTree, useMenuNested)
+ * 2. Create Select specific hooks (useMenuSelection, useMenuInnerFloating)
+ * 3. Create basic floating configuration hook (useMenuFloating)
+ * 4. Use these hooks in Select and Dropdown components
  */
 
 import { describe, it, expect } from "vitest"

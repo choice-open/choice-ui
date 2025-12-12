@@ -6,7 +6,7 @@ export const ScrollAreaContent = forwardRef<HTMLDivElement, React.ComponentProps
   ({ className, children, ...props }, ref) => {
     const { setContent, orientation } = useScrollAreaContext()
 
-    // 优化ref设置
+    // Optimize ref setting
     const setRef = useCallback(
       (node: HTMLDivElement | null) => {
         setContent(node)
@@ -19,15 +19,15 @@ export const ScrollAreaContent = forwardRef<HTMLDivElement, React.ComponentProps
       [setContent, ref],
     )
 
-    // 根据 orientation 动态设置尺寸类名
+    // Dynamically set size classes based on orientation
     const sizeClasses = useMemo(() => {
       switch (orientation) {
         case "vertical":
-          return "w-fit min-w-full" // 垂直滚动：宽度适应内容，高度可以超出
+          return "w-fit min-w-full" // Vertical scroll: width adapts to content, height can exceed
         case "horizontal":
-          return "h-fit min-h-full" // 水平滚动：高度适应内容，宽度可以超出
+          return "h-fit min-h-full" // Horizontal scroll: height adapts to content, width can exceed
         case "both":
-          return "" // 双向滚动：两个方向都可以超出，不限制尺寸
+          return "" // Dual scroll: both directions can exceed, no size limit
         default:
           return "w-fit min-w-full"
       }

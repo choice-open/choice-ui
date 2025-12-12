@@ -4,16 +4,16 @@ import { MenuDividerTv } from "../tv"
 
 export const MenuDivider = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElement>>((props, ref) => {
   const { className, ...rest } = props
-  const styles = MenuDividerTv()
+  const tv = MenuDividerTv()
 
   return (
     <div
       ref={ref}
-      className={tcx(styles.root(), className)}
+      className={tcx(tv.root(), className)}
       aria-hidden="true"
       {...rest}
     >
-      <div className={styles.divider()} />
+      <div className={tv.divider()} />
     </div>
   )
 })

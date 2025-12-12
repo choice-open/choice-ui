@@ -10,12 +10,12 @@ export const ScrollAreaThumb = forwardRef<HTMLDivElement, ThumbProps>(
     const { viewport, scrollState, scrollbarMode, variant, setThumbX, setThumbY } =
       useScrollAreaContext()
 
-    // 使用优化的hooks
+    // Use optimized hooks
     const { handleMouseDown } = useThumbDrag(viewport, scrollState, orientation)
     const thumbStyle = useThumbStyle(scrollState, orientation)
 
-    // 缓存TV配置
-    const tvConfig = useMemo(
+    // Cache TV configuration
+    const tv = useMemo(
       () =>
         ScrollTv({
           variant,
@@ -25,7 +25,7 @@ export const ScrollAreaThumb = forwardRef<HTMLDivElement, ThumbProps>(
       [variant, scrollbarMode, orientation],
     )
 
-    // 优化ref设置
+    // Optimize ref setting
     const setRef = useCallback(
       (node: HTMLDivElement | null) => {
         if (orientation === "vertical") {
@@ -45,10 +45,10 @@ export const ScrollAreaThumb = forwardRef<HTMLDivElement, ThumbProps>(
     return (
       <div
         ref={setRef}
-        className={tcx(tvConfig.thumb(), className)}
+        className={tcx(tv.thumb(), className)}
         style={thumbStyle}
         onMouseDown={handleMouseDown}
-        // WAI-ARIA 属性
+        // WAI-ARIA attributes
         role="button"
         aria-label={`${orientation} scroll thumb`}
         aria-hidden="true"

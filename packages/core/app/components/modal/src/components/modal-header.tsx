@@ -16,16 +16,16 @@ export const ModalHeader = forwardRef<HTMLDivElement, ModalHeaderProps>((props, 
     return isValidElement(title)
   }, [title])
 
-  const styles = ModalHeaderTv({ validElement, close: !!onClose })
+  const tv = ModalHeaderTv({ validElement, close: !!onClose })
 
   return (
     <div
       ref={ref}
-      className={tcx(styles.root(), className)}
+      className={tcx(tv.root(), className)}
       {...rest}
     >
       {title && (
-        <div className={styles.title()}>
+        <div className={tv.title()}>
           <span className="min-w-0 truncate">{title}</span>
         </div>
       )}
@@ -33,7 +33,7 @@ export const ModalHeader = forwardRef<HTMLDivElement, ModalHeaderProps>((props, 
       {children}
 
       {onClose && (
-        <div className={styles.close()}>
+        <div className={tv.close()}>
           <IconButton onClick={onClose}>
             <Remove />
           </IconButton>

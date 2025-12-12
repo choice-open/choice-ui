@@ -302,7 +302,7 @@ export const Group: Story = {
             </ToggleGroup.Item>
           </ToggleGroup>
 
-          <p className="bg-secondary-background text-secondary-foreground flex flex-col gap-2 rounded-lg p-2">
+          <div className="bg-secondary-background text-secondary-foreground flex flex-col gap-2 rounded-lg p-2">
             Only one button can be pressed at a time. Current value:
             <div className="flex flex-wrap gap-2">
               {singleValue.map((value) => (
@@ -310,7 +310,7 @@ export const Group: Story = {
               ))}
               {singleValue.length === 0 && <Badge>none</Badge>}
             </div>
-          </p>
+          </div>
         </div>
 
         <div className="flex flex-col gap-2">
@@ -345,7 +345,7 @@ export const Group: Story = {
             </ToggleGroup.Item>
           </ToggleGroup>
 
-          <p className="bg-secondary-background text-secondary-foreground flex flex-col gap-2 rounded-lg p-2">
+          <div className="bg-secondary-background text-secondary-foreground flex flex-col gap-2 rounded-lg p-2">
             Multiple buttons can be pressed simultaneously. Current values:
             <div className="flex flex-wrap gap-2">
               {multipleValue.map((value) => (
@@ -353,7 +353,7 @@ export const Group: Story = {
               ))}
               {multipleValue.length === 0 && <Badge>none</Badge>}
             </div>
-          </p>
+          </div>
         </div>
       </div>
     )
@@ -483,7 +483,7 @@ export const GroupControlled: Story = {
             </ToggleGroup.Item>
           </ToggleGroup>
 
-          <p className="bg-secondary-background text-secondary-foreground flex flex-col gap-2 rounded-lg p-2">
+          <div className="bg-secondary-background text-secondary-foreground flex flex-col gap-2 rounded-lg p-2">
             Current value:
             <div className="flex flex-wrap gap-2">
               {controlledValue.map((value) => (
@@ -491,7 +491,7 @@ export const GroupControlled: Story = {
               ))}
               {controlledValue.length === 0 && <Badge>none</Badge>}
             </div>
-          </p>
+          </div>
         </div>
 
         <div className="flex flex-col gap-2">

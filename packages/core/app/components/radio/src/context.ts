@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react"
 
-// Radio 组件的 Context
+// Radio component context
 export interface RadioContextType {
   descriptionId: string
   disabled?: boolean
@@ -17,7 +17,7 @@ export function useRadioContext() {
   return context
 }
 
-// RadioGroup 组件的 Context
+// RadioGroup component context
 export interface RadioGroupContextType {
   disabled?: boolean
   name: string

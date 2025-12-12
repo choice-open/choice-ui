@@ -53,7 +53,7 @@ export const ListItem = memo(
     const internalId = useId()
     const id = providedId || internalId
 
-    // 获取Context中的值
+    // Get values from Context
     const {
       registerItem,
       unregisterItem,
@@ -62,7 +62,7 @@ export const ListItem = memo(
       size,
     } = useStructureContext()
 
-    // 如果禁用交互，默认使用 div，否则使用 button
+    // If interaction is disabled, default to div, otherwise use button
     const As = providedAs ?? (interactive ? "button" : "div")
     const { activeItem, setActiveItem } = useActiveItemContext()
     const { isSelected, toggleSelection, selection } = useSelectionContext()
@@ -85,7 +85,7 @@ export const ListItem = memo(
 
     const safeLevel = level > 5 ? 5 : ((level < 0 ? 0 : level) as 0 | 1 | 2 | 3 | 4 | 5)
 
-    const styles = ListItemTv({
+    const tv = ListItemTv({
       active: active || activeItem === id,
       disabled,
       selected: selected || isSelected(id),
@@ -118,19 +118,19 @@ export const ListItem = memo(
       }
     }
 
-    // 只在 button 元素上设置 type 属性
+    // Only set type attribute on button elements
     const buttonProps = As === "button" ? { type: "button" as const } : {}
 
-    // 非交互模式下，tabIndex 应该始终为 -1
+    // In non-interactive mode, tabIndex should always be -1
     const tabIndex = interactive ? (activeItem === id ? 0 : -1) : -1
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
       if (disabled) return
 
       if (e.key === "Enter" || e.key === " ") {
-        // 对于原生按钮，浏览器会自动处理 Enter（触发 Click），但 Space 需要 preventDefault 防止滚动
-        // 且 Space 在按钮上也通常触发 Click
-        // 如果不是按钮（如 div），需要手动触发点击逻辑
+        // For native buttons, the browser will automatically handle Enter (trigger Click), but Space needs preventDefault to prevent scrolling
+        // And Space usually triggers Click on buttons as well
+        // If it's not a button (like div), you need to manually trigger the click logic
 
         if (As !== "button" && As !== "a") {
           e.preventDefault()
@@ -139,10 +139,10 @@ export const ListItem = memo(
           }
           onClick?.(e as unknown as React.MouseEvent<HTMLElement>)
         } else if (e.key === " ") {
-          // 防止 Space 滚动页面
+          // Prevent Space from scrolling the page
           e.preventDefault()
-          // 按钮上的 Space 默认行为是 keyup 时触发 click，但在 React 中有时需要手动处理
-          // 为了统一行为，这里手动触发
+          // The default behavior of Space on buttons is to trigger click when keyup, but in React it sometimes needs manual handling
+          // To unify behavior, here we manually trigger
           e.currentTarget.click()
         }
       }
@@ -155,7 +155,7 @@ export const ListItem = memo(
         ref={mergedRef}
         id={id}
         role="listitem"
-        className={tcx(styles.root(), className)}
+        className={tcx(tv.root(), className)}
         tabIndex={tabIndex}
         disabled={interactive ? disabled : undefined}
         aria-disabled={disabled}
@@ -170,20 +170,20 @@ export const ListItem = memo(
         onKeyDown={handleKeyDown}
         onClick={handleClick}
       >
-        {prefixElement && <div className={styles.icon()}>{prefixElement}</div>}
+        {prefixElement && <div className={tv.icon()}>{prefixElement}</div>}
 
         {children}
 
         {hasValidShortcut && (
           <Kbd
-            className={styles.shortcut()}
+            className={tv.shortcut()}
             keys={shortcut.modifier}
           >
             {shortcut.keys}
           </Kbd>
         )}
 
-        {suffixElement && <div className={styles.icon()}>{suffixElement}</div>}
+        {suffixElement && <div className={tv.icon()}>{suffixElement}</div>}
       </As>
     )
   }),

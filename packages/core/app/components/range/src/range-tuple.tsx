@@ -414,7 +414,7 @@ export const RangeTuple = forwardRef<HTMLDivElement, RangeTupleProps>(
       }
     }, [disabled])
 
-    const styles = useMemo(
+    const tv = useMemo(
       () =>
         rangeTv({
           hasStepOrDefault: step > 1 || normalizedDefaultValue !== undefined,
@@ -504,7 +504,7 @@ export const RangeTuple = forwardRef<HTMLDivElement, RangeTupleProps>(
       return currentStepValue[1] === defaultStepValue[1]
     }, [currentStepValue, defaultStepValue])
 
-    const thumb0Styles = useMemo(
+    const thumbTv0 = useMemo(
       () =>
         rangeTv({
           currentDefaultValue: thumb0IsDefault,
@@ -514,7 +514,7 @@ export const RangeTuple = forwardRef<HTMLDivElement, RangeTupleProps>(
       [thumb0IsDefault, step, normalizedDefaultValue, disabled],
     )
 
-    const thumb1Styles = useMemo(
+    const thumbTv1 = useMemo(
       () =>
         rangeTv({
           currentDefaultValue: thumb1IsDefault,
@@ -528,7 +528,7 @@ export const RangeTuple = forwardRef<HTMLDivElement, RangeTupleProps>(
       <div
         ref={mergeRefs(sliderRef, ref)}
         onPointerDown={handleSliderPointerDown}
-        className={tcx(styles.container(), className)}
+        className={tcx(tv.container(), className)}
         style={
           {
             "--width": `${trackWidth}px`,
@@ -537,19 +537,19 @@ export const RangeTuple = forwardRef<HTMLDivElement, RangeTupleProps>(
         }
       >
         <div
-          className={tcx(styles.connect(), connectsClass)}
+          className={tcx(tv.connect(), connectsClass)}
           style={connectStyle}
         />
 
         {(step > 1 || normalizedDefaultValue !== undefined) && (
-          <div className={styles.dotContainer()}>{renderDots()}</div>
+          <div className={tv.dotContainer()}>{renderDots()}</div>
         )}
 
         {/* Thumb 0 (min value) */}
         <div
           ref={thumb0Ref}
           onPointerDown={(e) => handlePointerDown(e, 0)}
-          className={thumb0Styles.thumb()}
+          className={thumbTv0.thumb()}
           style={{
             width: thumbSize,
             height: thumbSize,
@@ -561,7 +561,7 @@ export const RangeTuple = forwardRef<HTMLDivElement, RangeTupleProps>(
             ref={input0Ref}
             type="text"
             onKeyDown={(e) => handleKeyDown(e, 0)}
-            className={styles.input()}
+            className={tv.input()}
             tabIndex={disabled || readOnly ? -1 : 0}
             readOnly
           />
@@ -571,7 +571,7 @@ export const RangeTuple = forwardRef<HTMLDivElement, RangeTupleProps>(
         <div
           ref={thumb1Ref}
           onPointerDown={(e) => handlePointerDown(e, 1)}
-          className={thumb1Styles.thumb()}
+          className={thumbTv1.thumb()}
           style={{
             width: thumbSize,
             height: thumbSize,
@@ -583,7 +583,7 @@ export const RangeTuple = forwardRef<HTMLDivElement, RangeTupleProps>(
             ref={input1Ref}
             type="text"
             onKeyDown={(e) => handleKeyDown(e, 1)}
-            className={styles.input()}
+            className={tv.input()}
             tabIndex={disabled || readOnly ? -1 : 0}
             readOnly
           />

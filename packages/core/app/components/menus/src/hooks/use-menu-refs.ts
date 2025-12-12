@@ -2,55 +2,55 @@ import { useRef, useMemo } from "react"
 import type { SideObject } from "@floating-ui/react"
 
 /**
- * 菜单引用管理 Hook
+ * Menu reference management Hook
  *
- * 统一管理菜单组件中所有需要的引用：
- * - 滚动容器引用
- * - 列表项引用数组
- * - 列表内容引用数组
- * - 定时器引用
- * - Select 专用引用（overflow, allowSelect 等）
+ * Unify the management of all references needed in menu components:
+ * - Scroll container reference
+ * - List item reference array
+ * - List content reference array
+ * - Timer reference
+ * - Select specific reference (overflow, allowSelect, etc.)
  */
 
 export interface MenuRefsConfig {
-  /** 是否为 Select 类型（需要额外的选择相关引用） */
+  /** Whether to use Select type (requires additional selection related references) */
   isSelect?: boolean
 }
 
 export interface MenuRefsResult {
   allowMouseUpRef?: React.MutableRefObject<boolean>
   allowSelectRef?: React.MutableRefObject<boolean>
-  // 工具函数
+  // Utility functions
   clearSelectTimeout: () => void
 
   elementsRef: React.MutableRefObject<Array<HTMLElement | null>>
 
   labelsRef: React.MutableRefObject<Array<string | null>>
-  // Select 专用引用（仅在 isSelect=true 时存在）
+  // Select specific reference (only exists when isSelect=true)
   overflowRef?: React.MutableRefObject<SideObject | null>
   resetRefs: () => void
 
-  // 通用引用 - 使用 MutableRefObject 以兼容 FloatingUI
+  // General reference - use MutableRefObject to be compatible with FloatingUI
   scrollRef: React.MutableRefObject<HTMLDivElement | null>
-  // 定时器引用
+  // Timer reference
   selectTimeoutRef: React.MutableRefObject<ReturnType<typeof setTimeout> | undefined>
 }
 
 export function useMenuRefs(config: MenuRefsConfig = {}): MenuRefsResult {
   const { isSelect = false } = config
 
-  // 通用引用 - 使用 MutableRefObject
+  // General reference - use MutableRefObject to be compatible with FloatingUI
   const scrollRef = useRef<HTMLDivElement | null>(null)
   const elementsRef = useRef<Array<HTMLElement | null>>([])
   const labelsRef = useRef<Array<string | null>>([])
   const selectTimeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>()
 
-  // Select 专用引用
+  // Select specific reference
   const overflowRef = useRef<SideObject | null>(null)
   const allowSelectRef = useRef<boolean>(false)
   const allowMouseUpRef = useRef<boolean>(true)
 
-  // 工具函数
+  // Utility functions
   const clearSelectTimeout = () => {
     if (selectTimeoutRef.current) {
       clearTimeout(selectTimeoutRef.current)
@@ -59,14 +59,14 @@ export function useMenuRefs(config: MenuRefsConfig = {}): MenuRefsResult {
   }
 
   const resetRefs = () => {
-    // 清理定时器
+    // Clear timer
     clearSelectTimeout()
 
-    // 重置数组引用
+    // Reset array references
     elementsRef.current = []
     labelsRef.current = []
 
-    // 重置 Select 专用引用
+    // Reset Select specific reference
     if (isSelect) {
       if (allowSelectRef.current) {
         allowSelectRef.current = false
@@ -77,21 +77,21 @@ export function useMenuRefs(config: MenuRefsConfig = {}): MenuRefsResult {
     }
   }
 
-  // 构建结果对象
+  // Build result object
   const result: MenuRefsResult = useMemo(() => {
     const baseResult = {
-      // 通用引用
+      // General reference
       scrollRef,
       elementsRef,
       labelsRef,
       selectTimeoutRef,
 
-      // 工具函数
+      // Utility functions
       clearSelectTimeout,
       resetRefs,
     }
 
-    // 如果是 Select 类型，添加额外的引用
+    // If Select type, add additional references
     if (isSelect) {
       return {
         ...baseResult,

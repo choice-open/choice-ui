@@ -1,30 +1,30 @@
 import { useRef } from "react"
 
 /**
- * 菜单基础引用管理 Hook
+ * Menu base refs management Hook
  *
- * 统一管理所有菜单组件需要的基础 refs：
- * - scrollRef: 滚动容器引用
- * - elementsRef: 菜单项元素引用数组
- * - labelsRef: 菜单项标签引用数组（用于 typeahead）
- * - selectTimeoutRef: 选择延迟定时器引用
+ * Unified management of all base refs needed by menu components:
+ * - scrollRef: scroll container reference
+ * - elementsRef: menu item element reference array
+ * - labelsRef: menu item label reference array (for typeahead)
+ * - selectTimeoutRef: select delay timer reference
  *
- * 这些 refs 在多个组件中都有使用，统一管理可以保持一致性
+ * These refs are used in multiple components, unified management can maintain consistency
  */
 
 export interface MenuBaseRefsResult {
-  /** 菜单项元素引用数组 */
+  /** Menu item element reference array */
   elementsRef: React.MutableRefObject<Array<HTMLElement | null>>
-  /** 菜单项标签引用数组（用于 typeahead） */
+  /** Menu item label reference array (for typeahead) */
   labelsRef: React.MutableRefObject<Array<string | null>>
-  /** 滚动容器引用 */
+  /** Scroll container reference */
   scrollRef: React.RefObject<HTMLDivElement>
-  /** 选择延迟定时器引用 */
+  /** Select delay timer reference */
   selectTimeoutRef: React.MutableRefObject<ReturnType<typeof setTimeout> | undefined>
 }
 
 /**
- * 创建菜单基础引用
+ * Create menu base refs
  */
 export function useMenuBaseRefs(): MenuBaseRefsResult {
   const scrollRef = useRef<HTMLDivElement>(null)

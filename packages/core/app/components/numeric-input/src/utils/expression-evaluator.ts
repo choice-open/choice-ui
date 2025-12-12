@@ -1,7 +1,7 @@
 import { Operation } from "../types"
 
 /**
- * 运算符优先级映射
+ * Operator precedence mapping
  */
 const precedence: Record<Operation, number> = {
   "+": 1,
@@ -13,11 +13,11 @@ const precedence: Record<Operation, number> = {
 }
 
 /**
- * 执行二元操作
+ * Execute binary operation
  * @param op 操作符
- * @param b 右操作数
- * @param a 左操作数
- * @returns 计算结果
+ * @param b Right operand
+ * @param a Left operand
+ * @returns Calculation result
  */
 export const applyOperation = (op: Operation, b: number, a: number): number => {
   switch (op) {
@@ -35,9 +35,9 @@ export const applyOperation = (op: Operation, b: number, a: number): number => {
 }
 
 /**
- * 评估数学表达式并返回计算结果
- * @param expression 数学表达式字符串
- * @returns 表达式的计算结果
+ * Evaluate mathematical expression and return calculation result
+ * @param expression Mathematical expression string
+ * @returns Calculation result of the expression
  */
 export const evaluate = (expression: string): number => {
   const ops: Operation[] = []
@@ -99,9 +99,9 @@ export const evaluate = (expression: string): number => {
 }
 
 /**
- * 记忆化包装函数，用于缓存表达式计算结果
- * @param fn 原始函数
- * @returns 具有缓存功能的函数
+ * Memoized wrapper function, used to cache expression calculation results
+ * @param fn Original function
+ * @returns Function with caching functionality
  */
 export function memoize<T extends string, R>(fn: (arg: T) => R): (arg: T) => R {
   const cache = new Map<T, R>()
@@ -114,6 +114,6 @@ export function memoize<T extends string, R>(fn: (arg: T) => R): (arg: T) => R {
 }
 
 /**
- * 记忆化的表达式计算函数
+ * Memoized expression calculation function
  */
 export const memoizedEvaluate = memoize<string, number>(evaluate)

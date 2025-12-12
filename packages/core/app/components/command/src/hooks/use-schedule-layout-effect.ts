@@ -2,7 +2,7 @@ import { useCallback, useState } from "react"
 import { useIsomorphicLayoutEffect } from "usehooks-ts"
 import { useLazyRef } from "@choice-ui/shared"
 
-/** 在下一个 layout effect 周期内以命令式方式运行函数。 */
+/** Run functions imperatively in the next layout effect cycle. */
 export const useScheduleLayoutEffect = () => {
   const [updateCount, setUpdateCount] = useState(0)
   const fns = useLazyRef(() => new Map<string | number, () => void>())

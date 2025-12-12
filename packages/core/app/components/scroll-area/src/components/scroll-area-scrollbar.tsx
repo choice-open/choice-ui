@@ -24,11 +24,11 @@ export const ScrollAreaScrollbar = forwardRef<HTMLDivElement, ScrollbarProps>(
       scrollbarYId,
     } = useScrollAreaContext()
 
-    // 使用优化的hooks
+    // Use optimized hooks
     const hasOverflow = useHasOverflow(scrollState, orientation)
     const shouldShow = useScrollbarShouldShow(type, hasOverflow, isScrolling, isHovering)
 
-    // 计算滚动位置百分比
+    // Calculate scroll position percentage
     const scrollPercentage = useMemo(() => {
       if (orientation === "vertical") {
         const maxScroll = scrollState.scrollHeight - scrollState.clientHeight
@@ -39,7 +39,7 @@ export const ScrollAreaScrollbar = forwardRef<HTMLDivElement, ScrollbarProps>(
       }
     }, [scrollState, orientation])
 
-    // 缓存事件处理器
+    // Cache event handlers
     const handleTrackClick = useCallback(
       (e: React.MouseEvent) => {
         if (!viewport) return
@@ -50,8 +50,8 @@ export const ScrollAreaScrollbar = forwardRef<HTMLDivElement, ScrollbarProps>(
       [viewport, scrollState, orientation],
     )
 
-    // 缓存TV配置
-    const tvConfig = useMemo(
+    // Cache TV configuration
+    const tv = useMemo(
       () =>
         ScrollTv({
           variant,
@@ -62,7 +62,7 @@ export const ScrollAreaScrollbar = forwardRef<HTMLDivElement, ScrollbarProps>(
       [variant, scrollbarMode, orientation, hoverBoundary],
     )
 
-    // 优化ref设置
+    // Optimize ref setting
     const setRef = useCallback(
       (node: HTMLDivElement | null) => {
         if (orientation === "vertical") {
@@ -87,10 +87,10 @@ export const ScrollAreaScrollbar = forwardRef<HTMLDivElement, ScrollbarProps>(
       <div
         ref={setRef}
         id={scrollbarId}
-        className={tcx(tvConfig.scrollbar(), className)}
+        className={tcx(tv.scrollbar(), className)}
         style={getScrollbarPositionStyle(orientation)}
         onClick={handleTrackClick}
-        // WAI-ARIA 属性
+        // WAI-ARIA attributes
         role="scrollbar"
         aria-controls={viewportId}
         aria-orientation={orientation}

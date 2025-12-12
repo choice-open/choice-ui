@@ -1,7 +1,7 @@
 import type { ScrollState } from "../types"
 
 /**
- * 处理滚动条轨道点击事件
+ * Handle scrollbar track click event
  */
 export function handleScrollbarTrackClick(
   e: React.MouseEvent,
@@ -25,7 +25,7 @@ export function handleScrollbarTrackClick(
 }
 
 /**
- * 获取滚动条位置样式
+ * Get scrollbar position style
  */
 export function getScrollbarPositionStyle(orientation: "vertical" | "horizontal") {
   if (orientation === "vertical") {
@@ -46,7 +46,7 @@ export function getScrollbarPositionStyle(orientation: "vertical" | "horizontal"
 }
 
 /**
- * 判断是否应该显示角落组件
+ * Check if the corner component should be displayed
  */
 export function shouldShowCorner(scrollState: ScrollState): boolean {
   const hasVerticalOverflow = scrollState.scrollHeight > scrollState.clientHeight

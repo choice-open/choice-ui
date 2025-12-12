@@ -132,12 +132,12 @@ export const NumericInputBase = forwardRef<HTMLInputElement, NumericInputProps>(
     inputProps.onBlur?.()
   })
 
-  // 创建上下文值
+  // Create context value
   const contextValue = useMemo<NumericInputContextValue>(
     () => ({
       variant,
 
-      // 状态
+      // State
       value,
       defaultValue,
       disabled,
@@ -146,7 +146,7 @@ export const NumericInputBase = forwardRef<HTMLInputElement, NumericInputProps>(
       focused,
       handlerPressed,
 
-      // 配置
+      // Configuration
       min,
       max,
       step,
@@ -154,14 +154,14 @@ export const NumericInputBase = forwardRef<HTMLInputElement, NumericInputProps>(
       decimal,
       expression,
 
-      // 事件处理方法
+      // Event handling methods
       onChange,
       onEmpty,
       onPressStart,
       onPressEnd,
       onIsEditingChange,
 
-      // 处理程序
+      // Handler props
       handlerProps,
     }),
     [
@@ -188,7 +188,7 @@ export const NumericInputBase = forwardRef<HTMLInputElement, NumericInputProps>(
     ],
   )
 
-  // 合并递归查找，提升性能
+  // Merge recursive lookup, improve performance
   const { prefix, suffix, variable, actionPrompt } = useMemo(() => {
     const result: {
       actionPrompt: React.ReactElement[]
@@ -228,7 +228,7 @@ export const NumericInputBase = forwardRef<HTMLInputElement, NumericInputProps>(
   const variableNode = variable[0] || null
   const actionPromptNode = actionPrompt[0] || null
 
-  const styles = NumericInputTv({
+  const tv = NumericInputTv({
     variant,
     selected: selected || handlerPressed,
     focused,
@@ -242,7 +242,7 @@ export const NumericInputBase = forwardRef<HTMLInputElement, NumericInputProps>(
     <NumericInputContext.Provider value={contextValue}>
       <div
         ref={triggerRef}
-        className={tcx(styles.container(), classNames?.container, className)}
+        className={tcx(tv.container(), classNames?.container, className)}
         onMouseDown={(e) => {
           e.stopPropagation()
         }}
@@ -262,7 +262,7 @@ export const NumericInputBase = forwardRef<HTMLInputElement, NumericInputProps>(
           autoComplete="off"
           spellCheck={false}
           required={required}
-          className={tcx("[grid-area:input]", styles.input(), classNames?.input)}
+          className={tcx("[grid-area:input]", tv.input(), classNames?.input)}
           disabled={disabled}
           aria-label={ariaLabel}
           aria-describedby={ariaDescribedby}
@@ -281,7 +281,7 @@ export const NumericInputBase = forwardRef<HTMLInputElement, NumericInputProps>(
           <Tooltip {...tooltip}>
             <span
               tabIndex={-1}
-              className={styles.tooltip()}
+              className={tv.tooltip()}
               onFocusCapture={() => {
                 if (inputRef.current) {
                   inputRef.current.focus()

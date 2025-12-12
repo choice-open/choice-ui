@@ -1,28 +1,28 @@
 import { useEffect } from "react"
 
 /**
- * 菜单滚动容器高度设置 Hook
+ * Menu scroll container height setting Hook
  *
- * 确保滚动容器正确设置高度，作为 size middleware 的补充
- * 在所有菜单组件中都有类似的逻辑，统一抽取到这里
+ * Ensure the scroll container is correctly set to the parent element height, as a complement to the size middleware
+ * Similar logic exists in all menu components, unified extraction here
  *
- * 功能：
- * - 在菜单打开且定位完成后，确保滚动容器正确继承父元素高度
- * - 使用 requestAnimationFrame 确保 DOM 已更新，避免与 size middleware 的时序冲突
+ * Features:
+ * - Ensure the scroll container is correctly inherited from the parent element height after opening and positioning
+ * - Use requestAnimationFrame to ensure the DOM is updated, avoiding timing conflicts with the size middleware
  */
 
 export interface MenuScrollHeightConfig {
-  /** 是否打开 */
+  /** Whether to open */
   isControlledOpen: boolean
-  /** 是否已定位 */
+  /** Whether to be positioned */
   isPositioned: boolean
-  /** 滚动容器引用 */
+  /** Scroll container reference */
   scrollRef: React.RefObject<HTMLDivElement>
 }
 
 /**
- * 设置滚动容器高度
- * 这个 hook 会在菜单打开且定位完成后，确保滚动容器正确设置高度
+ * Set scroll container height
+ * This hook will ensure the scroll container is correctly set to the parent element height after opening and positioning
  */
 export function useMenuScrollHeight(config: MenuScrollHeightConfig): void {
   const { isControlledOpen, isPositioned, scrollRef } = config
@@ -30,11 +30,11 @@ export function useMenuScrollHeight(config: MenuScrollHeightConfig): void {
   useEffect(() => {
     if (!isControlledOpen || !isPositioned) return
 
-    // 使用 requestAnimationFrame 确保 DOM 已更新，避免与 size middleware 的时序冲突
+    // Use requestAnimationFrame to ensure the DOM is updated, avoiding timing conflicts with the size middleware
     const rafId = requestAnimationFrame(() => {
       if (scrollRef.current) {
         const parent = scrollRef.current.parentElement
-        // 只在父元素已设置高度时才应用样式，避免不必要的 DOM 操作
+        // Only apply styles when the parent element has a height, to avoid unnecessary DOM operations
         if (parent?.style.height) {
           scrollRef.current.style.height = "100%"
           scrollRef.current.style.maxHeight = "100%"

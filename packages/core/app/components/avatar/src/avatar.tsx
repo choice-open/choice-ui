@@ -34,7 +34,7 @@ export const Avatar = memo(
     const isNumericSize = typeof size === "number"
     const tvSize: "small" | "medium" | "large" = isNumericSize ? "medium" : (size ?? "medium")
 
-    const styles = avatarTv({
+    const tv = avatarTv({
       size: tvSize,
       states,
       isLoading,
@@ -46,7 +46,7 @@ export const Avatar = memo(
           data-slot="image"
           src={photo}
           alt={name}
-          className={styles.image()}
+          className={tv.image()}
           onLoad={() => {
             setIsLoading(false)
             setImageLoadedError(false)
@@ -64,7 +64,7 @@ export const Avatar = memo(
       ) : (
         <Use className="text-black/40" />
       )
-    }, [photo, imageLoadedError, name, size, styles])
+    }, [photo, imageLoadedError, name, size, tv])
 
     const textColor = useMemo(() => {
       return tinycolor(color).isDark() ? "white" : "black"
@@ -83,7 +83,7 @@ export const Avatar = memo(
       <Component
         ref={ref}
         tabIndex={-1}
-        className={tcx(styles.root(), className)}
+        className={tcx(tv.root(), className)}
         style={{ backgroundColor: color, color: textColor, ...sizeStyle }}
         {...rest}
       >

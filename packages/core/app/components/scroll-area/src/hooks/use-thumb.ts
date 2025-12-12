@@ -2,12 +2,12 @@ import { useCallback, useRef, useMemo, useEffect } from "react"
 import type { ScrollState } from "../types"
 
 /**
- * 缓存的 thumb 样式计算 hook
+ * Cached thumb style calculation hook
  */
 export function useThumbStyle(scrollState: ScrollState, orientation: "vertical" | "horizontal") {
   return useMemo(() => {
     if (orientation === "vertical") {
-      // 🔧 添加更严格的验证，确保数值有效
+      // 🔧 Add stricter checks to ensure values are valid
       const hasValidDimensions =
         scrollState.scrollHeight > 0 &&
         scrollState.clientHeight > 0 &&
@@ -29,7 +29,7 @@ export function useThumbStyle(scrollState: ScrollState, orientation: "vertical" 
         top: `${Math.max(0, Math.min(thumbTop, 100 - thumbHeight))}%`,
       }
     } else {
-      // 🔧 添加更严格的验证，确保数值有效
+      // 🔧 Add stricter checks to ensure values are valid
       const hasValidDimensions =
         scrollState.scrollWidth > 0 &&
         scrollState.clientWidth > 0 &&
@@ -63,7 +63,7 @@ export function useThumbStyle(scrollState: ScrollState, orientation: "vertical" 
 }
 
 /**
- * 🚀 高性能 thumb 拖拽 hook - 优化拖拽响应性和性能
+ * 🚀 High-performance thumb drag hook - optimize drag responsiveness and performance
  */
 export function useThumbDrag(
   viewport: HTMLDivElement | null,
@@ -76,26 +76,26 @@ export function useThumbDrag(
   const rafId = useRef<number>()
   const cleanupRef = useRef<(() => void) | null>(null)
 
-  // 🚀 性能优化：缓存拖拽计算参数，避免重复计算
+  // 🚀 Performance optimization: cache drag calculation parameters, avoid duplicate calculations
   const dragContextRef = useRef<{
     scrollableRange: number
     scrollbarRange: number
     scrollbarRect: DOMRect
   } | null>(null)
 
-  // 确保组件卸载时清理事件监听器
+  // Ensure event listeners are cleaned up when the component unmounts
   useEffect(() => {
     return () => {
-      // 清理拖拽状态
+      // Clean up drag state
       isDragging.current = false
 
-      // 清理RAF
+      // Clean up RAF
       if (rafId.current) {
         cancelAnimationFrame(rafId.current)
         rafId.current = undefined
       }
 
-      // 清理事件监听器
+      // Clean up event listeners
       if (cleanupRef.current) {
         cleanupRef.current()
         cleanupRef.current = null
@@ -107,12 +107,12 @@ export function useThumbDrag(
     (e: React.MouseEvent) => {
       if (!viewport) return
 
-      // 🔧 获取scrollbar元素
+      // 🔧 Get scrollbar element
       const target = e.currentTarget as HTMLElement
       const scrollbar = target.closest('[role="scrollbar"]') as HTMLElement
       if (!scrollbar) return
 
-      // 🚀 性能优化：预计算拖拽上下文，避免在mousemove中重复计算
+      // 🚀 Performance optimization: pre-calculate drag context, avoid duplicate calculations in mousemove
       const scrollbarRect = scrollbar.getBoundingClientRect()
       const scrollableRange =
         orientation === "vertical"
@@ -133,13 +133,13 @@ export function useThumbDrag(
       startScroll.current =
         orientation === "vertical" ? scrollState.scrollTop : scrollState.scrollLeft
 
-      // 🚀 性能优化：预计算转换比例，避免在每次mousemove中除法运算
+      // 🚀 Performance optimization: pre-calculate conversion ratio, avoid duplicate division operations in mousemove
       const scrollRatio = scrollableRange / scrollbarRange
 
       const handleMouseMove = (e: MouseEvent) => {
         if (!isDragging.current || !viewport || !dragContextRef.current) return
 
-        // 使用RAF节流，确保拖拽流畅且不阻塞UI
+        // Use RAF throttling, ensure drag is smooth and does not block UI
         if (rafId.current) {
           cancelAnimationFrame(rafId.current)
         }
@@ -148,14 +148,14 @@ export function useThumbDrag(
           const currentPos = orientation === "vertical" ? e.clientY : e.clientX
           const delta = currentPos - startPos.current
 
-          // 🚀 性能优化：使用预计算的比例，避免重复除法运算
+          // 🚀 Performance optimization: use pre-calculated ratio, avoid duplicate division operations
           const scrollDelta = delta * scrollRatio
           const newScrollValue = Math.max(
             0,
             Math.min(startScroll.current + scrollDelta, dragContextRef.current!.scrollableRange),
           )
 
-          // 🚀 性能优化：减少DOM操作，直接设置对应方向的scroll值
+          // 🚀 Performance optimization: reduce DOM operations, directly set scroll value for corresponding direction
           if (orientation === "vertical") {
             viewport.scrollTop = newScrollValue
           } else {
@@ -166,7 +166,7 @@ export function useThumbDrag(
 
       const handleMouseUp = () => {
         isDragging.current = false
-        // 🚀 性能优化：清理拖拽上下文
+        // 🚀 Performance optimization: clean up drag context
         dragContextRef.current = null
         if (rafId.current) {
           cancelAnimationFrame(rafId.current)
@@ -176,7 +176,7 @@ export function useThumbDrag(
         cleanupRef.current = null
       }
 
-      // 创建清理函数
+      // Create cleanup function
       const cleanup = () => {
         document.removeEventListener("mousemove", handleMouseMove)
         document.removeEventListener("mouseup", handleMouseUp)

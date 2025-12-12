@@ -11,13 +11,13 @@ export const ListLabel = forwardRef<HTMLDivElement, ListLabelProps>((props, ref)
   const { children, className, ...rest } = props
   const { selection } = useSelectionContext()
 
-  const styles = ListLabelTv({ selection })
+  const tv = ListLabelTv({ selection })
 
   return (
     <div
       ref={ref}
       {...rest}
-      className={tcx(styles, className)}
+      className={tcx(tv, className)}
     >
       {children}
     </div>

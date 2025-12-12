@@ -357,7 +357,7 @@ export const Command = forwardRef<HTMLDivElement, CommandProps>((props, forwarde
         store,
         variant,
       }),
-    [], // ❌ 空依赖数组，和原始实现一致
+    [], // Empty deps array, consistent with original cmdk implementation
   )
 
   // Store now directly uses the functions in closure, no need for updateHandlers

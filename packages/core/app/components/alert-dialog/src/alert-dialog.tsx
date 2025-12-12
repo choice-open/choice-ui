@@ -34,7 +34,7 @@ export const AlertDialog = memo(function AlertDialog(props: AlertDialogProps) {
   const { state, _handleAction } = useAlertDialogContext()
   const { isOpen, type, config } = state
 
-  // 使用 floating-ui 获取 context，但不需要定位功能
+  // Use floating-ui to get context, positioning not needed
   const { refs, context } = useFloating({
     open: isOpen,
     onOpenChange: (open) => {
@@ -44,26 +44,26 @@ export const AlertDialog = memo(function AlertDialog(props: AlertDialogProps) {
     },
   })
 
-  // 处理键盘事件
+  // Handle keyboard events
   useEffect(() => {
-    // 只有在对话框打开且有配置时才监听
+    // Only listen when dialog is open and config exists
     if (!isOpen || !config) {
       return
     }
 
     const handleKeyDown = (event: KeyboardEvent) => {
-      // ESC 键关闭对话框
+      // ESC key to close dialog
       if (event.key === "Escape") {
         const shouldClose = config.closeOnEscape !== false
         if (shouldClose) {
-          // 只有在确实要处理时才阻止传播
+          // Only prevent propagation when actually handling
           event.stopImmediatePropagation()
           event.preventDefault()
           _handleAction({ type: "HIDE", payload: { value: false } })
         }
       }
 
-      // Enter 键确认（如果有自动聚焦的按钮）
+      // Enter key to confirm (if autofocus button exists)
       if (event.key === "Enter") {
         if (type === "alert") {
           event.preventDefault()
@@ -79,30 +79,30 @@ export const AlertDialog = memo(function AlertDialog(props: AlertDialogProps) {
     return () => window.removeEventListener("keydown", handleKeyDown, { capture: true })
   }, [isOpen, config, type, _handleAction])
 
-  // 处理背景点击
+  // Handle overlay click
   const handleOverlayClick = useEventCallback((event: React.MouseEvent) => {
     if (!config) return
 
-    // 检查是否允许点击背景关闭
-    // 优先使用 outsidePress prop，如果没有设置则使用 config 中的设置
+    // Check if overlay click should close
+    // Prefer outsidePress prop, fallback to config setting
     let shouldClose = false
     if (outsidePress !== undefined) {
-      // 如果明确设置了 outsidePress，使用它的值
+      // If outsidePress is explicitly set, use its value
       shouldClose = outsidePress
     } else {
-      // 否则使用 config 中的设置，默认为 true（除非明确设置为 false）
+      // Otherwise use config setting, default to true (unless explicitly false)
       shouldClose = config.closeOnOverlayClick !== false
     }
 
     if (shouldClose) {
-      // 确保点击的是背景而不是对话框内容
+      // Ensure click is on overlay, not dialog content
       if (event.target === event.currentTarget) {
         _handleAction({ type: "HIDE", payload: { value: false } })
       }
     }
   })
 
-  // 处理按钮点击
+  // Handle button click
   const handleButtonClick = useEventCallback((buttonValue: string) => {
     if (!type) return
 
@@ -110,12 +110,12 @@ export const AlertDialog = memo(function AlertDialog(props: AlertDialogProps) {
     _handleAction({ type: "HIDE", payload: { value: result } })
   })
 
-  // 处理关闭按钮点击
+  // Handle close button click
   const handleCloseClick = useEventCallback(() => {
     _handleAction({ type: "HIDE", payload: { value: false } })
   })
 
-  // 生成按钮配置
+  // Generate button configuration
   const buttons = useMemo(() => {
     if (!type || !config) return []
 
@@ -126,29 +126,29 @@ export const AlertDialog = memo(function AlertDialog(props: AlertDialogProps) {
     return getButtonsForDialog(type, config)
   }, [type, config])
 
-  // 生成标题
+  // Generate title
   const title = useMemo(() => {
     if (!type || !config) return ""
     return getDialogTitle(type, config)
   }, [type, config])
 
-  // 检查是否显示关闭按钮
+  // Check if close button should be shown
   const showCloseButton = useMemo(() => {
     if (!type || !config) return false
     return shouldShowCloseButton(type, config)
   }, [type, config])
 
-  // 生成样式
+  // Generate styles
   const tv = useMemo(() => {
     const variant = config?.variant || "default"
     const size = config?.size || "default"
     return alertDialogTv({ variant, size })
   }, [config?.variant, config?.size])
 
-  // 提取渲染条件
+  // Extract render condition
   const shouldRenderContent = isOpen && config
 
-  // 背景点击关闭处理
+  // Handle backdrop close
   const handleBackdropClose = useEventCallback(() => {
     if (!config) return
 
@@ -164,7 +164,7 @@ export const AlertDialog = memo(function AlertDialog(props: AlertDialogProps) {
     }
   })
 
-  // 对话框内容
+  // Dialog content
   const dialogContent = shouldRenderContent && (
     <FloatingFocusManager
       context={context}
