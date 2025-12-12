@@ -313,7 +313,7 @@ export const Variants: Story = {
         >
           Disabled
         </Checkbox>
-        <div className="grid w-160 grid-cols-3 overflow-hidden rounded-xl border">
+        <div className="w-160 grid grid-cols-3 overflow-hidden rounded-xl border">
           <div className="bg-default-background p-8">
             <ContextInput
               disabled={disabled}
@@ -911,13 +911,6 @@ export const WithHeaderAndFooter: Story = {
  * ```
  */
 export const WithPasteButton: Story = {
-  decorators: [
-    (Story) => (
-      <AlertDialogProvider>
-        <Story />
-      </AlertDialogProvider>
-    ),
-  ],
   render: function WithPasteButton() {
     const mockSlateNodes = [
       {
@@ -954,8 +947,6 @@ export const WithPasteButton: Story = {
 
     const [copiedText, setCopiedText] = useState<string>("")
 
-    const { confirm } = useAlertDialog()
-
     return (
       <div className="w-full max-w-md space-y-4">
         <ContextInput
@@ -979,13 +970,7 @@ export const WithPasteButton: Story = {
               <h3 className="font-strong">Input content</h3>
               <ContextInput.CopyButton
                 onClick={async (copiedText) => {
-                  const confirmed = await confirm({
-                    title: "Paste",
-                    description: copiedText,
-                  })
-                  if (confirmed) {
-                    setCopiedText(copiedText)
-                  }
+                  setCopiedText(copiedText)
                 }}
               />
             </div>
