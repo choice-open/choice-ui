@@ -1,7 +1,6 @@
 import { useMemo } from "react"
 
 export interface UseSkeletonParams {
-  hasChildren: boolean
   height?: number | string
   width?: number | string
 }
@@ -10,7 +9,7 @@ export interface UseSkeletonReturn {
   styles: React.CSSProperties
 }
 
-export function useSkeleton({ hasChildren, width, height }: UseSkeletonParams): UseSkeletonReturn {
+export function useSkeleton({ width, height }: UseSkeletonParams): UseSkeletonReturn {
   const styles = useMemo<React.CSSProperties>(() => {
     const result: React.CSSProperties = {}
 

@@ -113,7 +113,7 @@ export const storyRegistry: Record<string, Record<string, unknown>> = {
   "buttons/segmented": StoryModule60,
   "collections/select": StoryModule61,
   "layouts/separator": StoryModule62,
-  "components/skeleton": StoryModule66,
+  "feedback/skeleton": StoryModule66,
   "utils/slot": StoryModule67,
   "layouts/splitter": StoryModule70,
   "utilities/spring-visualizer": StoryModule71,

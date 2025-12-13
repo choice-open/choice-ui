@@ -1,0 +1,155 @@
+{
+  "slug": "feedback/skeleton",
+  "title": "Skeleton",
+  "package": {
+    "name": "@choice-ui/skeleton",
+    "version": "0.0.2",
+    "description": "Skeleton component for Choiceform Design System",
+    "dependencies": {
+      "@choice-ui/shared": "workspace:*",
+      "@choice-ui/slot": "workspace:*"
+    },
+    "peerDependencies": {
+      "react": ">=18.0.0",
+      "react-dom": ">=18.0.0"
+    }
+  },
+  "exports": [
+    "Skeleton",
+    "type SkeletonProps",
+    "SkeletonProvider"
+  ],
+  "props": [
+    {
+      "displayName": "SkeletonProps",
+      "description": "",
+      "props": [
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": "Additional CSS classes"
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Optional children to infer width and height from\nWhen children are provided, Skeleton acts as a Slot and passes styles down"
+        },
+        {
+          "name": "asChild",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": "Whether to render as child element"
+        },
+        {
+          "name": "height",
+          "type": "string | number | undefined",
+          "required": false,
+          "description": "Height of the skeleton"
+        },
+        {
+          "name": "loading",
+          "type": "boolean | undefined",
+          "required": false,
+          "defaultValue": "undefined (falls back to Context)",
+          "description": "Whether the skeleton is in loading state\nWhen true, children will be wrapped with skeleton styles (gray background, no border/shadow, invisible children)\nIf not provided, will fallback to SkeletonContext loading state"
+        },
+        {
+          "name": "variant",
+          "type": "undefined | \"text\" | \"rectangular\" | \"rounded\" | \"circular\"",
+          "required": false,
+          "defaultValue": "'text'",
+          "description": "The variant of the skeleton"
+        },
+        {
+          "name": "width",
+          "type": "string | number | undefined",
+          "required": false,
+          "description": "Width of the skeleton"
+        },
+        {
+          "name": "ref",
+          "type": "((instance: HTMLSpanElement | null) => void) | RefObject<HTMLSpanElement> | null | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "Context",
+      "description": "Context lets components pass information deep down without explicitly\npassing props.\n\nCreated from {@link createContext}",
+      "props": []
+    },
+    {
+      "displayName": "SkeletonProvider",
+      "description": "",
+      "props": [
+        {
+          "name": "loading",
+          "type": "boolean",
+          "required": true,
+          "description": ""
+        }
+      ]
+    }
+  ],
+  "stories": [
+    {
+      "id": "feedback-skeleton--basic",
+      "name": "Basic",
+      "exportName": "Basic",
+      "description": "Basic: Demonstrates the fundamental usage of Skeleton component.\n- Toggle the loading state to see the transition effect.\n- When loading is true, the wrapped content displays as a skeleton.\n- When loading is false, the actual content is revealed with a smooth transition.",
+      "source": "import { Skeleton } from \"@choice-ui/skeleton\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [loading, setLoading] = useState(true)\n\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <Button\n        onClick={() => setLoading(!loading)}\n        className=\"self-start\"\n      >\n        {loading ? \"Show Content\" : \"Show Loading\"}\n      </Button>\n\n      <Skeleton loading={loading}>\n        <Button variant=\"primary\">Click me</Button>\n      </Skeleton>\n    </div>\n  )\n\n}"
+    },
+    {
+      "id": "feedback-skeleton--loading-prop",
+      "name": "Loading Prop",
+      "exportName": "LoadingProp",
+      "description": "LoadingProp: Shows how to control individual Skeleton components with the `loading` prop.\n- Each Skeleton can be controlled independently.\n- When `loading` is true, children are hidden and replaced with a skeleton effect.\n- Useful for granular control over different parts of the UI.",
+      "source": "import { Skeleton } from \"@choice-ui/skeleton\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [loading, setLoading] = useState(true)\n\n  return (\n    <div className=\"flex flex-col gap-6\">\n      <Button\n        onClick={() => setLoading(!loading)}\n        className=\"self-start\"\n      >\n        {loading ? \"Show Content\" : \"Show Loading\"}\n      </Button>\n\n      <div className=\"flex flex-col gap-4\">\n        <div>\n          <p className=\"text-tertiary-foreground mb-2\">Button:</p>\n          <Skeleton loading={loading}>\n            <Button variant=\"primary\">Click me</Button>\n          </Skeleton>\n        </div>\n\n        <div>\n          <p className=\"text-tertiary-foreground mb-2\">Input:</p>\n          <Skeleton loading={loading}>\n            <Input placeholder=\"Enter text...\" />\n          </Skeleton>\n        </div>\n\n        <div>\n          <p className=\"text-tertiary-foreground mb-2\">Avatar:</p>\n          <Skeleton loading={loading}>\n            <Avatar name=\"John Doe\" />\n          </Skeleton>\n        </div>\n\n        <div>\n          <p className=\"text-tertiary-foreground mb-2\">Card:</p>\n          <Skeleton loading={loading}>\n            <div className=\"w-64 rounded-lg p-4 shadow-sm\">\n              <h3 className=\"mb-2 text-lg font-semibold\">Card Title</h3>\n              <p className=\"text-secondary-foreground\">Card content goes here</p>\n            </div>\n          </Skeleton>\n        </div>\n      </div>\n    </div>\n  )\n\n}"
+    },
+    {
+      "id": "feedback-skeleton--skeleton-provider-usage",
+      "name": "SkeletonProvider",
+      "exportName": "SkeletonProviderUsage",
+      "description": "SkeletonProviderUsage: Demonstrates unified loading control with SkeletonProvider.\n- Wrap multiple Skeleton components with SkeletonProvider.\n- All nested Skeletons inherit the loading state from the provider.\n- Individual Skeleton `loading` props take precedence over provider.\n- Ideal for page-level or section-level loading states.",
+      "source": "import { Skeleton, SkeletonProvider } from \"@choice-ui/skeleton\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [loading, setLoading] = useState(true)\n\n  return (\n    <div className=\"flex flex-col gap-6\">\n      <Button\n        onClick={() => setLoading(!loading)}\n        className=\"self-start\"\n      >\n        {loading ? \"Show Content\" : \"Show Loading\"}\n      </Button>\n\n      <SkeletonProvider loading={loading}>\n        <div className=\"flex flex-col gap-4\">\n          <p className=\"text-tertiary-foreground\">\n            All components below are controlled by SkeletonProvider:\n          </p>\n\n          <div className=\"flex gap-2\">\n            <Skeleton>\n              <Button variant=\"primary\">Button 1</Button>\n            </Skeleton>\n            <Skeleton>\n              <Button variant=\"secondary\">Button 2</Button>\n            </Skeleton>\n            <Skeleton>\n              <Button variant=\"solid\">Button 3</Button>\n            </Skeleton>\n          </div>\n\n          <Skeleton>\n            <div className=\"w-64 rounded-lg p-4 shadow-sm\">\n              <h3 className=\"mb-2 text-lg font-semibold\">Card Title</h3>\n              <p className=\"text-secondary-foreground\">Card content goes here</p>\n            </div>\n          </Skeleton>\n\n          <div className=\"flex items-center gap-3\">\n            <Skeleton>\n              <Avatar name=\"John Doe\" />\n            </Skeleton>\n            <div className=\"flex flex-col gap-2\">\n              <Skeleton>\n                <span className=\"text-lg font-semibold\">User Name</span>\n              </Skeleton>\n              <Skeleton>\n                <span className=\"text-secondary-foreground\">User description</span>\n              </Skeleton>\n            </div>\n          </div>\n        </div>\n      </SkeletonProvider>\n    </div>\n  )\n\n}"
+    },
+    {
+      "id": "feedback-skeleton--profile-card",
+      "name": "Profile Card",
+      "exportName": "ProfileCard",
+      "description": "ProfileCard: Real-world example of a user profile card with skeleton loading.\n- Shows a complete profile layout with avatar, name, title, and action buttons.\n- Demonstrates how Skeleton preserves the layout structure during loading.\n- Each element maintains its size and position for a smooth loading experience.",
+      "source": "import { Skeleton } from \"@choice-ui/skeleton\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [loading, setLoading] = useState(true)\n\n  return (\n    <div className=\"flex w-80 flex-col gap-6\">\n      <Button\n        onClick={() => setLoading(!loading)}\n        className=\"self-start\"\n      >\n        {loading ? \"Show Content\" : \"Show Loading\"}\n      </Button>\n\n      <div className=\"rounded-lg p-4 shadow-sm\">\n        <div className=\"flex items-center gap-4\">\n          <Skeleton loading={loading}>\n            <Avatar\n              className=\"size-16\"\n              name=\"John Doe\"\n            />\n          </Skeleton>\n          <div className=\"flex flex-1 flex-col gap-2\">\n            <Skeleton loading={loading}>\n              <span className=\"text-lg font-semibold\">John Doe</span>\n            </Skeleton>\n            <Skeleton loading={loading}>\n              <span className=\"text-secondary-foreground\">Software Engineer</span>\n            </Skeleton>\n            <Skeleton loading={loading}>\n              <span className=\"text-tertiary-foreground\">San Francisco, CA</span>\n            </Skeleton>\n          </div>\n        </div>\n        <div className=\"mt-4 flex gap-2\">\n          <Skeleton loading={loading}>\n            <Button\n              variant=\"primary\"\n              className=\"flex-1\"\n            >\n              Follow\n            </Button>\n          </Skeleton>\n          <Skeleton loading={loading}>\n            <Button\n              variant=\"secondary\"\n              className=\"flex-1\"\n            >\n              Message\n            </Button>\n          </Skeleton>\n        </div>\n      </div>\n    </div>\n  )\n\n}"
+    },
+    {
+      "id": "feedback-skeleton--form-layout",
+      "name": "Form Layout",
+      "exportName": "FormLayout",
+      "description": "FormLayout: Demonstrates skeleton loading for form elements.\n- Shows a typical form with text inputs and a textarea.\n- Skeleton maintains form field dimensions during loading.\n- Action buttons are also wrapped for a complete loading experience.",
+      "source": "import { Skeleton } from \"@choice-ui/skeleton\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [loading, setLoading] = useState(true)\n\n  return (\n    <div className=\"flex w-80 flex-col gap-6\">\n      <Button\n        onClick={() => setLoading(!loading)}\n        className=\"self-start\"\n      >\n        {loading ? \"Show Content\" : \"Show Loading\"}\n      </Button>\n\n      <div className=\"flex flex-col gap-4\">\n        <div>\n          <label className=\"mb-1 block font-medium\">Name</label>\n          <Skeleton loading={loading}>\n            <Input placeholder=\"Enter your name\" />\n          </Skeleton>\n        </div>\n        <div>\n          <label className=\"mb-1 block font-medium\">Email</label>\n          <Skeleton loading={loading}>\n            <Input\n              type=\"email\"\n              placeholder=\"Enter your email\"\n            />\n          </Skeleton>\n        </div>\n        <div>\n          <label className=\"mb-1 block font-medium\">Message</label>\n          <Skeleton loading={loading}>\n            <Textarea\n              placeholder=\"Enter your message\"\n              minRows={4}\n              maxRows={8}\n            />\n          </Skeleton>\n        </div>\n        <div className=\"flex gap-2\">\n          <Skeleton loading={loading}>\n            <Button variant=\"primary\">Submit</Button>\n          </Skeleton>\n          <Skeleton loading={loading}>\n            <Button variant=\"secondary\">Cancel</Button>\n          </Skeleton>\n        </div>\n      </div>\n    </div>\n  )\n\n}"
+    },
+    {
+      "id": "feedback-skeleton--list-items",
+      "name": "List Items",
+      "exportName": "ListItems",
+      "description": "ListItems: Shows skeleton loading for list-based layouts.\n- Each List.Item is wrapped with Skeleton individually.\n- Maintains consistent item heights and spacing during loading.\n- Ideal for data-driven lists, feeds, or navigation menus.",
+      "source": "import { Skeleton } from \"@choice-ui/skeleton\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [loading, setLoading] = useState(true)\n\n  return (\n    <div className=\"flex w-96 flex-col gap-6\">\n      <Button\n        onClick={() => setLoading(!loading)}\n        className=\"self-start\"\n      >\n        {loading ? \"Show Content\" : \"Show Loading\"}\n      </Button>\n\n      <List>\n        <List.Content>\n          {Array.from({ length: 3 }).map((_, i) => (\n            <Skeleton\n              key={i}\n              loading={loading}\n            >\n              <List.Item\n                as=\"div\"\n                prefixElement={\n                  <Avatar\n                    name={`User ${i + 1}`}\n                    size=\"small\"\n                  />\n                }\n                suffixElement={\n                  <Button\n                    variant=\"ghost\"\n                    onClick={(e) => e.stopPropagation()}\n                  >\n                    Action\n                  </Button>\n                }\n              >\n                <List.Value>List item description</List.Value>\n              </List.Item>\n            </Skeleton>\n          ))}\n        </List.Content>\n      </List>\n    </div>\n  )\n\n}"
+    },
+    {
+      "id": "feedback-skeleton--transition-effect",
+      "name": "Transition Effect",
+      "exportName": "TransitionEffect",
+      "description": "TransitionEffect: Demonstrates the smooth transition animation.\n- Shows how Skeleton transitions smoothly between loading and loaded states.\n- Both entering (content → skeleton) and leaving (skeleton → content) have transitions.\n- The transition is powered by CSS transitions on background, border, and opacity.",
+      "source": "import { Skeleton } from \"@choice-ui/skeleton\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [loading, setLoading] = useState(true)\n\n  return (\n    <div className=\"flex flex-col gap-6\">\n      <div className=\"flex items-center gap-4\">\n        <Button\n          onClick={() => setLoading(!loading)}\n          className=\"self-start\"\n        >\n          Toggle Loading\n        </Button>\n        <span className=\"text-secondary-foreground\">\n          Current: <strong>{loading ? \"Loading\" : \"Loaded\"}</strong>\n        </span>\n      </div>\n\n      <p className=\"text-tertiary-foreground\">\n        Click the button and observe the smooth transition in both directions:\n      </p>\n\n      <div className=\"flex flex-wrap gap-4\">\n        <Skeleton loading={loading}>\n          <Button variant=\"primary\">Primary Button</Button>\n        </Skeleton>\n\n        <Skeleton loading={loading}>\n          <Button variant=\"secondary\">Secondary Button</Button>\n        </Skeleton>\n\n        <Skeleton loading={loading}>\n          <Avatar\n            name=\"Test User\"\n            className=\"size-10\"\n          />\n        </Skeleton>\n\n        <Skeleton loading={loading}>\n          <div className=\"rounded-lg border px-4 py-2\">\n            <span className=\"\">Card Content</span>\n          </div>\n        </Skeleton>\n      </div>\n    </div>\n  )\n\n}"
+    },
+    {
+      "id": "feedback-skeleton--mixed-content",
+      "name": "Mixed Content",
+      "exportName": "MixedContent",
+      "description": "MixedContent: Shows a complex layout combining multiple component types.\n- Demonstrates how SkeletonProvider can control a diverse set of elements.\n- Includes headings, paragraphs, buttons, and cards.\n- Represents a typical page section with mixed content types.",
+      "source": "import { Skeleton, SkeletonProvider } from \"@choice-ui/skeleton\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [loading, setLoading] = useState(true)\n\n  return (\n    <div className=\"flex w-96 flex-col gap-6\">\n      <Button\n        onClick={() => setLoading(!loading)}\n        className=\"self-start\"\n      >\n        {loading ? \"Show Content\" : \"Show Loading\"}\n      </Button>\n\n      <SkeletonProvider loading={loading}>\n        <div className=\"flex flex-col gap-4\">\n          <Skeleton>\n            <h2 className=\"text-heading-large\">Page Title</h2>\n          </Skeleton>\n\n          <Skeleton>\n            <p className=\"text-body-medium text-secondary-foreground\">\n              This is a page description that explains the content below.\n            </p>\n          </Skeleton>\n\n          <Skeleton>\n            <div className=\"flex gap-2\">\n              <Button variant=\"primary\">Primary Action</Button>\n              <Button variant=\"secondary\">Secondary Action</Button>\n            </div>\n          </Skeleton>\n\n          <Skeleton>\n            <div className=\"rounded-lg border p-4\">\n              <h3 className=\"text-heading-small mb-2\">Card Section</h3>\n              <p className=\"text-body-medium text-secondary-foreground\">\n                Card content with detailed information.\n              </p>\n            </div>\n          </Skeleton>\n        </div>\n      </SkeletonProvider>\n    </div>\n  )\n\n}"
+    }
+  ]
+}

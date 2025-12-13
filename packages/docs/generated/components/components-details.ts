@@ -66,7 +66,7 @@ import ComponentDetail62 from "./layouts-separator.json"
 import ComponentDetail63 from "./utils-date-formatting.json"
 import ComponentDetail64 from "./utils-i18n.json"
 import ComponentDetail65 from "./utils-tcx-tw-merge.json"
-import ComponentDetail66 from "./components-skeleton.json"
+import ComponentDetail66 from "./feedback-skeleton.json"
 import ComponentDetail67 from "./utils-slot.json"
 import ComponentDetail68 from "./status-spinner-spinner-bounce.json"
 import ComponentDetail69 from "./status-spinner-spinner-spin.json"
@@ -149,7 +149,7 @@ export const componentsDetails = {
   "utils/date-formatting": ComponentDetail63 as ComponentDetail,
   "utils/i18n": ComponentDetail64 as ComponentDetail,
   "utils/tcx-tw-merge": ComponentDetail65 as ComponentDetail,
-  "components/skeleton": ComponentDetail66 as ComponentDetail,
+  "feedback/skeleton": ComponentDetail66 as ComponentDetail,
   "utils/slot": ComponentDetail67 as ComponentDetail,
   "status/spinner/spinner-bounce": ComponentDetail68 as ComponentDetail,
   "status/spinner/spinner-spin": ComponentDetail69 as ComponentDetail,

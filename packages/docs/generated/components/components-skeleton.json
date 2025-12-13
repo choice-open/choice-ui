@@ -26,7 +26,7 @@
   "props": [
     {
       "displayName": "SkeletonProps",
-      "description": "Skeleton component for loading states",
+      "description": "",
       "props": [
         {
           "name": "className",
@@ -84,12 +84,6 @@
       "displayName": "useSkeleton",
       "description": "",
       "props": [
-        {
-          "name": "hasChildren",
-          "type": "boolean",
-          "required": true,
-          "description": ""
-        },
         {
           "name": "height",
           "type": "string | number | undefined",

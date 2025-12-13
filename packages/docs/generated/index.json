@@ -224,7 +224,7 @@
       "slug": "forms/form",
       "name": "@choice-ui/form",
       "title": "Form",
-      "description": "增强版的 useForm hook",
+      "description": "Enhanced useForm hook",
       "version": "0.0.3"
     },
     {
@@ -507,10 +507,10 @@
       "version": "0.0.1"
     },
     {
-      "slug": "components/skeleton",
+      "slug": "feedback/skeleton",
       "name": "@choice-ui/skeleton",
-      "title": "skeleton",
-      "description": "Skeleton component for loading states",
+      "title": "Skeleton",
+      "description": "",
       "version": "0.0.2"
     },
     {

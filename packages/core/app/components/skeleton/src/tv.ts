@@ -2,16 +2,13 @@ import { tcv } from "@choice-ui/shared"
 
 export const skeletonTv = tcv({
   slots: {
-    root: ["will-change-opacity", "animate-pulse"],
+    // transition always exists, ensure there is a transition effect when loading state changes
+    root: ["transition-all", "duration-200", "ease-in-out"],
   },
   variants: {
-    hasChildren: {
-      true: {},
-      false: {},
-    },
     loading: {
       true: {
-        root: ["skeleton"],
+        root: ["skeleton", "animate-pulse"],
       },
       false: {},
     },
