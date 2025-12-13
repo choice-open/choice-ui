@@ -9,17 +9,51 @@ const codeBlockHeaderTv = tcv({
   slots: {
     header: "text-body-medium code-header flex h-8 items-center justify-between pr-1 pl-2",
     title: "flex items-center gap-1",
-    filename: "text-secondary-foreground",
+    filename: "",
     actions: "flex items-center",
-    button: "opacity-0 group-hover:opacity-100",
+    button: "opacity-0 group-hover/code-block:opacity-100",
     lineCount: "text-success-foreground ml-2 font-strong",
   },
   variants: {
     isExpanded: {
-      true: { header: "bg-secondary-background" },
+      true: {},
       false: {},
     },
+    variant: {
+      default: {
+        filename: "text-secondary-foreground",
+      },
+      light: {
+        filename: "text-gray-900",
+      },
+      dark: {
+        filename: "text-white",
+      },
+    },
   },
+  compoundVariants: [
+    {
+      variant: "default",
+      isExpanded: true,
+      class: {
+        header: "bg-secondary-background",
+      },
+    },
+    {
+      variant: "light",
+      isExpanded: true,
+      class: {
+        header: "bg-gray-100",
+      },
+    },
+    {
+      variant: "dark",
+      isExpanded: true,
+      class: {
+        header: "bg-gray-700",
+      },
+    },
+  ],
   defaultVariants: {
     isExpanded: true,
   },
@@ -29,7 +63,7 @@ export const CodeBlockHeader = memo(function CodeBlockHeader(props: CodeBlockHea
   const {
     className,
     codeBlock,
-    showLineCount = true,
+    showLineCount = false,
     i18n = {
       collapse: "Collapse",
       copied: "Copied",
@@ -50,6 +84,7 @@ export const CodeBlockHeader = memo(function CodeBlockHeader(props: CodeBlockHea
     expandable = true,
     handleExpand,
     handleCopy,
+    variant,
   } = codeBlock
 
   // Guard against missing handlers
@@ -57,7 +92,7 @@ export const CodeBlockHeader = memo(function CodeBlockHeader(props: CodeBlockHea
     return null
   }
 
-  const tv = codeBlockHeaderTv({ isExpanded })
+  const tv = codeBlockHeaderTv({ isExpanded, variant })
 
   // Determine which icon to use
   let icon = null as React.ReactNode
@@ -96,7 +131,7 @@ export const CodeBlockHeader = memo(function CodeBlockHeader(props: CodeBlockHea
         {isExpanded && (
           <IconButton
             className={tv.button()}
-            variant="ghost"
+            variant={variant === "dark" ? "dark" : "ghost"}
             onClick={() => handleCopy()}
             tooltip={{ content: copyTooltipContent }}
           >
@@ -106,7 +141,7 @@ export const CodeBlockHeader = memo(function CodeBlockHeader(props: CodeBlockHea
         {expandable && (
           <IconButton
             className={tv.button()}
-            variant="ghost"
+            variant={variant === "dark" ? "dark" : "ghost"}
             onClick={handleExpand}
             tooltip={{
               content: expandTooltipContent,

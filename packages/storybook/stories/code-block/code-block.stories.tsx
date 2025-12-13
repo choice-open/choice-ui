@@ -1,4 +1,4 @@
-import { CodeBlock, ScrollArea } from "@choice-ui/react"
+import { Button, CodeBlock, Label, ScrollArea } from "@choice-ui/react"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import React, { useRef, useState } from "react"
 import { useStickToBottom } from "use-stick-to-bottom"
@@ -326,6 +326,42 @@ export const LongCodeWithoutScroll: Story = {
 }
 
 /**
+ * Code block with different variants.
+ */
+export const Variants: Story = {
+  render: function VariantsStory() {
+    return (
+      <div className="grid grid-cols-3 gap-4">
+        <Label>Default</Label>
+        <Label>Light</Label>
+        <Label>Dark</Label>
+        <CodeBlock
+          variant="default"
+          language="typescript"
+        >
+          <CodeBlock.Header />
+          <CodeBlock.Content code="console.log('Hello, world!')" />
+        </CodeBlock>
+        <CodeBlock
+          variant="light"
+          language="typescript"
+        >
+          <CodeBlock.Header />
+          <CodeBlock.Content code="console.log('Hello, world!')" />
+        </CodeBlock>
+        <CodeBlock
+          variant="dark"
+          language="typescript"
+        >
+          <CodeBlock.Header />
+          <CodeBlock.Content code="console.log('Hello, world!')" />
+        </CodeBlock>
+      </div>
+    )
+  },
+}
+
+/**
  * Showcases popular programming and markup languages.
  * Each language has proper syntax highlighting powered by Shiki.
  */
@@ -363,8 +399,8 @@ export const PopularLanguages: Story = {
  * Real-world example with a complex React component.
  * Demonstrates how readable long code remains with syntax highlighting.
  */
-export const LongTSXDemo: Story = {
-  render: function LongTSXDemoRender() {
+export const LongTsxDemo: Story = {
+  render: function LongTsxDemoRender() {
     return (
       <div className="max-w-md">
         <CodeBlock language="tsx">
@@ -485,8 +521,8 @@ export const NonExpandable: Story = {
  * Demonstrates internationalization support with custom labels.
  * You can provide custom translations for buttons and tooltips.
  */
-export const CustomI18n: Story = {
-  render: function CustomI18nRender() {
+export const Internationalization: Story = {
+  render: function InternationalizationRender() {
     return (
       <div className="max-w-3xl">
         <CodeBlock
@@ -856,33 +892,31 @@ export const StreamingWithAutoScroll: Story = {
     return (
       <div className="flex h-[600px] w-[600px] flex-col gap-4">
         <div className="flex items-center gap-2">
-          <button
+          <Button
             onClick={addBlock}
             disabled={isStreaming}
-            className="rounded bg-blue-500 px-3 py-1.5 text-sm text-white hover:bg-blue-600 disabled:opacity-50"
           >
             Add Code Block
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={startStreaming}
             disabled={isStreaming}
-            className="rounded bg-green-500 px-3 py-1.5 text-sm text-white hover:bg-green-600 disabled:opacity-50"
           >
             {isStreaming ? "Streaming..." : "Auto Stream"}
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={reset}
-            className="rounded bg-gray-500 px-3 py-1.5 text-sm text-white hover:bg-gray-600"
+            variant="secondary"
           >
             Reset
-          </button>
+          </Button>
           {!isAtBottom && (
-            <button
+            <Button
               onClick={() => scrollToBottom()}
-              className="rounded bg-orange-500 px-3 py-1.5 text-sm text-white hover:bg-orange-600"
+              variant="secondary"
             >
               Scroll to Bottom
-            </button>
+            </Button>
           )}
         </div>
 
@@ -992,74 +1026,29 @@ export function useUser(userId: string) {
     }
 
     return (
-      <div className="flex h-[500px] w-[600px] flex-col gap-4">
+      <div className="flex w-[600px] flex-col gap-4">
         <div className="flex items-center gap-2">
-          <button
+          <Button
             onClick={startCharacterStream}
             disabled={isStreaming}
-            className="rounded bg-blue-500 px-3 py-1.5 text-sm text-white hover:bg-blue-600 disabled:opacity-50"
           >
             {isStreaming ? "Streaming..." : "Start Stream"}
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={reset}
-            className="rounded bg-gray-500 px-3 py-1.5 text-sm text-white hover:bg-gray-600"
+            variant="secondary"
           >
             Reset
-          </button>
+          </Button>
         </div>
 
-        <ScrollArea className="flex-1 rounded-lg border">
-          <ScrollArea.Viewport ref={scrollRef as React.RefObject<HTMLDivElement>}>
-            <ScrollArea.Content
-              ref={contentRef as React.RefObject<HTMLDivElement>}
-              className="p-4"
-            >
-              <CodeBlock
-                language="typescript"
-                filename="useUser.ts"
-              >
-                <CodeBlock.Header />
-                <CodeBlock.Content
-                  code={streamedCode || "// Code will appear here..."}
-                  withScrollArea={false}
-                />
-              </CodeBlock>
-            </ScrollArea.Content>
-          </ScrollArea.Viewport>
-        </ScrollArea>
-      </div>
-    )
-  },
-}
-
-/**
- * Code block with different variants.
- */
-export const Variants: Story = {
-  render: function VariantsStory() {
-    return (
-      <div className="flex flex-col gap-2">
         <CodeBlock
-          variant="default"
           language="typescript"
+          filename="useUser.ts"
         >
           <CodeBlock.Header />
-          <CodeBlock.Content code="console.log('Hello, world!')" />
-        </CodeBlock>
-        <CodeBlock
-          variant="light"
-          language="typescript"
-        >
-          <CodeBlock.Header />
-          <CodeBlock.Content code="console.log('Hello, world!')" />
-        </CodeBlock>
-        <CodeBlock
-          variant="dark"
-          language="typescript"
-        >
-          <CodeBlock.Header />
-          <CodeBlock.Content code="console.log('Hello, world!')" />
+          <CodeBlock.Content code={streamedCode || "// Code will appear here..."} />
+          <CodeBlock.Footer />
         </CodeBlock>
       </div>
     )

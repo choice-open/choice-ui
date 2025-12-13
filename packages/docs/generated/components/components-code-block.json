@@ -21,20 +21,150 @@
   },
   "exports": [
     "CodeBlock",
+    "CodeBlockHeader",
+    "CodeBlockFooter",
+    "CodeBlockContent",
     "CodeBlockCode",
     "type CodeBlockProps",
     "type CodeBlockHeaderProps",
     "type CodeBlockFooterProps",
     "type CodeBlockContentProps",
     "type CodeBlockCodeProps",
-    "type CodeBlockContextValue",
-    "type CodeBlockInjectedProps",
-    "type UseCodeBlockOptions",
-    "type UseCodeBlockReturn",
-    "type UseScrollDetectionOptions",
     "getDefaultFilenameForLanguage"
   ],
   "props": [
+    {
+      "displayName": "CodeBlockRoot",
+      "description": "",
+      "props": [
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "defaultCodeExpanded",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "defaultExpanded",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "expandable",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "filename",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "language",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "lineThreshold",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onCodeExpandChange",
+          "type": "((expanded: boolean) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onExpandChange",
+          "type": "((expanded: boolean) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "variant",
+          "type": "undefined | \"default\" | \"light\" | \"dark\"",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "CodeBlockProps",
+      "description": "",
+      "props": [
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "defaultCodeExpanded",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "defaultExpanded",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "expandable",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "filename",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "language",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "lineThreshold",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onCodeExpandChange",
+          "type": "((expanded: boolean) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onExpandChange",
+          "type": "((expanded: boolean) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "variant",
+          "type": "undefined | \"default\" | \"light\" | \"dark\"",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
     {
       "displayName": "CodeBlockContentProps",
       "description": "",
@@ -115,6 +245,13 @@
       "source": "import { CodeBlock } from \"@choice-ui/code-block\"\n\nexport default function App() {\n\n  const long = Array.from({ length: 80 }, (_, i) => `console.log('line ${i + 1}')`).join(\"\\n\")\n  return (\n    <div className=\"max-w-3xl\">\n      <CodeBlock language=\"js\">\n        <CodeBlock.Content\n          code={long}\n          withScrollArea={false}\n        />\n      </CodeBlock>\n    </div>\n  )\n\n}"
     },
     {
+      "id": "components-codeblock--variants",
+      "name": "Variants",
+      "exportName": "Variants",
+      "description": "Code block with different variants.",
+      "source": "import { CodeBlock } from \"@choice-ui/code-block\"\n\nexport default function App() {\n\n  return (\n    <div className=\"grid grid-cols-3 gap-4\">\n      <Label>Default</Label>\n      <Label>Light</Label>\n      <Label>Dark</Label>\n      <CodeBlock\n        variant=\"default\"\n        language=\"typescript\"\n      >\n        <CodeBlock.Header />\n        <CodeBlock.Content code=\"console.log('Hello, world!')\" />\n      </CodeBlock>\n      <CodeBlock\n        variant=\"light\"\n        language=\"typescript\"\n      >\n        <CodeBlock.Header />\n        <CodeBlock.Content code=\"console.log('Hello, world!')\" />\n      </CodeBlock>\n      <CodeBlock\n        variant=\"dark\"\n        language=\"typescript\"\n      >\n        <CodeBlock.Header />\n        <CodeBlock.Content code=\"console.log('Hello, world!')\" />\n      </CodeBlock>\n    </div>\n  )\n\n}"
+    },
+    {
       "id": "components-codeblock--popular-languages",
       "name": "Popular Languages",
       "exportName": "PopularLanguages",
@@ -123,10 +260,10 @@
     },
     {
       "id": "components-codeblock--long-tsx-demo",
-      "name": "Long TSX Demo",
+      "name": "Long Tsx Demo",
       "exportName": "LongTsxDemo",
-      "description": "",
-      "source": ""
+      "description": "Real-world example with a complex React component.\nDemonstrates how readable long code remains with syntax highlighting.",
+      "source": "import { CodeBlock } from \"@choice-ui/code-block\"\n\nexport default function App() {\n\n  return (\n    <div className=\"max-w-md\">\n      <CodeBlock language=\"tsx\">\n        <CodeBlock.Content code={longTSXExample} />\n      </CodeBlock>\n    </div>\n  )\n\n}"
     },
     {
       "id": "components-codeblock--with-interactive-header",
@@ -164,11 +301,11 @@
       "source": "import { CodeBlock } from \"@choice-ui/code-block\"\n\nexport default function App() {\n\n  return (\n    <div className=\"max-w-3xl\">\n      <CodeBlock\n        language=\"json\"\n        filename=\"config.json\"\n        expandable={false}\n      >\n        <CodeBlock.Header />\n        <CodeBlock.Content code={jsonCode} />\n      </CodeBlock>\n    </div>\n  )\n\n}"
     },
     {
-      "id": "components-codeblock--custom-i-18-n",
-      "name": "Custom I 18 N",
-      "exportName": "CustomI18N",
-      "description": "",
-      "source": ""
+      "id": "components-codeblock--internationalization",
+      "name": "Internationalization",
+      "exportName": "Internationalization",
+      "description": "Demonstrates internationalization support with custom labels.\nYou can provide custom translations for buttons and tooltips.",
+      "source": "import { CodeBlock } from \"@choice-ui/code-block\"\n\nexport default function App() {\n\n  return (\n    <div className=\"max-w-3xl\">\n      <CodeBlock\n        language=\"tsx\"\n        filename=\"国际化示例.tsx\"\n      >\n        <CodeBlock.Header\n          i18n={{\n            collapse: \"折叠\",\n            copied: \"已复制\",\n            copy: \"复制\",\n            expand: \"展开\",\n          }}\n        />\n        <CodeBlock.Content code={tsxCode} />\n        <CodeBlock.Footer />\n      </CodeBlock>\n    </div>\n  )\n\n}"
     },
     {
       "id": "components-codeblock--language-icons",
@@ -196,21 +333,14 @@
       "name": "Streaming With Auto Scroll",
       "exportName": "StreamingWithAutoScroll",
       "description": "Streaming code blocks simulation with auto-scroll to bottom.\nUses useStickToBottom hook to keep scroll position at bottom as new code blocks appear.\nClick \"Add Code Block\" to simulate streaming new content.",
-      "source": "import { CodeBlock } from \"@choice-ui/code-block\"\nimport { useState, useRef } from \"react\"\n\nexport default function App() {\n\n  const [blocks, setBlocks] = useState<typeof streamingCodeExamples>([])\n  const [isStreaming, setIsStreaming] = useState(false)\n  const streamIndexRef = useRef(0)\n\n  const { scrollRef, contentRef, isAtBottom, scrollToBottom } = useStickToBottom({\n    resize: \"smooth\",\n    initial: \"instant\",\n  })\n\n  const addBlock = () => {\n    const nextBlock = streamingCodeExamples[streamIndexRef.current % streamingCodeExamples.length]\n    setBlocks((prev) => [...prev, nextBlock])\n    streamIndexRef.current++\n  }\n\n  const startStreaming = () => {\n    if (isStreaming) return\n    setIsStreaming(true)\n\n    const interval = setInterval(() => {\n      addBlock()\n      if (streamIndexRef.current >= streamingCodeExamples.length * 2) {\n        clearInterval(interval)\n        setIsStreaming(false)\n      }\n    }, 1500)\n  }\n\n  const reset = () => {\n    setBlocks([])\n    streamIndexRef.current = 0\n    setIsStreaming(false)\n  }\n\n  return (\n    <div className=\"flex h-[600px] w-[600px] flex-col gap-4\">\n      <div className=\"flex items-center gap-2\">\n        <button\n          onClick={addBlock}\n          disabled={isStreaming}\n          className=\"rounded bg-blue-500 px-3 py-1.5 text-sm text-white hover:bg-blue-600 disabled:opacity-50\"\n        >\n          Add Code Block\n        </button>\n        <button\n          onClick={startStreaming}\n          disabled={isStreaming}\n          className=\"rounded bg-green-500 px-3 py-1.5 text-sm text-white hover:bg-green-600 disabled:opacity-50\"\n        >\n          {isStreaming ? \"Streaming...\" : \"Auto Stream\"}\n        </button>\n        <button\n          onClick={reset}\n          className=\"rounded bg-gray-500 px-3 py-1.5 text-sm text-white hover:bg-gray-600\"\n        >\n          Reset\n        </button>\n        {!isAtBottom && (\n          <button\n            onClick={() => scrollToBottom()}\n            className=\"rounded bg-orange-500 px-3 py-1.5 text-sm text-white hover:bg-orange-600\"\n          >\n            Scroll to Bottom\n          </button>\n        )}\n      </div>\n\n      <div className=\"text-body-small text-fg-subtle\">\n        Blocks: {blocks.length} | At bottom: {isAtBottom ? \"Yes\" : \"No\"}\n      </div>\n\n      <ScrollArea className=\"flex-1 rounded-lg border\">\n        <ScrollArea.Viewport ref={scrollRef as React.RefObject<HTMLDivElement>}>\n          <ScrollArea.Content\n            ref={contentRef as React.RefObject<HTMLDivElement>}\n            className=\"flex flex-col gap-4 p-4\"\n          >\n            {blocks.length === 0 ? (\n              <div className=\"text-body-small text-fg-subtle py-8 text-center\">\n                Click &quot;Add Code Block&quot; or &quot;Auto Stream&quot; to start\n              </div>\n            ) : (\n              blocks.map((block, index) => (\n                <CodeBlock\n                  key={index}\n                  language={block.language}\n                  filename={block.filename}\n                >\n                  <CodeBlock.Header />\n                  <CodeBlock.Content code={block.code} />\n                </CodeBlock>\n              ))\n            )}\n          </ScrollArea.Content>\n        </ScrollArea.Viewport>\n      </ScrollArea>\n    </div>\n  )\n\n}"
+      "source": "import { CodeBlock } from \"@choice-ui/code-block\"\nimport { useState, useRef } from \"react\"\n\nexport default function App() {\n\n  const [blocks, setBlocks] = useState<typeof streamingCodeExamples>([])\n  const [isStreaming, setIsStreaming] = useState(false)\n  const streamIndexRef = useRef(0)\n\n  const { scrollRef, contentRef, isAtBottom, scrollToBottom } = useStickToBottom({\n    resize: \"smooth\",\n    initial: \"instant\",\n  })\n\n  const addBlock = () => {\n    const nextBlock = streamingCodeExamples[streamIndexRef.current % streamingCodeExamples.length]\n    setBlocks((prev) => [...prev, nextBlock])\n    streamIndexRef.current++\n  }\n\n  const startStreaming = () => {\n    if (isStreaming) return\n    setIsStreaming(true)\n\n    const interval = setInterval(() => {\n      addBlock()\n      if (streamIndexRef.current >= streamingCodeExamples.length * 2) {\n        clearInterval(interval)\n        setIsStreaming(false)\n      }\n    }, 1500)\n  }\n\n  const reset = () => {\n    setBlocks([])\n    streamIndexRef.current = 0\n    setIsStreaming(false)\n  }\n\n  return (\n    <div className=\"flex h-[600px] w-[600px] flex-col gap-4\">\n      <div className=\"flex items-center gap-2\">\n        <Button\n          onClick={addBlock}\n          disabled={isStreaming}\n        >\n          Add Code Block\n        </Button>\n        <Button\n          onClick={startStreaming}\n          disabled={isStreaming}\n        >\n          {isStreaming ? \"Streaming...\" : \"Auto Stream\"}\n        </Button>\n        <Button\n          onClick={reset}\n          variant=\"secondary\"\n        >\n          Reset\n        </Button>\n        {!isAtBottom && (\n          <Button\n            onClick={() => scrollToBottom()}\n            variant=\"secondary\"\n          >\n            Scroll to Bottom\n          </Button>\n        )}\n      </div>\n\n      <div className=\"text-body-small text-fg-subtle\">\n        Blocks: {blocks.length} | At bottom: {isAtBottom ? \"Yes\" : \"No\"}\n      </div>\n\n      <ScrollArea className=\"flex-1 rounded-lg border\">\n        <ScrollArea.Viewport ref={scrollRef as React.RefObject<HTMLDivElement>}>\n          <ScrollArea.Content\n            ref={contentRef as React.RefObject<HTMLDivElement>}\n            className=\"flex flex-col gap-4 p-4\"\n          >\n            {blocks.length === 0 ? (\n              <div className=\"text-body-small text-fg-subtle py-8 text-center\">\n                Click &quot;Add Code Block&quot; or &quot;Auto Stream&quot; to start\n              </div>\n            ) : (\n              blocks.map((block, index) => (\n                <CodeBlock\n                  key={index}\n                  language={block.language}\n                  filename={block.filename}\n                >\n                  <CodeBlock.Header />\n                  <CodeBlock.Content code={block.code} />\n                </CodeBlock>\n              ))\n            )}\n          </ScrollArea.Content>\n        </ScrollArea.Viewport>\n      </ScrollArea>\n    </div>\n  )\n\n}"
     },
     {
       "id": "components-codeblock--character-streaming",
       "name": "Character Streaming",
       "exportName": "CharacterStreaming",
       "description": "Simulates character-by-character streaming of code content.\nContent appears gradually like AI-generated code output.",
-      "source": "import { CodeBlock } from \"@choice-ui/code-block\"\nimport { useState, useEffect } from \"react\"\n\nexport default function App() {\n\n      const [streamedCode, setStreamedCode] = useState(\"\")\n      const [isStreaming, setIsStreaming] = useState(false)\n\n      const fullCode = `import { useState, useEffect } from 'react'\n\n  interface User {\n    id: string\n    name: string\n    email: string\n  }\n\n  export function useUser(userId: string) {\n    const [user, setUser] = useState<User | null>(null)\n    const [loading, setLoading] = useState(true)\n    const [error, setError] = useState<Error | null>(null)\n\n    useEffect(() => {\n      async function fetchUser() {\n        try {\n          setLoading(true)\n          const response = await fetch(\\`/api/users/\\${userId}\\`)\n          if (!response.ok) throw new Error('Failed to fetch')\n          const data = await response.json()\n          setUser(data)\n        } catch (err) {\n          setError(err instanceof Error ? err : new Error('Unknown error'))\n        } finally {\n          setLoading(false)\n        }\n      }\n\n      fetchUser()\n    }, [userId])\n\n    return { user, loading, error }\n  }`\n\n      const { scrollRef, contentRef } = useStickToBottom({\n        resize: \"smooth\",\n        initial: \"instant\",\n      })\n\n      const startCharacterStream = () => {\n        if (isStreaming) return\n        setIsStreaming(true)\n        setStreamedCode(\"\")\n\n        let index = 0\n        const interval = setInterval(() => {\n          if (index < fullCode.length) {\n            const chunkSize = Math.floor(Math.random() * 5) + 1\n            setStreamedCode(fullCode.slice(0, index + chunkSize))\n            index += chunkSize\n          } else {\n            clearInterval(interval)\n            setIsStreaming(false)\n          }\n        }, 20)\n      }\n\n      const reset = () => {\n        setStreamedCode(\"\")\n        setIsStreaming(false)\n      }\n\n      return (\n        <div className=\"flex h-[500px] w-[600px] flex-col gap-4\">\n          <div className=\"flex items-center gap-2\">\n            <button\n              onClick={startCharacterStream}\n              disabled={isStreaming}\n              className=\"rounded bg-blue-500 px-3 py-1.5 text-sm text-white hover:bg-blue-600 disabled:opacity-50\"\n            >\n              {isStreaming ? \"Streaming...\" : \"Start Stream\"}\n            </button>\n            <button\n              onClick={reset}\n              className=\"rounded bg-gray-500 px-3 py-1.5 text-sm text-white hover:bg-gray-600\"\n            >\n              Reset\n            </button>\n          </div>\n\n          <ScrollArea className=\"flex-1 rounded-lg border\">\n            <ScrollArea.Viewport ref={scrollRef as React.RefObject<HTMLDivElement>}>\n              <ScrollArea.Content\n                ref={contentRef as React.RefObject<HTMLDivElement>}\n                className=\"p-4\"\n              >\n                <CodeBlock\n                  language=\"typescript\"\n                  filename=\"useUser.ts\"\n                >\n                  <CodeBlock.Header />\n                  <CodeBlock.Content\n                    code={streamedCode || \"// Code will appear here...\"}\n                    withScrollArea={false}\n                  />\n                </CodeBlock>\n              </ScrollArea.Content>\n            </ScrollArea.Viewport>\n          </ScrollArea>\n        </div>\n      )\n\n}"
-    },
-    {
-      "id": "components-codeblock--variants",
-      "name": "Variants",
-      "exportName": "Variants",
-      "description": "Code block with different variants.",
-      "source": "import { CodeBlock } from \"@choice-ui/code-block\"\n\nexport default function App() {\n\n  return (\n    <div className=\"flex flex-col gap-2\">\n      <CodeBlock\n        variant=\"default\"\n        language=\"typescript\"\n      >\n        <CodeBlock.Header />\n        <CodeBlock.Content code=\"console.log('Hello, world!')\" />\n      </CodeBlock>\n      <CodeBlock\n        variant=\"light\"\n        language=\"typescript\"\n      >\n        <CodeBlock.Header />\n        <CodeBlock.Content code=\"console.log('Hello, world!')\" />\n      </CodeBlock>\n      <CodeBlock\n        variant=\"dark\"\n        language=\"typescript\"\n      >\n        <CodeBlock.Header />\n        <CodeBlock.Content code=\"console.log('Hello, world!')\" />\n      </CodeBlock>\n    </div>\n  )\n\n}"
+      "source": "import { CodeBlock } from \"@choice-ui/code-block\"\nimport { useState, useEffect } from \"react\"\n\nexport default function App() {\n\n      const [streamedCode, setStreamedCode] = useState(\"\")\n      const [isStreaming, setIsStreaming] = useState(false)\n\n      const fullCode = `import { useState, useEffect } from 'react'\n\n  interface User {\n    id: string\n    name: string\n    email: string\n  }\n\n  export function useUser(userId: string) {\n    const [user, setUser] = useState<User | null>(null)\n    const [loading, setLoading] = useState(true)\n    const [error, setError] = useState<Error | null>(null)\n\n    useEffect(() => {\n      async function fetchUser() {\n        try {\n          setLoading(true)\n          const response = await fetch(\\`/api/users/\\${userId}\\`)\n          if (!response.ok) throw new Error('Failed to fetch')\n          const data = await response.json()\n          setUser(data)\n        } catch (err) {\n          setError(err instanceof Error ? err : new Error('Unknown error'))\n        } finally {\n          setLoading(false)\n        }\n      }\n\n      fetchUser()\n    }, [userId])\n\n    return { user, loading, error }\n  }`\n\n      const { scrollRef, contentRef } = useStickToBottom({\n        resize: \"smooth\",\n        initial: \"instant\",\n      })\n\n      const startCharacterStream = () => {\n        if (isStreaming) return\n        setIsStreaming(true)\n        setStreamedCode(\"\")\n\n        let index = 0\n        const interval = setInterval(() => {\n          if (index < fullCode.length) {\n            const chunkSize = Math.floor(Math.random() * 5) + 1\n            setStreamedCode(fullCode.slice(0, index + chunkSize))\n            index += chunkSize\n          } else {\n            clearInterval(interval)\n            setIsStreaming(false)\n          }\n        }, 20)\n      }\n\n      const reset = () => {\n        setStreamedCode(\"\")\n        setIsStreaming(false)\n      }\n\n      return (\n        <div className=\"flex w-[600px] flex-col gap-4\">\n          <div className=\"flex items-center gap-2\">\n            <Button\n              onClick={startCharacterStream}\n              disabled={isStreaming}\n            >\n              {isStreaming ? \"Streaming...\" : \"Start Stream\"}\n            </Button>\n            <Button\n              onClick={reset}\n              variant=\"secondary\"\n            >\n              Reset\n            </Button>\n          </div>\n\n          <CodeBlock\n            language=\"typescript\"\n            filename=\"useUser.ts\"\n          >\n            <CodeBlock.Header />\n            <CodeBlock.Content code={streamedCode || \"// Code will appear here...\"} />\n            <CodeBlock.Footer />\n          </CodeBlock>\n        </div>\n      )\n\n}"
     }
   ]
 }

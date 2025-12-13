@@ -1,10 +1,11 @@
 import { tcx } from "@choice-ui/shared"
 import React, { memo } from "react"
 import { useStickToBottom } from "use-stick-to-bottom"
-import { useCodeBlock, useLineCount, useScrollDetection, useTheme } from "./hooks"
+import { CodeBlockCode, CodeBlockContent, CodeBlockFooter, CodeBlockHeader } from "./components"
+import { useCodeBlock, useLineCount, useScrollDetection } from "./hooks"
 import type { CodeBlockContextValue, CodeBlockProps } from "./types"
 
-export const CodeBlock = memo(function CodeBlock(props: CodeBlockProps) {
+export const CodeBlockRoot = memo(function CodeBlock(props: CodeBlockProps) {
   const {
     children,
     className,
@@ -138,7 +139,7 @@ export const CodeBlock = memo(function CodeBlock(props: CodeBlockProps) {
   return (
     <div
       className={tcx(
-        "group relative overflow-hidden rounded-lg",
+        "group/code-block relative overflow-hidden rounded-lg",
         variant === "default" && "bg-secondary-background",
         variant === "light" && "bg-gray-100",
         variant === "dark" && "bg-gray-700",
@@ -148,4 +149,11 @@ export const CodeBlock = memo(function CodeBlock(props: CodeBlockProps) {
       {injectedChildren}
     </div>
   )
+})
+
+export const CodeBlock = Object.assign(CodeBlockRoot, {
+  Code: CodeBlockCode,
+  Content: CodeBlockContent,
+  Footer: CodeBlockFooter,
+  Header: CodeBlockHeader,
 })
