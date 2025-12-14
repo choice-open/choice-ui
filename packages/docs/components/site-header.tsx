@@ -55,7 +55,7 @@ export function SiteHeader() {
             <ThemeToggle />
             <IconButton
               as={Link}
-              href="https://github.com/choice-form/design-tokens"
+              href="https://github.com/choice-open/choice-ui"
               target="_blank"
               rel="noopener noreferrer"
             >

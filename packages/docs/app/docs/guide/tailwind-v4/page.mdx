@@ -1,1 +1,104 @@
-# Tailwind V4
+# Tailwind v4
+
+TailwindCSS v4 is now available! This guide will help you migrate your existing TailwindCSS v4 project to Choice UI.
+
+---
+
+## Migration Steps
+
+1. Follow the official [Tailwind v4 upgrade guide](https://tailwindcss.com/docs/v4-beta)
+2. Upgrade Choice UI version
+
+```bash
+pnpm add @choice-ui/react@latest @choice-ui/design-tokens@latest
+```
+
+3. Configure Choice UI with the new Tailwind v4 syntax
+
+### Update CSS Import
+
+#### Without tailwind.config.js
+
+Since Tailwind v4 favors a CSS-first approach, `tailwind.config.js` will not be required.
+
+Add these imports to your main CSS file (e.g., `app.css` or `index.css`):
+
+```css
+@import "tailwindcss";
+@import "@choice-ui/design-tokens/tokens.css";
+@import "@choice-ui/design-tokens/preflight.css";
+@import "@choice-ui/design-tokens/tailwind.css";
+@source "../../../node_modules/@choice-ui/react";
+```
+
+**Important:** The `@source` directive is a powerful Tailwind CSS 4.0 feature that tells Tailwind where to scan for class names. This is essential to ensure styles from Choice UI components are properly recognized.
+
+#### With tailwind.config.js
+
+In Tailwind v4, `tailwind.config.js` is still supported for backward compatibility. If you still need to use it, you can load it explicitly as below:
+
+```css
+@import "tailwindcss";
+@import "@choice-ui/design-tokens/tokens.css";
+@import "@choice-ui/design-tokens/preflight.css";
+@import "@choice-ui/design-tokens/tailwind.css";
+@config "./tailwind.config.js";
+@source "../../../node_modules/@choice-ui/react";
+```
+
+### Update PostCSS Configuration
+
+Key changes in TailwindCSS v4:
+
+- `tailwindcss` was a PostCSS plugin in v3 and now it is in `@tailwindcss/postcss` package.
+- `autoprefixer` is no longer required as prefixing is handled automatically.
+
+Update your `postcss.config.mjs`:
+
+```js
+const config = {
+  plugins: {
+    "@tailwindcss/postcss": {},
+  },
+};
+
+export default config;
+```
+
+### Update Vite Configuration (Vite Projects Only)
+
+If you're using Vite, you can use the `@tailwindcss/vite` plugin for better performance:
+
+```bash
+pnpm add -D @tailwindcss/vite
+```
+
+Then in your `vite.config.ts`:
+
+```ts
+import { defineConfig } from "vite";
+import tailwindcss from "@tailwindcss/vite";
+
+export default defineConfig({
+  plugins: [tailwindcss()],
+});
+```
+
+**Note:** If using the Vite plugin, you don't need `@tailwindcss/postcss` in your PostCSS configuration.
+
+## Verification
+
+After migration, verify that:
+
+1. Your styles are being applied correctly
+2. The build process completes without errors
+3. Choice UI components render as expected
+
+> Make sure to check the [Tailwind v4 documentation](https://tailwindcss.com/docs/v4-beta) for any breaking changes that might affect your existing styles.
+
+## Need Help?
+
+If you encounter any issues during migration, please:
+
+- Refer to the [Installation guide](/docs/guide/installation) for detailed configuration
+- Check out the [Introduction guide](/docs/guide/introduction) for more information
