@@ -1,7 +1,7 @@
 {
   "name": "@choice-ui/calendar",
   "version": "0.0.5",
-  "description": "Calendar components for Choiceform Design System",
+  "description": "A calendar component for date selection with support for single, range, and multiple date picking",
   "sideEffects": false,
   "type": "module",
   "main": "./dist/index.js",

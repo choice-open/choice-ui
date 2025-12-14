@@ -123,7 +123,7 @@ const SlateEditorComponent = React.forwardRef<HTMLDivElement, SlateEditorProps>(
 
     return (
       <ScrollArea
-        scrollbarMode={size === "large" ? "large-y" : "default"}
+        scrollbarMode={size === "large" ? "padding-y" : "default"}
         className={tv.scrollArea()}
         {...props}
       >

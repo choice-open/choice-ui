@@ -1,7 +1,7 @@
 {
   "name": "@choice-ui/radio",
   "version": "0.0.4",
-  "description": "Radio component for Choiceform Design System",
+  "description": "A radio button component for single selection from a group of mutually exclusive options",
   "sideEffects": false,
   "type": "module",
   "main": "./dist/index.js",

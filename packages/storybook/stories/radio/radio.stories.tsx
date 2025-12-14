@@ -78,7 +78,7 @@ export const Basic: Story = {
             <div className="grid grid-cols-3 gap-2">
               {Object.values(State).map((state) => (
                 <Fragment key={state}>
-                  <span className="capitalize text-pink-500">{state}</span>
+                  <span className="text-pink-500 capitalize">{state}</span>
 
                   {Object.values(Interaction).map((interaction) => (
                     <Fragment key={interaction}>

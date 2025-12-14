@@ -1,7 +1,7 @@
 {
   "name": "@choice-ui/list",
   "version": "0.0.4",
-  "description": "List component for Choiceform Design System",
+  "description": "A list component for displaying structured data with items, actions, and keyboard navigation",
   "sideEffects": false,
   "type": "module",
   "main": "./dist/index.js",

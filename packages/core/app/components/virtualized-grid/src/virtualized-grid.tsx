@@ -45,8 +45,8 @@ function VirtualizedGridInner<P>(props: VirtualizedGridProps<P>) {
 
   // Use item pooling if enabled
   const pooledCells = useItemPool(visibleItemsForPool, {
-      poolSize: props.poolSize || 50,
-      maxPoolSize: props.maxPoolSize || 200,
+    poolSize: props.poolSize || 50,
+    maxPoolSize: props.maxPoolSize || 200,
   })
 
   const colWidth = props.fixedColumnWidth ? `${props.fixedColumnWidth}px` : "1fr"

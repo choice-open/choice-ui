@@ -1,7 +1,7 @@
 {
   "name": "@choice-ui/emoji-picker",
   "version": "0.0.4",
-  "description": "Emoji Picker component for Choiceform Design System",
+  "description": "An emoji picker component with search, categories, and recent emojis for user selection",
   "sideEffects": false,
   "type": "module",
   "main": "./dist/index.js",

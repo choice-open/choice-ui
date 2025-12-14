@@ -1,7 +1,7 @@
 {
   "name": "@choice-ui/dropdown",
   "version": "0.0.9",
-  "description": "Dropdown component for Choiceform Design System",
+  "description": "A dropdown menu component that displays a list of options triggered by a button or element",
   "sideEffects": false,
   "type": "module",
   "main": "./dist/index.js",

@@ -2,6 +2,16 @@
 
 All notable changes to the Scroll Area component will be documented in this file.
 
+## [2025-12-13]
+
+### Changed
+
+- refactor(scroll-area): update scrollbar modes and enhance documentation
+  - Replaced "large" scrollbar modes with "padding" variants for improved clarity and consistency
+  - Updated ScrollbarMode type definitions to reflect the new naming convention
+  - Adjusted documentation to include updated scrollbar modes and their descriptions
+  - Enhanced Storybook examples to demonstrate the new scrollbar modes and their usage scenarios
+
 ## [2025-12-06]
 
 ### Changed
@@ -24,7 +34,7 @@ All notable changes to the Scroll Area component will be documented in this file
 
 ### Changed
 
-- 更新组件版本和添加视觉变体支持
+- Update component version and add visual variant support
 
 ## [2025-08-25]
 
@@ -64,7 +74,7 @@ All notable changes to the Scroll Area component will be documented in this file
 
 ### Changed
 
-- 更新 ScrollArea 组件并替换相关组件中的 Scroll 引用
+- Update ScrollArea component and replace Scroll references in related components
 
 ## [2025-07-08]
 

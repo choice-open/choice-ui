@@ -73,7 +73,7 @@ For advanced customization, manually configure scrollbars:
 ```tsx
 <ScrollArea
   className="h-64 w-64 border"
-  scrollbarMode="large-y"
+  scrollbarMode="padding-y"
 >
   <ScrollArea.Viewport className="h-full">
     <ScrollArea.Content>{content}</ScrollArea.Content>
@@ -126,7 +126,7 @@ function VirtualScrollArea({ items }) {
   return (
     <ScrollArea
       className="h-96 w-80 border"
-      scrollbarMode="large-y"
+      scrollbarMode="padding-y"
     >
       <ScrollArea.Viewport ref={setScrollElement}>
         <ScrollArea.Content>
@@ -216,15 +216,15 @@ Scrollbars visible when scrolling or hovering (macOS-like behavior).
 Different scrollbar appearance modes for various contexts:
 
 - `default`: Standard scrollbar appearance
-- `large-y`: Prominent vertical scrollbar
-- `large-x`: Prominent horizontal scrollbar
-- `large-b`: Enhanced both directions
-- `large-t`: Top-aligned large scrollbar
-- `large-l`: Left-aligned large scrollbar
-- `large-r`: Right-aligned large scrollbar
+- `padding-y`: Prominent vertical scrollbar
+- `padding-x`: Prominent horizontal scrollbar
+- `padding-b`: Enhanced both directions
+- `padding-t`: Top-aligned large scrollbar
+- `padding-l`: Left-aligned large scrollbar
+- `padding-r`: Right-aligned large scrollbar
 
 ```tsx
-<ScrollArea scrollbarMode="large-y">{/* Content */}</ScrollArea>
+<ScrollArea scrollbarMode="padding-y">{/* Content */}</ScrollArea>
 ```
 
 ## Theme Variants
@@ -278,7 +278,14 @@ interface ScrollAreaProps {
   orientation?: "vertical" | "horizontal" | "both"
 
   /** Scrollbar appearance mode */
-  scrollbarMode?: "default" | "large-y" | "large-x" | "large-b" | "large-t" | "large-l" | "large-r"
+  scrollbarMode?:
+    | "default"
+    | "padding-y"
+    | "padding-x"
+    | "padding-b"
+    | "padding-t"
+    | "padding-l"
+    | "padding-r"
 
   /** Scrollbar visibility behavior */
   type?: "auto" | "always" | "scroll" | "hover"
@@ -361,7 +368,7 @@ The ScrollArea component is composed of several sub-components:
   <Modal.Content className="h-64 w-64">
     <ScrollArea
       className="h-full"
-      scrollbarMode="large-y"
+      scrollbarMode="padding-y"
     >
       <ScrollArea.Viewport className="h-full p-4">
         <ScrollArea.Content>{modalContent}</ScrollArea.Content>

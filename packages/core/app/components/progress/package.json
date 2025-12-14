@@ -1,7 +1,7 @@
 {
   "name": "@choice-ui/progress",
   "version": "0.0.2",
-  "description": "Progress components for Choiceform Design System",
+  "description": "A progress indicator component for displaying task completion, loading states, or value ranges",
   "sideEffects": false,
   "type": "module",
   "main": "./dist/index.js",

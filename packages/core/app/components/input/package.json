@@ -1,7 +1,7 @@
 {
   "name": "@choice-ui/input",
   "version": "0.0.5",
-  "description": "Input component for Choiceform Design System",
+  "description": "A text input component with validation states, placeholder support, and accessibility features",
   "sideEffects": false,
   "type": "module",
   "main": "./dist/index.js",

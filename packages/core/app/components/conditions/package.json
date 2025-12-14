@@ -1,7 +1,7 @@
 {
   "name": "@choice-ui/conditions",
   "version": "0.0.3",
-  "description": "Conditions component for Choiceform Design System",
+  "description": "A conditions builder component for creating and managing complex conditional logic rules",
   "sideEffects": false,
   "type": "module",
   "main": "./dist/index.js",

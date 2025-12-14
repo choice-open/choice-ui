@@ -1,7 +1,7 @@
 {
   "name": "@choice-ui/icon-button",
   "version": "0.0.5",
-  "description": "Icon Button component for Choiceform Design System",
+  "description": "An icon-only button component with various sizes and states for compact actions",
   "sideEffects": false,
   "type": "module",
   "main": "./dist/index.js",

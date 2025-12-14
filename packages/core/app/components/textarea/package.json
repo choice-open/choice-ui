@@ -1,7 +1,7 @@
 {
   "name": "@choice-ui/textarea",
   "version": "0.0.3",
-  "description": "Textarea component for Choiceform Design System",
+  "description": "A textarea component for multi-line text input with auto-resize and scroll management",
   "sideEffects": false,
   "type": "module",
   "main": "./dist/index.js",

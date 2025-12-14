@@ -32,7 +32,7 @@ export const Basic: Story = {
     return (
       <ContextMenu>
         <ContextMenu.Trigger>
-          <div className="bg-secondary-background select-none rounded-xl border border-dashed p-8">
+          <div className="bg-secondary-background rounded-xl border border-dashed p-8 select-none">
             Right click me to open context menu
           </div>
         </ContextMenu.Trigger>
@@ -302,7 +302,7 @@ export const WithSelection: Story = {
     return (
       <ContextMenu selection={true}>
         <ContextMenu.Trigger>
-          <div className="bg-secondary-background select-none rounded-xl border border-dashed p-8">
+          <div className="bg-secondary-background rounded-xl border border-dashed p-8 select-none">
             Right click me for selection menu
           </div>
         </ContextMenu.Trigger>

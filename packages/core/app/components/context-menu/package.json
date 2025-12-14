@@ -1,7 +1,7 @@
 {
   "name": "@choice-ui/context-menu",
   "version": "0.0.7",
-  "description": "Context Menu component for Choiceform Design System",
+  "description": "A context menu component that appears on right-click with customizable menu items and actions",
   "sideEffects": false,
   "type": "module",
   "main": "./dist/index.js",

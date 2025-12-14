@@ -1,7 +1,7 @@
 {
   "name": "@choice-ui/multi-select",
   "version": "0.0.4",
-  "description": "Multi Select component for Choiceform Design System",
+  "description": "A multi-select dropdown component that allows users to select multiple options from a list",
   "sideEffects": false,
   "type": "module",
   "main": "./dist/index.js",

@@ -1,10 +1,8 @@
 "use client"
 
 import { InfoCircle } from "@choiceform/icons-react"
-import { useTheme } from "next-themes"
-import { Highlight, Language, themes } from "prism-react-renderer"
 import { Fragment } from "react/jsx-runtime"
-import { IconButton } from "~/components"
+import { Badge, IconButton } from "~/components"
 
 export type PropDoc = {
   name: string
@@ -24,47 +22,6 @@ type ApiTableProps = {
   props: PropsGroup[]
 }
 
-const CodeBlock = ({ code, language }: { code: string; language: Language }) => {
-  const { theme } = useTheme()
-  const highlightTheme = theme === "dark" ? themes.vsDark : themes.github
-
-  return (
-    <Highlight
-      theme={highlightTheme}
-      code={code}
-      language={language}
-    >
-      {({ style, tokens, getLineProps, getTokenProps }) => (
-        <code style={{ ...style, backgroundColor: "transparent" }}>
-          {tokens.map((line, i) => {
-            const { key, ...lineProps } = getLineProps({ line, key: i })
-            return (
-              <div
-                key={i}
-                {...lineProps}
-              >
-                {line.map((token, tokenKey) => {
-                  const { key: tokenPropsKey, ...tokenProps } = getTokenProps({
-                    token,
-                    key: tokenKey,
-                  })
-                  return (
-                    <span
-                      key={tokenKey}
-                      {...tokenProps}
-                      className="text-body-medium"
-                    />
-                  )
-                })}
-              </div>
-            )
-          })}
-        </code>
-      )}
-    </Highlight>
-  )
-}
-
 function cleanDescription(text?: string): string {
   if (!text) return ""
   const withoutCode = text.replace(/```[\s\S]*?```/g, "")
@@ -74,6 +31,13 @@ function cleanDescription(text?: string): string {
     .map((line) => line.trim())
     .filter(Boolean)[0]
   return firstLine ?? ""
+}
+
+function splitUnionType(type: string): string[] {
+  return type
+    .split(/\s*\|\s*/g)
+    .map((t) => t.trim())
+    .filter(Boolean)
 }
 
 export function ApiTable({ props }: ApiTableProps) {
@@ -123,17 +87,41 @@ export function ApiTable({ props }: ApiTableProps) {
                             </div>
                           </td>
                           <td className="px-4 py-2 whitespace-pre-wrap">
-                            <CodeBlock
-                              code={prop.type}
-                              language="typescript"
-                            />
+                            {(() => {
+                              const unionParts = splitUnionType(prop.type)
+                              if (unionParts.length > 1) {
+                                return (
+                                  <span className="inline-flex flex-wrap items-center gap-2">
+                                    {unionParts.map((part, i) => (
+                                      <Fragment key={`${prop.name}-type-${part}-${i}`}>
+                                        <Badge className="bg-secondary-background text-secondary-foreground border-none select-text">
+                                          {part}
+                                        </Badge>
+                                        {i < unionParts.length - 1 ? (
+                                          <span className="text-secondary-foreground">|</span>
+                                        ) : null}
+                                      </Fragment>
+                                    ))}
+                                  </span>
+                                )
+                              }
+
+                              if (prop.type.includes("Object")) {
+                                return (
+                                  <Badge className="bg-secondary-background text-secondary-foreground border-none select-text">
+                                    {prop.type}
+                                  </Badge>
+                                )
+                              }
+
+                              return <span className="text-secondary-foreground">{prop.type}</span>
+                            })()}
                           </td>
                           <td className="px-4 py-2">
                             {prop.defaultValue ? (
-                              <CodeBlock
-                                code={prop.defaultValue}
-                                language="typescript"
-                              />
+                              <Badge className="bg-secondary-background text-secondary-foreground border-none select-text">
+                                {prop.defaultValue}
+                              </Badge>
                             ) : (
                               <span className="text-secondary-foreground"> - </span>
                             )}

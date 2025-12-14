@@ -147,10 +147,10 @@ export function useElementScroll(ref: RefObject<HTMLElement>): ElementScroll {
 
     const onScroll = () => {
       const nextScrollPosition = getElementScroll(element)
-        if (!isSameElementScroll(scrollPositionRef.current, nextScrollPosition)) {
-          setScrollPosition(nextScrollPosition)
-        }
+      if (!isSameElementScroll(scrollPositionRef.current, nextScrollPosition)) {
+        setScrollPosition(nextScrollPosition)
       }
+    }
 
     // Initialize on mount
     onScroll()

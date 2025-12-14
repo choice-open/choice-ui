@@ -1,7 +1,7 @@
 {
   "name": "@choice-ui/picture-preview",
   "version": "0.0.3",
-  "description": "Picture Preview component for Choiceform Design System",
+  "description": "An image preview component with zoom, navigation, and gallery functionality",
   "sideEffects": false,
   "type": "module",
   "main": "./dist/index.js",

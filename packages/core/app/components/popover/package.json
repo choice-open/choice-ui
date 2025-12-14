@@ -1,7 +1,7 @@
 {
   "name": "@choice-ui/popover",
   "version": "0.0.7",
-  "description": "Popover component for Choiceform Design System",
+  "description": "A popover component for displaying floating content relative to a trigger element",
   "sideEffects": false,
   "type": "module",
   "main": "./dist/index.js",

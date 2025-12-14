@@ -1,7 +1,7 @@
 {
   "name": "@choice-ui/code-block",
   "version": "0.0.2",
-  "description": "Code Block component for Choiceform Design System",
+  "description": "A syntax-highlighted code block component with copy functionality and language detection",
   "sideEffects": false,
   "type": "module",
   "main": "./dist/index.js",

@@ -1,7 +1,7 @@
 {
   "name": "@choice-ui/segmented",
   "version": "0.0.4",
-  "description": "Segmented component for Choiceform Design System",
+  "description": "A segmented control component for switching between multiple options in a single row",
   "sideEffects": false,
   "type": "module",
   "main": "./dist/index.js",

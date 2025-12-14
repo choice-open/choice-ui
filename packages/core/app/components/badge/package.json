@@ -1,7 +1,7 @@
 {
   "name": "@choice-ui/badge",
   "version": "0.0.3",
-  "description": "Badge component for Choiceform Design System",
+  "description": "A badge component for displaying labels, counts, or status indicators",
   "sideEffects": false,
   "type": "module",
   "main": "./dist/index.js",

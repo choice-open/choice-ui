@@ -1,7 +1,7 @@
 {
   "name": "@choice-ui/virtualized-grid",
   "version": "0.0.2",
-  "description": "Virtualized Grid component for Choiceform Design System",
+  "description": "A virtualized grid component for efficiently rendering large datasets in a grid layout",
   "sideEffects": false,
   "type": "module",
   "main": "./dist/index.js",

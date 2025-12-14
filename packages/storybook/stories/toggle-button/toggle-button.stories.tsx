@@ -145,7 +145,7 @@ export const Variants: Story = {
         <div className="grid grid-cols-[auto_1fr] items-center gap-4">
           {Object.values(State).map((state) => (
             <Fragment key={state}>
-              <span className="capitalize text-fuchsia-500">{state}</span>
+              <span className="text-fuchsia-500 capitalize">{state}</span>
               <ToggleButton
                 variant={variant}
                 value={controlled}

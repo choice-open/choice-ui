@@ -1,7 +1,7 @@
 {
   "name": "@choice-ui/checkbox",
   "version": "0.0.4",
-  "description": "Checkbox component for Choiceform Design System",
+  "description": "A checkbox component for binary selection with support for checked, unchecked, and indeterminate states",
   "sideEffects": false,
   "type": "module",
   "main": "./dist/index.js",

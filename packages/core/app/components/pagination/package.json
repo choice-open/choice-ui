@@ -1,7 +1,7 @@
 {
   "name": "@choice-ui/pagination",
   "version": "0.0.2",
-  "description": "Pagination component for Choiceform Design System",
+  "description": "A pagination component for navigating through paginated data with page numbers and controls",
   "sideEffects": false,
   "type": "module",
   "main": "./dist/index.js",

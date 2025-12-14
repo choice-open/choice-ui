@@ -1,7 +1,7 @@
 {
   "name": "@choice-ui/form",
   "version": "0.0.3",
-  "description": "Form components for Choiceform Design System",
+  "description": "A form component library with validation, field management, and integration with various input types",
   "sideEffects": false,
   "type": "module",
   "main": "./dist/index.js",

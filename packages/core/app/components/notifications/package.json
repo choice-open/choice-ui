@@ -1,7 +1,7 @@
 {
   "name": "@choice-ui/notifications",
   "version": "0.0.3",
-  "description": "Notifications component for Choiceform Design System",
+  "description": "A notification system component for displaying toast messages, alerts, and system notifications",
   "sideEffects": false,
   "type": "module",
   "main": "./dist/index.js",

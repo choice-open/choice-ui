@@ -54,16 +54,15 @@ ${componentMap}
   fs.writeFileSync(componentsDetailsPath, componentsDetailsContent, "utf8")
 
   // 生成 registry.ts - 直接使用 DocsData 中保存的 storyPath
-  const registryEntries = entries
-    .map(([, { detail, storyPath }], idx) => {
-      const importVar = `StoryModule${idx}`
-      const importPath = path
-        .relative(path.dirname(outputRegistry), storyPath)
-        .replace(/\\/g, "/")
-        .replace(/\.tsx?$/, "")
+  const registryEntries = entries.map(([, { detail, storyPath }], idx) => {
+    const importVar = `StoryModule${idx}`
+    const importPath = path
+      .relative(path.dirname(outputRegistry), storyPath)
+      .replace(/\\/g, "/")
+      .replace(/\.tsx?$/, "")
 
-      return { importVar, importPath, slug: detail.slug }
-    })
+    return { importVar, importPath, slug: detail.slug }
+  })
 
   const imports = registryEntries
     .map(

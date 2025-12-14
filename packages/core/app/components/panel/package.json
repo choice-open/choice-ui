@@ -1,7 +1,7 @@
 {
   "name": "@choice-ui/panel",
   "version": "0.0.5",
-  "description": "Panel component for Choiceform Design System",
+  "description": "A panel component for organizing content in collapsible sections with headers and actions",
   "sideEffects": false,
   "type": "module",
   "main": "./dist/index.js",

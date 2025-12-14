@@ -1,7 +1,7 @@
 {
   "name": "@choice-ui/tree-list",
   "version": "0.0.5",
-  "description": "Tree List component for Choiceform Design System",
+  "description": "A tree list component for displaying hierarchical data with expand/collapse, selection, and drag-and-drop",
   "sideEffects": false,
   "type": "module",
   "main": "./dist/index.js",

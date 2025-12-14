@@ -2,6 +2,33 @@
 
 All notable changes to the Context Input component will be documented in this file.
 
+## [2025-12-13]
+
+### Changed
+
+- refactor(context-input): update mention types for improved clarity and consistency
+  - Refactored mention-related types to use ContextMentionItemProps and ContextMentionTrigger for better type safety and clarity
+  - Updated component implementations to reflect the new types, enhancing overall code consistency
+  - Improved documentation and comments throughout the context-input components for better understanding and usability
+  - Adjusted Storybook examples to demonstrate the updated mention handling and component structure
+
+- feat(context-input): enhance mention handling and component structure
+  - Updated ComboboxProps to use a more specific type for focusManagerProps, improving type safety
+  - Removed lodash-es dependency from context-input package.json to streamline dependencies
+  - Refactored mention-related types and components to use MentionItemProps for better clarity and consistency
+  - Enhanced documentation and comments throughout the context-input components for improved understanding and usability
+  - Updated Storybook examples to reflect changes in mention handling and component structure
+
+## [2025-12-12]
+
+### Changed
+
+- feat: enhance mentions support in context input editor
+  - Updated the withMentions function to support mentions in pasted text
+  - Improved handling of pasted content by parsing mention tokens into Slate nodes
+  - Refactored editor methods to use a custom editor type for better type safety
+  - Adjusted documentation and examples to reflect the new mention functionality
+
 ## [2025-11-11]
 
 ### Changed

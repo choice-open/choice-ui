@@ -1,4 +1,5 @@
 .appContainer {
+  grid-column: span 2;
   background-color: rgb(var(--cdt-color-white));
   min-height: 100vh;
   color: rgb(var(--cdt-color-text-default));

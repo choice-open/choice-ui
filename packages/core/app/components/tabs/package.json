@@ -1,7 +1,7 @@
 {
   "name": "@choice-ui/tabs",
   "version": "0.0.4",
-  "description": "Tabs component for Choiceform Design System",
+  "description": "A tabs component for organizing content into multiple panels with tab navigation",
   "sideEffects": false,
   "type": "module",
   "main": "./dist/index.js",

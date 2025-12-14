@@ -424,7 +424,7 @@ export const RenderProp: Story = {
           <>
             <ScrollArea.Viewport className="h-full">
               <ScrollArea.Content>
-                <div className="z-2 sticky top-0 bg-white/50 p-2 backdrop-blur">
+                <div className="sticky top-0 z-2 bg-white/50 p-2 backdrop-blur">
                   Scroll Progress:{" "}
                   <span className="font-strong text-accent-foreground">
                     {Math.round(top * 100)}%
@@ -505,7 +505,7 @@ export const VirtualList: Story = {
               return (
                 <div
                   key={virtualItem.key}
-                  className="hover:bg-secondary-background absolute left-0 top-0 w-full border-b p-2"
+                  className="hover:bg-secondary-background absolute top-0 left-0 w-full border-b p-2"
                   style={{
                     height: virtualItem.size,
                     transform: `translateY(${virtualItem.start}px)`,

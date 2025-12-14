@@ -9,4 +9,3 @@ export default defineConfig({
   treeshake: true,
   external: ["react", "react-dom", "react/jsx-runtime", /^@choice-ui\//, /^@choiceform\//],
 })
-

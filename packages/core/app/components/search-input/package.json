@@ -1,7 +1,7 @@
 {
   "name": "@choice-ui/search-input",
   "version": "0.0.5",
-  "description": "Search Input component for Choiceform Design System",
+  "description": "A search input component with search icon, clear button, and search-specific styling",
   "sideEffects": false,
   "type": "module",
   "main": "./dist/index.js",

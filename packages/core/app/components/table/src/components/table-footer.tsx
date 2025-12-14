@@ -16,4 +16,3 @@ export function TableFooter({ children, className }: TableFooterProps): ReactNod
     </div>
   )
 }
-

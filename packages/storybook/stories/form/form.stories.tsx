@@ -59,7 +59,7 @@ export const InputAdapter: Story = {
     })
 
     return (
-      <>
+      <div className="grid grid-cols-2 gap-4">
         <form
           className="w-80 space-y-4"
           onSubmit={(e) => {
@@ -123,7 +123,7 @@ export const InputAdapter: Story = {
             <CodeBlock.Content code={result} />
           </CodeBlock>
         </div>
-      </>
+      </div>
     )
   },
 }
@@ -158,7 +158,7 @@ export const TextareaAdapter: Story = {
     })
 
     return (
-      <>
+      <div className="grid grid-cols-2 gap-4">
         <form
           className="w-80 space-y-4"
           onSubmit={(e) => {
@@ -230,7 +230,7 @@ export const TextareaAdapter: Story = {
             <CodeBlock.Content code={result} />
           </CodeBlock>
         </div>
-      </>
+      </div>
     )
   },
 }
@@ -264,7 +264,7 @@ export const SelectAdapter: Story = {
     })
 
     return (
-      <>
+      <div className="grid grid-cols-2 gap-4">
         <form
           className="w-80 space-y-4"
           onSubmit={(e) => {
@@ -310,7 +310,7 @@ export const SelectAdapter: Story = {
             <CodeBlock.Content code={result} />
           </CodeBlock>
         </div>
-      </>
+      </div>
     )
   },
 }
@@ -344,7 +344,7 @@ export const MultiSelectAdapter: Story = {
     })
 
     return (
-      <>
+      <div className="grid grid-cols-2 gap-4">
         <form
           className="w-80 space-y-4"
           onSubmit={(e) => {
@@ -394,7 +394,7 @@ export const MultiSelectAdapter: Story = {
             <CodeBlock.Content code={result} />
           </CodeBlock>
         </div>
-      </>
+      </div>
     )
   },
 }
@@ -428,7 +428,7 @@ export const ChipsInputAdapter: Story = {
     })
 
     return (
-      <>
+      <div className="grid grid-cols-2 gap-4">
         <form
           className="w-80 space-y-4"
           onSubmit={(e) => {
@@ -472,7 +472,7 @@ export const ChipsInputAdapter: Story = {
             <CodeBlock.Content code={result} />
           </CodeBlock>
         </div>
-      </>
+      </div>
     )
   },
 }
@@ -505,7 +505,7 @@ export const CheckboxAdapter: Story = {
     })
 
     return (
-      <>
+      <div className="grid grid-cols-2 gap-4">
         <form
           className="w-80 space-y-4"
           onSubmit={(e) => {
@@ -545,7 +545,7 @@ export const CheckboxAdapter: Story = {
             <CodeBlock.Content code={result} />
           </CodeBlock>
         </div>
-      </>
+      </div>
     )
   },
 }
@@ -578,7 +578,7 @@ export const RadioGroupAdapter: Story = {
     })
 
     return (
-      <>
+      <div className="grid grid-cols-2 gap-4">
         <form
           className="w-80 space-y-4"
           onSubmit={(e) => {
@@ -623,7 +623,7 @@ export const RadioGroupAdapter: Story = {
             <CodeBlock.Content code={result} />
           </CodeBlock>
         </div>
-      </>
+      </div>
     )
   },
 }
@@ -656,7 +656,7 @@ export const SwitchAdapter: Story = {
     })
 
     return (
-      <>
+      <div className="grid grid-cols-2 gap-4">
         <form
           className="w-80 space-y-4"
           onSubmit={(e) => {
@@ -696,7 +696,7 @@ export const SwitchAdapter: Story = {
             <CodeBlock.Content code={result} />
           </CodeBlock>
         </div>
-      </>
+      </div>
     )
   },
 }
@@ -730,7 +730,7 @@ export const RangeAdapter: Story = {
     })
 
     return (
-      <>
+      <div className="grid grid-cols-2 gap-4">
         <form
           className="w-80 space-y-4"
           onSubmit={(e) => {
@@ -772,7 +772,7 @@ export const RangeAdapter: Story = {
             <CodeBlock.Content code={result} />
           </CodeBlock>
         </div>
-      </>
+      </div>
     )
   },
 }
@@ -806,7 +806,7 @@ export const NumericInputAdapter: Story = {
     })
 
     return (
-      <>
+      <div className="grid grid-cols-2 gap-4">
         <form
           className="w-80 space-y-4"
           onSubmit={(e) => {
@@ -853,7 +853,7 @@ export const NumericInputAdapter: Story = {
             <CodeBlock.Content code={result} />
           </CodeBlock>
         </div>
-      </>
+      </div>
     )
   },
 }
@@ -886,7 +886,7 @@ export const SegmentedAdapter: Story = {
     })
 
     return (
-      <>
+      <div className="grid grid-cols-2 gap-4">
         <form
           className="w-80 space-y-4"
           onSubmit={(e) => {
@@ -931,7 +931,7 @@ export const SegmentedAdapter: Story = {
             <CodeBlock.Content code={result} />
           </CodeBlock>
         </div>
-      </>
+      </div>
     )
   },
 }
@@ -966,7 +966,7 @@ export const BasicForm: Story = {
     })
 
     return (
-      <>
+      <div className="grid grid-cols-2 gap-4">
         <form
           className="w-80 space-y-4"
           onSubmit={(e) => {
@@ -1030,7 +1030,7 @@ export const BasicForm: Story = {
             <CodeBlock.Content code={result} />
           </CodeBlock>
         </div>
-      </>
+      </div>
     )
   },
 }
@@ -1066,7 +1066,7 @@ export const WithDescription: Story = {
     })
 
     return (
-      <>
+      <div className="grid grid-cols-2 gap-4">
         <form
           className="w-80 space-y-4"
           onSubmit={(e) => {
@@ -1138,7 +1138,7 @@ export const WithDescription: Story = {
             <CodeBlock.Content code={result} />
           </CodeBlock>
         </div>
-      </>
+      </div>
     )
   },
 }
@@ -1175,7 +1175,7 @@ export const WithValidation: Story = {
     })
 
     return (
-      <>
+      <div className="grid grid-cols-2 gap-4">
         <form
           className="w-80 space-y-4"
           onSubmit={(e) => {
@@ -1269,7 +1269,7 @@ export const WithValidation: Story = {
             <CodeBlock.Content code={result} />
           </CodeBlock>
         </div>
-      </>
+      </div>
     )
   },
 }
@@ -1896,7 +1896,7 @@ export const WithAsyncInitialValues: Story = {
 
         {/* 表单状态信息 */}
         {!isInitialLoading && !loadError && (
-          <div className="bg-secondary-background w-80 space-y-2 rounded p-4">
+          <div className="bg-secondary-background w-80 space-y-2 rounded-xl p-4">
             <div className="font-strong">Form state:</div>
             <div className="grid grid-cols-2 gap-2">
               <div>Can submit: {form.state.canSubmit ? "Yes" : "No"}</div>
@@ -1995,147 +1995,260 @@ export const WithArrayFields: Story = {
     })
 
     return (
-      <div className="w-80 space-y-6">
-        <div className="flex w-80 flex-col gap-2">
-          <h3 className="font-strong">Array Form Example</h3>
-          <p className="text-secondary-foreground">
-            Demonstrate how to handle array-type form fields, including simple arrays and object
-            arrays
-          </p>
-        </div>
+      <div className="grid grid-cols-2 gap-4">
+        <div className="w-80 space-y-4">
+          <div className="flex w-80 flex-col gap-2">
+            <h3 className="font-strong">Array Form Example</h3>
+            <p className="text-secondary-foreground">
+              Demonstrate how to handle array-type form fields, including simple arrays and object
+              arrays
+            </p>
+          </div>
 
-        <form
-          onSubmit={(e) => {
-            e.preventDefault()
-            form.handleSubmit()
-          }}
-          className="space-y-4"
-        >
-          {/* 基本字段 */}
-          <form.Field
-            name="name"
-            validators={{
-              onChange: ({ value }) => {
-                const stringValue = String(value || "")
-                return !stringValue ? "Name cannot be empty" : undefined
-              },
+          <form
+            onSubmit={(e) => {
+              e.preventDefault()
+              form.handleSubmit()
             }}
+            className="space-y-4"
           >
-            {(field) => (
-              <form.Input
-                label="Name"
-                name={field.name}
-                value={String(field.state.value || "")}
-                onChange={field.handleChange}
-                onBlur={field.handleBlur}
-                placeholder="Enter your name"
-                error={formatErrors(field.state.meta.errors).join(", ")}
-              />
-            )}
-          </form.Field>
+            {/* 基本字段 */}
+            <form.Field
+              name="name"
+              validators={{
+                onChange: ({ value }) => {
+                  const stringValue = String(value || "")
+                  return !stringValue ? "Name cannot be empty" : undefined
+                },
+              }}
+            >
+              {(field) => (
+                <form.Input
+                  label="Name"
+                  name={field.name}
+                  value={String(field.state.value || "")}
+                  onChange={field.handleChange}
+                  onBlur={field.handleBlur}
+                  placeholder="Enter your name"
+                  error={formatErrors(field.state.meta.errors).join(", ")}
+                />
+              )}
+            </form.Field>
 
-          {/* 简单数组 - 技能列表 */}
-          <form.Field
-            name="skills"
-            mode="array"
-          >
-            {(skillsField) => (
-              <fieldset className="flex flex-col gap-3">
-                <div className="flex items-center justify-between">
-                  <Label>Skills List</Label>
-                  <Button
-                    onClick={() => {
-                      skillsField.pushValue("" as never)
-                    }}
-                  >
-                    Add skill
-                  </Button>
-                </div>
+            {/* 简单数组 - 技能列表 */}
+            <form.Field
+              name="skills"
+              mode="array"
+            >
+              {(skillsField) => (
+                <fieldset className="flex flex-col gap-3">
+                  <div className="flex items-center justify-between">
+                    <Label>Skills List</Label>
+                    <Button
+                      onClick={() => {
+                        skillsField.pushValue("" as never)
+                      }}
+                    >
+                      Add skill
+                    </Button>
+                  </div>
 
-                <div className="space-y-2">
-                  {(skillsField.state.value as string[]).length === 0 ? (
-                    <div className="text-secondary-foreground">
-                      No skills, click &quot;Add skill&quot; button to add
-                    </div>
-                  ) : (
-                    (skillsField.state.value as string[]).map((_, index) => (
-                      <form.Field
-                        key={index}
-                        name={`skills[${index}]`}
-                        validators={{
-                          onChange: ({ value }) => {
-                            const stringValue = String(value || "")
-                            return !stringValue ? "Skill cannot be empty" : undefined
-                          },
-                        }}
-                      >
-                        {(skillField) => (
-                          <div className="grid grid-cols-[1fr_auto] gap-2">
-                            <form.Input
-                              name={skillField.name}
-                              value={String(skillField.state.value || "")}
-                              onChange={skillField.handleChange}
-                              onBlur={skillField.handleBlur}
-                              placeholder={`Skill ${index + 1}`}
-                              className="flex-1"
-                            />
-                            <IconButton onClick={() => skillsField.removeValue(index)}>
-                              <TrashSmall />
-                            </IconButton>
-                            {skillField.state.meta.errors.length > 0 && (
-                              <div className="text-danger-foreground col-span-2">
-                                {formatErrors(skillField.state.meta.errors).join(", ")}
-                              </div>
-                            )}
-                          </div>
-                        )}
-                      </form.Field>
-                    ))
-                  )}
-                </div>
-              </fieldset>
-            )}
-          </form.Field>
+                  <div className="space-y-2">
+                    {(skillsField.state.value as string[]).length === 0 ? (
+                      <div className="text-secondary-foreground">
+                        No skills, click &quot;Add skill&quot; button to add
+                      </div>
+                    ) : (
+                      (skillsField.state.value as string[]).map((_, index) => (
+                        <form.Field
+                          key={index}
+                          name={`skills[${index}]`}
+                          validators={{
+                            onChange: ({ value }) => {
+                              const stringValue = String(value || "")
+                              return !stringValue ? "Skill cannot be empty" : undefined
+                            },
+                          }}
+                        >
+                          {(skillField) => (
+                            <div className="grid grid-cols-[1fr_auto] gap-2">
+                              <form.Input
+                                name={skillField.name}
+                                value={String(skillField.state.value || "")}
+                                onChange={skillField.handleChange}
+                                onBlur={skillField.handleBlur}
+                                placeholder={`Skill ${index + 1}`}
+                                className="flex-1"
+                              />
+                              <IconButton onClick={() => skillsField.removeValue(index)}>
+                                <TrashSmall />
+                              </IconButton>
+                              {skillField.state.meta.errors.length > 0 && (
+                                <div className="text-danger-foreground col-span-2">
+                                  {formatErrors(skillField.state.meta.errors).join(", ")}
+                                </div>
+                              )}
+                            </div>
+                          )}
+                        </form.Field>
+                      ))
+                    )}
+                  </div>
+                </fieldset>
+              )}
+            </form.Field>
 
-          {/* 对象数组 - 爱好列表 */}
-          <form.Field
-            name="hobbies"
-            mode="array"
-          >
-            {(hobbiesField) => (
-              <fieldset className="flex flex-col gap-2">
-                <div className="flex items-center justify-between">
-                  <Label>Hobbies List</Label>
-                  <Button
-                    onClick={() => {
-                      hobbiesField.pushValue({
-                        name: "",
-                        description: "",
-                        yearsOfExperience: 0,
-                      } as never)
-                    }}
-                  >
-                    Add hobby
-                  </Button>
-                </div>
+            {/* 对象数组 - 爱好列表 */}
+            <form.Field
+              name="hobbies"
+              mode="array"
+            >
+              {(hobbiesField) => (
+                <fieldset className="flex flex-col gap-2">
+                  <div className="flex items-center justify-between">
+                    <Label>Hobbies List</Label>
+                    <Button
+                      onClick={() => {
+                        hobbiesField.pushValue({
+                          name: "",
+                          description: "",
+                          yearsOfExperience: 0,
+                        } as never)
+                      }}
+                    >
+                      Add hobby
+                    </Button>
+                  </div>
 
-                <div className="space-y-4">
-                  {(
-                    hobbiesField.state.value as Array<{
-                      description: string
-                      name: string
-                      yearsOfExperience: number
-                    }>
-                  ).length === 0 ? (
-                    <div className="text-secondary-foreground">
-                      No hobbies, click &quot;Add hobby&quot; button to add
-                    </div>
-                  ) : (
-                    (
+                  <div className="space-y-4">
+                    {(
                       hobbiesField.state.value as Array<{
                         description: string
                         name: string
                         yearsOfExperience: number
+                      }>
+                    ).length === 0 ? (
+                      <div className="text-secondary-foreground">
+                        No hobbies, click &quot;Add hobby&quot; button to add
+                      </div>
+                    ) : (
+                      (
+                        hobbiesField.state.value as Array<{
+                          description: string
+                          name: string
+                          yearsOfExperience: number
+                        }>
+                      ).map((_, index) => (
+                        <div
+                          key={index}
+                          className="rounded-xl border p-4"
+                        >
+                          <div className="mb-2 flex items-center justify-between">
+                            <Label>Hobby {index + 1}</Label>
+                            <IconButton onClick={() => hobbiesField.removeValue(index)}>
+                              <TrashSmall />
+                            </IconButton>
+                          </div>
+
+                          <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                            <form.Field
+                              name={`hobbies[${index}].name`}
+                              validators={{
+                                onChange: ({ value }) => {
+                                  const stringValue = String(value || "")
+                                  return !stringValue ? "爱好名称不能为空" : undefined
+                                },
+                              }}
+                            >
+                              {(field) => (
+                                <form.Input
+                                  label="Name"
+                                  name={field.name}
+                                  value={String(field.state.value || "")}
+                                  onChange={field.handleChange}
+                                  onBlur={field.handleBlur}
+                                  placeholder="e.g. Basketball, Reading"
+                                  error={formatErrors(field.state.meta.errors).join(", ")}
+                                />
+                              )}
+                            </form.Field>
+
+                            <form.Field
+                              name={`hobbies[${index}].yearsOfExperience`}
+                              validators={{
+                                onChange: ({ value }) => {
+                                  const numValue = Number(value)
+                                  if (isNaN(numValue) || numValue < 0)
+                                    return "Please enter a valid number"
+                                  return undefined
+                                },
+                              }}
+                            >
+                              {(field) => (
+                                <form.NumericInput
+                                  label="Years of experience"
+                                  name={field.name}
+                                  value={Number(field.state.value || 0)}
+                                  onChange={(value) => field.handleChange(value || 0)}
+                                  onBlur={field.handleBlur}
+                                  placeholder="0"
+                                  error={formatErrors(field.state.meta.errors).join(", ")}
+                                />
+                              )}
+                            </form.Field>
+
+                            <form.Field name={`hobbies[${index}].description`}>
+                              {(field) => (
+                                <form.Textarea
+                                  className="col-span-2"
+                                  label="Description"
+                                  name={field.name}
+                                  value={String(field.state.value || "")}
+                                  onChange={(value) => field.handleChange(value)}
+                                  onBlur={field.handleBlur}
+                                  placeholder="Describe your hobby..."
+                                  rows={4}
+                                  error={formatErrors(field.state.meta.errors).join(", ")}
+                                />
+                              )}
+                            </form.Field>
+                          </div>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </fieldset>
+              )}
+            </form.Field>
+
+            {/* 复杂对象数组 - 联系方式 */}
+            <form.Field
+              name="contacts"
+              mode="array"
+            >
+              {(contactsField) => (
+                <fieldset className="flex flex-col gap-3">
+                  <div className="flex items-center justify-between">
+                    <Label>Contacts List</Label>
+                    <Button
+                      onClick={() => {
+                        contactsField.pushValue({
+                          type: "email",
+                          value: "",
+                          isPrimary: false,
+                        } as never)
+                      }}
+                    >
+                      Add contact
+                    </Button>
+                  </div>
+
+                  <div className="space-y-3">
+                    {(
+                      contactsField.state.value as Array<{
+                        isPrimary: boolean
+                        type: string
+                        value: string
                       }>
                     ).map((_, index) => (
                       <div
@@ -2143,232 +2256,123 @@ export const WithArrayFields: Story = {
                         className="rounded-xl border p-4"
                       >
                         <div className="mb-2 flex items-center justify-between">
-                          <Label>Hobby {index + 1}</Label>
-                          <IconButton onClick={() => hobbiesField.removeValue(index)}>
+                          <Label>Contact {index + 1}</Label>
+                          <IconButton onClick={() => contactsField.removeValue(index)}>
                             <TrashSmall />
                           </IconButton>
                         </div>
 
-                        <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                        <div className="grid grid-cols-2 gap-2">
+                          <form.Field name={`contacts[${index}].type`}>
+                            {(field) => (
+                              <form.Select
+                                label="Type"
+                                name={field.name}
+                                value={String(field.state.value || "")}
+                                onChange={field.handleChange}
+                                onBlur={field.handleBlur}
+                                options={[
+                                  { label: "Email", value: "email" },
+                                  { label: "Phone", value: "phone" },
+                                  { label: "Wechat", value: "wechat" },
+                                  { label: "QQ", value: "qq" },
+                                ]}
+                                error={formatErrors(field.state.meta.errors).join(", ")}
+                              />
+                            )}
+                          </form.Field>
+
                           <form.Field
-                            name={`hobbies[${index}].name`}
+                            name={`contacts[${index}].value`}
                             validators={{
                               onChange: ({ value }) => {
                                 const stringValue = String(value || "")
-                                return !stringValue ? "爱好名称不能为空" : undefined
+                                return !stringValue ? "Contact value cannot be empty" : undefined
                               },
                             }}
                           >
                             {(field) => (
                               <form.Input
-                                label="Name"
+                                label="Value"
                                 name={field.name}
                                 value={String(field.state.value || "")}
                                 onChange={field.handleChange}
                                 onBlur={field.handleBlur}
-                                placeholder="e.g. Basketball, Reading"
+                                placeholder="Enter contact value"
                                 error={formatErrors(field.state.meta.errors).join(", ")}
                               />
                             )}
                           </form.Field>
 
-                          <form.Field
-                            name={`hobbies[${index}].yearsOfExperience`}
-                            validators={{
-                              onChange: ({ value }) => {
-                                const numValue = Number(value)
-                                if (isNaN(numValue) || numValue < 0)
-                                  return "Please enter a valid number"
-                                return undefined
-                              },
-                            }}
-                          >
+                          <form.Field name={`contacts[${index}].isPrimary`}>
                             {(field) => (
-                              <form.NumericInput
-                                label="Years of experience"
-                                name={field.name}
-                                value={Number(field.state.value || 0)}
-                                onChange={(value) => field.handleChange(value || 0)}
-                                onBlur={field.handleBlur}
-                                placeholder="0"
-                                error={formatErrors(field.state.meta.errors).join(", ")}
-                              />
-                            )}
-                          </form.Field>
-
-                          <form.Field name={`hobbies[${index}].description`}>
-                            {(field) => (
-                              <form.Textarea
+                              <form.Checkbox
                                 className="col-span-2"
-                                label="Description"
+                                label="Is primary"
                                 name={field.name}
-                                value={String(field.state.value || "")}
+                                value={Boolean(field.state.value)}
                                 onChange={(value) => field.handleChange(value)}
                                 onBlur={field.handleBlur}
-                                placeholder="Describe your hobby..."
-                                rows={4}
-                                error={formatErrors(field.state.meta.errors).join(", ")}
                               />
                             )}
                           </form.Field>
                         </div>
                       </div>
-                    ))
-                  )}
-                </div>
-              </fieldset>
-            )}
-          </form.Field>
+                    ))}
+                  </div>
+                </fieldset>
+              )}
+            </form.Field>
 
-          {/* 复杂对象数组 - 联系方式 */}
-          <form.Field
-            name="contacts"
-            mode="array"
-          >
-            {(contactsField) => (
-              <fieldset className="flex flex-col gap-3">
-                <div className="flex items-center justify-between">
-                  <Label>Contacts List</Label>
-                  <Button
-                    onClick={() => {
-                      contactsField.pushValue({
-                        type: "email",
-                        value: "",
-                        isPrimary: false,
-                      } as never)
-                    }}
-                  >
-                    Add contact
-                  </Button>
-                </div>
+            <div className="flex gap-2">
+              <form.Button
+                type="submit"
+                disabled={!form.state.canSubmit || form.state.isSubmitting}
+              >
+                {form.state.isSubmitting ? "Submitting..." : "Submit form"}
+              </form.Button>
 
-                <div className="space-y-3">
-                  {(
-                    contactsField.state.value as Array<{
-                      isPrimary: boolean
-                      type: string
-                      value: string
-                    }>
-                  ).map((_, index) => (
-                    <div
-                      key={index}
-                      className="rounded-xl border p-4"
-                    >
-                      <div className="mb-2 flex items-center justify-between">
-                        <Label>Contact {index + 1}</Label>
-                        <IconButton onClick={() => contactsField.removeValue(index)}>
-                          <TrashSmall />
-                        </IconButton>
-                      </div>
-
-                      <div className="grid grid-cols-2 gap-2">
-                        <form.Field name={`contacts[${index}].type`}>
-                          {(field) => (
-                            <form.Select
-                              label="Type"
-                              name={field.name}
-                              value={String(field.state.value || "")}
-                              onChange={field.handleChange}
-                              onBlur={field.handleBlur}
-                              options={[
-                                { label: "Email", value: "email" },
-                                { label: "Phone", value: "phone" },
-                                { label: "Wechat", value: "wechat" },
-                                { label: "QQ", value: "qq" },
-                              ]}
-                              error={formatErrors(field.state.meta.errors).join(", ")}
-                            />
-                          )}
-                        </form.Field>
-
-                        <form.Field
-                          name={`contacts[${index}].value`}
-                          validators={{
-                            onChange: ({ value }) => {
-                              const stringValue = String(value || "")
-                              return !stringValue ? "Contact value cannot be empty" : undefined
-                            },
-                          }}
-                        >
-                          {(field) => (
-                            <form.Input
-                              label="Value"
-                              name={field.name}
-                              value={String(field.state.value || "")}
-                              onChange={field.handleChange}
-                              onBlur={field.handleBlur}
-                              placeholder="Enter contact value"
-                              error={formatErrors(field.state.meta.errors).join(", ")}
-                            />
-                          )}
-                        </form.Field>
-
-                        <form.Field name={`contacts[${index}].isPrimary`}>
-                          {(field) => (
-                            <form.Checkbox
-                              className="col-span-2"
-                              label="Is primary"
-                              name={field.name}
-                              value={Boolean(field.state.value)}
-                              onChange={(value) => field.handleChange(value)}
-                              onBlur={field.handleBlur}
-                            />
-                          )}
-                        </form.Field>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </fieldset>
-            )}
-          </form.Field>
-
-          <div className="flex gap-2">
-            <form.Button
-              type="submit"
-              disabled={!form.state.canSubmit || form.state.isSubmitting}
-            >
-              {form.state.isSubmitting ? "Submitting..." : "Submit form"}
-            </form.Button>
-
-            <form.Button
-              type="button"
-              variant="secondary"
-              onClick={() => form.reset()}
-            >
-              Reset form
-            </form.Button>
-          </div>
-        </form>
-
-        {submitResult && (
-          <div
-            className={tcx(
-              "rounded-xl p-4",
-              submitResult.includes("success")
-                ? "text-success-foreground bg-green-100"
-                : "text-danger-foreground bg-red-100",
-            )}
-          >
-            {submitResult}
-          </div>
-        )}
-
-        {/* 表单状态和数据预览 */}
-        <div className="space-y-4">
-          <div className="rounded-xl border p-4">
-            <div className="font-strong mb-2">Form status:</div>
-            <div className="grid grid-cols-2 gap-2">
-              <div>Can submit: {form.state.canSubmit ? "Yes" : "No"}</div>
-              <div>Is dirty: {form.state.isDirty ? "Yes" : "No"}</div>
-              <div>Is submitting: {form.state.isSubmitting ? "Yes" : "No"}</div>
-              <div>Is valid: {form.state.isValid ? "Yes" : "No"}</div>
+              <form.Button
+                type="button"
+                variant="secondary"
+                onClick={() => form.reset()}
+              >
+                Reset form
+              </form.Button>
             </div>
-          </div>
+          </form>
+        </div>
 
-          <div className="rounded-xl border p-4">
-            <div className="font-strong mb-2">Current form data:</div>
-            <pre className="overflow-auto">{JSON.stringify(form.state.values, null, 2)}</pre>
+        <div className="w-80 space-y-4">
+          {submitResult && (
+            <div
+              className={tcx(
+                "rounded-xl p-4",
+                submitResult.includes("success")
+                  ? "text-success-foreground bg-green-100"
+                  : "text-danger-foreground bg-red-100",
+              )}
+            >
+              {submitResult}
+            </div>
+          )}
+
+          {/* 表单状态和数据预览 */}
+          <div className="space-y-4">
+            <div className="rounded-xl border p-4">
+              <div className="font-strong mb-2">Form status:</div>
+              <div className="grid grid-cols-2 gap-2">
+                <div>Can submit: {form.state.canSubmit ? "Yes" : "No"}</div>
+                <div>Is dirty: {form.state.isDirty ? "Yes" : "No"}</div>
+                <div>Is submitting: {form.state.isSubmitting ? "Yes" : "No"}</div>
+                <div>Is valid: {form.state.isValid ? "Yes" : "No"}</div>
+              </div>
+            </div>
+
+            <div className="rounded-xl border p-4">
+              <div className="font-strong mb-2">Current form data:</div>
+              <pre className="overflow-auto">{JSON.stringify(form.state.values, null, 2)}</pre>
+            </div>
           </div>
         </div>
       </div>
@@ -2434,294 +2438,298 @@ export const WithLinkedFields: Story = {
     })
 
     return (
-      <div className="w-80 space-y-4">
-        <div className="space-y-2">
-          <h3 className="font-strong">Linked fields example</h3>
-          <p className="text-secondary-foreground">
-            Demonstrates how to link two fields, when one field value changes, the validation of the
-            other field will be re-run
-          </p>
+      <div className="grid grid-cols-2 gap-4">
+        <div className="w-80 space-y-4">
+          <div className="space-y-2">
+            <h3 className="font-strong">Linked fields example</h3>
+            <p className="text-secondary-foreground">
+              Demonstrates how to link two fields, when one field value changes, the validation of
+              the other field will be re-run
+            </p>
+          </div>
+
+          <form
+            onSubmit={(e) => {
+              e.preventDefault()
+              form.handleSubmit()
+            }}
+            className="space-y-4"
+          >
+            {/* 基本字段 */}
+            <form.Field
+              name="username"
+              validators={{
+                onChange: ({ value }) => {
+                  const stringValue = String(value || "")
+                  if (!stringValue) return "Username cannot be empty"
+                  if (stringValue.length < 3) return "Username must be at least 3 characters"
+                  return undefined
+                },
+              }}
+            >
+              {(field) => (
+                <form.Input
+                  label="Username"
+                  name={field.name}
+                  value={String(field.state.value || "")}
+                  onChange={field.handleChange}
+                  onBlur={field.handleBlur}
+                  placeholder="Enter username"
+                  error={formatErrors(field.state.meta.errors).join(", ")}
+                />
+              )}
+            </form.Field>
+
+            {/* 邮箱字段 */}
+            <form.Field
+              name="email"
+              validators={{
+                onChange: ({ value }) => {
+                  const stringValue = String(value || "")
+                  if (!stringValue) return "Email cannot be empty"
+                  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+                  return !emailRegex.test(stringValue)
+                    ? "Please enter a valid email address"
+                    : undefined
+                },
+              }}
+            >
+              {(field) => (
+                <form.Input
+                  label="Email"
+                  name={field.name}
+                  value={String(field.state.value || "")}
+                  onChange={field.handleChange}
+                  onBlur={field.handleBlur}
+                  type="email"
+                  placeholder="Enter email address"
+                  error={formatErrors(field.state.meta.errors).join(", ")}
+                />
+              )}
+            </form.Field>
+
+            <div className="rounded-xl border p-4">
+              <h4 className="text-warning-foreground font-strong mb-2">
+                Password validation example
+              </h4>
+              <p className="text-warning-foreground mb-3">
+                Try this flow: 1) input confirm password → 2) modify password → confirm password
+                will be automatically re-validated
+              </p>
+
+              {/* 密码字段 */}
+              <div className="space-y-4">
+                <form.Field
+                  name="password"
+                  validators={{
+                    onChange: ({ value }) => {
+                      const stringValue = String(value || "")
+                      if (!stringValue) return "Password cannot be empty"
+                      if (stringValue.length < 6) return "Password must be at least 6 characters"
+                      if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(stringValue)) {
+                        return "Password must contain uppercase and lowercase letters and numbers"
+                      }
+                      return undefined
+                    },
+                  }}
+                >
+                  {(field) => (
+                    <form.Input
+                      label="Password"
+                      name={field.name}
+                      value={String(field.state.value || "")}
+                      onChange={field.handleChange}
+                      onBlur={field.handleBlur}
+                      type="password"
+                      placeholder="Enter password"
+                      error={formatErrors(field.state.meta.errors).join(", ")}
+                      description="Password must be at least 6 characters, contain uppercase and lowercase letters and numbers"
+                    />
+                  )}
+                </form.Field>
+
+                {/* 确认密码字段 - 关联到密码字段 */}
+                <form.Field
+                  name="confirmPassword"
+                  validators={{
+                    onChangeListenTo: ["password"], // 监听密码字段的变化
+                    onChange: ({ value, fieldApi }) => {
+                      const stringValue = String(value || "")
+                      const password = String(fieldApi.form.getFieldValue("password") || "")
+
+                      if (!stringValue) return "Confirm password cannot be empty"
+                      if (stringValue !== password)
+                        return "The two passwords entered are inconsistent"
+
+                      return undefined
+                    },
+                  }}
+                >
+                  {(field) => (
+                    <form.Input
+                      label="Confirm password"
+                      name={field.name}
+                      value={String(field.state.value || "")}
+                      onChange={field.handleChange}
+                      onBlur={field.handleBlur}
+                      type="password"
+                      placeholder="Enter password again"
+                      error={formatErrors(field.state.meta.errors).join(", ")}
+                      description={
+                        field.state.meta.errors.length === 0 &&
+                        String(field.state.value) && (
+                          <div className="text-success-foreground">✓ Password matched</div>
+                        )
+                      }
+                    />
+                  )}
+                </form.Field>
+              </div>
+            </div>
+
+            <div className="rounded-xl border p-4">
+              <h4 className="text-accent-foreground font-strong mb-2">Email validation example</h4>
+              <p className="text-accent-foreground mb-3">
+                Demonstrates a more complex linking scenario: the new email cannot be the same as
+                the current email, and the confirm new email must match
+              </p>
+
+              <div className="space-y-4">
+                {/* 新邮箱字段 */}
+                <form.Field
+                  name="newEmail"
+                  validators={{
+                    onChangeListenTo: ["email"], // 监听原邮箱字段
+                    onChange: ({ value, fieldApi }) => {
+                      const stringValue = String(value || "")
+                      const currentEmail = String(fieldApi.form.getFieldValue("email") || "")
+
+                      if (!stringValue) return undefined // 新邮箱可以为空
+
+                      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+                      if (!emailRegex.test(stringValue)) return "Please enter a valid email address"
+
+                      if (stringValue === currentEmail)
+                        return "New email cannot be the same as the current email"
+
+                      return undefined
+                    },
+                  }}
+                >
+                  {(field) => (
+                    <form.Input
+                      label="New email"
+                      name={field.name}
+                      value={String(field.state.value || "")}
+                      onChange={field.handleChange}
+                      onBlur={field.handleBlur}
+                      type="email"
+                      placeholder="Enter new email (optional)"
+                      error={formatErrors(field.state.meta.errors).join(", ")}
+                    />
+                  )}
+                </form.Field>
+
+                {/* 确认新邮箱字段 */}
+                <form.Field
+                  name="confirmNewEmail"
+                  validators={{
+                    onChangeListenTo: ["newEmail"], // 监听新邮箱字段
+                    onChange: ({ value, fieldApi }) => {
+                      const stringValue = String(value || "")
+                      const newEmail = String(fieldApi.form.getFieldValue("newEmail") || "")
+
+                      // 如果新邮箱为空，确认邮箱也应该为空
+                      if (!newEmail && !stringValue) return undefined
+                      if (!newEmail && stringValue) return "Please enter a new email first"
+                      if (newEmail && !stringValue) return "Please confirm the new email"
+
+                      if (stringValue !== newEmail) return "The two entered emails do not match"
+
+                      return undefined
+                    },
+                  }}
+                >
+                  {(field) => (
+                    <form.Input
+                      label="Confirm new email"
+                      name={field.name}
+                      value={String(field.state.value || "")}
+                      onChange={field.handleChange}
+                      onBlur={field.handleBlur}
+                      type="email"
+                      placeholder="Enter new email again"
+                      error={formatErrors(field.state.meta.errors).join(", ")}
+                      description={
+                        field.state.meta.errors.length === 0 &&
+                        String(field.state.value) && (
+                          <div className="text-success-foreground">✓ Email matched</div>
+                        )
+                      }
+                    />
+                  )}
+                </form.Field>
+              </div>
+            </div>
+
+            <div className="flex gap-2">
+              <form.Button
+                type="submit"
+                disabled={!form.state.canSubmit || form.state.isSubmitting}
+              >
+                {form.state.isSubmitting ? "Submitting..." : "Register account"}
+              </form.Button>
+
+              <form.Button
+                type="button"
+                variant="secondary"
+                onClick={() => form.reset()}
+              >
+                Reset form
+              </form.Button>
+            </div>
+          </form>
         </div>
 
-        <form
-          onSubmit={(e) => {
-            e.preventDefault()
-            form.handleSubmit()
-          }}
-          className="space-y-4"
-        >
-          {/* 基本字段 */}
-          <form.Field
-            name="username"
-            validators={{
-              onChange: ({ value }) => {
-                const stringValue = String(value || "")
-                if (!stringValue) return "Username cannot be empty"
-                if (stringValue.length < 3) return "Username must be at least 3 characters"
-                return undefined
-              },
-            }}
-          >
-            {(field) => (
-              <form.Input
-                label="Username"
-                name={field.name}
-                value={String(field.state.value || "")}
-                onChange={field.handleChange}
-                onBlur={field.handleBlur}
-                placeholder="Enter username"
-                error={formatErrors(field.state.meta.errors).join(", ")}
-              />
-            )}
-          </form.Field>
-
-          {/* 邮箱字段 */}
-          <form.Field
-            name="email"
-            validators={{
-              onChange: ({ value }) => {
-                const stringValue = String(value || "")
-                if (!stringValue) return "Email cannot be empty"
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-                return !emailRegex.test(stringValue)
-                  ? "Please enter a valid email address"
-                  : undefined
-              },
-            }}
-          >
-            {(field) => (
-              <form.Input
-                label="Email"
-                name={field.name}
-                value={String(field.state.value || "")}
-                onChange={field.handleChange}
-                onBlur={field.handleBlur}
-                type="email"
-                placeholder="Enter email address"
-                error={formatErrors(field.state.meta.errors).join(", ")}
-              />
-            )}
-          </form.Field>
-
-          <div className="rounded-xl border p-4">
-            <h4 className="text-warning-foreground font-strong mb-2">
-              Password validation example
-            </h4>
-            <p className="text-warning-foreground mb-3">
-              Try this flow: 1) input confirm password → 2) modify password → confirm password will
-              be automatically re-validated
-            </p>
-
-            {/* 密码字段 */}
-            <div className="space-y-4">
-              <form.Field
-                name="password"
-                validators={{
-                  onChange: ({ value }) => {
-                    const stringValue = String(value || "")
-                    if (!stringValue) return "Password cannot be empty"
-                    if (stringValue.length < 6) return "Password must be at least 6 characters"
-                    if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(stringValue)) {
-                      return "Password must contain uppercase and lowercase letters and numbers"
-                    }
-                    return undefined
-                  },
-                }}
-              >
-                {(field) => (
-                  <form.Input
-                    label="Password"
-                    name={field.name}
-                    value={String(field.state.value || "")}
-                    onChange={field.handleChange}
-                    onBlur={field.handleBlur}
-                    type="password"
-                    placeholder="Enter password"
-                    error={formatErrors(field.state.meta.errors).join(", ")}
-                    description="Password must be at least 6 characters, contain uppercase and lowercase letters and numbers"
-                  />
-                )}
-              </form.Field>
-
-              {/* 确认密码字段 - 关联到密码字段 */}
-              <form.Field
-                name="confirmPassword"
-                validators={{
-                  onChangeListenTo: ["password"], // 监听密码字段的变化
-                  onChange: ({ value, fieldApi }) => {
-                    const stringValue = String(value || "")
-                    const password = String(fieldApi.form.getFieldValue("password") || "")
-
-                    if (!stringValue) return "Confirm password cannot be empty"
-                    if (stringValue !== password)
-                      return "The two passwords entered are inconsistent"
-
-                    return undefined
-                  },
-                }}
-              >
-                {(field) => (
-                  <form.Input
-                    label="Confirm password"
-                    name={field.name}
-                    value={String(field.state.value || "")}
-                    onChange={field.handleChange}
-                    onBlur={field.handleBlur}
-                    type="password"
-                    placeholder="Enter password again"
-                    error={formatErrors(field.state.meta.errors).join(", ")}
-                    description={
-                      field.state.meta.errors.length === 0 &&
-                      String(field.state.value) && (
-                        <div className="text-success-foreground">✓ Password matched</div>
-                      )
-                    }
-                  />
-                )}
-              </form.Field>
-            </div>
-          </div>
-
-          <div className="rounded-xl border p-4">
-            <h4 className="text-accent-foreground font-strong mb-2">Email validation example</h4>
-            <p className="text-accent-foreground mb-3">
-              Demonstrates a more complex linking scenario: the new email cannot be the same as the
-              current email, and the confirm new email must match
-            </p>
-
-            <div className="space-y-4">
-              {/* 新邮箱字段 */}
-              <form.Field
-                name="newEmail"
-                validators={{
-                  onChangeListenTo: ["email"], // 监听原邮箱字段
-                  onChange: ({ value, fieldApi }) => {
-                    const stringValue = String(value || "")
-                    const currentEmail = String(fieldApi.form.getFieldValue("email") || "")
-
-                    if (!stringValue) return undefined // 新邮箱可以为空
-
-                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-                    if (!emailRegex.test(stringValue)) return "Please enter a valid email address"
-
-                    if (stringValue === currentEmail)
-                      return "New email cannot be the same as the current email"
-
-                    return undefined
-                  },
-                }}
-              >
-                {(field) => (
-                  <form.Input
-                    label="New email"
-                    name={field.name}
-                    value={String(field.state.value || "")}
-                    onChange={field.handleChange}
-                    onBlur={field.handleBlur}
-                    type="email"
-                    placeholder="Enter new email (optional)"
-                    error={formatErrors(field.state.meta.errors).join(", ")}
-                  />
-                )}
-              </form.Field>
-
-              {/* 确认新邮箱字段 */}
-              <form.Field
-                name="confirmNewEmail"
-                validators={{
-                  onChangeListenTo: ["newEmail"], // 监听新邮箱字段
-                  onChange: ({ value, fieldApi }) => {
-                    const stringValue = String(value || "")
-                    const newEmail = String(fieldApi.form.getFieldValue("newEmail") || "")
-
-                    // 如果新邮箱为空，确认邮箱也应该为空
-                    if (!newEmail && !stringValue) return undefined
-                    if (!newEmail && stringValue) return "Please enter a new email first"
-                    if (newEmail && !stringValue) return "Please confirm the new email"
-
-                    if (stringValue !== newEmail) return "The two entered emails do not match"
-
-                    return undefined
-                  },
-                }}
-              >
-                {(field) => (
-                  <form.Input
-                    label="Confirm new email"
-                    name={field.name}
-                    value={String(field.state.value || "")}
-                    onChange={field.handleChange}
-                    onBlur={field.handleBlur}
-                    type="email"
-                    placeholder="Enter new email again"
-                    error={formatErrors(field.state.meta.errors).join(", ")}
-                    description={
-                      field.state.meta.errors.length === 0 &&
-                      String(field.state.value) && (
-                        <div className="text-success-foreground">✓ Email matched</div>
-                      )
-                    }
-                  />
-                )}
-              </form.Field>
-            </div>
-          </div>
-
-          <div className="flex gap-2">
-            <form.Button
-              type="submit"
-              disabled={!form.state.canSubmit || form.state.isSubmitting}
+        <div className="w-80 space-y-4">
+          {submitResult && (
+            <div
+              className={tcx(
+                "rounded-xl p-4",
+                submitResult.includes("success")
+                  ? "text-success-foreground bg-green-100"
+                  : "text-danger-foreground bg-red-100",
+              )}
             >
-              {form.state.isSubmitting ? "Submitting..." : "Register account"}
-            </form.Button>
-
-            <form.Button
-              type="button"
-              variant="secondary"
-              onClick={() => form.reset()}
-            >
-              Reset form
-            </form.Button>
-          </div>
-        </form>
-
-        {submitResult && (
-          <div
-            className={tcx(
-              "rounded-xl p-4",
-              submitResult.includes("success")
-                ? "text-success-foreground bg-green-100"
-                : "text-danger-foreground bg-red-100",
-            )}
-          >
-            {submitResult}
-          </div>
-        )}
-
-        {/* 表单状态和字段状态 */}
-        <div className="space-y-4">
-          <div className="rounded-xl border p-4">
-            <div className="font-strong mb-2">Form status:</div>
-            <div className="grid grid-cols-2 gap-2">
-              <div>Can submit: {form.state.canSubmit ? "Yes" : "No"}</div>
-              <div>Is dirty: {form.state.isDirty ? "Yes" : "No"}</div>
-              <div>Is submitting: {form.state.isSubmitting ? "Yes" : "No"}</div>
-              <div>Is valid: {form.state.isValid ? "Yes" : "No"}</div>
+              {submitResult}
             </div>
-          </div>
+          )}
 
-          <div className="rounded-xl border p-4">
-            <div className="font-strong mb-2">Field linking status:</div>
-            <div className="space-y-1">
-              <div>• Confirm password listen: password field</div>
-              <div>• New email listen: email field</div>
-              <div>• Confirm new email listen: newEmail field</div>
+          {/* 表单状态和字段状态 */}
+          <div className="space-y-4">
+            <div className="rounded-xl border p-4">
+              <div className="font-strong mb-2">Form status:</div>
+              <div className="grid grid-cols-2 gap-2">
+                <div>Can submit: {form.state.canSubmit ? "Yes" : "No"}</div>
+                <div>Is dirty: {form.state.isDirty ? "Yes" : "No"}</div>
+                <div>Is submitting: {form.state.isSubmitting ? "Yes" : "No"}</div>
+                <div>Is valid: {form.state.isValid ? "Yes" : "No"}</div>
+              </div>
             </div>
-          </div>
 
-          <div className="rounded-xl border p-4">
-            <div className="font-strong mb-2">Current form data:</div>
-            <pre className="overflow-auto">{JSON.stringify(form.state.values, null, 2)}</pre>
+            <div className="rounded-xl border p-4">
+              <div className="font-strong mb-2">Field linking status:</div>
+              <div className="space-y-1">
+                <div>• Confirm password listen: password field</div>
+                <div>• New email listen: email field</div>
+                <div>• Confirm new email listen: newEmail field</div>
+              </div>
+            </div>
+
+            <div className="rounded-xl border p-4">
+              <div className="font-strong mb-2">Current form data:</div>
+              <pre className="overflow-auto">{JSON.stringify(form.state.values, null, 2)}</pre>
+            </div>
           </div>
         </div>
       </div>
@@ -2810,371 +2818,375 @@ export const WithReactivity: Story = {
     }
 
     return (
-      <div className="w-80 space-y-4">
-        <div>
-          <h3 className="font-strong">Reactive subscription example</h3>
-          <p className="text-secondary-foreground">
-            Demonstrates how to use useStore and form.Subscribe to access reactive form values
-          </p>
-        </div>
+      <div className="grid grid-cols-2 gap-4">
+        <div className="w-80 space-y-4">
+          <div>
+            <h3 className="font-strong">Reactive subscription example</h3>
+            <p className="text-secondary-foreground">
+              Demonstrates how to use useStore and form.Subscribe to access reactive form values
+            </p>
+          </div>
 
-        {/* 使用 useStore 的响应式状态显示 */}
-        <div className="rounded-xl border p-4">
-          <h4 className="text-success-foreground font-strong mb-2">
-            useStore subscription example
-          </h4>
-          <div className="space-y-1">
-            <div>
-              • Current user type:{" "}
-              <span className="font-strong">
-                {userType === "personal" ? "Personal user" : "Business user"}
-              </span>
-            </div>
-            <div>
-              • Calculate price: <span className="font-strong">${calculatePrice()}/month</span>
-            </div>
-            <div>
-              • Form status:
-              <Badge
-                variant={canSubmit ? "success" : "error"}
-                className="ml-1"
-              >
-                {canSubmit ? "Can submit" : "Cannot submit"}
-              </Badge>
+          {/* 使用 useStore 的响应式状态显示 */}
+          <div className="rounded-xl border p-4">
+            <h4 className="text-success-foreground font-strong mb-2">
+              useStore subscription example
+            </h4>
+            <div className="space-y-1">
+              <div>
+                • Current user type:{" "}
+                <span className="font-strong">
+                  {userType === "personal" ? "Personal user" : "Business user"}
+                </span>
+              </div>
+              <div>
+                • Calculate price: <span className="font-strong">${calculatePrice()}/month</span>
+              </div>
+              <div>
+                • Form status:
+                <Badge
+                  variant={canSubmit ? "success" : "error"}
+                  className="ml-1"
+                >
+                  {canSubmit ? "Can submit" : "Cannot submit"}
+                </Badge>
+              </div>
             </div>
           </div>
+
+          <form
+            onSubmit={(e) => {
+              e.preventDefault()
+              form.handleSubmit()
+            }}
+            className="space-y-4"
+          >
+            {/* 用户类型选择 */}
+            <form.Field name="userType">
+              {(field) => (
+                <form.Segmented
+                  name={field.name}
+                  value={String(field.state.value || "")}
+                  onChange={field.handleChange}
+                  options={[
+                    { content: "Personal user", value: "personal" },
+                    { content: "Business user", value: "business" },
+                  ]}
+                />
+              )}
+            </form.Field>
+
+            {/* 基本信息 */}
+            <form.Field
+              name="name"
+              validators={{
+                onChange: ({ value }) => {
+                  const stringValue = String(value || "")
+                  return !stringValue ? "Name cannot be empty" : undefined
+                },
+              }}
+            >
+              {(field) => (
+                <form.Input
+                  label={userType === "personal" ? "Name" : "Contact name"}
+                  name={field.name}
+                  value={String(field.state.value || "")}
+                  onChange={field.handleChange}
+                  onBlur={field.handleBlur}
+                  placeholder={userType === "personal" ? "Enter your name" : "Enter contact name"}
+                  error={formatErrors(field.state.meta.errors).join(", ")}
+                />
+              )}
+            </form.Field>
+
+            <form.Field
+              name="email"
+              validators={{
+                onChange: ({ value }) => {
+                  const stringValue = String(value || "")
+                  if (!stringValue) return "Email cannot be empty"
+                  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+                  return !emailRegex.test(stringValue)
+                    ? "Please enter a valid email address"
+                    : undefined
+                },
+              }}
+            >
+              {(field) => (
+                <form.Input
+                  label="Email"
+                  name={field.name}
+                  value={String(field.state.value || "")}
+                  onChange={field.handleChange}
+                  onBlur={field.handleBlur}
+                  type="email"
+                  placeholder="Enter email address"
+                  error={formatErrors(field.state.meta.errors).join(", ")}
+                />
+              )}
+            </form.Field>
+
+            {/* 条件渲染 - 企业用户额外字段 */}
+            {userType === "business" && (
+              <div className="space-y-4 rounded-xl border p-4">
+                <h4 className="text-accent-foreground font-strong">Business information</h4>
+
+                <form.Field
+                  name="company"
+                  validators={{
+                    onChange: ({ value }) => {
+                      // 只有在企业用户时才验证公司名称
+                      if (userType === "business") {
+                        const stringValue = String(value || "")
+                        return !stringValue ? "Company name cannot be empty" : undefined
+                      }
+                      return undefined
+                    },
+                  }}
+                >
+                  {(field) => (
+                    <form.Input
+                      label="Company name"
+                      name={field.name}
+                      value={String(field.state.value || "")}
+                      onChange={field.handleChange}
+                      onBlur={field.handleBlur}
+                      placeholder="Enter company name"
+                      error={formatErrors(field.state.meta.errors).join(", ")}
+                    />
+                  )}
+                </form.Field>
+
+                <form.Field name="website">
+                  {(field) => (
+                    <form.Input
+                      label="Company website"
+                      name={field.name}
+                      value={String(field.state.value || "")}
+                      onChange={field.handleChange}
+                      onBlur={field.handleBlur}
+                      type="url"
+                      placeholder="https://example.com"
+                      error={formatErrors(field.state.meta.errors).join(", ")}
+                    />
+                  )}
+                </form.Field>
+              </div>
+            )}
+
+            {/* 套餐选择 */}
+            <form.Field name="plan">
+              {(field) => (
+                <form.Segmented
+                  name={field.name}
+                  value={String(field.state.value || "")}
+                  onChange={field.handleChange}
+                  options={[
+                    { content: "Basic - $10", value: "basic" },
+                    { content: "Pro - $50", value: "pro" },
+                    { content: "Enterprise - $200", value: "enterprise" },
+                  ]}
+                />
+              )}
+            </form.Field>
+
+            {/* 使用 form.Subscribe 的响应式组件 */}
+            <form.Subscribe selector={(state) => [state.values.plan, state.values.userType]}>
+              {([plan, userType]) => (
+                <div className="rounded-xl border p-4">
+                  <h4 className="text-accent-foreground font-strong mb-2">
+                    form.Subscribe subscription example
+                  </h4>
+                  <div className="text-secondary-foreground">
+                    <div>
+                      • Selected plan: <span className="font-strong">{String(plan)}</span>
+                    </div>
+                    <div>
+                      • User type: <span className="font-strong">{String(userType)}</span>
+                    </div>
+                    <div>
+                      • Actual price:{" "}
+                      <span className="text-body-large-strong">
+                        $
+                        {({ basic: 10, pro: 50, enterprise: 200 }[plan as keyof typeof plan] || 0) *
+                          (userType === "business" ? 2 : 1)}
+                        /month
+                      </span>
+                    </div>
+                    {userType === "business" && (
+                      <div className="mt-2">
+                        Business users get 2x features, with corresponding price adjustments
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+            </form.Subscribe>
+
+            {/* 预算滑块 */}
+            <form.Field name="budget">
+              {(field) => (
+                <form.Range
+                  label="Budget"
+                  value={Number(field.state.value) || 1000}
+                  onChange={(value) => field.handleChange(value)}
+                  min={100}
+                  max={10000}
+                  error={formatErrors(field.state.meta.errors).join(", ")}
+                />
+              )}
+            </form.Field>
+
+            {/* 通知设置 */}
+            <div className="space-y-4">
+              <h4 className="font-strong">Notification settings</h4>
+
+              <form.Field name="newsletter">
+                {(field) => (
+                  <form.Checkbox
+                    label="Subscribe to newsletter"
+                    name={field.name}
+                    value={Boolean(field.state.value)}
+                    onChange={(value) => field.handleChange(value)}
+                  />
+                )}
+              </form.Field>
+
+              <form.Field name="notifications.email">
+                {(field) => (
+                  <form.Checkbox
+                    label="Email notifications"
+                    name={field.name}
+                    value={Boolean(field.state.value)}
+                    onChange={(value) => field.handleChange(value)}
+                  />
+                )}
+              </form.Field>
+
+              <form.Field name="notifications.sms">
+                {(field) => (
+                  <form.Checkbox
+                    label="SMS notifications"
+                    name={field.name}
+                    value={Boolean(field.state.value)}
+                    onChange={(value) => field.handleChange(value)}
+                  />
+                )}
+              </form.Field>
+
+              <form.Field name="notifications.push">
+                {(field) => (
+                  <form.Checkbox
+                    label="Push notifications"
+                    name={field.name}
+                    value={Boolean(field.state.value)}
+                    onChange={(value) => field.handleChange(value)}
+                  />
+                )}
+              </form.Field>
+            </div>
+
+            {/* 响应式提交按钮 */}
+            <form.Subscribe
+              selector={(state) => [state.canSubmit, state.isSubmitting, state.isDirty]}
+            >
+              {([canSubmit, isSubmitting, isDirty]) => (
+                <div className="flex gap-2">
+                  <form.Button
+                    type="submit"
+                    disabled={!canSubmit || isSubmitting}
+                  >
+                    {isSubmitting ? "Submitting..." : "Submit form"}
+                  </form.Button>
+
+                  <form.Button
+                    type="button"
+                    variant="secondary"
+                    onClick={() => form.reset()}
+                    disabled={!isDirty}
+                  >
+                    Reset form
+                  </form.Button>
+                </div>
+              )}
+            </form.Subscribe>
+          </form>
         </div>
 
-        <form
-          onSubmit={(e) => {
-            e.preventDefault()
-            form.handleSubmit()
-          }}
-          className="space-y-4"
-        >
-          {/* 用户类型选择 */}
-          <form.Field name="userType">
-            {(field) => (
-              <form.Segmented
-                name={field.name}
-                value={String(field.state.value || "")}
-                onChange={field.handleChange}
-                options={[
-                  { content: "Personal user", value: "personal" },
-                  { content: "Business user", value: "business" },
-                ]}
-              />
-            )}
-          </form.Field>
-
-          {/* 基本信息 */}
-          <form.Field
-            name="name"
-            validators={{
-              onChange: ({ value }) => {
-                const stringValue = String(value || "")
-                return !stringValue ? "Name cannot be empty" : undefined
-              },
-            }}
-          >
-            {(field) => (
-              <form.Input
-                label={userType === "personal" ? "Name" : "Contact name"}
-                name={field.name}
-                value={String(field.state.value || "")}
-                onChange={field.handleChange}
-                onBlur={field.handleBlur}
-                placeholder={userType === "personal" ? "Enter your name" : "Enter contact name"}
-                error={formatErrors(field.state.meta.errors).join(", ")}
-              />
-            )}
-          </form.Field>
-
-          <form.Field
-            name="email"
-            validators={{
-              onChange: ({ value }) => {
-                const stringValue = String(value || "")
-                if (!stringValue) return "Email cannot be empty"
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-                return !emailRegex.test(stringValue)
-                  ? "Please enter a valid email address"
-                  : undefined
-              },
-            }}
-          >
-            {(field) => (
-              <form.Input
-                label="Email"
-                name={field.name}
-                value={String(field.state.value || "")}
-                onChange={field.handleChange}
-                onBlur={field.handleBlur}
-                type="email"
-                placeholder="Enter email address"
-                error={formatErrors(field.state.meta.errors).join(", ")}
-              />
-            )}
-          </form.Field>
-
-          {/* 条件渲染 - 企业用户额外字段 */}
-          {userType === "business" && (
-            <div className="space-y-4 rounded-xl border p-4">
-              <h4 className="text-accent-foreground font-strong">Business information</h4>
-
-              <form.Field
-                name="company"
-                validators={{
-                  onChange: ({ value }) => {
-                    // 只有在企业用户时才验证公司名称
-                    if (userType === "business") {
-                      const stringValue = String(value || "")
-                      return !stringValue ? "Company name cannot be empty" : undefined
-                    }
-                    return undefined
-                  },
-                }}
-              >
-                {(field) => (
-                  <form.Input
-                    label="Company name"
-                    name={field.name}
-                    value={String(field.state.value || "")}
-                    onChange={field.handleChange}
-                    onBlur={field.handleBlur}
-                    placeholder="Enter company name"
-                    error={formatErrors(field.state.meta.errors).join(", ")}
-                  />
-                )}
-              </form.Field>
-
-              <form.Field name="website">
-                {(field) => (
-                  <form.Input
-                    label="Company website"
-                    name={field.name}
-                    value={String(field.state.value || "")}
-                    onChange={field.handleChange}
-                    onBlur={field.handleBlur}
-                    type="url"
-                    placeholder="https://example.com"
-                    error={formatErrors(field.state.meta.errors).join(", ")}
-                  />
-                )}
-              </form.Field>
+        <div className="w-80 space-y-4">
+          {submitResult && (
+            <div
+              className={tcx(
+                "rounded-xl p-4",
+                submitResult.includes("success")
+                  ? "text-success-foreground bg-green-100"
+                  : "text-danger-foreground bg-red-100",
+              )}
+            >
+              {submitResult}
             </div>
           )}
 
-          {/* 套餐选择 */}
-          <form.Field name="plan">
-            {(field) => (
-              <form.Segmented
-                name={field.name}
-                value={String(field.state.value || "")}
-                onChange={field.handleChange}
-                options={[
-                  { content: "Basic - $10", value: "basic" },
-                  { content: "Pro - $50", value: "pro" },
-                  { content: "Enterprise - $200", value: "enterprise" },
-                ]}
-              />
-            )}
-          </form.Field>
-
-          {/* 使用 form.Subscribe 的响应式组件 */}
-          <form.Subscribe selector={(state) => [state.values.plan, state.values.userType]}>
-            {([plan, userType]) => (
-              <div className="rounded-xl border p-4">
-                <h4 className="text-accent-foreground font-strong mb-2">
-                  form.Subscribe subscription example
-                </h4>
-                <div className="text-secondary-foreground">
-                  <div>
-                    • Selected plan: <span className="font-strong">{String(plan)}</span>
+          {/* 响应式状态监控 */}
+          <div className="space-y-4">
+            <form.Subscribe
+              selector={(state) => [
+                state.canSubmit,
+                state.isDirty,
+                state.isValid,
+                state.isSubmitting,
+                state.errorMap,
+              ]}
+            >
+              {([canSubmit, isDirty, isValid, isSubmitting, errorMap]) => (
+                <div className="rounded-xl border p-4">
+                  <div className="font-strong mb-2">Real-time form status (form.Subscribe):</div>
+                  <div className="grid grid-cols-2 gap-2">
+                    <div className={canSubmit ? "text-green-600" : "text-red-600"}>
+                      Can submit: {canSubmit ? "Yes" : "No"}
+                    </div>
+                    <div className={isDirty ? "text-blue-600" : "text-gray-600"}>
+                      Is dirty: {isDirty ? "Yes" : "No"}
+                    </div>
+                    <div className={isValid ? "text-green-600" : "text-red-600"}>
+                      Is valid: {isValid ? "Yes" : "No"}
+                    </div>
+                    <div className={isSubmitting ? "text-orange-600" : "text-gray-600"}>
+                      Is submitting: {isSubmitting ? "Yes" : "No"}
+                    </div>
                   </div>
-                  <div>
-                    • User type: <span className="font-strong">{String(userType)}</span>
-                  </div>
-                  <div>
-                    • Actual price:{" "}
-                    <span className="text-body-large-strong">
-                      $
-                      {({ basic: 10, pro: 50, enterprise: 200 }[plan as keyof typeof plan] || 0) *
-                        (userType === "business" ? 2 : 1)}
-                      /month
-                    </span>
-                  </div>
-                  {userType === "business" && (
-                    <div className="mt-2">
-                      Business users get 2x features, with corresponding price adjustments
+                  {Object.keys(errorMap).length > 0 && (
+                    <div className="mt-2 text-red-600">
+                      Error fields: {Object.keys(errorMap).join(", ")}
                     </div>
                   )}
                 </div>
-              </div>
-            )}
-          </form.Subscribe>
-
-          {/* 预算滑块 */}
-          <form.Field name="budget">
-            {(field) => (
-              <form.Range
-                label="Budget"
-                value={Number(field.state.value) || 1000}
-                onChange={(value) => field.handleChange(value)}
-                min={100}
-                max={10000}
-                error={formatErrors(field.state.meta.errors).join(", ")}
-              />
-            )}
-          </form.Field>
-
-          {/* 通知设置 */}
-          <div className="space-y-4">
-            <h4 className="font-strong">Notification settings</h4>
-
-            <form.Field name="newsletter">
-              {(field) => (
-                <form.Checkbox
-                  label="Subscribe to newsletter"
-                  name={field.name}
-                  value={Boolean(field.state.value)}
-                  onChange={(value) => field.handleChange(value)}
-                />
               )}
-            </form.Field>
+            </form.Subscribe>
 
-            <form.Field name="notifications.email">
-              {(field) => (
-                <form.Checkbox
-                  label="Email notifications"
-                  name={field.name}
-                  value={Boolean(field.state.value)}
-                  onChange={(value) => field.handleChange(value)}
-                />
-              )}
-            </form.Field>
-
-            <form.Field name="notifications.sms">
-              {(field) => (
-                <form.Checkbox
-                  label="SMS notifications"
-                  name={field.name}
-                  value={Boolean(field.state.value)}
-                  onChange={(value) => field.handleChange(value)}
-                />
-              )}
-            </form.Field>
-
-            <form.Field name="notifications.push">
-              {(field) => (
-                <form.Checkbox
-                  label="Push notifications"
-                  name={field.name}
-                  value={Boolean(field.state.value)}
-                  onChange={(value) => field.handleChange(value)}
-                />
-              )}
-            </form.Field>
-          </div>
-
-          {/* 响应式提交按钮 */}
-          <form.Subscribe
-            selector={(state) => [state.canSubmit, state.isSubmitting, state.isDirty]}
-          >
-            {([canSubmit, isSubmitting, isDirty]) => (
-              <div className="flex gap-2">
-                <form.Button
-                  type="submit"
-                  disabled={!canSubmit || isSubmitting}
-                >
-                  {isSubmitting ? "Submitting..." : "Submit form"}
-                </form.Button>
-
-                <form.Button
-                  type="button"
-                  variant="secondary"
-                  onClick={() => form.reset()}
-                  disabled={!isDirty}
-                >
-                  Reset form
-                </form.Button>
-              </div>
-            )}
-          </form.Subscribe>
-        </form>
-
-        {submitResult && (
-          <div
-            className={tcx(
-              "rounded-xl p-4",
-              submitResult.includes("success")
-                ? "text-success-foreground bg-green-100"
-                : "text-danger-foreground bg-red-100",
-            )}
-          >
-            {submitResult}
-          </div>
-        )}
-
-        {/* 响应式状态监控 */}
-        <div className="space-y-4">
-          <form.Subscribe
-            selector={(state) => [
-              state.canSubmit,
-              state.isDirty,
-              state.isValid,
-              state.isSubmitting,
-              state.errorMap,
-            ]}
-          >
-            {([canSubmit, isDirty, isValid, isSubmitting, errorMap]) => (
-              <div className="rounded-xl border p-4">
-                <div className="font-strong mb-2">Real-time form status (form.Subscribe):</div>
-                <div className="grid grid-cols-2 gap-2">
-                  <div className={canSubmit ? "text-green-600" : "text-red-600"}>
-                    Can submit: {canSubmit ? "Yes" : "No"}
-                  </div>
-                  <div className={isDirty ? "text-blue-600" : "text-gray-600"}>
-                    Is dirty: {isDirty ? "Yes" : "No"}
-                  </div>
-                  <div className={isValid ? "text-green-600" : "text-red-600"}>
-                    Is valid: {isValid ? "Yes" : "No"}
-                  </div>
-                  <div className={isSubmitting ? "text-orange-600" : "text-gray-600"}>
-                    Is submitting: {isSubmitting ? "Yes" : "No"}
-                  </div>
+            <form.Subscribe selector={(state) => state.values}>
+              {(values) => (
+                <div className="rounded-xl border p-4">
+                  <div className="font-strong mb-2">Real-time form data (form.Subscribe):</div>
+                  <pre className="max-h-40 overflow-auto">{JSON.stringify(values, null, 2)}</pre>
                 </div>
-                {Object.keys(errorMap).length > 0 && (
-                  <div className="mt-2 text-red-600">
-                    Error fields: {Object.keys(errorMap).join(", ")}
-                  </div>
-                )}
-              </div>
-            )}
-          </form.Subscribe>
+              )}
+            </form.Subscribe>
 
-          <form.Subscribe selector={(state) => state.values}>
-            {(values) => (
-              <div className="rounded-xl border p-4">
-                <div className="font-strong mb-2">Real-time form data (form.Subscribe):</div>
-                <pre className="max-h-40 overflow-auto">{JSON.stringify(values, null, 2)}</pre>
+            {/* 性能对比说明 */}
+            <div className="rounded-xl border p-4">
+              <div className="font-strong mb-2">Performance optimization:</div>
+              <div>
+                • <strong>form.Subscribe</strong>: Suitable for responsive rendering, only
+                re-rendering when the subscribed value changes
               </div>
-            )}
-          </form.Subscribe>
-
-          {/* 性能对比说明 */}
-          <div className="rounded-xl border p-4">
-            <div className="font-strong mb-2">Performance optimization:</div>
-            <div>
-              • <strong>form.Subscribe</strong>: Suitable for responsive rendering, only
-              re-rendering when the subscribed value changes
-            </div>
-            <div>
-              • <strong>Selector</strong>: Use precise selectors to avoid unnecessary re-rendering
-            </div>
-            <div>
-              • <strong>Multiple value subscription</strong>: Can subscribe to multiple values,
-              reducing subscription count
+              <div>
+                • <strong>Selector</strong>: Use precise selectors to avoid unnecessary re-rendering
+              </div>
+              <div>
+                • <strong>Multiple value subscription</strong>: Can subscribe to multiple values,
+                reducing subscription count
+              </div>
             </div>
           </div>
         </div>
@@ -3298,611 +3310,615 @@ export const WithListeners: Story = {
     })
 
     return (
-      <div className="w-80 space-y-4">
-        <div className="space-y-2">
-          <h3 className="font-strong">Listeners API example</h3>
-          <p className="text-secondary-foreground">
-            Demonstrates how to use Listeners API to handle side effects and cascading logic between
-            fields
-          </p>
-        </div>
-
-        {/* 活动日志 */}
-        <div className="rounded-xl border p-4">
-          <h4 className="font-strong mb-2">Activity log</h4>
-          <div className="max-h-32 space-y-1 overflow-y-auto">
-            {activityLog.length === 0 ? (
-              <div className="text-secondary-foreground">No activity</div>
-            ) : (
-              activityLog.map((log, index) => (
-                <div
-                  key={index}
-                  className="text-gray-700"
-                >
-                  {log}
-                </div>
-              ))
-            )}
-          </div>
-        </div>
-
-        <form
-          onSubmit={(e) => {
-            e.preventDefault()
-            form.handleSubmit()
-          }}
-          className="space-y-6"
-        >
-          {/* 级联选择示例 - 国家-省份 */}
-          <div className="space-y-4 rounded-xl border p-4">
-            <h4 className="font-strong">Cascading select example</h4>
+      <div className="grid grid-cols-2 gap-4">
+        <div className="w-80 space-y-4">
+          <div className="space-y-2">
+            <h3 className="font-strong">Listeners API example</h3>
             <p className="text-secondary-foreground">
-              Demonstrates classic country-province cascading select, resetting province when
-              country changes
+              Demonstrates how to use Listeners API to handle side effects and cascading logic
+              between fields
             </p>
+          </div>
 
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              {/* 国家选择 */}
-              <form.Field
-                name="country"
-                listeners={{
-                  onChange: ({ value }) => {
-                    // 当国家改变时，重置省份和城市
-                    form.setFieldValue("province", "")
-                    form.setFieldValue("city", "")
-                    addLog(`Country changed to: ${value || "empty"}, reset province and city`)
-                  },
-                  onMount: () => {
-                    addLog("Country field mounted")
-                  },
-                }}
-                validators={{
-                  onChange: ({ value }) => {
-                    const stringValue = String(value || "")
-                    return !stringValue ? "Please select a country" : undefined
-                  },
-                }}
-              >
-                {(field) => (
-                  <form.Select
-                    label="Country"
-                    name={field.name}
-                    value={String(field.state.value || "")}
-                    onChange={field.handleChange}
-                    placeholder="Please select a country"
-                    options={[
-                      { label: "China", value: "china" },
-                      { label: "USA", value: "usa" },
-                      { label: "Japan", value: "japan" },
-                    ]}
-                    error={
-                      field.state.meta.errors.length > 0
-                        ? formatErrors(field.state.meta.errors).join(", ")
-                        : undefined
-                    }
-                  />
-                )}
-              </form.Field>
+          {/* 活动日志 */}
+          <div className="rounded-xl border p-4">
+            <h4 className="font-strong mb-2">Activity log</h4>
+            <div className="max-h-32 space-y-1 overflow-y-auto">
+              {activityLog.length === 0 ? (
+                <div className="text-secondary-foreground">No activity</div>
+              ) : (
+                activityLog.map((log, index) => (
+                  <div
+                    key={index}
+                    className="text-gray-700"
+                  >
+                    {log}
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
 
-              {/* 省份选择 */}
-              <form.Field
-                name="province"
-                listeners={{
-                  onChange: ({ value }) => {
-                    // 当省份改变时，重置城市
-                    form.setFieldValue("city", "")
-                    addLog(`Province changed to: ${value || "empty"}, reset city`)
-                  },
-                  onBlur: ({ value }) => {
-                    if (value) {
-                      addLog(`Province field blurred, current value: ${value}`)
-                    }
-                  },
-                }}
-                validators={{
-                  onChange: ({ value }) => {
-                    const country = form.getFieldValue("country")
-                    if (country && !value) return "Please select a province"
-                    return undefined
-                  },
-                }}
-              >
-                {(field) => {
-                  const currentCountry = String(form.getFieldValue("country") || "")
-                  const provinces = currentCountry
-                    ? countryProvinceData[currentCountry as keyof typeof countryProvinceData] || []
-                    : []
+          <form
+            onSubmit={(e) => {
+              e.preventDefault()
+              form.handleSubmit()
+            }}
+            className="space-y-6"
+          >
+            {/* 级联选择示例 - 国家-省份 */}
+            <div className="space-y-4 rounded-xl border p-4">
+              <h4 className="font-strong">Cascading select example</h4>
+              <p className="text-secondary-foreground">
+                Demonstrates classic country-province cascading select, resetting province when
+                country changes
+              </p>
 
-                  return (
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                {/* 国家选择 */}
+                <form.Field
+                  name="country"
+                  listeners={{
+                    onChange: ({ value }) => {
+                      // 当国家改变时，重置省份和城市
+                      form.setFieldValue("province", "")
+                      form.setFieldValue("city", "")
+                      addLog(`Country changed to: ${value || "empty"}, reset province and city`)
+                    },
+                    onMount: () => {
+                      addLog("Country field mounted")
+                    },
+                  }}
+                  validators={{
+                    onChange: ({ value }) => {
+                      const stringValue = String(value || "")
+                      return !stringValue ? "Please select a country" : undefined
+                    },
+                  }}
+                >
+                  {(field) => (
                     <form.Select
-                      label="Province"
+                      label="Country"
                       name={field.name}
                       value={String(field.state.value || "")}
                       onChange={field.handleChange}
-                      onBlur={field.handleBlur}
-                      placeholder="Please select a province"
-                      options={provinces}
-                      disabled={!currentCountry}
+                      placeholder="Please select a country"
+                      options={[
+                        { label: "China", value: "china" },
+                        { label: "USA", value: "usa" },
+                        { label: "Japan", value: "japan" },
+                      ]}
                       error={
                         field.state.meta.errors.length > 0
                           ? formatErrors(field.state.meta.errors).join(", ")
                           : undefined
                       }
-                      description="Please select a province"
                     />
-                  )
-                }}
-              </form.Field>
+                  )}
+                </form.Field>
 
-              {/* 城市输入 */}
+                {/* 省份选择 */}
+                <form.Field
+                  name="province"
+                  listeners={{
+                    onChange: ({ value }) => {
+                      // 当省份改变时，重置城市
+                      form.setFieldValue("city", "")
+                      addLog(`Province changed to: ${value || "empty"}, reset city`)
+                    },
+                    onBlur: ({ value }) => {
+                      if (value) {
+                        addLog(`Province field blurred, current value: ${value}`)
+                      }
+                    },
+                  }}
+                  validators={{
+                    onChange: ({ value }) => {
+                      const country = form.getFieldValue("country")
+                      if (country && !value) return "Please select a province"
+                      return undefined
+                    },
+                  }}
+                >
+                  {(field) => {
+                    const currentCountry = String(form.getFieldValue("country") || "")
+                    const provinces = currentCountry
+                      ? countryProvinceData[currentCountry as keyof typeof countryProvinceData] ||
+                        []
+                      : []
+
+                    return (
+                      <form.Select
+                        label="Province"
+                        name={field.name}
+                        value={String(field.state.value || "")}
+                        onChange={field.handleChange}
+                        onBlur={field.handleBlur}
+                        placeholder="Please select a province"
+                        options={provinces}
+                        disabled={!currentCountry}
+                        error={
+                          field.state.meta.errors.length > 0
+                            ? formatErrors(field.state.meta.errors).join(", ")
+                            : undefined
+                        }
+                        description="Please select a province"
+                      />
+                    )
+                  }}
+                </form.Field>
+
+                {/* 城市输入 */}
+                <form.Field
+                  name="city"
+                  listeners={{
+                    onChange: ({ value }) => {
+                      if (value) {
+                        addLog(`City input: ${value}`)
+                      }
+                    },
+                  }}
+                >
+                  {(field) => {
+                    const currentProvince = String(form.getFieldValue("province") || "")
+
+                    return (
+                      <form.Input
+                        className="col-span-2"
+                        label="City"
+                        name={field.name}
+                        value={String(field.state.value || "")}
+                        onChange={field.handleChange}
+                        onBlur={field.handleBlur}
+                        placeholder="Please enter city name"
+                        disabled={!currentProvince}
+                        description="Please select a province"
+                      />
+                    )
+                  }}
+                </form.Field>
+              </div>
+            </div>
+
+            {/* 用户类型切换示例 */}
+            <div className="space-y-4 rounded-xl border p-4">
+              <h4 className="font-strong">User type switch example</h4>
+              <p className="text-secondary-foreground">
+                Demonstrates when user type changes, reset related information fields
+              </p>
+
+              {/* 用户类型选择 */}
               <form.Field
-                name="city"
+                name="userType"
                 listeners={{
                   onChange: ({ value }) => {
-                    if (value) {
-                      addLog(`City input: ${value}`)
-                    }
+                    // 重置所有类型相关的字段
+                    form.setFieldValue("personalInfo", {
+                      firstName: "",
+                      lastName: "",
+                      idNumber: "",
+                    })
+                    form.setFieldValue("companyInfo", {
+                      companyName: "",
+                      taxId: "",
+                      industry: "",
+                    })
+                    form.setFieldValue("organizationInfo", {
+                      orgName: "",
+                      orgType: "",
+                      registrationNumber: "",
+                    })
+                    addLog(`User type changed to: ${value}, reset all related information`)
                   },
                 }}
               >
-                {(field) => {
-                  const currentProvince = String(form.getFieldValue("province") || "")
+                {(field) => (
+                  <form.RadioGroup
+                    label="User type"
+                    name={field.name}
+                    value={String(field.state.value || "")}
+                    onChange={field.handleChange}
+                    options={[
+                      { label: "Individual", value: "individual" },
+                      { label: "Company", value: "company" },
+                      { label: "Organization", value: "organization" },
+                    ]}
+                  />
+                )}
+              </form.Field>
 
-                  return (
+              {/* 条件渲染不同类型的信息字段 */}
+              {form.getFieldValue("userType") === "individual" && (
+                <div className="space-y-4">
+                  <h5 className="font-strong">Personal information</h5>
+                  <div className="grid grid-cols-2 gap-4">
+                    <form.Field
+                      name="personalInfo.firstName"
+                      listeners={{
+                        onMount: () => addLog("Personal information - first name field mounted"),
+                        onBlur: ({ value }) => {
+                          if (value)
+                            addLog(`Personal information - first name input completed: ${value}`)
+                        },
+                      }}
+                    >
+                      {(field) => (
+                        <form.Input
+                          label="First name"
+                          name={field.name}
+                          value={String(field.state.value || "")}
+                          onChange={field.handleChange}
+                          onBlur={field.handleBlur}
+                          placeholder="Please enter first name"
+                        />
+                      )}
+                    </form.Field>
+
+                    <form.Field name="personalInfo.lastName">
+                      {(field) => (
+                        <form.Input
+                          label="Last name"
+                          name={field.name}
+                          value={String(field.state.value || "")}
+                          onChange={field.handleChange}
+                          onBlur={field.handleBlur}
+                          placeholder="Please enter last name"
+                        />
+                      )}
+                    </form.Field>
+
+                    <form.Field
+                      name="personalInfo.idNumber"
+                      listeners={{
+                        onChange: ({ value }) => {
+                          // 身份证号变化时的格式化或验证
+                          if (value && String(value).length === 18) {
+                            addLog("ID number input completed, format validation in progress...")
+                          }
+                        },
+                      }}
+                    >
+                      {(field) => (
+                        <form.Input
+                          label="ID number"
+                          name={field.name}
+                          value={String(field.state.value || "")}
+                          onChange={field.handleChange}
+                          onBlur={field.handleBlur}
+                          placeholder="Please enter ID number"
+                        />
+                      )}
+                    </form.Field>
+                  </div>
+                </div>
+              )}
+
+              {form.getFieldValue("userType") === "company" && (
+                <div className="space-y-4">
+                  <h5 className="font-strong">Company information</h5>
+                  <div className="grid grid-cols-2 gap-4">
+                    <form.Field
+                      name="companyInfo.companyName"
+                      listeners={{
+                        onMount: () => addLog("Company information - company name field mounted"),
+                        onChange: ({ value }) => {
+                          if (value && String(value).length >= 3) {
+                            addLog(`Company name updated: ${value}`)
+                          }
+                        },
+                      }}
+                    >
+                      {(field) => (
+                        <form.Input
+                          label="Company name"
+                          name={field.name}
+                          value={String(field.state.value || "")}
+                          onChange={field.handleChange}
+                          onBlur={field.handleBlur}
+                          placeholder="Please enter company name"
+                        />
+                      )}
+                    </form.Field>
+
+                    <form.Field name="companyInfo.taxId">
+                      {(field) => (
+                        <form.Input
+                          label="Tax ID"
+                          name={field.name}
+                          value={String(field.state.value || "")}
+                          onChange={field.handleChange}
+                          onBlur={field.handleBlur}
+                          placeholder="Please enter tax ID"
+                        />
+                      )}
+                    </form.Field>
+
+                    <form.Field name="companyInfo.industry">
+                      {(field) => (
+                        <form.Select
+                          label="Industry"
+                          name={field.name}
+                          value={String(field.state.value || "")}
+                          onChange={field.handleChange}
+                          placeholder="Please select industry"
+                          options={[
+                            { label: "Technology", value: "technology" },
+                            { label: "Finance", value: "finance" },
+                            { label: "Manufacturing", value: "manufacturing" },
+                            { label: "Service", value: "service" },
+                          ]}
+                        />
+                      )}
+                    </form.Field>
+                  </div>
+                </div>
+              )}
+
+              {form.getFieldValue("userType") === "organization" && (
+                <div className="space-y-4">
+                  <h5 className="font-strong">Organization information</h5>
+                  <div className="grid grid-cols-2 gap-4">
+                    <form.Field name="organizationInfo.orgName">
+                      {(field) => (
+                        <form.Input
+                          label="Organization name"
+                          name={field.name}
+                          value={String(field.state.value || "")}
+                          onChange={field.handleChange}
+                          onBlur={field.handleBlur}
+                          placeholder="Please enter organization name"
+                        />
+                      )}
+                    </form.Field>
+
+                    <form.Field name="organizationInfo.orgType">
+                      {(field) => (
+                        <form.Select
+                          label="Organization type"
+                          name={field.name}
+                          value={String(field.state.value || "")}
+                          onChange={field.handleChange}
+                          placeholder="Please select organization type"
+                          options={[
+                            {
+                              label: "Nonprofit organization",
+                              value: "nonprofit",
+                            },
+                            { label: "Government agency", value: "government" },
+                            {
+                              label: "Education institution",
+                              value: "education",
+                            },
+                            { label: "Charity organization", value: "charity" },
+                          ]}
+                        />
+                      )}
+                    </form.Field>
+
+                    <form.Field name="organizationInfo.registrationNumber">
+                      {(field) => (
+                        <form.Input
+                          label="Registration number"
+                          name={field.name}
+                          value={String(field.state.value || "")}
+                          onChange={field.handleChange}
+                          onBlur={field.handleBlur}
+                          placeholder="Please enter registration number"
+                        />
+                      )}
+                    </form.Field>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* 通知设置示例 */}
+            <div className="space-y-4 rounded-xl border p-4">
+              <h4 className="font-strong">Notification settings example</h4>
+              <p className="text-secondary-foreground">
+                Demonstrates the logic of linking checkboxes
+              </p>
+
+              <div className="space-y-4">
+                <form.Field
+                  name="newsletter"
+                  listeners={{
+                    onChange: ({ value }) => {
+                      if (!value) {
+                        // 如果取消订阅新闻通讯，也取消邮件通知
+                        form.setFieldValue("notifications.email", false)
+                        addLog("Unsubscribe from newsletter, also cancel email notification")
+                      } else {
+                        addLog("Subscribe to newsletter")
+                      }
+                    },
+                  }}
+                >
+                  {(field) => (
+                    <form.Checkbox
+                      label="Subscribe to newsletter"
+                      name={field.name}
+                      value={Boolean(field.state.value)}
+                      onChange={field.handleChange}
+                    />
+                  )}
+                </form.Field>
+
+                <form.Field
+                  name="notifications.email"
+                  listeners={{
+                    onChange: ({ value }) => {
+                      if (value) {
+                        // 如果开启邮件通知，自动订阅新闻通讯
+                        form.setFieldValue("newsletter", true)
+                        addLog("Enable email notification, automatically subscribe to newsletter")
+                      } else {
+                        addLog("Disable email notification")
+                      }
+                    },
+                  }}
+                >
+                  {(field) => (
+                    <form.Checkbox
+                      label="Email notification"
+                      name={field.name}
+                      value={Boolean(field.state.value)}
+                      onChange={field.handleChange}
+                    />
+                  )}
+                </form.Field>
+
+                <form.Field
+                  name="notifications.sms"
+                  listeners={{
+                    onChange: ({ value }) => {
+                      addLog(`SMS notification ${value ? "enabled" : "disabled"}`)
+                    },
+                  }}
+                >
+                  {(field) => (
+                    <form.Checkbox
+                      label="SMS notification"
+                      name={field.name}
+                      value={Boolean(field.state.value)}
+                      onChange={field.handleChange}
+                    />
+                  )}
+                </form.Field>
+              </div>
+            </div>
+
+            {/* 基本联系信息 */}
+            <div className="space-y-4">
+              <h4 className="font-strong">Contact information</h4>
+
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                <form.Field
+                  name="email"
+                  listeners={{
+                    onBlur: ({ value }) => {
+                      if (value && String(value).includes("@")) {
+                        addLog(`Email input completed: ${value}`)
+                      }
+                    },
+                  }}
+                  validators={{
+                    onChange: ({ value }) => {
+                      const stringValue = String(value || "")
+                      if (!stringValue) return "Email cannot be empty"
+                      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+                      return !emailRegex.test(stringValue)
+                        ? "Please enter a valid email address"
+                        : undefined
+                    },
+                  }}
+                >
+                  {(field) => (
                     <form.Input
-                      className="col-span-2"
-                      label="City"
+                      label="Email *"
                       name={field.name}
                       value={String(field.state.value || "")}
                       onChange={field.handleChange}
                       onBlur={field.handleBlur}
-                      placeholder="Please enter city name"
-                      disabled={!currentProvince}
-                      description="Please select a province"
+                      type="email"
+                      placeholder="Please enter email address"
+                      error={
+                        field.state.meta.errors.length > 0
+                          ? formatErrors(field.state.meta.errors).join(", ")
+                          : undefined
+                      }
                     />
-                  )
-                }}
-              </form.Field>
-            </div>
-          </div>
+                  )}
+                </form.Field>
 
-          {/* 用户类型切换示例 */}
-          <div className="space-y-4 rounded-xl border p-4">
-            <h4 className="font-strong">User type switch example</h4>
-            <p className="text-secondary-foreground">
-              Demonstrates when user type changes, reset related information fields
-            </p>
-
-            {/* 用户类型选择 */}
-            <form.Field
-              name="userType"
-              listeners={{
-                onChange: ({ value }) => {
-                  // 重置所有类型相关的字段
-                  form.setFieldValue("personalInfo", {
-                    firstName: "",
-                    lastName: "",
-                    idNumber: "",
-                  })
-                  form.setFieldValue("companyInfo", {
-                    companyName: "",
-                    taxId: "",
-                    industry: "",
-                  })
-                  form.setFieldValue("organizationInfo", {
-                    orgName: "",
-                    orgType: "",
-                    registrationNumber: "",
-                  })
-                  addLog(`User type changed to: ${value}, reset all related information`)
-                },
-              }}
-            >
-              {(field) => (
-                <form.RadioGroup
-                  label="User type"
-                  name={field.name}
-                  value={String(field.state.value || "")}
-                  onChange={field.handleChange}
-                  options={[
-                    { label: "Individual", value: "individual" },
-                    { label: "Company", value: "company" },
-                    { label: "Organization", value: "organization" },
-                  ]}
-                />
-              )}
-            </form.Field>
-
-            {/* 条件渲染不同类型的信息字段 */}
-            {form.getFieldValue("userType") === "individual" && (
-              <div className="space-y-4">
-                <h5 className="font-strong">Personal information</h5>
-                <div className="grid grid-cols-2 gap-4">
-                  <form.Field
-                    name="personalInfo.firstName"
-                    listeners={{
-                      onMount: () => addLog("Personal information - first name field mounted"),
-                      onBlur: ({ value }) => {
-                        if (value)
-                          addLog(`Personal information - first name input completed: ${value}`)
-                      },
-                    }}
-                  >
-                    {(field) => (
-                      <form.Input
-                        label="First name"
-                        name={field.name}
-                        value={String(field.state.value || "")}
-                        onChange={field.handleChange}
-                        onBlur={field.handleBlur}
-                        placeholder="Please enter first name"
-                      />
-                    )}
-                  </form.Field>
-
-                  <form.Field name="personalInfo.lastName">
-                    {(field) => (
-                      <form.Input
-                        label="Last name"
-                        name={field.name}
-                        value={String(field.state.value || "")}
-                        onChange={field.handleChange}
-                        onBlur={field.handleBlur}
-                        placeholder="Please enter last name"
-                      />
-                    )}
-                  </form.Field>
-
-                  <form.Field
-                    name="personalInfo.idNumber"
-                    listeners={{
-                      onChange: ({ value }) => {
-                        // 身份证号变化时的格式化或验证
-                        if (value && String(value).length === 18) {
-                          addLog("ID number input completed, format validation in progress...")
-                        }
-                      },
-                    }}
-                  >
-                    {(field) => (
-                      <form.Input
-                        label="ID number"
-                        name={field.name}
-                        value={String(field.state.value || "")}
-                        onChange={field.handleChange}
-                        onBlur={field.handleBlur}
-                        placeholder="Please enter ID number"
-                      />
-                    )}
-                  </form.Field>
-                </div>
+                <form.Field
+                  name="phone"
+                  listeners={{
+                    onChange: ({ value }) => {
+                      const phone = String(value || "")
+                      if (phone.length === 11) {
+                        addLog(`Phone number input completed: ${phone}`)
+                      }
+                    },
+                  }}
+                >
+                  {(field) => (
+                    <form.Input
+                      label="Phone number"
+                      name={field.name}
+                      value={String(field.state.value || "")}
+                      onChange={field.handleChange}
+                      onBlur={field.handleBlur}
+                      type="tel"
+                      placeholder="Please enter phone number"
+                    />
+                  )}
+                </form.Field>
               </div>
-            )}
-
-            {form.getFieldValue("userType") === "company" && (
-              <div className="space-y-4">
-                <h5 className="font-strong">Company information</h5>
-                <div className="grid grid-cols-2 gap-4">
-                  <form.Field
-                    name="companyInfo.companyName"
-                    listeners={{
-                      onMount: () => addLog("Company information - company name field mounted"),
-                      onChange: ({ value }) => {
-                        if (value && String(value).length >= 3) {
-                          addLog(`Company name updated: ${value}`)
-                        }
-                      },
-                    }}
-                  >
-                    {(field) => (
-                      <form.Input
-                        label="Company name"
-                        name={field.name}
-                        value={String(field.state.value || "")}
-                        onChange={field.handleChange}
-                        onBlur={field.handleBlur}
-                        placeholder="Please enter company name"
-                      />
-                    )}
-                  </form.Field>
-
-                  <form.Field name="companyInfo.taxId">
-                    {(field) => (
-                      <form.Input
-                        label="Tax ID"
-                        name={field.name}
-                        value={String(field.state.value || "")}
-                        onChange={field.handleChange}
-                        onBlur={field.handleBlur}
-                        placeholder="Please enter tax ID"
-                      />
-                    )}
-                  </form.Field>
-
-                  <form.Field name="companyInfo.industry">
-                    {(field) => (
-                      <form.Select
-                        label="Industry"
-                        name={field.name}
-                        value={String(field.state.value || "")}
-                        onChange={field.handleChange}
-                        placeholder="Please select industry"
-                        options={[
-                          { label: "Technology", value: "technology" },
-                          { label: "Finance", value: "finance" },
-                          { label: "Manufacturing", value: "manufacturing" },
-                          { label: "Service", value: "service" },
-                        ]}
-                      />
-                    )}
-                  </form.Field>
-                </div>
-              </div>
-            )}
-
-            {form.getFieldValue("userType") === "organization" && (
-              <div className="space-y-4">
-                <h5 className="font-strong">Organization information</h5>
-                <div className="grid grid-cols-2 gap-4">
-                  <form.Field name="organizationInfo.orgName">
-                    {(field) => (
-                      <form.Input
-                        label="Organization name"
-                        name={field.name}
-                        value={String(field.state.value || "")}
-                        onChange={field.handleChange}
-                        onBlur={field.handleBlur}
-                        placeholder="Please enter organization name"
-                      />
-                    )}
-                  </form.Field>
-
-                  <form.Field name="organizationInfo.orgType">
-                    {(field) => (
-                      <form.Select
-                        label="Organization type"
-                        name={field.name}
-                        value={String(field.state.value || "")}
-                        onChange={field.handleChange}
-                        placeholder="Please select organization type"
-                        options={[
-                          {
-                            label: "Nonprofit organization",
-                            value: "nonprofit",
-                          },
-                          { label: "Government agency", value: "government" },
-                          {
-                            label: "Education institution",
-                            value: "education",
-                          },
-                          { label: "Charity organization", value: "charity" },
-                        ]}
-                      />
-                    )}
-                  </form.Field>
-
-                  <form.Field name="organizationInfo.registrationNumber">
-                    {(field) => (
-                      <form.Input
-                        label="Registration number"
-                        name={field.name}
-                        value={String(field.state.value || "")}
-                        onChange={field.handleChange}
-                        onBlur={field.handleBlur}
-                        placeholder="Please enter registration number"
-                      />
-                    )}
-                  </form.Field>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* 通知设置示例 */}
-          <div className="space-y-4 rounded-xl border p-4">
-            <h4 className="font-strong">Notification settings example</h4>
-            <p className="text-secondary-foreground">
-              Demonstrates the logic of linking checkboxes
-            </p>
-
-            <div className="space-y-4">
-              <form.Field
-                name="newsletter"
-                listeners={{
-                  onChange: ({ value }) => {
-                    if (!value) {
-                      // 如果取消订阅新闻通讯，也取消邮件通知
-                      form.setFieldValue("notifications.email", false)
-                      addLog("Unsubscribe from newsletter, also cancel email notification")
-                    } else {
-                      addLog("Subscribe to newsletter")
-                    }
-                  },
-                }}
-              >
-                {(field) => (
-                  <form.Checkbox
-                    label="Subscribe to newsletter"
-                    name={field.name}
-                    value={Boolean(field.state.value)}
-                    onChange={field.handleChange}
-                  />
-                )}
-              </form.Field>
-
-              <form.Field
-                name="notifications.email"
-                listeners={{
-                  onChange: ({ value }) => {
-                    if (value) {
-                      // 如果开启邮件通知，自动订阅新闻通讯
-                      form.setFieldValue("newsletter", true)
-                      addLog("Enable email notification, automatically subscribe to newsletter")
-                    } else {
-                      addLog("Disable email notification")
-                    }
-                  },
-                }}
-              >
-                {(field) => (
-                  <form.Checkbox
-                    label="Email notification"
-                    name={field.name}
-                    value={Boolean(field.state.value)}
-                    onChange={field.handleChange}
-                  />
-                )}
-              </form.Field>
-
-              <form.Field
-                name="notifications.sms"
-                listeners={{
-                  onChange: ({ value }) => {
-                    addLog(`SMS notification ${value ? "enabled" : "disabled"}`)
-                  },
-                }}
-              >
-                {(field) => (
-                  <form.Checkbox
-                    label="SMS notification"
-                    name={field.name}
-                    value={Boolean(field.state.value)}
-                    onChange={field.handleChange}
-                  />
-                )}
-              </form.Field>
             </div>
-          </div>
 
-          {/* 基本联系信息 */}
-          <div className="space-y-4">
-            <h4 className="font-strong">Contact information</h4>
+            {/* 提交按钮 */}
+            <div className="flex gap-2">
+              <form.Button
+                type="submit"
+                disabled={!form.state.canSubmit || form.state.isSubmitting}
+              >
+                {form.state.isSubmitting ? "Submitting..." : "Submit form"}
+              </form.Button>
 
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <form.Field
-                name="email"
-                listeners={{
-                  onBlur: ({ value }) => {
-                    if (value && String(value).includes("@")) {
-                      addLog(`Email input completed: ${value}`)
-                    }
-                  },
-                }}
-                validators={{
-                  onChange: ({ value }) => {
-                    const stringValue = String(value || "")
-                    if (!stringValue) return "Email cannot be empty"
-                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-                    return !emailRegex.test(stringValue)
-                      ? "Please enter a valid email address"
-                      : undefined
-                  },
+              <form.Button
+                type="button"
+                variant="secondary"
+                onClick={() => {
+                  form.reset()
+                  addLog("Form has been reset")
+                  setActivityLog([])
                 }}
               >
-                {(field) => (
-                  <form.Input
-                    label="Email *"
-                    name={field.name}
-                    value={String(field.state.value || "")}
-                    onChange={field.handleChange}
-                    onBlur={field.handleBlur}
-                    type="email"
-                    placeholder="Please enter email address"
-                    error={
-                      field.state.meta.errors.length > 0
-                        ? formatErrors(field.state.meta.errors).join(", ")
-                        : undefined
-                    }
-                  />
-                )}
-              </form.Field>
-
-              <form.Field
-                name="phone"
-                listeners={{
-                  onChange: ({ value }) => {
-                    const phone = String(value || "")
-                    if (phone.length === 11) {
-                      addLog(`Phone number input completed: ${phone}`)
-                    }
-                  },
-                }}
-              >
-                {(field) => (
-                  <form.Input
-                    label="Phone number"
-                    name={field.name}
-                    value={String(field.state.value || "")}
-                    onChange={field.handleChange}
-                    onBlur={field.handleBlur}
-                    type="tel"
-                    placeholder="Please enter phone number"
-                  />
-                )}
-              </form.Field>
+                Reset form
+              </form.Button>
             </div>
-          </div>
-
-          {/* 提交按钮 */}
-          <div className="flex gap-2">
-            <form.Button
-              type="submit"
-              disabled={!form.state.canSubmit || form.state.isSubmitting}
-            >
-              {form.state.isSubmitting ? "Submitting..." : "Submit form"}
-            </form.Button>
-
-            <form.Button
-              type="button"
-              variant="secondary"
-              onClick={() => {
-                form.reset()
-                addLog("Form has been reset")
-                setActivityLog([])
-              }}
-            >
-              Reset form
-            </form.Button>
-          </div>
-        </form>
-
-        {submitResult && (
-          <div
-            className={tcx(
-              "rounded-xl p-4",
-              submitResult.includes("success")
-                ? "text-success-foreground bg-green-100"
-                : "text-danger-foreground bg-red-100",
-            )}
-          >
-            {submitResult}
-          </div>
-        )}
-
-        {/* 表单状态监控 */}
-        <div className="rounded-xl border p-4">
-          <div className="font-strong mb-2">Current form data preview:</div>
-          <pre className="max-h-60 overflow-auto rounded bg-white p-2">
-            {JSON.stringify(form.state.values, null, 2)}
-          </pre>
+          </form>
         </div>
+        <div className="w-80 space-y-4">
+          {submitResult && (
+            <div
+              className={tcx(
+                "rounded-xl p-4",
+                submitResult.includes("success")
+                  ? "text-success-foreground bg-green-100"
+                  : "text-danger-foreground bg-red-100",
+              )}
+            >
+              {submitResult}
+            </div>
+          )}
 
-        {/* 监听器说明 */}
-        <div className="rounded-xl border p-4">
-          <div className="font-strong mb-2">Listener events description:</div>
-          <div className="text-secondary-foreground space-y-1">
-            <div>
-              • <strong>onChange</strong>: Triggered when the field value changes (most commonly
-              used)
-            </div>
-            <div>
-              • <strong>onBlur</strong>: Triggered when the field loses focus
-            </div>
-            <div>
-              • <strong>onMount</strong>: Triggered when the field is first mounted
-            </div>
-            <div>
-              • <strong>onSubmit</strong>: Triggered when the form is submitted
+          {/* 表单状态监控 */}
+          <div className="rounded-xl border p-4">
+            <div className="font-strong mb-2">Current form data preview:</div>
+            <pre className="max-h-60 overflow-auto rounded bg-white p-2">
+              {JSON.stringify(form.state.values, null, 2)}
+            </pre>
+          </div>
+
+          {/* 监听器说明 */}
+          <div className="rounded-xl border p-4">
+            <div className="font-strong mb-2">Listener events description:</div>
+            <div className="text-secondary-foreground space-y-1">
+              <div>
+                • <strong>onChange</strong>: Triggered when the field value changes (most commonly
+                used)
+              </div>
+              <div>
+                • <strong>onBlur</strong>: Triggered when the field loses focus
+              </div>
+              <div>
+                • <strong>onMount</strong>: Triggered when the field is first mounted
+              </div>
+              <div>
+                • <strong>onSubmit</strong>: Triggered when the form is submitted
+              </div>
             </div>
           </div>
         </div>

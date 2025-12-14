@@ -1,7 +1,7 @@
 {
   "name": "@choice-ui/combobox",
   "version": "0.0.4",
-  "description": "Combobox component for Choiceform Design System",
+  "description": "A combobox component combining input field with dropdown menu for filtering and selecting options",
   "sideEffects": false,
   "type": "module",
   "source": "./src/index.ts",

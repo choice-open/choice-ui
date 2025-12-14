@@ -1,7 +1,7 @@
 {
   "name": "@choice-ui/file-upload",
   "version": "0.0.3",
-  "description": "File upload component for Choiceform Design System",
+  "description": "A file upload component with drag-and-drop support, progress tracking, and file preview",
   "sideEffects": false,
   "type": "module",
   "main": "./dist/index.js",

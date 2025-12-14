@@ -1,7 +1,7 @@
 {
   "name": "@choice-ui/alert-dialog",
   "version": "0.0.4",
-  "description": "Alert Dialog component for Choiceform Design System",
+  "description": "A modal dialog component for displaying critical alerts and requiring user confirmation",
   "sideEffects": false,
   "type": "module",
   "main": "./dist/index.js",

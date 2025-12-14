@@ -1,7 +1,7 @@
 {
   "name": "@choice-ui/splitter",
   "version": "0.0.3",
-  "description": "Splitter component for Choiceform Design System",
+  "description": "A resizable splitter component for creating adjustable layouts with draggable dividers",
   "sideEffects": false,
   "type": "module",
   "main": "./dist/index.js",

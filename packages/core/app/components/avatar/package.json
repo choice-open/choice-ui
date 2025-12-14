@@ -1,7 +1,7 @@
 {
   "name": "@choice-ui/avatar",
   "version": "0.0.4",
-  "description": "Avatar component for Choiceform Design System",
+  "description": "A user avatar component that displays profile images, initials, or icons with customizable styling",
   "sideEffects": false,
   "type": "module",
   "main": "./dist/index.js",

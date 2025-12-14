@@ -137,7 +137,7 @@ const CommentsComponent = forwardRef<HTMLDivElement, CommentsProps>((props, ref)
     <>
       <ScrollArea
         className={tcx("flex h-full flex-col", className)}
-        scrollbarMode="large-b"
+        scrollbarMode="padding-b"
         ref={ref}
       >
         <ScrollArea.Viewport

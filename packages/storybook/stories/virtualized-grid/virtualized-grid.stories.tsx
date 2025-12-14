@@ -329,7 +329,7 @@ export const ContainerScroll: Story = {
     const containerRef = useRef<HTMLDivElement>(null)
 
     return (
-      <ScrollArea className="w-128 h-96 rounded-xl border">
+      <ScrollArea className="h-96 w-128 rounded-xl border">
         <ScrollArea.Viewport ref={scrollRef}>
           <ScrollArea.Content
             ref={containerRef}

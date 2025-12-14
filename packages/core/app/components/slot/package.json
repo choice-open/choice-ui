@@ -1,7 +1,7 @@
 {
   "name": "@choice-ui/slot",
   "version": "0.0.3",
-  "description": "Slot component for Choiceform Design System",
+  "description": "A slot component utility for composing components and merging props with child elements",
   "sideEffects": false,
   "type": "module",
   "main": "./dist/index.js",

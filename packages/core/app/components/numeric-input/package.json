@@ -1,7 +1,7 @@
 {
   "name": "@choice-ui/numeric-input",
   "version": "0.0.7",
-  "description": "Numeric Input component for Choiceform Design System",
+  "description": "A numeric input component with increment/decrement controls and number validation",
   "sideEffects": false,
   "type": "module",
   "main": "./dist/index.js",

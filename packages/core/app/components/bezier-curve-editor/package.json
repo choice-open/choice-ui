@@ -1,7 +1,7 @@
 {
   "name": "@choice-ui/bezier-curve-editor",
   "version": "0.0.3",
-  "description": "Bezier Curve Editor component for Choiceform Design System",
+  "description": "An interactive Bezier curve editor component for customizing animation easing functions",
   "sideEffects": false,
   "type": "module",
   "main": "./dist/index.js",

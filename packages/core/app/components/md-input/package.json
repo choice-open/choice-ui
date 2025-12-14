@@ -1,7 +1,7 @@
 {
   "name": "@choice-ui/md-input",
   "version": "0.0.3",
-  "description": "Markdown Input component for Choiceform Design System",
+  "description": "A markdown editor component with live preview, syntax highlighting, and markdown toolbar",
   "sideEffects": false,
   "type": "module",
   "main": "./dist/index.js",

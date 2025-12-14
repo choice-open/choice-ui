@@ -1,7 +1,7 @@
 {
   "name": "@choice-ui/skeleton",
   "version": "0.0.2",
-  "description": "Skeleton component for Choiceform Design System",
+  "description": "A skeleton loading component that displays placeholder content while data is loading",
   "sideEffects": false,
   "type": "module",
   "main": "./dist/index.js",

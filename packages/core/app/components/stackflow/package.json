@@ -1,7 +1,7 @@
 {
   "name": "@choice-ui/stackflow",
   "version": "0.0.3",
-  "description": "Stackflow component for Choiceform Design System",
+  "description": "A stack-based navigation flow component for managing sequential views with animations",
   "sideEffects": false,
   "type": "module",
   "main": "./dist/index.js",

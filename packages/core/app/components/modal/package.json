@@ -1,7 +1,7 @@
 {
   "name": "@choice-ui/modal",
   "version": "0.0.5",
-  "description": "Modal component for Choiceform Design System",
+  "description": "A modal component with header, footer, and content sections for structured dialog layouts",
   "sideEffects": false,
   "type": "module",
   "main": "./dist/index.js",

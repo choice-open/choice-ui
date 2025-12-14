@@ -1,7 +1,7 @@
 {
   "name": "@choice-ui/button",
   "version": "0.0.6",
-  "description": "Button component for Choiceform Design System",
+  "description": "A versatile button component with multiple variants, sizes, and states for user interactions",
   "sideEffects": false,
   "type": "module",
   "main": "./dist/index.js",

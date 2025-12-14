@@ -1,7 +1,7 @@
 {
   "name": "@choice-ui/chips-input",
   "version": "0.0.4",
-  "description": "Chips Input component for Choiceform Design System",
+  "description": "An input component that allows users to enter and manage multiple values as chips or tags",
   "sideEffects": false,
   "type": "module",
   "main": "./dist/index.js",

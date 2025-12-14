@@ -26,7 +26,7 @@ export function useValue(
           return valueRef.current
         }
       }
-        return undefined // Critical: consistent with original implementation, return undefined when value not found
+      return undefined // Critical: consistent with original implementation, return undefined when value not found
     })()
 
     const keywords = aliases.map((alias) => alias.trim())

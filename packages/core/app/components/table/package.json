@@ -1,7 +1,7 @@
 {
   "name": "@choice-ui/table",
   "version": "0.0.1",
-  "description": "Table component for Choiceform Design System",
+  "description": "A high-performance table component with virtualization, sorting, filtering, and column management",
   "sideEffects": false,
   "type": "module",
   "main": "./dist/index.js",

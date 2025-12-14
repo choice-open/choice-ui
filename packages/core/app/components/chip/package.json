@@ -1,7 +1,7 @@
 {
   "name": "@choice-ui/chip",
   "version": "0.0.3",
-  "description": "Chip component for Choiceform Design System",
+  "description": "A chip component for displaying compact labels, tags, or removable items",
   "sideEffects": false,
   "type": "module",
   "main": "./dist/index.js",

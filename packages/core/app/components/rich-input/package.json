@@ -1,7 +1,7 @@
 {
   "name": "@choice-ui/rich-input",
   "version": "0.0.2",
-  "description": "Rich Input component for Choiceform Design System",
+  "description": "A rich text input component with formatting toolbar, links, and rich content editing",
   "sideEffects": false,
   "type": "module",
   "main": "./dist/index.js",

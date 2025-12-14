@@ -1,7 +1,7 @@
 {
   "name": "@choice-ui/text-field",
   "version": "0.0.6",
-  "description": "Text Field component for Choiceform Design System",
+  "description": "A text field component combining input and label for form fields with validation support",
   "sideEffects": false,
   "type": "module",
   "main": "./dist/index.js",

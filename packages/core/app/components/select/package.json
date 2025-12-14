@@ -1,7 +1,7 @@
 {
   "name": "@choice-ui/select",
   "version": "0.0.8",
-  "description": "Select component for Choiceform Design System",
+  "description": "A select dropdown component for choosing a single option from a list of choices",
   "sideEffects": false,
   "type": "module",
   "main": "./dist/index.js",

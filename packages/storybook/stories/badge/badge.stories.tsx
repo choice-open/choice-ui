@@ -61,7 +61,7 @@ export const Basic: Story = {
         <div className="grid grid-cols-5 place-items-start gap-4 capitalize">
           {Object.values(Variant).map((variant) => (
             <Fragment key={variant}>
-              <span className="capitalize text-pink-500">{variant}</span>
+              <span className="text-pink-500 capitalize">{variant}</span>
               {Object.values(Strong).map((strong) => (
                 <Fragment key={strong}>
                   <Badge

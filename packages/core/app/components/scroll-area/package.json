@@ -1,7 +1,7 @@
 {
   "name": "@choice-ui/scroll-area",
   "version": "0.0.5",
-  "description": "Scroll Area component for Choiceform Design System",
+  "description": "A customizable scroll area component with native-like scrolling and custom scrollbar styling",
   "sideEffects": false,
   "type": "module",
   "main": "./dist/index.js",

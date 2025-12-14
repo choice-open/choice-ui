@@ -1,7 +1,7 @@
 {
   "name": "@choice-ui/toggle-button",
   "version": "0.0.5",
-  "description": "Toggle Button component for Choiceform Design System",
+  "description": "A toggle button component for selecting one or multiple options from a button group",
   "sideEffects": false,
   "type": "module",
   "main": "./dist/index.js",

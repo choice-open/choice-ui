@@ -1,7 +1,7 @@
 {
   "name": "@choice-ui/comments",
   "version": "0.0.3",
-  "description": "Comments component for Choiceform Design System",
+  "description": "A rich text comment system component with threading, mentions, and emoji support",
   "sideEffects": false,
   "type": "module",
   "main": "./dist/index.js",

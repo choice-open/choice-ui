@@ -1,7 +1,7 @@
 {
   "name": "@choice-ui/spring-visualizer",
   "version": "0.0.2",
-  "description": "Spring Visualizer component for Choiceform Design System",
+  "description": "A spring animation visualizer component for previewing and configuring spring physics animations",
   "sideEffects": false,
   "type": "module",
   "main": "./dist/index.js",

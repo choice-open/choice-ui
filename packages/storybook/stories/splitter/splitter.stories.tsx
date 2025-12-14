@@ -51,7 +51,7 @@ type Story = StoryObj<typeof meta>
 export const Basic = {
   render: function BasicStory() {
     return (
-      <Splitter className="w-128 h-64 rounded-xl border">
+      <Splitter className="h-64 w-128 rounded-xl border">
         <div className="grid h-full place-content-center">Pane 1</div>
         <div className="grid h-full place-content-center">Pane 2</div>
       </Splitter>
@@ -71,7 +71,7 @@ export const Basic = {
 export const Pane = {
   render: function PaneStory() {
     return (
-      <Splitter className="w-128 h-64 rounded-xl border">
+      <Splitter className="h-64 w-128 rounded-xl border">
         <Splitter.Pane>
           <div className="grid h-full place-content-center">Pane 1</div>
         </Splitter.Pane>
@@ -100,7 +100,7 @@ export const Nested = {
     return (
       <Splitter
         minSize={100}
-        className="w-128 h-64 rounded-xl border"
+        className="h-64 w-128 rounded-xl border"
       >
         <Splitter.Pane maxSize={400}>
           <Splitter vertical>
@@ -142,7 +142,7 @@ export const Close = {
       <Splitter
         vertical
         minSize={100}
-        className="w-128 h-64 rounded-xl border"
+        className="h-64 w-128 rounded-xl border"
       >
         <Splitter.Pane maxSize={400}>
           <Splitter>
@@ -151,7 +151,7 @@ export const Close = {
                 <div className="grid h-full place-content-center">Pane {index + 1}</div>
                 <div className="absolute top-0 h-full w-full">
                   <IconButton
-                    className="absolute right-2 top-2"
+                    className="absolute top-2 right-2"
                     onClick={() =>
                       setPanes((panes) => {
                         const newPanes = [...panes]
@@ -199,7 +199,7 @@ export const Visible = {
         >
           {visible ? "Hide Pane 2" : "Show Pane 2"}
         </Button>
-        <div className="w-128 h-64 rounded-xl border">
+        <div className="h-64 w-128 rounded-xl border">
           <Splitter
             snap
             onVisibleChange={(_index, value) => {
@@ -243,7 +243,7 @@ export const Reset = {
         >
           Reset
         </Button>
-        <div className="w-128 h-64 rounded-xl border">
+        <div className="h-64 w-128 rounded-xl border">
           <Splitter ref={ref}>
             <div className="grid h-full place-content-center">Pane 1</div>
             <div className="grid h-full place-content-center">Pane 2</div>

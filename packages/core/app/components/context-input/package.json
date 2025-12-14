@@ -1,7 +1,7 @@
 {
   "name": "@choice-ui/context-input",
   "version": "0.0.7",
-  "description": "Context Input component for Choiceform Design System",
+  "description": "A rich text input component with context-aware suggestions, mentions, and inline editing capabilities",
   "sideEffects": false,
   "type": "module",
   "main": "./dist/index.js",

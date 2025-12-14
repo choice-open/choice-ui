@@ -205,7 +205,7 @@
       "name": "Github Variant",
       "exportName": "GithubVariant",
       "description": "Github Variant: Shows the github variant of the markdown renderer.",
-      "source": "import { MdRender } from \"@choice-ui/md-render\"\n\nexport default function App() {\n\n  return (\n    <div className=\"grid grid-cols-2 gap-6 p-6\">\n      <div className=\"w-full rounded-xl border bg-white p-4 dark:bg-gray-900\">\n        <h3 className=\"font-strong mb-4 uppercase text-gray-500\">Default</h3>\n        <MdRender\n          content={sizingContent}\n          variant=\"default\"\n        />\n      </div>\n\n      <div className=\"w-full rounded-xl border bg-white p-4 dark:bg-gray-900\">\n        <h3 className=\"font-strong mb-4 uppercase text-gray-500\">Github</h3>\n        <MdRender\n          content={sizingContent}\n          variant=\"github\"\n        />\n      </div>\n    </div>\n  )\n\n}"
+      "source": "import { MdRender } from \"@choice-ui/md-render\"\n\nexport default function App() {\n\n  return (\n    <div className=\"grid grid-cols-2 gap-6 p-6\">\n      <div className=\"w-full rounded-xl border bg-white p-4 dark:bg-gray-900\">\n        <h3 className=\"font-strong mb-4 text-gray-500 uppercase\">Default</h3>\n        <MdRender\n          content={sizingContent}\n          variant=\"default\"\n        />\n      </div>\n\n      <div className=\"w-full rounded-xl border bg-white p-4 dark:bg-gray-900\">\n        <h3 className=\"font-strong mb-4 text-gray-500 uppercase\">Github</h3>\n        <MdRender\n          content={sizingContent}\n          variant=\"github\"\n        />\n      </div>\n    </div>\n  )\n\n}"
     },
     {
       "id": "data-display-mdrender--custom-color",

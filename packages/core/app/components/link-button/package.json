@@ -1,7 +1,7 @@
 {
   "name": "@choice-ui/link-button",
   "version": "0.0.2",
-  "description": "Link Button component for Choiceform Design System",
+  "description": "A link-styled button component that appears as a text link but behaves as a button",
   "sideEffects": false,
   "type": "module",
   "main": "./dist/index.js",

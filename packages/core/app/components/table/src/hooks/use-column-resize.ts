@@ -74,10 +74,7 @@ export function useColumnResize(options: UseColumnResizeOptions) {
     const { columnId, startWidth, startX, currentX } = currentResizeState
     const deltaX = currentX - startX
     // Clamp width between min and max
-    const clampedWidth = Math.max(
-      minWidth,
-      Math.min(maxWidth, Math.max(0, startWidth + deltaX)),
-    )
+    const clampedWidth = Math.max(minWidth, Math.min(maxWidth, Math.max(0, startWidth + deltaX)))
 
     // Clear resize state first
     resizeStateRef.current = null
@@ -99,4 +96,3 @@ export function useColumnResize(options: UseColumnResizeOptions) {
     endResize,
   }
 }
-

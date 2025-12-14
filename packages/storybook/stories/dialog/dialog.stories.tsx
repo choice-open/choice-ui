@@ -342,7 +342,7 @@ export const Resizable: Story = {
           <Dialog.Content className="w-full min-w-0 overflow-hidden">
             <ScrollArea
               className="h-full"
-              scrollbarMode="large-b"
+              scrollbarMode="padding-b"
             >
               <ScrollArea.Viewport className="h-full p-4">
                 <ScrollArea.Content>{faker.lorem.paragraphs(3)}</ScrollArea.Content>
@@ -378,7 +378,7 @@ export const RememberSize: Story = {
           <Dialog.Content className="max-w-96 overflow-hidden">
             <ScrollArea
               className="h-full"
-              scrollbarMode="large-b"
+              scrollbarMode="padding-b"
             >
               <ScrollArea.Viewport className="h-full p-4">
                 <ScrollArea.Content>{faker.lorem.paragraphs(3)}</ScrollArea.Content>
@@ -426,7 +426,7 @@ export const CornerResize: Story = {
           <Dialog.Content className="w-full min-w-0 overflow-hidden">
             <ScrollArea
               className="h-full"
-              scrollbarMode="large-b"
+              scrollbarMode="padding-b"
             >
               <ScrollArea.Viewport className="h-full p-4">
                 <ScrollArea.Content className="space-y-2">
