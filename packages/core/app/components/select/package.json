@@ -1,6 +1,6 @@
 {
   "name": "@choice-ui/select",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "A select dropdown component for choosing a single option from a list of choices",
   "sideEffects": false,
   "type": "module",

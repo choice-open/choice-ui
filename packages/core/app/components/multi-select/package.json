@@ -1,6 +1,6 @@
 {
   "name": "@choice-ui/multi-select",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A multi-select dropdown component that allows users to select multiple options from a list",
   "sideEffects": false,
   "type": "module",

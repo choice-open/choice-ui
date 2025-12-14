@@ -1,6 +1,6 @@
 {
   "name": "@choice-ui/badge",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A badge component for displaying labels, counts, or status indicators",
   "sideEffects": false,
   "type": "module",

@@ -1,6 +1,6 @@
 {
   "name": "@choice-ui/label",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A label component for form fields with proper accessibility and association with inputs",
   "sideEffects": false,
   "type": "module",

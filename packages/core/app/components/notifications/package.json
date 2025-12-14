@@ -1,6 +1,6 @@
 {
   "name": "@choice-ui/notifications",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A notification system component for displaying toast messages, alerts, and system notifications",
   "sideEffects": false,
   "type": "module",

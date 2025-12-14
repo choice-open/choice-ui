@@ -1,6 +1,6 @@
 {
   "name": "@choice-ui/list",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A list component for displaying structured data with items, actions, and keyboard navigation",
   "sideEffects": false,
   "type": "module",

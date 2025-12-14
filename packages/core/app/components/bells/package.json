@@ -1,6 +1,6 @@
 {
   "name": "@choice-ui/bells",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A notification bell component with animated indicators for displaying alerts and messages",
   "sideEffects": false,
   "type": "module",

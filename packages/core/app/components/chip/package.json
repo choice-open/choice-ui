@@ -1,6 +1,6 @@
 {
   "name": "@choice-ui/chip",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A chip component for displaying compact labels, tags, or removable items",
   "sideEffects": false,
   "type": "module",

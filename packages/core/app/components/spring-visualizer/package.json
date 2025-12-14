@@ -1,6 +1,6 @@
 {
   "name": "@choice-ui/spring-visualizer",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A spring animation visualizer component for previewing and configuring spring physics animations",
   "sideEffects": false,
   "type": "module",

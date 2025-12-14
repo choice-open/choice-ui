@@ -1,6 +1,6 @@
 {
   "name": "@choice-ui/spinner",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A spinner component with animated loading indicators in various sizes and styles",
   "sideEffects": false,
   "type": "module",

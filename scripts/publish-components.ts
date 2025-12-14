@@ -85,6 +85,59 @@ function exec(command: string, cwd?: string) {
   }
 }
 
+function execSilent(command: string): string | null {
+  try {
+    return execSync(command, { encoding: "utf-8", stdio: ["pipe", "pipe", "pipe"] }).trim()
+  } catch {
+    return null
+  }
+}
+
+/**
+ * 从 npm 获取包的已发布版本列表
+ */
+function getNpmVersions(packageName: string): string[] {
+  const result = execSilent(`npm view ${packageName} versions --json`)
+  if (!result) return []
+  try {
+    const versions = JSON.parse(result)
+    return Array.isArray(versions) ? versions : [versions]
+  } catch {
+    return []
+  }
+}
+
+/**
+ * 递增 patch 版本号
+ */
+function incrementPatchVersion(version: string): string {
+  const parts = version.split(".")
+  if (parts.length !== 3) return version
+  const [major, minor, patch] = parts
+  return `${major}.${minor}.${parseInt(patch, 10) + 1}`
+}
+
+/**
+ * 获取下一个可用版本号（如果当前版本已存在则递增）
+ */
+function getNextAvailableVersion(packageName: string, currentVersion: string): string {
+  const npmVersions = getNpmVersions(packageName)
+
+  if (npmVersions.length === 0) {
+    // 包不存在或首次发布
+    return currentVersion
+  }
+
+  let version = currentVersion
+  while (npmVersions.includes(version)) {
+    const newVersion = incrementPatchVersion(version)
+    log(`${packageName}@${version} 已存在，递增到 ${newVersion}`, "warn")
+    version = newVersion
+  }
+
+  return version
+}
+
 // ============================================================================
 // 版本解析
 // ============================================================================
@@ -198,16 +251,29 @@ function publishComponent(component: ComponentInfo, versions: Map<string, string
     pkg.devDependencies = resolveWorkspaceVersions(pkg.devDependencies, versions)
     pkg.peerDependencies = resolveWorkspaceVersions(pkg.peerDependencies, versions)
 
+    // 检查版本号并自动递增（如果已存在）
+    const nextVersion = getNextAvailableVersion(pkg.name, pkg.version)
+    if (nextVersion !== pkg.version) {
+      log(`${pkg.name} 版本从 ${pkg.version} 更新到 ${nextVersion}`, "info")
+      pkg.version = nextVersion
+      // 同时更新 versions map 以便其他组件引用
+      versions.set(pkg.name, nextVersion)
+    }
+
     // 写入修改后的 package.json
     writePackageJson(pkgPath, pkg)
 
     if (isDryRun) {
       log(`[DRY-RUN] 将发布 ${pkg.name}@${pkg.version}`, "info")
+      // 恢复原始 package.json
+      writeFileSync(pkgPath, originalContent)
       return true
     }
 
     if (isBuildOnly) {
       log(`[BUILD-ONLY] 跳过发布 ${pkg.name}`, "info")
+      // 恢复原始 package.json
+      writeFileSync(pkgPath, originalContent)
       return true
     }
 
@@ -217,14 +283,21 @@ function publishComponent(component: ComponentInfo, versions: Map<string, string
 
     if (success) {
       log(`${pkg.name}@${pkg.version} 发布成功`, "success")
+      // 发布成功后，更新本地 package.json 的版本号
+      const localPkg = JSON.parse(originalContent) as PackageJson
+      localPkg.version = nextVersion
+      writeFileSync(pkgPath, JSON.stringify(localPkg, null, 2) + "\n")
+      return true
     } else {
       log(`${pkg.name} 发布失败`, "error")
+      // 发布失败时恢复原始内容
+      writeFileSync(pkgPath, originalContent)
+      return false
     }
-
-    return success
-  } finally {
-    // 恢复原始 package.json
+  } catch (error) {
+    // 出错时恢复原始 package.json
     writeFileSync(pkgPath, originalContent)
+    throw error
   }
 }
 

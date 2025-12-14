@@ -1,6 +1,6 @@
 {
   "name": "@choice-ui/kbd",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A keyboard key indicator component for displaying keyboard shortcuts and key combinations",
   "sideEffects": false,
   "type": "module",

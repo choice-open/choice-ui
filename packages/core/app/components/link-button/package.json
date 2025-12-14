@@ -1,6 +1,6 @@
 {
   "name": "@choice-ui/link-button",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A link-styled button component that appears as a text link but behaves as a button",
   "sideEffects": false,
   "type": "module",

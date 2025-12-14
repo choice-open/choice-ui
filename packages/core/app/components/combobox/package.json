@@ -1,6 +1,6 @@
 {
   "name": "@choice-ui/combobox",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A combobox component combining input field with dropdown menu for filtering and selecting options",
   "sideEffects": false,
   "type": "module",

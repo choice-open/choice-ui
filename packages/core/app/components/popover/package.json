@@ -1,6 +1,6 @@
 {
   "name": "@choice-ui/popover",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "A popover component for displaying floating content relative to a trigger element",
   "sideEffects": false,
   "type": "module",

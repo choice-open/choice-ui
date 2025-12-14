@@ -1,6 +1,6 @@
 {
   "name": "@choice-ui/skeleton",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A skeleton loading component that displays placeholder content while data is loading",
   "sideEffects": false,
   "type": "module",

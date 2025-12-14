@@ -1,6 +1,6 @@
 {
   "name": "@choice-ui/file-upload",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A file upload component with drag-and-drop support, progress tracking, and file preview",
   "sideEffects": false,
   "type": "module",

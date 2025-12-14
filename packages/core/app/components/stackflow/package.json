@@ -1,6 +1,6 @@
 {
   "name": "@choice-ui/stackflow",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A stack-based navigation flow component for managing sequential views with animations",
   "sideEffects": false,
   "type": "module",

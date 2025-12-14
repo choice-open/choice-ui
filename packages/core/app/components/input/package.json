@@ -1,6 +1,6 @@
 {
   "name": "@choice-ui/input",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "A text input component with validation states, placeholder support, and accessibility features",
   "sideEffects": false,
   "type": "module",

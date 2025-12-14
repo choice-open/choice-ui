@@ -1,6 +1,6 @@
 {
   "name": "@choice-ui/dialog",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "A modal dialog component for displaying content, forms, or confirmations in an overlay",
   "sideEffects": false,
   "type": "module",

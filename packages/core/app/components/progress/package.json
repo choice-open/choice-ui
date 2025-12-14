@@ -1,6 +1,6 @@
 {
   "name": "@choice-ui/progress",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A progress indicator component for displaying task completion, loading states, or value ranges",
   "sideEffects": false,
   "type": "module",

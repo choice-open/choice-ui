@@ -1,6 +1,6 @@
 {
   "name": "@choice-ui/md-render",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A markdown renderer component that converts markdown text into formatted HTML with syntax highlighting",
   "sideEffects": false,
   "type": "module",

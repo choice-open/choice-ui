@@ -1,6 +1,6 @@
 {
   "name": "@choice-ui/splitter",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A resizable splitter component for creating adjustable layouts with draggable dividers",
   "sideEffects": false,
   "type": "module",

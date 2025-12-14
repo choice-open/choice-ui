@@ -1,6 +1,6 @@
 {
   "name": "@choice-ui/hint",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A hint component that displays helpful information or tips in a floating tooltip",
   "sideEffects": false,
   "type": "module",

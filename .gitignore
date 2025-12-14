@@ -6,6 +6,7 @@ dist
 build/
 output/
 .env
+.npmrc
 .DS_Store
 
 *storybook.log

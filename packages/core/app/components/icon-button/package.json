@@ -1,6 +1,6 @@
 {
   "name": "@choice-ui/icon-button",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "An icon-only button component with various sizes and states for compact actions",
   "sideEffects": false,
   "type": "module",

@@ -1,6 +1,6 @@
 {
   "name": "@choice-ui/context-menu",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "A context menu component that appears on right-click with customizable menu items and actions",
   "sideEffects": false,
   "type": "module",

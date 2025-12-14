@@ -1,6 +1,6 @@
 {
   "name": "@choice-ui/alert-dialog",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A modal dialog component for displaying critical alerts and requiring user confirmation",
   "sideEffects": false,
   "type": "module",

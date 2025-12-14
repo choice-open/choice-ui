@@ -3,8 +3,8 @@
   "title": "ContextInput",
   "package": {
     "name": "@choice-ui/context-input",
-    "version": "0.0.7",
-    "description": "Context Input component for Choiceform Design System",
+    "version": "0.0.8",
+    "description": "A rich text input component with context-aware suggestions, mentions, and inline editing capabilities",
     "dependencies": {
       "@choice-ui/combobox": "workspace:*",
       "@choice-ui/shared": "workspace:*",
@@ -25,6 +25,20 @@
     "ContextInput",
     "InsertMentionsButton",
     "CopyButton",
+    "useContextInput",
+    "useMentions",
+    "useContextInputEditor",
+    "shouldInsertSpaceBefore",
+    "shouldInsertSpaceAfter",
+    "insertSpaceBeforeIfNeeded",
+    "insertSpaceAfterIfNeeded",
+    "insertWithSmartSpacing",
+    "convertSlateToText",
+    "convertTextToSlate",
+    "convertTextToSlateWithResolver",
+    "extractTextWithMentions",
+    "parseTextWithMentions",
+    "extractMentionContext",
     "type ContextInputProps",
     "type ContextInputValue",
     "type ContextMentionElement",
@@ -431,6 +445,135 @@
           "description": ""
         }
       ]
+    },
+    {
+      "displayName": "useMentions",
+      "description": "",
+      "props": [
+        {
+          "name": "editor",
+          "type": "ContextEditor",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "maxSuggestions",
+          "type": "number | undefined",
+          "required": false,
+          "defaultValue": "10",
+          "description": ""
+        },
+        {
+          "name": "mentionPrefix",
+          "type": "string | undefined",
+          "required": false,
+          "defaultValue": "@",
+          "description": ""
+        },
+        {
+          "name": "onMentionSelect",
+          "type": "((mention: ContextMentionItemProps, trigger: string) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onSearchClose",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "triggers",
+          "type": "ContextMentionTrigger[]",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "useSlateEditor",
+      "description": "",
+      "props": []
+    },
+    {
+      "displayName": "useContextInput",
+      "description": "",
+      "props": [
+        {
+          "name": "autoFocus",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "editor",
+          "type": "ContextEditor | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "((value: ContextInputValue) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "value",
+          "type": "ContextInputValue | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "ContextInputProps",
+      "description": "Context lets components pass information deep down without explicitly\npassing props.\n\nCreated from {@link createContext}",
+      "props": []
+    },
+    {
+      "displayName": "convertSlateToText",
+      "description": "Convert SlateJS node array to string\nMention nodes are converted to {{#context#}}{{#id.text#}} format",
+      "props": []
+    },
+    {
+      "displayName": "convertTextToSlate",
+      "description": "Convert string to SlateJS node array\nSupports parsing {{#context#}}{{#id.text#}} format to mention nodes",
+      "props": []
+    },
+    {
+      "displayName": "convertTextToSlateWithResolver",
+      "description": "Advanced version: supports async mention info resolution",
+      "props": []
+    },
+    {
+      "displayName": "extractTextWithMentions",
+      "description": "",
+      "props": []
+    },
+    {
+      "displayName": "shouldInsertSpaceBefore",
+      "description": "Check if a space should be inserted before the current position",
+      "props": []
+    },
+    {
+      "displayName": "shouldInsertSpaceAfter",
+      "description": "Check if a space should be inserted after the current position",
+      "props": []
+    },
+    {
+      "displayName": "insertSpaceBeforeIfNeeded",
+      "description": "Smartly insert space at current position (leading space)",
+      "props": []
+    },
+    {
+      "displayName": "insertSpaceAfterIfNeeded",
+      "description": "Smartly insert space at current position (trailing space)",
+      "props": []
+    },
+    {
+      "displayName": "insertWithSmartSpacing",
+      "description": "Insert smart spacing for mention\nThis function intelligently adds spaces before/after mention insertion based on context",
+      "props": []
     }
   ],
   "stories": [

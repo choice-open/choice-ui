@@ -1,6 +1,6 @@
 {
   "name": "@choice-ui/tree-list",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "A tree list component for displaying hierarchical data with expand/collapse, selection, and drag-and-drop",
   "sideEffects": false,
   "type": "module",

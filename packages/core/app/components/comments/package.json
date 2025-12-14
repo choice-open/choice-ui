@@ -1,6 +1,6 @@
 {
   "name": "@choice-ui/comments",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A rich text comment system component with threading, mentions, and emoji support",
   "sideEffects": false,
   "type": "module",

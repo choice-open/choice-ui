@@ -1,6 +1,6 @@
 {
   "name": "@choice-ui/menus",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A menu component system for building dropdown menus, context menus, and navigation lists",
   "sideEffects": false,
   "type": "module",

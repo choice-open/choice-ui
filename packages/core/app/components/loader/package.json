@@ -1,6 +1,6 @@
 {
   "name": "@choice-ui/loader",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A loading indicator component with animated visual feedback for async operations",
   "sideEffects": false,
   "type": "module",

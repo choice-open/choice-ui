@@ -1,6 +1,6 @@
 {
   "name": "@choice-ui/switch",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A toggle switch component for binary on/off states with smooth animations",
   "sideEffects": false,
   "type": "module",
