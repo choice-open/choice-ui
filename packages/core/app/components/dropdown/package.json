@@ -1,6 +1,6 @@
 {
   "name": "@choice-ui/dropdown",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "A dropdown menu component that displays a list of options triggered by a button or element",
   "sideEffects": false,
   "type": "module",

@@ -481,33 +481,62 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
     [activeIndex, getItemProps, handleClose, isControlledOpen, readOnly, selection, variant],
   )
 
+  // Cache Slot props to avoid unnecessary re-renders
+  // Note: getReferenceProps returns a new object each time, but only recalculates when dependencies change
+  const parentActiveIndex = parent?.activeIndex
+  const parentGetItemProps = parent?.getItemProps
+
+  const slotProps = useMemo(() => {
+    const referenceProps = getReferenceProps(
+      parentGetItemProps
+        ? parentGetItemProps({
+            onFocus: handleFocus,
+          })
+        : {},
+    )
+    return {
+      tabIndex: !isNested ? undefined : parentActiveIndex === item.index ? 0 : -1,
+      role: isNested ? ("menuitem" as const) : undefined,
+      "data-open": isControlledOpen ? "" : undefined,
+      "data-nested": isNested ? "" : undefined,
+      "data-focus-inside": hasFocusInside ? "" : undefined,
+      onTouchStart: handleTouchStart,
+      onPointerMove: handlePointerMove,
+      "aria-haspopup": "menu" as const,
+      "aria-expanded": isControlledOpen,
+      "aria-controls": menuId,
+      ...referenceProps,
+    }
+  }, [
+    isNested,
+    parentActiveIndex,
+    parentGetItemProps,
+    item.index,
+    isControlledOpen,
+    hasFocusInside,
+    handleTouchStart,
+    handlePointerMove,
+    menuId,
+    getReferenceProps,
+    handleFocus,
+  ])
+
+  // Cache trigger children
+  const slotChildren = useMemo(() => {
+    const element = isNested ? subTriggerElement : triggerElement
+    if (!element) return null
+    return cloneElement(element, { active: isControlledOpen })
+  }, [isNested, subTriggerElement, triggerElement, isControlledOpen])
+
   return (
     <FloatingNode id={nodeId}>
       {/* Render built-in Slot when not in coordinate mode and no external trigger */}
       {!isCoordinateMode && !hasExternalTrigger && (
         <Slot
           ref={refs.setReference}
-          tabIndex={!isNested ? undefined : parent?.activeIndex === item.index ? 0 : -1}
-          role={isNested ? "menuitem" : undefined}
-          data-open={isControlledOpen ? "" : undefined}
-          data-nested={isNested ? "" : undefined}
-          data-focus-inside={hasFocusInside ? "" : undefined}
-          onTouchStart={handleTouchStart}
-          onPointerMove={handlePointerMove}
-          aria-haspopup="menu"
-          aria-expanded={isControlledOpen}
-          aria-controls={menuId}
-          {...getReferenceProps(
-            parent
-              ? parent.getItemProps({
-                  onFocus: handleFocus,
-                })
-              : {},
-          )}
+          {...slotProps}
         >
-          {isNested
-            ? subTriggerElement && cloneElement(subTriggerElement, { active: isControlledOpen })
-            : triggerElement && cloneElement(triggerElement, { active: isControlledOpen })}
+          {slotChildren}
         </Slot>
       )}
 

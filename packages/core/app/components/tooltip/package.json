@@ -1,6 +1,6 @@
 {
   "name": "@choice-ui/tooltip",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "A tooltip component that displays additional information on hover or focus",
   "sideEffects": false,
   "type": "module",

@@ -2,7 +2,8 @@ import { Button, type ButtonProps } from "@choice-ui/button"
 import { Slot } from "@choice-ui/slot"
 import { tcx } from "@choice-ui/shared"
 import { ChevronDownSmall } from "@choiceform/icons-react"
-import { forwardRef, memo, ReactNode } from "react"
+import { forwardRef, memo, ReactNode, useMemo } from "react"
+import { useEventCallback } from "usehooks-ts"
 import { MenuTriggerTv } from "../tv"
 
 export interface MenuTriggerProps extends Omit<ButtonProps, "children"> {
@@ -40,26 +41,31 @@ export const MenuTrigger = memo(
       size,
     })
 
-    const slotProps = enterForwardedProps
-      ? {
+    // Cache click handler to avoid unnecessary re-renders
+    const handleClick = useEventCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+      e.stopPropagation()
+      e.preventDefault()
+      rest.onClick?.(e)
+    })
+
+    // Cache Slot props to avoid unnecessary re-renders
+    const slotProps = useMemo(() => {
+      if (enterForwardedProps) {
+        return {
           ...rest,
           active,
           selected,
           disabled,
-          onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
-            e.stopPropagation()
-            e.preventDefault()
-            if (rest.onClick) {
-              rest.onClick(e)
-            }
-          },
+          onClick: handleClick,
         }
-      : {
-          ...rest,
-          ...(active !== undefined ? { "data-active": active } : {}),
-          ...(selected !== undefined ? { "data-selected": selected } : {}),
-          ...(disabled !== undefined ? { "data-disabled": disabled } : {}),
-        }
+      }
+      return {
+        ...rest,
+        ...(active !== undefined ? { "data-active": active } : {}),
+        ...(selected !== undefined ? { "data-selected": selected } : {}),
+        ...(disabled !== undefined ? { "data-disabled": disabled } : {}),
+      }
+    }, [enterForwardedProps, rest, active, selected, disabled, handleClick])
 
     return asChild ? (
       <Slot

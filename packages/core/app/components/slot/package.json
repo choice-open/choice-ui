@@ -1,6 +1,6 @@
 {
   "name": "@choice-ui/slot",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "A slot component utility for composing components and merging props with child elements",
   "sideEffects": false,
   "type": "module",

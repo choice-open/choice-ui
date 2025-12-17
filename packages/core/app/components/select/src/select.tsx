@@ -562,6 +562,44 @@ const SelectComponent = memo(function SelectComponent(props: SelectProps) {
     })
   }, [triggerElement, isControlledOpen, sizeProp])
 
+  // Cache Slot props to avoid unnecessary re-renders
+  const handleTouchStart = useEventCallback(() => {
+    setTouch(true)
+  })
+
+  const handleMouseDown = useEventCallback(() => {
+    // Mark that mouse is being held down from trigger (for native select-like behavior)
+    refs.isMouseDownFromTrigger.current = true
+  })
+
+  const handlePointerMove = useEventCallback(({ pointerType }: React.PointerEvent) => {
+    if (pointerType !== "touch") {
+      setTouch(false)
+    }
+  })
+
+  const slotProps = useMemo(() => {
+    return {
+      "aria-haspopup": "listbox" as const,
+      "aria-expanded": isControlledOpen,
+      "aria-controls": menuId,
+      ...getReferenceProps({
+        disabled,
+        onTouchStart: handleTouchStart,
+        onMouseDown: handleMouseDown,
+        onPointerMove: handlePointerMove,
+      }),
+    }
+  }, [
+    isControlledOpen,
+    menuId,
+    getReferenceProps,
+    disabled,
+    handleTouchStart,
+    handleMouseDown,
+    handlePointerMove,
+  ])
+
   // Error handling
   if (!triggerElement || !contentElement) {
     console.error("Select requires both Select.Trigger and Select.Content components as children")
@@ -572,24 +610,7 @@ const SelectComponent = memo(function SelectComponent(props: SelectProps) {
     <FloatingNode id={nodeId}>
       <Slot
         ref={floating.refs.setReference}
-        aria-haspopup="listbox"
-        aria-expanded={isControlledOpen}
-        aria-controls={menuId}
-        {...getReferenceProps({
-          disabled,
-          onTouchStart() {
-            setTouch(true)
-          },
-          onMouseDown() {
-            // Mark that mouse is being held down from trigger (for native select-like behavior)
-            refs.isMouseDownFromTrigger.current = true
-          },
-          onPointerMove({ pointerType }: React.PointerEvent) {
-            if (pointerType !== "touch") {
-              setTouch(false)
-            }
-          },
-        })}
+        {...slotProps}
       >
         {enhancedTriggerElement}
       </Slot>

@@ -1,6 +1,6 @@
 import { mergeRefs } from "@choice-ui/shared"
 import { Slot } from "@choice-ui/slot"
-import { forwardRef, memo } from "react"
+import { forwardRef, memo, useMemo } from "react"
 import { usePopoverContext } from "../popover-context"
 
 export const PopoverTrigger = memo(
@@ -13,10 +13,15 @@ export const PopoverTrigger = memo(
     const { children } = props
     const { getReferenceProps, refs } = usePopoverContext()
 
+    // Cache Slot props to avoid unnecessary re-renders
+    const slotProps = useMemo(() => {
+      return getReferenceProps()
+    }, [getReferenceProps])
+
     return (
       <Slot
         ref={mergeRefs(refs.setReference, forwardedRef)}
-        {...getReferenceProps()}
+        {...slotProps}
       >
         {children}
       </Slot>

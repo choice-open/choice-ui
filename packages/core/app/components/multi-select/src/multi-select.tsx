@@ -556,6 +556,25 @@ const MultiSelectComponent = memo(
       valueDisabledMap,
     ])
 
+    // Cache Slot props to avoid unnecessary re-renders
+    const handleTouchStart = useEventCallback(() => {
+      setTouch(true)
+    })
+
+    const handlePointerMove = useEventCallback(({ pointerType }: React.PointerEvent) => {
+      if (pointerType !== "touch") {
+        setTouch(false)
+      }
+    })
+
+    const slotProps = useMemo(() => {
+      return getReferenceProps({
+        disabled,
+        onTouchStart: handleTouchStart,
+        onPointerMove: handlePointerMove,
+      })
+    }, [getReferenceProps, disabled, handleTouchStart, handlePointerMove])
+
     // Error handling
     if (!triggerElement || !contentElement) {
       console.error(
@@ -568,17 +587,7 @@ const MultiSelectComponent = memo(
       <FloatingNode id={nodeId}>
         <Slot
           ref={refs.setReference}
-          {...getReferenceProps({
-            disabled,
-            onTouchStart() {
-              setTouch(true)
-            },
-            onPointerMove({ pointerType }: React.PointerEvent) {
-              if (pointerType !== "touch") {
-                setTouch(false)
-              }
-            },
-          })}
+          {...slotProps}
         >
           {enhancedTriggerElement}
         </Slot>
