@@ -3,7 +3,7 @@
   "title": "Popover",
   "package": {
     "name": "@choice-ui/popover",
-    "version": "0.0.8",
+    "version": "0.0.9",
     "description": "A popover component for displaying floating content relative to a trigger element",
     "dependencies": {
       "@choice-ui/shared": "workspace:*",

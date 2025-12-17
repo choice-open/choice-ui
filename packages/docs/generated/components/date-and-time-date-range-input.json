@@ -7,6 +7,7 @@
     "description": "A calendar component for date selection with support for single, range, and multiple date picking",
     "dependencies": {
       "@choice-ui/shared": "workspace:*",
+      "@choice-ui/dropdown": "workspace:*",
       "@choice-ui/icon-button": "workspace:*",
       "@choiceform/icons-react": "^1.3.8",
       "@choice-ui/menus": "workspace:*",
@@ -611,10 +612,16 @@
       "description": "",
       "props": [
         {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Custom trigger element. Use Dropdown.Trigger as wrapper"
+        },
+        {
           "name": "className",
           "type": "string | undefined",
           "required": false,
-          "description": "Custom class name"
+          "description": "Custom class name for dropdown content"
         },
         {
           "name": "hourStep",
@@ -627,6 +634,36 @@
           "type": "number | undefined",
           "required": false,
           "description": "Minute step, default 15 minutes"
+        },
+        {
+          "name": "open",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": "Whether the dropdown is open (controlled)"
+        },
+        {
+          "name": "onOpenChange",
+          "type": "((open: boolean) => void) | undefined",
+          "required": false,
+          "description": "Callback when open state changes"
+        },
+        {
+          "name": "closeOnSelect",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": "Whether to close dropdown after selection"
+        },
+        {
+          "name": "triggerRef",
+          "type": "RefObject<HTMLElement> | undefined",
+          "required": false,
+          "description": "External trigger element ref"
+        },
+        {
+          "name": "triggerSelector",
+          "type": "string | undefined",
+          "required": false,
+          "description": "CSS selector for external trigger element"
         },
         {
           "name": "defaultValue",

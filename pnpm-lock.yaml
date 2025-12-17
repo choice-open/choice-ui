@@ -520,6 +520,9 @@ importers:
 
   packages/core/app/components/calendar:
     dependencies:
+      '@choice-ui/dropdown':
+        specifier: workspace:*
+        version: link:../dropdown
       '@choice-ui/icon-button':
         specifier: workspace:*
         version: link:../icon-button

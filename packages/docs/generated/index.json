@@ -195,7 +195,7 @@
       "name": "@choice-ui/dropdown",
       "title": "Dropdown",
       "description": "Whether to automatically select the first item in coordinate mode.",
-      "version": "0.0.11",
+      "version": "0.0.12",
       "tags": [
         "upgrade"
       ]
@@ -328,7 +328,7 @@
       "name": "@choice-ui/menus",
       "title": "Menus",
       "description": "",
-      "version": "0.1.3"
+      "version": "0.1.4"
     },
     {
       "slug": "overlays/modal",
@@ -355,7 +355,7 @@
       "name": "@choice-ui/multi-select",
       "title": "MultiSelect",
       "description": "MultiSelect - Multi-select component with standard dropdown positioning",
-      "version": "0.0.6",
+      "version": "0.0.7",
       "tags": [
         "new"
       ]
@@ -415,7 +415,7 @@
       "name": "@choice-ui/popover",
       "title": "Popover",
       "description": "Portal root element. When specified, the popover will be rendered into this element.",
-      "version": "0.0.8"
+      "version": "0.0.9"
     },
     {
       "slug": "feedback/progress-bar",
@@ -504,7 +504,7 @@
       "name": "@choice-ui/select",
       "title": "Select",
       "description": "Select - High-performance select component with macOS-style positioning",
-      "version": "0.0.10",
+      "version": "0.0.12",
       "tags": [
         "upgrade"
       ]
@@ -527,8 +527,8 @@
       "slug": "utils/slot",
       "name": "@choice-ui/slot",
       "title": "Slot",
-      "description": "优化的 Slot 组件实现",
-      "version": "0.0.4"
+      "description": "Slot component - Lightweight implementation",
+      "version": "0.0.6"
     },
     {
       "slug": "layouts/panel/sortable",
@@ -681,7 +681,7 @@
       "name": "@choice-ui/tooltip",
       "title": "Tooltip",
       "description": "",
-      "version": "0.0.8"
+      "version": "0.0.9"
     },
     {
       "slug": "components/tree-list",

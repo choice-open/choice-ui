@@ -3,10 +3,11 @@
   "title": "DateInput",
   "package": {
     "name": "@choice-ui/calendar",
-    "version": "0.0.6",
+    "version": "0.0.8",
     "description": "A calendar component for date selection with support for single, range, and multiple date picking",
     "dependencies": {
       "@choice-ui/shared": "workspace:*",
+      "@choice-ui/dropdown": "workspace:*",
       "@choice-ui/icon-button": "workspace:*",
       "@choiceform/icons-react": "^1.3.8",
       "@choice-ui/menus": "workspace:*",
@@ -614,19 +615,49 @@
           "name": "className",
           "type": "string | undefined",
           "required": false,
-          "description": "Custom class name"
+          "description": ""
         },
         {
           "name": "hourStep",
           "type": "number | undefined",
           "required": false,
-          "description": "Hour step, default 1 hour"
+          "description": ""
         },
         {
           "name": "minuteStep",
           "type": "number | undefined",
           "required": false,
-          "description": "Minute step, default 15 minutes"
+          "description": ""
+        },
+        {
+          "name": "open",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onOpenChange",
+          "type": "((open: boolean) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "closeOnSelect",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "triggerRef",
+          "type": "RefObject<HTMLElement> | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "triggerSelector",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
         },
         {
           "name": "defaultValue",
@@ -699,6 +730,30 @@
           "type": "number | undefined",
           "required": false,
           "description": "Base step (minutes), default 1 minute"
+        },
+        {
+          "name": "offset",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "placement",
+          "type": "undefined | \"top\" | \"right\" | \"bottom\" | \"left\" | \"top-start\" | \"top-end\" | \"right-start\" | \"right-end\" | \"bottom-start\" | \"bottom-end\" | \"left-start\" | \"left-end\"",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "matchTriggerWidth",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "variant",
+          "type": "undefined | \"default\" | \"light\" | \"reset\"",
+          "required": false,
+          "description": ""
         }
       ]
     },

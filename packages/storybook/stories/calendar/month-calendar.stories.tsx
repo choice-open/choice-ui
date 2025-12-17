@@ -1,199 +1,7 @@
 import type { CalendarValue } from "@choice-ui/react"
-import { MonthCalendar, MonthCalendarProps } from "@choice-ui/react"
+import { MonthCalendar } from "@choice-ui/react"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { useState } from "react"
-
-// 单选模式示例组件
-const SingleSelectDemo = (args: MonthCalendarProps) => {
-  const [value, setValue] = useState<CalendarValue>(null)
-
-  return (
-    <div className="space-y-4">
-      <div className="grid grid-cols-2 gap-4">
-        <MonthCalendar
-          {...args}
-          value={value}
-          onChange={setValue}
-          selectionMode="single"
-          className="w-50 rounded-xl border"
-        />
-        <MonthCalendar
-          {...args}
-          value={value}
-          onChange={setValue}
-          selectionMode="single"
-          className="w-50 rounded-xl border"
-          variant="dark"
-        />
-      </div>
-      {value && value instanceof Date && (
-        <p className="text-gray-600">选中日期: {value.toLocaleDateString("zh-CN")}</p>
-      )}
-    </div>
-  )
-}
-
-// 多选模式示例组件
-const MultiSelectDemo = (args: MonthCalendarProps) => {
-  const [value, setValue] = useState<CalendarValue>([])
-
-  return (
-    <div className="space-y-4">
-      <div className="grid grid-cols-2 gap-4">
-        <MonthCalendar
-          {...args}
-          value={value}
-          onChange={setValue}
-          selectionMode="multiple"
-          className="w-50 rounded-xl border"
-        />
-        <MonthCalendar
-          {...args}
-          value={value}
-          onChange={setValue}
-          selectionMode="multiple"
-          className="w-50 rounded-xl border"
-          variant="dark"
-        />
-      </div>
-      {Array.isArray(value) && value.length > 0 && (
-        <div className="text-secondary-foreground">
-          <p>Selected date ({value.length}):</p>
-          <ul className="list-inside list-disc">
-            {value.map((date, index) => (
-              <li key={index}>{date.toLocaleDateString("zh-CN")}</li>
-            ))}
-          </ul>
-        </div>
-      )}
-    </div>
-  )
-}
-
-// 范围选择示例组件
-const RangeSelectDemo = (args: MonthCalendarProps) => {
-  const [value, setValue] = useState<CalendarValue>(null)
-
-  return (
-    <div className="space-y-4">
-      <div className="grid grid-cols-2 gap-4">
-        <MonthCalendar
-          {...args}
-          value={value}
-          onChange={setValue}
-          selectionMode="range"
-          className="w-50 rounded-xl border"
-        />
-        <MonthCalendar
-          {...args}
-          value={value}
-          onChange={setValue}
-          selectionMode="range"
-          className="w-50 rounded-xl border"
-          variant="dark"
-        />
-      </div>
-      {value && typeof value === "object" && "start" in value && (
-        <div className="text-secondary-foreground">
-          <p>Selected range:</p>
-          <p>Start: {value.start.toLocaleDateString("zh-CN")}</p>
-          <p>End: {value.end.toLocaleDateString("zh-CN")}</p>
-        </div>
-      )}
-    </div>
-  )
-}
-
-// 禁用日期示例组件
-const DisabledDatesDemo = (args: MonthCalendarProps) => {
-  const [value, setValue] = useState<CalendarValue>(null)
-
-  // 禁用过去的日期和一些特定日期
-  const today = new Date()
-  const disabledDates = [
-    new Date(today.getTime() - 24 * 60 * 60 * 1000), // 昨天
-    new Date(today.getTime() - 2 * 24 * 60 * 60 * 1000), // 前天
-    new Date(today.getFullYear(), today.getMonth(), 15), // 每月15号
-    new Date(today.getFullYear(), today.getMonth(), 25), // 每月25号
-  ]
-
-  return (
-    <div className="space-y-4">
-      <div className="grid grid-cols-2 gap-4">
-        <MonthCalendar
-          {...args}
-          value={value}
-          onChange={setValue}
-          disabledDates={disabledDates}
-          selectionMode="single"
-          className="w-50 rounded-xl border"
-        />
-        <MonthCalendar
-          {...args}
-          value={value}
-          onChange={setValue}
-          disabledDates={disabledDates}
-          selectionMode="single"
-          className="w-50 rounded-xl border"
-          variant="dark"
-        />
-      </div>
-      <div className="text-secondary-foreground">
-        <p>
-          Disabled dates include: yesterday, the day before yesterday, the 15th and 25th of each
-          month
-        </p>
-        {value && value instanceof Date && (
-          <p>Selected date: {value.toLocaleDateString("zh-CN")}</p>
-        )}
-      </div>
-    </div>
-  )
-}
-
-// 高亮日期示例组件
-const HighlightDatesDemo = (args: MonthCalendarProps) => {
-  const [value, setValue] = useState<CalendarValue>(null)
-
-  // 高亮一些特定日期（比如节假日）
-  const today = new Date()
-  const highlightDates = [
-    new Date(today.getFullYear(), today.getMonth(), 1), // 每月1号
-    new Date(today.getFullYear(), today.getMonth(), 10), // 每月10号
-    new Date(today.getFullYear(), today.getMonth(), 20), // 每月20号
-    new Date(today.getFullYear(), today.getMonth(), 30), // 每月30号
-  ]
-
-  return (
-    <div className="space-y-4">
-      <div className="grid grid-cols-2 gap-4">
-        <MonthCalendar
-          {...args}
-          value={value}
-          onChange={setValue}
-          highlightDates={highlightDates}
-          selectionMode="single"
-          className="w-50 rounded-xl border"
-        />
-        <MonthCalendar
-          {...args}
-          value={value}
-          onChange={setValue}
-          highlightDates={highlightDates}
-          selectionMode="single"
-          className="w-50 rounded-xl border"
-          variant="dark"
-        />
-      </div>
-      <div className="text-secondary-foreground">
-        <p>Highlighted dates include: the 1st, 10th, 20th and 30th of each month</p>
-        {value && value instanceof Date && (
-          <p>Selected date: {value.toLocaleDateString("zh-CN")}</p>
-        )}
-      </div>
-    </div>
-  )
-}
 
 const meta: Meta<typeof MonthCalendar> = {
   title: "DateAndTime/MonthCalendar",
@@ -249,18 +57,15 @@ type Story = StoryObj<typeof meta>
  * - Provides a foundation for calendar implementation.
  */
 export const Default: Story = {
-  args: {
-    highlightToday: true,
-    showOutsideDays: true,
-    showWeekNumbers: false,
-    weekStartsOn: 1,
-    locale: "zh-CN",
-    fixedGrid: true,
-  },
-  render: (args) => {
+  render: function DefaultStory() {
     return (
       <MonthCalendar
-        {...args}
+        highlightToday
+        showOutsideDays
+        showWeekNumbers={false}
+        weekStartsOn={1}
+        locale="zh-CN"
+        fixedGrid
         className="w-50 rounded-xl border"
       />
     )
@@ -274,15 +79,16 @@ export const Default: Story = {
  * - Useful for applications requiring week-based scheduling or reporting.
  */
 export const WithWeekNumbers: Story = {
-  args: {
-    ...Default.args,
-    showWeekNumbers: true,
-  },
-  render: (args) => {
+  render: function WithWeekNumbersStory() {
     return (
       <div className="space-y-4">
         <MonthCalendar
-          {...args}
+          highlightToday
+          showOutsideDays
+          showWeekNumbers
+          weekStartsOn={1}
+          locale="zh-CN"
+          fixedGrid
           className="w-50 rounded-xl border"
         />
         <p className="text-secondary-foreground">
@@ -300,15 +106,42 @@ export const WithWeekNumbers: Story = {
  * - Useful for basic date selection in forms and filters.
  */
 export const SingleSelect: Story = {
-  args: {
-    ...Default.args,
+  render: function SingleSelectStory() {
+    const [value, setValue] = useState<CalendarValue>(null)
+
+    return (
+      <div className="space-y-4">
+        <div className="grid grid-cols-2 gap-4">
+          <MonthCalendar
+            value={value}
+            onChange={setValue}
+            selectionMode="single"
+            highlightToday
+            showOutsideDays
+            weekStartsOn={1}
+            locale="zh-CN"
+            fixedGrid
+            className="w-50 rounded-xl border"
+          />
+          <MonthCalendar
+            value={value}
+            onChange={setValue}
+            selectionMode="single"
+            highlightToday
+            showOutsideDays
+            weekStartsOn={1}
+            locale="zh-CN"
+            fixedGrid
+            className="w-50 rounded-xl border"
+            variant="dark"
+          />
+        </div>
+        {value && value instanceof Date && (
+          <p className="text-gray-600">Selected: {value.toLocaleDateString("zh-CN")}</p>
+        )}
+      </div>
+    )
   },
-  render: (args) => (
-    <SingleSelectDemo
-      {...args}
-      className="w-50 rounded-xl border"
-    />
-  ),
 }
 
 /**
@@ -318,15 +151,49 @@ export const SingleSelect: Story = {
  * - Useful for event scheduling, availability selection, or batch operations.
  */
 export const MultiSelect: Story = {
-  args: {
-    ...Default.args,
+  render: function MultiSelectStory() {
+    const [value, setValue] = useState<CalendarValue>([])
+
+    return (
+      <div className="space-y-4">
+        <div className="grid grid-cols-2 gap-4">
+          <MonthCalendar
+            value={value}
+            onChange={setValue}
+            selectionMode="multiple"
+            highlightToday
+            showOutsideDays
+            weekStartsOn={1}
+            locale="zh-CN"
+            fixedGrid
+            className="w-50 rounded-xl border"
+          />
+          <MonthCalendar
+            value={value}
+            onChange={setValue}
+            selectionMode="multiple"
+            highlightToday
+            showOutsideDays
+            weekStartsOn={1}
+            locale="zh-CN"
+            fixedGrid
+            className="w-50 rounded-xl border"
+            variant="dark"
+          />
+        </div>
+        {Array.isArray(value) && value.length > 0 && (
+          <div className="text-secondary-foreground">
+            <p>Selected date ({value.length}):</p>
+            <ul className="list-inside list-disc">
+              {value.map((date, index) => (
+                <li key={index}>{date.toLocaleDateString("zh-CN")}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+    )
   },
-  render: (args) => (
-    <MultiSelectDemo
-      {...args}
-      className="w-50 rounded-xl border"
-    />
-  ),
 }
 
 /**
@@ -336,15 +203,46 @@ export const MultiSelect: Story = {
  * - Useful for booking systems, vacation planning, or report period selection.
  */
 export const RangeSelect: Story = {
-  args: {
-    ...Default.args,
+  render: function RangeSelectStory() {
+    const [value, setValue] = useState<CalendarValue>(null)
+
+    return (
+      <div className="space-y-4">
+        <div className="grid grid-cols-2 gap-4">
+          <MonthCalendar
+            value={value}
+            onChange={setValue}
+            selectionMode="range"
+            highlightToday
+            showOutsideDays
+            weekStartsOn={1}
+            locale="zh-CN"
+            fixedGrid
+            className="w-50 rounded-xl border"
+          />
+          <MonthCalendar
+            value={value}
+            onChange={setValue}
+            selectionMode="range"
+            highlightToday
+            showOutsideDays
+            weekStartsOn={1}
+            locale="zh-CN"
+            fixedGrid
+            className="w-50 rounded-xl border"
+            variant="dark"
+          />
+        </div>
+        {value && typeof value === "object" && "start" in value && (
+          <div className="text-secondary-foreground">
+            <p>Selected range:</p>
+            <p>Start: {value.start.toLocaleDateString("zh-CN")}</p>
+            <p>End: {value.end.toLocaleDateString("zh-CN")}</p>
+          </div>
+        )}
+      </div>
+    )
   },
-  render: (args) => (
-    <RangeSelectDemo
-      {...args}
-      className="w-50 rounded-xl border"
-    />
-  ),
 }
 
 /**
@@ -354,15 +252,58 @@ export const RangeSelect: Story = {
  * - Useful for availability systems, booking restrictions, or business rule enforcement.
  */
 export const DisabledDates: Story = {
-  args: {
-    ...Default.args,
+  render: function DisabledDatesStory() {
+    const [value, setValue] = useState<CalendarValue>(null)
+
+    const today = new Date()
+    const disabledDates = [
+      new Date(today.getTime() - 24 * 60 * 60 * 1000),
+      new Date(today.getTime() - 2 * 24 * 60 * 60 * 1000),
+      new Date(today.getFullYear(), today.getMonth(), 15),
+      new Date(today.getFullYear(), today.getMonth(), 25),
+    ]
+
+    return (
+      <div className="space-y-4">
+        <div className="grid grid-cols-2 gap-4">
+          <MonthCalendar
+            value={value}
+            onChange={setValue}
+            disabledDates={disabledDates}
+            selectionMode="single"
+            highlightToday
+            showOutsideDays
+            weekStartsOn={1}
+            locale="zh-CN"
+            fixedGrid
+            className="w-50 rounded-xl border"
+          />
+          <MonthCalendar
+            value={value}
+            onChange={setValue}
+            disabledDates={disabledDates}
+            selectionMode="single"
+            highlightToday
+            showOutsideDays
+            weekStartsOn={1}
+            locale="zh-CN"
+            fixedGrid
+            className="w-50 rounded-xl border"
+            variant="dark"
+          />
+        </div>
+        <div className="text-secondary-foreground">
+          <p>
+            Disabled dates include: yesterday, the day before yesterday, the 15th and 25th of each
+            month
+          </p>
+          {value && value instanceof Date && (
+            <p>Selected date: {value.toLocaleDateString("zh-CN")}</p>
+          )}
+        </div>
+      </div>
+    )
   },
-  render: (args) => (
-    <DisabledDatesDemo
-      {...args}
-      className="w-50 rounded-xl border"
-    />
-  ),
 }
 
 /**
@@ -372,15 +313,55 @@ export const DisabledDates: Story = {
  * - Useful for marking holidays, deadlines, important events, or special dates.
  */
 export const HighlightDates: Story = {
-  args: {
-    ...Default.args,
+  render: function HighlightDatesStory() {
+    const [value, setValue] = useState<CalendarValue>(null)
+
+    const today = new Date()
+    const highlightDates = [
+      new Date(today.getFullYear(), today.getMonth(), 1),
+      new Date(today.getFullYear(), today.getMonth(), 10),
+      new Date(today.getFullYear(), today.getMonth(), 20),
+      new Date(today.getFullYear(), today.getMonth(), 30),
+    ]
+
+    return (
+      <div className="space-y-4">
+        <div className="grid grid-cols-2 gap-4">
+          <MonthCalendar
+            value={value}
+            onChange={setValue}
+            highlightDates={highlightDates}
+            selectionMode="single"
+            highlightToday
+            showOutsideDays
+            weekStartsOn={1}
+            locale="zh-CN"
+            fixedGrid
+            className="w-50 rounded-xl border"
+          />
+          <MonthCalendar
+            value={value}
+            onChange={setValue}
+            highlightDates={highlightDates}
+            selectionMode="single"
+            highlightToday
+            showOutsideDays
+            weekStartsOn={1}
+            locale="zh-CN"
+            fixedGrid
+            className="w-50 rounded-xl border"
+            variant="dark"
+          />
+        </div>
+        <div className="text-secondary-foreground">
+          <p>Highlighted dates include: the 1st, 10th, 20th and 30th of each month</p>
+          {value && value instanceof Date && (
+            <p>Selected date: {value.toLocaleDateString("zh-CN")}</p>
+          )}
+        </div>
+      </div>
+    )
   },
-  render: (args) => (
-    <HighlightDatesDemo
-      {...args}
-      className="w-50 rounded-xl border"
-    />
-  ),
 }
 
 /**
@@ -390,16 +371,16 @@ export const HighlightDates: Story = {
  * - Useful for applications requiring specific weekday formatting or branding.
  */
 export const CustomWeekdays: Story = {
-  args: {
-    ...Default.args,
-    weekdayNames: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-    locale: "en-US",
-  },
-  render: (args) => {
+  render: function CustomWeekdaysStory() {
     return (
       <div className="space-y-4">
         <MonthCalendar
-          {...args}
+          highlightToday
+          showOutsideDays
+          weekStartsOn={1}
+          locale="en-US"
+          fixedGrid
+          weekdayNames={["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]}
           className="w-50 rounded-xl border"
         />
         <p className="text-secondary-foreground">
@@ -417,41 +398,50 @@ export const CustomWeekdays: Story = {
  * - Useful for testing international compatibility and understanding localization features.
  */
 export const MultiLanguage: Story = {
-  args: {
-    ...Default.args,
-  },
-  render: (args) => {
+  render: function MultiLanguageStory() {
     return (
       <div className="grid grid-cols-2 gap-4">
         <div>
           <h3 className="font-strong mb-2">中文 (zh-CN)</h3>
           <MonthCalendar
-            {...args}
+            highlightToday
+            showOutsideDays
+            weekStartsOn={1}
             locale="zh-CN"
+            fixedGrid
             className="w-50 rounded-xl border"
           />
         </div>
         <div>
           <h3 className="font-strong mb-2">English (en-US)</h3>
           <MonthCalendar
-            {...args}
+            highlightToday
+            showOutsideDays
+            weekStartsOn={1}
             locale="en-US"
+            fixedGrid
             className="w-50 rounded-xl border"
           />
         </div>
         <div>
           <h3 className="font-strong mb-2">日本語 (ja-JP)</h3>
           <MonthCalendar
-            {...args}
+            highlightToday
+            showOutsideDays
+            weekStartsOn={1}
             locale="ja-JP"
+            fixedGrid
             className="w-50 rounded-xl border"
           />
         </div>
         <div>
           <h3 className="font-strong mb-2">한국어 (ko-KR)</h3>
           <MonthCalendar
-            {...args}
+            highlightToday
+            showOutsideDays
+            weekStartsOn={1}
             locale="ko-KR"
+            fixedGrid
             className="w-50 rounded-xl border"
           />
         </div>
@@ -467,36 +457,43 @@ export const MultiLanguage: Story = {
  * - Useful for accommodating different cultural preferences for week structure.
  */
 export const WeekStartOptions: Story = {
-  args: {
-    ...Default.args,
-    locale: "en-US",
-    showWeekNumbers: true,
-  },
-  render: (args) => {
+  render: function WeekStartOptionsStory() {
     return (
       <div className="space-y-4">
         <div className="grid grid-cols-2 gap-4">
           <div>
             <h3 className="font-strong mb-2">Starts on Sunday (0) + Week Numbers</h3>
             <MonthCalendar
-              {...args}
+              highlightToday
+              showOutsideDays
+              showWeekNumbers
               weekStartsOn={0}
+              locale="en-US"
+              fixedGrid
               className="w-50 rounded-xl border"
             />
           </div>
           <div>
             <h3 className="font-strong mb-2">Starts on Monday (1) + Week Numbers</h3>
             <MonthCalendar
-              {...args}
+              highlightToday
+              showOutsideDays
+              showWeekNumbers
               weekStartsOn={1}
+              locale="en-US"
+              fixedGrid
               className="w-50 rounded-xl border"
             />
           </div>
           <div>
             <h3 className="font-strong mb-2">Starts on Saturday (6) + Week Numbers</h3>
             <MonthCalendar
-              {...args}
+              highlightToday
+              showOutsideDays
+              showWeekNumbers
               weekStartsOn={6}
+              locale="en-US"
+              fixedGrid
               className="w-50 rounded-xl border"
             />
           </div>
@@ -517,15 +514,15 @@ export const WeekStartOptions: Story = {
  * - Useful for space-efficient layouts or when consistent height isn't required.
  */
 export const DynamicRows: Story = {
-  args: {
-    ...Default.args,
-    fixedGrid: false,
-  },
-  render: (args) => {
+  render: function DynamicRowsStory() {
     return (
       <div className="space-y-4">
         <MonthCalendar
-          {...args}
+          highlightToday
+          showOutsideDays
+          weekStartsOn={1}
+          locale="zh-CN"
+          fixedGrid={false}
           className="w-50 rounded-xl border"
         />
         <p className="text-secondary-foreground">
@@ -537,77 +534,74 @@ export const DynamicRows: Story = {
   },
 }
 
-// 统一接口示例组件
-const UnifiedInterfaceExample = () => {
-  const [singleValue, setSingleValue] = useState<CalendarValue>(new Date())
-  const [multiValue, setMultiValue] = useState<CalendarValue>([
-    new Date(),
-    new Date(Date.now() + 86400000),
-  ])
-  const [rangeValue, setRangeValue] = useState<CalendarValue>({
-    start: new Date(),
-    end: new Date(Date.now() + 7 * 86400000),
-  })
-
-  return (
-    <div className="grid grid-cols-2 gap-4">
-      <div>
-        <h3 className="text-body-large-strong mb-4">Single Select</h3>
-        <MonthCalendar
-          value={singleValue}
-          onChange={setSingleValue}
-          selectionMode="single"
-          className="w-50 rounded-xl border"
-        />
-        <p className="text-secondary-foreground mt-2">
-          Selected: {singleValue instanceof Date ? singleValue.toLocaleDateString() : "None"}
-        </p>
-      </div>
-
-      <div>
-        <h3 className="text-body-large-strong mb-4">Multi Select</h3>
-        <MonthCalendar
-          value={multiValue}
-          onChange={setMultiValue}
-          selectionMode="multiple"
-          className="w-50 rounded-xl border"
-        />
-        <p className="text-secondary-foreground mt-2">
-          Selected: {Array.isArray(multiValue) ? `${multiValue.length} dates` : "None"}
-        </p>
-      </div>
-
-      <div>
-        <h3 className="text-body-large-strong mb-4">Range Select</h3>
-        <MonthCalendar
-          value={rangeValue}
-          onChange={setRangeValue}
-          selectionMode="range"
-          className="w-50 rounded-xl border"
-        />
-        <p className="text-secondary-foreground mt-2">
-          Selected range:{" "}
-          {rangeValue && typeof rangeValue === "object" && "start" in rangeValue
-            ? `${rangeValue.start.toLocaleDateString()} - ${rangeValue.end.toLocaleDateString()}`
-            : "None"}
-        </p>
-      </div>
-    </div>
-  )
-}
-
 /**
  * UnifiedInterface: Demonstrates all three selection modes with unified interface.
  * - Shows single, multiple, and range selection modes side by side.
  * - Displays how the same component API handles different selection types.
  * - Useful for understanding the component's versatility and selection mode differences.
  */
-export const UnifiedInterface: StoryObj<typeof MonthCalendar> = {
-  render: () => <UnifiedInterfaceExample />,
+export const UnifiedInterface: Story = {
+  render: function UnifiedInterfaceStory() {
+    const [singleValue, setSingleValue] = useState<CalendarValue>(new Date())
+    const [multiValue, setMultiValue] = useState<CalendarValue>([
+      new Date(),
+      new Date(Date.now() + 86400000),
+    ])
+    const [rangeValue, setRangeValue] = useState<CalendarValue>({
+      start: new Date(),
+      end: new Date(Date.now() + 7 * 86400000),
+    })
+
+    return (
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <h3 className="text-body-large-strong mb-4">Single Select</h3>
+          <MonthCalendar
+            value={singleValue}
+            onChange={setSingleValue}
+            selectionMode="single"
+            className="w-50 rounded-xl border"
+          />
+          <p className="text-secondary-foreground mt-2">
+            Selected: {singleValue instanceof Date ? singleValue.toLocaleDateString() : "None"}
+          </p>
+        </div>
+
+        <div>
+          <h3 className="text-body-large-strong mb-4">Multi Select</h3>
+          <MonthCalendar
+            value={multiValue}
+            onChange={setMultiValue}
+            selectionMode="multiple"
+            className="w-50 rounded-xl border"
+          />
+          <p className="text-secondary-foreground mt-2">
+            Selected: {Array.isArray(multiValue) ? `${multiValue.length} dates` : "None"}
+          </p>
+        </div>
+
+        <div>
+          <h3 className="text-body-large-strong mb-4">Range Select</h3>
+          <MonthCalendar
+            value={rangeValue}
+            onChange={setRangeValue}
+            selectionMode="range"
+            className="w-50 rounded-xl border"
+          />
+          <p className="text-secondary-foreground mt-2">
+            Selected range:{" "}
+            {rangeValue && typeof rangeValue === "object" && "start" in rangeValue
+              ? `${rangeValue.start.toLocaleDateString()} - ${rangeValue.end.toLocaleDateString()}`
+              : "None"}
+          </p>
+        </div>
+      </div>
+    )
+  },
 }
 
 /**
- * ReadOnly: Demonstrates the MonthCalendar component in readOnly mode.
+ * [TEST] ReadOnly: Demonstrates the MonthCalendar component in readOnly mode.
  * - Prevents value changes while allowing focus and navigation
  * - Maintains normal visual appearance (unlike disabled)
  * - Useful for displaying non-editable calendar information
@@ -648,8 +642,8 @@ export const ReadOnly: Story = {
           />
         </div>
         <div className="text-body-small text-stone-600">
-          💡 Try clicking dates on the readonly calendar - the value should not change and the
-          change count should remain at 0. Only the normal calendar will change the value.
+          Try clicking dates on the readonly calendar - the value should not change and the change
+          count should remain at 0. Only the normal calendar will change the value.
         </div>
       </div>
     )

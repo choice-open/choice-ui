@@ -31,7 +31,7 @@ interface MenusComponentProps extends React.ForwardRefExoticComponent<
 }
 
 export const MenusBase = forwardRef<HTMLDivElement, MenusProps>((props, ref) => {
-  const { children, className, matchTriggerWidth, variant, ...rest } = props
+  const { children, className, matchTriggerWidth, variant = "default", ...rest } = props
 
   const tv = MenusTv({ matchTriggerWidth, variant })
 

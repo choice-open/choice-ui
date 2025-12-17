@@ -1,73 +1,13 @@
-import type { TimeCalendarProps } from "@choice-ui/react"
-import { createTimeToday, TimeCalendar } from "@choice-ui/react"
+import {
+  Button,
+  createTimeToday,
+  IconButton,
+  TimeCalendar,
+  TimeInput,
+} from "@choice-ui/react"
+import { ChevronDownSmall } from "@choiceform/icons-react"
 import type { Meta, StoryObj } from "@storybook/react-vite"
-import { useState } from "react"
-
-// 辅助组件
-const SingleColumnDemo = (args: TimeCalendarProps) => {
-  const [time, setTime] = useState<Date | null>(createTimeToday(0, 30))
-
-  return (
-    <div className="space-y-4">
-      <TimeCalendar
-        {...args}
-        value={time}
-        onChange={setTime}
-        className="h-64"
-      />
-      <div className="text-secondary-foreground">
-        Selected time:{" "}
-        {time
-          ? time.toLocaleTimeString("zh-CN", {
-              hour: "2-digit",
-              minute: "2-digit",
-            })
-          : "None"}
-      </div>
-    </div>
-  )
-}
-
-const SpecialValueDemo = (args: TimeCalendarProps) => {
-  const [time, setTime] = useState<Date | null>(createTimeToday(14, 37)) // 不在15分钟步进中的值
-
-  return (
-    <div className="space-y-4">
-      <TimeCalendar
-        {...args}
-        value={time}
-        onChange={setTime}
-        className="h-64"
-      />
-      <div className="text-secondary-foreground">
-        Selected time:{" "}
-        {time
-          ? time.toLocaleTimeString("zh-CN", {
-              hour: "2-digit",
-              minute: "2-digit",
-            })
-          : "None"}
-        <br />
-        <span className="text-orange-600">
-          Note: 14:37 is not in the 15-minute step range, but it will still be displayed in the list
-        </span>
-      </div>
-    </div>
-  )
-}
-
-const UncontrolledDemo = (args: TimeCalendarProps) => {
-  return (
-    <div className="space-y-4">
-      <TimeCalendar
-        {...args}
-        defaultValue={createTimeToday(10, 45)}
-        className="h-64"
-      />
-      <div className="text-secondary-foreground">Uncontrolled mode, default value: 10:45</div>
-    </div>
-  )
-}
+import { useRef, useState } from "react"
 
 const meta: Meta<typeof TimeCalendar> = {
   title: "DateAndTime/TimeCalendar",
@@ -121,11 +61,26 @@ type Story = StoryObj<typeof meta>
  * - Shows selected time display and state management.
  */
 export const Default: Story = {
-  args: {
-    format: "HH:mm",
-    step: 15,
+  render: function DefaultStory() {
+    const [time, setTime] = useState<Date | null>(createTimeToday(0, 30))
+
+    const formatTime = (t: Date | null) =>
+      t ? t.toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit" }) : "Select time"
+
+    return (
+      <div className="space-y-4">
+        <TimeCalendar
+          value={time}
+          onChange={setTime}
+          format="HH:mm"
+          step={15}
+        >
+          <TimeCalendar.Trigger>{formatTime(time)}</TimeCalendar.Trigger>
+        </TimeCalendar>
+        <div className="text-secondary-foreground">Selected time: {formatTime(time)}</div>
+      </div>
+    )
   },
-  render: (args) => <SingleColumnDemo {...args} />,
 }
 
 /**
@@ -135,11 +90,26 @@ export const Default: Story = {
  * - Useful for applications targeting US users or 12-hour time preferences.
  */
 export const TwelveHourFormat: Story = {
-  args: {
-    format: "h:mm a",
-    step: 15,
+  render: function TwelveHourFormatStory() {
+    const [time, setTime] = useState<Date | null>(createTimeToday(0, 30))
+
+    const formatTime = (t: Date | null) =>
+      t ? t.toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit" }) : "Select time"
+
+    return (
+      <div className="space-y-4">
+        <TimeCalendar
+          value={time}
+          onChange={setTime}
+          format="h:mm a"
+          step={15}
+        >
+          <TimeCalendar.Trigger>{formatTime(time)}</TimeCalendar.Trigger>
+        </TimeCalendar>
+        <div className="text-secondary-foreground">Selected time: {formatTime(time)}</div>
+      </div>
+    )
   },
-  render: (args) => <SingleColumnDemo {...args} />,
 }
 
 /**
@@ -149,11 +119,26 @@ export const TwelveHourFormat: Story = {
  * - Reduces list length for faster navigation in broad time ranges.
  */
 export const CustomSteps: Story = {
-  args: {
-    format: "HH:mm",
-    step: 30,
+  render: function CustomStepsStory() {
+    const [time, setTime] = useState<Date | null>(createTimeToday(0, 30))
+
+    const formatTime = (t: Date | null) =>
+      t ? t.toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit" }) : "Select time"
+
+    return (
+      <div className="space-y-4">
+        <TimeCalendar
+          value={time}
+          onChange={setTime}
+          format="HH:mm"
+          step={30}
+        >
+          <TimeCalendar.Trigger>{formatTime(time)}</TimeCalendar.Trigger>
+        </TimeCalendar>
+        <div className="text-secondary-foreground">Selected time: {formatTime(time)}</div>
+      </div>
+    )
   },
-  render: (args) => <SingleColumnDemo {...args} />,
 }
 
 /**
@@ -163,11 +148,26 @@ export const CustomSteps: Story = {
  * - Provides more granular control over time selection.
  */
 export const PreciseMinutes: Story = {
-  args: {
-    format: "HH:mm",
-    step: 5,
+  render: function PreciseMinutesStory() {
+    const [time, setTime] = useState<Date | null>(createTimeToday(0, 30))
+
+    const formatTime = (t: Date | null) =>
+      t ? t.toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit" }) : "Select time"
+
+    return (
+      <div className="space-y-4">
+        <TimeCalendar
+          value={time}
+          onChange={setTime}
+          format="HH:mm"
+          step={5}
+        >
+          <TimeCalendar.Trigger>{formatTime(time)}</TimeCalendar.Trigger>
+        </TimeCalendar>
+        <div className="text-secondary-foreground">Selected time: {formatTime(time)}</div>
+      </div>
+    )
   },
-  render: (args) => <SingleColumnDemo {...args} />,
 }
 
 /**
@@ -177,11 +177,33 @@ export const PreciseMinutes: Story = {
  * - Useful for understanding flexible time value handling.
  */
 export const SpecialValue: Story = {
-  args: {
-    format: "HH:mm",
-    step: 15,
+  render: function SpecialValueStory() {
+    const [time, setTime] = useState<Date | null>(createTimeToday(14, 37))
+
+    const formatTime = (t: Date | null) =>
+      t ? t.toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit" }) : "Select time"
+
+    return (
+      <div className="space-y-4">
+        <TimeCalendar
+          value={time}
+          onChange={setTime}
+          format="HH:mm"
+          step={15}
+        >
+          <TimeCalendar.Trigger>{formatTime(time)}</TimeCalendar.Trigger>
+        </TimeCalendar>
+        <div className="text-secondary-foreground">
+          Selected time: {formatTime(time)}
+          <br />
+          <span className="text-orange-600">
+            Note: 14:37 is not in the 15-minute step range, but it will still be displayed in the
+            list
+          </span>
+        </div>
+      </div>
+    )
   },
-  render: (args) => <SpecialValueDemo {...args} />,
 }
 
 /**
@@ -191,15 +213,119 @@ export const SpecialValue: Story = {
  * - Demonstrates internal state handling and default value setting.
  */
 export const Uncontrolled: Story = {
-  args: {
-    format: "HH:mm",
-    step: 15,
+  render: function UncontrolledStory() {
+    const [displayTime, setDisplayTime] = useState<Date | null>(createTimeToday(10, 45))
+
+    const formatTime = (t: Date | null) =>
+      t ? t.toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit" }) : "Select time"
+
+    return (
+      <div className="space-y-4">
+        <TimeCalendar
+          defaultValue={createTimeToday(10, 45)}
+          onChange={setDisplayTime}
+          format="HH:mm"
+          step={15}
+        >
+          <TimeCalendar.Trigger>{formatTime(displayTime)}</TimeCalendar.Trigger>
+        </TimeCalendar>
+        <div className="text-secondary-foreground">Uncontrolled mode, default value: 10:45</div>
+      </div>
+    )
   },
-  render: (args) => <UncontrolledDemo {...args} />,
 }
 
 /**
- * ReadOnly: Demonstrates the TimeCalendar component in readOnly mode.
+ * TriggerRef: Demonstrates using an external trigger element via triggerRef.
+ * - Shows how to use triggerRef to connect an external button to TimeCalendar.
+ * - Useful when the trigger element is outside the TimeCalendar component.
+ * - The dropdown will position relative to the referenced element.
+ */
+export const TriggerRef: Story = {
+  render: function TriggerRefStory() {
+    const [time, setTime] = useState<Date | null>(createTimeToday(9, 0))
+    const triggerRef = useRef<HTMLButtonElement>(null)
+
+    const formatTime = (t: Date | null) =>
+      t ? t.toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit" }) : "Select time"
+
+    return (
+      <div className="space-y-4">
+        <Button ref={triggerRef}>{formatTime(time)}</Button>
+        <TimeCalendar
+          value={time}
+          onChange={setTime}
+          triggerRef={triggerRef}
+          format="HH:mm"
+          step={15}
+        />
+        <div className="text-secondary-foreground">
+          Using triggerRef pattern - trigger is external to TimeCalendar
+        </div>
+      </div>
+    )
+  },
+}
+
+/**
+ * WithTimeInput: TimeInput as trigger with focus-to-open behavior.
+ * - TimeInput and TimeCalendar share the same value state
+ * - Dropdown opens on TimeInput focus
+ * - Selecting from dropdown updates TimeInput value
+ * - Typing in TimeInput updates the selected time
+ */
+export const WithTimeInput: Story = {
+  render: function WithTimeInputStory() {
+    const [time, setTime] = useState<Date | null>(createTimeToday(14, 30))
+    const [open, setOpen] = useState(false)
+    const triggerRef = useRef<HTMLButtonElement>(null)
+
+    const formatTime = (t: Date | null) =>
+      t ? t.toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit" }) : "Select time"
+
+    return (
+      <div className="flex flex-col gap-4">
+        <div className="relative">
+          <TimeInput
+            value={time}
+            onChange={setTime}
+            format="HH:mm"
+            className="w-40"
+            selected={open}
+            suffixElement={
+              <div className="-mr-2 p-1">
+                <IconButton
+                  className="size-4 rounded-sm"
+                  ref={triggerRef}
+                  active={open}
+                >
+                  <ChevronDownSmall />
+                </IconButton>
+              </div>
+            }
+          />
+          <TimeCalendar
+            value={time}
+            onChange={setTime}
+            format="HH:mm"
+            step={15}
+            open={open}
+            onOpenChange={setOpen}
+            triggerRef={triggerRef}
+            closeOnSelect={false}
+          />
+        </div>
+        <div className="text-secondary-foreground">Selected: {formatTime(time)}</div>
+        <div className="text-body-small text-stone-500">
+          Click the dropdown icon to open. Type or select from list.
+        </div>
+      </div>
+    )
+  },
+}
+
+/**
+ * [TEST] ReadOnly: Demonstrates the TimeCalendar component in readOnly mode.
  * - Prevents value changes while allowing focus and scrolling
  * - Maintains normal visual appearance (unlike disabled)
  * - Useful for displaying non-editable time information
@@ -208,6 +334,9 @@ export const ReadOnly: Story = {
   render: function ReadOnlyStory() {
     const [value, setValue] = useState<Date | null>(new Date(2024, 0, 1, 14, 30))
     const [changeCount, setChangeCount] = useState(0)
+
+    const formatTime = (t: Date | null) =>
+      t ? t.toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit" }) : "Select time"
 
     const handleChange = (newValue: Date | null) => {
       setValue(newValue)
@@ -231,17 +360,29 @@ export const ReadOnly: Story = {
             onChange={handleChange}
             format="HH:mm"
             step={15}
-          />
+          >
+            <TimeCalendar.Trigger>
+              <button className="rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-white hover:bg-white/10">
+                {formatTime(value)} (ReadOnly)
+              </button>
+            </TimeCalendar.Trigger>
+          </TimeCalendar>
           <TimeCalendar
             value={value}
             onChange={handleChange}
             format="HH:mm"
             step={15}
-          />
+          >
+            <TimeCalendar.Trigger>
+              <button className="rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-white hover:bg-white/10">
+                {formatTime(value)} (Editable)
+              </button>
+            </TimeCalendar.Trigger>
+          </TimeCalendar>
         </div>
         <div className="text-body-small text-stone-600">
-          💡 Try clicking time options on the readonly calendar - the value should not change and
-          the change count should remain at 0. Only the normal calendar will change the value.
+          Try clicking time options on the readonly calendar - the value should not change and the
+          change count should remain at 0. Only the normal calendar will change the value.
         </div>
       </div>
     )

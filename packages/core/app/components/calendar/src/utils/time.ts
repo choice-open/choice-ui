@@ -389,7 +389,7 @@ export const generateTimeOptions = (format: TimeDataFormat, step: number = 15) =
 
     if (is12Hour) {
       const displayHour = hours === 0 ? 12 : hours > 12 ? hours - 12 : hours
-      const ampm = hours < 12 ? "AM" : "PM"
+      const ampm = hours < 12 ? "am" : "pm"
       const value = `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`
       const label = `${displayHour}:${minutes.toString().padStart(2, "0")} ${ampm}`
       options.push({ value, label })

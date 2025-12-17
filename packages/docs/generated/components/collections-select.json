@@ -3,7 +3,7 @@
   "title": "Select",
   "package": {
     "name": "@choice-ui/select",
-    "version": "0.0.11",
+    "version": "0.0.12",
     "description": "A select dropdown component for choosing a single option from a list of choices",
     "dependencies": {
       "@choice-ui/shared": "workspace:*",

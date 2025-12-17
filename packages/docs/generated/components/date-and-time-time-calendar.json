@@ -7,9 +7,9 @@
     "description": "A calendar component for date selection with support for single, range, and multiple date picking",
     "dependencies": {
       "@choice-ui/shared": "workspace:*",
+      "@choice-ui/dropdown": "workspace:*",
       "@choice-ui/icon-button": "workspace:*",
       "@choiceform/icons-react": "^1.3.8",
-      "@choice-ui/menus": "workspace:*",
       "@choice-ui/text-field": "workspace:*",
       "@date-fns/tz": "^1.2.0",
       "date-fns": "^4.1.0",
@@ -611,10 +611,16 @@
       "description": "",
       "props": [
         {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Custom trigger element. Use Dropdown.Trigger as wrapper"
+        },
+        {
           "name": "className",
           "type": "string | undefined",
           "required": false,
-          "description": "Custom class name"
+          "description": "Custom class name for dropdown content"
         },
         {
           "name": "hourStep",
@@ -627,6 +633,36 @@
           "type": "number | undefined",
           "required": false,
           "description": "Minute step, default 15 minutes"
+        },
+        {
+          "name": "open",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": "Whether the dropdown is open (controlled)"
+        },
+        {
+          "name": "onOpenChange",
+          "type": "((open: boolean) => void) | undefined",
+          "required": false,
+          "description": "Callback when open state changes"
+        },
+        {
+          "name": "closeOnSelect",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": "Whether to close dropdown after selection"
+        },
+        {
+          "name": "triggerRef",
+          "type": "RefObject<HTMLElement> | undefined",
+          "required": false,
+          "description": "External trigger element ref"
+        },
+        {
+          "name": "triggerSelector",
+          "type": "string | undefined",
+          "required": false,
+          "description": "CSS selector for external trigger element"
         },
         {
           "name": "defaultValue",
@@ -1807,49 +1843,56 @@
       "name": "Default",
       "exportName": "Default",
       "description": "`TimeCalendar` is a specialized calendar component for time selection with customizable time steps and formats.\n\nFeatures:\n- Scrollable time list with configurable step intervals (1, 5, 15, 30 minutes)\n- Support for both 12-hour and 24-hour time formats\n- Intelligent handling of values outside step ranges\n- Smooth scrolling and keyboard navigation\n- Controlled and uncontrolled modes\n- Customizable time format strings\n- Compact vertical layout optimized for popovers\n- Accessibility support with proper ARIA labels\n- Today's current time highlighting\n\nUsage:\n- Use in time picker popovers and dropdowns\n- Ideal for scheduling applications and time-based forms\n- Combine with time input components for complete time selection\n- Perfect for appointment booking and event scheduling\n\nBest Practices:\n- Choose appropriate step intervals based on use case precision\n- Use 24-hour format for international applications\n- Consider 12-hour format for US-focused applications\n- Provide reasonable default values for better UX\n\nAccessibility:\n- Full keyboard navigation with arrow keys and page up/down\n- Screen reader friendly with proper time announcements\n- Focus management and proper ARIA roles\n- High contrast support for all time entries\nDefault: Shows the basic TimeCalendar with 24-hour format and 15-minute steps.\n- Demonstrates standard time selection with scrollable list interface.\n- Uses 24-hour format (HH:mm) with 15-minute intervals.\n- Shows selected time display and state management.",
-      "source": "import { MonthCalendar } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <SingleColumnDemo {...args} />\n  );\n}"
+      "source": "import { TimeCalendar, createTimeToday } from \"@choice-ui/calendar\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [time, setTime] = useState<Date | null>(createTimeToday(0, 30))\n\n  const formatTime = (t: Date | null) =>\n    t ? t.toLocaleTimeString(\"zh-CN\", { hour: \"2-digit\", minute: \"2-digit\" }) : \"Select time\"\n\n  return (\n    <div className=\"space-y-4\">\n      <TimeCalendar\n        value={time}\n        onChange={setTime}\n        format=\"HH:mm\"\n        step={15}\n      >\n        <TimeCalendar.Trigger>{formatTime(time)}</TimeCalendar.Trigger>\n      </TimeCalendar>\n      <div className=\"text-secondary-foreground\">Selected time: {formatTime(time)}</div>\n    </div>\n  )\n\n}"
     },
     {
       "id": "dateandtime-timecalendar--twelve-hour-format",
       "name": "Twelve Hour Format",
       "exportName": "TwelveHourFormat",
       "description": "TwelveHourFormat: Demonstrates 12-hour time format with AM/PM indicators.\n- Shows time selection using 12-hour format with AM/PM suffix.\n- Maintains 15-minute step intervals in 12-hour display.\n- Useful for applications targeting US users or 12-hour time preferences.",
-      "source": "import { MonthCalendar } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <SingleColumnDemo {...args} />\n  );\n}"
+      "source": "import { TimeCalendar, createTimeToday } from \"@choice-ui/calendar\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [time, setTime] = useState<Date | null>(createTimeToday(0, 30))\n\n  const formatTime = (t: Date | null) =>\n    t ? t.toLocaleTimeString(\"zh-CN\", { hour: \"2-digit\", minute: \"2-digit\" }) : \"Select time\"\n\n  return (\n    <div className=\"space-y-4\">\n      <TimeCalendar\n        value={time}\n        onChange={setTime}\n        format=\"h:mm a\"\n        step={15}\n      >\n        <TimeCalendar.Trigger>{formatTime(time)}</TimeCalendar.Trigger>\n      </TimeCalendar>\n      <div className=\"text-secondary-foreground\">Selected time: {formatTime(time)}</div>\n    </div>\n  )\n\n}"
     },
     {
       "id": "dateandtime-timecalendar--custom-steps",
       "name": "Custom Steps",
       "exportName": "CustomSteps",
       "description": "CustomSteps: Demonstrates 30-minute step intervals for broader time selection.\n- Shows time selection with 30-minute intervals instead of default 15-minute.\n- Useful for applications with less precise time requirements.\n- Reduces list length for faster navigation in broad time ranges.",
-      "source": "import { MonthCalendar } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <SingleColumnDemo {...args} />\n  );\n}"
+      "source": "import { TimeCalendar, createTimeToday } from \"@choice-ui/calendar\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [time, setTime] = useState<Date | null>(createTimeToday(0, 30))\n\n  const formatTime = (t: Date | null) =>\n    t ? t.toLocaleTimeString(\"zh-CN\", { hour: \"2-digit\", minute: \"2-digit\" }) : \"Select time\"\n\n  return (\n    <div className=\"space-y-4\">\n      <TimeCalendar\n        value={time}\n        onChange={setTime}\n        format=\"HH:mm\"\n        step={30}\n      >\n        <TimeCalendar.Trigger>{formatTime(time)}</TimeCalendar.Trigger>\n      </TimeCalendar>\n      <div className=\"text-secondary-foreground\">Selected time: {formatTime(time)}</div>\n    </div>\n  )\n\n}"
     },
     {
       "id": "dateandtime-timecalendar--precise-minutes",
       "name": "Precise Minutes",
       "exportName": "PreciseMinutes",
       "description": "PreciseMinutes: Demonstrates 5-minute step intervals for precise time selection.\n- Shows time selection with 5-minute intervals for high precision.\n- Ideal for applications requiring detailed time scheduling.\n- Provides more granular control over time selection.",
-      "source": "import { MonthCalendar } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <SingleColumnDemo {...args} />\n  );\n}"
+      "source": "import { TimeCalendar, createTimeToday } from \"@choice-ui/calendar\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [time, setTime] = useState<Date | null>(createTimeToday(0, 30))\n\n  const formatTime = (t: Date | null) =>\n    t ? t.toLocaleTimeString(\"zh-CN\", { hour: \"2-digit\", minute: \"2-digit\" }) : \"Select time\"\n\n  return (\n    <div className=\"space-y-4\">\n      <TimeCalendar\n        value={time}\n        onChange={setTime}\n        format=\"HH:mm\"\n        step={5}\n      >\n        <TimeCalendar.Trigger>{formatTime(time)}</TimeCalendar.Trigger>\n      </TimeCalendar>\n      <div className=\"text-secondary-foreground\">Selected time: {formatTime(time)}</div>\n    </div>\n  )\n\n}"
     },
     {
       "id": "dateandtime-timecalendar--special-value",
       "name": "Special Value",
       "exportName": "SpecialValue",
       "description": "SpecialValue: Demonstrates handling of times outside the configured step range.\n- Shows how the component handles 14:37 with 15-minute steps.\n- Displays special values that don't align with step intervals.\n- Useful for understanding flexible time value handling.",
-      "source": "import { MonthCalendar } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <SpecialValueDemo {...args} />\n  );\n}"
+      "source": "import { TimeCalendar, createTimeToday } from \"@choice-ui/calendar\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [time, setTime] = useState<Date | null>(createTimeToday(14, 37))\n\n  const formatTime = (t: Date | null) =>\n    t ? t.toLocaleTimeString(\"zh-CN\", { hour: \"2-digit\", minute: \"2-digit\" }) : \"Select time\"\n\n  return (\n    <div className=\"space-y-4\">\n      <TimeCalendar\n        value={time}\n        onChange={setTime}\n        format=\"HH:mm\"\n        step={15}\n      >\n        <TimeCalendar.Trigger>{formatTime(time)}</TimeCalendar.Trigger>\n      </TimeCalendar>\n      <div className=\"text-secondary-foreground\">\n        Selected time: {formatTime(time)}\n        <br />\n        <span className=\"text-orange-600\">\n          Note: 14:37 is not in the 15-minute step range, but it will still be displayed in the\n          list\n        </span>\n      </div>\n    </div>\n  )\n\n}"
     },
     {
       "id": "dateandtime-timecalendar--uncontrolled",
       "name": "Uncontrolled",
       "exportName": "Uncontrolled",
       "description": "Uncontrolled: Demonstrates uncontrolled mode with default value.\n- Shows TimeCalendar operating in uncontrolled mode with defaultValue.\n- Useful for simple implementations without external state management.\n- Demonstrates internal state handling and default value setting.",
-      "source": "import { MonthCalendar } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <UncontrolledDemo {...args} />\n  );\n}"
+      "source": "import { TimeCalendar, createTimeToday } from \"@choice-ui/calendar\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [displayTime, setDisplayTime] = useState<Date | null>(createTimeToday(10, 45))\n\n  const formatTime = (t: Date | null) =>\n    t ? t.toLocaleTimeString(\"zh-CN\", { hour: \"2-digit\", minute: \"2-digit\" }) : \"Select time\"\n\n  return (\n    <div className=\"space-y-4\">\n      <TimeCalendar\n        defaultValue={createTimeToday(10, 45)}\n        onChange={setDisplayTime}\n        format=\"HH:mm\"\n        step={15}\n      >\n        <TimeCalendar.Trigger>{formatTime(displayTime)}</TimeCalendar.Trigger>\n      </TimeCalendar>\n      <div className=\"text-secondary-foreground\">Uncontrolled mode, default value: 10:45</div>\n    </div>\n  )\n\n}"
     },
     {
-      "id": "dateandtime-timecalendar--read-only",
-      "name": "Read Only",
-      "exportName": "ReadOnly",
-      "description": "ReadOnly: Demonstrates the TimeCalendar component in readOnly mode.\n- Prevents value changes while allowing focus and scrolling\n- Maintains normal visual appearance (unlike disabled)\n- Useful for displaying non-editable time information",
-      "source": "import { TimeCalendar } from \"@choice-ui/calendar\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [value, setValue] = useState<Date | null>(new Date(2024, 0, 1, 14, 30))\n  const [changeCount, setChangeCount] = useState(0)\n\n  const handleChange = (newValue: Date | null) => {\n    setValue(newValue)\n    setChangeCount((prev) => prev + 1)\n  }\n\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <div className=\"rounded-xl border bg-stone-50 p-4\">\n        <div className=\"text-body-small-strong mb-2 text-stone-700\">Current Value:</div>\n        <div className=\"text-body-small font-mono text-stone-600\">\n          {value ? value.toLocaleTimeString() : \"null\"}\n        </div>\n        <div className=\"text-body-small-strong mt-2 text-stone-700\">Change Count:</div>\n        <div className=\"text-body-small font-mono text-stone-600\">{changeCount}</div>\n      </div>\n      <div className=\"grid grid-cols-2 gap-4\">\n        <TimeCalendar\n          readOnly\n          value={value}\n          onChange={handleChange}\n          format=\"HH:mm\"\n          step={15}\n        />\n        <TimeCalendar\n          value={value}\n          onChange={handleChange}\n          format=\"HH:mm\"\n          step={15}\n        />\n      </div>\n      <div className=\"text-body-small text-stone-600\">\n        💡 Try clicking time options on the readonly calendar - the value should not change and\n        the change count should remain at 0. Only the normal calendar will change the value.\n      </div>\n    </div>\n  )\n\n}"
+      "id": "dateandtime-timecalendar--trigger-ref",
+      "name": "Trigger Ref",
+      "exportName": "TriggerRef",
+      "description": "TriggerRef: Demonstrates using an external trigger element via triggerRef.\n- Shows how to use triggerRef to connect an external button to TimeCalendar.\n- Useful when the trigger element is outside the TimeCalendar component.\n- The dropdown will position relative to the referenced element.",
+      "source": "import { TimeCalendar, createTimeToday } from \"@choice-ui/calendar\"\nimport { useState, useRef } from \"react\"\n\nexport default function App() {\n\n  const [time, setTime] = useState<Date | null>(createTimeToday(9, 0))\n  const triggerRef = useRef<HTMLButtonElement>(null)\n\n  const formatTime = (t: Date | null) =>\n    t ? t.toLocaleTimeString(\"zh-CN\", { hour: \"2-digit\", minute: \"2-digit\" }) : \"Select time\"\n\n  return (\n    <div className=\"space-y-4\">\n      <Button ref={triggerRef}>{formatTime(time)}</Button>\n      <TimeCalendar\n        value={time}\n        onChange={setTime}\n        triggerRef={triggerRef}\n        format=\"HH:mm\"\n        step={15}\n      />\n      <div className=\"text-secondary-foreground\">\n        Using triggerRef pattern - trigger is external to TimeCalendar\n      </div>\n    </div>\n  )\n\n}"
+    },
+    {
+      "id": "dateandtime-timecalendar--with-time-input",
+      "name": "With Time Input",
+      "exportName": "WithTimeInput",
+      "description": "WithTimeInput: TimeInput as trigger with focus-to-open behavior.\n- TimeInput and TimeCalendar share the same value state\n- Dropdown opens on TimeInput focus\n- Selecting from dropdown updates TimeInput value\n- Typing in TimeInput updates the selected time",
+      "source": "import { TimeCalendar, TimeInput, createTimeToday } from \"@choice-ui/calendar\"\nimport { useState, useRef } from \"react\"\n\nexport default function App() {\n\n  const [time, setTime] = useState<Date | null>(createTimeToday(14, 30))\n  const [open, setOpen] = useState(false)\n  const triggerRef = useRef<HTMLButtonElement>(null)\n\n  const formatTime = (t: Date | null) =>\n    t ? t.toLocaleTimeString(\"zh-CN\", { hour: \"2-digit\", minute: \"2-digit\" }) : \"Select time\"\n\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <div className=\"relative\">\n        <TimeInput\n          value={time}\n          onChange={setTime}\n          format=\"HH:mm\"\n          className=\"w-40\"\n          selected={open}\n          suffixElement={\n            <div className=\"-mr-2 p-1\">\n              <IconButton\n                className=\"size-4 rounded-sm\"\n                ref={triggerRef}\n                active={open}\n              >\n                <ChevronDownSmall />\n              </IconButton>\n            </div>\n          }\n        />\n        <TimeCalendar\n          value={time}\n          onChange={setTime}\n          format=\"HH:mm\"\n          step={15}\n          open={open}\n          onOpenChange={setOpen}\n          triggerRef={triggerRef}\n          closeOnSelect={false}\n        />\n      </div>\n      <div className=\"text-secondary-foreground\">Selected: {formatTime(time)}</div>\n      <div className=\"text-body-small text-stone-500\">\n        Click the dropdown icon to open. Type or select from list.\n      </div>\n    </div>\n  )\n\n}"
     }
   ],
   "tags": [
