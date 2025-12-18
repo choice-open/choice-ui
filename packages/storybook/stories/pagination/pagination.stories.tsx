@@ -51,7 +51,7 @@ const PaginationWrapper = (props: Partial<PaginationRootProps> & { totalItems: n
  * - `itemsPerPage`: Number of items displayed per page
  * - `onPageChange`: Callback when page changes
  */
-export const Default: Story = {
+export const Basic: Story = {
   render: () => <PaginationWrapper totalItems={100} />,
 }
 

@@ -13,9 +13,9 @@
   "props": [],
   "stories": [
     {
-      "id": "utils-date-formatting--live-demo",
-      "name": "Live Demo",
-      "exportName": "LiveDemo",
+      "id": "utils-date-formatting--basic",
+      "name": "Basic",
+      "exportName": "Basic",
       "description": "",
       "source": ""
     },

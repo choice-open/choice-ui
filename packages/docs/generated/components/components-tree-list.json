@@ -824,9 +824,9 @@
   ],
   "stories": [
     {
-      "id": "components-treelist--comprehensive",
-      "name": "Comprehensive",
-      "exportName": "Comprehensive",
+      "id": "components-treelist--basic",
+      "name": "Basic",
+      "exportName": "Basic",
       "description": "",
       "source": "import { TreeList } from \"@choice-ui/tree-list\"\n\nexport default function App() {\n  return (\n    <ComprehensiveTreeList />\n  );\n}"
     },

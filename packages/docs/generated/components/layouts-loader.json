@@ -97,9 +97,9 @@
   ],
   "stories": [
     {
-      "id": "layouts-loader--default",
-      "name": "Default",
-      "exportName": "Default",
+      "id": "layouts-loader--basic",
+      "name": "Basic",
+      "exportName": "Basic",
       "description": "",
       "source": ""
     },

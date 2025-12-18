@@ -300,8 +300,8 @@ const Sortable = observer(function Sortable({
   )
 })
 
-export const SingleItem: Story = {
-  render: function SingleItemStory() {
+export const Basic: Story = {
+  render: function BasicStory() {
     const sortableTriggerRefs = useRef<Map<string, HTMLFieldSetElement>>(new Map())
     const open$ = useObservable<string | null>(null)
     const selectedId$ = useObservable<string | null>(null)

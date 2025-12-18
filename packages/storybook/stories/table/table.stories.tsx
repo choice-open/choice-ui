@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite"
 import { useCallback, useMemo, useRef, useState } from "react"
 
 const meta: Meta<typeof Table> = {
-  title: "Data Display/Table",
+  title: "DataDisplay/Table",
   component: Table,
   tags: ["autodocs", "beta"],
 }

@@ -1858,9 +1858,9 @@
   ],
   "stories": [
     {
-      "id": "dateandtime-monthcalendar--default",
-      "name": "Default",
-      "exportName": "Default",
+      "id": "dateandtime-monthcalendar--basic",
+      "name": "Basic",
+      "exportName": "Basic",
       "description": "`MonthCalendar` is a comprehensive calendar component for displaying and selecting dates within a month view.\n\nFeatures:\n- Multiple selection modes: single, multiple, and range selection\n- Comprehensive internationalization support with locale-aware formatting\n- Flexible week start configuration (Sunday through Saturday)\n- Week number display with ISO standard support\n- Date highlighting and disabling capabilities\n- Light and dark theme variants\n- Dynamic or fixed grid layout options\n- Outside day display control\n- Today highlighting and navigation\n- Keyboard navigation and accessibility support\n- Customizable weekday names and formatting\n\nUsage:\n- Use for date selection in forms, filters, and scheduling interfaces\n- Ideal for booking systems, event planners, and date range pickers\n- Combine with input components for complete date selection workflows\n- Leverage multiple selection modes for different use cases\n\nBest Practices:\n- Choose appropriate selection mode based on user needs\n- Consider locale and cultural differences in week start preferences\n- Use highlighting and disabling to guide user selection\n- Provide clear visual feedback for selected dates\n\nAccessibility:\n- Full keyboard navigation with arrow keys and space/enter selection\n- Screen reader friendly with proper ARIA labels and descriptions\n- High contrast support for all states and variants\n- Semantic HTML structure with proper date semantics\nDefault: Shows the basic MonthCalendar with standard configuration.\n- Demonstrates default month view with Chinese locale and Monday week start.\n- Shows today highlighting and outside day display.\n- Provides a foundation for calendar implementation.",
       "source": "import { MonthCalendar } from \"@choice-ui/calendar\"\n\nexport default function App() {\n\n  return (\n    <MonthCalendar\n      highlightToday\n      showOutsideDays\n      showWeekNumbers={false}\n      weekStartsOn={1}\n      locale=\"zh-CN\"\n      fixedGrid\n      className=\"w-50 rounded-xl border\"\n    />\n  )\n\n}"
     },

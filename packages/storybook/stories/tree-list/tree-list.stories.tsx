@@ -1050,7 +1050,7 @@ const ComprehensiveTreeList = observer(() => {
 })
 
 // 导出单一综合示例
-export const Comprehensive: Story = {
+export const Basic: Story = {
   render: () => <ComprehensiveTreeList />,
 }
 

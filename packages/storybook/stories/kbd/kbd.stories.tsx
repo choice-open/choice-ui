@@ -3,7 +3,7 @@ import { Story } from "@storybook/addon-docs/blocks"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 
 const meta: Meta<typeof Kbd> = {
-  title: "Data Display/Kbd",
+  title: "DataDisplay/Kbd",
   component: Kbd,
 }
 

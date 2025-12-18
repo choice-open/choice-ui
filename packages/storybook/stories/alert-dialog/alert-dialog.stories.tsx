@@ -63,8 +63,8 @@ type Story = StoryObj
  * - `confirm` returns boolean for user confirmation actions
  * - `alert` returns void for informational messages
  */
-export const BasicUsage: Story = {
-  render: function BasicUsageStory() {
+export const Basic: Story = {
+  render: function BasicStory() {
     const Example = () => {
       const { confirm, alert } = useAlertDialog()
       const [confirmResult, setConfirmResult] = useState<boolean | null>(null)

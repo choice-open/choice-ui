@@ -56,8 +56,8 @@ type Story = StoryObj<typeof meta>
  * - Shows today highlighting and outside day display.
  * - Provides a foundation for calendar implementation.
  */
-export const Default: Story = {
-  render: function DefaultStory() {
+export const Basic: Story = {
+  render: function BasicStory() {
     return (
       <MonthCalendar
         highlightToday

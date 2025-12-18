@@ -37,7 +37,7 @@
   ],
   "stories": [
     {
-      "id": "data-display-kbd--basic",
+      "id": "datadisplay-kbd--basic",
       "name": "Basic",
       "exportName": "Basic",
       "description": "Basic usage of the Kbd component.\n\nThis story demonstrates how to use the Kbd component with different combinations of keys.\nIt shows examples with single key, multiple keys, and nested keys.\n\n```tsx\n<Kbd keys={[\"command\"]}>K</Kbd>\n<Kbd keys={[\"command\", \"shift\"]}>K</Kbd>\n<Kbd keys={[\"command\", \"shift\", \"option\"]}>K</Kbd>\n<Kbd keys={[\"command\", \"shift\", \"option\", \"ctrl\"]}>K</Kbd>\n```\n\nkbdKeysMap:\n```ts\n{\n  command: '⌘',\n  windows: '⊞',\n  shift: '⇧',\n  ctrl: '⌃',\n  option: '⌥',\n  alt: '⌥',\n  enter: '↵',\n  delete: '⌫',\n  backspace: '⌫',\n  escape: '⎋',\n  tab: '⇥',\n  capslock: '⇪',\n  up: '↑',\n  right: '→',\n  down: '↓',\n  left: '←',\n  pageup: '⇞',\n  pagedown: '⇟',\n  home: '↖',\n  end: '↘',\n  help: '?',\n  space: '␣',\n}\n```",

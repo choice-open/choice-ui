@@ -52,8 +52,8 @@ type Story = StoryObj<typeof meta>
  * - Default visual styling
  * - Basic placeholder text
  */
-export const Default: Story = {
-  render: function Default() {
+export const Basic: Story = {
+  render: function Basic() {
     return (
       <Textarea
         placeholder="Enter your text here..."

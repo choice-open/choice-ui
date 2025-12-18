@@ -11,6 +11,12 @@ type ComponentActionsProps = {
 
 export function ComponentActions({ slugKey, packageName }: ComponentActionsProps) {
   const githubPath = packageName.replace("@choice-ui/", "")
+  // Convert slug format to Storybook path format
+  // e.g., "date-and-time/time-calendar" -> "dateandtime-timecalendar"
+  const storybookPath = slugKey
+    .split("/")
+    .map((segment) => segment.replace(/-/g, ""))
+    .join("-")
 
   return (
     <div className="mt-4 flex gap-4">
@@ -20,7 +26,7 @@ export function ComponentActions({ slugKey, packageName }: ComponentActionsProps
         size="large"
       >
         <Link
-          href={`http://storybook.choice-ui.com/?path=/docs/${slugKey.replace("/", "-")}--docs`}
+          href={`http://storybook.choice-ui.com/?path=/story/${storybookPath}--basic`}
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -49,7 +55,7 @@ export function ComponentActions({ slugKey, packageName }: ComponentActionsProps
         size="large"
       >
         <Link
-          href={`https://github.com/choice-open/choice-ui/tree/main/packages/core/app/components/${githubPath}`}
+          href={`https://www.npmjs.com/package/${packageName}`}
           target="_blank"
           rel="noopener noreferrer"
         >

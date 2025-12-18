@@ -101,9 +101,9 @@
   ],
   "stories": [
     {
-      "id": "navigation-pagination--default",
-      "name": "Default",
-      "exportName": "Default",
+      "id": "navigation-pagination--basic",
+      "name": "Basic",
+      "exportName": "Basic",
       "description": "Pagination is a **compound component** for navigating through paginated data.\n\n### Core Components\n- **Pagination**: Root container, manages state and configuration\n- **Pagination.Spinner**: Displays current page info (e.g., \"1-10 of 100\")\n- **Pagination.Navigation**: Page number buttons and prev/next controls\n- **Pagination.ItemsPerPage**: Dropdown to change items per page\n\n### Required Props\n- `currentPage`: Current active page number\n- `totalItems`: Total number of items to paginate\n- `itemsPerPage`: Number of items displayed per page\n- `onPageChange`: Callback when page changes",
       "source": "import { Pagination } from \"@choice-ui/pagination\"\n\nexport default function App() {\n  return (\n    <PaginationWrapper totalItems={100} />\n  );\n}"
     },

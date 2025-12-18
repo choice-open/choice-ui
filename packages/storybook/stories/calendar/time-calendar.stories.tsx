@@ -60,8 +60,8 @@ type Story = StoryObj<typeof meta>
  * - Uses 24-hour format (HH:mm) with 15-minute intervals.
  * - Shows selected time display and state management.
  */
-export const Default: Story = {
-  render: function DefaultStory() {
+export const Basic: Story = {
+  render: function BasicStory() {
     const [time, setTime] = useState<Date | null>(createTimeToday(0, 30))
 
     const formatTime = (t: Date | null) =>

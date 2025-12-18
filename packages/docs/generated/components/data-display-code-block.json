@@ -224,119 +224,119 @@
   ],
   "stories": [
     {
-      "id": "data-display-codeblock--languages-and-themes",
-      "name": "Languages And Themes",
-      "exportName": "LanguagesAndThemes",
+      "id": "datadisplay-codeblock--basic",
+      "name": "Basic",
+      "exportName": "Basic",
       "description": "Demonstrates different programming languages with automatic theme switching.\nThe theme automatically adapts to the system/app theme (light/dark).",
       "source": "import { CodeBlock } from \"@choice-ui/code-block\"\n\nexport default function App() {\n\n  return (\n    <div className=\"flex max-w-4xl flex-col gap-4\">\n      <CodeBlock language=\"ts\">\n        <CodeBlock.Content code={tsCode} />\n      </CodeBlock>\n\n      <CodeBlock language=\"json\">\n        <CodeBlock.Content code={jsonCode} />\n      </CodeBlock>\n\n      <CodeBlock language=\"diff\">\n        <CodeBlock.Content code={diffCode} />\n      </CodeBlock>\n    </div>\n  )\n\n}"
     },
     {
-      "id": "data-display-codeblock--long-code-with-scroll",
+      "id": "datadisplay-codeblock--long-code-with-scroll",
       "name": "Long Code With Scroll",
       "exportName": "LongCodeWithScroll",
       "description": "Shows how long code content is handled with vertical scrolling.\nUseful for displaying large code files without taking up too much space.",
       "source": "import { CodeBlock } from \"@choice-ui/code-block\"\n\nexport default function App() {\n\n  const long = Array.from({ length: 80 }, (_, i) => `console.log('line ${i + 1}')`).join(\"\\n\")\n  return (\n    <div className=\"max-w-3xl\">\n      <CodeBlock language=\"js\">\n        <CodeBlock.Content code={long} />\n      </CodeBlock>\n    </div>\n  )\n\n}"
     },
     {
-      "id": "data-display-codeblock--long-code-without-scroll",
+      "id": "datadisplay-codeblock--long-code-without-scroll",
       "name": "Long Code Without Scroll",
       "exportName": "LongCodeWithoutScroll",
       "description": "Demonstrates code block without scroll area container.\nUse this when you want the code to naturally extend the container height.",
       "source": "import { CodeBlock } from \"@choice-ui/code-block\"\n\nexport default function App() {\n\n  const long = Array.from({ length: 80 }, (_, i) => `console.log('line ${i + 1}')`).join(\"\\n\")\n  return (\n    <div className=\"max-w-3xl\">\n      <CodeBlock language=\"js\">\n        <CodeBlock.Content\n          code={long}\n          withScrollArea={false}\n        />\n      </CodeBlock>\n    </div>\n  )\n\n}"
     },
     {
-      "id": "data-display-codeblock--variants",
+      "id": "datadisplay-codeblock--variants",
       "name": "Variants",
       "exportName": "Variants",
       "description": "Code block with different variants.",
       "source": "import { CodeBlock } from \"@choice-ui/code-block\"\n\nexport default function App() {\n\n  return (\n    <div className=\"grid grid-cols-3 gap-4\">\n      <Label>Default</Label>\n      <Label>Light</Label>\n      <Label>Dark</Label>\n      <CodeBlock\n        variant=\"default\"\n        language=\"typescript\"\n      >\n        <CodeBlock.Header />\n        <CodeBlock.Content code=\"console.log('Hello, world!')\" />\n      </CodeBlock>\n      <CodeBlock\n        variant=\"light\"\n        language=\"typescript\"\n      >\n        <CodeBlock.Header />\n        <CodeBlock.Content code=\"console.log('Hello, world!')\" />\n      </CodeBlock>\n      <CodeBlock\n        variant=\"dark\"\n        language=\"typescript\"\n      >\n        <CodeBlock.Header />\n        <CodeBlock.Content code=\"console.log('Hello, world!')\" />\n      </CodeBlock>\n    </div>\n  )\n\n}"
     },
     {
-      "id": "data-display-codeblock--popular-languages",
+      "id": "datadisplay-codeblock--popular-languages",
       "name": "Popular Languages",
       "exportName": "PopularLanguages",
       "description": "Showcases popular programming and markup languages.\nEach language has proper syntax highlighting powered by Shiki.",
       "source": "import { CodeBlock } from \"@choice-ui/code-block\"\n\nexport default function App() {\n\n  return (\n    <div className=\"flex max-w-4xl flex-col gap-4\">\n      <CodeBlock language=\"tsx\">\n        <CodeBlock.Content code={tsxCode} />\n      </CodeBlock>\n\n      <CodeBlock language=\"html\">\n        <CodeBlock.Content code={htmlCode} />\n      </CodeBlock>\n\n      <CodeBlock language=\"js\">\n        <CodeBlock.Content\n          code={`(() => {\\n  const msg = 'hello';\\n  console.log(msg);\\n})();`}\n        />\n      </CodeBlock>\n\n      <CodeBlock language=\"css\">\n        <CodeBlock.Content code={cssCode} />\n      </CodeBlock>\n\n      <CodeBlock language=\"python\">\n        <CodeBlock.Content code={pyCode} />\n      </CodeBlock>\n    </div>\n  )\n\n}"
     },
     {
-      "id": "data-display-codeblock--long-tsx-demo",
+      "id": "datadisplay-codeblock--long-tsx-demo",
       "name": "Long Tsx Demo",
       "exportName": "LongTsxDemo",
       "description": "Real-world example with a complex React component.\nDemonstrates how readable long code remains with syntax highlighting.",
       "source": "import { CodeBlock } from \"@choice-ui/code-block\"\n\nexport default function App() {\n\n  return (\n    <div className=\"max-w-md\">\n      <CodeBlock language=\"tsx\">\n        <CodeBlock.Content code={longTSXExample} />\n      </CodeBlock>\n    </div>\n  )\n\n}"
     },
     {
-      "id": "data-display-codeblock--with-interactive-header",
+      "id": "datadisplay-codeblock--with-interactive-header",
       "name": "With Interactive Header",
       "exportName": "WithInteractiveHeader",
       "description": "Code block with interactive header showing filename and controls.\nHeader includes language icon, filename, copy button, and expand/collapse toggle.",
       "source": "import { CodeBlock } from \"@choice-ui/code-block\"\n\nexport default function App() {\n\n  return (\n    <div className=\"max-w-3xl\">\n      <CodeBlock\n        language=\"tsx\"\n        filename=\"HelloWorld.tsx\"\n      >\n        <CodeBlock.Header />\n        <CodeBlock.Content code={tsxCode} />\n      </CodeBlock>\n    </div>\n  )\n\n}"
     },
     {
-      "id": "data-display-codeblock--with-header-and-footer",
+      "id": "datadisplay-codeblock--with-header-and-footer",
       "name": "With Header And Footer",
       "exportName": "WithHeaderAndFooter",
       "description": "Full featured code block with header and footer.\nFooter appears when code exceeds the line threshold, showing expand controls.",
       "source": "import { CodeBlock } from \"@choice-ui/code-block\"\n\nexport default function App() {\n\n  return (\n    <div className=\"max-w-3xl\">\n      <CodeBlock\n        language=\"tsx\"\n        filename=\"LongComponent.tsx\"\n      >\n        <CodeBlock.Header />\n        <CodeBlock.Content code={longTSXExample} />\n        <CodeBlock.Footer />\n      </CodeBlock>\n    </div>\n  )\n\n}"
     },
     {
-      "id": "data-display-codeblock--collapsed-by-default",
+      "id": "datadisplay-codeblock--collapsed-by-default",
       "name": "Collapsed By Default",
       "exportName": "CollapsedByDefault",
       "description": "Code block collapsed by default to save space.\nUsers can click the expand button to reveal the code content.",
       "source": "import { CodeBlock } from \"@choice-ui/code-block\"\n\nexport default function App() {\n\n  return (\n    <div className=\"max-w-3xl\">\n      <CodeBlock\n        language=\"python\"\n        filename=\"example.py\"\n        defaultExpanded={false}\n      >\n        <CodeBlock.Header />\n        <CodeBlock.Content code={pyCode} />\n        <CodeBlock.Footer />\n      </CodeBlock>\n    </div>\n  )\n\n}"
     },
     {
-      "id": "data-display-codeblock--expanded-code",
+      "id": "datadisplay-codeblock--expanded-code",
       "name": "Expanded Code",
       "exportName": "ExpandedCode",
       "description": "Long code that starts fully expanded, showing all lines.\nUseful when you want to display complete code without initial truncation.",
       "source": "import { CodeBlock } from \"@choice-ui/code-block\"\n\nexport default function App() {\n\n  return (\n    <div className=\"max-w-3xl\">\n      <CodeBlock\n        language=\"tsx\"\n        filename=\"LongFile.tsx\"\n        defaultCodeExpanded={true}\n      >\n        <CodeBlock.Header />\n        <CodeBlock.Content code={longTSXExample} />\n        <CodeBlock.Footer />\n      </CodeBlock>\n    </div>\n  )\n\n}"
     },
     {
-      "id": "data-display-codeblock--non-expandable",
+      "id": "datadisplay-codeblock--non-expandable",
       "name": "Non Expandable",
       "exportName": "NonExpandable",
       "description": "Code block with expand/collapse functionality disabled.\nUse this for short code snippets that don't need truncation.",
       "source": "import { CodeBlock } from \"@choice-ui/code-block\"\n\nexport default function App() {\n\n  return (\n    <div className=\"max-w-3xl\">\n      <CodeBlock\n        language=\"json\"\n        filename=\"config.json\"\n        expandable={false}\n      >\n        <CodeBlock.Header />\n        <CodeBlock.Content code={jsonCode} />\n      </CodeBlock>\n    </div>\n  )\n\n}"
     },
     {
-      "id": "data-display-codeblock--internationalization",
+      "id": "datadisplay-codeblock--internationalization",
       "name": "Internationalization",
       "exportName": "Internationalization",
       "description": "Demonstrates internationalization support with custom labels.\nYou can provide custom translations for buttons and tooltips.",
       "source": "import { CodeBlock } from \"@choice-ui/code-block\"\n\nexport default function App() {\n\n  return (\n    <div className=\"max-w-3xl\">\n      <CodeBlock\n        language=\"tsx\"\n        filename=\"国际化示例.tsx\"\n      >\n        <CodeBlock.Header\n          i18n={{\n            collapse: \"折叠\",\n            copied: \"已复制\",\n            copy: \"复制\",\n            expand: \"展开\",\n          }}\n        />\n        <CodeBlock.Content code={tsxCode} />\n        <CodeBlock.Footer />\n      </CodeBlock>\n    </div>\n  )\n\n}"
     },
     {
-      "id": "data-display-codeblock--language-icons",
+      "id": "datadisplay-codeblock--language-icons",
       "name": "Language Icons",
       "exportName": "LanguageIcons",
       "description": "Comprehensive showcase of language-specific icons in the header.\nIcons are automatically selected based on the language or filename.\nDemonstrates JavaScript, TypeScript, markup, config files, and more.",
       "source": "import { CodeBlock } from \"@choice-ui/code-block\"\n\nexport default function App() {\n\n  const examples = [\n    // JavaScript variants\n    {\n      language: \"javascript\",\n      filename: \"script.js\",\n      code: `console.log('Hello, World!');`,\n    },\n    {\n      language: \"jsx\",\n      filename: \"Component.jsx\",\n      code: `export const Button = () => <button>Click</button>`,\n    },\n\n    // TypeScript variants\n    { language: \"typescript\", filename: \"example.ts\", code: tsCode },\n    { language: \"tsx\", filename: \"App.tsx\", code: tsxCode },\n    {\n      language: \"typescript\",\n      filename: \"types.d.ts\",\n      code: `declare module 'my-lib' {\\n  export function hello(): string\\n}`,\n    },\n\n    // Styles\n    { language: \"css\", filename: \"styles.css\", code: cssCode },\n    {\n      language: \"scss\",\n      filename: \"theme.scss\",\n      code: `$primary: #0ea5e9;\\n.button {\\n  color: $primary;\\n}`,\n    },\n\n    // Markup\n    { language: \"html\", filename: \"index.html\", code: htmlCode },\n    {\n      language: \"xml\",\n      filename: \"config.xml\",\n      code: `<?xml version=\"1.0\"?>\\n<root>\\n  <item>value</item>\\n</root>`,\n    },\n\n    // Markdown\n    {\n      language: \"markdown\",\n      filename: \"README.md\",\n      code: `# Hello World\\n\\nThis is a markdown file.`,\n    },\n    {\n      language: \"mdx\",\n      filename: \"docs.mdx\",\n      code: `# Component Docs\\n\\nimport { Button } from './Button'\\n\\n<Button />`,\n    },\n\n    // Config files\n    { language: \"json\", filename: \"package.json\", code: jsonCode },\n    {\n      language: \"yaml\",\n      filename: \"config.yml\",\n      code: `name: My App\\nversion: 1.0.0\\nscripts:\\n  - build\\n  - test`,\n    },\n\n    // Shell\n    {\n      language: \"bash\",\n      filename: \"deploy.sh\",\n      code: `#!/bin/bash\\necho \"Deploying...\"\\nnpm run build`,\n    },\n    {\n      language: \"shell\",\n      filename: \"setup.sh\",\n      code: `#!/bin/sh\\nexport NODE_ENV=production`,\n    },\n\n    // Python\n    { language: \"python\", filename: \"main.py\", code: pyCode },\n\n    // Node\n    {\n      language: \"node\",\n      filename: \"server.js\",\n      code: `const express = require('express')\\nconst app = express()\\napp.listen(3000)`,\n    },\n\n    // Plain text\n    {\n      language: \"text\",\n      filename: \"notes.txt\",\n      code: `This is a plain text file.\\nNo syntax highlighting.`,\n    },\n\n    // Languages with default icon\n    {\n      language: \"go\",\n      filename: \"main.go\",\n      code: `package main\\n\\nfunc main() {\\n  println(\"Hello\")\\n}`,\n    },\n    {\n      language: \"rust\",\n      filename: \"main.rs\",\n      code: `fn main() {\\n    println!(\"Hello\");\\n}`,\n    },\n    {\n      language: \"java\",\n      filename: \"Main.java\",\n      code: `public class Main {\\n  public static void main(String[] args) {\\n    System.out.println(\"Hello\");\\n  }\\n}`,\n    },\n  ]\n\n  return (\n    <div className=\"grid max-w-6xl grid-cols-3 place-content-start place-items-start gap-4\">\n      {examples.map((example, index) => (\n        <CodeBlock\n          className=\"w-full\"\n          key={index}\n          language={example.language}\n          filename={example.filename}\n        >\n          <CodeBlock.Header />\n          <CodeBlock.Content code={example.code} />\n        </CodeBlock>\n      ))}\n    </div>\n  )\n\n}"
     },
     {
-      "id": "data-display-codeblock--default-filename",
+      "id": "datadisplay-codeblock--default-filename",
       "name": "Default Filename",
       "exportName": "DefaultFilename",
       "description": "",
       "source": "import { CodeBlock } from \"@choice-ui/code-block\"\n\nexport default function App() {\n\n  return (\n    <div className=\"max-w-3xl\">\n      <CodeBlock language=\"tsx\">\n        <CodeBlock.Header />\n        <CodeBlock.Content code={tsxCode} />\n      </CodeBlock>\n    </div>\n  )\n\n}"
     },
     {
-      "id": "data-display-codeblock--line-count-threshold",
+      "id": "datadisplay-codeblock--line-count-threshold",
       "name": "Line Count Threshold",
       "exportName": "LineCountThreshold",
       "description": "Shows how the lineThreshold property controls when footer appears.\nFooter with expand controls only shows when code exceeds the threshold.\nUseful for managing space with varying code lengths.",
       "source": "import { CodeBlock } from \"@choice-ui/code-block\"\n\nexport default function App() {\n\n      const shortCode = `// Short code (5 lines)\n  function greet(name) {\n    return \\`Hello, \\${name}!\\`;\n  }\n  console.log(greet('World'));`\n\n      const mediumCode = `// Medium code (12 lines)\n  import React from 'react';\n\n  function TodoItem({ todo, onToggle }) {\n    return (\n      <li className=\"todo-item\">\n        <input\n          type=\"checkbox\"\n          checked={todo.completed}\n          onChange={() => onToggle(todo.id)}\n        />\n        <span>{todo.text}</span>\n      </li>\n    );\n  }`\n\n      return (\n        <div className=\"flex max-w-3xl flex-col gap-4\">\n          <div>\n            <h3 className=\"font-strong mb-2\">10 lines (no footer, below threshold)</h3>\n            <CodeBlock\n              language=\"javascript\"\n              filename=\"short.js\"\n              lineThreshold={10}\n            >\n              <CodeBlock.Header />\n              <CodeBlock.Content code={shortCode} />\n              <CodeBlock.Footer />\n            </CodeBlock>\n          </div>\n\n          <div>\n            <h3 className=\"font-strong mb-2\">12 lines (footer shown, above threshold)</h3>\n            <CodeBlock\n              language=\"javascript\"\n              filename=\"medium.js\"\n              lineThreshold={12}\n            >\n              <CodeBlock.Header />\n              <CodeBlock.Content code={mediumCode} />\n              <CodeBlock.Footer />\n            </CodeBlock>\n          </div>\n\n          <div>\n            <h3 className=\"font-strong mb-2\">Custom threshold (3 lines)</h3>\n            <CodeBlock\n              language=\"javascript\"\n              filename=\"custom.js\"\n              lineThreshold={3}\n            >\n              <CodeBlock.Header />\n              <CodeBlock.Content code={shortCode} />\n              <CodeBlock.Footer />\n            </CodeBlock>\n          </div>\n        </div>\n      )\n\n}"
     },
     {
-      "id": "data-display-codeblock--streaming-with-auto-scroll",
+      "id": "datadisplay-codeblock--streaming-with-auto-scroll",
       "name": "Streaming With Auto Scroll",
       "exportName": "StreamingWithAutoScroll",
       "description": "Streaming code blocks simulation with auto-scroll to bottom.\nUses useStickToBottom hook to keep scroll position at bottom as new code blocks appear.\nClick \"Add Code Block\" to simulate streaming new content.",
       "source": "import { CodeBlock } from \"@choice-ui/code-block\"\nimport { useState, useRef } from \"react\"\n\nexport default function App() {\n\n  const [blocks, setBlocks] = useState<typeof streamingCodeExamples>([])\n  const [isStreaming, setIsStreaming] = useState(false)\n  const streamIndexRef = useRef(0)\n\n  const { scrollRef, contentRef, isAtBottom, scrollToBottom } = useStickToBottom({\n    resize: \"smooth\",\n    initial: \"instant\",\n  })\n\n  const addBlock = () => {\n    const nextBlock = streamingCodeExamples[streamIndexRef.current % streamingCodeExamples.length]\n    setBlocks((prev) => [...prev, nextBlock])\n    streamIndexRef.current++\n  }\n\n  const startStreaming = () => {\n    if (isStreaming) return\n    setIsStreaming(true)\n\n    const interval = setInterval(() => {\n      addBlock()\n      if (streamIndexRef.current >= streamingCodeExamples.length * 2) {\n        clearInterval(interval)\n        setIsStreaming(false)\n      }\n    }, 1500)\n  }\n\n  const reset = () => {\n    setBlocks([])\n    streamIndexRef.current = 0\n    setIsStreaming(false)\n  }\n\n  return (\n    <div className=\"flex h-[600px] w-[600px] flex-col gap-4\">\n      <div className=\"flex items-center gap-2\">\n        <Button\n          onClick={addBlock}\n          disabled={isStreaming}\n        >\n          Add Code Block\n        </Button>\n        <Button\n          onClick={startStreaming}\n          disabled={isStreaming}\n        >\n          {isStreaming ? \"Streaming...\" : \"Auto Stream\"}\n        </Button>\n        <Button\n          onClick={reset}\n          variant=\"secondary\"\n        >\n          Reset\n        </Button>\n        {!isAtBottom && (\n          <Button\n            onClick={() => scrollToBottom()}\n            variant=\"secondary\"\n          >\n            Scroll to Bottom\n          </Button>\n        )}\n      </div>\n\n      <div className=\"text-body-small text-fg-subtle\">\n        Blocks: {blocks.length} | At bottom: {isAtBottom ? \"Yes\" : \"No\"}\n      </div>\n\n      <ScrollArea className=\"flex-1 rounded-lg border\">\n        <ScrollArea.Viewport ref={scrollRef as React.RefObject<HTMLDivElement>}>\n          <ScrollArea.Content\n            ref={contentRef as React.RefObject<HTMLDivElement>}\n            className=\"flex flex-col gap-4 p-4\"\n          >\n            {blocks.length === 0 ? (\n              <div className=\"text-body-small text-fg-subtle py-8 text-center\">\n                Click &quot;Add Code Block&quot; or &quot;Auto Stream&quot; to start\n              </div>\n            ) : (\n              blocks.map((block, index) => (\n                <CodeBlock\n                  key={index}\n                  language={block.language}\n                  filename={block.filename}\n                >\n                  <CodeBlock.Header />\n                  <CodeBlock.Content code={block.code} />\n                </CodeBlock>\n              ))\n            )}\n          </ScrollArea.Content>\n        </ScrollArea.Viewport>\n      </ScrollArea>\n    </div>\n  )\n\n}"
     },
     {
-      "id": "data-display-codeblock--character-streaming",
+      "id": "datadisplay-codeblock--character-streaming",
       "name": "Character Streaming",
       "exportName": "CharacterStreaming",
       "description": "Simulates character-by-character streaming of code content.\nContent appears gradually like AI-generated code output.",

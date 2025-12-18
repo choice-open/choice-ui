@@ -233,8 +233,8 @@ const NumericInputComponent = ({
  *
  * Label is optional and can be added based on requirements.
  */
-export const Single: Story = {
-  render: function SingleStory() {
+export const Basic: Story = {
+  render: function BasicStory() {
     const [showLabels, setShowLabels] = useState(false)
 
     return (

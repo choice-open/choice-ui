@@ -272,9 +272,9 @@
   ],
   "stories": [
     {
-      "id": "layouts-panel-row--single",
-      "name": "Single",
-      "exportName": "Single",
+      "id": "layouts-panel-row--basic",
+      "name": "Basic",
+      "exportName": "Basic",
       "description": "Single row\n```css\n.rows--single {\n  grid-template-areas: \"label\" \"input\";\n  grid-template-columns: 1fr;\n  grid-template-rows: auto minmax(2rem, auto);\n}\n```\n### Usage:\nSpecify areas using the following classnames:\n- `area-label`: Label area\n- `area-input`: Input area\n\n```tsx\n<IfPanel.Row type=\"single\">\n  <IfPanel.Label className=\"area-label\">...</IfPanel.Label>\n  <IfSelect className=\"area-input\" />\n</IfPanel.Row>\n```\n\nLabel is optional and can be added based on requirements.",
       "source": "import { Panel } from \"@choice-ui/panel\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [showLabels, setShowLabels] = useState(false)\n\n  return (\n    <AllotmentContainer\n      header={\n        <Switch\n          size=\"small\"\n          label=\"Show labels\"\n          value={showLabels}\n          onChange={(value) => setShowLabels(value)}\n        />\n      }\n    >\n      <Panel showLabels={showLabels}>\n        <Panel.Title title=\"Single\">\n          <IconButton tooltip={{ content: \"Styles\" }}>\n            <Styles />\n          </IconButton>\n        </Panel.Title>\n\n        <Panel.Row type=\"single\">\n          <Panel.Label>Select</Panel.Label>\n          <SelectComponent />\n        </Panel.Row>\n        <Panel.Row type=\"single\">\n          <Panel.Label>Input</Panel.Label>\n          <InputComponent />\n        </Panel.Row>\n        <Panel.Row type=\"single\">\n          <Panel.Label>Segmented Control</Panel.Label>\n          <SegmentedComponent />\n        </Panel.Row>\n        <Panel.Row type=\"single\">\n          <CheckboxComponent />\n        </Panel.Row>\n      </Panel>\n    </AllotmentContainer>\n  )\n\n}"
     },

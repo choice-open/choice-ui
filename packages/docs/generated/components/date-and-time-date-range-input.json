@@ -1858,9 +1858,9 @@
   ],
   "stories": [
     {
-      "id": "dateandtime-daterangeinput--default",
-      "name": "Default",
-      "exportName": "Default",
+      "id": "dateandtime-daterangeinput--basic",
+      "name": "Basic",
+      "exportName": "Basic",
       "description": "Default: Shows the basic DateRangeInput usage with standard configuration.\n- Demonstrates dual input fields for start and end dates.\n- Uses ISO date format and English locale as defaults.\n- Provides a foundation for date range selection implementation.",
       "source": "import { MonthCalendar } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <DateRangeDemo {...args} />\n  );\n}"
     },

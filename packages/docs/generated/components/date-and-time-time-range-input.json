@@ -1858,9 +1858,9 @@
   ],
   "stories": [
     {
-      "id": "dateandtime-timerangeinput--default",
-      "name": "Default",
-      "exportName": "Default",
+      "id": "dateandtime-timerangeinput--basic",
+      "name": "Basic",
+      "exportName": "Basic",
       "description": "Default: Shows the basic TimeRangeInput usage with standard configuration.\n- Demonstrates dual time input fields for start and end times.\n- Uses 24-hour format (HH:mm) as the default time format.\n- Provides a foundation for time range selection implementation.",
       "source": "import { MonthCalendar } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <TimeRangeDemo {...args} />\n  );\n}"
     },

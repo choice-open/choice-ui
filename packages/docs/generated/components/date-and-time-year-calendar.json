@@ -1858,9 +1858,9 @@
   ],
   "stories": [
     {
-      "id": "dateandtime-yearcalendar--default",
-      "name": "Default",
-      "exportName": "Default",
+      "id": "dateandtime-yearcalendar--basic",
+      "name": "Basic",
+      "exportName": "Basic",
       "description": "Default: Shows the basic YearCalendar with standard configuration.\n- Demonstrates year selection with 12 years displayed in a grid.\n- Shows both light and dark theme variants side by side.\n- Uses current year as the selected value and reference point.",
       "source": "import { MonthCalendar } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <YearPickerDemo {...args} />\n  );\n}"
     },

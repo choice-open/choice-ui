@@ -51,9 +51,9 @@
   ],
   "stories": [
     {
-      "id": "buttons-linkbutton--as-button",
-      "name": "As Button",
-      "exportName": "AsButton",
+      "id": "buttons-linkbutton--basic",
+      "name": "Basic",
+      "exportName": "Basic",
       "description": "Basic button usage without href prop.\nRenders as a <button> element with click handler.",
       "source": "import { LinkButton } from \"@choice-ui/link-button\"\n\nexport default function App() {\n  return (\n    <LinkButton onClick={() => alert(\"Button clicked!\")}>Click me</LinkButton>\n  );\n}"
     },

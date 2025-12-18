@@ -36,7 +36,7 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const Default: Story = {
+export const Basic: Story = {
   args: {
     stages: [
       { label: "Initializing", icon: <Settings /> },

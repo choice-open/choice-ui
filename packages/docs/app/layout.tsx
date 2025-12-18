@@ -10,8 +10,8 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: "Hero UI Documentation",
-  description: "Documentation for Choiceform Design System",
+  title: "Choice UI Documentation",
+  description: "Documentation for Choice UI Design System",
 }
 
 export default function RootLayout({

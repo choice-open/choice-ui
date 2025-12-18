@@ -168,7 +168,7 @@ const RangeSyncDemo = () => {
  * - Uses ISO date format and English locale as defaults.
  * - Provides a foundation for date range selection implementation.
  */
-export const Default: Story = {
+export const Basic: Story = {
   args: {
     startPlaceholder: "Start Date",
     endPlaceholder: "End Date",

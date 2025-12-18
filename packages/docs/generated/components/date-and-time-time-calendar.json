@@ -1858,9 +1858,9 @@
   ],
   "stories": [
     {
-      "id": "dateandtime-timecalendar--default",
-      "name": "Default",
-      "exportName": "Default",
+      "id": "dateandtime-timecalendar--basic",
+      "name": "Basic",
+      "exportName": "Basic",
       "description": "`TimeCalendar` is a specialized calendar component for time selection with customizable time steps and formats.\n\nFeatures:\n- Scrollable time list with configurable step intervals (1, 5, 15, 30 minutes)\n- Support for both 12-hour and 24-hour time formats\n- Intelligent handling of values outside step ranges\n- Smooth scrolling and keyboard navigation\n- Controlled and uncontrolled modes\n- Customizable time format strings\n- Compact vertical layout optimized for popovers\n- Accessibility support with proper ARIA labels\n- Today's current time highlighting\n\nUsage:\n- Use in time picker popovers and dropdowns\n- Ideal for scheduling applications and time-based forms\n- Combine with time input components for complete time selection\n- Perfect for appointment booking and event scheduling\n\nBest Practices:\n- Choose appropriate step intervals based on use case precision\n- Use 24-hour format for international applications\n- Consider 12-hour format for US-focused applications\n- Provide reasonable default values for better UX\n\nAccessibility:\n- Full keyboard navigation with arrow keys and page up/down\n- Screen reader friendly with proper time announcements\n- Focus management and proper ARIA roles\n- High contrast support for all time entries\nDefault: Shows the basic TimeCalendar with 24-hour format and 15-minute steps.\n- Demonstrates standard time selection with scrollable list interface.\n- Uses 24-hour format (HH:mm) with 15-minute intervals.\n- Shows selected time display and state management.",
       "source": "import { TimeCalendar, createTimeToday } from \"@choice-ui/calendar\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [time, setTime] = useState<Date | null>(createTimeToday(0, 30))\n\n  const formatTime = (t: Date | null) =>\n    t ? t.toLocaleTimeString(\"zh-CN\", { hour: \"2-digit\", minute: \"2-digit\" }) : \"Select time\"\n\n  return (\n    <div className=\"space-y-4\">\n      <TimeCalendar\n        value={time}\n        onChange={setTime}\n        format=\"HH:mm\"\n        step={15}\n      >\n        <TimeCalendar.Trigger>{formatTime(time)}</TimeCalendar.Trigger>\n      </TimeCalendar>\n      <div className=\"text-secondary-foreground\">Selected time: {formatTime(time)}</div>\n    </div>\n  )\n\n}"
     },

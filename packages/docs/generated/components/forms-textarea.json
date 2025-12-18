@@ -176,9 +176,9 @@
   ],
   "stories": [
     {
-      "id": "forms-textarea--default",
-      "name": "Default",
-      "exportName": "Default",
+      "id": "forms-textarea--basic",
+      "name": "Basic",
+      "exportName": "Basic",
       "description": "Default: Basic textarea with auto-resize behavior and default styling.\n\nFeatures:\n- Auto-sizing based on content\n- Default visual styling\n- Basic placeholder text",
       "source": "import { Textarea } from \"@choice-ui/textarea\"\n\nexport default function App() {\n\n  return (\n    <Textarea\n      placeholder=\"Enter your text here...\"\n      className=\"w-64\"\n    />\n  )\n\n}"
     },

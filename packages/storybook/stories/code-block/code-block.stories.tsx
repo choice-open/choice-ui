@@ -4,7 +4,7 @@ import React, { useRef, useState } from "react"
 import { useStickToBottom } from "use-stick-to-bottom"
 
 const meta = {
-  title: "Data Display/CodeBlock",
+  title: "DataDisplay/CodeBlock",
   component: CodeBlock,
   parameters: {
     layout: "centered",
@@ -268,8 +268,8 @@ export default CodeEditor`
  * Demonstrates different programming languages with automatic theme switching.
  * The theme automatically adapts to the system/app theme (light/dark).
  */
-export const LanguagesAndThemes: Story = {
-  render: function LanguagesAndThemesRender() {
+export const Basic: Story = {
+  render: function BasicRender() {
     return (
       <div className="flex max-w-4xl flex-col gap-4">
         <CodeBlock language="ts">

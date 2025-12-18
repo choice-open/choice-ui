@@ -83,7 +83,7 @@ type Story = StoryObj<typeof Menus>
  *
  * This example provides the foundation for all other MenuItem variations.
  */
-export const MenuItemBasic: Story = {
+export const Basic: Story = {
   render: function BasicStory() {
     const [activeIndex, setActiveIndex] = useState<number | null>(null)
 

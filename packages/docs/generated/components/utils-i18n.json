@@ -13,9 +13,9 @@
   "props": [],
   "stories": [
     {
-      "id": "utils-i18n--default",
-      "name": "Default",
-      "exportName": "Default",
+      "id": "utils-i18n--basic",
+      "name": "Basic",
+      "exportName": "Basic",
       "description": "Default English configuration",
       "source": ""
     },

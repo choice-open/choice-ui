@@ -67,7 +67,7 @@ const BasicCommentInput = ({
   )
 }
 
-export const Default: Story = {
+export const Basic: Story = {
   render: () => (
     <BasicCommentInput
       users={mockUsers}

@@ -32,7 +32,7 @@ function useDarkMode(): boolean {
 }
 
 const meta: Meta<typeof MdRender> = {
-  title: "Data Display/MdRender",
+  title: "DataDisplay/MdRender",
   component: MdRender,
   parameters: {
     layout: "centered",
@@ -1265,7 +1265,7 @@ export const GithubVariant: Story = {
     return (
       <div className="grid grid-cols-2 gap-6 p-6">
         <div className="w-full rounded-xl border bg-white p-4 dark:bg-gray-900">
-          <h3 className="font-strong mb-4 text-gray-500 uppercase">Default</h3>
+          <h3 className="font-strong mb-4 uppercase text-gray-500">Default</h3>
           <MdRender
             content={sizingContent}
             variant="default"
@@ -1273,7 +1273,7 @@ export const GithubVariant: Story = {
         </div>
 
         <div className="w-full rounded-xl border bg-white p-4 dark:bg-gray-900">
-          <h3 className="font-strong mb-4 text-gray-500 uppercase">Github</h3>
+          <h3 className="font-strong mb-4 uppercase text-gray-500">Github</h3>
           <MdRender
             content={sizingContent}
             variant="github"

@@ -159,7 +159,7 @@ const RangeSyncDemo = () => {
  * - Uses 24-hour format (HH:mm) as the default time format.
  * - Provides a foundation for time range selection implementation.
  */
-export const Default: Story = {
+export const Basic: Story = {
   args: {
     startPlaceholder: "Start Time",
     endPlaceholder: "End Time",

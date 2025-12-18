@@ -85,7 +85,7 @@ const currentYear = new Date()
  * - Shows both light and dark theme variants side by side.
  * - Uses current year as the selected value and reference point.
  */
-export const Default: Story = {
+export const Basic: Story = {
   args: {
     value: currentYear,
     currentYear,

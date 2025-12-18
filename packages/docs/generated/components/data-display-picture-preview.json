@@ -55,21 +55,21 @@
   ],
   "stories": [
     {
-      "id": "data-display-picturepreview--default",
-      "name": "Default",
-      "exportName": "Default",
+      "id": "datadisplay-picturepreview--basic",
+      "name": "Basic",
+      "exportName": "Basic",
       "description": "`PicturePreview` is a component for displaying image previews with additional metadata.\n\nFeatures:\n- Clean, responsive image display\n- File name display\n- Image loading indicator\n- Error state handling\n- Optimized image rendering\n- Support for various image formats\n\nUsage Guidelines:\n- Use for displaying image previews in galleries, file lists, or attachments\n- Provide both image source and file name for complete context\n- Consider appropriate sizing in your layout (component will adapt)\n- Use in conjunction with image loading or lazy loading for performance\n\nAccessibility:\n- Includes appropriate alt text based on file name\n- Maintains proper contrast for filename text\n- Supports keyboard navigation\n- Loading states are properly communicated to screen readers",
       "source": "import { PicturePreview } from \"@choice-ui/picture-preview\"\n\nexport default function App() {\n\n  return (\n    <PicturePreview\n      src={sampleImages[0].src}\n      fileName={sampleImages[0].fileName}\n    />\n  )\n\n}"
     },
     {
-      "id": "data-display-picturepreview--with-error",
+      "id": "datadisplay-picturepreview--with-error",
       "name": "With Error",
       "exportName": "WithError",
       "description": "WithError: Demonstrates how the component handles image loading errors.\n\nThis example shows how the PicturePreview component displays an error state\nwhen the image fails to load. It provides visual feedback to the user\nthat there was a problem loading the image, while still displaying the\nfilename information.",
       "source": "import { PicturePreview } from \"@choice-ui/picture-preview\"\n\nexport default function App() {\n\n  return (\n    <PicturePreview\n      src=\"https://example.com/non-existent-image.jpg\"\n      fileName=\"broken-image.jpg\"\n    />\n  )\n\n}"
     },
     {
-      "id": "data-display-picturepreview--gallery",
+      "id": "datadisplay-picturepreview--gallery",
       "name": "Gallery",
       "exportName": "Gallery",
       "description": "Gallery: Demonstrates using multiple PicturePreview components together.\n\nThis example shows how multiple PicturePreview components can be used\nin a grid layout to create a simple image gallery. Each preview retains\nits own filename display and error handling capabilities.",

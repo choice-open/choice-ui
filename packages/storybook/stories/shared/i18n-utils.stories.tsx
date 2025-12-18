@@ -80,7 +80,7 @@ export default {
 /**
  * Default English configuration
  */
-export const Default: StoryObj<typeof I18nDemoComponent> = {
+export const Basic: StoryObj<typeof I18nDemoComponent> = {
   args: {},
 }
 

@@ -18,7 +18,7 @@ type Story = StoryObj<typeof meta>
  * Basic button usage without href prop.
  * Renders as a <button> element with click handler.
  */
-export const AsButton: Story = {
+export const Basic: Story = {
   render: () => <LinkButton onClick={() => alert("Button clicked!")}>Click me</LinkButton>,
 }
 

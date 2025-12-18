@@ -305,9 +305,9 @@
   ],
   "stories": [
     {
-      "id": "components-comments-commentinput--default",
-      "name": "Default",
-      "exportName": "Default",
+      "id": "components-comments-commentinput--basic",
+      "name": "Basic",
+      "exportName": "Basic",
       "description": "",
       "source": "import { Comments } from \"@choice-ui/comments\"\n\nexport default function App() {\n  return (\n\n    <BasicCommentInput\n      users={mockUsers}\n      placeholder=\"Add a comment, use @ to mention users...\"\n    />\n\n  );\n}"
     },

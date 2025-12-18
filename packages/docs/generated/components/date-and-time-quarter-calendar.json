@@ -1858,9 +1858,9 @@
   ],
   "stories": [
     {
-      "id": "dateandtime-quartercalendar--default",
-      "name": "Default",
-      "exportName": "Default",
+      "id": "dateandtime-quartercalendar--basic",
+      "name": "Basic",
+      "exportName": "Basic",
       "description": "Default: Shows the basic QuarterCalendar usage with standard configuration.\n- Demonstrates quarter selection with both light and dark variants side by side.\n- Uses English locale and current year as defaults.\n- Provides a foundation for quarter selection implementation.",
       "source": "import { MonthCalendar } from \"@choice-ui/calendar\"\n\nexport default function App() {\n  return (\n    <QuarterCalendarDemo {...args} />\n  );\n}"
     },

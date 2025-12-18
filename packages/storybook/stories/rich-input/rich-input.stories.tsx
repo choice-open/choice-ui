@@ -108,9 +108,9 @@ export default {
  * - Use `enterFormatting` to enable the floating formatting toolbar
  * - Combine with ScrollArea (built-in) for long content handling
  */
-export const Standard: StoryObj<typeof RichInput> = {
+export const Basic: StoryObj<typeof RichInput> = {
   args: {},
-  render: function StandardTemplate() {
+  render: function BasicTemplate() {
     const [value, setValue] = useState<Descendant[]>([
       {
         type: "paragraph",

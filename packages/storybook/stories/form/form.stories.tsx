@@ -43,8 +43,8 @@ type Story = StoryObj
  * - Errors are stored in `field.state.meta.errors` array
  * - Use `useId()` to avoid field name conflicts in multiple instances
  */
-export const InputAdapter: Story = {
-  render: function InputAdapterRender() {
+export const Basic: Story = {
+  render: function BasicRender() {
     const uuid = useId()
     const [result, setResult] = useState<string>("")
 

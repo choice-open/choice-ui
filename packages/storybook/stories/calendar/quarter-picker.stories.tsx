@@ -179,7 +179,7 @@ const currentYear = new Date().getFullYear()
  * - Uses English locale and current year as defaults.
  * - Provides a foundation for quarter selection implementation.
  */
-export const Default: Story = {
+export const Basic: Story = {
   args: {
     currentYear,
     locale: "en-US",

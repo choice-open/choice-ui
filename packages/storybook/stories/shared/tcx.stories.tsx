@@ -17,7 +17,7 @@ const TestComponent = ({ className }: { className: string }) => (
   </div>
 )
 
-export const BasicMerging: Story = {
+export const Basic: Story = {
   render: () => {
     const testCases = [
       {

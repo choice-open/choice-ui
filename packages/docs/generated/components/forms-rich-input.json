@@ -47,9 +47,9 @@
   ],
   "stories": [
     {
-      "id": "forms-richinput--standard",
-      "name": "Standard",
-      "exportName": "Standard",
+      "id": "forms-richinput--basic",
+      "name": "Basic",
+      "exportName": "Basic",
       "description": "Basic usage of RichInput with essential props. This demonstrates the simplest way to integrate\na rich text editor into your application.\n\n## Key Points\n- **Controlled Component**: Pass `value` and `onChange` for full state control\n- **Formatting Toolbar**: Enable with `enterFormatting={true}` to show floating toolbar on text selection\n- **Styling**: Use `className` for container styling, `minHeight` for editor area\n\n## Getting Started\n```tsx\nconst [value, setValue] = useState<Descendant[]>([\n  { type: \"paragraph\", children: [{ text: \"\" }] }\n])\n\n<RichInput\n  value={value}\n  onChange={setValue}\n  enterFormatting={true}\n  placeholder=\"Start typing...\"\n/>\n```\n\n## Tips\n- Always initialize with at least one paragraph element\n- Use `enterFormatting` to enable the floating formatting toolbar\n- Combine with ScrollArea (built-in) for long content handling",
       "source": "import { RichInput } from \"@choice-ui/rich-input\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [value, setValue] = useState<Descendant[]>([\n    {\n      type: \"paragraph\",\n      children: [{ text: \"A line of text in a paragraph.\" }],\n    } as CustomElement,\n  ])\n  return (\n    <RichInput\n      value={value}\n      onChange={setValue}\n      enterFormatting={true}\n      minHeight={120}\n      className=\"max-h-96 w-96 rounded-lg border\"\n    />\n  )\n\n}"
     },

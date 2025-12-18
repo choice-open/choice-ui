@@ -278,7 +278,7 @@ export default meta
 type Story = StoryObj<typeof DateFormattingDemo>
 
 // Basic story with current time
-export const LiveDemo: Story = {
+export const Basic: Story = {
   args: {
     date: new Date(),
     options: {

@@ -14,12 +14,12 @@ const sampleImages = [
 ]
 
 const meta: Meta<typeof PicturePreview> = {
-  title: "Data Display/PicturePreview",
+  title: "DataDisplay/PicturePreview",
   component: PicturePreview,
   tags: ["beta"],
   decorators: [
     (Story) => (
-      <div className="h-96 w-2xl">
+      <div className="w-2xl h-96">
         <Story />
       </div>
     ),
@@ -51,8 +51,8 @@ export default meta
  * - Supports keyboard navigation
  * - Loading states are properly communicated to screen readers
  */
-export const Default = {
-  render: function DefaultStory() {
+export const Basic = {
+  render: function BasicStory() {
     return (
       <PicturePreview
         src={sampleImages[0].src}
