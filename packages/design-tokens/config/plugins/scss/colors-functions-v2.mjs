@@ -78,14 +78,17 @@ export default function scssColorsFunctionsV2(userOptions = {}) {
       output.push('@function color($path, $alpha: null, $mode: ".") {');
       output.push('  @if not $path or $path == "" {');
       output.push('    @warn "[design-tokens] Invalid color path: #{$path}";');
-      output.push("    @return rgba(0, 0, 0, if($alpha != null, $alpha, 1));");
+      output.push("    $fallback-alpha: 1;");
+      output.push("    @if $alpha != null { $fallback-alpha: $alpha; }");
+      output.push("    @return rgba(0, 0, 0, $fallback-alpha);");
       output.push("  }");
       output.push("");
 
       // 自动添加 color. 前缀（如果没有的话）
-      output.push(
-        '  $token-path: if(string.index($path, "color.") == 1, $path, "color.#{$path}");'
-      );
+      output.push("  $token-path: $path;");
+      output.push('  @if string.index($path, "color.") != 1 {');
+      output.push('    $token-path: "color.#{$path}";');
+      output.push("  }");
       output.push("  ");
 
       // 验证颜色是否存在
@@ -93,7 +96,9 @@ export default function scssColorsFunctionsV2(userOptions = {}) {
       output.push(
         "    @warn \"[design-tokens] Color token '#{$path}' (#{$token-path}:#{$mode}) not found\";"
       );
-      output.push("    @return rgba(0, 0, 0, if($alpha != null, $alpha, 1));");
+      output.push("    $fallback-alpha: 1;");
+      output.push("    @if $alpha != null { $fallback-alpha: $alpha; }");
+      output.push("    @return rgba(0, 0, 0, $fallback-alpha);");
       output.push("  }");
       output.push("");
 
@@ -127,9 +132,10 @@ export default function scssColorsFunctionsV2(userOptions = {}) {
       output.push("/// @param {String} $path - 颜色路径");
       output.push("/// @return {String} CSS 变量");
       output.push("@function color-var($path) {");
-      output.push(
-        '  $token-path: if(string.index($path, "color.") == 1, $path, "color.#{$path}");'
-      );
+      output.push("  $token-path: $path;");
+      output.push('  @if string.index($path, "color.") != 1 {');
+      output.push('    $token-path: "color.#{$path}";');
+      output.push("  }");
       output.push('  $css-var-name: str-replace($token-path, ".", "-");');
       output.push("  @return var(--cdt-#{$css-var-name});");
       output.push("}");
