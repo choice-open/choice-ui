@@ -2,7 +2,6 @@ import { tcx } from "@choice-ui/shared"
 import { OTPInput, type SlotProps, type RenderProps } from "input-otp"
 import { createContext, useContext, useMemo, type ComponentProps, type ReactNode } from "react"
 import { otpInputTv } from "./tv"
-import css from "./otp-input.module.css"
 
 type OTPInputVariant = "default" | "light" | "dark"
 
@@ -116,7 +115,7 @@ function OTPInputSlot({ className, index, ...props }: OTPInputSlotProps) {
       ) : null}
       {hasFakeCaret && isActive ? (
         <div
-          className={tcx(styles?.caret?.(), css.caret)}
+          className={tcx(styles?.caret?.(), "otp-input__caret")}
           data-slot="otp-input-caret"
         />
       ) : null}

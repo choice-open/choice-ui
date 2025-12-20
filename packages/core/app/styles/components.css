@@ -593,3 +593,22 @@
     grid-template-columns: auto 1fr 2.5rem;
   }
 }
+
+/* OTP Input styles */
+@layer components {
+  .otp-input__caret {
+    animation: otp-caret-blink 1s ease-out infinite;
+  }
+
+  @keyframes otp-caret-blink {
+    0%,
+    70%,
+    100% {
+      opacity: 1;
+    }
+    20%,
+    50% {
+      opacity: 0;
+    }
+  }
+}
