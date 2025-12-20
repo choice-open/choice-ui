@@ -17,6 +17,7 @@ export const NumericInputMenuTrigger = forwardRef<HTMLButtonElement, NumericInpu
 
     const tv = NumericInputMenuTriggerTv({
       type,
+      size: context.size,
       disabled: context.disabled,
       variant: context.variant,
     })
@@ -24,6 +25,7 @@ export const NumericInputMenuTrigger = forwardRef<HTMLButtonElement, NumericInpu
     return (
       <IconButton
         ref={ref}
+        size={context.size}
         variant={type === "menu" ? (context.disabled ? "ghost" : "solid") : undefined}
         className={tcx(tv, className)}
         disabled={context.disabled}
@@ -52,7 +54,7 @@ export const NumericInputMenuActionPrompt = forwardRef<
   return (
     <div
       ref={ref}
-      className={tcx(NumericInputMenuActionPromptTv({ disabled: context.disabled }), className)}
+      className={tcx(NumericInputMenuActionPromptTv({ size: context.size, disabled: context.disabled }), className)}
       {...rest}
     >
       {children}

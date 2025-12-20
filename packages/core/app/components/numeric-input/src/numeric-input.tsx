@@ -38,6 +38,7 @@ export interface NumericInputProps
       | "step"
       | "disabled"
       | "id"
+      | "size"
     > {
   children?: ReactNode
   className?: string
@@ -77,6 +78,7 @@ export const NumericInputBase = forwardRef<HTMLInputElement, NumericInputProps>(
     readOnly,
     required,
     shiftStep = 10,
+    size = "default",
     step = 1,
     value,
     variant = "default",
@@ -136,6 +138,7 @@ export const NumericInputBase = forwardRef<HTMLInputElement, NumericInputProps>(
   const contextValue = useMemo<NumericInputContextValue>(
     () => ({
       variant,
+      size,
 
       // State
       value,
@@ -166,6 +169,7 @@ export const NumericInputBase = forwardRef<HTMLInputElement, NumericInputProps>(
     }),
     [
       variant,
+      size,
       value,
       defaultValue,
       disabled,
@@ -230,6 +234,7 @@ export const NumericInputBase = forwardRef<HTMLInputElement, NumericInputProps>(
 
   const tv = NumericInputTv({
     variant,
+    size,
     selected: selected || handlerPressed,
     focused,
     disabled,

@@ -1359,6 +1359,12 @@
       "description": "NumericInput Adapter for Form system",
       "props": [
         {
+          "name": "size",
+          "type": "undefined | \"default\" | \"large\"",
+          "required": false,
+          "description": ""
+        },
+        {
           "name": "defaultValue",
           "type": "NumericInputValue | undefined",
           "required": false,
@@ -1580,6 +1586,12 @@
       "displayName": "createNumericInputAdapter",
       "description": "",
       "props": [
+        {
+          "name": "size",
+          "type": "undefined | \"default\" | \"large\"",
+          "required": false,
+          "description": ""
+        },
         {
           "name": "defaultValue",
           "type": "NumericInputValue | undefined",

@@ -3,7 +3,7 @@
   "title": "Table",
   "package": {
     "name": "@choice-ui/table",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "A high-performance table component with virtualization, sorting, filtering, and column management",
     "dependencies": {
       "@choice-ui/checkbox": "workspace:*",

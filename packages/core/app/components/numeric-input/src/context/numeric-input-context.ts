@@ -20,6 +20,7 @@ export interface NumericInputContextValue {
   readOnly?: boolean
   selected?: boolean
   shiftStep?: number
+  size?: "default" | "large"
   step?: number
   value?: NumericInputValue
   variant?: "default" | "light" | "dark" | "reset"

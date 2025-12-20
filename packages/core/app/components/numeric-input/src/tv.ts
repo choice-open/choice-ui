@@ -2,9 +2,9 @@ import { tcv } from "@choice-ui/shared"
 
 export const NumericInputTv = tcv({
   slots: {
-    container: ["group/input grid h-6 before:border-transparent", "input__number"],
-    input: ["peer", "h-6 w-full", "cursor-default appearance-none truncate"],
-    tooltip: "col-span-3 col-start-1 row-start-1 h-6",
+    container: ["group/input grid before:border-transparent", "input__number"],
+    input: ["peer", "w-full", "cursor-default appearance-none truncate"],
+    tooltip: "col-span-3 col-start-1 row-start-1",
   },
   variants: {
     variant: {
@@ -18,6 +18,18 @@ export const NumericInputTv = tcv({
         input: "bg-gray-700 text-white placeholder:text-white/50",
       },
       reset: {},
+    },
+    size: {
+      default: {
+        container: ["h-6", "input__number--default"],
+        input: "h-6",
+        tooltip: "h-6",
+      },
+      large: {
+        container: ["h-8", "input__number--large"],
+        input: "h-8",
+        tooltip: "h-8",
+      },
     },
     prefixElement: {
       true: {},
@@ -141,6 +153,7 @@ export const NumericInputTv = tcv({
   ],
   defaultVariants: {
     variant: "default",
+    size: "default",
     selected: false,
     disabled: false,
     focused: false,
@@ -152,6 +165,10 @@ export const NumericInputMenuTriggerTv = tcv({
   variants: {
     disabled: {
       true: "",
+    },
+    size: {
+      default: "",
+      large: "",
     },
     type: {
       menu: "",
@@ -200,6 +217,7 @@ export const NumericInputMenuTriggerTv = tcv({
   ],
   defaultVariants: {
     disabled: false,
+    size: "default",
     type: "menu",
     variant: "default",
   },
@@ -306,7 +324,7 @@ export const NumericInputVariableTv = tcv({
 })
 
 export const NumericInputElementTv = tcv({
-  base: ["select-none", "z-2 h-6 w-6", "flex flex-none items-center justify-center"],
+  base: ["select-none", "z-2", "flex flex-none items-center justify-center"],
   variants: {
     type: {
       handler: "select-none",
@@ -316,6 +334,10 @@ export const NumericInputElementTv = tcv({
     position: {
       prefix: "rounded-l-md",
       suffix: "rounded-r-md",
+    },
+    size: {
+      default: "h-6 w-6",
+      large: "h-8 w-8",
     },
     disabled: {
       true: "text-disabled-foreground",
@@ -378,18 +400,23 @@ export const NumericInputElementTv = tcv({
   defaultVariants: {
     disabled: false,
     variant: "default",
+    size: "default",
   },
 })
 
 export const NumericInputMenuActionPromptTv = tcv({
   base: [
     "[grid-area:action]",
-    "w-6 pr-2",
+    "pr-2",
     "flex items-center justify-center",
     "rounded-r-md",
     "pointer-events-none z-3",
   ],
   variants: {
+    size: {
+      default: "w-6",
+      large: "w-8",
+    },
     disabled: {
       true: "text-secondary-foreground bg-default-background",
       false: "bg-secondary-background group-focus-within/input:hidden group-hover/input:hidden",
@@ -397,5 +424,6 @@ export const NumericInputMenuActionPromptTv = tcv({
   },
   defaultVariants: {
     disabled: false,
+    size: "default",
   },
 })

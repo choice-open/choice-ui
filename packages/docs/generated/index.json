@@ -188,7 +188,7 @@
       "name": "@choice-ui/dialog",
       "title": "Dialog",
       "description": "",
-      "version": "0.0.8"
+      "version": "0.0.9"
     },
     {
       "slug": "collections/dropdown",
@@ -287,7 +287,7 @@
       "name": "@choice-ui/list",
       "title": "List",
       "description": "",
-      "version": "0.0.5"
+      "version": "0.0.6"
     },
     {
       "slug": "layouts/loader",
@@ -335,7 +335,7 @@
       "name": "@choice-ui/modal",
       "title": "Modal",
       "description": "",
-      "version": "0.0.6",
+      "version": "0.0.7",
       "tags": [
         "new"
       ]
@@ -385,7 +385,7 @@
       "name": "@choice-ui/otp-input",
       "title": "OtpInput",
       "description": "",
-      "version": "0.0.1",
+      "version": "0.0.2",
       "tags": [
         "new"
       ]
@@ -415,7 +415,7 @@
       "name": "@choice-ui/popover",
       "title": "Popover",
       "description": "Portal root element. When specified, the popover will be rendered into this element.",
-      "version": "0.0.9"
+      "version": "0.0.10"
     },
     {
       "slug": "feedback/progress-bar",
@@ -477,7 +477,7 @@
       "name": "@choice-ui/scroll-area",
       "title": "ScrollArea",
       "description": "",
-      "version": "0.0.6",
+      "version": "0.0.7",
       "tags": [
         "upgrade"
       ]
@@ -590,7 +590,7 @@
       "name": "@choice-ui/table",
       "title": "Table",
       "description": "Table component with compound components pattern.",
-      "version": "0.0.1",
+      "version": "0.0.2",
       "tags": [
         "beta"
       ]

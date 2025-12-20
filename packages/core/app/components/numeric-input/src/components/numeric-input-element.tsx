@@ -22,6 +22,7 @@ export const NumericInputElement = memo(
     const tv = NumericInputElementTv({
       type,
       position,
+      size: context.size,
       disabled: context.disabled,
       variant: context.variant,
     })

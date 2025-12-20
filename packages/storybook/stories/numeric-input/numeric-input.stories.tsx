@@ -438,6 +438,306 @@ export const Disabled: Story = {
 }
 
 /**
+ * Sizes: Demonstrates different size variants of the numeric input component.
+ * - default: Standard height (24px / h-6)
+ * - large: Larger height (32px / h-8)
+ *
+ * This example shows all combinations of sizes with different features:
+ * - Basic input
+ * - With prefix
+ * - With suffix
+ * - With prefix and suffix
+ * - With variable
+ * - With menu trigger
+ * - Disabled state
+ */
+export const Sizes: Story = {
+  render: function SizesStory() {
+    const [value, setValue] = useState(10)
+    const [menuOpen, setMenuOpen] = useState(false)
+    const [menuOpenLarge, setMenuOpenLarge] = useState(false)
+
+    return (
+      <>
+        {/* Default Size */}
+        <div className="flex flex-col gap-4">
+          <h3 className="text-body-large font-medium">Default Size (h-6 / 24px)</h3>
+          <div className="flex flex-wrap gap-4">
+            {/* Basic */}
+            <div className="flex flex-col gap-1">
+              <span className="text-secondary-foreground text-body-small">Basic</span>
+              <NumericInput
+                className="w-32"
+                size="default"
+                value={value}
+                onChange={(newValue) => setValue(newValue as number)}
+              />
+            </div>
+
+            {/* With Prefix */}
+            <div className="flex flex-col gap-1">
+              <span className="text-secondary-foreground text-body-small">With Prefix</span>
+              <NumericInput
+                className="w-32"
+                size="default"
+                value={value}
+                onChange={(newValue) => setValue(newValue as number)}
+              >
+                <NumericInput.Prefix>
+                  <FixedWidth />
+                </NumericInput.Prefix>
+              </NumericInput>
+            </div>
+
+            {/* With Suffix */}
+            <div className="flex flex-col gap-1">
+              <span className="text-secondary-foreground text-body-small">With Suffix</span>
+              <NumericInput
+                className="w-32"
+                size="default"
+                value={value}
+                onChange={(newValue) => setValue(newValue as number)}
+              >
+                <NumericInput.Suffix>
+                  <Relative />
+                </NumericInput.Suffix>
+              </NumericInput>
+            </div>
+
+            {/* With Prefix and Suffix */}
+            <div className="flex flex-col gap-1">
+              <span className="text-secondary-foreground text-body-small">Prefix + Suffix</span>
+              <NumericInput
+                className="w-32"
+                size="default"
+                value={value}
+                onChange={(newValue) => setValue(newValue as number)}
+              >
+                <NumericInput.Prefix>
+                  <FixedWidth />
+                </NumericInput.Prefix>
+                <NumericInput.Suffix>
+                  <Relative />
+                </NumericInput.Suffix>
+              </NumericInput>
+            </div>
+
+            {/* With Variable */}
+            <div className="flex flex-col gap-1">
+              <span className="text-secondary-foreground text-body-small">With Variable</span>
+              <NumericInput
+                className="w-32"
+                size="default"
+                value={undefined}
+                onChange={(newValue) => setValue(newValue as number)}
+              >
+                <NumericInput.Prefix>
+                  <FixedWidth />
+                </NumericInput.Prefix>
+                <NumericInput.Variable value={10} />
+              </NumericInput>
+            </div>
+
+            {/* With Menu Trigger */}
+            <div className="flex flex-col gap-1">
+              <span className="text-secondary-foreground text-body-small">With Menu</span>
+              <NumericInput
+                className="w-32"
+                size="default"
+                focused={menuOpen}
+                value={value}
+                onChange={(newValue) => setValue(newValue as number)}
+              >
+                <NumericInput.Prefix>
+                  <FixedWidth />
+                </NumericInput.Prefix>
+                <NumericInput.Suffix type="action">
+                  <Select
+                    open={menuOpen}
+                    onOpenChange={setMenuOpen}
+                    placement="bottom-end"
+                  >
+                    <Select.Trigger asChild>
+                      <NumericInput.MenuTrigger
+                        aria-label="Open menu"
+                        type="action"
+                      />
+                    </Select.Trigger>
+                    <Select.Content>
+                      <Select.Item value="fixed">
+                        <FixedHeight />
+                        Fixed height
+                      </Select.Item>
+                      <Select.Item value="hug">
+                        <HugHeight />
+                        Hug contents
+                      </Select.Item>
+                    </Select.Content>
+                  </Select>
+                </NumericInput.Suffix>
+              </NumericInput>
+            </div>
+
+            {/* Disabled */}
+            <div className="flex flex-col gap-1">
+              <span className="text-secondary-foreground text-body-small">Disabled</span>
+              <NumericInput
+                className="w-32"
+                size="default"
+                disabled
+                value={value}
+                onChange={(newValue) => setValue(newValue as number)}
+              >
+                <NumericInput.Prefix>
+                  <FixedWidth />
+                </NumericInput.Prefix>
+              </NumericInput>
+            </div>
+          </div>
+        </div>
+
+        {/* Large Size */}
+        <div className="flex flex-col gap-4">
+          <h3 className="text-body-large font-medium">Large Size (h-8 / 32px)</h3>
+          <div className="flex flex-wrap gap-4">
+            {/* Basic */}
+            <div className="flex flex-col gap-1">
+              <span className="text-secondary-foreground text-body-small">Basic</span>
+              <NumericInput
+                className="w-32"
+                size="large"
+                value={value}
+                onChange={(newValue) => setValue(newValue as number)}
+              />
+            </div>
+
+            {/* With Prefix */}
+            <div className="flex flex-col gap-1">
+              <span className="text-secondary-foreground text-body-small">With Prefix</span>
+              <NumericInput
+                className="w-32"
+                size="large"
+                value={value}
+                onChange={(newValue) => setValue(newValue as number)}
+              >
+                <NumericInput.Prefix>
+                  <FixedWidth />
+                </NumericInput.Prefix>
+              </NumericInput>
+            </div>
+
+            {/* With Suffix */}
+            <div className="flex flex-col gap-1">
+              <span className="text-secondary-foreground text-body-small">With Suffix</span>
+              <NumericInput
+                className="w-32"
+                size="large"
+                value={value}
+                onChange={(newValue) => setValue(newValue as number)}
+              >
+                <NumericInput.Suffix>
+                  <Relative />
+                </NumericInput.Suffix>
+              </NumericInput>
+            </div>
+
+            {/* With Prefix and Suffix */}
+            <div className="flex flex-col gap-1">
+              <span className="text-secondary-foreground text-body-small">Prefix + Suffix</span>
+              <NumericInput
+                className="w-32"
+                size="large"
+                value={value}
+                onChange={(newValue) => setValue(newValue as number)}
+              >
+                <NumericInput.Prefix>
+                  <FixedWidth />
+                </NumericInput.Prefix>
+                <NumericInput.Suffix>
+                  <Relative />
+                </NumericInput.Suffix>
+              </NumericInput>
+            </div>
+
+            {/* With Variable */}
+            <div className="flex flex-col gap-1">
+              <span className="text-secondary-foreground text-body-small">With Variable</span>
+              <NumericInput
+                className="w-32"
+                size="large"
+                value={undefined}
+                onChange={(newValue) => setValue(newValue as number)}
+              >
+                <NumericInput.Prefix>
+                  <FixedWidth />
+                </NumericInput.Prefix>
+                <NumericInput.Variable value={10} />
+              </NumericInput>
+            </div>
+
+            {/* With Menu Trigger */}
+            <div className="flex flex-col gap-1">
+              <span className="text-secondary-foreground text-body-small">With Menu</span>
+              <NumericInput
+                className="w-32"
+                size="large"
+                focused={menuOpenLarge}
+                value={value}
+                onChange={(newValue) => setValue(newValue as number)}
+              >
+                <NumericInput.Prefix>
+                  <FixedWidth />
+                </NumericInput.Prefix>
+                <NumericInput.Suffix type="action">
+                  <Select
+                    open={menuOpenLarge}
+                    onOpenChange={setMenuOpenLarge}
+                    placement="bottom-end"
+                  >
+                    <Select.Trigger asChild>
+                      <NumericInput.MenuTrigger
+                        aria-label="Open menu"
+                        type="action"
+                      />
+                    </Select.Trigger>
+                    <Select.Content>
+                      <Select.Item value="fixed">
+                        <FixedHeight />
+                        Fixed height
+                      </Select.Item>
+                      <Select.Item value="hug">
+                        <HugHeight />
+                        Hug contents
+                      </Select.Item>
+                    </Select.Content>
+                  </Select>
+                </NumericInput.Suffix>
+              </NumericInput>
+            </div>
+
+            {/* Disabled */}
+            <div className="flex flex-col gap-1">
+              <span className="text-secondary-foreground text-body-small">Disabled</span>
+              <NumericInput
+                className="w-32"
+                size="large"
+                disabled
+                value={value}
+                onChange={(newValue) => setValue(newValue as number)}
+              >
+                <NumericInput.Prefix>
+                  <FixedWidth />
+                </NumericInput.Prefix>
+              </NumericInput>
+            </div>
+          </div>
+        </div>
+      </>
+    )
+  },
+}
+
+/**
  * Variants: Demonstrates different visual variants of the numeric input component.
  * - default: Follows the page theme dynamically (light/dark mode)
  * - light: Fixed light appearance regardless of theme

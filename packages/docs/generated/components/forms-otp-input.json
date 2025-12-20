@@ -3,7 +3,7 @@
   "title": "OtpInput",
   "package": {
     "name": "@choice-ui/otp-input",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "A one-time password input component with customizable slots and separators",
     "dependencies": {
       "@choice-ui/shared": "workspace:*",

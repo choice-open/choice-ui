@@ -558,14 +558,27 @@
   }
 
   .input__number {
-    grid-template-rows: 1.5rem;
     grid-template-columns: auto auto 1fr auto auto;
     grid-template-areas: "prefix-handler variable input action suffix-handler";
     &::before {
-      @apply pointer-events-none z-3 h-6 rounded-md border;
+      @apply pointer-events-none z-3 rounded-md border;
       grid-row: 1 / 2;
       grid-column: 1 / 6;
       content: "";
+    }
+  }
+
+  .input__number--default {
+    grid-template-rows: 1.5rem;
+    &::before {
+      @apply h-6;
+    }
+  }
+
+  .input__number--large {
+    grid-template-rows: 2rem;
+    &::before {
+      @apply h-8;
     }
   }
 
