@@ -16,9 +16,10 @@ const codeBlockFooterTv = tcv({
       },
       false: {
         footer: [
-          "bg-secondary-background/90 absolute inset-x-0 bottom-0 z-3",
+          "bg-secondary-background/80 absolute inset-x-0 bottom-0 z-3",
           "opacity-0 group-hover:opacity-100",
           "hover:bg-tertiary-background",
+          "backdrop-blur-xs",
         ],
       },
     },
@@ -39,7 +40,10 @@ export const CodeBlockFooter = memo(function CodeBlockFooter(props: CodeBlockFoo
   const tv = codeBlockFooterTv({ codeExpanded })
 
   // Only show footer if content needs scrolling
-  if (!(lineCount > lineThreshold || needsScroll || codeExpanded) || !isExpanded) {
+  if (
+    (lineThreshold && !(lineCount > lineThreshold || needsScroll || codeExpanded)) ||
+    !isExpanded
+  ) {
     return null
   }
 

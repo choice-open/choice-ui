@@ -571,7 +571,7 @@ export const ControlledValue: StoryObj<typeof RichInput> = {
         </div>
 
         <CodeBlock language="json">
-          <CodeBlock.Content code={JSON.stringify(value, null, 2)} />
+          <CodeBlock.Content>{JSON.stringify(value, null, 2)}</CodeBlock.Content>
         </CodeBlock>
       </div>
     )

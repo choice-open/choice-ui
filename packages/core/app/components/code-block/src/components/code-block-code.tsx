@@ -29,7 +29,7 @@ const codeBlockCodeTv = tcv({
 })
 
 export const CodeBlockCode = memo(function CodeBlockCode(props: CodeBlockCodeProps) {
-  const { code, language = "tsx", className, variant: variantProp, codeBlock, ...rest } = props
+  const { children, language = "tsx", className, variant: variantProp, codeBlock, ...rest } = props
 
   const systemTheme = useTheme()
 
@@ -41,31 +41,50 @@ export const CodeBlockCode = memo(function CodeBlockCode(props: CodeBlockCodePro
   const [highlightedHtml, setHighlightedHtml] = useState<string | null>(null)
 
   useEffect(() => {
+    let isMounted = true
+
     async function highlight() {
-      if (!code) {
-        setHighlightedHtml("<pre><code></code></pre>")
+      if (!children) {
+        if (isMounted) setHighlightedHtml("<pre><code></code></pre>")
         return
       }
 
       const resolvedLang = resolveLanguage(language)
+      const themeConfig = theme === "light" ? "github-light" : "github-dark"
 
       try {
-        const html = await codeToHtml(code, {
+        const html = await codeToHtml(children, {
           lang: resolvedLang,
-          theme: theme === "light" ? "github-light" : "github-dark",
+          theme: themeConfig,
         })
-        setHighlightedHtml(html)
+        if (isMounted) setHighlightedHtml(html)
       } catch {
         // Fallback to plain text if language is not supported
-        const html = await codeToHtml(code, {
-          lang: "text",
-          theme: theme === "light" ? "github-light" : "github-dark",
-        })
-        setHighlightedHtml(html)
+        try {
+          const html = await codeToHtml(children, {
+            lang: "text",
+            theme: themeConfig,
+          })
+          if (isMounted) setHighlightedHtml(html)
+        } catch {
+          // Both attempts failed, render escaped plain text
+          if (isMounted) {
+            const escaped = children
+              .replace(/&/g, "&amp;")
+              .replace(/</g, "&lt;")
+              .replace(/>/g, "&gt;")
+            setHighlightedHtml(`<pre><code>${escaped}</code></pre>`)
+          }
+        }
       }
     }
+
     highlight()
-  }, [code, language, theme])
+
+    return () => {
+      isMounted = false
+    }
+  }, [children, language, theme])
 
   const classNames = codeBlockCodeTv({ className })
 
@@ -82,7 +101,7 @@ export const CodeBlockCode = memo(function CodeBlockCode(props: CodeBlockCodePro
       {...rest}
     >
       <pre>
-        <code>{code}</code>
+        <code>{children}</code>
       </pre>
     </div>
   )

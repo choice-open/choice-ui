@@ -1,17 +1,23 @@
 import { tcv, tcx } from "@choice-ui/shared"
 import { ScrollArea } from "@choice-ui/scroll-area"
+import { memo } from "react"
 import type { CodeBlockContentProps } from "../types"
 import { CodeBlockCode } from "./code-block-code"
 
+/** Pixels per line for height calculation */
+const LINE_HEIGHT_PX = 16
+/** Padding offset for height calculation */
+const HEIGHT_PADDING_PX = 32 + 40
+
 const codeBlockTv = tcv({
   slots: {
-    code: "overflow-hidden",
+    code: "overflow-hidden min-h-0 flex-1",
     content: "flex w-fit flex-col overflow-clip p-[inherit]",
   },
 })
 
-export function CodeBlockContent(props: CodeBlockContentProps) {
-  const { code, className, codeBlock, withScrollArea = true } = props
+export const CodeBlockContent = memo(function CodeBlockContent(props: CodeBlockContentProps) {
+  const { className, codeBlock, withScrollArea = true, children } = props
 
   if (!codeBlock) return null
 
@@ -23,14 +29,14 @@ export function CodeBlockContent(props: CodeBlockContentProps) {
   }
 
   // Ensure code is a string
-  if (typeof code !== "string") {
+  if (typeof children !== "string") {
     return null
   }
 
   const tv = codeBlockTv()
 
   // 根据 lineThreshold 决定是否需要限制高度
-  const shouldLimitHeight = lineCount > lineThreshold && !codeExpanded
+  const shouldLimitHeight = lineThreshold && lineCount > lineThreshold && !codeExpanded
 
   return (
     <>
@@ -44,7 +50,9 @@ export function CodeBlockContent(props: CodeBlockContentProps) {
           <ScrollArea.Viewport
             ref={scrollRef}
             style={{
-              maxHeight: shouldLimitHeight ? `${lineThreshold * 14 + 32}px` : "none",
+              maxHeight: shouldLimitHeight
+                ? `${lineThreshold * LINE_HEIGHT_PX + HEIGHT_PADDING_PX}px`
+                : "none",
             }}
           >
             <ScrollArea.Content
@@ -52,22 +60,24 @@ export function CodeBlockContent(props: CodeBlockContentProps) {
               className={tv.content()}
             >
               <CodeBlockCode
-                code={code}
                 language={language}
                 codeBlock={codeBlock}
-              />
+              >
+                {children}
+              </CodeBlockCode>
             </ScrollArea.Content>
           </ScrollArea.Viewport>
         </ScrollArea>
       ) : (
         <div className={tcx(tv.content(), className)}>
           <CodeBlockCode
-            code={code}
             language={language}
             codeBlock={codeBlock}
-          />
+          >
+            {children}
+          </CodeBlockCode>
         </div>
       )}
     </>
   )
-}
+})

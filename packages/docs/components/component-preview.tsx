@@ -88,10 +88,7 @@ export function ComponentPreview({
             showLineCount={false}
             className="border-b"
           />
-          <CodeBlock.Content
-            code={code ?? ""}
-            language={language}
-          />
+          <CodeBlock.Content language={language}>{code ?? ""}</CodeBlock.Content>
           <CodeBlock.Footer />
         </CodeBlock>
       ) : null}

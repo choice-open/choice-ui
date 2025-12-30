@@ -25,10 +25,8 @@ export default function InstallationPage() {
           language="css"
           variant="dark"
         >
-          <CodeBlock.Content
-            code={`@import "tailwindcss";
-@import "@choice-ui/react/tailwind.css";`}
-          />
+          <CodeBlock.Content>{`@import "tailwindcss";
+@import "@choice-ui/react/tailwind.css";`}</CodeBlock.Content>
         </CodeBlock>
       </section>
 
@@ -41,8 +39,7 @@ export default function InstallationPage() {
           language="tsx"
           variant="dark"
         >
-          <CodeBlock.Content
-            code={`import { ChoiceUiProvider } from "@choice-ui/react"
+          <CodeBlock.Content>{`import { ChoiceUiProvider } from "@choice-ui/react"
 
 function App() {
   return (
@@ -50,8 +47,7 @@ function App() {
       <YourApp />
     </ChoiceUiProvider>
   )
-}`}
-          />
+}`}</CodeBlock.Content>
         </CodeBlock>
       </section>
 
@@ -62,13 +58,11 @@ function App() {
           language="tsx"
           variant="dark"
         >
-          <CodeBlock.Content
-            code={`import { Button } from "@choice-ui/react"
+          <CodeBlock.Content>{`import { Button } from "@choice-ui/react"
 
 function MyComponent() {
   return <Button>Click me</Button>
-}`}
-          />
+}`}</CodeBlock.Content>
         </CodeBlock>
       </section>
     </div>

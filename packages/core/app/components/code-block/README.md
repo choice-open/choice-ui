@@ -35,7 +35,7 @@ function App() {
 
   return (
     <CodeBlock language="javascript">
-      <CodeBlock.Content code={code} />
+      <CodeBlock.Content>{code}</CodeBlock.Content>
     </CodeBlock>
   )
 }
@@ -49,7 +49,7 @@ function App() {
   filename="App.tsx"
 >
   <CodeBlock.Header />
-  <CodeBlock.Content code={code} />
+  <CodeBlock.Content>{code}</CodeBlock.Content>
   <CodeBlock.Footer />
 </CodeBlock>
 ```
@@ -177,7 +177,7 @@ Currently supported icons:
   defaultExpanded={false}
 >
   <CodeBlock.Header />
-  <CodeBlock.Content code={code} />
+  <CodeBlock.Content>{code}</CodeBlock.Content>
 </CodeBlock>
 ```
 
@@ -189,7 +189,7 @@ Currently supported icons:
   lineThreshold={10} // Show footer after 10 lines
 >
   <CodeBlock.Header />
-  <CodeBlock.Content code={code} />
+  <CodeBlock.Content>{code}</CodeBlock.Content>
   <CodeBlock.Footer />
 </CodeBlock>
 ```
@@ -198,10 +198,7 @@ Currently supported icons:
 
 ```tsx
 <CodeBlock language="js">
-  <CodeBlock.Content
-    code={code}
-    withScrollArea={false}
-  />
+  <CodeBlock.Content withScrollArea={false}>{code}</CodeBlock.Content>
 </CodeBlock>
 ```
 
@@ -220,7 +217,7 @@ Currently supported icons:
       collapse: "折叠",
     }}
   />
-  <CodeBlock.Content code={code} />
+  <CodeBlock.Content>{code}</CodeBlock.Content>
 </CodeBlock>
 ```
 
@@ -232,7 +229,7 @@ Currently supported icons:
   expandable={false}
 >
   <CodeBlock.Header />
-  <CodeBlock.Content code={code} />
+  <CodeBlock.Content>{code}</CodeBlock.Content>
 </CodeBlock>
 ```
 

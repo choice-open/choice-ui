@@ -415,7 +415,7 @@
       "name": "@choice-ui/popover",
       "title": "Popover",
       "description": "Portal root element. When specified, the popover will be rendered into this element.",
-      "version": "0.0.10"
+      "version": "0.0.11"
     },
     {
       "slug": "feedback/progress-bar",

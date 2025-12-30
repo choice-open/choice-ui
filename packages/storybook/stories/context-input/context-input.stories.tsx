@@ -136,7 +136,7 @@ export const Basic: Story = {
         />
 
         <CodeBlock language="json">
-          <CodeBlock.Content code={JSON.stringify(value, null, 2)} />
+          <CodeBlock.Content>{JSON.stringify(value, null, 2)}</CodeBlock.Content>
         </CodeBlock>
       </div>
     )
@@ -200,7 +200,7 @@ export const Disabled: Story = {
         />
 
         <CodeBlock language="json">
-          <CodeBlock.Content code={JSON.stringify(value, null, 2)} />
+          <CodeBlock.Content>{JSON.stringify(value, null, 2)}</CodeBlock.Content>
         </CodeBlock>
       </div>
     )
@@ -257,7 +257,7 @@ export const ReadOnly: Story = {
           onChange={handleChange}
         />
         <CodeBlock language="json">
-          <CodeBlock.Content code={JSON.stringify(value, null, 2)} />
+          <CodeBlock.Content>{JSON.stringify(value, null, 2)}</CodeBlock.Content>
         </CodeBlock>
       </div>
     )
@@ -421,8 +421,8 @@ export const LargeSize: Story = {
         />
 
         <CodeBlock language="json">
-          <CodeBlock.Content code={JSON.stringify(value, null, 2)} />
-          <CodeBlock.Content code={value.text} />
+          <CodeBlock.Content>{JSON.stringify(value, null, 2)}</CodeBlock.Content>
+          <CodeBlock.Content>{value.text}</CodeBlock.Content>
         </CodeBlock>
       </div>
     )
@@ -475,8 +475,8 @@ export const MinHeight: Story = {
         />
 
         <CodeBlock language="json">
-          <CodeBlock.Content code={JSON.stringify(value, null, 2)} />
-          <CodeBlock.Content code={value.text} />
+          <CodeBlock.Content>{JSON.stringify(value, null, 2)}</CodeBlock.Content>
+          <CodeBlock.Content>{value.text}</CodeBlock.Content>
         </CodeBlock>
       </div>
     )
@@ -539,8 +539,8 @@ export const WithHeader: Story = {
         </ContextInput>
 
         <CodeBlock language="json">
-          <CodeBlock.Content code={JSON.stringify(value, null, 2)} />
-          <CodeBlock.Content code={value.text} />
+          <CodeBlock.Content>{JSON.stringify(value, null, 2)}</CodeBlock.Content>
+          <CodeBlock.Content>{value.text}</CodeBlock.Content>
         </CodeBlock>
       </div>
     )
@@ -1075,8 +1075,8 @@ export const CustomMentionPrefix: Story = {
         />
 
         <CodeBlock language="json">
-          <CodeBlock.Content code={JSON.stringify(value, null, 2)} />
-          <CodeBlock.Content code={value.text} />
+          <CodeBlock.Content>{JSON.stringify(value, null, 2)}</CodeBlock.Content>
+          <CodeBlock.Content>{value.text}</CodeBlock.Content>
         </CodeBlock>
       </div>
     )
@@ -1432,7 +1432,7 @@ export const ControlledValue: Story = {
         </ContextInput>
 
         <CodeBlock language="json">
-          <CodeBlock.Content code={JSON.stringify(value, null, 2)} />
+          <CodeBlock.Content>{JSON.stringify(value, null, 2)}</CodeBlock.Content>
         </CodeBlock>
       </div>
     )

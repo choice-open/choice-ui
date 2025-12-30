@@ -40,14 +40,43 @@ export function useCodeBlock({
       return
     }
 
-    try {
-      if (typeof navigator !== "undefined" && navigator.clipboard) {
+    const onSuccess = () => {
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    }
+
+    // Try modern Clipboard API first (requires HTTPS)
+    if (typeof navigator !== "undefined" && navigator.clipboard) {
+      try {
         await navigator.clipboard.writeText(code)
-        setCopied(true)
-        setTimeout(() => setCopied(false), 2000)
+        onSuccess()
+        return
+      } catch {
+        // Clipboard API failed, try fallback
       }
-    } catch (error) {
-      // Fallback: do nothing, just don't crash
+    }
+
+    // Fallback for non-HTTPS environments using execCommand
+    const textArea = document.createElement("textarea")
+    try {
+      textArea.value = code
+      // Avoid scrolling to bottom
+      textArea.style.cssText =
+        "position:fixed;top:0;left:0;width:2em;height:2em;padding:0;border:none;outline:none;box-shadow:none;background:transparent;"
+      document.body.appendChild(textArea)
+      textArea.focus()
+      textArea.select()
+      const successful = document.execCommand("copy")
+      if (successful) {
+        onSuccess()
+      }
+    } catch {
+      // execCommand failed, do nothing
+    } finally {
+      // Always clean up the textarea element
+      if (textArea.parentNode) {
+        textArea.parentNode.removeChild(textArea)
+      }
     }
   })
 

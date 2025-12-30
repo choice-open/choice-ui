@@ -104,10 +104,7 @@ export const createMarkdownComponents = (
           className={tv.codeBlock()}
           lineThreshold={undefined}
         >
-          <CodeBlock.Code
-            code={children as string}
-            language={language}
-          />
+          <CodeBlock.Code language={language}>{children as string}</CodeBlock.Code>
         </CodeBlock>
       )
     },

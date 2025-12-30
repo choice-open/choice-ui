@@ -1,7 +1,6 @@
-import { useState, useEffect, RefObject } from "react"
+import { useState, useEffect, useCallback, useRef, type RefObject } from "react"
 
 interface UseScrollDetectionProps {
-  children: React.ReactNode
   codeExpanded: boolean
   contentRef: RefObject<HTMLElement>
   isExpanded: boolean
@@ -13,12 +12,17 @@ export function useScrollDetection({
   contentRef,
   isExpanded,
   codeExpanded,
-  children,
 }: UseScrollDetectionProps) {
   const [needsScroll, setNeedsScroll] = useState(false)
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  useEffect(() => {
-    const checkScrollNeeded = () => {
+  const checkScrollNeeded = useCallback(() => {
+    // Debounce rapid calls
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current)
+    }
+
+    debounceRef.current = setTimeout(() => {
       if (!scrollRef.current || !contentRef.current) {
         setNeedsScroll(false)
         return
@@ -27,35 +31,36 @@ export function useScrollDetection({
       try {
         const viewport = scrollRef.current
         const content = contentRef.current
-        // Check if content height exceeds viewport height
         const hasScroll = content.scrollHeight > viewport.clientHeight
         setNeedsScroll(hasScroll)
-      } catch (error) {
+      } catch {
         setNeedsScroll(false)
       }
-    }
+    }, 50)
+  }, [scrollRef, contentRef])
 
-    // Check initially with a small delay to ensure content is rendered
+  useEffect(() => {
+    // Initial check with delay to ensure content is rendered
     const timeoutId = setTimeout(checkScrollNeeded, 100)
 
-    // Also check on window resize
     window.addEventListener("resize", checkScrollNeeded)
 
-    // Use ResizeObserver to detect content changes
+    // Use ResizeObserver to detect content size changes (replaces children dependency)
     let resizeObserver: ResizeObserver | null = null
-    if (typeof ResizeObserver !== "undefined") {
+    if (typeof ResizeObserver !== "undefined" && contentRef.current) {
       resizeObserver = new ResizeObserver(checkScrollNeeded)
-      if (contentRef.current) {
-        resizeObserver.observe(contentRef.current)
-      }
+      resizeObserver.observe(contentRef.current)
     }
 
     return () => {
       clearTimeout(timeoutId)
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current)
+      }
       window.removeEventListener("resize", checkScrollNeeded)
       resizeObserver?.disconnect()
     }
-  }, [scrollRef, contentRef, isExpanded, codeExpanded, children])
+  }, [checkScrollNeeded, isExpanded, codeExpanded])
 
   return needsScroll
 }

@@ -120,7 +120,7 @@ export const Basic: Story = {
         <div className="bg-secondary-background mt-4 rounded-xl p-4">
           <strong>Form Result:</strong>
           <CodeBlock language="json">
-            <CodeBlock.Content code={result} />
+            <CodeBlock.Content>{result}</CodeBlock.Content>
           </CodeBlock>
         </div>
       </div>
@@ -227,7 +227,7 @@ export const TextareaAdapter: Story = {
         <div className="bg-secondary-background mt-4 w-80 rounded-xl p-4">
           <strong>Form Result:</strong>
           <CodeBlock language="json">
-            <CodeBlock.Content code={result} />
+            <CodeBlock.Content>{result}</CodeBlock.Content>
           </CodeBlock>
         </div>
       </div>
@@ -307,7 +307,7 @@ export const SelectAdapter: Story = {
         <div className="bg-secondary-background mt-4 w-80 rounded-xl p-4">
           <strong>Form Result:</strong>
           <CodeBlock language="json">
-            <CodeBlock.Content code={result} />
+            <CodeBlock.Content>{result}</CodeBlock.Content>
           </CodeBlock>
         </div>
       </div>
@@ -391,7 +391,7 @@ export const MultiSelectAdapter: Story = {
         <div className="bg-secondary-background mt-4 w-80 rounded-xl p-4">
           <strong>Form Result:</strong>
           <CodeBlock language="json">
-            <CodeBlock.Content code={result} />
+            <CodeBlock.Content>{result}</CodeBlock.Content>
           </CodeBlock>
         </div>
       </div>
@@ -469,7 +469,7 @@ export const ChipsInputAdapter: Story = {
         <div className="bg-secondary-background mt-4 w-80 rounded-xl p-4">
           <strong>Form Result:</strong>
           <CodeBlock language="json">
-            <CodeBlock.Content code={result} />
+            <CodeBlock.Content>{result}</CodeBlock.Content>
           </CodeBlock>
         </div>
       </div>
@@ -542,7 +542,7 @@ export const CheckboxAdapter: Story = {
         <div className="bg-secondary-background mt-4 w-80 rounded-xl p-4">
           <strong>Form Result:</strong>
           <CodeBlock language="json">
-            <CodeBlock.Content code={result} />
+            <CodeBlock.Content>{result}</CodeBlock.Content>
           </CodeBlock>
         </div>
       </div>
@@ -620,7 +620,7 @@ export const RadioGroupAdapter: Story = {
         <div className="bg-secondary-background mt-4 w-80 rounded-xl p-4">
           <strong>Form Result:</strong>
           <CodeBlock language="json">
-            <CodeBlock.Content code={result} />
+            <CodeBlock.Content>{result}</CodeBlock.Content>
           </CodeBlock>
         </div>
       </div>
@@ -693,7 +693,7 @@ export const SwitchAdapter: Story = {
         <div className="bg-secondary-background mt-4 w-80 rounded-xl p-4">
           <strong>Form Result:</strong>
           <CodeBlock language="json">
-            <CodeBlock.Content code={result} />
+            <CodeBlock.Content>{result}</CodeBlock.Content>
           </CodeBlock>
         </div>
       </div>
@@ -769,7 +769,7 @@ export const RangeAdapter: Story = {
         <div className="bg-secondary-background mt-4 w-80 rounded-xl p-4">
           <strong>Form Result:</strong>
           <CodeBlock language="json">
-            <CodeBlock.Content code={result} />
+            <CodeBlock.Content>{result}</CodeBlock.Content>
           </CodeBlock>
         </div>
       </div>
@@ -850,7 +850,7 @@ export const NumericInputAdapter: Story = {
         <div className="bg-secondary-background mt-4 rounded-xl p-4">
           <strong>Form Result:</strong>
           <CodeBlock language="json">
-            <CodeBlock.Content code={result} />
+            <CodeBlock.Content>{result}</CodeBlock.Content>
           </CodeBlock>
         </div>
       </div>
@@ -928,7 +928,7 @@ export const SegmentedAdapter: Story = {
         <div className="bg-secondary-background mt-4 w-80 rounded-xl p-4">
           <strong>Form Result:</strong>
           <CodeBlock language="json">
-            <CodeBlock.Content code={result} />
+            <CodeBlock.Content>{result}</CodeBlock.Content>
           </CodeBlock>
         </div>
       </div>
@@ -1027,7 +1027,7 @@ export const BasicForm: Story = {
         <div className="bg-secondary-background mt-4 rounded-xl p-4">
           <strong>Form Result:</strong>
           <CodeBlock language="json">
-            <CodeBlock.Content code={result} />
+            <CodeBlock.Content>{result}</CodeBlock.Content>
           </CodeBlock>
         </div>
       </div>
@@ -1135,7 +1135,7 @@ export const WithDescription: Story = {
         <div className="bg-secondary-background mt-4 rounded-xl p-4">
           <strong>Form Result:</strong>
           <CodeBlock language="json">
-            <CodeBlock.Content code={result} />
+            <CodeBlock.Content>{result}</CodeBlock.Content>
           </CodeBlock>
         </div>
       </div>
@@ -1266,7 +1266,7 @@ export const WithValidation: Story = {
         <div className="bg-secondary-background mt-4 rounded-xl p-4">
           <strong>Form Result:</strong>
           <CodeBlock language="json">
-            <CodeBlock.Content code={result} />
+            <CodeBlock.Content>{result}</CodeBlock.Content>
           </CodeBlock>
         </div>
       </div>

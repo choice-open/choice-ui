@@ -53,7 +53,7 @@ const INITIAL_COMPONENTS: InitialComponents = {
         expandable={false}
       >
         <CodeBlock.Header showLineCount={false} />
-        <CodeBlock.Content code={children as string} />
+        <CodeBlock.Content>{children as string}</CodeBlock.Content>
       </CodeBlock>
     )
   },

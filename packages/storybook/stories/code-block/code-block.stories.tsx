@@ -273,15 +273,15 @@ export const Basic: Story = {
     return (
       <div className="flex max-w-4xl flex-col gap-4">
         <CodeBlock language="ts">
-          <CodeBlock.Content code={tsCode} />
+          <CodeBlock.Content>{tsCode}</CodeBlock.Content>
         </CodeBlock>
 
         <CodeBlock language="json">
-          <CodeBlock.Content code={jsonCode} />
+          <CodeBlock.Content>{jsonCode}</CodeBlock.Content>
         </CodeBlock>
 
         <CodeBlock language="diff">
-          <CodeBlock.Content code={diffCode} />
+          <CodeBlock.Content>{diffCode}</CodeBlock.Content>
         </CodeBlock>
       </div>
     )
@@ -298,7 +298,7 @@ export const LongCodeWithScroll: Story = {
     return (
       <div className="max-w-3xl">
         <CodeBlock language="js">
-          <CodeBlock.Content code={long} />
+          <CodeBlock.Content>{long}</CodeBlock.Content>
         </CodeBlock>
       </div>
     )
@@ -315,10 +315,7 @@ export const LongCodeWithoutScroll: Story = {
     return (
       <div className="max-w-3xl">
         <CodeBlock language="js">
-          <CodeBlock.Content
-            code={long}
-            withScrollArea={false}
-          />
+          <CodeBlock.Content withScrollArea={false}>{long}</CodeBlock.Content>
         </CodeBlock>
       </div>
     )
@@ -340,21 +337,21 @@ export const Variants: Story = {
           language="typescript"
         >
           <CodeBlock.Header />
-          <CodeBlock.Content code="console.log('Hello, world!')" />
+          <CodeBlock.Content>console.log('Hello, world!')</CodeBlock.Content>
         </CodeBlock>
         <CodeBlock
           variant="light"
           language="typescript"
         >
           <CodeBlock.Header />
-          <CodeBlock.Content code="console.log('Hello, world!')" />
+          <CodeBlock.Content>console.log('Hello, world!')</CodeBlock.Content>
         </CodeBlock>
         <CodeBlock
           variant="dark"
           language="typescript"
         >
           <CodeBlock.Header />
-          <CodeBlock.Content code="console.log('Hello, world!')" />
+          <CodeBlock.Content>console.log('Hello, world!')</CodeBlock.Content>
         </CodeBlock>
       </div>
     )
@@ -370,25 +367,25 @@ export const PopularLanguages: Story = {
     return (
       <div className="flex max-w-4xl flex-col gap-4">
         <CodeBlock language="tsx">
-          <CodeBlock.Content code={tsxCode} />
+          <CodeBlock.Content>{tsxCode}</CodeBlock.Content>
         </CodeBlock>
 
         <CodeBlock language="html">
-          <CodeBlock.Content code={htmlCode} />
+          <CodeBlock.Content>{htmlCode}</CodeBlock.Content>
         </CodeBlock>
 
         <CodeBlock language="js">
-          <CodeBlock.Content
-            code={`(() => {\n  const msg = 'hello';\n  console.log(msg);\n})();`}
-          />
+          <CodeBlock.Content>
+            {`(() => {\n  const msg = 'hello';\n  console.log(msg);\n})();`}
+          </CodeBlock.Content>
         </CodeBlock>
 
         <CodeBlock language="css">
-          <CodeBlock.Content code={cssCode} />
+          <CodeBlock.Content>{cssCode}</CodeBlock.Content>
         </CodeBlock>
 
         <CodeBlock language="python">
-          <CodeBlock.Content code={pyCode} />
+          <CodeBlock.Content>{pyCode}</CodeBlock.Content>
         </CodeBlock>
       </div>
     )
@@ -404,7 +401,7 @@ export const LongTsxDemo: Story = {
     return (
       <div className="max-w-md">
         <CodeBlock language="tsx">
-          <CodeBlock.Content code={longTSXExample} />
+          <CodeBlock.Content>{longTSXExample}</CodeBlock.Content>
         </CodeBlock>
       </div>
     )
@@ -424,7 +421,7 @@ export const WithInteractiveHeader: Story = {
           filename="HelloWorld.tsx"
         >
           <CodeBlock.Header />
-          <CodeBlock.Content code={tsxCode} />
+          <CodeBlock.Content>{tsxCode}</CodeBlock.Content>
         </CodeBlock>
       </div>
     )
@@ -444,7 +441,7 @@ export const WithHeaderAndFooter: Story = {
           filename="LongComponent.tsx"
         >
           <CodeBlock.Header />
-          <CodeBlock.Content code={longTSXExample} />
+          <CodeBlock.Content>{longTSXExample}</CodeBlock.Content>
           <CodeBlock.Footer />
         </CodeBlock>
       </div>
@@ -466,7 +463,7 @@ export const CollapsedByDefault: Story = {
           defaultExpanded={false}
         >
           <CodeBlock.Header />
-          <CodeBlock.Content code={pyCode} />
+          <CodeBlock.Content>{pyCode}</CodeBlock.Content>
           <CodeBlock.Footer />
         </CodeBlock>
       </div>
@@ -488,7 +485,7 @@ export const ExpandedCode: Story = {
           defaultCodeExpanded={true}
         >
           <CodeBlock.Header />
-          <CodeBlock.Content code={longTSXExample} />
+          <CodeBlock.Content>{longTSXExample}</CodeBlock.Content>
           <CodeBlock.Footer />
         </CodeBlock>
       </div>
@@ -510,7 +507,7 @@ export const NonExpandable: Story = {
           expandable={false}
         >
           <CodeBlock.Header />
-          <CodeBlock.Content code={jsonCode} />
+          <CodeBlock.Content>{jsonCode}</CodeBlock.Content>
         </CodeBlock>
       </div>
     )
@@ -537,7 +534,7 @@ export const Internationalization: Story = {
               expand: "展开",
             }}
           />
-          <CodeBlock.Content code={tsxCode} />
+          <CodeBlock.Content>{tsxCode}</CodeBlock.Content>
           <CodeBlock.Footer />
         </CodeBlock>
       </div>
@@ -667,7 +664,7 @@ export const LanguageIcons: Story = {
             filename={example.filename}
           >
             <CodeBlock.Header />
-            <CodeBlock.Content code={example.code} />
+            <CodeBlock.Content>{example.code}</CodeBlock.Content>
           </CodeBlock>
         ))}
       </div>
@@ -681,7 +678,7 @@ export const DefaultFilename: Story = {
       <div className="max-w-3xl">
         <CodeBlock language="tsx">
           <CodeBlock.Header />
-          <CodeBlock.Content code={tsxCode} />
+          <CodeBlock.Content>{tsxCode}</CodeBlock.Content>
         </CodeBlock>
       </div>
     )
@@ -727,7 +724,7 @@ function TodoItem({ todo, onToggle }) {
             lineThreshold={10}
           >
             <CodeBlock.Header />
-            <CodeBlock.Content code={shortCode} />
+            <CodeBlock.Content>{shortCode}</CodeBlock.Content>
             <CodeBlock.Footer />
           </CodeBlock>
         </div>
@@ -740,7 +737,7 @@ function TodoItem({ todo, onToggle }) {
             lineThreshold={12}
           >
             <CodeBlock.Header />
-            <CodeBlock.Content code={mediumCode} />
+            <CodeBlock.Content>{mediumCode}</CodeBlock.Content>
             <CodeBlock.Footer />
           </CodeBlock>
         </div>
@@ -753,7 +750,7 @@ function TodoItem({ todo, onToggle }) {
             lineThreshold={3}
           >
             <CodeBlock.Header />
-            <CodeBlock.Content code={shortCode} />
+            <CodeBlock.Content>{shortCode}</CodeBlock.Content>
             <CodeBlock.Footer />
           </CodeBlock>
         </div>
@@ -942,7 +939,7 @@ export const StreamingWithAutoScroll: Story = {
                     filename={block.filename}
                   >
                     <CodeBlock.Header />
-                    <CodeBlock.Content code={block.code} />
+                    <CodeBlock.Content>{block.code}</CodeBlock.Content>
                   </CodeBlock>
                 ))
               )}
@@ -1045,9 +1042,10 @@ export function useUser(userId: string) {
         <CodeBlock
           language="typescript"
           filename="useUser.ts"
+          lineThreshold={10}
         >
           <CodeBlock.Header />
-          <CodeBlock.Content code={streamedCode || "// Code will appear here..."} />
+          <CodeBlock.Content>{streamedCode || "// Code will appear here..."}</CodeBlock.Content>
           <CodeBlock.Footer />
         </CodeBlock>
       </div>

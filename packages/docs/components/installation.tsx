@@ -69,7 +69,7 @@ function InstallationComponent({
               className="border-b"
               showLineCount={false}
             />
-            <CodeBlock.Content code={content} />
+            <CodeBlock.Content>{content}</CodeBlock.Content>
           </CodeBlock>
         ) : null}
       </div>
@@ -95,7 +95,7 @@ function InstallationComponent({
               className="border-b"
               showLineCount={false}
             />
-            <CodeBlock.Content code={importContent} />
+            <CodeBlock.Content>{importContent}</CodeBlock.Content>
           </CodeBlock>
         ) : null}
       </div>

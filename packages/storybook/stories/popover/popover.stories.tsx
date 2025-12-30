@@ -1713,7 +1713,7 @@ export const WithUseForm: Story = {
           <div className="bg-secondary-background w-64 rounded-xl p-4">
             <strong className="mb-2 block">Result:</strong>
             <CodeBlock language="json">
-              <CodeBlock.Content code={result} />
+              <CodeBlock.Content>{result}</CodeBlock.Content>
             </CodeBlock>
           </div>
         )}

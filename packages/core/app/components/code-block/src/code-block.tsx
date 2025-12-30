@@ -2,8 +2,9 @@ import { tcx } from "@choice-ui/shared"
 import React, { memo } from "react"
 import { useStickToBottom } from "use-stick-to-bottom"
 import { CodeBlockCode, CodeBlockContent, CodeBlockFooter, CodeBlockHeader } from "./components"
-import { useCodeBlock, useLineCount, useScrollDetection } from "./hooks"
+import { useCodeBlock, useScrollDetection } from "./hooks"
 import type { CodeBlockContextValue, CodeBlockProps } from "./types"
+import { extractCodeFromChildren } from "./utils"
 
 export const CodeBlockRoot = memo(function CodeBlock(props: CodeBlockProps) {
   const {
@@ -11,7 +12,7 @@ export const CodeBlockRoot = memo(function CodeBlock(props: CodeBlockProps) {
     className,
     filename,
     language = "code",
-    lineThreshold = 20,
+    lineThreshold,
     expandable = true,
     defaultExpanded = true,
     defaultCodeExpanded = false,
@@ -24,9 +25,6 @@ export const CodeBlockRoot = memo(function CodeBlock(props: CodeBlockProps) {
     resize: "smooth",
     initial: "smooth",
   })
-
-  // Store the code content in a ref so it can be accessed by the copy handler
-  const codeContentRef = React.useRef<string>("")
 
   const {
     isExpanded,
@@ -43,41 +41,28 @@ export const CodeBlockRoot = memo(function CodeBlock(props: CodeBlockProps) {
     scrollToBottom,
   })
 
-  // Wrap the copy handler to use the stored code content
+  // Extract code content once and memoize - used for copy and line count
+  const codeContent = React.useMemo(() => extractCodeFromChildren(children), [children])
+  const lineCount = React.useMemo(
+    () => (codeContent ? codeContent.split("\n").length : 0),
+    [codeContent],
+  )
+
+  // Wrap the copy handler to use the extracted code content
   const handleCopy = React.useCallback(
     (code?: string) => {
-      const codeToUse = code || codeContentRef.current
+      const codeToUse = code || codeContent
       if (codeToUse) {
         originalHandleCopy(codeToUse)
       }
     },
-    [originalHandleCopy],
+    [originalHandleCopy, codeContent],
   )
-
-  // Update code content ref when children change
-  React.useEffect(() => {
-    try {
-      // Find BlockCode component in children to extract code
-      React.Children.forEach(children, (child) => {
-        if (React.isValidElement(child) && child.props) {
-          // Check if it's BlockCode component by looking for code prop
-          if (child.props.code && typeof child.props.code === "string") {
-            codeContentRef.current = child.props.code
-          }
-        }
-      })
-    } catch {
-      // Fallback: keep existing code content
-    }
-  }, [children])
-
-  const lineCount = useLineCount(children)
   const needsScroll = useScrollDetection({
     scrollRef,
     contentRef,
     isExpanded,
     codeExpanded,
-    children,
   })
 
   const contextValue = React.useMemo<CodeBlockContextValue>(
@@ -139,7 +124,7 @@ export const CodeBlockRoot = memo(function CodeBlock(props: CodeBlockProps) {
   return (
     <div
       className={tcx(
-        "group/code-block relative overflow-hidden rounded-lg",
+        "group/code-block relative flex flex-col overflow-hidden rounded-lg",
         variant === "default" && "bg-secondary-background",
         variant === "light" && "bg-gray-100",
         variant === "dark" && "bg-gray-700",

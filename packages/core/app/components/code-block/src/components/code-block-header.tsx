@@ -87,10 +87,9 @@ export const CodeBlockHeader = memo(function CodeBlockHeader(props: CodeBlockHea
     variant,
   } = codeBlock
 
-  // Guard against missing handlers
-  if (!handleExpand || !handleCopy) {
-    return null
-  }
+  // Check if handlers are available for enabling buttons
+  const canExpand = Boolean(handleExpand)
+  const canCopy = Boolean(handleCopy)
 
   const tv = codeBlockHeaderTv({ isExpanded, variant })
 
@@ -128,17 +127,17 @@ export const CodeBlockHeader = memo(function CodeBlockHeader(props: CodeBlockHea
       </div>
 
       <div className={tv.actions()}>
-        {isExpanded && (
+        {isExpanded && canCopy && (
           <IconButton
             className={tv.button()}
             variant={variant === "dark" ? "dark" : "ghost"}
-            onClick={() => handleCopy()}
+            onClick={() => handleCopy?.()}
             tooltip={{ content: copyTooltipContent }}
           >
             {copied ? <Check className="text-success-foreground" /> : <ClipboardSmall />}
           </IconButton>
         )}
-        {expandable && (
+        {expandable && canExpand && (
           <IconButton
             className={tv.button()}
             variant={variant === "dark" ? "dark" : "ghost"}
