@@ -2,6 +2,13 @@
 
 All notable changes to the Md Render component will be documented in this file.
 
+## [2026-01-03]
+
+### Added
+
+- feat(md-render): support `children` prop as alternative to `content` for passing markdown content
+- feat(md-render): make `content` prop optional when using `children`
+
 ## [2025-12-06]
 
 ### Changed

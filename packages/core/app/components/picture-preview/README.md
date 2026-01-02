@@ -76,6 +76,27 @@ export function GalleryExample() {
 | `onClose`     | `function` | -       | Callback function when close action is triggered |
 | `className`   | `string`   | -       | Additional CSS classes                           |
 | `defaultText` | `object`   | -       | Customizable text labels (see below)             |
+| `control`     | `object`   | -       | Control bar configuration (see below)            |
+
+### Control Configuration
+
+```tsx
+control?: {
+  enable?: boolean                                          // Enable/disable control bar (default: true)
+  position?: "top-left" | "top-right" | "bottom-left" | "bottom-right"  // Control bar position (default: "bottom-right")
+  show?: "always" | "hover"                                 // Show mode (default: "hover")
+}
+```
+
+Default values:
+
+```tsx
+{
+  enable: true,
+  position: "bottom-right",
+  show: "hover"
+}
+```
 
 ### Default Text Configuration
 
@@ -109,10 +130,12 @@ Default values:
 
 ### Zoom Controls
 
-- **Mouse wheel**: Zoom in/out at cursor position
+- **Mouse wheel**: Zoom in/out centered at cursor position
+- **Trackpad pinch**: Two-finger pinch-to-zoom on trackpad
 - **Zoom buttons**: Increment/decrement zoom level
 - **Zoom dropdown**: Quick access to common zoom levels (50%, 100%, 200%)
-- **Zoom range**: 1% to 1000% with smooth transitions
+- **Zoom range**: 2% to 1000% based on actual image size
+- **Actual percentage display**: Shows zoom relative to original image dimensions
 - **Keyboard shortcuts**: `Cmd/Ctrl + Plus/Minus` for zooming
 
 ### Pan and Navigation
@@ -121,12 +144,21 @@ Default values:
 - **Smooth panning**: Performance-optimized pan interactions
 - **Reset view**: Return to original position and zoom
 - **Fit to screen**: Automatically fit image to container
+- **Double-click to fit**: Double-click anywhere to fit image to screen
 
 ### Loading States
 
 - **Loading indicator**: Animated spinner while image loads
+- **Smooth transition**: Blur and scale animation when image loads
 - **Error handling**: Clear error message with retry capability
 - **Graceful fallbacks**: Alt text and filename fallbacks
+
+### Control Bar
+
+- **Configurable position**: Place controls in any corner
+- **Show on hover**: Auto-hide controls, show on hover
+- **Always visible**: Option to keep controls always visible
+- **Disable controls**: Option to hide control bar entirely
 
 ### Keyboard Shortcuts
 
@@ -138,6 +170,35 @@ Default values:
 | `Cmd/Ctrl + 1`     | Fit to screen           |
 
 ## Advanced Examples
+
+### Control Bar Configuration
+
+```tsx
+// Always visible controls in top-right corner
+<PicturePreview
+  src="https://example.com/image.jpg"
+  control={{
+    enable: true,
+    position: "top-right",
+    show: "always",
+  }}
+/>
+
+// Hidden controls (for custom UI)
+<PicturePreview
+  src="https://example.com/image.jpg"
+  control={{ enable: false }}
+/>
+
+// Show on hover in bottom-left
+<PicturePreview
+  src="https://example.com/image.jpg"
+  control={{
+    position: "bottom-left",
+    show: "hover",
+  }}
+/>
+```
 
 ### Custom Error Handling
 

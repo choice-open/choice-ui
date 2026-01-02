@@ -29,6 +29,7 @@ export interface EmojiPickerProps {
   showCategories?: boolean
   showFrequentlyUsed?: boolean
   showSearch?: boolean
+  showFooter?: boolean
   value?: EmojiData | null
   variant?: "default" | "dark" | "light"
 }
@@ -56,6 +57,7 @@ export const EmojiPicker = memo(function EmojiPicker({
   showCategories = true,
   showFrequentlyUsed = true,
   showSearch = true,
+  showFooter = true,
   children,
   variant = "dark",
 }: EmojiPickerProps) {
@@ -115,6 +117,7 @@ export const EmojiPicker = memo(function EmojiPicker({
 
   // handle emoji hover
   const handleEmojiHover = useEventCallback((emoji: EmojiData | null) => {
+    if (!showFooter) return
     setHoveredEmoji(emoji)
   })
 
@@ -134,38 +137,40 @@ export const EmojiPicker = memo(function EmojiPicker({
       className={tv.container({ className })}
       style={rootStyle}
     >
-      <div className={tv.header()}>
-        {showSearch && (
-          <SearchInput
-            autoFocus
-            variant={variant}
-            placeholder={searchPlaceholder}
-            value={searchQuery}
-            onChange={(value: string) => setSearchQuery(value)}
-          />
-        )}
+      {(showSearch || showCategories) && (
+        <div className={tv.header()}>
+          {showSearch && (
+            <SearchInput
+              autoFocus
+              variant={variant}
+              placeholder={searchPlaceholder}
+              value={searchQuery}
+              onChange={(value: string) => setSearchQuery(value)}
+            />
+          )}
 
-        {showCategories && (
-          <Segmented
-            variant={variant}
-            value={searchQuery.trim() ? undefined : currentVisibleCategory}
-            onChange={(value: string) => handleCategoryClick(value as EmojiCategory)}
-          >
-            {availableCategories.map((category) => (
-              <Segmented.Item
-                key={category.id}
-                value={category.id}
-                tooltip={{
-                  content: category.name,
-                  placement: "top",
-                }}
-              >
-                {category.icon}
-              </Segmented.Item>
-            ))}
-          </Segmented>
-        )}
-      </div>
+          {showCategories && (
+            <Segmented
+              variant={variant}
+              value={searchQuery.trim() ? undefined : currentVisibleCategory}
+              onChange={(value: string) => handleCategoryClick(value as EmojiCategory)}
+            >
+              {availableCategories.map((category) => (
+                <Segmented.Item
+                  key={category.id}
+                  value={category.id}
+                  tooltip={{
+                    content: category.name,
+                    placement: "top",
+                  }}
+                >
+                  {category.icon}
+                </Segmented.Item>
+              ))}
+            </Segmented>
+          )}
+        </div>
+      )}
 
       <ScrollArea
         variant={variant}
@@ -238,11 +243,13 @@ export const EmojiPicker = memo(function EmojiPicker({
         </ScrollArea.Viewport>
       </ScrollArea>
 
-      <EmojiFooter
-        hoveredEmoji={hoveredEmoji}
-        selectedEmoji={value || null}
-        variant={variant}
-      />
+      {showFooter && (
+        <EmojiFooter
+          hoveredEmoji={hoveredEmoji}
+          selectedEmoji={value || null}
+          variant={variant}
+        />
+      )}
 
       {children}
     </div>

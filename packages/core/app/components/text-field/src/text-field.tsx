@@ -1,6 +1,7 @@
-import { tcx } from "@choice-ui/shared"
+import { Description } from "@choice-ui/description"
 import { Input, type InputProps } from "@choice-ui/input"
 import { Label } from "@choice-ui/label"
+import { tcx } from "@choice-ui/shared"
 import React, {
   Children,
   cloneElement,
@@ -10,7 +11,7 @@ import React, {
   ReactNode,
   useId,
 } from "react"
-import { FieldAddon, FieldDescription } from "./components"
+import { FieldAddon } from "./components"
 import { TextFieldTv } from "./tv"
 
 export interface TextFieldProps extends Omit<InputProps, "children"> {
@@ -20,7 +21,7 @@ export interface TextFieldProps extends Omit<InputProps, "children"> {
 interface TextFieldComponent extends React.ForwardRefExoticComponent<
   TextFieldProps & React.RefAttributes<HTMLInputElement>
 > {
-  Description: typeof FieldDescription
+  Description: typeof Description
   Label: typeof Label
   Prefix: typeof FieldAddon
   Suffix: typeof FieldAddon
@@ -147,5 +148,5 @@ export const TextField = Object.assign(TextFieldBase, {
   Prefix: PrefixComponent,
   Suffix: SuffixComponent,
   Label: Label,
-  Description: FieldDescription,
+  Description: Description,
 }) as TextFieldComponent

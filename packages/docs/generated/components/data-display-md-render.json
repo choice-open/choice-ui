@@ -3,7 +3,7 @@
   "title": "MdRender",
   "package": {
     "name": "@choice-ui/md-render",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "description": "A markdown renderer component that converts markdown text into formatted HTML with syntax highlighting",
     "dependencies": {
       "marked": "^15.0.7",
@@ -52,8 +52,8 @@
         },
         {
           "name": "content",
-          "type": "string",
-          "required": true,
+          "type": "string | undefined",
+          "required": false,
           "description": ""
         },
         {

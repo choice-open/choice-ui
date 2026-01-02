@@ -1,5 +1,6 @@
 export { NumericInput } from "./numeric-input"
 export { NumericInputElement, NumericInputMenuTrigger, NumericInputVariable } from "./components"
+export { useNumericLongPress } from "./hooks"
 
 export type { NumericInputProps } from "./numeric-input"
 export type {

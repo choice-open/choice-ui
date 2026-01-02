@@ -2,21 +2,51 @@ import { tcv } from "@choice-ui/shared"
 
 export const SeparatorTV = tcv({
   slots: {
-    root: "shrink-0",
+    root: "flex items-center gap-2",
+    separator: "shrink-0",
   },
   variants: {
+    hasChildren: {
+      true: {
+        separator: "flex-1",
+      },
+      false: {},
+    },
     orientation: {
-      horizontal: { root: "h-px w-full" },
-      vertical: { root: "h-full w-px" },
+      horizontal: { separator: "h-px" },
+      vertical: { separator: "w-px" },
     },
     variant: {
-      default: { root: "bg-default-boundary" },
-      light: { root: "bg-gray-200" },
-      dark: { root: "bg-gray-800" },
-      reset: { root: "" },
+      default: { separator: "bg-default-boundary" },
+      light: { separator: "bg-gray-200" },
+      dark: { separator: "bg-gray-800" },
+      reset: { separator: "" },
     },
   },
+  compoundVariants: [
+    {
+      hasChildren: true,
+      orientation: "horizontal",
+      class: { root: "flex-row" },
+    },
+    {
+      hasChildren: true,
+      orientation: "vertical",
+      class: { root: "flex-col" },
+    },
+    {
+      hasChildren: false,
+      orientation: "horizontal",
+      class: { separator: "w-full" },
+    },
+    {
+      hasChildren: false,
+      orientation: "vertical",
+      class: { separator: "h-full" },
+    },
+  ],
   defaultVariants: {
+    hasChildren: false,
     orientation: "horizontal",
     variant: "default",
   },

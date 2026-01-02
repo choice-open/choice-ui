@@ -8,9 +8,10 @@ interface MentionItemProps {
 
 export interface MdRenderProps {
   allowedPrefixes?: string[]
+  children?: string
   className?: string
   components?: Partial<Components>
-  content: string
+  content?: string
   customColor?: {
     codeBackground?: string
     defaultBackground?: string

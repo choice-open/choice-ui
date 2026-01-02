@@ -80,7 +80,7 @@
       "name": "@choice-ui/code-block",
       "title": "CodeBlock",
       "description": "",
-      "version": "0.0.3"
+      "version": "0.0.4"
     },
     {
       "slug": "collections/combobox",
@@ -97,7 +97,7 @@
       "name": "@choice-ui/command",
       "title": "Command",
       "description": "Value of the search query.",
-      "version": "0.0.4",
+      "version": "0.0.5",
       "tags": [
         "new"
       ]
@@ -184,6 +184,13 @@
       ]
     },
     {
+      "slug": "forms/description",
+      "name": "@choice-ui/description",
+      "title": "Description",
+      "description": "",
+      "version": "0.0.1"
+    },
+    {
       "slug": "overlays/dialog",
       "name": "@choice-ui/dialog",
       "title": "Dialog",
@@ -209,6 +216,13 @@
       "tags": [
         "beta"
       ]
+    },
+    {
+      "slug": "forms/error-message",
+      "name": "@choice-ui/error-message",
+      "title": "ErrorMessage",
+      "description": "",
+      "version": "0.0.1"
     },
     {
       "slug": "forms/file-upload",
@@ -311,7 +325,7 @@
       "name": "@choice-ui/md-render",
       "title": "MdRender",
       "description": "",
-      "version": "0.0.4"
+      "version": "0.0.5"
     },
     {
       "slug": "collections/menubar",
@@ -513,7 +527,7 @@
       "slug": "layouts/separator",
       "name": "@choice-ui/separator",
       "title": "Separator",
-      "description": "Separator direction",
+      "description": "Separator - Separator component",
       "version": "0.0.1"
     },
     {
@@ -667,6 +681,16 @@
       "version": "0.0.6"
     },
     {
+      "slug": "feedback/toast",
+      "name": "@choice-ui/toast",
+      "title": "Toast",
+      "description": "",
+      "version": "0.0.1",
+      "tags": [
+        "new"
+      ]
+    },
+    {
       "slug": "buttons/toggle-button",
       "name": "@choice-ui/toggle-button",
       "title": "ToggleButton",
@@ -677,7 +701,7 @@
       ]
     },
     {
-      "slug": "feedback/tooltip",
+      "slug": "overlays/tooltip",
       "name": "@choice-ui/tooltip",
       "title": "Tooltip",
       "description": "",

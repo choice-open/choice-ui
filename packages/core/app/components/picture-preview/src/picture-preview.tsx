@@ -1,15 +1,18 @@
-import { tcx } from "@choice-ui/shared"
 import { Dropdown } from "@choice-ui/dropdown"
 import { IconButton } from "@choice-ui/icon-button"
+import { tcx } from "@choice-ui/shared"
 import { Add, Delete, ImageRemove, LoaderCircle } from "@choiceform/icons-react"
 import { forwardRef, HTMLProps, useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { useEventCallback, useHover } from "usehooks-ts"
 import { HOTKEYS, Position, useDraggable, useHotkeys, useWheelHandler } from "./hooks"
 import { PicturePreviewTv } from "./tv"
 
-const MIN_ZOOM = 0.01
-const MAX_ZOOM = 10
 const ZOOM_STEP = 0.1
 const INITIAL_ZOOM = 1
+
+// 基于实际百分比的缩放限制
+const MIN_ACTUAL_PERCENT = 2 // 最小 2%
+const MAX_ACTUAL_PERCENT = 1000 // 最大 1000%
 
 interface PicturePreviewProps extends HTMLProps<HTMLDivElement> {
   defaultText?: {
@@ -24,6 +27,11 @@ interface PicturePreviewProps extends HTMLProps<HTMLDivElement> {
   fileName?: string
   onClose?: () => void
   src: string
+  control?: {
+    enable?: boolean
+    position?: "top-left" | "top-right" | "bottom-left" | "bottom-right"
+    show?: "always" | "hover"
+  }
 }
 
 export const PicturePreview = forwardRef<HTMLDivElement, PicturePreviewProps>(
@@ -43,12 +51,30 @@ export const PicturePreview = forwardRef<HTMLDivElement, PicturePreviewProps>(
         zoomTo200: "Zoom to 200%",
         error: "Image loading failed, please try again.",
       },
+      control = {
+        enable: true,
+        position: "bottom-right",
+        show: "hover",
+      },
       ...rest
     } = props
 
     const [zoom, setZoom] = useState(INITIAL_ZOOM)
     const [isLoading, setIsLoading] = useState(true)
     const [isError, setIsError] = useState(false)
+    const [naturalSize, setNaturalSize] = useState<{ width: number; height: number } | null>(null)
+    const [baseScale, setBaseScale] = useState(1)
+    const [menuIsOpen, setMenuIsOpen] = useState(false)
+
+    // 基于实际百分比计算内部缩放限制（防止除零）
+    const minZoom = useMemo(
+      () => (baseScale > 0 ? MIN_ACTUAL_PERCENT / 100 / baseScale : 0.01),
+      [baseScale],
+    )
+    const maxZoom = useMemo(
+      () => (baseScale > 0 ? MAX_ACTUAL_PERCENT / 100 / baseScale : 100),
+      [baseScale],
+    )
 
     const internalRef = useRef<HTMLDivElement>(null)
     const canvasRef = useRef<HTMLDivElement>(null)
@@ -57,7 +83,7 @@ export const PicturePreview = forwardRef<HTMLDivElement, PicturePreviewProps>(
 
     const rafId = useRef<number | null>(null)
 
-    const scheduleUpdate = useCallback(() => {
+    const scheduleUpdate = useEventCallback(() => {
       if (rafId.current !== null) {
         return
       }
@@ -66,7 +92,7 @@ export const PicturePreview = forwardRef<HTMLDivElement, PicturePreviewProps>(
         setZoom(zoomRef.current)
         rafId.current = null
       })
-    }, [])
+    })
 
     useEffect(() => {
       return () => {
@@ -82,50 +108,69 @@ export const PicturePreview = forwardRef<HTMLDivElement, PicturePreviewProps>(
 
     const { position, isDragging, handleMouseDown, updatePosition, positionRef } = useDraggable()
 
-    const handleZoomChange = useCallback(
-      (newZoom: number) => {
-        zoomRef.current = newZoom
+    const handlePositionChange = useEventCallback((newPosition: Position) => {
+      updatePosition(newPosition)
+    })
+
+    // Handle zoom at mouse position (zoom + pan in one update)
+    const handleZoomAtPoint = useEventCallback(
+      (params: { newZoom: number; newPosition: Position }) => {
+        zoomRef.current = params.newZoom
+        updatePosition(params.newPosition)
         scheduleUpdate()
       },
-      [scheduleUpdate],
-    )
-
-    const handlePositionChange = useCallback(
-      (newPosition: Position) => {
-        updatePosition(newPosition)
-      },
-      [updatePosition],
     )
 
     useWheelHandler(internalRef, zoomRef, positionRef, {
-      minZoom: MIN_ZOOM,
-      maxZoom: MAX_ZOOM,
+      minZoom,
+      maxZoom,
       zoomStep: ZOOM_STEP,
-      onZoom: handleZoomChange,
       onPan: handlePositionChange,
+      onZoomAtPoint: handleZoomAtPoint,
     })
 
-    const zoomIn = useCallback(() => {
-      handleZoomChange(Math.min(MAX_ZOOM, zoomRef.current + ZOOM_STEP))
-    }, [handleZoomChange])
+    const zoomIn = useEventCallback(() => {
+      zoomRef.current = Math.min(maxZoom, zoomRef.current + ZOOM_STEP)
+      scheduleUpdate()
+    })
 
-    const zoomOut = useCallback(() => {
-      handleZoomChange(Math.max(MIN_ZOOM, zoomRef.current - ZOOM_STEP))
-    }, [handleZoomChange])
+    const zoomOut = useEventCallback(() => {
+      zoomRef.current = Math.max(minZoom, zoomRef.current - ZOOM_STEP)
+      scheduleUpdate()
+    })
 
-    const resetView = useCallback(() => {
+    const resetView = useEventCallback(() => {
       zoomRef.current = INITIAL_ZOOM
       updatePosition({ x: 0, y: 0 })
       scheduleUpdate()
-    }, [updatePosition, scheduleUpdate])
+    })
 
-    const fitToView = useCallback(() => {
-      if (!canvasRef.current) return
+    const fitToView = useEventCallback(() => {
+      if (!canvasRef.current || !naturalSize || !internalRef.current || baseScale <= 0) return
 
-      zoomRef.current = 1
+      const containerRect = internalRef.current.getBoundingClientRect()
+      const containerWidth = containerRect.width
+      const containerHeight = containerRect.height
+
+      // 防止除零
+      if (naturalSize.width <= 0 || naturalSize.height <= 0) return
+
+      // 根据长边计算适应屏幕的缩放比例
+      const scaleX = containerWidth / naturalSize.width
+      const scaleY = containerHeight / naturalSize.height
+      const fitScale = Math.min(scaleX, scaleY)
+
+      // 将实际缩放比例转换为内部 zoom 值
+      // actualZoom = zoom * baseScale, 所以 zoom = actualZoom / baseScale
+      zoomRef.current = fitScale / baseScale
+
       updatePosition({ x: 0, y: 0 })
       scheduleUpdate()
-    }, [updatePosition, scheduleUpdate])
+    })
+
+    const handleDoubleClick = useEventCallback(() => {
+      fitToView()
+    })
 
     useHotkeys([
       {
@@ -146,13 +191,17 @@ export const PicturePreview = forwardRef<HTMLDivElement, PicturePreviewProps>(
       },
     ])
 
-    const handleZoomMenuItemClick = useCallback(
-      (zoomLevel: number) => {
-        zoomRef.current = zoomLevel
-        scheduleUpdate()
-      },
-      [scheduleUpdate],
-    )
+    const handleZoomMenuItemClick = useEventCallback((zoomLevel: number) => {
+      zoomRef.current = zoomLevel
+      scheduleUpdate()
+    })
+
+    const setActualZoomPercent = useEventCallback((percent: number) => {
+      if (baseScale === 0) return
+      const newZoom = percent / 100 / baseScale
+      zoomRef.current = Math.max(minZoom, Math.min(maxZoom, newZoom))
+      scheduleUpdate()
+    })
 
     useEffect(() => {
       if (!internalRef.current) return
@@ -176,28 +225,103 @@ export const PicturePreview = forwardRef<HTMLDivElement, PicturePreviewProps>(
       }
     }, [position.x, position.y, zoom, isDragging])
 
+    const calculateBaseScale = useCallback(() => {
+      if (!naturalSize || !internalRef.current) return 1
+
+      const containerRect = internalRef.current.getBoundingClientRect()
+      const containerWidth = containerRect.width
+      const containerHeight = containerRect.height
+
+      // 防止除零
+      if (
+        naturalSize.width <= 0 ||
+        naturalSize.height <= 0 ||
+        containerWidth <= 0 ||
+        containerHeight <= 0
+      ) {
+        return 1
+      }
+
+      const scaleX = containerWidth / naturalSize.width
+      const scaleY = containerHeight / naturalSize.height
+
+      return Math.min(scaleX, scaleY)
+    }, [naturalSize])
+
+    useEffect(() => {
+      if (!naturalSize || !internalRef.current) return
+
+      const updateBaseScale = () => {
+        const scale = calculateBaseScale()
+        setBaseScale(scale)
+      }
+
+      // 初始计算
+      updateBaseScale()
+
+      // 监听容器尺寸变化
+      const resizeObserver = new ResizeObserver(() => {
+        updateBaseScale()
+      })
+
+      resizeObserver.observe(internalRef.current)
+
+      return () => {
+        resizeObserver.disconnect()
+      }
+    }, [naturalSize, calculateBaseScale])
+
     useEffect(() => {
       setIsLoading(true)
+      setIsError(false)
+      setNaturalSize(null)
+
       const img = new Image()
-      img.src = src
+      let isCancelled = false
+
       img.onload = () => {
+        if (isCancelled) return
+        setNaturalSize({ width: img.naturalWidth, height: img.naturalHeight })
         setIsLoading(false)
       }
+
       img.onerror = () => {
+        if (isCancelled) return
+        setIsError(true)
         setIsLoading(false)
+      }
+
+      img.src = src
+
+      return () => {
+        isCancelled = true
+        // 清理图片加载，防止内存泄漏
+        img.onload = null
+        img.onerror = null
+        img.src = ""
       }
     }, [src])
 
-    const styles = PicturePreviewTv({ isLoading, isError })
+    const actualZoomPercent = useMemo(() => {
+      return Math.round(zoom * baseScale * 100)
+    }, [zoom, baseScale])
+
+    const tv = PicturePreviewTv({
+      isLoading,
+      isError,
+      isMenuOpen: menuIsOpen,
+      controlPosition: control.position,
+      controlShow: control.show,
+    })
 
     return (
       <div
         ref={internalRef}
-        className={tcx(styles.root(), className)}
+        className={tcx(tv.root(), className)}
         {...rest}
       >
         {isLoading && (
-          <div className={styles.loading()}>
+          <div className={tv.loading()}>
             <LoaderCircle
               className="animate-spin"
               width={32}
@@ -206,7 +330,7 @@ export const PicturePreview = forwardRef<HTMLDivElement, PicturePreviewProps>(
           </div>
         )}
         {isError && (
-          <div className={styles.loading()}>
+          <div className={tv.loading()}>
             <ImageRemove
               width={32}
               height={32}
@@ -215,28 +339,39 @@ export const PicturePreview = forwardRef<HTMLDivElement, PicturePreviewProps>(
           </div>
         )}
 
-        <div className={styles.content()}>
-          <div
-            ref={canvasRef}
-            className={styles.canvas()}
-            style={transformStyle}
-            onMouseDown={handleMouseDown}
-          >
-            <img
-              src={src}
-              alt={fileName || "Preview"}
-              className={styles.image()}
-              draggable={false}
-              loading="eager"
-              decoding="async"
-              onLoad={() => setIsLoading(false)}
-              onError={() => setIsError(true)}
-            />
+        {!isError && (
+          <div className={tv.content()}>
+            <div
+              ref={canvasRef}
+              className={tv.canvas()}
+              style={transformStyle}
+              onMouseDown={handleMouseDown}
+              onDoubleClick={handleDoubleClick}
+            >
+              <img
+                src={src}
+                alt={fileName || "Preview"}
+                className={tv.image()}
+                style={
+                  naturalSize
+                    ? {
+                        width: naturalSize.width * baseScale,
+                        height: naturalSize.height * baseScale,
+                      }
+                    : undefined
+                }
+                draggable={false}
+                loading="eager"
+                decoding="async"
+                onLoad={() => setIsLoading(false)}
+                onError={() => setIsError(true)}
+              />
+            </div>
           </div>
-        </div>
+        )}
 
-        {isError || isLoading ? null : (
-          <div className={styles.controlGroup()}>
+        {isError || isLoading || control.enable === false ? null : (
+          <div className={tv.controlGroup()}>
             <IconButton
               onClick={zoomOut}
               className="rounded-none"
@@ -252,13 +387,17 @@ export const PicturePreview = forwardRef<HTMLDivElement, PicturePreviewProps>(
               <Delete />
             </IconButton>
 
-            <Dropdown selection>
+            <Dropdown
+              selection
+              open={menuIsOpen}
+              onOpenChange={setMenuIsOpen}
+            >
               <Dropdown.Trigger
                 variant="ghost"
                 className="border-x-default rounded-none"
                 size="large"
               >
-                <span className="flex-1">{Math.round(zoom * 100)}%</span>
+                <span className="flex-1">{actualZoomPercent}%</span>
               </Dropdown.Trigger>
 
               <Dropdown.Content>
@@ -281,20 +420,20 @@ export const PicturePreview = forwardRef<HTMLDivElement, PicturePreviewProps>(
                   <span className="flex-1">{defaultText.zoomOut}</span>
                 </Dropdown.Item>
                 <Dropdown.Item
-                  selected={zoomRef.current === 0.5}
-                  onMouseUp={() => handleZoomMenuItemClick(0.5)}
+                  selected={actualZoomPercent === 50}
+                  onMouseUp={() => setActualZoomPercent(50)}
                 >
                   <span className="flex-1">{defaultText.zoomTo50}</span>
                 </Dropdown.Item>
                 <Dropdown.Item
-                  selected={zoomRef.current === 1}
-                  onMouseUp={() => handleZoomMenuItemClick(1)}
+                  selected={actualZoomPercent === 100}
+                  onMouseUp={() => setActualZoomPercent(100)}
                 >
                   <span className="flex-1">{defaultText.zoomTo100}</span>
                 </Dropdown.Item>
                 <Dropdown.Item
-                  selected={zoomRef.current === 2}
-                  onMouseUp={() => handleZoomMenuItemClick(2)}
+                  selected={actualZoomPercent === 200}
+                  onMouseUp={() => setActualZoomPercent(200)}
                 >
                   <span className="flex-1">{defaultText.zoomTo200}</span>
                 </Dropdown.Item>

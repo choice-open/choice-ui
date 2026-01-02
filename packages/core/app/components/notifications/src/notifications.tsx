@@ -81,7 +81,7 @@ const ToastBase = (props: NotificationsProps) => {
   )
 }
 
-export const Toast = memo(ToastBase)
+const Toast = memo(ToastBase)
 
 Toast.displayName = "Toast"
 

@@ -74,6 +74,7 @@ export const WithError = {
   render: function WithErrorStory() {
     return (
       <PicturePreview
+        className="w-2xl h-96"
         src="https://example.com/non-existent-image.jpg"
         fileName="broken-image.jpg"
       />
@@ -100,6 +101,86 @@ export const Gallery = {
           />
         ))}
       </div>
+    )
+  },
+}
+
+/**
+ * ControlAlwaysVisible: Shows the zoom control bar always visible.
+ *
+ * By default, the control bar only appears on hover. Setting `control.show`
+ * to "always" makes it permanently visible.
+ */
+export const ControlAlwaysVisible = {
+  render: function ControlAlwaysVisibleStory() {
+    return (
+      <PicturePreview
+        src={sampleImages[0].src}
+        fileName={sampleImages[0].fileName}
+        control={{
+          enable: true,
+          position: "bottom-right",
+          show: "always",
+        }}
+      />
+    )
+  },
+}
+
+/**
+ * ControlPositions: Demonstrates different control bar positions.
+ *
+ * The control bar can be positioned in any corner of the preview:
+ * - top-left
+ * - top-right
+ * - bottom-left
+ * - bottom-right (default)
+ */
+export const ControlPositions = {
+  render: function ControlPositionsStory() {
+    const positions = ["top-left", "top-right", "bottom-left", "bottom-right"] as const
+    return (
+      <div className="grid grid-cols-2 gap-4">
+        {positions.map((position) => (
+          <div
+            key={position}
+            className="flex flex-col gap-2"
+          >
+            <span className="text-sm text-secondary-foreground">{position}</span>
+            <div className="h-64">
+              <PicturePreview
+                src={sampleImages[0].src}
+                fileName={sampleImages[0].fileName}
+                control={{
+                  enable: true,
+                  position,
+                  show: "always",
+                }}
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+    )
+  },
+}
+
+/**
+ * ControlDisabled: Shows the preview without zoom controls.
+ *
+ * Setting `control.enable` to false hides the control bar entirely,
+ * useful for read-only previews or when zoom functionality is not needed.
+ */
+export const ControlDisabled = {
+  render: function ControlDisabledStory() {
+    return (
+      <PicturePreview
+        src={sampleImages[0].src}
+        fileName={sampleImages[0].fileName}
+        control={{
+          enable: false,
+        }}
+      />
     )
   },
 }

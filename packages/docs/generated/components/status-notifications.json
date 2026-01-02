@@ -17,12 +17,11 @@
   },
   "exports": [
     "type NotificationsProps",
-    "Toast",
     "notifications"
   ],
   "props": [
     {
-      "displayName": "Toast",
+      "displayName": "notifications",
       "description": "",
       "props": [
         {

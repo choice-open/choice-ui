@@ -1,0 +1,57 @@
+{
+  "slug": "forms/description",
+  "title": "Description",
+  "package": {
+    "name": "@choice-ui/description",
+    "version": "0.0.1",
+    "description": "A description component for form fields and UI elements with proper accessibility support",
+    "dependencies": {
+      "@choice-ui/shared": "workspace:*"
+    },
+    "peerDependencies": {
+      "react": ">=18.0.0",
+      "react-dom": ">=18.0.0"
+    }
+  },
+  "exports": [
+    "Description",
+    "type DescriptionProps"
+  ],
+  "props": [
+    {
+      "displayName": "DescriptionProps",
+      "description": "",
+      "props": [
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    }
+  ],
+  "stories": [
+    {
+      "id": "forms-description--basic",
+      "name": "Basic",
+      "exportName": "Basic",
+      "description": "Basic description usage.\n\nUse the `Description` component to provide supplementary text for form fields.",
+      "source": "import { Description } from \"@choice-ui/description\"\n\nexport default function App() {\n  return (\n\n    <div className=\"flex w-64 flex-col gap-2\">\n      <Label htmlFor=\"email\">Email</Label>\n      <Input\n        id=\"email\"\n        aria-describedby=\"email-description\"\n      />\n      <Description id=\"email-description\">\n        We'll never share your email with anyone else.\n      </Description>\n    </div>\n\n  );\n}"
+    },
+    {
+      "id": "forms-description--disabled",
+      "name": "Disabled",
+      "exportName": "Disabled",
+      "description": "Disabled description.\n\nUse the `disabled` prop to match the disabled state of form fields.",
+      "source": "import { Description } from \"@choice-ui/description\"\n\nexport default function App() {\n  return (\n\n    <div className=\"flex w-64 flex-col gap-2\">\n      <Label\n        htmlFor=\"disabled-email\"\n        disabled\n      >\n        Email\n      </Label>\n      <Input\n        id=\"disabled-email\"\n        disabled\n        aria-describedby=\"disabled-email-description\"\n      />\n      <Description\n        id=\"disabled-email-description\"\n        disabled\n      >\n        This field is currently disabled.\n      </Description>\n    </div>\n\n  );\n}"
+    },
+    {
+      "id": "forms-description--multiple-descriptions",
+      "name": "Multiple Descriptions",
+      "exportName": "MultipleDescriptions",
+      "description": "Multiple descriptions.\n\nYou can use multiple descriptions to provide different types of information.",
+      "source": "import { Description } from \"@choice-ui/description\"\n\nexport default function App() {\n  return (\n\n    <div className=\"flex w-64 flex-col gap-2\">\n      <Label htmlFor=\"password\">Password</Label>\n      <Input\n        id=\"password\"\n        type=\"password\"\n        aria-describedby=\"password-hint password-requirements\"\n      />\n      <Description id=\"password-hint\">Choose a strong password.</Description>\n      <Description id=\"password-requirements\">\n        Must be at least 8 characters with one uppercase letter.\n      </Description>\n    </div>\n\n  );\n}"
+    }
+  ]
+}

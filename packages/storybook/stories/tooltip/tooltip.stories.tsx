@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite"
 import { useState } from "react"
 
 const meta: Meta<typeof Tooltip> = {
-  title: "Feedback/Tooltip",
+  title: "Overlays/Tooltip",
   component: Tooltip,
   parameters: {
     layout: "centered",

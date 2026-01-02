@@ -8,7 +8,8 @@
     "dependencies": {
       "@choice-ui/shared": "workspace:*",
       "@choice-ui/input": "workspace:*",
-      "@choice-ui/label": "workspace:*"
+      "@choice-ui/label": "workspace:*",
+      "@choice-ui/description": "workspace:*"
     },
     "peerDependencies": {
       "react": ">=18.0.0",
@@ -26,6 +27,12 @@
       "description": "",
       "props": [
         {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
           "name": "selected",
           "type": "boolean | undefined",
           "required": false,
@@ -39,12 +46,6 @@
         },
         {
           "name": "value",
-          "type": "string | undefined",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "className",
           "type": "string | undefined",
           "required": false,
           "description": ""
@@ -91,18 +92,6 @@
           "required": false,
           "description": ""
         },
-        {
-          "name": "ref",
-          "type": "((instance: HTMLDivElement | null) => void) | RefObject<HTMLDivElement> | null | undefined",
-          "required": false,
-          "description": ""
-        }
-      ]
-    },
-    {
-      "displayName": "FieldDescription",
-      "description": "",
-      "props": [
         {
           "name": "ref",
           "type": "((instance: HTMLDivElement | null) => void) | RefObject<HTMLDivElement> | null | undefined",

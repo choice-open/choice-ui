@@ -1,5 +1,7 @@
-import { tcx } from "@choice-ui/shared"
+import { Description } from "@choice-ui/description"
+import { ErrorMessage } from "@choice-ui/error-message"
 import { Label } from "@choice-ui/label"
+import { tcx } from "@choice-ui/shared"
 import { ReactNode } from "react"
 import { FormTv } from "../tv"
 
@@ -40,8 +42,16 @@ export function BaseAdapter({
         </Label>
       )}
       {children}
-      {description && <p className={tv.description()}>{description}</p>}
-      {error && <p className={tv.error()}>{error}</p>}
+      {typeof description === "string" ? (
+        <Description id={`${htmlFor}-description`}>{description}</Description>
+      ) : (
+        description
+      )}
+      {typeof error === "string" ? (
+        <ErrorMessage id={`${htmlFor}-error`}>{error}</ErrorMessage>
+      ) : (
+        error
+      )}
     </fieldset>
   )
 }

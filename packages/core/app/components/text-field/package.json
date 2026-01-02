@@ -34,7 +34,8 @@
   "dependencies": {
     "@choice-ui/shared": "workspace:*",
     "@choice-ui/input": "workspace:*",
-    "@choice-ui/label": "workspace:*"
+    "@choice-ui/label": "workspace:*",
+    "@choice-ui/description": "workspace:*"
   },
   "devDependencies": {
     "@types/react": "^18.3.12",

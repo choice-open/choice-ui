@@ -11,7 +11,8 @@
       "@choice-ui/shared": "workspace:*",
       "@choice-ui/dropdown": "workspace:*",
       "@choice-ui/icon-button": "workspace:*",
-      "@choiceform/icons-react": "^1.3.8"
+      "@choiceform/icons-react": "^1.3.8",
+      "framer-motion": "^11.17.2"
     },
     "peerDependencies": {
       "react": ">=18.0.0",
@@ -49,6 +50,12 @@
           "type": "string",
           "required": true,
           "description": ""
+        },
+        {
+          "name": "control",
+          "type": "{ enable?: boolean | undefined; position?: \"top-left\" | \"top-right\" | \"bottom-left\" | \"bottom-right\" | undefined; show?: \"always\" | \"hover\" | undefined; } | undefined",
+          "required": false,
+          "description": ""
         }
       ]
     }
@@ -66,7 +73,7 @@
       "name": "With Error",
       "exportName": "WithError",
       "description": "WithError: Demonstrates how the component handles image loading errors.\n\nThis example shows how the PicturePreview component displays an error state\nwhen the image fails to load. It provides visual feedback to the user\nthat there was a problem loading the image, while still displaying the\nfilename information.",
-      "source": "import { PicturePreview } from \"@choice-ui/picture-preview\"\n\nexport default function App() {\n\n  return (\n    <PicturePreview\n      src=\"https://example.com/non-existent-image.jpg\"\n      fileName=\"broken-image.jpg\"\n    />\n  )\n\n}"
+      "source": "import { PicturePreview } from \"@choice-ui/picture-preview\"\n\nexport default function App() {\n\n  return (\n    <PicturePreview\n      className=\"w-2xl h-96\"\n      src=\"https://example.com/non-existent-image.jpg\"\n      fileName=\"broken-image.jpg\"\n    />\n  )\n\n}"
     },
     {
       "id": "datadisplay-picturepreview--gallery",
@@ -74,6 +81,27 @@
       "exportName": "Gallery",
       "description": "Gallery: Demonstrates using multiple PicturePreview components together.\n\nThis example shows how multiple PicturePreview components can be used\nin a grid layout to create a simple image gallery. Each preview retains\nits own filename display and error handling capabilities.",
       "source": "import { PicturePreview } from \"@choice-ui/picture-preview\"\n\nexport default function App() {\n\n  return (\n    <div className=\"grid grid-cols-2 gap-4\">\n      {sampleImages.map((image, index) => (\n        <PicturePreview\n          key={index}\n          src={image.src}\n          fileName={image.fileName}\n        />\n      ))}\n    </div>\n  )\n\n}"
+    },
+    {
+      "id": "datadisplay-picturepreview--control-always-visible",
+      "name": "Control Always Visible",
+      "exportName": "ControlAlwaysVisible",
+      "description": "ControlAlwaysVisible: Shows the zoom control bar always visible.\n\nBy default, the control bar only appears on hover. Setting `control.show`\nto \"always\" makes it permanently visible.",
+      "source": "import { PicturePreview } from \"@choice-ui/picture-preview\"\n\nexport default function App() {\n\n  return (\n    <PicturePreview\n      src={sampleImages[0].src}\n      fileName={sampleImages[0].fileName}\n      control={{\n        enable: true,\n        position: \"bottom-right\",\n        show: \"always\",\n      }}\n    />\n  )\n\n}"
+    },
+    {
+      "id": "datadisplay-picturepreview--control-positions",
+      "name": "Control Positions",
+      "exportName": "ControlPositions",
+      "description": "ControlPositions: Demonstrates different control bar positions.\n\nThe control bar can be positioned in any corner of the preview:\n- top-left\n- top-right\n- bottom-left\n- bottom-right (default)",
+      "source": "import { PicturePreview } from \"@choice-ui/picture-preview\"\n\nexport default function App() {\n\n  const positions = [\"top-left\", \"top-right\", \"bottom-left\", \"bottom-right\"] as const\n  return (\n    <div className=\"grid grid-cols-2 gap-4\">\n      {positions.map((position) => (\n        <div\n          key={position}\n          className=\"flex flex-col gap-2\"\n        >\n          <span className=\"text-sm text-secondary-foreground\">{position}</span>\n          <div className=\"h-64\">\n            <PicturePreview\n              src={sampleImages[0].src}\n              fileName={sampleImages[0].fileName}\n              control={{\n                enable: true,\n                position,\n                show: \"always\",\n              }}\n            />\n          </div>\n        </div>\n      ))}\n    </div>\n  )\n\n}"
+    },
+    {
+      "id": "datadisplay-picturepreview--control-disabled",
+      "name": "Control Disabled",
+      "exportName": "ControlDisabled",
+      "description": "ControlDisabled: Shows the preview without zoom controls.\n\nSetting `control.enable` to false hides the control bar entirely,\nuseful for read-only previews or when zoom functionality is not needed.",
+      "source": "import { PicturePreview } from \"@choice-ui/picture-preview\"\n\nexport default function App() {\n\n  return (\n    <PicturePreview\n      src={sampleImages[0].src}\n      fileName={sampleImages[0].fileName}\n      control={{\n        enable: false,\n      }}\n    />\n  )\n\n}"
     }
   ],
   "tags": [

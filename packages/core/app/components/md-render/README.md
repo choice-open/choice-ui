@@ -35,7 +35,19 @@ This is **bold text** and *italic text*.
 - List item 1
 - List item 2`
 
+  // Using content prop
   return <MdRender content={markdown} />
+}
+
+// Or using children prop
+function AppWithChildren() {
+  return (
+    <MdRender>
+      {`# Hello World
+
+This is **bold text** and *italic text*.`}
+    </MdRender>
+  )
 }
 ```
 
@@ -71,14 +83,17 @@ This is **bold text** and *italic text*.
 
 ### Props
 
-| Prop                     | Type                                      | Default      | Description                               |
-| ------------------------ | ----------------------------------------- | ------------ | ----------------------------------------- |
-| `content`                | `string`                                  | **required** | Markdown content to render                |
-| `size`                   | `"small"` \| `"default"` \| `"large"`     | `"default"`  | Typography size mode                      |
-| `mentionItems`           | `MentionItemProps[]`                      | `undefined`  | Array of mentionable items                |
-| `mentionRenderComponent` | `React.ComponentType<MentionRenderProps>` | `undefined`  | Custom mention renderer component         |
-| `allowedPrefixes`        | `string[]`                                | `undefined`  | Allowed URL prefixes for links and images |
-| `className`              | `string`                                  | `undefined`  | Additional CSS classes                    |
+| Prop                     | Type                                      | Default     | Description                                           |
+| ------------------------ | ----------------------------------------- | ----------- | ----------------------------------------------------- |
+| `content`                | `string`                                  | `undefined` | Markdown content to render (alternative to children)  |
+| `children`               | `string`                                  | `undefined` | Markdown content as children (alternative to content) |
+| `size`                   | `"small"` \| `"default"` \| `"large"`     | `"default"` | Typography size mode                                  |
+| `mentionItems`           | `MentionItemProps[]`                      | `undefined` | Array of mentionable items                            |
+| `mentionRenderComponent` | `React.ComponentType<MentionRenderProps>` | `undefined` | Custom mention renderer component                     |
+| `allowedPrefixes`        | `string[]`                                | `undefined` | Allowed URL prefixes for links and images             |
+| `className`              | `string`                                  | `undefined` | Additional CSS classes                                |
+
+> **Note**: Either `content` or `children` should be provided. If both are provided, `content` takes precedence.
 
 ### Type Definitions
 

@@ -35,7 +35,7 @@ export function SiteHeader() {
             </Tabs.Item>
             <Tabs.Item
               as={Link}
-              href="/docs/components/buttons/button"
+              href="/docs/components"
               value="components"
             >
               Components

@@ -16,141 +16,141 @@
       "id": "utils-date-formatting--basic",
       "name": "Basic",
       "exportName": "Basic",
-      "description": "",
-      "source": ""
+      "description": "Live demonstration showing real-time relative formatting.\nThe relative time updates every second.",
+      "source": "import {  } from \"@choice-ui/date-formatting\"\nimport { useState, useEffect } from \"react\"\n\nexport default function App() {\n\n  const [currentTime, setCurrentTime] = useState(new Date())\n  const date = new Date()\n  const options = { language: \"en\" as const }\n\n  useEffect(() => {\n    const interval = setInterval(() => {\n      setCurrentTime(new Date())\n    }, 1000)\n    return () => clearInterval(interval)\n  }, [])\n\n  const relativeResult = formatRelativeTime(date, {\n    ...options,\n    timezone: {\n      referenceTime: currentTime,\n    },\n  })\n\n  const simpleResult = formatSimpleDate(date, options)\n  const timeResult = formatTime(date, options)\n\n  return (\n    <div className=\"bg-default-background space-y-4 rounded-lg border p-4\">\n      <div className=\"text-secondary-foreground\">\n        <strong>Input Date:</strong> {date.toISOString()}\n      </div>\n      <div className=\"text-secondary-foreground\">\n        <strong>Current Time:</strong> {currentTime.toISOString()}\n      </div>\n\n      <div className=\"space-y-2\">\n        <div className=\"bg-secondary-background rounded-lg p-2\">\n          <strong>Relative Time:</strong>\n          <div className=\"text-body-large-strong\">{relativeResult}</div>\n        </div>\n\n        <div className=\"bg-secondary-background rounded-lg p-2\">\n          <strong>Simple Date:</strong>\n          <div className=\"text-body-large-strong\">{simpleResult}</div>\n        </div>\n\n        <div className=\"bg-secondary-background rounded-lg p-2\">\n          <strong>Time Only:</strong>\n          <div className=\"text-body-large-strong\">{timeResult}</div>\n        </div>\n      </div>\n    </div>\n  )\n\n}"
     },
     {
       "id": "utils-date-formatting--five-minutes-ago",
       "name": "Five Minutes Ago",
       "exportName": "FiveMinutesAgo",
-      "description": "",
-      "source": ""
+      "description": "Shows formatting for a date 5 minutes in the past.",
+      "source": "import {  } from \"@choice-ui/date-formatting\"\n\nexport default function App() {\n\n  const date = new Date(Date.now() - 5 * 60 * 1000)\n  return (\n    <div className=\"bg-default-background space-y-4 rounded-lg border p-4\">\n      <div className=\"text-secondary-foreground\">\n        <strong>Input Date:</strong> {date.toISOString()}\n      </div>\n      <div className=\"space-y-2\">\n        <div className=\"bg-secondary-background rounded-lg p-2\">\n          <strong>Relative Time:</strong>\n          <div className=\"text-body-large-strong\">{formatRelativeTime(date, { language: \"en\" })}</div>\n        </div>\n        <div className=\"bg-secondary-background rounded-lg p-2\">\n          <strong>Simple Date:</strong>\n          <div className=\"text-body-large-strong\">{formatSimpleDate(date, { language: \"en\" })}</div>\n        </div>\n        <div className=\"bg-secondary-background rounded-lg p-2\">\n          <strong>Time Only:</strong>\n          <div className=\"text-body-large-strong\">{formatTime(date, { language: \"en\" })}</div>\n        </div>\n      </div>\n    </div>\n  )\n\n}"
     },
     {
       "id": "utils-date-formatting--two-hours-ago",
       "name": "Two Hours Ago",
       "exportName": "TwoHoursAgo",
-      "description": "",
-      "source": ""
+      "description": "Shows formatting for a date 2 hours in the past.",
+      "source": "import {  } from \"@choice-ui/date-formatting\"\n\nexport default function App() {\n\n  const date = new Date(Date.now() - 2 * 60 * 60 * 1000)\n  return (\n    <div className=\"bg-default-background space-y-4 rounded-lg border p-4\">\n      <div className=\"text-secondary-foreground\">\n        <strong>Input Date:</strong> {date.toISOString()}\n      </div>\n      <div className=\"space-y-2\">\n        <div className=\"bg-secondary-background rounded-lg p-2\">\n          <strong>Relative Time:</strong>\n          <div className=\"text-body-large-strong\">{formatRelativeTime(date, { language: \"en\" })}</div>\n        </div>\n        <div className=\"bg-secondary-background rounded-lg p-2\">\n          <strong>Simple Date:</strong>\n          <div className=\"text-body-large-strong\">{formatSimpleDate(date, { language: \"en\" })}</div>\n        </div>\n        <div className=\"bg-secondary-background rounded-lg p-2\">\n          <strong>Time Only:</strong>\n          <div className=\"text-body-large-strong\">{formatTime(date, { language: \"en\" })}</div>\n        </div>\n      </div>\n    </div>\n  )\n\n}"
     },
     {
       "id": "utils-date-formatting--yesterday",
       "name": "Yesterday",
       "exportName": "Yesterday",
-      "description": "",
-      "source": ""
+      "description": "Shows formatting for a date 24 hours in the past.",
+      "source": "import {  } from \"@choice-ui/date-formatting\"\n\nexport default function App() {\n\n  const date = new Date(Date.now() - 24 * 60 * 60 * 1000)\n  return (\n    <div className=\"bg-default-background space-y-4 rounded-lg border p-4\">\n      <div className=\"text-secondary-foreground\">\n        <strong>Input Date:</strong> {date.toISOString()}\n      </div>\n      <div className=\"space-y-2\">\n        <div className=\"bg-secondary-background rounded-lg p-2\">\n          <strong>Relative Time:</strong>\n          <div className=\"text-body-large-strong\">{formatRelativeTime(date, { language: \"en\" })}</div>\n        </div>\n        <div className=\"bg-secondary-background rounded-lg p-2\">\n          <strong>Simple Date:</strong>\n          <div className=\"text-body-large-strong\">{formatSimpleDate(date, { language: \"en\" })}</div>\n        </div>\n        <div className=\"bg-secondary-background rounded-lg p-2\">\n          <strong>Time Only:</strong>\n          <div className=\"text-body-large-strong\">{formatTime(date, { language: \"en\" })}</div>\n        </div>\n      </div>\n    </div>\n  )\n\n}"
     },
     {
       "id": "utils-date-formatting--one-week-ago",
       "name": "One Week Ago",
       "exportName": "OneWeekAgo",
-      "description": "",
-      "source": ""
+      "description": "Shows formatting for a date 7 days in the past.",
+      "source": "import {  } from \"@choice-ui/date-formatting\"\n\nexport default function App() {\n\n  const date = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)\n  return (\n    <div className=\"bg-default-background space-y-4 rounded-lg border p-4\">\n      <div className=\"text-secondary-foreground\">\n        <strong>Input Date:</strong> {date.toISOString()}\n      </div>\n      <div className=\"space-y-2\">\n        <div className=\"bg-secondary-background rounded-lg p-2\">\n          <strong>Relative Time:</strong>\n          <div className=\"text-body-large-strong\">{formatRelativeTime(date, { language: \"en\" })}</div>\n        </div>\n        <div className=\"bg-secondary-background rounded-lg p-2\">\n          <strong>Simple Date:</strong>\n          <div className=\"text-body-large-strong\">{formatSimpleDate(date, { language: \"en\" })}</div>\n        </div>\n        <div className=\"bg-secondary-background rounded-lg p-2\">\n          <strong>Time Only:</strong>\n          <div className=\"text-body-large-strong\">{formatTime(date, { language: \"en\" })}</div>\n        </div>\n      </div>\n    </div>\n  )\n\n}"
     },
     {
       "id": "utils-date-formatting--one-month-ago",
       "name": "One Month Ago",
       "exportName": "OneMonthAgo",
-      "description": "",
-      "source": ""
+      "description": "Shows formatting for a date 30 days in the past.",
+      "source": "import {  } from \"@choice-ui/date-formatting\"\n\nexport default function App() {\n\n  const date = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)\n  return (\n    <div className=\"bg-default-background space-y-4 rounded-lg border p-4\">\n      <div className=\"text-secondary-foreground\">\n        <strong>Input Date:</strong> {date.toISOString()}\n      </div>\n      <div className=\"space-y-2\">\n        <div className=\"bg-secondary-background rounded-lg p-2\">\n          <strong>Relative Time:</strong>\n          <div className=\"text-body-large-strong\">{formatRelativeTime(date, { language: \"en\" })}</div>\n        </div>\n        <div className=\"bg-secondary-background rounded-lg p-2\">\n          <strong>Simple Date:</strong>\n          <div className=\"text-body-large-strong\">{formatSimpleDate(date, { language: \"en\" })}</div>\n        </div>\n        <div className=\"bg-secondary-background rounded-lg p-2\">\n          <strong>Time Only:</strong>\n          <div className=\"text-body-large-strong\">{formatTime(date, { language: \"en\" })}</div>\n        </div>\n      </div>\n    </div>\n  )\n\n}"
     },
     {
       "id": "utils-date-formatting--one-year-ago",
       "name": "One Year Ago",
       "exportName": "OneYearAgo",
-      "description": "",
-      "source": ""
+      "description": "Shows formatting for a date 365 days in the past.",
+      "source": "import {  } from \"@choice-ui/date-formatting\"\n\nexport default function App() {\n\n  const date = new Date(Date.now() - 365 * 24 * 60 * 60 * 1000)\n  return (\n    <div className=\"bg-default-background space-y-4 rounded-lg border p-4\">\n      <div className=\"text-secondary-foreground\">\n        <strong>Input Date:</strong> {date.toISOString()}\n      </div>\n      <div className=\"space-y-2\">\n        <div className=\"bg-secondary-background rounded-lg p-2\">\n          <strong>Relative Time:</strong>\n          <div className=\"text-body-large-strong\">{formatRelativeTime(date, { language: \"en\" })}</div>\n        </div>\n        <div className=\"bg-secondary-background rounded-lg p-2\">\n          <strong>Simple Date:</strong>\n          <div className=\"text-body-large-strong\">{formatSimpleDate(date, { language: \"en\" })}</div>\n        </div>\n        <div className=\"bg-secondary-background rounded-lg p-2\">\n          <strong>Time Only:</strong>\n          <div className=\"text-body-large-strong\">{formatTime(date, { language: \"en\" })}</div>\n        </div>\n      </div>\n    </div>\n  )\n\n}"
     },
     {
       "id": "utils-date-formatting--chinese-locale",
       "name": "Chinese Locale",
       "exportName": "ChineseLocale",
-      "description": "",
-      "source": ""
+      "description": "Demonstrates Chinese locale formatting with appropriate cultural conventions.",
+      "source": "import {  } from \"@choice-ui/date-formatting\"\n\nexport default function App() {\n\n  const date = new Date(Date.now() - 2 * 60 * 60 * 1000)\n  return (\n    <div className=\"bg-default-background space-y-4 rounded-lg border p-4\">\n      <div className=\"text-secondary-foreground\">\n        <strong>Input Date:</strong> {date.toISOString()}\n      </div>\n      <div className=\"space-y-2\">\n        <div className=\"bg-secondary-background rounded-lg p-2\">\n          <strong>Relative Time:</strong>\n          <div className=\"text-body-large-strong\">{formatRelativeTime(date, { language: \"cn\" })}</div>\n        </div>\n        <div className=\"bg-secondary-background rounded-lg p-2\">\n          <strong>Simple Date:</strong>\n          <div className=\"text-body-large-strong\">{formatSimpleDate(date, { language: \"cn\" })}</div>\n        </div>\n        <div className=\"bg-secondary-background rounded-lg p-2\">\n          <strong>Time Only:</strong>\n          <div className=\"text-body-large-strong\">{formatTime(date, { language: \"cn\" })}</div>\n        </div>\n      </div>\n    </div>\n  )\n\n}"
     },
     {
       "id": "utils-date-formatting--japanese-locale",
       "name": "Japanese Locale",
       "exportName": "JapaneseLocale",
-      "description": "",
-      "source": ""
+      "description": "Demonstrates Japanese locale formatting.",
+      "source": "import {  } from \"@choice-ui/date-formatting\"\n\nexport default function App() {\n\n  const date = new Date(Date.now() - 2 * 60 * 60 * 1000)\n  return (\n    <div className=\"bg-default-background space-y-4 rounded-lg border p-4\">\n      <div className=\"text-secondary-foreground\">\n        <strong>Input Date:</strong> {date.toISOString()}\n      </div>\n      <div className=\"space-y-2\">\n        <div className=\"bg-secondary-background rounded-lg p-2\">\n          <strong>Relative Time:</strong>\n          <div className=\"text-body-large-strong\">{formatRelativeTime(date, { language: \"ja\" })}</div>\n        </div>\n        <div className=\"bg-secondary-background rounded-lg p-2\">\n          <strong>Simple Date:</strong>\n          <div className=\"text-body-large-strong\">{formatSimpleDate(date, { language: \"ja\" })}</div>\n        </div>\n        <div className=\"bg-secondary-background rounded-lg p-2\">\n          <strong>Time Only:</strong>\n          <div className=\"text-body-large-strong\">{formatTime(date, { language: \"ja\" })}</div>\n        </div>\n      </div>\n    </div>\n  )\n\n}"
     },
     {
       "id": "utils-date-formatting--spanish-locale",
       "name": "Spanish Locale",
       "exportName": "SpanishLocale",
-      "description": "",
-      "source": ""
+      "description": "Demonstrates Spanish locale formatting.",
+      "source": "import {  } from \"@choice-ui/date-formatting\"\n\nexport default function App() {\n\n  const date = new Date(Date.now() - 2 * 60 * 60 * 1000)\n  return (\n    <div className=\"bg-default-background space-y-4 rounded-lg border p-4\">\n      <div className=\"text-secondary-foreground\">\n        <strong>Input Date:</strong> {date.toISOString()}\n      </div>\n      <div className=\"space-y-2\">\n        <div className=\"bg-secondary-background rounded-lg p-2\">\n          <strong>Relative Time:</strong>\n          <div className=\"text-body-large-strong\">{formatRelativeTime(date, { language: \"es\" })}</div>\n        </div>\n        <div className=\"bg-secondary-background rounded-lg p-2\">\n          <strong>Simple Date:</strong>\n          <div className=\"text-body-large-strong\">{formatSimpleDate(date, { language: \"es\" })}</div>\n        </div>\n        <div className=\"bg-secondary-background rounded-lg p-2\">\n          <strong>Time Only:</strong>\n          <div className=\"text-body-large-strong\">{formatTime(date, { language: \"es\" })}</div>\n        </div>\n      </div>\n    </div>\n  )\n\n}"
     },
     {
       "id": "utils-date-formatting--specific-time-mode",
       "name": "Specific Time Mode",
       "exportName": "SpecificTimeMode",
-      "description": "",
-      "source": ""
+      "description": "When `showSpecificTime` is enabled, shows 'Today at 2:30 PM' style formatting for recent dates.",
+      "source": "import {  } from \"@choice-ui/date-formatting\"\n\nexport default function App() {\n\n  const date = new Date(Date.now() - 3 * 60 * 60 * 1000)\n  const options = { language: \"en\" as const, showSpecificTime: true }\n  return (\n    <div className=\"bg-default-background space-y-4 rounded-lg border p-4\">\n      <div className=\"text-secondary-foreground\">\n        <strong>Input Date:</strong> {date.toISOString()}\n      </div>\n      <div className=\"space-y-2\">\n        <div className=\"bg-secondary-background rounded-lg p-2\">\n          <strong>Relative Time (with showSpecificTime):</strong>\n          <div className=\"text-body-large-strong\">{formatRelativeTime(date, options)}</div>\n        </div>\n        <div className=\"bg-secondary-background rounded-lg p-2\">\n          <strong>Simple Date:</strong>\n          <div className=\"text-body-large-strong\">{formatSimpleDate(date, options)}</div>\n        </div>\n        <div className=\"bg-secondary-background rounded-lg p-2\">\n          <strong>Time Only:</strong>\n          <div className=\"text-body-large-strong\">{formatTime(date, options)}</div>\n        </div>\n      </div>\n    </div>\n  )\n\n}"
     },
     {
       "id": "utils-date-formatting--custom-thresholds",
       "name": "Custom Thresholds",
       "exportName": "CustomThresholds",
-      "description": "",
-      "source": ""
+      "description": "Custom thresholds control when to switch from relative time to absolute dates.",
+      "source": "import {  } from \"@choice-ui/date-formatting\"\n\nexport default function App() {\n\n  const date = new Date(Date.now() - 10 * 24 * 60 * 60 * 1000)\n  const options = { language: \"en\" as const, daysThreshold: 30, yearThreshold: 2 }\n  return (\n    <div className=\"bg-default-background space-y-4 rounded-lg border p-4\">\n      <div className=\"text-secondary-foreground\">\n        <strong>Input Date:</strong> {date.toISOString()}\n      </div>\n      <div className=\"text-secondary-foreground\">\n        <strong>Options:</strong> daysThreshold: 30, yearThreshold: 2\n      </div>\n      <div className=\"space-y-2\">\n        <div className=\"bg-secondary-background rounded-lg p-2\">\n          <strong>Relative Time:</strong>\n          <div className=\"text-body-large-strong\">{formatRelativeTime(date, options)}</div>\n        </div>\n        <div className=\"bg-secondary-background rounded-lg p-2\">\n          <strong>Simple Date:</strong>\n          <div className=\"text-body-large-strong\">{formatSimpleDate(date, options)}</div>\n        </div>\n        <div className=\"bg-secondary-background rounded-lg p-2\">\n          <strong>Time Only:</strong>\n          <div className=\"text-body-large-strong\">{formatTime(date, options)}</div>\n        </div>\n      </div>\n    </div>\n  )\n\n}"
     },
     {
       "id": "utils-date-formatting--force-numeric-format",
       "name": "Force Numeric Format",
       "exportName": "ForceNumericFormat",
-      "description": "",
-      "source": ""
+      "description": "Forces numeric date formats (MM/dd) instead of text-based formats (January 15).",
+      "source": "import {  } from \"@choice-ui/date-formatting\"\n\nexport default function App() {\n\n  const date = new Date(Date.now() - 15 * 24 * 60 * 60 * 1000)\n  const options = { language: \"en\" as const, forceNumericFormat: true }\n  return (\n    <div className=\"bg-default-background space-y-4 rounded-lg border p-4\">\n      <div className=\"text-secondary-foreground\">\n        <strong>Input Date:</strong> {date.toISOString()}\n      </div>\n      <div className=\"text-secondary-foreground\">\n        <strong>Options:</strong> forceNumericFormat: true\n      </div>\n      <div className=\"space-y-2\">\n        <div className=\"bg-secondary-background rounded-lg p-2\">\n          <strong>Relative Time:</strong>\n          <div className=\"text-body-large-strong\">{formatRelativeTime(date, options)}</div>\n        </div>\n        <div className=\"bg-secondary-background rounded-lg p-2\">\n          <strong>Simple Date:</strong>\n          <div className=\"text-body-large-strong\">{formatSimpleDate(date, options)}</div>\n        </div>\n        <div className=\"bg-secondary-background rounded-lg p-2\">\n          <strong>Time Only:</strong>\n          <div className=\"text-body-large-strong\">{formatTime(date, options)}</div>\n        </div>\n      </div>\n    </div>\n  )\n\n}"
     },
     {
       "id": "utils-date-formatting--custom-formats",
       "name": "Custom Formats",
       "exportName": "CustomFormats",
-      "description": "",
-      "source": ""
+      "description": "Custom format strings allow complete control over date/time display patterns.",
+      "source": "import {  } from \"@choice-ui/date-formatting\"\n\nexport default function App() {\n\n  const date = new Date(Date.now() - 400 * 24 * 60 * 60 * 1000)\n  const options = {\n    language: \"en\" as const,\n    customFormat: {\n      fullDate: \"EEEE, MMMM do, yyyy\",\n      monthDay: \"MMM dd\",\n      time: \"h:mm:ss a\",\n    },\n  }\n  return (\n    <div className=\"bg-default-background space-y-4 rounded-lg border p-4\">\n      <div className=\"text-secondary-foreground\">\n        <strong>Input Date:</strong> {date.toISOString()}\n      </div>\n      <div className=\"text-secondary-foreground\">\n        <strong>Custom Formats:</strong> fullDate: \"EEEE, MMMM do, yyyy\", monthDay: \"MMM dd\", time:\n        \"h:mm:ss a\"\n      </div>\n      <div className=\"space-y-2\">\n        <div className=\"bg-secondary-background rounded-lg p-2\">\n          <strong>Relative Time:</strong>\n          <div className=\"text-body-large-strong\">{formatRelativeTime(date, options)}</div>\n        </div>\n        <div className=\"bg-secondary-background rounded-lg p-2\">\n          <strong>Simple Date:</strong>\n          <div className=\"text-body-large-strong\">{formatSimpleDate(date, options)}</div>\n        </div>\n        <div className=\"bg-secondary-background rounded-lg p-2\">\n          <strong>Time Only:</strong>\n          <div className=\"text-body-large-strong\">{formatTime(date, options)}</div>\n        </div>\n      </div>\n    </div>\n  )\n\n}"
     },
     {
       "id": "utils-date-formatting--timezone-handling",
       "name": "Timezone Handling",
       "exportName": "TimezoneHandling",
-      "description": "",
-      "source": ""
+      "description": "Timezone options allow for UTC calculations and custom reference times.",
+      "source": "import {  } from \"@choice-ui/date-formatting\"\n\nexport default function App() {\n\n  const date = new Date(Date.now() - 2 * 60 * 60 * 1000)\n  const options = {\n    language: \"en\" as const,\n    timezone: {\n      useUTC: true,\n      referenceTime: new Date(),\n    },\n  }\n  return (\n    <div className=\"bg-default-background space-y-4 rounded-lg border p-4\">\n      <div className=\"text-secondary-foreground\">\n        <strong>Input Date:</strong> {date.toISOString()}\n      </div>\n      <div className=\"text-secondary-foreground\">\n        <strong>Options:</strong> timezone.useUTC: true\n      </div>\n      <div className=\"space-y-2\">\n        <div className=\"bg-secondary-background rounded-lg p-2\">\n          <strong>Relative Time:</strong>\n          <div className=\"text-body-large-strong\">{formatRelativeTime(date, options)}</div>\n        </div>\n        <div className=\"bg-secondary-background rounded-lg p-2\">\n          <strong>Simple Date:</strong>\n          <div className=\"text-body-large-strong\">{formatSimpleDate(date, options)}</div>\n        </div>\n        <div className=\"bg-secondary-background rounded-lg p-2\">\n          <strong>Time Only:</strong>\n          <div className=\"text-body-large-strong\">{formatTime(date, options)}</div>\n        </div>\n      </div>\n    </div>\n  )\n\n}"
     },
     {
       "id": "utils-date-formatting--all-languages-comparison",
       "name": "All Languages Comparison",
       "exportName": "AllLanguagesComparison",
-      "description": "",
-      "source": ""
+      "description": "Side-by-side comparison of all 10 supported languages formatting the same date.",
+      "source": "import {  } from \"@choice-ui/date-formatting\"\n\nexport default function App() {\n\n  const date = new Date(Date.now() - 2 * 60 * 60 * 1000)\n  const languages: SupportedLanguage[] = [\n    \"en\",\n    \"cn\",\n    \"ja\",\n    \"ko\",\n    \"es\",\n    \"fr\",\n    \"de\",\n    \"pt\",\n    \"ru\",\n    \"ar\",\n  ]\n\n  return (\n    <div className=\"grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5\">\n      {languages.map((language) => (\n        <div\n          key={language}\n          className=\"bg-secondary-background rounded-lg border p-4\"\n        >\n          <div className=\"text-secondary-foreground font-strong mb-2\">{language.toUpperCase()}</div>\n          <div className=\"space-y-1\">\n            <div>{formatRelativeTime(date, { language })}</div>\n            <div className=\"text-secondary-foreground\">{formatSimpleDate(date, { language })}</div>\n            <div className=\"text-secondary-foreground\">{formatTime(date, { language })}</div>\n          </div>\n        </div>\n      ))}\n    </div>\n  )\n\n}"
     },
     {
       "id": "utils-date-formatting--all-formatting-modes",
       "name": "All Formatting Modes",
       "exportName": "AllFormattingModes",
-      "description": "",
-      "source": ""
+      "description": "Demonstrates all major formatting modes and options available.",
+      "source": "import {  } from \"@choice-ui/date-formatting\"\n\nexport default function App() {\n\n  const date = new Date(Date.now() - 10 * 24 * 60 * 60 * 1000)\n  const modes = [\n    { name: \"Default Relative\", options: {} },\n    { name: \"Show Specific Time\", options: { showSpecificTime: true } },\n    { name: \"Force Numeric\", options: { forceNumericFormat: true } },\n    { name: \"Custom Threshold (30 days)\", options: { daysThreshold: 30 } },\n    { name: \"Year Threshold (2 years)\", options: { yearThreshold: 2 } },\n    {\n      name: \"Custom Formats\",\n      options: {\n        customFormat: {\n          fullDate: \"dd/MM/yyyy\",\n          monthDay: \"MMM dd\",\n          time: \"HH:mm:ss\",\n        },\n      },\n    },\n  ] as const\n\n  return (\n    <div className=\"space-y-4\">\n      {modes.map((mode) => (\n        <div\n          key={mode.name}\n          className=\"rounded-lg border p-4\"\n        >\n          <div className=\"text-secondary-foreground font-strong mb-2\">{mode.name}</div>\n          <div className=\"grid grid-cols-2 gap-4 md:grid-cols-4\">\n            <div>\n              <div className=\"text-secondary-foreground\">English</div>\n              <div>{formatRelativeTime(date, { ...mode.options, language: \"en\" })}</div>\n            </div>\n            <div>\n              <div className=\"text-secondary-foreground\">中文</div>\n              <div>{formatRelativeTime(date, { ...mode.options, language: \"cn\" })}</div>\n            </div>\n            <div>\n              <div className=\"text-secondary-foreground\">日本語</div>\n              <div>{formatRelativeTime(date, { ...mode.options, language: \"ja\" })}</div>\n            </div>\n            <div>\n              <div className=\"text-secondary-foreground\">한국어</div>\n              <div>{formatRelativeTime(date, { ...mode.options, language: \"ko\" })}</div>\n            </div>\n          </div>\n        </div>\n      ))}\n    </div>\n  )\n\n}"
     },
     {
       "id": "utils-date-formatting--custom-formatter-examples",
       "name": "Custom Formatter Examples",
       "exportName": "CustomFormatterExamples",
-      "description": "",
-      "source": ""
+      "description": "Examples of creating reusable formatters with predefined configurations.",
+      "source": "import {  } from \"@choice-ui/date-formatting\"\n\nexport default function App() {\n\n  const chineseFormatter = createDateFormatter({\n    language: \"cn\",\n    daysThreshold: 14,\n    showSpecificTime: true,\n  })\n\n  const englishFormatter = createDateFormatter({\n    language: \"en\",\n    customFormat: {\n      fullDate: \"MMMM do, yyyy\",\n      time: \"h:mm a\",\n    },\n  })\n\n  const dates = [\n    new Date(),\n    new Date(Date.now() - 2 * 60 * 60 * 1000),\n    new Date(Date.now() - 5 * 24 * 60 * 60 * 1000),\n    new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),\n  ]\n\n  return (\n    <div className=\"space-y-6\">\n      <div>\n        <h3 className=\"text-body-large-strong mb-4\">\n          Chinese Formatter (14 day threshold, specific time)\n        </h3>\n        <div className=\"space-y-2\">\n          {dates.map((date, index) => (\n            <div\n              key={index}\n              className=\"bg-secondary-background rounded-lg p-2\"\n            >\n              <div className=\"text-secondary-foreground\">{date.toLocaleString()}</div>\n              <div className=\"font-strong\">{chineseFormatter(date)}</div>\n            </div>\n          ))}\n        </div>\n      </div>\n\n      <div>\n        <h3 className=\"text-body-large-strong mb-4\">English Formatter (custom formats)</h3>\n        <div className=\"space-y-2\">\n          {dates.map((date, index) => (\n            <div\n              key={index}\n              className=\"bg-secondary-background rounded-lg p-2\"\n            >\n              <div className=\"text-secondary-foreground\">{date.toLocaleString()}</div>\n              <div className=\"font-strong\">{englishFormatter(date)}</div>\n            </div>\n          ))}\n        </div>\n      </div>\n    </div>\n  )\n\n}"
     },
     {
       "id": "utils-date-formatting--invalid-date",
       "name": "Invalid Date",
       "exportName": "InvalidDate",
-      "description": "",
-      "source": "import {  } from \"@choice-ui/date-formatting\"\n\nexport default function App() {\n  return (\n\n    <div className=\"space-y-4\">\n      <div className=\"rounded-lg border bg-red-50 p-4\">\n        <strong>Invalid Date Input:</strong>\n        <div className=\"mt-2\">{formatRelativeTime(new Date(\"invalid date\"))}</div>\n      </div>\n      <div className=\"rounded-lg border bg-red-50 p-4\">\n        <strong>Null Input:</strong>\n        <div className=\"mt-2\">{formatRelativeTime(null as unknown as Date)}</div>\n      </div>\n    </div>\n\n  );\n}"
+      "description": "Demonstrates graceful error handling for invalid date inputs.",
+      "source": "import {  } from \"@choice-ui/date-formatting\"\n\nexport default function App() {\n\n  return (\n    <div className=\"space-y-4\">\n      <div className=\"rounded-lg border bg-red-50 p-4\">\n        <strong>Invalid Date Input:</strong>\n        <div className=\"mt-2\">{formatRelativeTime(new Date(\"invalid date\"))}</div>\n      </div>\n      <div className=\"rounded-lg border bg-red-50 p-4\">\n        <strong>Null Input:</strong>\n        <div className=\"mt-2\">{formatRelativeTime(null as unknown as Date)}</div>\n      </div>\n    </div>\n  )\n\n}"
     },
     {
       "id": "utils-date-formatting--future-dates",
       "name": "Future Dates",
       "exportName": "FutureDates",
-      "description": "",
-      "source": "import {  } from \"@choice-ui/date-formatting\"\n\nexport default function App() {\n  return (\n\n    <div className=\"space-y-4\">\n      {[\n        { name: \"In 5 minutes\", date: new Date(Date.now() + 5 * 60 * 1000) },\n        { name: \"In 2 hours\", date: new Date(Date.now() + 2 * 60 * 60 * 1000) },\n        { name: \"Tomorrow\", date: new Date(Date.now() + 24 * 60 * 60 * 1000) },\n        {\n          name: \"Next week\",\n          date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),\n        },\n      ].map((item) => (\n        <div\n          key={item.name}\n          className=\"rounded-lg border bg-blue-50 p-4\"\n        >\n          <strong>{item.name}:</strong>\n          <div className=\"mt-2 grid grid-cols-2 gap-4\">\n            <div>\n              <div className=\"text-secondary-foreground\">English</div>\n              <div>{formatRelativeTime(item.date, { language: \"en\" })}</div>\n            </div>\n            <div>\n              <div className=\"text-secondary-foreground\">中文</div>\n              <div>{formatRelativeTime(item.date, { language: \"cn\" })}</div>\n            </div>\n          </div>\n        </div>\n      ))}\n    </div>\n\n  );\n}"
+      "description": "Shows how the utility handles future dates and times.",
+      "source": "import {  } from \"@choice-ui/date-formatting\"\n\nexport default function App() {\n\n  return (\n    <div className=\"space-y-4\">\n      {[\n        { name: \"In 5 minutes\", date: new Date(Date.now() + 5 * 60 * 1000) },\n        { name: \"In 2 hours\", date: new Date(Date.now() + 2 * 60 * 60 * 1000) },\n        { name: \"Tomorrow\", date: new Date(Date.now() + 24 * 60 * 60 * 1000) },\n        {\n          name: \"Next week\",\n          date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),\n        },\n      ].map((item) => (\n        <div\n          key={item.name}\n          className=\"rounded-lg border bg-blue-50 p-4\"\n        >\n          <strong>{item.name}:</strong>\n          <div className=\"mt-2 grid grid-cols-2 gap-4\">\n            <div>\n              <div className=\"text-secondary-foreground\">English</div>\n              <div>{formatRelativeTime(item.date, { language: \"en\" })}</div>\n            </div>\n            <div>\n              <div className=\"text-secondary-foreground\">中文</div>\n              <div>{formatRelativeTime(item.date, { language: \"cn\" })}</div>\n            </div>\n          </div>\n        </div>\n      ))}\n    </div>\n  )\n\n}"
     }
   ]
 }

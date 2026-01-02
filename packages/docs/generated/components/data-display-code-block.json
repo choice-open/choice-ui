@@ -3,7 +3,7 @@
   "title": "CodeBlock",
   "package": {
     "name": "@choice-ui/code-block",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "description": "A syntax-highlighted code block component with copy functionality and language detection",
     "dependencies": {
       "@choice-ui/shared": "workspace:*",

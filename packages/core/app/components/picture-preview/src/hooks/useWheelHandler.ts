@@ -5,12 +5,18 @@ interface Position {
   y: number
 }
 
+interface ZoomAtPointParams {
+  newZoom: number
+  newPosition: Position
+}
+
 interface WheelHandlerOptions {
   minZoom?: number
   maxZoom?: number
   zoomStep?: number
   onZoom?: (newZoom: number) => void
   onPan?: (newPosition: Position) => void
+  onZoomAtPoint?: (params: ZoomAtPointParams) => void
 }
 
 /**
@@ -21,12 +27,12 @@ interface WheelHandlerOptions {
  * @param options 配置选项
  */
 export function useWheelHandler(
-  targetRef: React.RefObject<HTMLElement>,
+  targetRef: React.RefObject<HTMLElement | null>,
   zoomRef: React.RefObject<number>,
   positionRef: React.RefObject<Position>,
   options: WheelHandlerOptions = {},
 ) {
-  const { minZoom = 0.01, maxZoom = 10, zoomStep = 0.1, onZoom, onPan } = options
+  const { minZoom = 0.01, maxZoom = 10, zoomStep = 0.1, onZoom, onPan, onZoomAtPoint } = options
 
   // 是否Mac平台
   const isMac = useRef(
@@ -43,7 +49,7 @@ export function useWheelHandler(
       event.preventDefault()
       event.stopPropagation()
 
-      if (!zoomRef.current || !positionRef.current) return
+      if (zoomRef.current === undefined || zoomRef.current === null || !positionRef.current) return
 
       // Mac 触摸板检测 - 精确的滚动事件
       const isPreciseEvent = event.deltaMode === 0
@@ -52,12 +58,47 @@ export function useWheelHandler(
       // 检测是否按下了 Command/Ctrl 键
       const isZoomModifier = (isMac.current && event.metaKey) || (!isMac.current && event.ctrlKey)
 
-      if (isZoomModifier) {
-        // Command/Ctrl + 滚轮 - 缩放
-        const delta = -Math.sign(event.deltaY) * zoomStep
-        const newZoom = Math.max(minZoom, Math.min(maxZoom, zoomRef.current + delta))
+      // 检测触摸板双指捏合缩放 (Mac上 ctrlKey + 精确滚动)
+      const isPinchZoom = event.ctrlKey && isPreciseEvent && !event.metaKey
 
-        if (onZoom) {
+      if (isZoomModifier || isPinchZoom) {
+        // Command/Ctrl + 滚轮 或 触摸板双指捏合 - 缩放
+        const oldZoom = zoomRef.current
+        let newZoom: number
+
+        // 统一使用连续缩放，基于实际 deltaY 值
+        // 使用指数缩放公式: newZoom = oldZoom * e^(-delta * sensitivity)
+        // 这样可以实现更自然的缩放感觉
+        const sensitivity = isPinchZoom ? 0.008 : 0.003
+        const delta = event.deltaY
+        newZoom = oldZoom * Math.exp(-delta * sensitivity)
+        newZoom = Math.max(minZoom, Math.min(maxZoom, newZoom))
+
+        const target = targetRef.current
+        if (onZoomAtPoint && target) {
+          // 获取容器的边界信息
+          const rect = target.getBoundingClientRect()
+
+          // 鼠标相对于容器中心的位置
+          const mouseX = event.clientX - rect.left - rect.width / 2
+          const mouseY = event.clientY - rect.top - rect.height / 2
+
+          // 计算缩放比例
+          const zoomRatio = newZoom / oldZoom
+
+          // 当前位置
+          const currentX = positionRef.current.x
+          const currentY = positionRef.current.y
+
+          // 计算新位置，使鼠标指向的点保持不变
+          // 公式: newPos = mousePos - (mousePos - currentPos) * zoomRatio
+          const newPosition = {
+            x: mouseX - (mouseX - currentX) * zoomRatio,
+            y: mouseY - (mouseY - currentY) * zoomRatio,
+          }
+
+          onZoomAtPoint({ newZoom, newPosition })
+        } else if (onZoom) {
           onZoom(newZoom)
         }
       } else if (isPreciseEvent && hasDeltaX) {
@@ -95,7 +136,7 @@ export function useWheelHandler(
         }
       }
     },
-    [minZoom, maxZoom, zoomStep, onZoom, onPan],
+    [minZoom, maxZoom, onZoom, onPan, onZoomAtPoint, targetRef],
   )
 
   // 处理键盘按下事件

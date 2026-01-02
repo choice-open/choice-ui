@@ -7,10 +7,15 @@ import {
   Label,
   NumericInput,
   Select,
+  useNumericLongPress,
 } from "@choice-ui/react"
 import {
+  AddSmall,
+  AddTiny,
   ChevronDownSmall,
   ColorTypeSolid,
+  DeleteSmall,
+  DeleteTiny,
   FixedHeight,
   FixedWidth,
   HugHeight,
@@ -22,7 +27,7 @@ import {
 } from "@choiceform/icons-react"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { useState } from "react"
-import { useEventCallback } from "usehooks-ts"
+import { useCounter, useEventCallback } from "usehooks-ts"
 
 const meta: Meta<typeof NumericInput> = {
   title: "Forms/NumericInput",
@@ -160,23 +165,65 @@ export const Suffix: Story = {
 }
 
 /**
- * Example showing NumericInput with both prefix and suffix elements.
- * This pattern is useful for providing complete context around a value.
+ * Demonstrates the `useNumericLongPress` hook for continuous increment/decrement.
+ *
+ * ### Features
+ * - **Single click**: Triggers one increment/decrement
+ * - **Long press**: After 400ms delay, continuously triggers at 50ms intervals
+ * - **Auto-stop**: Stops when mouse is released or leaves the button
+ *
  */
-export const PrefixAndSuffix: Story = {
-  render: function PrefixAndSuffixStory() {
-    const [value, setValue] = useState(10)
+export const LongPress: Story = {
+  render: function LongPressStory() {
+    const { count, setCount, increment, decrement } = useCounter(0)
+
+    const handleIncrement = useEventCallback(() => {
+      if (count >= 100) return
+      increment()
+    })
+
+    const handleDecrement = useEventCallback(() => {
+      if (count <= 0) return
+      decrement()
+    })
+
+    const incrementLongPress = useNumericLongPress(handleIncrement)
+    const decrementLongPress = useNumericLongPress(handleDecrement)
+
     return (
       <NumericInput
         className="w-64"
-        value={value}
-        onChange={(newValue) => setValue(newValue as number)}
+        value={count}
+        onChange={(newValue) => setCount(newValue as number)}
+        min={0}
+        max={100}
+        classNames={{
+          input: "px-2",
+        }}
       >
-        <NumericInput.Prefix>
-          <HugWidth />
+        <NumericInput.Prefix
+          type="action"
+          className="mr-px"
+        >
+          <IconButton
+            disabled={count <= 0}
+            className="rounded-r-none"
+            {...decrementLongPress}
+          >
+            <DeleteTiny />
+          </IconButton>
         </NumericInput.Prefix>
-        <NumericInput.Suffix>
-          <Relative />
+        <NumericInput.Suffix
+          type="action"
+          className="ml-px"
+        >
+          <IconButton
+            disabled={count >= 100}
+            className="rounded-l-none"
+            {...incrementLongPress}
+          >
+            <AddTiny />
+          </IconButton>
         </NumericInput.Suffix>
       </NumericInput>
     )

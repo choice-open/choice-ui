@@ -27,15 +27,13 @@
           "name": "orientation",
           "type": "undefined | \"horizontal\" | \"vertical\"",
           "required": false,
-          "defaultValue": "\"horizontal\"",
-          "description": "Separator direction"
+          "description": ""
         },
         {
           "name": "decorative",
           "type": "boolean | undefined",
           "required": false,
-          "defaultValue": "false",
-          "description": "Whether to use decorative separator (not read by screen readers)"
+          "description": ""
         },
         {
           "name": "variant",
@@ -87,6 +85,13 @@
       "exportName": "CustomStyling",
       "description": "CustomStyling: Demonstrates custom styling options.\n\nThe separator accepts className for custom styling. You can modify\nthickness, color, margins, and other CSS properties.",
       "source": "import { Separator } from \"@choice-ui/separator\"\n\nexport default function App() {\n\n  return (\n    <div className=\"flex flex-col gap-8\">\n      <div>\n        <p className=\"text-secondary-foreground mb-2\">Default</p>\n        <Separator />\n      </div>\n\n      <div>\n        <p className=\"text-secondary-foreground mb-2\">Custom color</p>\n        <Separator className=\"bg-accent-background\" />\n      </div>\n\n      <div>\n        <p className=\"text-secondary-foreground mb-2\">Thicker</p>\n        <Separator className=\"h-0.5\" />\n      </div>\n\n      <div>\n        <p className=\"text-secondary-foreground mb-2\">Dashed (via gradient)</p>\n        <Separator className=\"h-px bg-[repeating-linear-gradient(90deg,var(--color-default-boundary)_0,var(--color-default-boundary)_4px,transparent_4px,transparent_8px)]\" />\n      </div>\n\n      <div>\n        <p className=\"text-secondary-foreground mb-2\">With margin</p>\n        <Separator className=\"my-4\" />\n      </div>\n    </div>\n  )\n\n}"
+    },
+    {
+      "id": "layouts-separator--with-children",
+      "name": "With Children",
+      "exportName": "WithChildren",
+      "description": "WithChildren: Separator with content in the middle.\n\nUse children to insert content (text, icons) between the separator lines.\nCommon patterns include \"OR\" dividers and section labels.",
+      "source": "import { Separator } from \"@choice-ui/separator\"\n\nexport default function App() {\n\n  return (\n    <div className=\"flex w-80 flex-col gap-8\">\n      <div className=\"flex flex-col gap-4\">\n        <button className=\"bg-accent-background text-on-accent-foreground w-full rounded-md py-2\">\n          Continue with Google\n        </button>\n        <Separator>or</Separator>\n        <button className=\"border-default-boundary w-full rounded-md border py-2\">\n          Continue with Email\n        </button>\n      </div>\n\n      <Separator>Section Title</Separator>\n\n      <Separator>\n        <span className=\"text-accent-foreground\">New</span>\n      </Separator>\n    </div>\n  )\n\n}"
     },
     {
       "id": "layouts-separator--in-card",

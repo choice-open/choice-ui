@@ -5,17 +5,10 @@ import { SeparatorTV } from "./tv"
 export type SeparatorOrientation = "horizontal" | "vertical"
 
 export interface SeparatorProps extends React.HTMLAttributes<HTMLDivElement> {
-  /**
-   * Separator direction
-   * @default "horizontal"
-   */
   orientation?: SeparatorOrientation
-  /**
-   * Whether to use decorative separator (not read by screen readers)
-   * @default false
-   */
   decorative?: boolean
   variant?: "default" | "light" | "dark" | "reset"
+  children?: React.ReactNode
 }
 
 /**
@@ -32,12 +25,12 @@ export const Separator = memo(
       orientation = "horizontal",
       decorative = false,
       variant = "default",
+      children,
       ...rest
     } = props
 
-    const tv = SeparatorTV({ orientation, variant })
+    const tv = SeparatorTV({ orientation, variant, hasChildren: !!children })
 
-    // Decorative separator uses role="none", otherwise uses role="separator"
     const semanticProps = decorative
       ? { role: "none" as const }
       : {
@@ -45,13 +38,33 @@ export const Separator = memo(
           "aria-orientation": orientation,
         }
 
+    if (!children) {
+      return (
+        <div
+          ref={ref}
+          {...semanticProps}
+          {...rest}
+          className={tcx(tv.separator(), className)}
+        />
+      )
+    }
+
     return (
       <div
         ref={ref}
-        {...semanticProps}
-        {...rest}
         className={tcx(tv.root(), className)}
-      />
+        {...rest}
+      >
+        <div
+          {...semanticProps}
+          className={tv.separator()}
+        />
+        {children}
+        <div
+          {...semanticProps}
+          className={tv.separator()}
+        />
+      </div>
     )
   }),
 )

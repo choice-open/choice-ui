@@ -2,6 +2,7 @@ import {
   Badge,
   Button,
   CodeBlock,
+  ErrorMessage,
   IconButton,
   Label,
   LinkButton,
@@ -72,7 +73,7 @@ export const Basic: Story = {
             name={`username-${uuid}`}
             validators={{
               onChange: ({ value }) => {
-                if ((value as string).length < 3) {
+                if (!value || (value as string).length < 3) {
                   return "Username must be at least 3 characters"
                 }
               },
@@ -81,12 +82,12 @@ export const Basic: Story = {
             {(field) => (
               <form.Input
                 name={field.name}
-                label={<div className="text-red-500">onChange validation</div>}
+                label="Username"
                 value={field.state.value as string}
                 onChange={field.handleChange}
                 onBlur={field.handleBlur}
                 placeholder="Enter username"
-                error={<em role="alert">{field.state.meta.errors.join(", ")}</em>}
+                error={field.state.meta.errors.join(", ")}
               />
             )}
           </form.Field>
@@ -95,7 +96,7 @@ export const Basic: Story = {
             name={`email-${uuid}`}
             validators={{
               onBlur: ({ value }) => {
-                if ((value as string).length < 3) {
+                if (!value || (value as string).length < 3) {
                   return "Email must be at least 3 characters"
                 }
               },
@@ -109,7 +110,7 @@ export const Basic: Story = {
                 onChange={field.handleChange}
                 onBlur={field.handleBlur}
                 placeholder="Enter email"
-                error={<em role="alert">{field.state.meta.errors.join(", ")}</em>}
+                error={field.state.meta.errors.join(", ")}
               />
             )}
           </form.Field>
@@ -171,7 +172,7 @@ export const TextareaAdapter: Story = {
             name="message"
             validators={{
               onChange: ({ value }) => {
-                if ((value as string).length > 100) {
+                if (value && (value as string).length > 100) {
                   return "Message must be less than 100 characters"
                 }
               },
@@ -188,7 +189,7 @@ export const TextareaAdapter: Story = {
                 minRows={4}
                 maxRows={8}
                 description={`${(field.state.value as string).length}/100 characters`}
-                error={<em role="alert">{field.state.meta.errors.join(", ")}</em>}
+                error={field.state.meta.errors.join(", ")}
               />
             )}
           </form.Field>
@@ -197,7 +198,7 @@ export const TextareaAdapter: Story = {
             name="bio"
             validators={{
               onChange: ({ value }) => {
-                if ((value as string).length > 200) {
+                if (value && (value as string).length > 200) {
                   return "Message must be less than 100 characters"
                 }
               },
@@ -216,7 +217,7 @@ export const TextareaAdapter: Story = {
                 minRows={4}
                 resize="handle"
                 description={`${(field.state.value as string).length}/200 characters`}
-                error={<em role="alert">{field.state.meta.errors.join(", ")}</em>}
+                error={field.state.meta.errors.join(", ")}
               />
             )}
           </form.Field>
@@ -296,7 +297,7 @@ export const SelectAdapter: Story = {
                   { label: "Admin", value: "admin" },
                   { label: "User", value: "user" },
                 ]}
-                error={<em role="alert">{field.state.meta.errors.join(", ")}</em>}
+                error={field.state.meta.errors.join(", ")}
               />
             )}
           </form.Field>
@@ -380,7 +381,7 @@ export const MultiSelectAdapter: Story = {
                   { label: "Manager", value: "manager" },
                   { label: "Viewer", value: "viewer" },
                 ]}
-                error={<em role="alert">{field.state.meta.errors.join(", ")}</em>}
+                error={field.state.meta.errors.join(", ")}
               />
             )}
           </form.Field>
@@ -458,7 +459,7 @@ export const ChipsInputAdapter: Story = {
                 onChange={field.handleChange}
                 onBlur={field.handleBlur}
                 placeholder="Enter tags"
-                error={<em role="alert">{field.state.meta.errors.join(", ")}</em>}
+                error={field.state.meta.errors.join(", ")}
               />
             )}
           </form.Field>
@@ -531,7 +532,7 @@ export const CheckboxAdapter: Story = {
                 value={field.state.value as boolean}
                 onChange={field.handleChange}
                 onBlur={field.handleBlur}
-                error={<em role="alert">{field.state.meta.errors.join(", ")}</em>}
+                error={field.state.meta.errors.join(", ")}
               />
             )}
           </form.Field>
@@ -609,7 +610,7 @@ export const RadioGroupAdapter: Story = {
                   { label: "User", value: "user" },
                   { label: "Guest", value: "guest" },
                 ]}
-                error={<em role="alert">{field.state.meta.errors.join(", ")}</em>}
+                error={field.state.meta.errors.join(", ")}
               />
             )}
           </form.Field>
@@ -682,7 +683,7 @@ export const SwitchAdapter: Story = {
                 value={field.state.value as boolean}
                 onChange={field.handleChange}
                 onBlur={field.handleBlur}
-                error={<em role="alert">{field.state.meta.errors.join(", ")}</em>}
+                error={field.state.meta.errors.join(", ")}
               />
             )}
           </form.Field>
@@ -758,7 +759,7 @@ export const RangeAdapter: Story = {
                 step={1}
                 onChange={field.handleChange}
                 onBlur={field.handleBlur}
-                error={<em role="alert">{field.state.meta.errors.join(", ")}</em>}
+                error={field.state.meta.errors.join(", ")}
               />
             )}
           </form.Field>
@@ -835,7 +836,7 @@ export const NumericInputAdapter: Story = {
                 onChange={field.handleChange}
                 onBlur={field.handleBlur}
                 placeholder="Enter age"
-                error={<em role="alert">{field.state.meta.errors.join(", ")}</em>}
+                error={field.state.meta.errors.join(", ")}
               >
                 <NI.Prefix>
                   <FillWidth />
@@ -917,7 +918,7 @@ export const SegmentedAdapter: Story = {
                   { content: "User", value: "user" },
                   { content: "Guest", value: "guest" },
                 ]}
-                error={<em role="alert">{field.state.meta.errors.join(", ")}</em>}
+                error={field.state.meta.errors.join(", ")}
               />
             )}
           </form.Field>
@@ -1188,7 +1189,7 @@ export const WithValidation: Story = {
             name="password"
             validators={{
               onChange: ({ value }) => {
-                if ((value as string).length < 6) {
+                if (!value || (value as string).length < 6) {
                   return "Password must be at least 6 characters"
                 }
               },
@@ -1484,18 +1485,6 @@ export const WithSchemaValidation: Story = {
       </div>
     )
   },
-}
-
-// FieldInfo component for displaying field validation information
-function FieldInfo({ field }: { field: AnyFieldApi }) {
-  return (
-    <>
-      {field.state.meta.isTouched && !field.state.meta.isValid ? (
-        <em>{field.state.meta.errors.join(", ")}</em>
-      ) : null}
-      {field.state.meta.isValidating ? <em>Validating...</em> : null}
-    </>
-  )
 }
 
 /**
@@ -3995,14 +3984,7 @@ export const WithCustomErrors: Story = {
       return errors.map((error, index) => {
         // 字符串错误
         if (typeof error === "string") {
-          return (
-            <div
-              key={index}
-              className="text-danger-foreground"
-            >
-              {error}
-            </div>
-          )
+          return <ErrorMessage key={index}>{error}</ErrorMessage>
         }
 
         // 验证错误对象
@@ -4012,8 +3994,9 @@ export const WithCustomErrors: Story = {
           if (validationError.type === "password_strength") {
             const pwdError = error as PasswordStrengthError
             return (
-              <div
+              <em
                 key={index}
+                role="alert"
                 className="space-y-2"
               >
                 <div className="text-danger-foreground font-strong">{pwdError.message}</div>
@@ -4076,7 +4059,7 @@ export const WithCustomErrors: Story = {
                     </div>
                   )}
                 </div>
-              </div>
+              </em>
             )
           }
 
@@ -4445,24 +4428,14 @@ export const WithCustomErrors: Story = {
                     error={
                       <>
                         {field.state.meta.errors.length > 0 && (
-                          <div className="space-y-1">
-                            {formatCustomErrors(field.state.meta.errors)}
-                          </div>
+                          <p className="space-y-1">{formatCustomErrors(field.state.meta.errors)}</p>
                         )}
                         {serverErrors.username && (
-                          <div className="space-y-1">
-                            {formatCustomErrors(serverErrors.username)}
-                          </div>
+                          <p className="space-y-1">{formatCustomErrors(serverErrors.username)}</p>
                         )}
                       </>
                     }
-                    description={
-                      <>
-                        {field.state.meta.isValidating && (
-                          <div className="text-accent-foreground">Validating...</div>
-                        )}
-                      </>
-                    }
+                    description={field.state.meta.isValidating ? "Validating..." : undefined}
                   />
                 )}
               </form.Field>
@@ -4508,22 +4481,14 @@ export const WithCustomErrors: Story = {
                     error={
                       <>
                         {field.state.meta.errors.length > 0 && (
-                          <div className="space-y-1">
-                            {formatCustomErrors(field.state.meta.errors)}
-                          </div>
+                          <p className="space-y-1">{formatCustomErrors(field.state.meta.errors)}</p>
                         )}
                         {serverErrors.email && (
-                          <div className="space-y-1">{formatCustomErrors(serverErrors.email)}</div>
+                          <p className="space-y-1">{formatCustomErrors(serverErrors.email)}</p>
                         )}
                       </>
                     }
-                    description={
-                      <>
-                        {field.state.meta.isValidating && (
-                          <div className="text-accent-foreground">Validating...</div>
-                        )}
-                      </>
-                    }
+                    description={field.state.meta.isValidating ? "Validating..." : undefined}
                   />
                 )}
               </form.Field>
@@ -4556,9 +4521,7 @@ export const WithCustomErrors: Story = {
                     error={
                       <>
                         {field.state.meta.errors.length > 0 && (
-                          <div className="space-y-1">
-                            {formatCustomErrors(field.state.meta.errors)}
-                          </div>
+                          <p className="space-y-1">{formatCustomErrors(field.state.meta.errors)}</p>
                         )}
                       </>
                     }
@@ -4610,9 +4573,7 @@ export const WithCustomErrors: Story = {
                     error={
                       <>
                         {field.state.meta.errors.length > 0 && (
-                          <div className="space-y-1">
-                            {formatCustomErrors(field.state.meta.errors)}
-                          </div>
+                          <p className="space-y-1">{formatCustomErrors(field.state.meta.errors)}</p>
                         )}
                       </>
                     }
@@ -4646,9 +4607,7 @@ export const WithCustomErrors: Story = {
                   error={
                     <>
                       {field.state.meta.errors.length > 0 && (
-                        <div className="space-y-1">
-                          {formatCustomErrors(field.state.meta.errors)}
-                        </div>
+                        <p className="space-y-1">{formatCustomErrors(field.state.meta.errors)}</p>
                       )}
                     </>
                   }
@@ -4713,9 +4672,7 @@ export const WithCustomErrors: Story = {
                   error={
                     <>
                       {field.state.meta.errors.length > 0 && (
-                        <div className="space-y-1">
-                          {formatCustomErrors(field.state.meta.errors)}
-                        </div>
+                        <p className="space-y-1">{formatCustomErrors(field.state.meta.errors)}</p>
                       )}
                     </>
                   }
@@ -4760,7 +4717,7 @@ export const WithCustomErrors: Story = {
                   placeholder="Enter score (0-100)"
                   error={
                     field.state.meta.errors.length > 0 && (
-                      <div className="space-y-1">
+                      <p className="space-y-1">
                         {field.state.meta.errors.map((error, index) => (
                           <div key={index}>
                             {error === true && "Please enter a valid number"}
@@ -4769,7 +4726,7 @@ export const WithCustomErrors: Story = {
                             {typeof error === "string" && error}
                           </div>
                         ))}
-                      </div>
+                      </p>
                     )
                   }
                 />
@@ -4806,7 +4763,7 @@ export const WithCustomErrors: Story = {
                 placeholder="Enter description"
                 error={
                   field.state.meta.errors.length > 0 && (
-                    <div className="space-y-1">{formatCustomErrors(field.state.meta.errors)}</div>
+                    <p className="space-y-1">{formatCustomErrors(field.state.meta.errors)}</p>
                   )
                 }
                 description={`Current characters: ${String(field.state.value || "").length}/200`}
@@ -4839,7 +4796,7 @@ export const WithCustomErrors: Story = {
                 onBlur={field.handleBlur}
                 error={
                   field.state.meta.errors.length > 0 && (
-                    <div className="space-y-1">{formatCustomErrors(field.state.meta.errors)}</div>
+                    <p className="space-y-1">{formatCustomErrors(field.state.meta.errors)}</p>
                   )
                 }
               />

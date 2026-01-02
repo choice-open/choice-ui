@@ -216,6 +216,36 @@ export const CustomStyling: Story = {
 }
 
 /**
+ * WithChildren: Separator with content in the middle.
+ *
+ * Use children to insert content (text, icons) between the separator lines.
+ * Common patterns include "OR" dividers and section labels.
+ */
+export const WithChildren: Story = {
+  render: function WithChildrenStory() {
+    return (
+      <div className="flex w-80 flex-col gap-8">
+        <div className="flex flex-col gap-4">
+          <button className="bg-accent-background text-on-accent-foreground w-full rounded-md py-2">
+            Continue with Google
+          </button>
+          <Separator>or</Separator>
+          <button className="border-default-boundary w-full rounded-md border py-2">
+            Continue with Email
+          </button>
+        </div>
+
+        <Separator>Section Title</Separator>
+
+        <Separator>
+          <span className="text-accent-foreground">New</span>
+        </Separator>
+      </div>
+    )
+  },
+}
+
+/**
  * InCard: Separator used within a card component.
  *
  * A common pattern is using separators to divide card sections

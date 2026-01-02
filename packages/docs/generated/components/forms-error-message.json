@@ -1,0 +1,57 @@
+{
+  "slug": "forms/error-message",
+  "title": "ErrorMessage",
+  "package": {
+    "name": "@choice-ui/error-message",
+    "version": "0.0.1",
+    "description": "An error message component for displaying validation errors in form fields and UI elements",
+    "dependencies": {
+      "@choice-ui/shared": "workspace:*"
+    },
+    "peerDependencies": {
+      "react": ">=18.0.0",
+      "react-dom": ">=18.0.0"
+    }
+  },
+  "exports": [
+    "ErrorMessage",
+    "type ErrorMessageProps"
+  ],
+  "props": [
+    {
+      "displayName": "ErrorMessageProps",
+      "description": "",
+      "props": [
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    }
+  ],
+  "stories": [
+    {
+      "id": "forms-errormessage--basic",
+      "name": "Basic",
+      "exportName": "Basic",
+      "description": "Basic error message usage.\n\nUse the `ErrorMessage` component to display validation errors for form fields.",
+      "source": "import { ErrorMessage } from \"@choice-ui/error-message\"\n\nexport default function App() {\n  return (\n\n    <div className=\"flex w-64 flex-col gap-2\">\n      <Label htmlFor=\"email\">Email</Label>\n      <Input\n        id=\"email\"\n        aria-describedby=\"email-error\"\n        aria-invalid=\"true\"\n      />\n      <ErrorMessage id=\"email-error\">Please enter a valid email address.</ErrorMessage>\n    </div>\n\n  );\n}"
+    },
+    {
+      "id": "forms-errormessage--disabled",
+      "name": "Disabled",
+      "exportName": "Disabled",
+      "description": "Disabled error message.\n\nUse the `disabled` prop to match the disabled state of form fields.",
+      "source": "import { ErrorMessage } from \"@choice-ui/error-message\"\n\nexport default function App() {\n  return (\n\n    <div className=\"flex w-64 flex-col gap-2\">\n      <Label\n        htmlFor=\"disabled-email\"\n        disabled\n      >\n        Email\n      </Label>\n      <Input\n        id=\"disabled-email\"\n        disabled\n        aria-describedby=\"disabled-email-error\"\n        aria-invalid=\"true\"\n      />\n      <ErrorMessage\n        id=\"disabled-email-error\"\n        disabled\n      >\n        This field has an error but is disabled.\n      </ErrorMessage>\n    </div>\n\n  );\n}"
+    },
+    {
+      "id": "forms-errormessage--with-validation",
+      "name": "With Validation",
+      "exportName": "WithValidation",
+      "description": "Interactive validation example.\n\nShows how to conditionally display ErrorMessage or Description based on validation state.",
+      "source": ""
+    }
+  ]
+}

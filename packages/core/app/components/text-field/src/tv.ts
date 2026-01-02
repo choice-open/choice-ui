@@ -13,12 +13,7 @@ export const TextFieldTv = tcv({
     input: "[grid-area:input]",
     prefix: "[grid-area:prefix]",
     suffix: "[grid-area:suffix]",
-    description: [
-      "text-body-medium mt-1",
-      "px-0.5",
-      "break-words whitespace-pre-wrap",
-      "text-secondary-foreground",
-    ],
+    description: "",
   },
   variants: {
     variant: {

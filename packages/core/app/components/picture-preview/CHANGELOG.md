@@ -2,6 +2,27 @@
 
 All notable changes to the Picture Preview component will be documented in this file.
 
+## [2026-01-03]
+
+### Added
+
+- feat(picture-preview): add `control` prop for configurable control bar position and visibility
+- feat(picture-preview): support trackpad two-finger pinch-to-zoom gesture
+- feat(picture-preview): zoom centered at mouse/cursor position instead of center
+- feat(picture-preview): display actual zoom percentage based on original image dimensions
+- feat(picture-preview): double-click to fit image to screen
+- feat(picture-preview): smooth blur and scale loading transition animation
+
+### Changed
+
+- refactor(picture-preview): use exponential zoom formula for more natural zoom feel
+- refactor(picture-preview): calculate zoom limits (2%-1000%) based on actual image size
+- refactor(picture-preview): improve image cleanup on unmount to prevent memory leaks
+
+### Dependencies
+
+- Added `framer-motion` as peer dependency
+
 ## [2025-11-24]
 
 ### Changed

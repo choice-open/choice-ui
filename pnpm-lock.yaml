@@ -1054,6 +1054,34 @@ importers:
         specifier: ^5.5.3
         version: 5.9.3
 
+  packages/core/app/components/description:
+    dependencies:
+      '@choice-ui/shared':
+        specifier: workspace:*
+        version: link:../../../../shared
+    devDependencies:
+      '@types/react':
+        specifier: ^18.3.12
+        version: 18.3.27
+      '@types/react-dom':
+        specifier: ^18.3.1
+        version: 18.3.7(@types/react@18.3.27)
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
+      rimraf:
+        specifier: ^6.0.1
+        version: 6.1.2
+      tsup:
+        specifier: ^8.5.0
+        version: 8.5.1(@microsoft/api-extractor@7.55.2(@types/node@22.19.2))(jiti@2.6.1)(postcss@8.5.6)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.2)
+      typescript:
+        specifier: ^5.5.3
+        version: 5.9.3
+
   packages/core/app/components/dialog:
     dependencies:
       '@choice-ui/modal':
@@ -1180,6 +1208,34 @@ importers:
         specifier: ^5.5.3
         version: 5.9.3
 
+  packages/core/app/components/error-message:
+    dependencies:
+      '@choice-ui/shared':
+        specifier: workspace:*
+        version: link:../../../../shared
+    devDependencies:
+      '@types/react':
+        specifier: ^18.3.12
+        version: 18.3.27
+      '@types/react-dom':
+        specifier: ^18.3.1
+        version: 18.3.7(@types/react@18.3.27)
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
+      rimraf:
+        specifier: ^6.0.1
+        version: 6.1.2
+      tsup:
+        specifier: ^8.5.0
+        version: 8.5.1(@microsoft/api-extractor@7.55.2(@types/node@22.19.2))(jiti@2.6.1)(postcss@8.5.6)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.2)
+      typescript:
+        specifier: ^5.5.3
+        version: 5.9.3
+
   packages/core/app/components/file-upload:
     dependencies:
       '@choice-ui/shared':
@@ -1225,6 +1281,12 @@ importers:
       '@choice-ui/chips-input':
         specifier: workspace:*
         version: link:../chips-input
+      '@choice-ui/description':
+        specifier: workspace:*
+        version: link:../description
+      '@choice-ui/error-message':
+        specifier: workspace:*
+        version: link:../error-message
       '@choice-ui/input':
         specifier: workspace:*
         version: link:../input
@@ -2037,6 +2099,9 @@ importers:
       '@choiceform/icons-react':
         specifier: ^1.3.8
         version: 1.3.9(react@18.3.1)
+      framer-motion:
+        specifier: ^11.17.2
+        version: 11.18.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       is-hotkey:
         specifier: ^0.2.0
         version: 0.2.0
@@ -2728,6 +2793,9 @@ importers:
 
   packages/core/app/components/text-field:
     dependencies:
+      '@choice-ui/description':
+        specifier: workspace:*
+        version: link:../description
       '@choice-ui/input':
         specifier: workspace:*
         version: link:../input
@@ -2768,6 +2836,46 @@ importers:
       '@choice-ui/shared':
         specifier: workspace:*
         version: link:../../../../shared
+      usehooks-ts:
+        specifier: ^3.1.0
+        version: 3.1.1(react@18.3.1)
+    devDependencies:
+      '@types/react':
+        specifier: ^18.3.12
+        version: 18.3.27
+      '@types/react-dom':
+        specifier: ^18.3.1
+        version: 18.3.7(@types/react@18.3.27)
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
+      rimraf:
+        specifier: ^6.0.1
+        version: 6.1.2
+      tsup:
+        specifier: ^8.5.0
+        version: 8.5.1(@microsoft/api-extractor@7.55.2(@types/node@22.19.2))(jiti@2.6.1)(postcss@8.5.6)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.2)
+      typescript:
+        specifier: ^5.5.3
+        version: 5.9.3
+
+  packages/core/app/components/toast:
+    dependencies:
+      '@choice-ui/icon-button':
+        specifier: workspace:*
+        version: link:../icon-button
+      '@choice-ui/shared':
+        specifier: workspace:*
+        version: link:../../../../shared
+      '@choiceform/icons-react':
+        specifier: ^1.3.8
+        version: 1.3.9(react@18.3.1)
+      framer-motion:
+        specifier: ^11
+        version: 11.18.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       usehooks-ts:
         specifier: ^3.1.0
         version: 3.1.1(react@18.3.1)

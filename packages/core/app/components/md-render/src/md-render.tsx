@@ -65,6 +65,7 @@ export const MdRender = memo(
       id,
       components: customComponents,
       content,
+      children,
       className,
       mentionRenderComponent,
       mentionItems,
@@ -74,9 +75,11 @@ export const MdRender = memo(
       variant = "default",
     } = props
 
+    const markdownContent = content ?? children ?? ""
+
     const generatedId = useId()
     const blockId = id ?? generatedId
-    const blocks = useMdBlocks(content)
+    const blocks = useMdBlocks(markdownContent)
 
     const tv = useMemo(() => mdRenderTv({ size, variant }), [size, variant])
 

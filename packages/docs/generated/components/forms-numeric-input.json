@@ -23,6 +23,7 @@
     "NumericInputElement",
     "NumericInputMenuTrigger",
     "NumericInputVariable",
+    "useNumericLongPress",
     "type NumericInputProps",
     "type NumericInputElementProps",
     "type NumericInputMenuTriggerProps",
@@ -343,6 +344,274 @@
           "description": ""
         }
       ]
+    },
+    {
+      "displayName": "useNumericInput",
+      "description": "Main hook for numeric input component, integrating various interaction features",
+      "props": [
+        {
+          "name": "containerRef",
+          "type": "RefObject<HTMLElement> | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "decimal",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "defaultValue",
+          "type": "NumericInputValue | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "expression",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "max",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "min",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "((value: T, obj: NumberResult) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onEmpty",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onPressEnd",
+          "type": "(((event: PressEvent) => void) & ((e: PointerEvent) => void)) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onPressStart",
+          "type": "(((event: PressEvent) => void) & ((e: PointerEvent) => void)) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "readOnly",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "ref",
+          "type": "Ref<HTMLInputElement> | undefined",
+          "required": false,
+          "description": "Allows getting a ref to the component instance.\nOnce the component unmounts, React will set `ref.current` to `null`\n(or call the ref with `null` if you passed a callback ref)."
+        },
+        {
+          "name": "shiftStep",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "step",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "value",
+          "type": "NumericInputValue | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "useStepCalculation",
+      "description": "Hook to calculate the step size of numeric input",
+      "props": []
+    },
+    {
+      "displayName": "useNumericValueProcessing",
+      "description": "Hook to handle numeric input and conversion",
+      "props": [
+        {
+          "name": "decimal",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "defaultValue",
+          "type": "NumericInputValue | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "expression",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "max",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "min",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "value",
+          "type": "NumericInputValue | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "useInputInteractions",
+      "description": "Hook to handle input box interactions",
+      "props": [
+        {
+          "name": "decimal",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "displayValue",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "expression",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "getCurrentStep",
+          "type": "() => number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "innerValue",
+          "type": "NumberResult | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "inputRef",
+          "type": "RefObject<HTMLInputElement>",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "isFocused",
+          "type": "boolean",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "max",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "min",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "((value: T, detail: NumberResult) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onEmpty",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "readOnly",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "setDisplayValue",
+          "type": "(value: string) => void",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "setIsFocused",
+          "type": "(focused: boolean) => void",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "setValue",
+          "type": "(value: NumberResult | ((prev: NumberResult | undefined) => NumberResult)) => void",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "updateValue",
+          "type": "(updateFn?: ((value: number) => number) | undefined) => void",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "value",
+          "type": "NumericInputValue | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "useNumericLongPress",
+      "description": "Hook for handling long press on numeric input increment/decrement buttons.\nTriggers the callback immediately on press, then repeatedly after a delay.",
+      "props": []
     }
   ],
   "stories": [
@@ -368,11 +637,11 @@
       "source": "import { NumericInput } from \"@choice-ui/numeric-input\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [value, setValue] = useState(10)\n  return (\n    <NumericInput\n      className=\"w-64\"\n      value={value}\n      onChange={(newValue) => setValue(newValue as number)}\n    >\n      <NumericInput.Suffix>\n        <Relative />\n      </NumericInput.Suffix>\n    </NumericInput>\n  )\n\n}"
     },
     {
-      "id": "forms-numericinput--prefix-and-suffix",
-      "name": "Prefix And Suffix",
-      "exportName": "PrefixAndSuffix",
-      "description": "Example showing NumericInput with both prefix and suffix elements.\nThis pattern is useful for providing complete context around a value.",
-      "source": "import { NumericInput } from \"@choice-ui/numeric-input\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [value, setValue] = useState(10)\n  return (\n    <NumericInput\n      className=\"w-64\"\n      value={value}\n      onChange={(newValue) => setValue(newValue as number)}\n    >\n      <NumericInput.Prefix>\n        <HugWidth />\n      </NumericInput.Prefix>\n      <NumericInput.Suffix>\n        <Relative />\n      </NumericInput.Suffix>\n    </NumericInput>\n  )\n\n}"
+      "id": "forms-numericinput--long-press",
+      "name": "Long Press",
+      "exportName": "LongPress",
+      "description": "Demonstrates the `useNumericLongPress` hook for continuous increment/decrement.\n\n### Features\n- **Single click**: Triggers one increment/decrement\n- **Long press**: After 400ms delay, continuously triggers at 50ms intervals\n- **Auto-stop**: Stops when mouse is released or leaves the button",
+      "source": "import { NumericInput, useNumericLongPress } from \"@choice-ui/numeric-input\"\n\nexport default function App() {\n\n  const { count, setCount, increment, decrement } = useCounter(0)\n\n  const handleIncrement = useEventCallback(() => {\n    if (count >= 100) return\n    increment()\n  })\n\n  const handleDecrement = useEventCallback(() => {\n    if (count <= 0) return\n    decrement()\n  })\n\n  const incrementLongPress = useNumericLongPress(handleIncrement)\n  const decrementLongPress = useNumericLongPress(handleDecrement)\n\n  return (\n    <NumericInput\n      className=\"w-64\"\n      value={count}\n      onChange={(newValue) => setCount(newValue as number)}\n      min={0}\n      max={100}\n      classNames={{\n        input: \"px-2\",\n      }}\n    >\n      <NumericInput.Prefix\n        type=\"action\"\n        className=\"mr-px\"\n      >\n        <IconButton\n          disabled={count <= 0}\n          className=\"rounded-r-none\"\n          {...decrementLongPress}\n        >\n          <DeleteTiny />\n        </IconButton>\n      </NumericInput.Prefix>\n      <NumericInput.Suffix\n        type=\"action\"\n        className=\"ml-px\"\n      >\n        <IconButton\n          disabled={count >= 100}\n          className=\"rounded-l-none\"\n          {...incrementLongPress}\n        >\n          <AddTiny />\n        </IconButton>\n      </NumericInput.Suffix>\n    </NumericInput>\n  )\n\n}"
     },
     {
       "id": "forms-numericinput--suffix-menu",

@@ -328,8 +328,8 @@ export const NumericInputElementTv = tcv({
   variants: {
     type: {
       handler: "select-none",
-      action: "[grid-area:action]",
-      menu: "ml-px [grid-area:action]",
+      action: "",
+      menu: "",
     },
     position: {
       prefix: "rounded-l-md",
@@ -361,6 +361,29 @@ export const NumericInputElementTv = tcv({
       position: "suffix",
       class: "[grid-area:suffix-handler]",
     },
+
+    {
+      type: "action",
+      position: "prefix",
+      class: "[grid-area:prefix-handler]",
+    },
+    {
+      type: "action",
+      position: "suffix",
+      class: "[grid-area:action]",
+    },
+
+    {
+      type: "menu",
+      position: "prefix",
+      class: "[grid-area:prefix-handler]",
+    },
+    {
+      type: "menu",
+      position: "suffix",
+      class: "ml-px [grid-area:action]",
+    },
+
     {
       type: "handler",
       disabled: false,

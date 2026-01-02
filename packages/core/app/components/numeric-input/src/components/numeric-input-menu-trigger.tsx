@@ -54,7 +54,10 @@ export const NumericInputMenuActionPrompt = forwardRef<
   return (
     <div
       ref={ref}
-      className={tcx(NumericInputMenuActionPromptTv({ size: context.size, disabled: context.disabled }), className)}
+      className={tcx(
+        NumericInputMenuActionPromptTv({ size: context.size, disabled: context.disabled }),
+        className,
+      )}
       {...rest}
     >
       {children}

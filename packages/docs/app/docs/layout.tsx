@@ -68,7 +68,7 @@ const componentsNav: { title: string; items: SidebarNode[] } = (() => {
   sortNodes(root.items)
   return {
     title: "Components",
-    items: root.items ?? [],
+    items: [{ title: "All Components", href: "/docs/components" }, ...(root.items ?? [])],
   }
 })()
 
