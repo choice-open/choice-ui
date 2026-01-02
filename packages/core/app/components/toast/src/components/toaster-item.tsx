@@ -65,6 +65,16 @@ function getToastIcon(type: ToastType): React.ReactNode {
   return TOAST_ICONS[type] ?? null
 }
 
+// Regex to detect HTML tags in a string
+const HTML_TAG_REGEX = /<[a-z][\s\S]*>/i
+
+/**
+ * Check if a ReactNode is a string containing HTML tags
+ */
+function isHtmlString(content: React.ReactNode): content is string {
+  return typeof content === "string" && HTML_TAG_REGEX.test(content)
+}
+
 export { DEFAULT_HEIGHT, GAP }
 
 export interface ToasterItemProps {
@@ -291,7 +301,7 @@ export const ToasterItem = memo(
           type: toast.type,
           position,
           hasActions: !!toast.action || !!toast.cancel,
-          hasDescription: !!(toast.description || toast.descriptionHtml),
+          hasDescription: !!toast.description,
           hasIcon: !!displayIcon,
           behind: isBehind,
           expanded,
@@ -304,7 +314,6 @@ export const ToasterItem = memo(
         toast.action,
         toast.cancel,
         toast.description,
-        toast.descriptionHtml,
         displayIcon,
         isBehind,
         expanded,
@@ -373,33 +382,27 @@ export const ToasterItem = memo(
           id={titleId}
           className={tcx(tv.title(), slotProps.titleClassName)}
           style={slotProps.titleStyle}
-        >
-          {toast.title}
-        </div>
+          {...(isHtmlString(toast.title)
+            ? { dangerouslySetInnerHTML: { __html: toast.title } }
+            : { children: toast.title })}
+        />
       )
     }, [toast.title, titleId, tv, slotProps.titleClassName, slotProps.titleStyle])
 
     // Render description with slot className support
     const descriptionContent = useMemo(() => {
-      if (!toast.description && !toast.descriptionHtml) return null
+      if (!toast.description) return null
       return (
         <div
           id={descriptionId}
           className={tcx(tv.description(), slotProps.descriptionClassName)}
           style={slotProps.descriptionStyle}
-          {...(toast.descriptionHtml
-            ? { dangerouslySetInnerHTML: { __html: toast.descriptionHtml } }
+          {...(isHtmlString(toast.description)
+            ? { dangerouslySetInnerHTML: { __html: toast.description } }
             : { children: toast.description })}
         />
       )
-    }, [
-      toast.description,
-      toast.descriptionHtml,
-      descriptionId,
-      tv,
-      slotProps.descriptionClassName,
-      slotProps.descriptionStyle,
-    ])
+    }, [toast.description, descriptionId, tv, slotProps.descriptionClassName, slotProps.descriptionStyle])
 
     // Render actions with slot support
     const actionsContent = useMemo(() => {

@@ -5,12 +5,20 @@ export interface ToastData {
   id: string
   type: ToastType
   variant?: ToastVariant
+  /**
+   * Title content. Supports:
+   * - Plain string: rendered as text
+   * - HTML string (containing tags like `<b>`, `<strong>`, etc.): rendered as HTML
+   * - ReactNode: rendered as React component
+   */
   title?: React.ReactNode
-  /** HTML string for title - rendered with dangerouslySetInnerHTML */
-  titleHtml?: string
+  /**
+   * Description content. Supports:
+   * - Plain string: rendered as text
+   * - HTML string (containing tags like `<b>`, `<strong>`, etc.): rendered as HTML
+   * - ReactNode: rendered as React component
+   */
   description?: React.ReactNode
-  /** HTML string for description - rendered with dangerouslySetInnerHTML */
-  descriptionHtml?: string
   duration?: number
   icon?: React.ReactNode
   action?: {
@@ -35,9 +43,13 @@ export interface ToastData {
 export interface ToastOptions {
   id?: string
   variant?: ToastVariant
+  /**
+   * Description content. Supports:
+   * - Plain string: rendered as text
+   * - HTML string (containing tags like `<b>`, `<strong>`, etc.): rendered as HTML
+   * - ReactNode: rendered as React component
+   */
   description?: React.ReactNode
-  /** HTML string for description - rendered with dangerouslySetInnerHTML */
-  descriptionHtml?: string
   duration?: number
   icon?: React.ReactNode
   action?: {
@@ -181,7 +193,6 @@ function addToast(
     variant: options.variant,
     title,
     description: options.description,
-    descriptionHtml: options.descriptionHtml,
     duration: options.duration,
     icon: options.icon,
     action: options.action,

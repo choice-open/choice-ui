@@ -1067,8 +1067,9 @@ export const MultipleToasters: Story = {
 }
 
 /**
- * Use `descriptionHtml` to render rich HTML content in toast descriptions.
- * This enables inline formatting like bold, colored text, code snippets, and links.
+ * Both `title` and `description` automatically detect and render HTML content.
+ * When a string contains HTML tags (like `<b>`, `<strong>`, `<span>`), it will be
+ * rendered as HTML. Plain strings and React nodes are rendered normally.
  *
  * Supported HTML:
  * - `<strong>`, `<b>` for bold text
@@ -1076,7 +1077,7 @@ export const MultipleToasters: Story = {
  * - `<span>` with classes for colored text
  * - Any inline HTML elements with Tailwind classes
  *
- * **Security Note**: Only use `descriptionHtml` with trusted content.
+ * **Security Note**: Only use HTML strings with trusted content.
  * User-generated content should be sanitized before rendering.
  */
 export const HtmlContent: Story = {
@@ -1096,40 +1097,39 @@ export const HtmlContent: Story = {
         </Dialog>
 
         <p className="text-secondary-foreground">
-          Use{" "}
-          <code className="text-body-small bg-default-background rounded px-1">
-            descriptionHtml
-          </code>{" "}
-          for rich text formatting. Supports bold, colored text, code elements, and more.
+          Both title and description automatically detect HTML tags and render them appropriately.
+          Plain strings are rendered as text, while strings with HTML tags are rendered as HTML.
         </p>
         <div className="flex flex-wrap gap-2">
           <Button
             variant="secondary"
             onClick={() =>
               toast.use("html-content").success("Project duplicated", {
-                descriptionHtml:
+                description:
                   'Duplicated <strong class="text-white">Original Project</strong> to <strong class="text-white">New Project Copy</strong>',
               })
             }
           >
-            Bold Text
+            HTML Description
           </Button>
           <Button
             variant="secondary"
             onClick={() =>
-              toast.use("html-content").info("New message", {
-                descriptionHtml:
-                  'From <span class="text-accent-foreground">john@example.com</span>: Meeting at 3pm',
-              })
+              toast
+                .use("html-content")
+                .info('<span class="text-accent-foreground">New message</span> received', {
+                  description:
+                    'From <span class="text-accent-foreground">john@example.com</span>: Meeting at 3pm',
+                })
             }
           >
-            Colored Text
+            HTML Title + Description
           </Button>
           <Button
             variant="secondary"
             onClick={() =>
               toast.use("html-content").error("Error occurred", {
-                descriptionHtml:
+                description:
                   'Failed to save <code class="bg-white/10 px-1 rounded">config.json</code>. Please try again.',
               })
             }
@@ -1139,13 +1139,15 @@ export const HtmlContent: Story = {
           <Button
             variant="secondary"
             onClick={() =>
-              toast.use("html-content").success("Project duplicated", {
-                descriptionHtml: "Duplicated <b>Original Project</b> to <b>New Project Copy</b>",
-                action: {
-                  label: "View Project",
-                  onClick: () => setDialogOpen(true),
-                },
-              })
+              toast
+                .use("html-content")
+                .success('<b>Project</b> duplicated', {
+                  description: "Duplicated <b>Original Project</b> to <b>New Project Copy</b>",
+                  action: {
+                    label: "View Project",
+                    onClick: () => setDialogOpen(true),
+                  },
+                })
             }
           >
             HTML + Action
