@@ -220,8 +220,9 @@ const ToasterRoot = memo(
         if (toast.type === "loading") return
 
         const toastDuration = toast.duration ?? duration
-        // duration <= 0 means no auto-dismiss
-        if (toastDuration <= 0) return
+        // duration <= 0 or Infinity means no auto-dismiss
+        // Note: setTimeout with Infinity overflows (32-bit signed int max is ~24.8 days)
+        if (toastDuration <= 0 || !Number.isFinite(toastDuration)) return
 
         const hasTimer = timersRef.current.has(toast.id)
 

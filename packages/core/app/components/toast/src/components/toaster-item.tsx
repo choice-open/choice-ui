@@ -127,7 +127,8 @@ export const ToasterItem = memo(
 
     // Progress bar animation
     const toastDuration = toast.duration ?? defaultDuration
-    const shouldShowProgress = showProgress && toastDuration > 0 && toast.type !== "loading"
+    const shouldShowProgress =
+      showProgress && toastDuration > 0 && Number.isFinite(toastDuration) && toast.type !== "loading"
 
     // Calculate offset for stacking using passed heights (avoids getSnapshot call)
     const offsetY = useMemo(() => {

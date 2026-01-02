@@ -494,13 +494,13 @@ export const DismissToast: Story = {
  *
  * - **Default**: 5000ms (5 seconds)
  * - **Custom**: Any positive number
- * - **Persistent**: Set `duration: 0` to disable auto-dismiss
+ * - **Persistent**: Set `duration: 0` or `duration: Infinity` to disable auto-dismiss
  *
  * Guidelines:
  * - Short messages: 2-3 seconds
  * - Standard notifications: 4-5 seconds
  * - Important information: 7-10 seconds
- * - Critical alerts: `duration: 0` (manual dismiss only)
+ * - Critical alerts: `duration: 0` or `Infinity` (manual dismiss only)
  *
  * Note: `loading` type toasts never auto-dismiss regardless of duration setting.
  */
@@ -561,6 +561,92 @@ export const Duration: Story = {
           </Button>
         </div>
         <Toaster id="duration" />
+      </div>
+    )
+  },
+}
+
+/**
+ * Set `duration: Infinity` for toasts that should never auto-dismiss.
+ * This is useful for critical notifications that require explicit user acknowledgment.
+ *
+ * Use cases:
+ * - Important security alerts (password changes, session expiry)
+ * - Critical errors that need user action
+ * - Confirmations that shouldn't disappear automatically
+ *
+ * Note: Always provide a way to dismiss (action button or cancel) for infinite duration toasts.
+ */
+export const InfiniteDuration: Story = {
+  render: function InfiniteDurationStory() {
+    return (
+      <div className="flex flex-col gap-4">
+        <p className="text-secondary-foreground">
+          Use{" "}
+          <code className="text-body-small bg-default-background rounded px-1">
+            duration: Infinity
+          </code>{" "}
+          for toasts that require explicit user dismissal. Always provide a close action.
+        </p>
+        <div className="flex flex-wrap gap-2">
+          <Button
+            variant="secondary"
+            onClick={() => {
+              toast.use("infinite").warning("Password Changed", {
+                description: "Your password has been updated. Please log in again on other devices.",
+                duration: Infinity,
+                action: {
+                  label: "Got it",
+                  onClick: () => {},
+                },
+              })
+            }}
+          >
+            Security Alert
+          </Button>
+          <Button
+            variant="secondary"
+            onClick={() => {
+              toast.use("infinite").error("Connection Lost", {
+                description: "Unable to connect to server. Check your internet connection.",
+                duration: Infinity,
+                action: {
+                  label: "Retry",
+                  onClick: () => {
+                    toast.use("infinite").loading("Reconnecting...")
+                  },
+                },
+                cancel: {
+                  label: "Dismiss",
+                },
+              })
+            }}
+          >
+            Critical Error
+          </Button>
+          <Button
+            variant="secondary"
+            onClick={() => {
+              toast.use("infinite").success("Export Ready", {
+                description: "Your data export is ready for download.",
+                duration: Infinity,
+                variant: "success",
+                action: {
+                  label: "Download",
+                  onClick: () => {
+                    toast.use("infinite").info("Download started")
+                  },
+                },
+                cancel: {
+                  label: "Later",
+                },
+              })
+            }}
+          >
+            Persistent Success
+          </Button>
+        </div>
+        <Toaster id="infinite" />
       </div>
     )
   },
