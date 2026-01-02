@@ -1,6 +1,6 @@
 {
   "name": "@choice-ui/emoji-picker",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "An emoji picker component with search, categories, and recent emojis for user selection",
   "sideEffects": false,
   "type": "module",

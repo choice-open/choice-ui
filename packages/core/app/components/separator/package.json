@@ -1,6 +1,6 @@
 {
   "name": "@choice-ui/separator",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A separator component for visually dividing content sections horizontally or vertically",
   "sideEffects": false,
   "type": "module",

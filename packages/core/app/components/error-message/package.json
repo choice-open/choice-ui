@@ -1,6 +1,6 @@
 {
   "name": "@choice-ui/error-message",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "An error message component for displaying validation errors in form fields and UI elements",
   "sideEffects": false,
   "type": "module",
