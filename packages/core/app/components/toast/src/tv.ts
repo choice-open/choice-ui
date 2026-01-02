@@ -1,7 +1,7 @@
 import { tcv } from "@choice-ui/shared"
 
 export const toastViewportTv = tcv({
-  base: ["fixed z-modals flex flex-col outline-none"],
+  base: ["fixed z-modals flex flex-col outline-none overflow-visible"],
   variants: {
     expanded: {
       true: {},

@@ -25,13 +25,13 @@ const SWIPE_THRESHOLD = 56
 const ANIMATION_CONFIG = {
   default: {
     type: "spring" as const,
-    stiffness: 150,
-    damping: 20,
+    stiffness: 120,
+    damping: 18,
     mass: 1,
   },
   opacity: {
     type: "tween" as const,
-    duration: 0.35,
+    duration: 0.4,
     ease: "easeOut" as const,
   },
 }
@@ -257,7 +257,7 @@ export const ToasterItem = memo(
       setSwipeDirection(null)
     })
 
-    const displayIcon = getToastIcon(toast.type)
+    const displayIcon = toast.icon ?? getToastIcon(toast.type)
     const isBehind = index > 0 && !expanded
     const isTop = position.startsWith("top")
     const scale = expanded ? 1 : Math.max(0, 1 - index * 0.05)
@@ -286,13 +286,15 @@ export const ToasterItem = memo(
 
     const exitAnimation = useMemo(() => {
       const dir = swipeDirection || toast.swipeDirection
-      const exitBase = { opacity: 0, zIndex: -1, filter: "blur(4px)" }
+      const exitBase = { opacity: 0, zIndex: -1, filter: "blur(8px)" }
+      // Swipe direction takes priority
       if (dir === "right") return { ...exitBase, x: "100%" }
       if (dir === "left") return { ...exitBase, x: "-100%" }
       if (dir === "up") return { ...exitBase, y: "-100%" }
       if (dir === "down") return { ...exitBase, y: "100%" }
-      return exitBase
-    }, [swipeDirection, toast.swipeDirection])
+      // Default exit animation: same direction as enter (top = up, bottom = down)
+      return { ...exitBase, y: isTop ? "-100%" : "100%" }
+    }, [swipeDirection, toast.swipeDirection, isTop])
 
     const tv = useMemo(
       () =>
@@ -343,7 +345,8 @@ export const ToasterItem = memo(
             assistive: "var(--color-assistive-background)",
           }
 
-      const bgColor = backgroundColorMap[toast.variant ?? "default"] ?? "var(--color-menu-background)"
+      const bgColor =
+        backgroundColorMap[toast.variant ?? "default"] ?? "var(--color-menu-background)"
 
       return {
         "--toast-index": index,
@@ -402,7 +405,13 @@ export const ToasterItem = memo(
             : { children: toast.description })}
         />
       )
-    }, [toast.description, descriptionId, tv, slotProps.descriptionClassName, slotProps.descriptionStyle])
+    }, [
+      toast.description,
+      descriptionId,
+      tv,
+      slotProps.descriptionClassName,
+      slotProps.descriptionStyle,
+    ])
 
     // Render actions with slot support
     const actionsContent = useMemo(() => {

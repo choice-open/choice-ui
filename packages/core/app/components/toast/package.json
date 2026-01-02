@@ -1,6 +1,6 @@
 {
   "name": "@choice-ui/toast",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "A toast notification component with stacking, hover pause, and progress indicators",
   "sideEffects": [
     "*.css"

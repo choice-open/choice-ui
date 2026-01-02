@@ -3,7 +3,7 @@
   "title": "Toast",
   "package": {
     "name": "@choice-ui/toast",
-    "version": "0.0.1",
+    "version": "0.0.3",
     "description": "A toast notification component with stacking, hover pause, and progress indicators",
     "dependencies": {
       "@choice-ui/shared": "workspace:*",
