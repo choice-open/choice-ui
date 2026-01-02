@@ -32,6 +32,13 @@ export interface ToastData {
   onClose?: () => void
   onAutoClose?: () => void
   dismissible?: boolean
+  /**
+   * Show progress bar for this toast. Overrides Toaster's showProgress setting.
+   * - `true`: Always show progress bar
+   * - `false`: Never show progress bar
+   * - `undefined`: Use Toaster's showProgress setting
+   */
+  progress?: boolean
   // Internal
   createdAt: number
   height?: number
@@ -63,6 +70,13 @@ export interface ToastOptions {
   onClose?: () => void
   onAutoClose?: () => void
   dismissible?: boolean
+  /**
+   * Show progress bar for this toast. Overrides Toaster's showProgress setting.
+   * - `true`: Always show progress bar
+   * - `false`: Never show progress bar
+   * - `undefined`: Use Toaster's showProgress setting
+   */
+  progress?: boolean
 }
 
 export interface ToasterState {
@@ -200,6 +214,7 @@ function addToast(
     onClose: options.onClose,
     onAutoClose: options.onAutoClose,
     dismissible: options.dismissible ?? true,
+    progress: options.progress,
     createdAt: Date.now(),
   }
 

@@ -659,8 +659,9 @@ export const InfiniteDuration: Story = {
  * Features:
  * - Visual countdown indicator
  * - Pauses on hover (timer also pauses)
- * - Not shown for `loading` type or `duration: 0` toasts
+ * - Not shown for `loading` type, `duration: 0`, or `duration: Infinity` toasts
  * - Styled differently for default and compact layouts
+ * - Per-toast override via `progress` option
  *
  * The progress bar helps users understand how long a notification will remain visible
  * and gives them time to read or interact with it.
@@ -672,7 +673,9 @@ export const WithProgressBar: Story = {
         <p className="text-secondary-foreground">
           Enable{" "}
           <code className="text-body-small bg-default-background rounded px-1">showProgress</code>{" "}
-          to display a countdown indicator. Hover over the toast to pause the timer.
+          on Toaster, or use{" "}
+          <code className="text-body-small bg-default-background rounded px-1">progress</code>{" "}
+          option per toast. Hover over the toast to pause the timer.
         </p>
         <div className="flex flex-wrap gap-2">
           <Button
@@ -720,6 +723,29 @@ export const WithProgressBar: Story = {
             }
           >
             Loading (No Progress)
+          </Button>
+          <Button
+            variant="secondary"
+            onClick={() =>
+              toast.use("progress").info("No progress bar", {
+                description: "This toast has progress disabled via the progress option.",
+                progress: false,
+              })
+            }
+          >
+            Disabled via Option
+          </Button>
+          <Button
+            variant="secondary"
+            onClick={() =>
+              toast.use("progress").warning("Persistent with progress", {
+                description: "Infinite duration toasts don't show progress bar.",
+                duration: Infinity,
+                cancel: { label: "Dismiss" },
+              })
+            }
+          >
+            Infinity (No Progress)
           </Button>
         </div>
         <Toaster

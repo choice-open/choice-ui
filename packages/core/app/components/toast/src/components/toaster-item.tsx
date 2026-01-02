@@ -126,9 +126,14 @@ export const ToasterItem = memo(
     const swipeStartRef = useRef<{ x: number; y: number } | null>(null)
 
     // Progress bar animation
+    // toast.progress overrides Toaster's showProgress setting
     const toastDuration = toast.duration ?? defaultDuration
+    const effectiveShowProgress = toast.progress ?? showProgress
     const shouldShowProgress =
-      showProgress && toastDuration > 0 && Number.isFinite(toastDuration) && toast.type !== "loading"
+      effectiveShowProgress &&
+      toastDuration > 0 &&
+      Number.isFinite(toastDuration) &&
+      toast.type !== "loading"
 
     // Calculate offset for stacking using passed heights (avoids getSnapshot call)
     const offsetY = useMemo(() => {
