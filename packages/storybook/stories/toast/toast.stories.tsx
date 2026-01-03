@@ -3,6 +3,7 @@ import {
   Dialog,
   RadioGroup,
   Range,
+  Segmented,
   Switch,
   ToastType,
   ToastVariant,
@@ -431,8 +432,8 @@ export const DismissToast: Story = {
       <div className="flex flex-col gap-4">
         <p className="text-secondary-foreground">
           Store toast IDs to dismiss them programmatically. Use{" "}
-          <code className="text-body-small bg-default-background rounded px-1">dismissAll()</code>{" "}
-          to clear all toasts at once.
+          <code className="bg-default-background rounded px-1">dismissAll()</code> to clear all
+          toasts at once.
         </p>
         <div className="flex flex-wrap gap-2">
           <Button
@@ -510,8 +511,8 @@ export const Duration: Story = {
       <div className="flex flex-col gap-4">
         <p className="text-secondary-foreground">
           Set custom durations for different notification types. Use{" "}
-          <code className="text-body-small bg-default-background rounded px-1">duration: 0</code>{" "}
-          for persistent toasts that require manual dismissal.
+          <code className="bg-default-background rounded px-1">duration: 0</code> for persistent
+          toasts that require manual dismissal.
         </p>
         <div className="flex flex-wrap gap-2">
           <Button
@@ -582,18 +583,16 @@ export const InfiniteDuration: Story = {
     return (
       <div className="flex flex-col gap-4">
         <p className="text-secondary-foreground">
-          Use{" "}
-          <code className="text-body-small bg-default-background rounded px-1">
-            duration: Infinity
-          </code>{" "}
-          for toasts that require explicit user dismissal. Always provide a close action.
+          Use <code className="bg-default-background rounded px-1">duration: Infinity</code> for
+          toasts that require explicit user dismissal. Always provide a close action.
         </p>
         <div className="flex flex-wrap gap-2">
           <Button
             variant="secondary"
             onClick={() => {
               toast.use("infinite").warning("Password Changed", {
-                description: "Your password has been updated. Please log in again on other devices.",
+                description:
+                  "Your password has been updated. Please log in again on other devices.",
                 duration: Infinity,
                 action: {
                   label: "Got it",
@@ -671,10 +670,8 @@ export const WithProgressBar: Story = {
     return (
       <div className="flex flex-col gap-4">
         <p className="text-secondary-foreground">
-          Enable{" "}
-          <code className="text-body-small bg-default-background rounded px-1">showProgress</code>{" "}
-          on Toaster, or use{" "}
-          <code className="text-body-small bg-default-background rounded px-1">progress</code>{" "}
+          Enable <code className="bg-default-background rounded px-1">showProgress</code> on
+          Toaster, or use <code className="bg-default-background rounded px-1">progress</code>{" "}
           option per toast. Hover over the toast to pause the timer.
         </p>
         <div className="flex flex-wrap gap-2">
@@ -849,9 +846,8 @@ export const Variant: Story = {
     return (
       <div className="flex flex-col gap-4">
         <p className="text-secondary-foreground">
-          Use the{" "}
-          <code className="text-body-small bg-default-background rounded px-1">variant</code> option
-          to customize the background color scheme of each toast independently from its type.
+          Use the <code className="bg-default-background rounded px-1">variant</code> option to
+          customize the background color scheme of each toast independently from its type.
         </p>
         <div className="flex flex-wrap gap-2">
           <Button
@@ -960,11 +956,8 @@ export const CompactLayout: Story = {
     return (
       <div className="flex flex-col gap-4">
         <p className="text-secondary-foreground">
-          Use{" "}
-          <code className="text-body-small bg-default-background rounded px-1">
-            layout="compact"
-          </code>{" "}
-          for minimal, single-line toasts. Ideal for brief confirmations and high-frequency
+          Use <code className="bg-default-background rounded px-1">layout="compact"</code> for
+          minimal, single-line toasts. Ideal for brief confirmations and high-frequency
           notifications.
         </p>
         <div className="flex flex-wrap gap-2">
@@ -1109,10 +1102,8 @@ export const MultipleToasters: Story = {
       <div className="flex flex-col gap-4">
         <p className="text-secondary-foreground">
           Multiple Toaster instances with different IDs operate independently. Use{" "}
-          <code className="text-body-small bg-default-background rounded px-1">
-            toast.use("id")
-          </code>{" "}
-          to target specific instances.
+          <code className="bg-default-background rounded px-1">toast.use("id")</code> to target
+          specific instances.
         </p>
 
         <div className="grid grid-cols-2 gap-4">
@@ -1251,15 +1242,13 @@ export const HtmlContent: Story = {
           <Button
             variant="secondary"
             onClick={() =>
-              toast
-                .use("html-content")
-                .success('<b>Project</b> duplicated', {
-                  description: "Duplicated <b>Original Project</b> to <b>New Project Copy</b>",
-                  action: {
-                    label: "View Project",
-                    onClick: () => setDialogOpen(true),
-                  },
-                })
+              toast.use("html-content").success("<b>Project</b> duplicated", {
+                description: "Duplicated <b>Original Project</b> to <b>New Project Copy</b>",
+                action: {
+                  label: "View Project",
+                  onClick: () => setDialogOpen(true),
+                },
+              })
             }
           >
             HTML + Action
@@ -1455,7 +1444,7 @@ export const UseEffect: Story = {
           </Button>
         </div>
 
-        <div className="text-secondary-foreground text-body-small space-y-1 rounded-lg border p-3">
+        <div className="text-secondary-foreground space-y-1 rounded-lg border p-3">
           <p>
             <strong>Status:</strong> {isMonitoring ? "Monitoring active" : "Monitoring inactive"}
           </p>
@@ -1559,8 +1548,9 @@ export const Playground: Story = {
       <div className="flex flex-col gap-4">
         <div className="grid grid-cols-4 gap-4">
           <div>
-            <p className="text-body-small mb-2 font-medium">Position</p>
+            <p className="mb-2 font-medium">Position</p>
             <RadioGroup
+              variant="accent"
               value={position}
               onChange={(value) =>
                 setPosition(
@@ -1593,8 +1583,9 @@ export const Playground: Story = {
           </div>
 
           <div>
-            <p className="text-body-small mb-2 font-medium">Variant</p>
+            <p className="mb-2 font-medium">Variant</p>
             <RadioGroup
+              variant="accent"
               value={variant}
               onChange={(value) => setVariant(value as ToastVariant)}
             >
@@ -1610,8 +1601,9 @@ export const Playground: Story = {
           </div>
 
           <div>
-            <p className="text-body-small mb-2 font-medium">Type</p>
+            <p className="mb-2 font-medium">Type</p>
             <RadioGroup
+              variant="accent"
               value={type}
               onChange={(value) => setType(value as ToastType)}
             >
@@ -1627,8 +1619,9 @@ export const Playground: Story = {
           </div>
 
           <div>
-            <p className="text-body-small mb-2 font-medium">Layout</p>
+            <p className="mb-2 font-medium">Layout</p>
             <RadioGroup
+              variant="accent"
               value={layout}
               onChange={(value) => setLayout(value as "default" | "compact")}
             >
@@ -1641,83 +1634,89 @@ export const Playground: Story = {
                 </RadioGroup.Item>
               ))}
             </RadioGroup>
-          </div>
-        </div>
 
-        <div className="flex items-center gap-4">
-          <Switch
-            size="small"
-            value={showProgress}
-            onChange={(value) => setShowProgress(value)}
-          >
-            Progress Bar
-          </Switch>
-          <Switch
-            size="small"
-            value={showAction}
-            onChange={(value) => setShowAction(value)}
-          >
-            Action Button
-          </Switch>
-          <Switch
-            size="small"
-            value={showClose}
-            onChange={(value) => setShowClose(value)}
-          >
-            Cancel Button
-          </Switch>
+            <div className="mt-4 flex flex-col gap-2">
+              <Switch
+                variant="accent"
+                size="small"
+                value={showProgress}
+                onChange={(value) => setShowProgress(value)}
+              >
+                Progress Bar
+              </Switch>
+              <Switch
+                variant="accent"
+                size="small"
+                value={showAction}
+                onChange={(value) => setShowAction(value)}
+              >
+                Action Button
+              </Switch>
+              <Switch
+                variant="accent"
+                size="small"
+                value={showClose}
+                onChange={(value) => setShowClose(value)}
+              >
+                Cancel Button
+              </Switch>
+            </div>
+          </div>
         </div>
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <p className="text-body-small mb-2 font-medium">Title Length</p>
-            <RadioGroup
+            <p className="mb-2 font-medium">Title Length</p>
+
+            <Segmented
               value={titleLength}
               onChange={(value) => setTitleLength(value as "short" | "medium" | "long")}
             >
               {["short", "medium", "long"].map((length) => (
-                <RadioGroup.Item
+                <Segmented.Item
                   key={length}
                   value={length}
                 >
                   {length}
-                </RadioGroup.Item>
+                </Segmented.Item>
               ))}
-            </RadioGroup>
+            </Segmented>
           </div>
           <div>
-            <p className="text-body-small mb-2 font-medium">Description Length</p>
-            <RadioGroup
+            <p className="mb-2 font-medium">Description Length</p>
+            <Segmented
               value={descriptionLength}
               onChange={(value) =>
                 setDescriptionLength(value as "none" | "short" | "medium" | "long")
               }
             >
               {["none", "short", "medium", "long"].map((length) => (
-                <RadioGroup.Item
+                <Segmented.Item
                   key={length}
                   value={length}
                 >
                   {length}
-                </RadioGroup.Item>
+                </Segmented.Item>
               ))}
-            </RadioGroup>
+            </Segmented>
           </div>
         </div>
 
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2">
-            <span className="text-body-small">Offset: {offset}px</span>
+          <div className="flex flex-1 items-center gap-4">
+            <span className="w-20 flex-none">Offset: {offset}px</span>
             <Range
               min={0}
               max={64}
               step={4}
               value={offset}
               onChange={(value) => setOffset(value)}
-              className="w-32"
+              className="flex-1"
+              trackSize={{
+                width: "auto",
+              }}
             />
           </div>
-          <div className="flex-1" />
           <Button
             onClick={() => {
               const api = toast.use("playground")

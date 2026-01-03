@@ -11,8 +11,8 @@ export function SiteHeader() {
   const [selectedTab, setSelectedTab] = useState("docs")
 
   return (
-    <header className="border-default-boundary/40 bg-default-background/80 supports-[backdrop-filter]:bg-default-background/60 sticky top-0 z-50 w-full border-b backdrop-blur-md">
-      <div className="container flex h-16 max-w-screen-2xl items-center">
+    <header className="border-default-boundary/40 sticky top-0 z-50 w-full border-b bg-gray-50/80 backdrop-blur-md supports-[backdrop-filter]:bg-gray-50/60 dark:bg-gray-900/80 dark:supports-[backdrop-filter]:bg-gray-900/60">
+      <div className="mx-auto flex h-16 w-full max-w-[80rem] min-w-0 items-center px-4">
         <div className="mr-8 flex items-center">
           <Link
             className="mr-6 flex items-center gap-2"

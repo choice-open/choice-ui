@@ -90,13 +90,33 @@ const ComponentCard = memo(function ComponentCard({
         href={`/docs/components/${collection}/${title.toLowerCase().replaceAll(" ", "-")}`}
         className="cursor-pointer"
       >
-        <div className="hover:border-disabled-background flex aspect-square flex-col rounded-xl border p-4">
+        <div className="hover:border-disabled-background bg-default-background flex aspect-square flex-col rounded-xl border p-4 dark:border-transparent">
           <div className="pointer-events-none relative flex aspect-square flex-1 flex-col items-center justify-center [&_*]:pointer-events-none">
             {children}
           </div>
         </div>
       </Link>
       <p className="text-body-medium px-1">{title}</p>
+    </div>
+  )
+})
+
+const CollectionCard = memo(function CollectionCard({
+  children,
+  title,
+  description,
+}: {
+  children: React.ReactNode
+  title: string
+  description?: string
+}) {
+  return (
+    <div className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-x-4 gap-y-4">
+      <div className="md col-span-full">
+        <h2 className="md-h3">{title}</h2>
+        {description && <p className="text-secondary-foreground md-p">{description}</p>}
+      </div>
+      {children}
     </div>
   )
 })
@@ -113,17 +133,18 @@ export default function ComponentsPage() {
 
   return (
     <div className="col-span-2 min-w-0 space-y-16">
-      <div className="space-y-2">
+      <div className="md space-y-2">
         <h1 className="md-h1">All Components</h1>
-        <p className="md-h3">
-          Explore the full list of components available in the library. More are on the way.
+        <p className="md-h4 text-secondary-foreground">
+          Browse all available components organized by category.
         </p>
       </div>
 
       <div className="flex flex-col gap-y-8">
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-x-4 gap-y-4">
-          <h2 className="md-h3 col-span-full mb-0">Buttons</h2>
-
+        <CollectionCard
+          title="Buttons"
+          description="Interactive elements for triggering actions, toggling states, and making selections."
+        >
           <ComponentCard
             title="Button"
             collection="buttons"
@@ -194,10 +215,12 @@ export default function ComponentsPage() {
           >
             <Chip>Chip</Chip>
           </ComponentCard>
-        </div>
+        </CollectionCard>
 
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-x-4 gap-y-4">
-          <h2 className="md-h3 col-span-full mb-0">Collections</h2>
+        <CollectionCard
+          title="Collections"
+          description="Components for displaying and selecting from lists of options, including dropdowns, menus, and searchable lists."
+        >
           <ComponentCard
             title="Combobox"
             collection="collections"
@@ -390,11 +413,12 @@ export default function ComponentsPage() {
               </Select.Content>
             </Select>
           </ComponentCard>
-        </div>
+        </CollectionCard>
 
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-x-4 gap-y-4">
-          <h2 className="md-h3 col-span-full mb-0">Forms</h2>
-
+        <CollectionCard
+          title="Forms"
+          description="Input components for collecting and validating user data, from text fields to complex form controls."
+        >
           <ComponentCard
             title="Checkbox"
             collection="forms"
@@ -728,10 +752,12 @@ export default function ComponentsPage() {
               <form.Button type="submit">Submit</form.Button>
             </form>
           </ComponentCard>
-        </div>
+        </CollectionCard>
 
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-x-4 gap-y-4">
-          <h2 className="md-h3 col-span-full mb-0">Date & Time</h2>
+        <CollectionCard
+          title="Date & Time"
+          description="Specialized inputs and calendars for selecting dates, times, and date ranges."
+        >
           <ComponentCard
             title="Date Input"
             collection="date-and-time"
@@ -850,10 +876,12 @@ export default function ComponentsPage() {
               onChange={() => {}}
             />
           </ComponentCard>
-        </div>
+        </CollectionCard>
 
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-x-4 gap-y-4">
-          <h2 className="md-h3 col-span-full mb-0">Navigation</h2>
+        <CollectionCard
+          title="Navigation"
+          description="Components for moving between views, pages, and content sections within an application."
+        >
           <ComponentCard
             title="Tabs"
             collection="navigation"
@@ -1029,11 +1057,12 @@ export default function ComponentsPage() {
               </div>
             </div>
           </ComponentCard>
-        </div>
+        </CollectionCard>
 
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-x-4 gap-y-4">
-          <h2 className="md-h3 col-span-full mb-0">Overlays</h2>
-
+        <CollectionCard
+          title="Overlays"
+          description="Floating UI elements like modals, dialogs, popovers, and tooltips that appear above the main content."
+        >
           <ComponentCard
             title="Alert Dialog"
             collection="overlays"
@@ -1110,10 +1139,12 @@ export default function ComponentsPage() {
               </div>
             </div>
           </ComponentCard>
-        </div>
+        </CollectionCard>
 
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-x-4 gap-y-4">
-          <h2 className="md-h3 col-span-full mb-0">Layouts</h2>
+        <CollectionCard
+          title="Layouts"
+          description="Structural components for organizing and arranging content, including scroll areas, splitters, and grids."
+        >
           <ComponentCard
             title="Scroll Area"
             collection="layouts"
@@ -1187,11 +1218,12 @@ export default function ComponentsPage() {
               ))}
             </div>
           </ComponentCard>
-        </div>
+        </CollectionCard>
 
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-x-4 gap-y-4">
-          <h2 className="md-h3 col-span-full mb-0">Data Display</h2>
-
+        <CollectionCard
+          title="Data Display"
+          description="Components for presenting information, including tables, code blocks, and rich text rendering."
+        >
           <ComponentCard
             title="Code Block"
             collection="data-display"
@@ -1350,10 +1382,12 @@ Lorem ipsum, dolor sit amet consectetur adipisicing elit. Possimus quasi dolorem
               alt="Picture Preview"
             />
           </ComponentCard>
-        </div>
+        </CollectionCard>
 
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-x-4 gap-y-4">
-          <h2 className="md-h3 col-span-full mb-0">Pickers</h2>
+        <CollectionCard
+          title="Pickers"
+          description="Specialized selection components like emoji pickers and color pickers for choosing from visual options."
+        >
           <ComponentCard
             title="Emoji Picker"
             collection="pickers"
@@ -1365,7 +1399,7 @@ Lorem ipsum, dolor sit amet consectetur adipisicing elit. Possimus quasi dolorem
               height={360}
             />
           </ComponentCard>
-        </div>
+        </CollectionCard>
       </div>
     </div>
   )

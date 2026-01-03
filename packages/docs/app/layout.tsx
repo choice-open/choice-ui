@@ -25,7 +25,7 @@ export default function RootLayout({
       suppressHydrationWarning
       className={inter.variable}
     >
-      <body className="flex min-h-dvh flex-col">
+      <body className="flex min-h-dvh flex-col bg-gray-50 dark:bg-gray-900">
         <ChoiceUiProvider>
           <ThemeProvider
             attribute="class"
