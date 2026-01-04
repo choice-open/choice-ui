@@ -128,7 +128,7 @@ export const CollectionsCollection = memo(function CollectionsCollection() {
       </ComponentCard>
 
       <ComponentCard
-        title="Menuar"
+        title="Menubar"
         collection="collections"
       >
         <Menubar className="rounded-lg border p-1">
