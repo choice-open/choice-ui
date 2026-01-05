@@ -183,6 +183,24 @@
           "type": "undefined | \"default\" | \"solid\"",
           "required": false,
           "description": ""
+        },
+        {
+          "name": "showMentionButton",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "showEmojiButton",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "showImageUploadButton",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
         }
       ]
     },
@@ -305,86 +323,86 @@
   ],
   "stories": [
     {
-      "id": "components-comments-commentitem--basic",
-      "name": "Basic",
-      "exportName": "Basic",
+      "id": "components-comments-commentitem--comment-item-basic",
+      "name": "Comment Item Basic",
+      "exportName": "CommentItemBasic",
       "description": "",
-      "source": ""
+      "source": "import { CommentItem } from \"@choice-ui/comments\"\n\nexport default function App() {\n\n  return (\n    <CommentItem\n      author={mockUser}\n      created_at={new Date(Date.now() - 2 * 60 * 60 * 1000)}\n      message_meta={[\n        {\n          type: \"paragraph\",\n          children: [{ text: \"This is a basic comment without any formatting.\" }],\n        } as CustomElement,\n      ]}\n      reactions={null}\n      locale=\"zh-cn\"\n    />\n  )\n\n}"
     },
     {
-      "id": "components-comments-commentitem--with-formatting-chinese",
-      "name": "With Formatting Chinese",
-      "exportName": "WithFormattingChinese",
+      "id": "components-comments-commentitem--comment-item-with-formatting-chinese",
+      "name": "Comment Item With Formatting Chinese",
+      "exportName": "CommentItemWithFormattingChinese",
       "description": "",
-      "source": ""
+      "source": "import { CommentItem } from \"@choice-ui/comments\"\n\nexport default function App() {\n  return (\n\n    <CommentItem\n      author={{\n        id: \"2\",\n        name: \"John Smith\",\n        email: \"john@example.com\",\n        photo_url: \"https://i.pravatar.cc/150?img=2\",\n        color: null,\n      }}\n      created_at={new Date(Date.now() - 86400000)}\n      message_meta={[\n        {\n          type: \"paragraph\",\n          children: [\n            { text: \"这条评论包含 \" },\n            { text: \"粗体\", bold: true },\n            { text: \"、\" },\n            { text: \"斜体\", italic: true },\n            { text: \"和\" },\n            { text: \"下划线\", underline: true },\n            { text: \"文本，以及\" },\n            { text: \"删除线\", strikethrough: true },\n            { text: \"。\" },\n          ],\n        } as CustomElement,\n      ]}\n      reactions={null}\n      locale=\"zh-cn\"\n    />\n\n  );\n}"
     },
     {
-      "id": "components-comments-commentitem--with-formatting-english",
-      "name": "With Formatting English",
-      "exportName": "WithFormattingEnglish",
+      "id": "components-comments-commentitem--comment-item-with-formatting-english",
+      "name": "Comment Item With Formatting English",
+      "exportName": "CommentItemWithFormattingEnglish",
       "description": "",
-      "source": ""
+      "source": "import { CommentItem } from \"@choice-ui/comments\"\n\nexport default function App() {\n  return (\n\n    <CommentItem\n      author={{\n        id: \"2\",\n        name: \"John Smith\",\n        email: \"john@example.com\",\n        photo_url: \"https://i.pravatar.cc/150?img=2\",\n        color: null,\n      }}\n      created_at={new Date(Date.now() - 86400000)}\n      message_meta={[\n        {\n          type: \"paragraph\",\n          children: [\n            { text: \"This comment has \" },\n            { text: \"bold\", bold: true },\n            { text: \", \" },\n            { text: \"italic\", italic: true },\n            { text: \", and \" },\n            { text: \"underlined\", underline: true },\n            { text: \" text, as well as \" },\n            { text: \"strikethrough\", strikethrough: true },\n            { text: \".\" },\n          ],\n        } as CustomElement,\n      ]}\n      reactions={null}\n      locale=\"en-us\"\n    />\n\n  );\n}"
     },
     {
-      "id": "components-comments-commentitem--recent-comment-chinese",
-      "name": "Recent Comment Chinese",
-      "exportName": "RecentCommentChinese",
+      "id": "components-comments-commentitem--comment-item-recent-comment-chinese",
+      "name": "Comment Item Recent Comment Chinese",
+      "exportName": "CommentItemRecentCommentChinese",
       "description": "",
-      "source": ""
+      "source": "import { CommentItem } from \"@choice-ui/comments\"\n\nexport default function App() {\n  return (\n\n    <CommentItem\n      author={{\n        id: \"9\",\n        name: \"Rebecca Moore\",\n        email: \"rebecca@example.com\",\n        photo_url: \"https://i.pravatar.cc/150?img=9\",\n        color: null,\n      }}\n      created_at={new Date(Date.now() - 2 * 60 * 60 * 1000)}\n      message_meta={[\n        {\n          type: \"paragraph\",\n          children: [{ text: \"这条评论是最近发布的，显示相对时间格式。\" }],\n        } as CustomElement,\n      ]}\n      reactions={null}\n      locale=\"zh-cn\"\n    />\n\n  );\n}"
     },
     {
-      "id": "components-comments-commentitem--recent-comment-english",
-      "name": "Recent Comment English",
-      "exportName": "RecentCommentEnglish",
+      "id": "components-comments-commentitem--comment-item-recent-comment-english",
+      "name": "Comment Item Recent Comment English",
+      "exportName": "CommentItemRecentCommentEnglish",
       "description": "",
-      "source": ""
+      "source": "import { CommentItem } from \"@choice-ui/comments\"\n\nexport default function App() {\n  return (\n\n    <CommentItem\n      author={{\n        id: \"9\",\n        name: \"Rebecca Moore\",\n        email: \"rebecca@example.com\",\n        photo_url: \"https://i.pravatar.cc/150?img=9\",\n        color: null,\n      }}\n      created_at={new Date(Date.now() - 2 * 60 * 60 * 1000)}\n      message_meta={[\n        {\n          type: \"paragraph\",\n          children: [\n            {\n              text: \"This comment was posted recently, showing the relative time format.\",\n            },\n          ],\n        } as CustomElement,\n      ]}\n      reactions={null}\n      locale=\"en-us\"\n    />\n\n  );\n}"
     },
     {
-      "id": "components-comments-commentitem--this-year-comment-chinese",
-      "name": "This Year Comment Chinese",
-      "exportName": "ThisYearCommentChinese",
+      "id": "components-comments-commentitem--comment-item-this-year-comment-chinese",
+      "name": "Comment Item This Year Comment Chinese",
+      "exportName": "CommentItemThisYearCommentChinese",
       "description": "",
-      "source": ""
+      "source": "import { CommentItem } from \"@choice-ui/comments\"\n\nexport default function App() {\n  return (\n\n    <CommentItem\n      author={{\n        id: \"10\",\n        name: \"Thomas Wilson\",\n        email: \"thomas@example.com\",\n        photo_url: \"https://i.pravatar.cc/150?img=10\",\n        color: null,\n      }}\n      created_at={new Date(new Date().setMonth(new Date().getMonth() - 3))}\n      message_meta={[\n        {\n          type: \"paragraph\",\n          children: [{ text: \"这条评论发布于今年，显示月份和日期格式。\" }],\n        } as CustomElement,\n      ]}\n      reactions={null}\n      locale=\"zh-cn\"\n    />\n\n  );\n}"
     },
     {
-      "id": "components-comments-commentitem--this-year-comment-english",
-      "name": "This Year Comment English",
-      "exportName": "ThisYearCommentEnglish",
+      "id": "components-comments-commentitem--comment-item-this-year-comment-english",
+      "name": "Comment Item This Year Comment English",
+      "exportName": "CommentItemThisYearCommentEnglish",
       "description": "",
-      "source": ""
+      "source": "import { CommentItem } from \"@choice-ui/comments\"\n\nexport default function App() {\n  return (\n\n    <CommentItem\n      author={{\n        id: \"10\",\n        name: \"Thomas Wilson\",\n        email: \"thomas@example.com\",\n        photo_url: \"https://i.pravatar.cc/150?img=10\",\n        color: null,\n      }}\n      created_at={new Date(new Date().setMonth(new Date().getMonth() - 3))}\n      message_meta={[\n        {\n          type: \"paragraph\",\n          children: [\n            {\n              text: \"This comment was posted within this year, showing month and day.\",\n            },\n          ],\n        } as CustomElement,\n      ]}\n      reactions={null}\n      locale=\"en-us\"\n    />\n\n  );\n}"
     },
     {
-      "id": "components-comments-commentitem--last-year-comment-chinese",
-      "name": "Last Year Comment Chinese",
-      "exportName": "LastYearCommentChinese",
+      "id": "components-comments-commentitem--comment-item-last-year-comment-chinese",
+      "name": "Comment Item Last Year Comment Chinese",
+      "exportName": "CommentItemLastYearCommentChinese",
       "description": "",
-      "source": ""
+      "source": "import { CommentItem } from \"@choice-ui/comments\"\n\nexport default function App() {\n  return (\n\n    <CommentItem\n      author={{\n        id: \"11\",\n        name: \"Patricia Clark\",\n        email: \"patricia@example.com\",\n        photo_url: \"https://i.pravatar.cc/150?img=11\",\n        color: null,\n      }}\n      created_at={new Date(new Date().setFullYear(new Date().getFullYear() - 1))}\n      message_meta={[\n        {\n          type: \"paragraph\",\n          children: [{ text: \"这条评论发布于去年，显示完整日期格式。\" }],\n        } as CustomElement,\n      ]}\n      reactions={null}\n      locale=\"zh-cn\"\n    />\n\n  );\n}"
     },
     {
-      "id": "components-comments-commentitem--last-year-comment-english",
-      "name": "Last Year Comment English",
-      "exportName": "LastYearCommentEnglish",
+      "id": "components-comments-commentitem--comment-item-last-year-comment-english",
+      "name": "Comment Item Last Year Comment English",
+      "exportName": "CommentItemLastYearCommentEnglish",
       "description": "",
-      "source": ""
+      "source": "import { CommentItem } from \"@choice-ui/comments\"\n\nexport default function App() {\n  return (\n\n    <CommentItem\n      author={{\n        id: \"11\",\n        name: \"Patricia Clark\",\n        email: \"patricia@example.com\",\n        photo_url: \"https://i.pravatar.cc/150?img=11\",\n        color: null,\n      }}\n      created_at={new Date(new Date().setFullYear(new Date().getFullYear() - 1))}\n      message_meta={[\n        {\n          type: \"paragraph\",\n          children: [\n            {\n              text: \"This comment was posted last year, showing the full date format.\",\n            },\n          ],\n        } as CustomElement,\n      ]}\n      reactions={null}\n      locale=\"en-us\"\n    />\n\n  );\n}"
     },
     {
-      "id": "components-comments-commentitem--with-mention-and-image",
-      "name": "With Mention And Image",
-      "exportName": "WithMentionAndImage",
+      "id": "components-comments-commentitem--comment-item-with-mention-and-image",
+      "name": "Comment Item With Mention And Image",
+      "exportName": "CommentItemWithMentionAndImage",
       "description": "",
-      "source": ""
+      "source": "import { CommentItem } from \"@choice-ui/comments\"\n\nexport default function App() {\n  return (\n\n    <CommentItem\n      author={{\n        id: \"3\",\n        name: \"Alex Johnson\",\n        email: \"alex@example.com\",\n        photo_url: \"https://i.pravatar.cc/150?img=3\",\n        color: null,\n      }}\n      created_at={new Date(Date.now() - 5 * 60 * 60 * 1000)}\n      message_meta={[\n        {\n          type: \"paragraph\",\n          children: [\n            { text: \"Take a look at this image \" },\n            {\n              type: \"mention\",\n              user: {\n                id: \"user-1\",\n                name: \"Sarah Parker\",\n                photo_url: \"https://i.pravatar.cc/150?img=5\",\n                email: \"sarah.parker@example.com\",\n                color: null,\n              },\n              children: [{ text: \"\" }],\n            } as CustomElement,\n            { text: \" shared:\" },\n          ],\n        } as CustomElement,\n        {\n          type: \"image\",\n          attachments: [\n            {\n              url: \"https://images.unsplash.com/photo-1745750747234-5df61f67a7bc?q=80&w=5070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D\",\n              name: \"Nature Image\",\n            },\n          ],\n          children: [{ text: \"\" }],\n        } as CustomElement,\n        {\n          type: \"paragraph\",\n          children: [\n            { text: \"What do you think? \" },\n            {\n              type: \"mention\",\n              user: {\n                id: \"user-2\",\n                name: \"Robert Davis\",\n                photo_url: \"https://i.pravatar.cc/150?img=8\",\n                email: \"robert.davis@example.com\",\n                color: null,\n              },\n              children: [{ text: \"\" }],\n            } as CustomElement,\n            { text: \" might have some thoughts on this.\" },\n          ],\n        } as CustomElement,\n      ]}\n      reactions={null}\n      locale=\"zh-cn\"\n    />\n\n  );\n}"
     },
     {
-      "id": "components-comments-commentitem--with-lists",
-      "name": "With Lists",
-      "exportName": "WithLists",
+      "id": "components-comments-commentitem--comment-item-with-lists",
+      "name": "Comment Item With Lists",
+      "exportName": "CommentItemWithLists",
       "description": "",
-      "source": ""
+      "source": "import { CommentItem } from \"@choice-ui/comments\"\n\nexport default function App() {\n  return (\n\n    <CommentItem\n      author={{\n        id: \"4\",\n        name: \"Emily Wilson\",\n        email: \"emily@example.com\",\n        photo_url: \"https://i.pravatar.cc/150?img=4\",\n        color: null,\n      }}\n      created_at={new Date(Date.now() - 24 * 60 * 60 * 1000)}\n      message_meta={[\n        {\n          type: \"paragraph\",\n          children: [{ text: \"Here are some key points:\" }],\n        } as CustomElement,\n        {\n          type: \"bulleted-list\",\n          children: [\n            {\n              type: \"list-item\",\n              children: [{ text: \"First bullet point\" }],\n            } as CustomElement,\n            {\n              type: \"list-item\",\n              children: [{ text: \"Second bullet point with \" }, { text: \"formatting\", bold: true }],\n            } as CustomElement,\n            {\n              type: \"list-item\",\n              children: [{ text: \"Third bullet point\" }],\n            } as CustomElement,\n          ],\n        } as CustomElement,\n        {\n          type: \"paragraph\",\n          children: [{ text: \"And a numbered list:\" }],\n        } as CustomElement,\n        {\n          type: \"numbered-list\",\n          children: [\n            {\n              type: \"list-item\",\n              children: [{ text: \"First numbered item\" }],\n            } as CustomElement,\n            {\n              type: \"list-item\",\n              children: [{ text: \"Second numbered item\" }],\n            } as CustomElement,\n            {\n              type: \"list-item\",\n              children: [{ text: \"Third numbered item\" }],\n            } as CustomElement,\n          ],\n        } as CustomElement,\n      ]}\n      reactions={null}\n    />\n\n  );\n}"
     },
     {
-      "id": "components-comments-commentitem--multiple-images",
-      "name": "Multiple Images",
-      "exportName": "MultipleImages",
+      "id": "components-comments-commentitem--comment-item-multiple-images",
+      "name": "Comment Item Multiple Images",
+      "exportName": "CommentItemMultipleImages",
       "description": "",
       "source": "import { CommentItem } from \"@choice-ui/comments\"\nimport { useState, useMemo } from \"react\"\n\nexport default function App() {\n\n  const [isOpen, setIsOpen] = useState(false)\n  const [imageIndex, setImageIndex] = useState<number | undefined>(undefined)\n\n  const message_meta: Descendant[] = useMemo(\n    () => [\n      {\n        type: \"paragraph\",\n        children: [{ text: \"Check out these images from our trip:\" }],\n      } as CustomElement,\n      {\n        type: \"image\",\n        attachments: [\n          {\n            url: \"https://images.unsplash.com/photo-1745750747234-5df61f67a7bc?q=80&w=5070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D\",\n            name: \"Beach\",\n          },\n          {\n            url: \"https://images.unsplash.com/photo-1739989934289-4cb75f451a56?q=80&w=5070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D\",\n            name: \"Mountains\",\n          },\n          {\n            url: \"https://images.unsplash.com/photo-1746071062150-b12db59e9c53?q=80&w=2048&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D\",\n            name: \"Forest\",\n          },\n          {\n            url: \"https://images.unsplash.com/photo-1745659601865-1af86dec8bcd?q=80&w=3183&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D\",\n            name: \"City\",\n          },\n        ],\n        children: [{ text: \"\" }],\n      } as CustomElement,\n      {\n        type: \"paragraph\",\n        children: [{ text: \"It was an amazing experience!\" }],\n      } as CustomElement,\n    ],\n    [],\n  )\n\n  const currentImage = useMemo(() => {\n    const image = message_meta.find((item) => {\n      // 检查是否为 CustomElement 并且是 image 类型\n      return (item as CustomElement).type === \"image\"\n    }) as ImageElement | undefined\n\n    if (!image || !image.attachments) return null\n    return image.attachments[imageIndex ?? 0]\n  }, [message_meta, imageIndex])\n\n  const author = useMemo(() => {\n    return {\n      id: faker.string.uuid(),\n      name: faker.person.fullName(),\n      email: faker.internet.email(),\n      photo_url: faker.image.avatar(),\n      color: null,\n    }\n  }, [])\n\n  return (\n    <>\n      <CommentItem\n        author={author}\n        created_at={faker.date.recent()}\n        message_meta={message_meta}\n        reactions={null}\n        handleOnImageClick={(index) => {\n          setImageIndex(index)\n          setIsOpen(true)\n        }}\n      />\n      {imageIndex !== undefined && (\n        <Dialog\n          open={isOpen}\n          onOpenChange={setIsOpen}\n          outsidePress\n          className=\"overflow-hidden\"\n        >\n          <Dialog.Header title={currentImage?.name} />\n          <Dialog.Content className=\"overflow-hidden p-0\">\n            <PicturePreview\n              src={currentImage?.url ?? \"\"}\n              fileName={currentImage?.name}\n            />\n          </Dialog.Content>\n        </Dialog>\n      )}\n    </>\n  )\n\n}"
     }

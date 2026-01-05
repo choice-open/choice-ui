@@ -181,7 +181,7 @@ export const Variants: Story = {
         <div className="grid grid-cols-[auto_1fr_1fr] items-center gap-4">
           {Object.values(State).map((state) => (
             <Fragment key={state}>
-              <span className="text-pink-500 capitalize">{state}</span>
+              <span className="capitalize text-pink-500">{state}</span>
               <Button
                 variant={variant}
                 active={state === State.Active}
@@ -222,12 +222,18 @@ export const AsChild: Story = {
 }
 
 /**
- * Tooltip: Demonstrates the Button with a tooltip.
- * - Shows how to add a tooltip for additional context or guidance.
- * - Tooltips are accessible and appear on hover or focus.
+ * As: Demonstrates rendering the Button as another element using the `as` prop.
+ * - Useful for rendering a button as a link or other custom element while retaining button styles and behaviors.
  */
-export const Tooltip: Story = {
-  render: () => <Button tooltip={{ content: "Tooltip" }}>Button</Button>,
+export const As: Story = {
+  render: () => (
+    <Button
+      as="a"
+      href="#"
+    >
+      Link
+    </Button>
+  ),
 }
 
 /**

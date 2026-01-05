@@ -703,8 +703,5 @@
       "description": "ImperativeFocus: Demonstrates how to programmatically focus the input using ref.\n- Use ref to get access to the focus method\n- Call ref.current.focus() to focus the input from outside\n- Useful for keyboard shortcuts or external button triggers\n\n```tsx\nconst inputRef = useRef<ContextInputRef>(null)\n\n<ContextInput ref={inputRef} />\n\n<Button onClick={() => inputRef.current?.focus()}>\n  Focus Input\n</Button>\n```",
       "source": "import { ContextInput } from \"@choice-ui/context-input\"\nimport { useRef } from \"react\"\n\nexport default function App() {\n\n  const inputRef = useRef<ContextInputRef>(null)\n\n  const handleFocusClick = () => {\n    inputRef.current?.focus()\n  }\n\n  return (\n    <div className=\"flex w-80 flex-col gap-4\">\n      <Button\n        variant=\"secondary\"\n        size=\"default\"\n        onClick={handleFocusClick}\n      >\n        Focus Input\n      </Button>\n\n      <ContextInput\n        ref={inputRef}\n        placeholder=\"This input can be focused programmatically...\"\n        triggers={[\n          {\n            char: \"@\",\n            onSearch: async (query: string) => {\n              return users.filter((user) =>\n                user.label.toLowerCase().includes(query.toLowerCase()),\n              )\n            },\n          },\n        ]}\n      />\n    </div>\n  )\n\n}"
     }
-  ],
-  "tags": [
-    "beta"
   ]
 }

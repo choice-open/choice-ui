@@ -1,5 +1,6 @@
 import { mergeRefs, tcx } from "@choice-ui/shared"
-import React, { forwardRef, memo, useCallback, useEffect, useMemo, useRef } from "react"
+import React, { forwardRef, memo, useEffect, useMemo, useRef } from "react"
+import { useEventCallback } from "usehooks-ts"
 import {
   SortableItem,
   SortablePaneContext,
@@ -9,10 +10,11 @@ import {
   useSortableRowItem,
 } from "../context"
 import { usePanelDragDrop } from "../hooks"
+import { panelSortableContainerTv } from "../tv"
 
 interface PanelSortableProps<T extends SortableItem> {
-  children: React.ReactNode
   className?: string
+  children: React.ReactNode
   data: T[]
   onDrop: (position: "top" | "bottom" | null, id: string, newIndex: number) => void
   onSelectedIdChange: (id: string | null) => void
@@ -23,12 +25,12 @@ export const PanelSortable = forwardRef(function PanelSortable<T extends Sortabl
   props: PanelSortableProps<T>,
   ref: React.ForwardedRef<HTMLDivElement>,
 ) {
-  const { data, children, className, selectedId, onSelectedIdChange, onDrop } = props
+  const { data, className, children, selectedId, onSelectedIdChange, onDrop } = props
 
   const containerRef = useRef<HTMLDivElement>(null)
 
   // 处理拖放完成后的数据更新
-  const handleDrop = useCallback(
+  const handleDrop = useEventCallback(
     (dragId: string, dropId: string, position: "top" | "bottom" | null) => {
       // 获取源和目标索引
       const items = [...data]
@@ -41,10 +43,12 @@ export const PanelSortable = forwardRef(function PanelSortable<T extends Sortabl
       }
 
       // 检测是否拖拽到原位置
+      // dragIndex === dropIndex - 1 表示拖拽项在目标项的正上方
+      // dragIndex === dropIndex + 1 表示拖拽项在目标项的正下方
       const isDraggingToSamePosition =
         dragId === dropId || // 同一个项目
-        (position === "top" && dragIndex === dropIndex - 1) || // 放在前一个项目的底部
-        (position === "bottom" && dragIndex === dropIndex + 1) // 放在后一个项目的顶部
+        (position === "top" && dragIndex === dropIndex - 1) || // 拖拽项在目标项上方，放到目标项顶部 = 位置不变
+        (position === "bottom" && dragIndex === dropIndex + 1) // 拖拽项在目标项下方，放到目标项底部 = 位置不变
 
       if (isDraggingToSamePosition) {
         // 位置未变
@@ -53,7 +57,6 @@ export const PanelSortable = forwardRef(function PanelSortable<T extends Sortabl
 
       onDrop(position, dragId, dropIndex)
     },
-    [data, onDrop],
   )
 
   // 使用抽取的回调函数
@@ -71,24 +74,21 @@ export const PanelSortable = forwardRef(function PanelSortable<T extends Sortabl
   const paneRef = useRef<HTMLDivElement>(null)
 
   // 处理鼠标按下事件，开始拖拽
-  const handleMouseDown = useCallback(
-    (id: string, e: React.MouseEvent) => {
-      e.stopPropagation()
+  const handleMouseDown = useEventCallback((id: string, e: React.MouseEvent) => {
+    e.stopPropagation()
 
-      // 选中被拖拽的项目
-      if (selectedId !== id) {
-        onSelectedIdChange(id)
-      }
+    // 选中被拖拽的项目
+    if (selectedId !== id) {
+      onSelectedIdChange(id)
+    }
 
-      // 找到对应元素
-      const element = document.querySelector(`[data-row-id="${id}"]`) as HTMLElement
-      if (!element) return
+    // 找到对应元素
+    const element = document.querySelector(`[data-row-id="${id}"]`) as HTMLElement
+    if (!element) return
 
-      // 使用自定义拖拽钩子处理拖拽开始
-      handleDragStart({ id, element }, e)
-    },
-    [handleDragStart, selectedId, onSelectedIdChange],
-  )
+    // 使用自定义拖拽钩子处理拖拽开始
+    handleDragStart({ id, element }, e)
+  })
 
   // 处理键盘和文档点击事件
   useEffect(() => {
@@ -109,6 +109,8 @@ export const PanelSortable = forwardRef(function PanelSortable<T extends Sortabl
       document.removeEventListener("click", handleDocumentClick)
     }
   }, [isDragging, onSelectedIdChange, containerRef])
+
+  const tv = useMemo(() => panelSortableContainerTv(), [])
 
   const contextValue: SortablePaneContextValue = useMemo(
     () => ({
@@ -136,7 +138,7 @@ export const PanelSortable = forwardRef(function PanelSortable<T extends Sortabl
   return (
     <div
       ref={mergeRefs(ref, paneRef, dragContainerRef, containerRef)}
-      className={tcx("relative flex flex-col", className)}
+      className={tcx(tv.container(), className)}
     >
       <SortablePaneContext.Provider value={contextValue}>
         {data.map((item) => (
@@ -145,7 +147,7 @@ export const PanelSortable = forwardRef(function PanelSortable<T extends Sortabl
             value={{ item }}
           >
             <RowContainer>
-              {React.Children.map(props.children, (child) => {
+              {React.Children.map(children, (child) => {
                 if (React.isValidElement(child)) {
                   return child
                 }
@@ -165,6 +167,8 @@ interface RowContainerProps {
   children: React.ReactNode
 }
 
+const tv = panelSortableContainerTv()
+
 const RowContainer = memo(function RowContainer(props: RowContainerProps) {
   const { children } = props
   const item = useSortableRowItem()
@@ -172,7 +176,7 @@ const RowContainer = memo(function RowContainer(props: RowContainerProps) {
 
   return (
     <div
-      className="panel-sortable-row group/sortable-row relative"
+      className={tv.rowContainer()}
       data-row-id={item.id}
       data-row-index={item.indexKey}
       data-drop-target="false"

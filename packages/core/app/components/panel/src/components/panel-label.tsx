@@ -1,6 +1,7 @@
 import { tcx } from "@choice-ui/shared"
 import { forwardRef, HTMLProps } from "react"
 import { usePanelContext } from "../context"
+import { panelLabelTv } from "../tv"
 
 interface PanelLabelProps extends HTMLProps<HTMLLegendElement> {
   className?: string
@@ -15,7 +16,7 @@ export const PanelLabel = forwardRef<HTMLLegendElement, PanelLabelProps>(
     return (
       <span
         ref={ref}
-        className={tcx("[grid-area:label]", showLabels ? "rows--label" : "sr-only", className)}
+        className={tcx(panelLabelTv({ showLabels }), className)}
         {...rest}
       >
         {showLabels ? children : null}

@@ -23,7 +23,7 @@ const meta: Meta<typeof ContextInput> = {
   parameters: {
     layout: "centered",
   },
-  tags: ["autodocs", "beta"],
+  tags: ["autodocs"],
 }
 
 export default meta

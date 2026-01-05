@@ -8,7 +8,7 @@ const meta: Meta<typeof EmojiPicker> = {
   parameters: {
     layout: "centered",
   },
-  tags: ["beta", "autodocs"],
+  tags: ["autodocs"],
 }
 
 export default meta

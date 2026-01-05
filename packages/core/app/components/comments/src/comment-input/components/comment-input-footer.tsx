@@ -1,5 +1,6 @@
 import { Button } from "@choice-ui/button"
 import { IconButton } from "@choice-ui/icon-button"
+import { Tooltip } from "@choice-ui/tooltip"
 import { ArrowUp, AtSign, Image, Smile } from "@choiceform/icons-react"
 import { ChangeEvent, useRef } from "react"
 import type { InputDefaultText } from "../../types"
@@ -22,6 +23,9 @@ interface CommentInputFooterProps {
   onMentionClick?: () => void
   onSubmit?: () => void
   typing?: boolean
+  showMentionButton?: boolean
+  showEmojiButton?: boolean
+  showImageUploadButton?: boolean
 }
 
 export const CommentInputFooter = (props: CommentInputFooterProps) => {
@@ -42,6 +46,9 @@ export const CommentInputFooter = (props: CommentInputFooterProps) => {
     maxImageCount = 5,
     hasOnlyImages = false,
     defaultText,
+    showMentionButton = true,
+    showEmojiButton = true,
+    showImageUploadButton = true,
   } = props
 
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -69,45 +76,51 @@ export const CommentInputFooter = (props: CommentInputFooterProps) => {
       {typing && (
         <div className={styles.footerActions()}>
           {/* Emoji Button */}
-          <IconButton
-            ref={emojiButtonRef}
-            onClick={onEmojiClick}
-            tooltip={{
-              content: defaultText.ADD_EMOJI,
-            }}
-          >
-            <Smile />
-          </IconButton>
+          {showEmojiButton && (
+            <IconButton
+              ref={emojiButtonRef}
+              onClick={onEmojiClick}
+              tooltip={{
+                content: defaultText.ADD_EMOJI,
+              }}
+            >
+              <Smile />
+            </IconButton>
+          )}
 
           {/* Mention Button */}
-          <IconButton
-            onClick={onMentionClick}
-            tooltip={{
-              content: defaultText.ADD_MENTION,
-            }}
-          >
-            <AtSign />
-          </IconButton>
+          {showMentionButton && (
+            <IconButton
+              onClick={onMentionClick}
+              tooltip={{
+                content: defaultText.ADD_MENTION,
+              }}
+            >
+              <AtSign />
+            </IconButton>
+          )}
 
           {/* Image Upload Button */}
-          <IconButton
-            onClick={handleImageButtonClick}
-            disabled={disableImageUpload}
-            tooltip={{
-              content: getImageTooltipText(),
-            }}
-          >
-            <Image />
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              multiple
-              onChange={onImageUpload}
-              className="hidden"
+          {showImageUploadButton && (
+            <IconButton
+              onClick={handleImageButtonClick}
               disabled={disableImageUpload}
-            />
-          </IconButton>
+              tooltip={{
+                content: getImageTooltipText(),
+              }}
+            >
+              <Image />
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={onImageUpload}
+                className="hidden"
+                disabled={disableImageUpload}
+              />
+            </IconButton>
+          )}
         </div>
       )}
 
@@ -130,16 +143,15 @@ export const CommentInputFooter = (props: CommentInputFooterProps) => {
         </div>
       ) : (
         /* Submit Button */
-        <Button
-          onClick={onSubmit}
-          disabled={isSubmitDisabled}
-          className="w-6 rounded-full border-none px-0"
-          tooltip={{
-            content: defaultText.SUBMIT,
-          }}
-        >
-          <ArrowUp />
-        </Button>
+        <Tooltip content={defaultText.SUBMIT}>
+          <Button
+            onClick={onSubmit}
+            disabled={isSubmitDisabled}
+            className="w-6 rounded-full border-none px-0"
+          >
+            <ArrowUp />
+          </Button>
+        </Tooltip>
       )}
     </div>
   )

@@ -1,6 +1,7 @@
 import { mergeRefs, tcx } from "@choice-ui/shared"
 import { forwardRef, Fragment, HTMLProps, ReactNode, useRef } from "react"
 import { useHover } from "usehooks-ts"
+import { panelRowManyIconTv } from "../tv"
 
 export type PanelRowManyIconItem = {
   alwaysShow?: boolean
@@ -23,18 +24,17 @@ export const PanelRowManyIcon = forwardRef<HTMLDivElement, PanelRowManyIconProps
     const innerRef = useRef<HTMLDivElement>(null)
     const isHovered = useHover(innerRef)
 
+    const tv = panelRowManyIconTv()
+
     return (
       <div
         ref={mergeRefs(ref, innerRef)}
-        className={tcx(
-          "group text-body-medium flex h-8 min-w-0 items-center justify-between gap-x-2 pr-2 pl-4 select-none",
-          className,
-        )}
+        className={tcx(tv.container(), className)}
         {...rest}
       >
         {children}
 
-        <div className="text-secondary-foreground group-hover:text-default-foreground flex h-6 min-w-6 flex-none gap-x-1">
+        <div className={tv.iconWrapper()}>
           {!isEditing &&
             icons.map(({ element, alwaysShow, id }) => {
               return <Fragment key={id}>{isHovered || alwaysShow ? element : null}</Fragment>

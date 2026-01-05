@@ -17,7 +17,7 @@ import { useState } from "react"
 const meta: Meta<typeof Modal> = {
   title: "Overlays/Modal",
   component: Modal,
-  tags: ["new"],
+  tags: ["autodocs"],
 }
 
 export default meta

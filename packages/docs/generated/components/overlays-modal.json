@@ -3,7 +3,7 @@
   "title": "Modal",
   "package": {
     "name": "@choice-ui/modal",
-    "version": "0.0.7",
+    "version": "0.0.8",
     "description": "A modal component with header, footer, and content sections for structured dialog layouts",
     "dependencies": {
       "@choice-ui/shared": "workspace:*",
@@ -422,8 +422,5 @@
       "description": "",
       "source": "import { Modal } from \"@choice-ui/modal\"\n\nexport default function App() {\n\n  return (\n    <Modal className=\"w-sm\">\n      <Modal.Header title=\"Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.\" />\n      <Modal.Content className=\"p-4\">\n        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.\n      </Modal.Content>\n    </Modal>\n  )\n\n}"
     }
-  ],
-  "tags": [
-    "new"
   ]
 }

@@ -38,7 +38,7 @@ const meta: Meta<typeof Textarea> = {
   parameters: {
     layout: "centered",
   },
-  tags: ["autodocs", "new"],
+  tags: ["autodocs"],
 }
 
 export default meta

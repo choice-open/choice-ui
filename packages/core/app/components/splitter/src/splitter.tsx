@@ -1,10 +1,9 @@
 import {
   Allotment as Splitter,
-  type AllotmentProps,
+  type AllotmentProps as SplitterProps,
   type AllotmentHandle as SplitterHandle,
 } from "allotment"
-// import "allotment/dist/style.css"
 
 export { Splitter }
 
-export type { SplitterHandle, AllotmentProps }
+export type { SplitterHandle, SplitterProps }

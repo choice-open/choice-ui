@@ -303,8 +303,5 @@
       "description": "Empty: Demonstrates empty state display when no results match.\n\nFeatures:\n- Show custom empty message when no options match the search\n- Useful for filtered results scenarios",
       "source": "import { Combobox } from \"@choice-ui/combobox\"\nimport { useState, useMemo } from \"react\"\n\nexport default function App() {\n\n  const [value, setValue] = useState(\"\")\n\n  const allOptions = [\n    { value: \"apple\", label: \"Apple\" },\n    { value: \"banana\", label: \"Banana\" },\n    { value: \"orange\", label: \"Orange\" },\n  ]\n\n  const filteredOptions = useMemo(() => {\n    if (!value.trim()) return allOptions\n    return allOptions.filter((opt) => opt.label.toLowerCase().includes(value.toLowerCase()))\n  }, [value])\n\n  return (\n    <Combobox\n      value={value}\n      onChange={setValue}\n    >\n      <Combobox.Trigger placeholder=\"Search fruits...\" />\n      <Combobox.Content>\n        {filteredOptions.length > 0 ? (\n          filteredOptions.map((option) => (\n            <Combobox.Item\n              key={option.value}\n              value={option.value}\n              onClick={() => setValue(option.label)}\n            >\n              <Combobox.Value>{option.label}</Combobox.Value>\n            </Combobox.Item>\n          ))\n        ) : (\n          <Combobox.Empty>No results found</Combobox.Empty>\n        )}\n      </Combobox.Content>\n    </Combobox>\n  )\n\n}"
     }
-  ],
-  "tags": [
-    "beta"
   ]
 }

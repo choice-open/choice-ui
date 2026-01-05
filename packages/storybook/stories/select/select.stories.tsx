@@ -11,7 +11,7 @@ import React, { useMemo, useRef, useState } from "react"
 const meta: Meta<typeof Select> = {
   title: "Collections/Select",
   component: Select,
-  tags: ["upgrade"],
+  tags: ["autodocs"],
 }
 
 export default meta

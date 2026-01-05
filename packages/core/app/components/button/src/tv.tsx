@@ -71,6 +71,10 @@ export const buttonTv = tcv({
       true: "",
       false: "",
     },
+    multiElement: {
+      true: "",
+      false: "",
+    },
   },
   compoundVariants: [
     {
@@ -118,10 +122,15 @@ export const buttonTv = tcv({
       variant: ["link", "link-danger", "ghost"],
       disabled: true,
       class: {
-        button: [
-          "text-disabled-foreground pointer-events-none",
-          "data-[multi-element=true]:border-default-boundary",
-        ],
+        button: ["text-disabled-foreground pointer-events-none"],
+      },
+    },
+    {
+      variant: ["link", "link-danger", "ghost"],
+      disabled: true,
+      multiElement: true,
+      class: {
+        button: ["border-default-boundary"],
       },
     },
     {
@@ -240,5 +249,6 @@ export const buttonTv = tcv({
     disabled: false,
     loading: false,
     focused: false,
+    multiElement: false,
   },
 })

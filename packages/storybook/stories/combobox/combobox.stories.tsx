@@ -9,7 +9,7 @@ import { useEventCallback } from "usehooks-ts"
 const meta: Meta<typeof Combobox> = {
   title: "Collections/Combobox",
   component: Combobox,
-  tags: ["beta", "autodocs"],
+  tags: ["autodocs"],
 }
 
 export default meta

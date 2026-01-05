@@ -9,7 +9,7 @@ import { Editable, ReactEditor, Slate, withReact } from "slate-react"
 const meta: Meta<typeof Dropdown> = {
   title: "Collections/Dropdown",
   component: Dropdown,
-  tags: ["upgrade", "autodocs"],
+  tags: ["autodocs"],
 }
 
 export default meta

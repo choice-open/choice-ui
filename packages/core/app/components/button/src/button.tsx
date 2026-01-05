@@ -1,25 +1,21 @@
 import { isMultiElement, tcx } from "@choice-ui/shared"
-import { LoaderCircle } from "@choiceform/icons-react"
 import { Slot } from "@choice-ui/slot"
-import { Tooltip, TooltipProps } from "@choice-ui/tooltip"
+import { LoaderCircle } from "@choiceform/icons-react"
 import { cloneElement, forwardRef, HTMLProps, isValidElement, useMemo } from "react"
 import { buttonTv } from "./tv"
 
-export interface ButtonProps extends Omit<HTMLProps<HTMLButtonElement>, "size"> {
+export interface ButtonProps extends Omit<
+  HTMLProps<HTMLButtonElement | HTMLAnchorElement>,
+  "size" | "as"
+> {
   active?: boolean
+  as?: React.ElementType
   asChild?: boolean
   className?: string
   focused?: boolean
   loading?: boolean
   readOnly?: boolean
-  /**
-   * @default "default"
-   */
   size?: "default" | "large"
-  tooltip?: TooltipProps
-  /**
-   * @default "primary"
-   */
   variant?:
     | "primary"
     | "secondary"
@@ -47,15 +43,33 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
     loading,
     asChild,
     children,
-    tooltip,
+    as,
     "aria-label": ariaLabel,
     onClick,
     ...rest
   } = props
 
-  const Button = asChild ? Slot : "button"
+  const As = as ?? "button"
+  const AsComponent = asChild ? Slot : As
 
-  const tv = buttonTv({ variant, size, active, disabled, loading, focused, className })
+  // 只在真正渲染为 button 时才添加 type 属性，asChild 模式下不添加
+  const elementProps =
+    !asChild && As === "button"
+      ? { type: (rest.type as "button" | "submit" | "reset") ?? "button" }
+      : {}
+
+  const tv = useMemo(
+    () =>
+      buttonTv({
+        variant,
+        size,
+        active,
+        disabled,
+        loading,
+        focused,
+      }),
+    [variant, size, active, disabled, loading, focused],
+  )
 
   const content = isValidElement(children) ? (
     cloneElement(children as React.ReactElement, {
@@ -83,24 +97,21 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
   // In readOnly mode, prevent onClick event
   const handleClick = readOnly ? undefined : onClick
 
-  const button = (
-    <Button
-      {...rest}
+  return (
+    <AsComponent
       ref={ref}
-      type={(rest.type as "button" | "submit" | "reset" | undefined) || "button"}
+      className={tcx(tv.button({ multiElement: isMultiElement(content) }), className)}
+      {...elementProps}
+      {...rest}
       disabled={disabled || loading}
       onClick={handleClick}
-      className={tcx(tv.button(), className)}
-      data-multi-element={isMultiElement(content)}
       aria-disabled={disabled || loading}
       aria-busy={loading}
       aria-label={ariaLabelProps}
     >
       {content}
-    </Button>
+    </AsComponent>
   )
-
-  return tooltip ? <Tooltip {...tooltip}>{button}</Tooltip> : button
 })
 
 Button.displayName = "Button"

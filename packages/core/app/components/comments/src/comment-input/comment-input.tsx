@@ -27,6 +27,9 @@ export interface CommentInputProps {
   placeholder?: string
   users?: User[]
   variant?: "default" | "solid"
+  showMentionButton?: boolean
+  showEmojiButton?: boolean
+  showImageUploadButton?: boolean
 }
 
 export const CommentInput = forwardRef<HTMLDivElement, CommentInputProps>((props, ref) => {
@@ -50,6 +53,9 @@ export const CommentInput = forwardRef<HTMLDivElement, CommentInputProps>((props
       UPLOAD_ATTACHMENT: "Upload up to 5 images",
       REMOVE_IMAGE: "Remove image",
     },
+    showMentionButton = true,
+    showEmojiButton = true,
+    showImageUploadButton = true,
   } = props
 
   // Edit mode state
@@ -285,6 +291,9 @@ export const CommentInput = forwardRef<HTMLDivElement, CommentInputProps>((props
           maxImageCount={maxImageCount}
           hasOnlyImages={hasOnlyImages}
           defaultText={defaultText}
+          showMentionButton={showMentionButton && users.length > 0}
+          showEmojiButton={showEmojiButton}
+          showImageUploadButton={showImageUploadButton}
         />
 
         {shouldShowPlaceholder ? (

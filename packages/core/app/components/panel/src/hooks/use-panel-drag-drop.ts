@@ -364,18 +364,22 @@ export function usePanelDragDrop({
   // 保存endDrag引用
   useEffect(() => {
     endDragRef.current = endDrag
+  }, [endDrag])
 
-    // 确保组件卸载时清理资源
+  // 组件卸载时清理资源
+  useEffect(() => {
     return () => {
-      if (dragStateRef.current.isDragging) {
-        document.removeEventListener("mousemove", handleGlobalMouseMove)
-        document.removeEventListener("mouseup", handleGlobalMouseUp)
-        clearDropIndicators()
-      }
+      // 清理事件监听器
+      document.removeEventListener("mousemove", handleGlobalMouseMove)
+      document.removeEventListener("mouseup", handleGlobalMouseUp)
+      // 清理 DOM 指示器
+      clearDropIndicators()
       // 清理滚动动画
       stopAutoScroll()
+      // 清理滚动容器引用
+      scrollContainerRef.current = null
     }
-  }, [endDrag, handleGlobalMouseMove, handleGlobalMouseUp, clearDropIndicators, stopAutoScroll])
+  }, [handleGlobalMouseMove, handleGlobalMouseUp, clearDropIndicators, stopAutoScroll])
 
   // 处理拖拽开始
   const handleDragStart = useEventCallback((item: PanelDragItem, e: React.MouseEvent) => {

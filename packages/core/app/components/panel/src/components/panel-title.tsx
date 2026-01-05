@@ -23,25 +23,25 @@ const TitleContent = memo(function TitleContent({
   title,
   onClick,
   collapsible,
-  styles,
-  classNames,
+  titleClassName,
 }: {
-  classNames?: PanelTitleProps["classNames"]
   collapsible?: boolean
   onClick?: () => void
-  styles: ReturnType<typeof propertiesPaneTitleTv>
   title: string
+  titleClassName?: string
 }) {
+  const tv = useMemo(() => propertiesPaneTitleTv(), [])
+
   return collapsible || onClick ? (
     <button
       type="button"
       onClick={onClick}
-      className={tcx(styles.title(), classNames?.title)}
+      className={tcx(tv.title(), titleClassName)}
     >
       <span aria-hidden="true">{title}</span>
     </button>
   ) : (
-    <span className={tcx(styles.title(), classNames?.title)}>{title}</span>
+    <span className={tcx(tv.title(), titleClassName)}>{title}</span>
   )
 })
 
@@ -51,7 +51,7 @@ export const PanelTitle = forwardRef<HTMLDivElement, PanelTitleProps>(
 
     const { collapsible, isCollapsed, onCollapsedChange, alwaysShowCollapsible } = usePanelContext()
 
-    const styles = propertiesPaneTitleTv()
+    const tv = useMemo(() => propertiesPaneTitleTv(), [])
 
     const handleMouseDown = useEventCallback(() => {
       if (collapsible) {
@@ -59,40 +59,38 @@ export const PanelTitle = forwardRef<HTMLDivElement, PanelTitleProps>(
       }
     })
 
-    const containerClassName = useMemo(
-      () => tcx(styles.container(), className),
-      [styles, className],
-    )
+    const handleClick = useEventCallback(() => {
+      onHeaderClick?.()
+    })
+
+    const containerClassName = useMemo(() => tcx(tv.container(), className), [tv, className])
 
     return (
       <div
         ref={ref}
         className={containerClassName}
         onMouseDown={handleMouseDown}
-        onClick={() => {
-          onHeaderClick?.()
-        }}
+        onClick={handleClick}
         {...rest}
       >
-        <div className={styles.wrapper()}>
-          <div className={styles.content()}>
-            <div className={tcx(styles.collapsibleWrapper(), alwaysShowCollapsible && "visible")}>
+        <div className={tv.wrapper()}>
+          <div className={tv.content()}>
+            <div className={tcx(tv.collapsibleWrapper(), alwaysShowCollapsible && "visible")}>
               {collapsible && (isCollapsed ? <ChevronRightSmall /> : <ChevronDownSmall />)}
             </div>
 
-            <div className={tcx(styles.titleWrapper(), classNames?.titleWrapper)}>
+            <div className={tcx(tv.titleWrapper(), classNames?.titleWrapper)}>
               <TitleContent
                 title={title}
                 collapsible={collapsible}
                 onClick={onTitleClick}
-                styles={styles}
-                classNames={classNames}
+                titleClassName={classNames?.title}
               />
             </div>
           </div>
 
           {children && (
-            <div className={tcx(styles.actionWrapper(), classNames?.actionWrapper)}>{children}</div>
+            <div className={tcx(tv.actionWrapper(), classNames?.actionWrapper)}>{children}</div>
           )}
         </div>
       </div>

@@ -3,11 +3,11 @@
   "title": "Splitter",
   "package": {
     "name": "@choice-ui/splitter",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "description": "A resizable splitter component for creating adjustable layouts with draggable dividers",
     "dependencies": {
       "@choice-ui/shared": "workspace:*",
-      "allotment": "^1.20.4"
+      "allotment": "^1.20.5"
     },
     "peerDependencies": {
       "react": ">=18.0.0",
@@ -17,7 +17,7 @@
   "exports": [
     "Splitter",
     "type SplitterHandle",
-    "type AllotmentProps"
+    "type SplitterProps"
   ],
   "props": [
     {

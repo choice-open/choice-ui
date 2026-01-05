@@ -1,8 +1,9 @@
 import { tcv } from "@choice-ui/shared"
+import s from "./styles/style.module.css"
 
 export const propertiesPanelTv = tcv({
   slots: {
-    container: "properties-panel",
+    container: "relative flex min-w-0 flex-col not-last:border-b",
     triggerRef: "pointer-events-none absolute inset-y-0 left-0",
   },
   variants: {
@@ -31,25 +32,26 @@ export const propertiesPaneTitleTv = tcv({
 
 export const propertiesPanelRowTv = tcv({
   slots: {
-    container: "group rows",
+    container: "group grid min-w-0 items-center pr-2 pl-4",
     triggerRef: "pointer-events-none absolute inset-y-0 left-0",
   },
   variants: {
     type: {
-      single: { container: "rows--single" },
-      "two-columns": { container: "rows--two-columns" },
-      "one-label-one-input": { container: "rows--one-label-one-input" },
-      "one-label-one-input-one-icon": { container: "rows--one-label-one-input-one-icon" },
-      "one-label-two-input": { container: "rows--one-label-two-input" },
-      "one-icon-one-input": { container: "rows--one-icon-one-input" },
-      "one-input-one-icon": { container: "rows--one-input-one-icon" },
-      "one-input-two-icon": { container: "rows--one-input-two-icon" },
-      "two-input-one-icon": { container: "rows--two-input-one-icon" },
-      "two-input-two-icon": { container: "rows--two-input-two-icon" },
-      "one-icon-one-input-two-icon": { container: "rows--one-icon-one-input-two-icon" },
-      "two-input-one-icon-double-row": { container: "rows--two-input-one-icon-double-row" },
+      single: { container: s.single },
+      "two-columns": { container: s["two-columns"] },
+      "one-label-one-input": { container: s["one-label-one-input"] },
+      "one-label-one-input-one-icon": { container: s["one-label-one-input-one-icon"] },
+      "one-label-two-input": { container: s["one-label-two-input"] },
+      "one-icon-one-input": { container: s["one-icon-one-input"] },
+      "one-input-one-icon": { container: s["one-input-one-icon"] },
+      "one-input-two-icon": { container: s["one-input-two-icon"] },
+      "two-input-one-icon": { container: s["two-input-one-icon"] },
+      "two-input-two-icon": { container: s["two-input-two-icon"] },
+      "one-icon-one-input-one-icon": { container: s["one-icon-one-input-one-icon"] },
+      "one-icon-one-input-two-icon": { container: s["one-icon-one-input-two-icon"] },
+      "two-input-one-icon-double-row": { container: s["two-input-one-icon-double-row"] },
       "one-icon-one-input-two-icon-double-row": {
-        container: "rows--one-icon-one-input-two-icon-double-row",
+        container: s["one-icon-one-input-two-icon-double-row"],
       },
     },
     triggerRef: {
@@ -100,5 +102,42 @@ export const panelSortableRowTv = tcv({
     dragging: false,
     beingDragged: false,
     singleItem: false,
+  },
+})
+
+export const panelLabelTv = tcv({
+  base: "[grid-area:label]",
+  variants: {
+    showLabels: {
+      true: ["text-secondary-foreground", s.label],
+      false: "sr-only",
+    },
+  },
+  defaultVariants: {
+    showLabels: false,
+  },
+})
+
+export const panelPreviewerTv = tcv({
+  base: "bg-secondary-background text-secondary-foreground relative mx-4 my-2 flex h-32 flex-col items-center justify-center rounded-xl",
+})
+
+export const panelRowLabelTv = tcv({
+  base: "text-secondary-foreground cursor-default truncate select-none [grid-area:label]",
+})
+
+export const panelRowManyIconTv = tcv({
+  slots: {
+    container:
+      "group text-body-medium flex h-8 min-w-0 items-center justify-between gap-x-2 pr-2 pl-4 select-none",
+    iconWrapper:
+      "text-secondary-foreground group-hover:text-default-foreground flex h-6 min-w-6 flex-none gap-x-1",
+  },
+})
+
+export const panelSortableContainerTv = tcv({
+  slots: {
+    container: "relative flex flex-col",
+    rowContainer: "panel-sortable-row group/sortable-row relative",
   },
 })

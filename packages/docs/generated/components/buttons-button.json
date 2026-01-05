@@ -29,7 +29,12 @@
           "name": "size",
           "type": "undefined | \"default\" | \"large\"",
           "required": false,
-          "defaultValue": "\"default\"",
+          "description": ""
+        },
+        {
+          "name": "as",
+          "type": "ElementType<any, keyof IntrinsicElements> | undefined",
+          "required": false,
           "description": ""
         },
         {
@@ -69,16 +74,9 @@
           "description": ""
         },
         {
-          "name": "tooltip",
-          "type": "TooltipProps | undefined",
-          "required": false,
-          "description": ""
-        },
-        {
           "name": "variant",
           "type": "undefined | \"link\" | \"primary\" | \"secondary\" | \"solid\" | \"destructive\" | \"secondary-destruct\" | \"inverse\" | \"success\" | \"link-danger\" | \"ghost\" | \"dark\" | \"reset\"",
           "required": false,
-          "defaultValue": "\"primary\"",
           "description": ""
         }
       ]
@@ -139,7 +137,7 @@
       "name": "Variants",
       "exportName": "Variants",
       "description": "Variants: Demonstrates all visual variants, sizes, and states for the Button component.\n- Shows how to use the variant, size, and state props.\n- Includes interactive controls for switching variants and sizes.\n- Demonstrates active, focused, loading, and disabled states.\n- Shows usage with and without icons.\n- Useful for previewing all button styles and states in your design system.",
-      "source": "import { Button } from \"@choice-ui/button\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  enum Variant {\n    Dark = \"dark\",\n    Destructive = \"destructive\",\n    Ghost = \"ghost\",\n    Inverse = \"inverse\",\n    Link = \"link\",\n    LinkDanger = \"link-danger\",\n    Primary = \"primary\",\n    Secondary = \"secondary\",\n    SecondaryDestruct = \"secondary-destruct\",\n    Solid = \"solid\",\n    Success = \"success\",\n  }\n\n  enum State {\n    Active = \"active\",\n    Disabled = \"disabled\",\n    Focused = \"focused\",\n    Loading = \"loading\",\n    Rest = \"rest\",\n  }\n\n  const [variant, setVariant] = useState<Variant>(Variant.Primary)\n\n  return (\n    <div\n      className={tcx(\n        \"flex flex-col items-start gap-4 rounded-xl p-4\",\n        variant === Variant.Dark && \"bg-gray-800\",\n      )}\n    >\n      <Select\n        value={variant}\n        onChange={(value) => setVariant(value as Variant)}\n      >\n        <Select.Trigger>\n          {Object.keys(Variant).find((v) => Variant[v as keyof typeof Variant] === variant)}\n        </Select.Trigger>\n        <Select.Content>\n          {Object.entries(Variant).map(([key, value]) => (\n            <Select.Item\n              key={key}\n              value={value}\n            >\n              {key}\n            </Select.Item>\n          ))}\n        </Select.Content>\n      </Select>\n\n      <div className=\"grid grid-cols-[auto_1fr_1fr] items-center gap-4\">\n        {Object.values(State).map((state) => (\n          <Fragment key={state}>\n            <span className=\"text-pink-500 capitalize\">{state}</span>\n            <Button\n              variant={variant}\n              active={state === State.Active}\n              disabled={state === State.Disabled}\n              loading={state === State.Loading}\n              focused={state === State.Focused}\n            >\n              Button\n            </Button>\n            <Button\n              variant={variant}\n              active={state === State.Active}\n              disabled={state === State.Disabled}\n              loading={state === State.Loading}\n              focused={state === State.Focused}\n            >\n              <SearchSmall />\n              Button\n            </Button>\n          </Fragment>\n        ))}\n      </div>\n    </div>\n  )\n\n}"
+      "source": "import { Button } from \"@choice-ui/button\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  enum Variant {\n    Dark = \"dark\",\n    Destructive = \"destructive\",\n    Ghost = \"ghost\",\n    Inverse = \"inverse\",\n    Link = \"link\",\n    LinkDanger = \"link-danger\",\n    Primary = \"primary\",\n    Secondary = \"secondary\",\n    SecondaryDestruct = \"secondary-destruct\",\n    Solid = \"solid\",\n    Success = \"success\",\n  }\n\n  enum State {\n    Active = \"active\",\n    Disabled = \"disabled\",\n    Focused = \"focused\",\n    Loading = \"loading\",\n    Rest = \"rest\",\n  }\n\n  const [variant, setVariant] = useState<Variant>(Variant.Primary)\n\n  return (\n    <div\n      className={tcx(\n        \"flex flex-col items-start gap-4 rounded-xl p-4\",\n        variant === Variant.Dark && \"bg-gray-800\",\n      )}\n    >\n      <Select\n        value={variant}\n        onChange={(value) => setVariant(value as Variant)}\n      >\n        <Select.Trigger>\n          {Object.keys(Variant).find((v) => Variant[v as keyof typeof Variant] === variant)}\n        </Select.Trigger>\n        <Select.Content>\n          {Object.entries(Variant).map(([key, value]) => (\n            <Select.Item\n              key={key}\n              value={value}\n            >\n              {key}\n            </Select.Item>\n          ))}\n        </Select.Content>\n      </Select>\n\n      <div className=\"grid grid-cols-[auto_1fr_1fr] items-center gap-4\">\n        {Object.values(State).map((state) => (\n          <Fragment key={state}>\n            <span className=\"capitalize text-pink-500\">{state}</span>\n            <Button\n              variant={variant}\n              active={state === State.Active}\n              disabled={state === State.Disabled}\n              loading={state === State.Loading}\n              focused={state === State.Focused}\n            >\n              Button\n            </Button>\n            <Button\n              variant={variant}\n              active={state === State.Active}\n              disabled={state === State.Disabled}\n              loading={state === State.Loading}\n              focused={state === State.Focused}\n            >\n              <SearchSmall />\n              Button\n            </Button>\n          </Fragment>\n        ))}\n      </div>\n    </div>\n  )\n\n}"
     },
     {
       "id": "buttons-button--as-child",
@@ -149,11 +147,11 @@
       "source": "import { Button } from \"@choice-ui/button\"\n\nexport default function App() {\n  return (\n\n    <Button asChild>\n      <a href=\"#\">Link</a>\n    </Button>\n\n  );\n}"
     },
     {
-      "id": "buttons-button--tooltip",
-      "name": "Tooltip",
-      "exportName": "Tooltip",
-      "description": "Tooltip: Demonstrates the Button with a tooltip.\n- Shows how to add a tooltip for additional context or guidance.\n- Tooltips are accessible and appear on hover or focus.",
-      "source": "import { Button } from \"@choice-ui/button\"\n\nexport default function App() {\n  return (\n    <Button tooltip={{ content: \"Tooltip\" }}>Button</Button>\n  );\n}"
+      "id": "buttons-button--as",
+      "name": "As",
+      "exportName": "As",
+      "description": "As: Demonstrates rendering the Button as another element using the `as` prop.\n- Useful for rendering a button as a link or other custom element while retaining button styles and behaviors.",
+      "source": "import { Button } from \"@choice-ui/button\"\n\nexport default function App() {\n  return (\n\n    <Button\n      as=\"a\"\n      href=\"#\"\n    >\n      Link\n    </Button>\n\n  );\n}"
     }
   ]
 }

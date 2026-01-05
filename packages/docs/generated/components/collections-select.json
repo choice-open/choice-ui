@@ -218,8 +218,5 @@
       "description": "Empty: Demonstrates Select with empty state when no options available.\n\nFeatures:\n- Empty state display when options array is empty\n- Custom empty message support\n- Consistent with menu styling\n\nUse cases:\n- Search results with no matches\n- Dynamic option lists that may be empty\n- Placeholder for loading states",
       "source": "import { Select } from \"@choice-ui/select\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [value, setValue] = useState<string | null>(null)\n  const options: { value: string; label: string }[] = []\n\n  return (\n    <Select\n      value={value}\n      onChange={setValue}\n    >\n      <Select.Trigger>\n        <Select.Value>{value || \"Select an option...\"}</Select.Value>\n      </Select.Trigger>\n      <Select.Content>\n        {options.length > 0 ? (\n          options.map((option) => (\n            <Select.Item\n              key={option.value}\n              value={option.value}\n            >\n              <Select.Value>{option.label}</Select.Value>\n            </Select.Item>\n          ))\n        ) : (\n          <Select.Empty>No options</Select.Empty>\n        )}\n      </Select.Content>\n    </Select>\n  )\n\n}"
     }
-  ],
-  "tags": [
-    "upgrade"
   ]
 }

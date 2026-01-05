@@ -5,7 +5,7 @@ import { useRef, useState } from "react"
 const meta: Meta<typeof ContextMenu> = {
   title: "Collections/ContextMenu",
   component: ContextMenu,
-  tags: ["upgrade", "autodocs"],
+  tags: ["autodocs"],
 }
 
 export default meta

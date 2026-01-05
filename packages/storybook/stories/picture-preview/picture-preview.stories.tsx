@@ -16,7 +16,7 @@ const sampleImages = [
 const meta: Meta<typeof PicturePreview> = {
   title: "DataDisplay/PicturePreview",
   component: PicturePreview,
-  tags: ["beta"],
+  tags: ["autodocs", "new"],
   decorators: [
     (Story) => (
       <div className="w-2xl h-96">
@@ -146,7 +146,7 @@ export const ControlPositions = {
             key={position}
             className="flex flex-col gap-2"
           >
-            <span className="text-sm text-secondary-foreground">{position}</span>
+            <span className="text-secondary-foreground text-sm">{position}</span>
             <div className="h-64">
               <PicturePreview
                 src={sampleImages[0].src}

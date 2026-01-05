@@ -210,8 +210,5 @@
       "description": "Empty: Demonstrates empty state display when no items are available.\n\nFeatures:\n- Show custom empty message when menu has no items\n- Useful for dynamic menu content scenarios",
       "source": "import { ContextMenu } from \"@choice-ui/context-menu\"\n\nexport default function App() {\n\n  const items: { id: string; label: string }[] = []\n\n  return (\n    <ContextMenu>\n      <ContextMenu.Trigger>\n        <div className=\"bg-secondary-background select-none rounded-xl border border-dashed p-8\">\n          Right click me to open context menu\n        </div>\n      </ContextMenu.Trigger>\n      <ContextMenu.Content>\n        {items.length > 0 ? (\n          items.map((item) => (\n            <ContextMenu.Item key={item.id}>\n              <ContextMenu.Value>{item.label}</ContextMenu.Value>\n            </ContextMenu.Item>\n          ))\n        ) : (\n          <ContextMenu.Empty>No actions available</ContextMenu.Empty>\n        )}\n      </ContextMenu.Content>\n    </ContextMenu>\n  )\n\n}"
     }
-  ],
-  "tags": [
-    "upgrade"
   ]
 }

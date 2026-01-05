@@ -8,6 +8,7 @@
 @import "../../core/app/styles/markdown.css";
 
 @source "../../core/app";
+@source "../../storybook/stories";
 
 body {
 }

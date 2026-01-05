@@ -3,7 +3,7 @@
   "title": "TextField",
   "package": {
     "name": "@choice-ui/text-field",
-    "version": "0.0.8",
+    "version": "0.0.9",
     "description": "A text field component combining input and label for form fields with validation support",
     "dependencies": {
       "@choice-ui/shared": "workspace:*",
@@ -186,8 +186,5 @@
       "description": "TextField with arrow icon prefix and dropdown menu suffix\nDemonstrates a URL or page input with navigation and dropdown functionality",
       "source": "import { TextField } from \"@choice-ui/text-field\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [dropdownValue, setDropdownValue] = useState<string>(\"recent\")\n\n  return (\n    <TextField\n      placeholder=\"Page or URL\"\n      className=\"w-64\"\n    >\n      <TextField.Prefix className=\"text-secondary-foreground group-hover/text-field:text-default-foreground group-focus-within/text-field:text-default-foreground\">\n        <ArrowRight />\n      </TextField.Prefix>\n      <TextField.Suffix className=\"\">\n        <Select\n          value={dropdownValue}\n          onChange={setDropdownValue}\n        >\n          <Select.Trigger className=\"h-6 w-6 border-0 bg-transparent p-0 hover:bg-transparent\"></Select.Trigger>\n          <Select.Content>\n            <Select.Item value=\"recent\">\n              <Select.Value>Recent</Select.Value>\n            </Select.Item>\n            <Select.Item value=\"bookmarks\">\n              <Select.Value>Bookmarks</Select.Value>\n            </Select.Item>\n            <Select.Item value=\"history\">\n              <Select.Value>History</Select.Value>\n            </Select.Item>\n            <Select.Divider />\n            <Select.Item value=\"settings\">\n              <Select.Value>Settings</Select.Value>\n            </Select.Item>\n          </Select.Content>\n        </Select>\n      </TextField.Suffix>\n    </TextField>\n  )\n\n}"
     }
-  ],
-  "tags": [
-    "new"
   ]
 }

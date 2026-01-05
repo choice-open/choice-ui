@@ -5,7 +5,7 @@ import { useState } from "react"
 const meta: Meta<typeof SearchInput> = {
   title: "Forms/SearchInput",
   component: SearchInput,
-  tags: ["new"],
+  tags: ["autodocs"],
 }
 
 export default meta

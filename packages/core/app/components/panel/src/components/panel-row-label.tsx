@@ -1,5 +1,6 @@
 import { tcx } from "@choice-ui/shared"
 import { ComponentProps } from "react"
+import { panelRowLabelTv } from "../tv"
 
 type Props = {
   label: string
@@ -9,10 +10,7 @@ export const PanelRowLabel = (props: Props) => {
   const { className, label, ...rest } = props
   return (
     <div
-      className={tcx(
-        "text-secondary-foreground cursor-default truncate select-none [grid-area:label]",
-        className,
-      )}
+      className={tcx(panelRowLabelTv(), className)}
       {...rest}
     >
       {label}

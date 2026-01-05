@@ -104,7 +104,9 @@ export const renderLeaf = (props: RenderLeafProps) => {
   }
 
   if (customLeaf.emoji) {
-    formattedChildren = <span className="font-emoji text-xl leading-6">{formattedChildren}</span>
+    formattedChildren = (
+      <span className="font-emoji text-body-large leading-6">{formattedChildren}</span>
+    )
   }
 
   return <span {...attributes}>{formattedChildren}</span>

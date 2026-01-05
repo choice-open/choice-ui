@@ -6,7 +6,7 @@ import { useState } from "react"
 const meta = {
   title: "Forms/TextField",
   component: TextField,
-  tags: ["new"],
+  tags: ["autodocs"],
 } satisfies Meta<typeof TextField>
 
 export default meta

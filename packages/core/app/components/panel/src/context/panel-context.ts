@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react"
 
-interface PanelContextType {
+export interface PanelContextType {
   alwaysShowCollapsible?: boolean
   collapsible?: boolean
   isCollapsed?: boolean

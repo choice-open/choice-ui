@@ -67,7 +67,12 @@
           "name": "size",
           "type": "undefined | \"default\" | \"large\"",
           "required": false,
-          "defaultValue": "\"default\"",
+          "description": ""
+        },
+        {
+          "name": "as",
+          "type": "ElementType<any, keyof IntrinsicElements> | undefined",
+          "required": false,
           "description": ""
         },
         {
@@ -107,16 +112,9 @@
           "description": ""
         },
         {
-          "name": "tooltip",
-          "type": "TooltipProps | undefined",
-          "required": false,
-          "description": ""
-        },
-        {
           "name": "variant",
           "type": "undefined | \"link\" | \"primary\" | \"secondary\" | \"solid\" | \"destructive\" | \"secondary-destruct\" | \"inverse\" | \"success\" | \"link-danger\" | \"ghost\" | \"dark\" | \"reset\"",
           "required": false,
-          "defaultValue": "\"primary\"",
           "description": ""
         },
         {
@@ -404,7 +402,12 @@
           "name": "size",
           "type": "undefined | \"default\" | \"large\"",
           "required": false,
-          "defaultValue": "\"default\"",
+          "description": ""
+        },
+        {
+          "name": "as",
+          "type": "ElementType<any, keyof IntrinsicElements> | undefined",
+          "required": false,
           "description": ""
         },
         {
@@ -444,16 +447,9 @@
           "description": ""
         },
         {
-          "name": "tooltip",
-          "type": "TooltipProps | undefined",
-          "required": false,
-          "description": ""
-        },
-        {
           "name": "variant",
           "type": "undefined | \"link\" | \"primary\" | \"secondary\" | \"solid\" | \"destructive\" | \"secondary-destruct\" | \"inverse\" | \"success\" | \"link-danger\" | \"ghost\" | \"dark\" | \"reset\"",
           "required": false,
-          "defaultValue": "\"primary\"",
           "description": ""
         },
         {

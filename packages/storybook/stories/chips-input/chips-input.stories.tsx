@@ -6,7 +6,7 @@ import { useState } from "react"
 const meta = {
   title: "Forms/ChipsInput",
   component: ChipsInput,
-  tags: ["beta", "autodocs"],
+  tags: ["autodocs"],
 } satisfies Meta<typeof ChipsInput>
 
 export default meta

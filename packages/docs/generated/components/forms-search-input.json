@@ -3,7 +3,7 @@
   "title": "SearchInput",
   "package": {
     "name": "@choice-ui/search-input",
-    "version": "0.0.6",
+    "version": "0.0.7",
     "description": "A search input component with search icon, clear button, and search-specific styling",
     "dependencies": {
       "@choice-ui/shared": "workspace:*",
@@ -126,8 +126,5 @@
       "description": "Variants: Demonstrates different visual variants of the numeric input component.\n- default: Follows the page theme dynamically (light/dark mode)\n- light: Fixed light appearance regardless of theme\n- dark: Fixed dark appearance regardless of theme\n- reset: Removes variant styling, no variant settings applied",
       "source": "import { SearchInput } from \"@choice-ui/search-input\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [value, setValue] = useState(\"\")\n  const [disabled, setDisabled] = useState(false)\n\n  return (\n    <div className=\"flex flex-col gap-2\">\n      <Checkbox\n        value={disabled}\n        onChange={(value) => setDisabled(value)}\n      >\n        Disabled\n      </Checkbox>\n      <div className=\"flex flex-wrap gap-4\">\n        <div className=\"bg-default-background rounded-lg border p-4\">\n          <SearchInput\n            disabled={disabled}\n            value={value}\n            onChange={setValue}\n          />\n        </div>\n        <div className=\"rounded-lg border bg-white p-4\">\n          <SearchInput\n            disabled={disabled}\n            value={value}\n            onChange={setValue}\n            variant=\"light\"\n          />\n        </div>\n        <div className=\"rounded-lg border bg-gray-800 p-4\">\n          <SearchInput\n            disabled={disabled}\n            value={value}\n            onChange={setValue}\n            variant=\"dark\"\n          />\n        </div>\n      </div>\n    </div>\n  )\n\n}"
     }
-  ],
-  "tags": [
-    "new"
   ]
 }

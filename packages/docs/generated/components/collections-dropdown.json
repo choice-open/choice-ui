@@ -288,8 +288,5 @@
       "description": "Empty: Demonstrates empty state display when no items are available.\n\nFeatures:\n- Show custom empty message when menu has no items\n- Useful for dynamic menu content scenarios",
       "source": "import { Dropdown } from \"@choice-ui/dropdown\"\n\nexport default function App() {\n\n  const items: { id: string; label: string }[] = []\n\n  return (\n    <Dropdown>\n      <Dropdown.Trigger>\n        <Dropdown.Value>Open Menu</Dropdown.Value>\n      </Dropdown.Trigger>\n      <Dropdown.Content>\n        {items.length > 0 ? (\n          items.map((item) => (\n            <Dropdown.Item key={item.id}>\n              <Dropdown.Value>{item.label}</Dropdown.Value>\n            </Dropdown.Item>\n          ))\n        ) : (\n          <Dropdown.Empty>No items available</Dropdown.Empty>\n        )}\n      </Dropdown.Content>\n    </Dropdown>\n  )\n\n}"
     }
-  ],
-  "tags": [
-    "upgrade"
   ]
 }

@@ -1,0 +1,31 @@
+
+CLI Building entry: src/index.ts
+CLI Using tsconfig: tsconfig.json
+CLI tsup v8.5.1
+CLI Using tsup config: /Users/wester/GitHub/choice-ui/packages/core/app/components/splitter/t
+CLI Using tsup config: /Users/wester/GitHub/choice-ui/packages/core/app/components/splitter/tsup.config.ts
+CLI Target: es2022
+CLI Cleaning output folder
+ESM Build start
+ESM dist/index.js 51.00 B
+ESM ⚡️ Build success in 14ms
+DTS Build start
+DTS ⚡️ Build success inhoice-ui/splitter 版本从 0.0.4 更新到 0.0.5
+ℹ️  发�r@0ℹ️  发�r@0ℹ️  发�r@0ℹ️  发�r@0ℹ️  发�r@0ℹice Tarball Conteℹ️  发�r@0ℹ️  �DME.md
+npm notice 119B dist/index.d.ts
+npm notice 51B dist/index.js
+npm notice 976B package.json
+npm notice 976B package.js
+npm notice name: @choice-ui/splitter
+npm notice version: 0.0.5
+npm noticnpm noticnpm noticnpm noticnpm noticnpm noticnpm noticnpm noticnpm noticnpm noticnpmunpacked snpm noticnpm not notice shasum: 268958431d712d8a8f8ce59dff5b6e18fc1e363b
+npm notice integrity: sha512-iiycPyFrpsN45[...]PSSuzDXvx3crQ==
+npm notice total files: 4
+npm notice
+npm notice Publishing to https://registry.npmjs.org/ with tag latest and public access
++ @choice-ui/splitter@0.0.5
+✅ @choice-ui/splitter@0.0.5 发布成功
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅ 完成: 1 成功, 0 失败
+

@@ -1,0 +1,86 @@
+@reference "tailwindcss";
+
+.label {
+  @apply mt-1 select-none;
+  padding-right: 0.125rem;
+  padding-left: 0.125rem;
+  font-weight: 500;
+  font-size: 0.5625rem;
+  line-height: 0.875rem;
+  letter-spacing: 0.016875rem;
+}
+
+.single {
+  @apply gap-x-2 pr-4;
+  grid-template-rows: auto minmax(2rem, auto);
+  grid-template-columns: 1fr;
+  grid-template-areas: "label" "input";
+}
+.two-columns {
+  @apply gap-x-2 pr-4;
+  grid-template-rows: auto minmax(2rem, auto);
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas: "label-1 label-2" "input-1 input-2";
+}
+.one-label-one-input {
+  @apply gap-x-2 pr-4;
+  grid-template-rows: 2rem;
+  grid-template-columns: 8fr 20fr;
+  grid-template-areas: "label input";
+}
+.one-label-one-input-one-icon {
+  @apply gap-x-1 pr-2;
+  grid-template-rows: 2rem;
+  grid-template-columns: 8fr 20fr 1.5rem;
+  grid-template-areas: "label input icon";
+}
+.one-label-two-input {
+  @apply gap-x-2 pr-4;
+  grid-template-rows: 2rem;
+  grid-template-columns: 8fr 10fr 10fr;
+  grid-template-areas: "label input-1 input-2";
+}
+.one-icon-one-input {
+  @apply gap-x-2 pr-4;
+  grid-template-rows: auto minmax(2rem, auto);
+  grid-template-columns: 1.5rem 1fr;
+  grid-template-areas: ". label" "icon input";
+}
+.one-input-one-icon {
+  @apply gap-x-2;
+  grid-template-rows: auto minmax(2rem, auto);
+  grid-template-columns: 1fr 1.5rem;
+  grid-template-areas: "label label" "input icon";
+}
+.one-input-two-icon {
+  grid-template-rows: auto minmax(2rem, auto);
+  grid-template-columns: 1fr 0.5rem 1.5rem 0.25rem 1.5rem;
+  grid-template-areas: "label . . . ." "input . icon-1 . icon-2";
+}
+.two-input-two-icon {
+  grid-template-rows: auto minmax(2rem, auto);
+  grid-template-columns: minmax(76px, 1fr) 0.5rem 1fr 0.5rem 1.5rem 0.25rem 1.5rem;
+  grid-template-areas: "label-1 label-1 label-2 label-2 . . ." "input-1 . input-2 . icon-1 . icon-2";
+}
+.two-input-one-icon {
+  @apply gap-x-2;
+  grid-template-rows: auto minmax(2rem, auto);
+  grid-template-columns: 1fr 1fr 1.5rem;
+  grid-template-areas: "label-1 label-2 label-2" "input-1 input-2 icon";
+}
+.one-icon-one-input-one-icon {
+  grid-template-rows: auto minmax(2rem, auto);
+  grid-template-columns: 1.5rem 0.5rem 1fr 0.5rem 1.5rem;
+  grid-template-areas: "label label label label label" "icon-1 . input . icon-2";
+}
+.one-icon-one-input-two-icon {
+  grid-template-rows: auto minmax(2rem, auto);
+  grid-template-columns: 1.5rem 0.5rem 1fr 0.5rem 1.5rem 0.25rem 1.5rem;
+  grid-template-areas: "label label label label label label label" "icon-1 . input . icon-2 . icon-3";
+}
+.two-input-one-icon-double-row {
+  @apply gap-x-2;
+  grid-template-rows: auto 2rem 2rem;
+  grid-template-columns: 1fr 1fr 1.5rem;
+  grid-template-areas: "label-1 label-2 ." "input-1 input-3 icon-1" "input-2 input-3 icon-2";
+}

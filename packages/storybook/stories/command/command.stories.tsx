@@ -33,7 +33,7 @@ import React, { useEffect, useRef, useState } from "react"
 const meta: Meta<typeof Command> = {
   title: "Collections/Command",
   component: Command,
-  tags: ["autodocs", "new"],
+  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {

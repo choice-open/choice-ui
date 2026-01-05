@@ -1,6 +1,6 @@
 {
   "name": "@choice-ui/panel",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "A panel component for organizing content in collapsible sections with headers and actions",
   "sideEffects": false,
   "type": "module",

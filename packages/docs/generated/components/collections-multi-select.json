@@ -380,8 +380,5 @@
       "description": "Empty: Demonstrates empty state display when no options are available.\n\nFeatures:\n- Show custom empty message when options list is empty\n- Useful for async loading or filtered results scenarios",
       "source": "import { MultiSelect } from \"@choice-ui/multi-select\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [values, setValues] = useState<string[]>([])\n  const options: { value: string; label: string }[] = []\n\n  return (\n    <MultiSelect\n      values={values}\n      onChange={setValues}\n    >\n      <MultiSelect.Trigger\n        placeholder=\"Select options...\"\n        className=\"w-80\"\n      />\n      <MultiSelect.Content>\n        {options.length > 0 ? (\n          options.map((option) => (\n            <MultiSelect.Item\n              key={option.value}\n              value={option.value}\n            >\n              {option.label}\n            </MultiSelect.Item>\n          ))\n        ) : (\n          <MultiSelect.Empty>No options available</MultiSelect.Empty>\n        )}\n      </MultiSelect.Content>\n    </MultiSelect>\n  )\n\n}"
     }
-  ],
-  "tags": [
-    "new"
   ]
 }

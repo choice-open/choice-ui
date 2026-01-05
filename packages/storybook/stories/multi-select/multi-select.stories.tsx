@@ -12,7 +12,7 @@ import React, { useCallback, useMemo, useState } from "react"
 const meta: Meta<typeof MultiSelect> = {
   title: "Collections/MultiSelect",
   component: MultiSelect,
-  tags: ["new", "autodocs"],
+  tags: ["autodocs"],
 }
 
 export default meta

@@ -1,5 +1,5 @@
 import { tcx } from "@choice-ui/shared"
-import { Children, forwardRef, HTMLProps, useMemo } from "react"
+import { Children, forwardRef, HTMLProps, memo, useMemo } from "react"
 import {
   PanelLabel,
   PanelPreviewer,
@@ -10,7 +10,7 @@ import {
   PanelSortableRow,
   PanelTitle,
 } from "./components"
-import { PanelContext, usePanelContext } from "./context"
+import { PanelContext, PanelContextType, usePanelContext } from "./context"
 import { propertiesPanelTv } from "./tv"
 
 interface PanelProps extends Omit<HTMLProps<HTMLDivElement>, "title"> {
@@ -22,12 +22,11 @@ interface PanelProps extends Omit<HTMLProps<HTMLDivElement>, "title"> {
   isEmpty?: boolean
   onCollapsedChange?: (isCollapsed: boolean) => void
   onEmptyChange?: (isEmpty: boolean) => void
-  // 始终显示折叠按钮
   showLabels?: boolean
   triggerRef?: React.RefObject<HTMLDivElement>
 }
 
-const PanelContent = function PanelContent({
+const PanelContent = memo(function PanelContent({
   children,
   collapsible,
   title,
@@ -48,7 +47,7 @@ const PanelContent = function PanelContent({
   ) : (
     <>{children}</>
   )
-}
+})
 
 interface PanelComponentProps extends React.ForwardRefExoticComponent<
   PanelProps & React.RefAttributes<HTMLDivElement>
@@ -106,24 +105,31 @@ export const PanelBase = forwardRef<HTMLDivElement, PanelProps>(function Panel(p
     return { title, otherChildren }
   }, [children, collapsible, isCollapsed])
 
-  const styles = propertiesPanelTv({
-    isEmpty: isEmpty || isCollapsed || otherChildren.length === 0,
-  })
+  const tv = useMemo(
+    () =>
+      propertiesPanelTv({
+        isEmpty: isEmpty || isCollapsed || otherChildren.length === 0,
+      }),
+    [isEmpty, isCollapsed, otherChildren.length],
+  )
+
+  const contextValue = useMemo<PanelContextType>(
+    () => ({ collapsible, isCollapsed, onCollapsedChange, showLabels, alwaysShowCollapsible }),
+    [collapsible, isCollapsed, onCollapsedChange, showLabels, alwaysShowCollapsible],
+  )
 
   return (
-    <PanelContext.Provider
-      value={{ collapsible, isCollapsed, onCollapsedChange, showLabels, alwaysShowCollapsible }}
-    >
+    <PanelContext.Provider value={contextValue}>
       <div
         ref={ref}
-        className={tcx(styles.container(), className)}
+        className={tcx(tv.container(), className)}
         aria-expanded={!isCollapsed}
         {...rest}
       >
         {triggerRef && (
           <div
             ref={triggerRef}
-            className={styles.triggerRef()}
+            className={tv.triggerRef()}
           />
         )}
 

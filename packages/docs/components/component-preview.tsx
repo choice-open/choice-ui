@@ -67,7 +67,7 @@ export function ComponentPreview({
       {tab === "preview" ? (
         <div
           className={tcx(
-            "bg-default-background relative flex w-full items-center justify-center rounded-xl border px-4 py-8 dark:border-transparent",
+            "bg-default-background relative flex w-full items-center justify-center overflow-hidden rounded-xl border px-4 py-8 dark:border-transparent",
             align === "start" && "items-start",
             align === "end" && "items-end",
           )}
