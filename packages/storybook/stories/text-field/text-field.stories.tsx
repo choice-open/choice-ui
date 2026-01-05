@@ -1,6 +1,5 @@
 import { Badge, Checkbox, Select, TextField } from "@choice-ui/react"
 import { ArrowRight, Search } from "@choiceform/icons-react"
-import { faker } from "@faker-js/faker"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { useState } from "react"
 
@@ -116,7 +115,7 @@ export const WithDescription: Story = {
         placeholder="Enter text"
         className="w-64"
       >
-        <TextField.Description>{faker.lorem.words()}</TextField.Description>
+        <TextField.Description>This is a description</TextField.Description>
       </TextField>
     )
   },

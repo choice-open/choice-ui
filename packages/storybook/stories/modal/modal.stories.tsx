@@ -10,7 +10,6 @@ import {
   TextField,
 } from "@choice-ui/react"
 import { ChevronLeft, LockAspectRatio, ThemeSunBright } from "@choiceform/icons-react"
-import { faker } from "@faker-js/faker"
 import { Story } from "@storybook/addon-docs/blocks"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { useState } from "react"
@@ -178,7 +177,7 @@ export const ModalContent: Story = {
     return (
       <Modal>
         <Modal.Header title="Modal" />
-        <Modal.Content className="flex w-md flex-col gap-4 p-4">
+        <Modal.Content className="w-md flex flex-col gap-4 p-4">
           <div className="flex w-full items-center gap-2">
             <TextField
               className="flex-1 rounded-lg"
@@ -246,7 +245,7 @@ export const ModalContent: Story = {
             >
               <Avatar
                 photo={"https://api.dicebear.com/7.x/avataaars/svg?seed=Jennifer%20Miller"}
-                name={faker.name.fullName()}
+                name="Jennifer Miller"
                 size="small"
               />
               <span className="flex-1 truncate">{select || "Select"}</span>
@@ -267,8 +266,10 @@ export const LongTitle: Story = {
   render: function LongTitleStory() {
     return (
       <Modal className="w-sm">
-        <Modal.Header title={faker.lorem.sentence(10)} />
-        <Modal.Content className="p-4">{faker.lorem.sentence(10)}</Modal.Content>
+        <Modal.Header title="Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos." />
+        <Modal.Content className="p-4">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
+        </Modal.Content>
       </Modal>
     )
   },

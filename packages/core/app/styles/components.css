@@ -26,7 +26,6 @@
   --animate-spinner-bounce-right: spinner-bounce-right 0.5s infinite alternate ease;
   --animate-indeterminate-bar: indeterminate-bar 1.5s cubic-bezier(0.65, 0.815, 0.735, 0.395)
     infinite normal none running;
-
 }
 
 /* Base styles */
@@ -507,28 +506,6 @@
   }
 }
 
-/* Skeleton styles */
-@layer components {
-  .skeleton {
-    transition: all 0.2s ease-in-out !important;
-    outline: none !important;
-    box-shadow: none !important;
-    border-color: transparent !important;
-    border-radius: var(--radius-md);
-    background-color: var(--color-secondary-background) !important;
-    resize: none !important;
-    pointer-events: none !important;
-    color: transparent !important;
-    &::placeholder,
-    &:placeholder-shown {
-      color: transparent !important;
-    }
-    & * {
-      visibility: hidden !important;
-    }
-  }
-}
-
 /* Comments styles */
 @layer components {
   .comments__input {
@@ -543,87 +520,3 @@
     column-gap: calc(var(--spacing) * 2);
   }
 }
-
-/* Fields styles */
-@layer components {
-  .fields__text-field {
-    grid-template-columns: auto 1fr auto;
-    grid-template-areas: "prefix input suffix";
-    &::before {
-      @apply pointer-events-none z-2 h-full border transform-3d;
-      grid-row: 1 / 2;
-      grid-column: 1 / 4;
-      border-radius: inherit;
-      content: "";
-    }
-  }
-
-  .input__number {
-    grid-template-columns: auto auto 1fr auto auto;
-    grid-template-areas: "prefix-handler variable input action suffix-handler";
-    &::before {
-      @apply pointer-events-none z-3 rounded-md border;
-      grid-row: 1 / 2;
-      grid-column: 1 / 6;
-      content: "";
-    }
-  }
-
-  .input__number--default {
-    grid-template-rows: 1.5rem;
-    &::before {
-      @apply h-6;
-    }
-  }
-
-  .input__number--large {
-    grid-template-rows: 2rem;
-    &::before {
-      @apply h-8;
-    }
-  }
-
-  .input-search {
-    @apply relative grid;
-    grid-template-columns: 1.5rem 1fr auto;
-    grid-template-areas: "icon input action";
-    &::before {
-      @apply pointer-events-none z-2 h-full rounded-md border border-transparent;
-      grid-row: 1 / 2;
-      grid-column: 1 / 4;
-    }
-  }
-}
-
-/* Modal styles */
-@layer components {
-  .modal__header {
-    @apply grid;
-    grid-template-rows: minmax(2.5rem, auto);
-    grid-template-areas: "title . close" "input input input";
-  }
-
-  .modal__header--action {
-    grid-template-columns: auto 1fr 2.5rem;
-  }
-}
-
-/* OTP Input styles */
-@layer components {
-  .otp-input__caret {
-    animation: otp-caret-blink 1s ease-out infinite;
-  }
-
-  @keyframes otp-caret-blink {
-    0%,
-    70%,
-    100% {
-      opacity: 1;
-    }
-    20%,
-    50% {
-      opacity: 0;
-    }
-  }
-}
-

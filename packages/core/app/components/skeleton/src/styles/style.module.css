@@ -1,0 +1,18 @@
+.skeleton {
+  transition: all 0.2s ease-in-out !important;
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: transparent !important;
+  border-radius: var(--radius-md);
+  background-color: var(--color-secondary-background) !important;
+  resize: none !important;
+  pointer-events: none !important;
+  color: transparent !important;
+  &::placeholder,
+  &:placeholder-shown {
+    color: transparent !important;
+  }
+  & * {
+    visibility: hidden !important;
+  }
+}

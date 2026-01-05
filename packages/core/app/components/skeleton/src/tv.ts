@@ -1,4 +1,5 @@
 import { tcv } from "@choice-ui/shared"
+import s from "./styles/style.module.css"
 
 export const skeletonTv = tcv({
   slots: {
@@ -8,7 +9,7 @@ export const skeletonTv = tcv({
   variants: {
     loading: {
       true: {
-        root: ["skeleton", "animate-pulse"],
+        root: [s.skeleton, "animate-pulse"],
       },
       false: {},
     },

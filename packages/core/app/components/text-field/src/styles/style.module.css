@@ -1,0 +1,13 @@
+@reference "tailwindcss";
+
+.textField {
+  grid-template-columns: auto 1fr auto;
+  grid-template-areas: "prefix input suffix";
+  &::before {
+    @apply pointer-events-none z-2 h-full border transform-3d;
+    grid-row: 1 / 2;
+    grid-column: 1 / 4;
+    border-radius: inherit;
+    content: "";
+  }
+}

@@ -1,0 +1,4 @@
+.header {
+  grid-template-rows: minmax(2.5rem, auto);
+  grid-template-areas: "title . close" "input input input";
+}

@@ -212,7 +212,7 @@
       "name": "@choice-ui/emoji-picker",
       "title": "EmojiPicker",
       "description": "",
-      "version": "0.0.5",
+      "version": "0.0.6",
       "tags": [
         "beta"
       ]
@@ -222,7 +222,7 @@
       "name": "@choice-ui/error-message",
       "title": "ErrorMessage",
       "description": "",
-      "version": "0.0.1"
+      "version": "0.0.2"
     },
     {
       "slug": "forms/file-upload",
@@ -239,7 +239,7 @@
       "name": "@choice-ui/form",
       "title": "Form",
       "description": "Enhanced useForm hook",
-      "version": "0.0.4"
+      "version": "0.0.5"
     },
     {
       "slug": "feedback/hint",
@@ -325,7 +325,7 @@
       "name": "@choice-ui/md-render",
       "title": "MdRender",
       "description": "",
-      "version": "0.0.5"
+      "version": "0.0.6"
     },
     {
       "slug": "collections/menubar",
@@ -389,7 +389,7 @@
       "name": "@choice-ui/numeric-input",
       "title": "NumericInput",
       "description": "",
-      "version": "0.0.9",
+      "version": "0.0.10",
       "tags": [
         "upgrade"
       ]
@@ -419,7 +419,7 @@
       "name": "@choice-ui/picture-preview",
       "title": "PicturePreview",
       "description": "",
-      "version": "0.0.4",
+      "version": "0.0.5",
       "tags": [
         "beta"
       ]
@@ -528,7 +528,7 @@
       "name": "@choice-ui/separator",
       "title": "Separator",
       "description": "Separator - Separator component",
-      "version": "0.0.1"
+      "version": "0.0.2"
     },
     {
       "slug": "feedback/skeleton",
@@ -638,7 +638,7 @@
       "name": "@choice-ui/text-field",
       "title": "TextField",
       "description": "",
-      "version": "0.0.7",
+      "version": "0.0.8",
       "tags": [
         "new"
       ]
@@ -685,7 +685,7 @@
       "name": "@choice-ui/toast",
       "title": "Toast",
       "description": "",
-      "version": "0.0.1",
+      "version": "0.0.6",
       "tags": [
         "new"
       ]

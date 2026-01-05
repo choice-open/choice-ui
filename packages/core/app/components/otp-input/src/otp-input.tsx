@@ -6,7 +6,6 @@ import { otpInputTv } from "./tv"
 type OTPInputVariant = "default" | "light" | "dark"
 
 interface OTPInputContextValue {
-  styles: ReturnType<typeof otpInputTv>
   slotProps: SlotProps[]
   variant: OTPInputVariant
   disabled: boolean
@@ -14,7 +13,6 @@ interface OTPInputContextValue {
 }
 
 const OTPInputCtx = createContext<OTPInputContextValue>({
-  styles: otpInputTv({}),
   slotProps: [],
   variant: "default",
   disabled: false,
@@ -54,10 +52,9 @@ function OTPInputRoot({
       autoComplete="off"
       data-disabled={disabled || undefined}
       data-invalid={isInvalid || undefined}
-      data-slot="otp-input"
       disabled={disabled}
       render={({ slots: slotProps }: RenderProps) => (
-        <OTPInputCtx.Provider value={{ styles: tv, slotProps, variant, disabled, isInvalid }}>
+        <OTPInputCtx.Provider value={{ slotProps, variant, disabled, isInvalid }}>
           {children}
         </OTPInputCtx.Provider>
       )}
@@ -69,12 +66,11 @@ function OTPInputRoot({
 export interface OTPInputGroupProps extends ComponentProps<"div"> {}
 
 function OTPInputGroup({ className, ...props }: OTPInputGroupProps) {
-  const { styles } = useContext(OTPInputCtx)
+  const tv = otpInputTv()
 
   return (
     <div
-      className={styles?.group?.({ className })}
-      data-slot="otp-input-group"
+      className={tcx(tv.group(), className)}
       {...props}
     />
   )
@@ -85,10 +81,10 @@ export interface OTPInputSlotProps extends ComponentProps<"div"> {
 }
 
 function OTPInputSlot({ className, index, ...props }: OTPInputSlotProps) {
-  const { styles, slotProps, variant, disabled, isInvalid } = useContext(OTPInputCtx)
+  const { slotProps, variant, disabled, isInvalid } = useContext(OTPInputCtx)
   const { char, hasFakeCaret, isActive } = slotProps?.[index] ?? {}
 
-  const slotStyles = otpInputTv({
+  const tv = otpInputTv({
     variant,
     selected: isActive,
     disabled,
@@ -98,27 +94,14 @@ function OTPInputSlot({ className, index, ...props }: OTPInputSlotProps) {
   return (
     <div
       {...props}
-      className={tcx(styles?.slot?.({ className }), slotStyles?.slot?.())}
+      className={tcx(tv.slot(), className)}
       data-active={isActive || undefined}
       data-disabled={disabled || undefined}
       data-filled={!!char || undefined}
       data-invalid={isInvalid || undefined}
-      data-slot="otp-input-slot"
     >
-      {char ? (
-        <div
-          className={styles?.slotValue?.()}
-          data-slot="otp-input-slot-value"
-        >
-          {char}
-        </div>
-      ) : null}
-      {hasFakeCaret && isActive ? (
-        <div
-          className={tcx(styles?.caret?.(), "otp-input__caret")}
-          data-slot="otp-input-caret"
-        />
-      ) : null}
+      {char ? <div className={tv.slotValue()}>{char}</div> : null}
+      {hasFakeCaret && isActive ? <div className={tv.caret()} /> : null}
     </div>
   )
 }
@@ -126,12 +109,11 @@ function OTPInputSlot({ className, index, ...props }: OTPInputSlotProps) {
 export interface OTPInputSeparatorProps extends ComponentProps<"div"> {}
 
 function OTPInputSeparator({ className, children, ...props }: OTPInputSeparatorProps) {
-  const { styles } = useContext(OTPInputCtx)
+  const tv = otpInputTv()
 
   return (
     <div
-      className={styles?.separator?.({ className })}
-      data-slot="otp-input-separator"
+      className={tcx(tv.separator(), className)}
       {...props}
     >
       {children ?? <span>-</span>}

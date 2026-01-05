@@ -3,7 +3,7 @@
   "title": "NumericInput",
   "package": {
     "name": "@choice-ui/numeric-input",
-    "version": "0.0.9",
+    "version": "0.0.10",
     "description": "A numeric input component with increment/decrement controls and number validation",
     "dependencies": {
       "@choice-ui/chip": "workspace:*",

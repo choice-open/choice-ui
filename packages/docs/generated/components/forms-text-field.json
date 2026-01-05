@@ -3,7 +3,7 @@
   "title": "TextField",
   "package": {
     "name": "@choice-ui/text-field",
-    "version": "0.0.7",
+    "version": "0.0.8",
     "description": "A text field component combining input and label for form fields with validation support",
     "dependencies": {
       "@choice-ui/shared": "workspace:*",
@@ -142,7 +142,7 @@
       "name": "With Description",
       "exportName": "WithDescription",
       "description": "Text field with a description.\nProvides additional context or help text below the input.\nUseful for explaining format requirements or providing examples.",
-      "source": "import { TextField } from \"@choice-ui/text-field\"\n\nexport default function App() {\n\n  return (\n    <TextField\n      placeholder=\"Enter text\"\n      className=\"w-64\"\n    >\n      <TextField.Description>{faker.lorem.words()}</TextField.Description>\n    </TextField>\n  )\n\n}"
+      "source": "import { TextField } from \"@choice-ui/text-field\"\n\nexport default function App() {\n\n  return (\n    <TextField\n      placeholder=\"Enter text\"\n      className=\"w-64\"\n    >\n      <TextField.Description>This is a description</TextField.Description>\n    </TextField>\n  )\n\n}"
     },
     {
       "id": "forms-textfield--size",

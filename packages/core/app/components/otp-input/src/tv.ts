@@ -1,4 +1,5 @@
 import { tcv } from "@choice-ui/shared"
+import s from "./styles/style.module.css"
 
 export const otpInputTv = tcv({
   slots: {
@@ -13,7 +14,7 @@ export const otpInputTv = tcv({
       "border border-solid border-transparent",
     ],
     slotValue: "",
-    caret: "absolute inset-y-2 left-1/2 w-px -translate-x-1/2",
+    caret: ["absolute inset-y-2 left-1/2 w-px -translate-x-1/2", s.caret],
     separator: "text-secondary-foreground mx-1",
   },
   variants: {
