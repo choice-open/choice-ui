@@ -1,6 +1,6 @@
 @reference "tailwindcss";
 
-.input {
+.input__number {
   grid-template-columns: auto auto 1fr auto auto;
   grid-template-areas: "prefix-handler variable input action suffix-handler";
   &::before {
@@ -11,14 +11,14 @@
   }
 }
 
-.default {
+.input__number--default {
   grid-template-rows: 1.5rem;
   &::before {
     @apply h-6;
   }
 }
 
-.large {
+.input__number--large {
   grid-template-rows: 2rem;
   &::before {
     @apply h-8;

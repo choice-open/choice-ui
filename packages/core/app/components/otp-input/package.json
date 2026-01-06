@@ -1,6 +1,6 @@
 {
   "name": "@choice-ui/otp-input",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A one-time password input component with customizable slots and separators",
   "sideEffects": false,
   "type": "module",

@@ -1,5 +1,4 @@
 import { tcv } from "@choice-ui/shared"
-import s from "./styles/style.module.css"
 
 export const propertiesPanelTv = tcv({
   slots: {
@@ -37,21 +36,21 @@ export const propertiesPanelRowTv = tcv({
   },
   variants: {
     type: {
-      single: { container: s.single },
-      "two-columns": { container: s["two-columns"] },
-      "one-label-one-input": { container: s["one-label-one-input"] },
-      "one-label-one-input-one-icon": { container: s["one-label-one-input-one-icon"] },
-      "one-label-two-input": { container: s["one-label-two-input"] },
-      "one-icon-one-input": { container: s["one-icon-one-input"] },
-      "one-input-one-icon": { container: s["one-input-one-icon"] },
-      "one-input-two-icon": { container: s["one-input-two-icon"] },
-      "two-input-one-icon": { container: s["two-input-one-icon"] },
-      "two-input-two-icon": { container: s["two-input-two-icon"] },
-      "one-icon-one-input-one-icon": { container: s["one-icon-one-input-one-icon"] },
-      "one-icon-one-input-two-icon": { container: s["one-icon-one-input-two-icon"] },
-      "two-input-one-icon-double-row": { container: s["two-input-one-icon-double-row"] },
+      single: { container: "rows--single" },
+      "two-columns": { container: "rows--two-columns" },
+      "one-label-one-input": { container: "rows--one-label-one-input" },
+      "one-label-one-input-one-icon": { container: "rows--one-label-one-input-one-icon" },
+      "one-label-two-input": { container: "rows--one-label-two-input" },
+      "one-icon-one-input": { container: "rows--one-icon-one-input" },
+      "one-input-one-icon": { container: "rows--one-input-one-icon" },
+      "one-input-two-icon": { container: "rows--one-input-two-icon" },
+      "two-input-one-icon": { container: "rows--two-input-one-icon" },
+      "two-input-two-icon": { container: "rows--two-input-two-icon" },
+      "one-icon-one-input-one-icon": { container: "rows--one-icon-one-input-one-icon" },
+      "one-icon-one-input-two-icon": { container: "rows--one-icon-one-input-two-icon" },
+      "two-input-one-icon-double-row": { container: "rows--two-input-one-icon-double-row" },
       "one-icon-one-input-two-icon-double-row": {
-        container: s["one-icon-one-input-two-icon-double-row"],
+        container: "rows--one-icon-one-input-two-icon-double-row",
       },
     },
     triggerRef: {
@@ -109,7 +108,7 @@ export const panelLabelTv = tcv({
   base: "[grid-area:label]",
   variants: {
     showLabels: {
-      true: ["text-secondary-foreground", s.label],
+      true: ["text-secondary-foreground", "rows--label"],
       false: "sr-only",
     },
   },

@@ -1,5 +1,4 @@
 import { tcv } from "@choice-ui/shared"
-import s from "./styles/style.module.css"
 
 export const TextFieldTv = tcv({
   slots: {
@@ -9,7 +8,7 @@ export const TextFieldTv = tcv({
       "rounded-md",
       "focus-within:before:border-selected-boundary",
       "before:border-transparent",
-      s.textField,
+      "fields__text-field",
     ],
     input: "[grid-area:input]",
     prefix: "[grid-area:prefix]",

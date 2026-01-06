@@ -1,9 +1,8 @@
 import { tcv } from "@choice-ui/shared"
-import s from "./styles/style.module.css"
 
 export const NumericInputTv = tcv({
   slots: {
-    container: ["group/input grid before:border-transparent", s.input],
+    container: ["group/input grid before:border-transparent", "input__number"],
     input: ["peer", "w-full", "cursor-default appearance-none truncate"],
     tooltip: "col-span-3 col-start-1 row-start-1",
   },
@@ -22,12 +21,12 @@ export const NumericInputTv = tcv({
     },
     size: {
       default: {
-        container: ["h-6", s.default],
+        container: ["h-6", "input__number--default"],
         input: "h-6",
         tooltip: "h-6",
       },
       large: {
-        container: ["h-8", s.large],
+        container: ["h-8", "input__number--large"],
         input: "h-8",
         tooltip: "h-8",
       },
