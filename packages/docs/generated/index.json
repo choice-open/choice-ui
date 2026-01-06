@@ -204,6 +204,13 @@
       "version": "0.0.5"
     },
     {
+      "slug": "plugins/grid-areas",
+      "name": "@choice-ui/grid-areas",
+      "title": "Grid Areas",
+      "description": "",
+      "version": "0.0.0"
+    },
+    {
       "slug": "feedback/hint",
       "name": "@choice-ui/hint",
       "title": "Hint",
@@ -311,7 +318,7 @@
       "name": "@choice-ui/modal",
       "title": "Modal",
       "description": "",
-      "version": "0.0.8"
+      "version": "0.0.9"
     },
     {
       "slug": "date-and-time/month-calendar",
@@ -345,7 +352,7 @@
       "name": "@choice-ui/numeric-input",
       "title": "NumericInput",
       "description": "",
-      "version": "0.0.11",
+      "version": "0.0.12",
       "tags": [
         "upgrade"
       ]
@@ -355,7 +362,7 @@
       "name": "@choice-ui/otp-input",
       "title": "OtpInput",
       "description": "",
-      "version": "0.0.3",
+      "version": "0.0.4",
       "tags": [
         "new"
       ]
@@ -375,7 +382,7 @@
       "name": "@choice-ui/panel",
       "title": "Panel",
       "description": "",
-      "version": "0.0.7"
+      "version": "0.0.8"
     },
     {
       "slug": "data-display/picture-preview",
@@ -485,7 +492,7 @@
       "name": "@choice-ui/skeleton",
       "title": "Skeleton",
       "description": "",
-      "version": "0.0.4"
+      "version": "0.0.5"
     },
     {
       "slug": "utils/slot",
@@ -578,7 +585,7 @@
       "name": "@choice-ui/text-field",
       "title": "TextField",
       "description": "",
-      "version": "0.0.9"
+      "version": "0.0.10"
     },
     {
       "slug": "date-and-time/time-calendar",

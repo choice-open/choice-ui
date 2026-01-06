@@ -1,0 +1,79 @@
+{
+  "slug": "utilities/grid-areas",
+  "title": "Grid Areas",
+  "package": {
+    "name": "@choice-ui/grid-areas",
+    "version": "0.0.0",
+    "description": "",
+    "dependencies": {}
+  },
+  "exports": [
+    "Component"
+  ],
+  "props": [],
+  "stories": [
+    {
+      "id": "utilities-grid-areas--basic",
+      "name": "Basic",
+      "exportName": "Basic",
+      "description": "`grid-areas` is a Tailwind CSS v4 plugin that provides utilities for CSS Grid named areas.\n\nFeatures:\n- `grid-areas-[...]`: Define grid template areas (CSS: grid-template-areas)\n- `grid-area-[...]`: Place elements in named grid areas (CSS: grid-area)\n- Uses `_` for spaces and `,` for row separators in arbitrary values\n\nUsage in tailwind.css:\n```css\nBasic: A simple 3-column layout with header, sidebar, main content, and footer.",
+      "source": "import {  } from \"@choice-ui/grid-areas\"\n\nexport default function App() {\n  return (\n\n    <div className=\"grid-areas-[header_header_header,sidebar_main_main,footer_footer_footer] h-[400px] w-96 grid-cols-[128px_1fr_1fr] grid-rows-[auto_1fr_auto] gap-4\">\n      <header className=\"grid-area-[header] bg-accent-background flex items-center justify-center rounded-lg p-4 font-semibold text-white\">\n        Header\n      </header>\n      <aside className=\"grid-area-[sidebar] bg-secondary-background flex items-center justify-center rounded-lg p-4\">\n        Sidebar\n      </aside>\n      <main className=\"grid-area-[main] bg-selected-background flex items-center justify-center rounded-lg p-4\">\n        Main Content\n      </main>\n      <footer className=\"grid-area-[footer] bg-secondary-background flex items-center justify-center rounded-lg p-4\">\n        Footer\n      </footer>\n    </div>\n\n  );\n}"
+    },
+    {
+      "id": "utilities-grid-areas--dashboard",
+      "name": "Dashboard",
+      "exportName": "Dashboard",
+      "description": "Dashboard: A dashboard layout with navigation, aside panel, and content area.",
+      "source": "import {  } from \"@choice-ui/grid-areas\"\n\nexport default function App() {\n  return (\n\n    <div className=\"grid-areas-[nav_nav_nav,aside_content_content,aside_content_content] h-[500px] grid-cols-[128px_1fr_1fr] grid-rows-[60px_1fr_1fr] gap-2\">\n      <nav className=\"grid-area-[nav] bg-accent-background flex items-center gap-4 rounded-lg p-4 text-white\">\n        <span className=\"text-lg font-bold\">Dashboard</span>\n        <span>Home</span>\n        <span>Settings</span>\n        <span>Profile</span>\n      </nav>\n      <aside className=\"grid-area-[aside] rounded-lg border p-4\">\n        <div className=\"mb-4 font-semibold\">Navigation</div>\n        <List className=\"p-0\">\n          <List.Content>\n            <List.Item>Overview</List.Item>\n            <List.Item>Analytics</List.Item>\n            <List.Item>Reports</List.Item>\n            <List.Item>Settings</List.Item>\n          </List.Content>\n        </List>\n      </aside>\n      <main className=\"grid-area-[content] rounded-lg border p-4\">\n        <h2 className=\"mb-4 text-xl font-semibold\">Content Area</h2>\n        <p className=\"text-slate-600\">\n          This is the main content area that spans 2 columns and 2 rows.\n        </p>\n      </main>\n    </div>\n\n  );\n}"
+    },
+    {
+      "id": "utilities-grid-areas--holy-grail",
+      "name": "Holy Grail",
+      "exportName": "HolyGrail",
+      "description": "HolyGrail: The classic \"Holy Grail\" layout with header, left sidebar, main, right sidebar, and footer.",
+      "source": "import {  } from \"@choice-ui/grid-areas\"\n\nexport default function App() {\n  return (\n\n    <div className=\"grid-areas-[header_header_header,left_main_right,footer_footer_footer] h-[400px] grid-cols-[150px_1fr_150px] grid-rows-[auto_1fr_auto] gap-3\">\n      <header className=\"grid-area-[header] bg-secondary-background rounded-lg p-4 text-center font-semibold\">\n        Header\n      </header>\n      <aside className=\"grid-area-[left] bg-secondary-background rounded-lg p-4 text-center\">\n        Left\n      </aside>\n      <main className=\"grid-area-[main] bg-selected-background rounded-lg p-4 text-center\">\n        Main Content\n      </main>\n      <aside className=\"grid-area-[right] bg-secondary-background rounded-lg p-4 text-center\">\n        Right\n      </aside>\n      <footer className=\"grid-area-[footer] bg-secondary-background rounded-lg p-4 text-center font-semibold\">\n        Footer\n      </footer>\n    </div>\n\n  );\n}"
+    },
+    {
+      "id": "utilities-grid-areas--card",
+      "name": "Card",
+      "exportName": "Card",
+      "description": "Card: A card layout with image, title, description, and actions.",
+      "source": "import {  } from \"@choice-ui/grid-areas\"\n\nexport default function App() {\n  return (\n\n    <div className=\"grid-areas-[image_image,title_title,desc_desc,._actions] bg-default-background w-[300px] grid-rows-[200px_auto_1fr_auto] gap-2 overflow-hidden rounded-xl shadow-lg\">\n      <div className=\"grid-area-[image] bg-gradient-to-br from-purple-500 to-pink-500\" />\n      <h3 className=\"grid-area-[title] px-4 pt-2 text-lg font-bold\">Card Title</h3>\n      <p className=\"grid-area-[desc] text-secondary-foreground px-4 text-sm\">\n        This is a card description that explains what this card is about.\n      </p>\n      <div className=\"grid-area-[actions] flex justify-end gap-2 px-4 pb-4\">\n        <Button variant=\"secondary\">Cancel</Button>\n        <Button>Action</Button>\n      </div>\n    </div>\n\n  );\n}"
+    },
+    {
+      "id": "utilities-grid-areas--gallery",
+      "name": "Gallery",
+      "exportName": "Gallery",
+      "description": "Gallery: A gallery layout with featured image and thumbnails.",
+      "source": "import {  } from \"@choice-ui/grid-areas\"\n\nexport default function App() {\n  return (\n\n    <div className=\"grid-areas-[featured_featured_featured,thumb1_thumb2_thumb3] h-[420px] grid-cols-[1fr_1fr_1fr] grid-rows-[300px_100px] gap-2\">\n      <div className=\"grid-area-[featured] flex items-center justify-center rounded-lg bg-gradient-to-r from-violet-500 to-purple-500 p-4 text-2xl font-bold text-white\">\n        Featured Image\n      </div>\n      <div className=\"grid-area-[thumb1] bg-secondary-background flex items-center justify-center rounded-lg\">\n        Thumb 1\n      </div>\n      <div className=\"grid-area-[thumb2] bg-secondary-background flex items-center justify-center rounded-lg\">\n        Thumb 2\n      </div>\n      <div className=\"grid-area-[thumb3] bg-secondary-background flex items-center justify-center rounded-lg\">\n        Thumb 3\n      </div>\n    </div>\n\n  );\n}"
+    },
+    {
+      "id": "utilities-grid-areas--responsive",
+      "name": "Responsive",
+      "exportName": "Responsive",
+      "description": "Responsive: Shows how to use responsive breakpoints with grid-areas.\n- On mobile: stacked layout\n- On desktop: sidebar layout",
+      "source": "import {  } from \"@choice-ui/grid-areas\"\n\nexport default function App() {\n  return (\n\n    <div className=\"grid-areas-[header,nav,main,footer] md:grid-areas-[header_header,nav_main,footer_footer] h-[400px] grid-cols-1 grid-rows-[auto_auto_1fr_auto] gap-3 md:grid-cols-[200px_1fr] md:grid-rows-[auto_1fr_auto]\">\n      <header className=\"grid-area-[header] bg-accent-background rounded-lg p-4 text-center font-semibold text-white\">\n        Header\n      </header>\n      <nav className=\"grid-area-[nav] bg-secondary-background flex flex-col items-center justify-center gap-2 rounded-lg p-4 text-center\">\n        Navigation\n      </nav>\n      <main className=\"grid-area-[main] bg-selected-background flex flex-col items-center justify-center gap-2 rounded-lg p-4 text-center\">\n        Main Content\n        <p className=\"text-sm\">Resize the window to see the layout change</p>\n      </main>\n      <footer className=\"grid-area-[footer] bg-secondary-background rounded-lg p-4 text-center font-semibold\">\n        Footer\n      </footer>\n    </div>\n\n  );\n}"
+    },
+    {
+      "id": "utilities-grid-areas--empty-cells",
+      "name": "Empty Cells",
+      "exportName": "EmptyCells",
+      "description": "EmptyCells: Shows how to use `.` for empty cells in grid templates.",
+      "source": "import {  } from \"@choice-ui/grid-areas\"\n\nexport default function App() {\n  return (\n\n    <div className=\"grid-areas-[a_._b,._c_.,d_._e] grid-cols-[100px_100px_100px] grid-rows-[100px_100px_100px] gap-2\">\n      <div className=\"grid-area-[a] bg-selected-background text-accent-foreground flex items-center justify-center rounded-lg font-bold\">\n        A\n      </div>\n      <div className=\"grid-area-[b] bg-selected-background text-accent-foreground flex items-center justify-center rounded-lg font-bold\">\n        B\n      </div>\n      <div className=\"grid-area-[c] bg-selected-background text-accent-foreground flex items-center justify-center rounded-lg font-bold\">\n        C\n      </div>\n      <div className=\"grid-area-[d] bg-selected-background text-accent-foreground flex items-center justify-center rounded-lg font-bold\">\n        D\n      </div>\n      <div className=\"grid-area-[e] bg-selected-background text-accent-foreground flex items-center justify-center rounded-lg font-bold\">\n        E\n      </div>\n    </div>\n\n  );\n}"
+    },
+    {
+      "id": "utilities-grid-areas--form-input",
+      "name": "Form Input",
+      "exportName": "FormInput",
+      "description": "FormInput: A form input layout with label, icons, and input field.\nMimics the pattern: label spanning full width, then icon-input-icons row with gaps.\n\nGrid structure:\n- Row 1: label (spans all columns)\n- Row 2: icon-1, gap, input, gap, icon-2, gap, icon-3",
+      "source": "import {  } from \"@choice-ui/grid-areas\"\n\nexport default function App() {\n  return (\n\n    <div className=\"space-y-6\">\n      {/* Single icon + input + two icons */}\n      <div className=\"grid-areas-[._._label_label_label_label_label,icon1_._input_._icon2_._icon3] grid-cols-[1.5rem_0.5rem_1fr_0.5rem_1.5rem_0.25rem_1.5rem] grid-rows-[auto_minmax(2rem,auto)] items-center\">\n        <Label className=\"grid-area-[label]\">Email Address</Label>\n        <div className=\"grid-area-[icon1] text-secondary-foreground flex items-center justify-center\">\n          <Email />\n        </div>\n        <Input\n          type=\"email\"\n          placeholder=\"you@example.com\"\n          className=\"grid-area-[input]\"\n        />\n        <IconButton className=\"grid-area-[icon2]\">\n          <Visible />\n        </IconButton>\n        <IconButton className=\"grid-area-[icon3]\">\n          <RemoveTiny />\n        </IconButton>\n      </div>\n\n      {/* Password field variant */}\n      <div className=\"grid-areas-[._._label_label_label,icon1_._input_._icon2] grid-cols-[1.5rem_0.5rem_1fr_0.5rem_1.5rem] grid-rows-[auto_minmax(2rem,auto)] items-center\">\n        <Label className=\"grid-area-[label]\">Password</Label>\n        <div className=\"grid-area-[icon1] text-secondary-foreground flex items-center justify-center\">\n          <LockSmall />\n        </div>\n        <Input\n          type=\"password\"\n          placeholder=\"••••••••\"\n          className=\"grid-area-[input]\"\n        />\n        <IconButton className=\"grid-area-[icon2]\">\n          <Hidden />\n        </IconButton>\n      </div>\n\n      {/* Simple input with single icon */}\n      <div className=\"grid-areas-[._._label,icon1_._input] grid-cols-[1.5rem_0.5rem_1fr] grid-rows-[auto_minmax(2rem,auto)] items-center\">\n        <Label className=\"grid-area-[label]\">Username</Label>\n        <div className=\"grid-area-[icon1] text-secondary-foreground flex items-center justify-center\">\n          <Use />\n        </div>\n        <Input\n          type=\"text\"\n          placeholder=\"johndoe\"\n          className=\"grid-area-[input]\"\n        />\n      </div>\n    </div>\n\n  );\n}"
+    },
+    {
+      "id": "utilities-grid-areas--css-keywords",
+      "name": "CSS Keywords",
+      "exportName": "CssKeywords",
+      "description": "",
+      "source": ""
+    }
+  ]
+}

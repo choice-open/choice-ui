@@ -3,7 +3,7 @@
   "title": "TextField",
   "package": {
     "name": "@choice-ui/text-field",
-    "version": "0.0.9",
+    "version": "0.0.10",
     "description": "A text field component combining input and label for form fields with validation support",
     "dependencies": {
       "@choice-ui/shared": "workspace:*",

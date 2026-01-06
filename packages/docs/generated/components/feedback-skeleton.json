@@ -3,7 +3,7 @@
   "title": "Skeleton",
   "package": {
     "name": "@choice-ui/skeleton",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "description": "A skeleton loading component that displays placeholder content while data is loading",
     "dependencies": {
       "@choice-ui/shared": "workspace:*",

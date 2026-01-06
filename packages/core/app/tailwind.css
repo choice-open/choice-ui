@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
+@plugin "@choice-ui/grid-areas";
 
 @import "@choice-ui/design-tokens/tokens.css";
 @import "@choice-ui/design-tokens/preflight.css";

@@ -3,7 +3,7 @@
   "title": "Modal",
   "package": {
     "name": "@choice-ui/modal",
-    "version": "0.0.8",
+    "version": "0.0.9",
     "description": "A modal component with header, footer, and content sections for structured dialog layouts",
     "dependencies": {
       "@choice-ui/shared": "workspace:*",
