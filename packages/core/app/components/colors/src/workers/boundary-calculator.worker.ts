@@ -1,4 +1,3 @@
-import tinycolor from "tinycolor2"
 import type {
   BezierCurveSegment,
   BoundaryCalculationResult,
@@ -10,6 +9,114 @@ import type {
 } from "../types/colors"
 import { getContrastThreshold } from "../utils/colors-convert"
 import { calculateContrastRatio } from "../utils/contrast-utils"
+
+// 纯整数 HSL 转 RGB（避免浮点精度问题）
+// h: 0-360, s: 0-1, l: 0-1 -> RGB 0-255
+const hslToRgbInt = (h: number, s: number, l: number): RGB => {
+  // 将 h 归一化到 0-360，并取整
+  h = Math.round(h) % 360
+  if (h < 0) h += 360
+
+  // 特殊情况：无饱和度（灰度）
+  if (s === 0) {
+    const gray = Math.round(l * 255)
+    return { r: gray, g: gray, b: gray }
+  }
+
+  const c = (1 - Math.abs(2 * l - 1)) * s
+  const x = c * (1 - Math.abs(((h / 60) % 2) - 1))
+  const m = l - c / 2
+
+  let r1 = 0,
+    g1 = 0,
+    b1 = 0
+
+  if (h < 60) {
+    r1 = c
+    g1 = x
+    b1 = 0
+  } else if (h < 120) {
+    r1 = x
+    g1 = c
+    b1 = 0
+  } else if (h < 180) {
+    r1 = 0
+    g1 = c
+    b1 = x
+  } else if (h < 240) {
+    r1 = 0
+    g1 = x
+    b1 = c
+  } else if (h < 300) {
+    r1 = x
+    g1 = 0
+    b1 = c
+  } else {
+    r1 = c
+    g1 = 0
+    b1 = x
+  }
+
+  return {
+    r: Math.round((r1 + m) * 255),
+    g: Math.round((g1 + m) * 255),
+    b: Math.round((b1 + m) * 255),
+  }
+}
+
+// 纯整数 HSV/HSB 转 RGB（避免浮点精度问题）
+// h: 0-360, s: 0-1, v: 0-1 -> RGB 0-255
+const hsvToRgbInt = (h: number, s: number, v: number): RGB => {
+  // 将 h 归一化到 0-360，并取整
+  h = Math.round(h) % 360
+  if (h < 0) h += 360
+
+  // 特殊情况：无饱和度（灰度）
+  if (s === 0) {
+    const gray = Math.round(v * 255)
+    return { r: gray, g: gray, b: gray }
+  }
+
+  const c = v * s
+  const x = c * (1 - Math.abs(((h / 60) % 2) - 1))
+  const m = v - c
+
+  let r1 = 0,
+    g1 = 0,
+    b1 = 0
+
+  if (h < 60) {
+    r1 = c
+    g1 = x
+    b1 = 0
+  } else if (h < 120) {
+    r1 = x
+    g1 = c
+    b1 = 0
+  } else if (h < 180) {
+    r1 = 0
+    g1 = c
+    b1 = x
+  } else if (h < 240) {
+    r1 = 0
+    g1 = x
+    b1 = c
+  } else if (h < 300) {
+    r1 = x
+    g1 = 0
+    b1 = c
+  } else {
+    r1 = c
+    g1 = 0
+    b1 = x
+  }
+
+  return {
+    r: Math.round((r1 + m) * 255),
+    g: Math.round((g1 + m) * 255),
+    b: Math.round((b1 + m) * 255),
+  }
+}
 
 interface WorkerParams {
   backgroundColor: RGB
@@ -291,16 +398,8 @@ const calculateBoundaryPoints = (
       const s = x / width
       const yValue = 1 - y / height // 值/亮度 (0 到 1)。y=0 时为 1，y=height 时为 0
 
-      let color: tinycolor.Instance | null = null
-      if (isHSL) {
-        color = tinycolor({ h: hue, s, l: yValue, a: foregroundAlpha })
-      } else {
-        // HSV/HSB
-        color = tinycolor({ h: hue, s, v: yValue, a: foregroundAlpha })
-      }
-
-      if (!color || !color.isValid()) continue // Skip if invalid
-      const foregroundRgba = color.toRgb() // Get { r, g, b }
+      // 使用纯整数转换函数，避免浮点精度问题导致相同 hue 值产生不同曲线
+      const foregroundRgb = isHSL ? hslToRgbInt(hue, s, yValue) : hsvToRgbInt(hue, s, yValue)
 
       // 检查我们是否正在考虑除纯黑/灰度原点之外的颜色
       // (yValue > 0 对应于 y < height)
@@ -308,7 +407,7 @@ const calculateBoundaryPoints = (
         allPointsAreZeroValue = false
       }
 
-      const contrast = calculateContrastRatio(backgroundColor, foregroundRgba, foregroundAlpha)
+      const contrast = calculateContrastRatio(backgroundColor, foregroundRgb, foregroundAlpha)
       const isSafe = contrast >= threshold
 
       // 跟踪当前 X 坐标下沿 Y 轴的连续安全间隔的逻辑
@@ -434,7 +533,31 @@ const calculateBoundaryPoints = (
     }
 
     // 将曲线拟合到唯一点 - 传递宽度
-    const bezierSegments = fitSmoothCurve(uniqueRawPoints, height, width)
+    let bezierSegments = fitSmoothCurve(uniqueRawPoints, height, width)
+
+    // 将贝塞尔曲线在边缘的 y 值向外扩展，避免在画布边缘看到水平直线
+    const edgeOffset = 2
+    if (bezierSegments && bezierSegments.length > 0) {
+      // 修改第一个段的起点
+      const firstSegment = bezierSegments[0]
+      if (firstSegment.start[1] <= 1) {
+        firstSegment.start = [firstSegment.start[0], -edgeOffset]
+        firstSegment.cp1 = [firstSegment.cp1[0], Math.min(firstSegment.cp1[1], -edgeOffset)]
+      } else if (firstSegment.start[1] >= height - 1) {
+        firstSegment.start = [firstSegment.start[0], height + edgeOffset]
+        firstSegment.cp1 = [firstSegment.cp1[0], Math.max(firstSegment.cp1[1], height + edgeOffset)]
+      }
+
+      // 修改最后一个段的终点
+      const lastSegment = bezierSegments[bezierSegments.length - 1]
+      if (lastSegment.end[1] <= 1) {
+        lastSegment.end = [lastSegment.end[0], -edgeOffset]
+        lastSegment.cp2 = [lastSegment.cp2[0], Math.min(lastSegment.cp2[1], -edgeOffset)]
+      } else if (lastSegment.end[1] >= height - 1) {
+        lastSegment.end = [lastSegment.end[0], height + edgeOffset]
+        lastSegment.cp2 = [lastSegment.cp2[0], Math.max(lastSegment.cp2[1], height + edgeOffset)]
+      }
+    }
 
     if (!bezierSegments || bezierSegments.length === 0) {
       // 降级：返回连接唯一点的直线

@@ -67,9 +67,7 @@ export const CheckColorContrastBoundary = memo(function CheckColorContrastBounda
     targetPos: { x: number; y: number } | null
   }>({ startTime: null, startPos: null, targetPos: null, duration: 50 })
 
-  // 创建一个lastRenderKey引用，用于判断是否需要重新渲染
-  const lastRenderKeyRef = useRef("")
-  // 添加boundaryRendered标记，确保曲线只渲染一次
+  // 添加boundaryRendered标记，用于点位绘制等待曲线完成
   const boundaryRenderedRef = useRef(false)
 
   useEffect(() => {
@@ -198,24 +196,7 @@ export const CheckColorContrastBoundary = memo(function CheckColorContrastBounda
     const canvas = boundaryCanvasRef.current
     if (!canvas) return
 
-    // 计算当前渲染的关键参数 - 移除animatedPointPos的依赖
-    // 这样hover状态变化不会触发曲线重绘
-    const renderKey = `${Math.round(hue)}-${width}-${height}-${foregroundAlpha.toFixed(2)}-${isHSL}`
-
-    // 检查 boundaryData 是否变化（通过比较 lowerBoundary 的第一个点）
-    // 这能够检测背景颜色变化导致的边界曲线位置变化
-    const lowerFirstPoint = lowerBoundary?.simplifiedPoints?.[0]
-    const upperFirstPoint = upperBoundary?.simplifiedPoints?.[0]
-    const boundaryKey = `${lowerFirstPoint?.[0] ?? "n"}-${lowerFirstPoint?.[1] ?? "n"}-${upperFirstPoint?.[0] ?? "n"}-${upperFirstPoint?.[1] ?? "n"}`
-    const fullRenderKey = `${renderKey}-${boundaryKey}`
-
-    // 如果已经渲染过且参数没变，跳过重绘
-    if (boundaryRenderedRef.current && fullRenderKey === lastRenderKeyRef.current) {
-      return
-    }
-
-    // 更新最后渲染的key和渲染状态
-    lastRenderKeyRef.current = fullRenderKey
+    // 标记曲线已渲染，用于点位绘制等待
     boundaryRenderedRef.current = true
 
     // 设置canvas尺寸 (考虑高DPI显示)
