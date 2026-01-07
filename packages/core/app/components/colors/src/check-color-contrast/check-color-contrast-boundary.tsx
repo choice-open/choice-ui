@@ -6,19 +6,15 @@ import type {
   BoundaryCalculationResult,
   BoundaryInfo,
   ChannelFieldSpace,
-  CheckColorContrastCategory,
-  CheckColorContrastLevel,
   PaintState,
   RecommendedPoint,
 } from "../types/colors"
 
 interface CheckColorContrastBoundaryProps {
   boundaryData: BoundaryCalculationResult
-  category?: CheckColorContrastCategory
   colorSpace: ChannelFieldSpace
   foregroundAlpha?: number
   height?: number
-  level?: CheckColorContrastLevel
   paintState: PaintState
   recommendedPoint: RecommendedPoint | null
   showRecommendedPoint?: boolean
@@ -38,7 +34,6 @@ export const CheckColorContrastBoundary = memo(function CheckColorContrastBounda
   const {
     width = 0,
     height = 0,
-
     foregroundAlpha = 1,
     showRecommendedPoint = false,
     recommendedPoint,
@@ -47,6 +42,7 @@ export const CheckColorContrastBoundary = memo(function CheckColorContrastBounda
     colorSpace,
     paintState,
   } = props
+
   // 使用两个独立的Canvas分别绘制曲线和点
   const boundaryCanvasRef = useRef<HTMLCanvasElement>(null)
   const pointCanvasRef = useRef<HTMLCanvasElement>(null)
@@ -66,9 +62,6 @@ export const CheckColorContrastBoundary = memo(function CheckColorContrastBounda
     startTime: number | null
     targetPos: { x: number; y: number } | null
   }>({ startTime: null, startPos: null, targetPos: null, duration: 50 })
-
-  // 添加boundaryRendered标记，用于点位绘制等待曲线完成
-  const boundaryRenderedRef = useRef(false)
 
   useEffect(() => {
     if (showRecommendedPoint) {
@@ -196,9 +189,6 @@ export const CheckColorContrastBoundary = memo(function CheckColorContrastBounda
     const canvas = boundaryCanvasRef.current
     if (!canvas) return
 
-    // 标记曲线已渲染，用于点位绘制等待
-    boundaryRenderedRef.current = true
-
     // 设置canvas尺寸 (考虑高DPI显示)
     // canvas 使用 -inset-[3px] 偏移，所以实际尺寸是 width + 6, height + 6
     const dpr = window.devicePixelRatio || 1
@@ -222,45 +212,88 @@ export const CheckColorContrastBoundary = memo(function CheckColorContrastBounda
     ctx.save()
     ctx.beginPath()
 
-    // 使用贝塞尔曲线创建覆盖所有安全区域的裁剪路径
+    // 使用贝塞尔曲线创建覆盖不安全区域的裁剪路径
     if (lowerBoundary && upperBoundary) {
-      // 两个边界：裁剪低于 lower 和高于 upper
       const lowerSegments = lowerBoundary.bezierSegments
       const upperSegments = upperBoundary.bezierSegments
 
-      // 确保有效的段数组
       if (lowerSegments?.length && upperSegments?.length) {
-        // 路径用于低于 lower 边界
-        ctx.moveTo(lowerSegments[0].start[0], lowerSegments[0].start[1])
-        for (const segment of lowerSegments) {
-          ctx.bezierCurveTo(
-            segment.cp1[0],
-            segment.cp1[1],
-            segment.cp2[0],
-            segment.cp2[1],
-            segment.end[0],
-            segment.end[1],
-          )
-        }
-        ctx.lineTo(width, height)
-        ctx.lineTo(0, height)
-        ctx.closePath()
+        // 检查是否是真正的双边界（两条曲线都在画布内部）
+        // 计算 upperBoundary 的平均 Y 值
+        const upperAvgY =
+          upperSegments.reduce((sum, seg) => sum + seg.start[1] + seg.end[1], 0) /
+          (upperSegments.length * 2)
+        // 计算 lowerBoundary 的平均 Y 值
+        const lowerAvgY =
+          lowerSegments.reduce((sum, seg) => sum + seg.start[1] + seg.end[1], 0) /
+          (lowerSegments.length * 2)
 
-        // 路径用于高于 upper 边界
-        ctx.moveTo(upperSegments[0].start[0], upperSegments[0].start[1])
-        for (const segment of upperSegments) {
-          ctx.bezierCurveTo(
-            segment.cp1[0],
-            segment.cp1[1],
-            segment.cp2[0],
-            segment.cp2[1],
-            segment.end[0],
-            segment.end[1],
-          )
+        const edgeThreshold = 5 // 边缘阈值
+
+        // upperBoundary 在顶部边缘 -> 实际是单边界（只有 lowerBoundary 可见）
+        if (upperAvgY < edgeThreshold) {
+          // 不安全区在 lowerBoundary 下方
+          ctx.moveTo(lowerSegments[0].start[0], lowerSegments[0].start[1])
+          for (const segment of lowerSegments) {
+            ctx.bezierCurveTo(
+              segment.cp1[0],
+              segment.cp1[1],
+              segment.cp2[0],
+              segment.cp2[1],
+              segment.end[0],
+              segment.end[1],
+            )
+          }
+          ctx.lineTo(width, height)
+          ctx.lineTo(0, height)
+          ctx.closePath()
         }
-        ctx.lineTo(width, 0)
-        ctx.lineTo(0, 0)
-        ctx.closePath()
+        // lowerBoundary 在底部边缘 -> 实际是单边界（只有 upperBoundary 可见）
+        else if (lowerAvgY > height - edgeThreshold) {
+          // 不安全区在 upperBoundary 上方
+          ctx.moveTo(upperSegments[0].start[0], upperSegments[0].start[1])
+          for (const segment of upperSegments) {
+            ctx.bezierCurveTo(
+              segment.cp1[0],
+              segment.cp1[1],
+              segment.cp2[0],
+              segment.cp2[1],
+              segment.end[0],
+              segment.end[1],
+            )
+          }
+          ctx.lineTo(width, 0)
+          ctx.lineTo(0, 0)
+          ctx.closePath()
+        }
+        // 真正的双边界：不安全区在中间
+        else {
+          ctx.moveTo(upperSegments[0].start[0], upperSegments[0].start[1])
+          for (const segment of upperSegments) {
+            ctx.bezierCurveTo(
+              segment.cp1[0],
+              segment.cp1[1],
+              segment.cp2[0],
+              segment.cp2[1],
+              segment.end[0],
+              segment.end[1],
+            )
+          }
+          const lastLowerSegment = lowerSegments[lowerSegments.length - 1]
+          ctx.lineTo(lastLowerSegment.end[0], lastLowerSegment.end[1])
+          for (let i = lowerSegments.length - 1; i >= 0; i--) {
+            const segment = lowerSegments[i]
+            ctx.bezierCurveTo(
+              segment.cp2[0],
+              segment.cp2[1],
+              segment.cp1[0],
+              segment.cp1[1],
+              segment.start[0],
+              segment.start[1],
+            )
+          }
+          ctx.closePath()
+        }
       }
     } else if (lowerBoundary) {
       // 只有 lower 边界：裁剪低于它
@@ -398,6 +431,7 @@ export const CheckColorContrastBoundary = memo(function CheckColorContrastBounda
 
     drawBoundaryLine(lowerBoundary)
     drawBoundaryLine(upperBoundary)
+    // boundaryPaths 在依赖数组中用于确保路径变化时触发重绘
   }, [width, height, roundedHue, foregroundAlpha, isHSL, boundaryData, boundaryPaths])
 
   // 单独的函数来处理推荐点的绘制
@@ -421,9 +455,6 @@ export const CheckColorContrastBoundary = memo(function CheckColorContrastBounda
 
     // 如果没有动画点位或尺寸无效，只清除画布不绘制
     if (!animatedPointPos || width <= 0 || height <= 0) return
-
-    // 等待曲线绘制完成
-    if (!boundaryRenderedRef.current) return
 
     // 设置缩放
     ctx.scale(dpr, dpr)

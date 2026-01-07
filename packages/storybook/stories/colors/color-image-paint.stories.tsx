@@ -5,7 +5,7 @@ import { useMemo, useState } from "react"
 import { useEventCallback } from "usehooks-ts"
 
 const meta: Meta<typeof ColorImagePaint> = {
-  title: "Colors/Paint/ColorImagePaint",
+  title: "Colors/ColorImagePaint",
   component: ColorImagePaint,
   tags: ["new"],
 }

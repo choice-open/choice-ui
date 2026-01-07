@@ -405,13 +405,83 @@ export const useColorContrastRecommendation = (props: ColorContrastRecommendatio
     [],
   )
 
+  // 获取边界的 X 范围
+  const getBoundaryXRange = useCallback(
+    (boundary: BoundaryInfo | null): { minX: number; maxX: number } | null => {
+      if (!boundary) return null
+
+      if (boundary.bezierSegments?.length) {
+        let minX = Infinity
+        let maxX = -Infinity
+        for (const segment of boundary.bezierSegments) {
+          minX = Math.min(minX, segment.start[0], segment.end[0])
+          maxX = Math.max(maxX, segment.start[0], segment.end[0])
+        }
+        return { minX, maxX }
+      }
+
+      if (boundary.simplifiedPoints?.length >= 2) {
+        const points = boundary.simplifiedPoints
+        let minX = Infinity
+        let maxX = -Infinity
+        for (const point of points) {
+          minX = Math.min(minX, point[0])
+          maxX = Math.max(maxX, point[0])
+        }
+        return { minX, maxX }
+      }
+
+      return null
+    },
+    [],
+  )
+
   // 在边界上的指定 X 位置找到 Y 值
   const findYAtX = useCallback(
     (boundary: BoundaryInfo | null, x: number): number | null => {
       if (!boundary) return null
 
       if (boundary.bezierSegments?.length) {
-        for (const segment of boundary.bezierSegments) {
+        const segments = boundary.bezierSegments
+
+        // 首先找到整个边界的 X 范围
+        let boundaryMinX = Infinity
+        let boundaryMaxX = -Infinity
+        let leftEndY = 0
+        let rightEndY = 0
+
+        for (const segment of segments) {
+          const [x0] = segment.start
+          const [x3] = segment.end
+          if (x0 < boundaryMinX) {
+            boundaryMinX = x0
+            leftEndY = segment.start[1]
+          }
+          if (x3 < boundaryMinX) {
+            boundaryMinX = x3
+            leftEndY = segment.end[1]
+          }
+          if (x0 > boundaryMaxX) {
+            boundaryMaxX = x0
+            rightEndY = segment.start[1]
+          }
+          if (x3 > boundaryMaxX) {
+            boundaryMaxX = x3
+            rightEndY = segment.end[1]
+          }
+        }
+
+        // 如果 x 在曲线左边，返回左端点 Y
+        if (x < boundaryMinX) {
+          return leftEndY
+        }
+        // 如果 x 在曲线右边，返回右端点 Y
+        if (x > boundaryMaxX) {
+          return rightEndY
+        }
+
+        // x 在曲线范围内，找到对应的段
+        for (const segment of segments) {
           const [x0] = segment.start
           const [x3] = segment.end
           const minX = Math.min(x0, x3)
@@ -441,6 +511,21 @@ export const useColorContrastRecommendation = (props: ColorContrastRecommendatio
       // 降级到简化点
       if (boundary.simplifiedPoints?.length >= 2) {
         const points = boundary.simplifiedPoints
+
+        // 找到简化点的 X 范围
+        const firstX = points[0][0]
+        const lastX = points[points.length - 1][0]
+        const minX = Math.min(firstX, lastX)
+        const maxX = Math.max(firstX, lastX)
+
+        // 如果 x 在范围外，返回端点 Y
+        if (x < minX) {
+          return firstX < lastX ? points[0][1] : points[points.length - 1][1]
+        }
+        if (x > maxX) {
+          return firstX < lastX ? points[points.length - 1][1] : points[0][1]
+        }
+
         for (let i = 0; i < points.length - 1; i++) {
           const [x0, y0] = points[i]
           const [x1, y1] = points[i + 1]
@@ -477,41 +562,69 @@ export const useColorContrastRecommendation = (props: ColorContrastRecommendatio
 
     const { lowerBoundary, upperBoundary } = boundaryData
     const safetyMargin = 3
+    const edgeThreshold = 5
 
     // 边界定义（Canvas 坐标系，Y=0 在顶部）：
     // - lowerBoundary：安全区域的下边界，安全区域在它上方（Y < lowerBoundary Y值）
     // - upperBoundary：安全区域的上边界，安全区域在它下方（Y > upperBoundary Y值）
 
-    // 首先检查当前点相对于边界的位置
-    const lowerY = findYAtX(lowerBoundary, currentX)
-    const upperY = findYAtX(upperBoundary, currentX)
+    // 计算边界的平均 Y 值，用于判断是否在边缘
+    const getAvgY = (boundary: BoundaryInfo | null): number | null => {
+      if (!boundary?.bezierSegments?.length) return null
+      const segments = boundary.bezierSegments
+      return segments.reduce((sum, seg) => sum + seg.start[1] + seg.end[1], 0) / (segments.length * 2)
+    }
+
+    const upperAvgY = getAvgY(upperBoundary)
+    const lowerAvgY = getAvgY(lowerBoundary)
+
+    // 判断是否为"假双边界"（其中一个边界在画布边缘）
+    const isUpperAtTopEdge = upperAvgY !== null && upperAvgY < edgeThreshold
+    const isLowerAtBottomEdge = lowerAvgY !== null && lowerAvgY > height - edgeThreshold
+
+    // 有效边界：排除在边缘的边界
+    const effectiveLowerBoundary = isLowerAtBottomEdge ? null : lowerBoundary
+    const effectiveUpperBoundary = isUpperAtTopEdge ? null : upperBoundary
+
+    // 获取边界的 X 范围
+    const lowerXRange = getBoundaryXRange(effectiveLowerBoundary)
+    const upperXRange = getBoundaryXRange(effectiveUpperBoundary)
+
+    // 检查当前点是否在边界的 X 范围内
+    const isInLowerXRange = lowerXRange && currentX >= lowerXRange.minX && currentX <= lowerXRange.maxX
+    const isInUpperXRange = upperXRange && currentX >= upperXRange.minX && currentX <= upperXRange.maxX
+
+    // 首先检查当前点相对于边界的位置（使用有效边界）
+    const lowerY = findYAtX(effectiveLowerBoundary, currentX)
+    const upperY = findYAtX(effectiveUpperBoundary, currentX)
 
     // 判断当前点是否在安全区域内
     // 对于 lowerBoundary: 安全区域在上方，currentY < lowerY 表示在安全区域
     // 对于 upperBoundary: 安全区域在下方，currentY > upperY 表示在安全区域
-    const isAboveLower = lowerY !== null && currentY < lowerY - safetyMargin
-    const isBelowUpper = upperY !== null && currentY > upperY + safetyMargin
+    // 注意：只有当 currentX 在边界 X 范围内时，Y 比较才有效
+    const isAboveLower = lowerY !== null && isInLowerXRange && currentY < lowerY - safetyMargin
+    const isBelowUpper = upperY !== null && isInUpperXRange && currentY > upperY + safetyMargin
 
-    // 如果只有 lowerBoundary，安全区域在上方
-    if (lowerBoundary && !upperBoundary) {
+    // 如果只有 effectiveLowerBoundary，安全区域在上方
+    if (effectiveLowerBoundary && !effectiveUpperBoundary) {
       if (isAboveLower) {
         // 已在安全区域，不需要推荐
         return null
       }
     }
 
-    // 如果只有 upperBoundary，安全区域在下方
-    if (upperBoundary && !lowerBoundary) {
+    // 如果只有 effectiveUpperBoundary，安全区域在下方
+    if (effectiveUpperBoundary && !effectiveLowerBoundary) {
       if (isBelowUpper) {
         // 已在安全区域，不需要推荐
         return null
       }
     }
 
-    // 如果两条边界都存在
-    if (lowerBoundary && upperBoundary) {
+    // 如果两条有效边界都存在
+    if (effectiveLowerBoundary && effectiveUpperBoundary) {
       // 两条边界之间是不安全区域
-      // 安全区域：Y < lowerY 或 Y > upperY
+      // 安全区域：Y < lowerY 或 Y > upperY（且在对应边界的 X 范围内）
       if (isAboveLower || isBelowUpper) {
         return null
       }
@@ -523,28 +636,28 @@ export const useColorContrastRecommendation = (props: ColorContrastRecommendatio
     let recommendedX: number | null = null
     let recommendedY: number | null = null
 
-    // 只有 lowerBoundary 的情况（最常见）：当前点在曲线下方，需要移动到曲线上方
-    if (lowerBoundary && !upperBoundary) {
+    // 只有 effectiveLowerBoundary 的情况（最常见）：当前点在曲线下方，需要移动到曲线上方
+    if (effectiveLowerBoundary && !effectiveUpperBoundary) {
       // 找到曲线上距离当前点最近的点，然后向上偏移进入安全区域
-      const nearest = findNearestPointOnBoundary(lowerBoundary, currentX, currentY, -safetyMargin, height)
+      const nearest = findNearestPointOnBoundary(effectiveLowerBoundary, currentX, currentY, -safetyMargin, height)
       if (nearest) {
         recommendedX = nearest.x
         recommendedY = nearest.y
       }
     }
-    // 只有 upperBoundary 的情况：当前点在曲线上方，需要移动到曲线下方
-    else if (upperBoundary && !lowerBoundary) {
-      const nearest = findNearestPointOnBoundary(upperBoundary, currentX, currentY, safetyMargin, height)
+    // 只有 effectiveUpperBoundary 的情况：当前点在曲线上方，需要移动到曲线下方
+    else if (effectiveUpperBoundary && !effectiveLowerBoundary) {
+      const nearest = findNearestPointOnBoundary(effectiveUpperBoundary, currentX, currentY, safetyMargin, height)
       if (nearest) {
         recommendedX = nearest.x
         recommendedY = nearest.y
       }
     }
-    // 两条边界都存在的情况：当前点在两条曲线之间
-    else if (lowerBoundary && upperBoundary) {
+    // 两条有效边界都存在的情况：当前点在两条曲线之间
+    else if (effectiveLowerBoundary && effectiveUpperBoundary) {
       // 找到两条边界上距离当前点最近的点
-      const nearestOnLower = findNearestPointOnBoundary(lowerBoundary, currentX, currentY, -safetyMargin, height)
-      const nearestOnUpper = findNearestPointOnBoundary(upperBoundary, currentX, currentY, safetyMargin, height)
+      const nearestOnLower = findNearestPointOnBoundary(effectiveLowerBoundary, currentX, currentY, -safetyMargin, height)
+      const nearestOnUpper = findNearestPointOnBoundary(effectiveUpperBoundary, currentX, currentY, safetyMargin, height)
 
       // 选择距离更近的
       if (nearestOnLower && nearestOnUpper) {
@@ -581,7 +694,7 @@ export const useColorContrastRecommendation = (props: ColorContrastRecommendatio
       slX,
       slY,
     }
-  }, [width, height, boundaryData, findNearestPointOnBoundary, findYAtX, colorSpace, paintState])
+  }, [width, height, boundaryData, findNearestPointOnBoundary, findYAtX, getBoundaryXRange, colorSpace, paintState])
 
   // --- 每当边界变化时更新推荐点状态 ---
   useEffect(() => {

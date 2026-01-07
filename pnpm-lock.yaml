@@ -3202,8 +3202,8 @@ importers:
         specifier: workspace:*
         version: link:../design-tokens
       '@choice-ui/grid-areas':
-        specifier: workspace:*
-        version: link:../grid-areas
+        specifier: ^0.0.2
+        version: 0.0.2
       '@choice-ui/react':
         specifier: workspace:*
         version: link:../core
@@ -4343,6 +4343,9 @@ packages:
 
   '@changesets/write@0.4.0':
     resolution: {integrity: sha512-CdTLvIOPiCNuH71pyDu3rA+Q0n65cmAbXnwWH84rKGiFumFzkmHNT8KHTMEchcxN+Kl8I54xGUhJ7l3E7X396Q==}
+
+  '@choice-ui/grid-areas@0.0.2':
+    resolution: {integrity: sha512-bvQT8YK/TZUOlA/qXPOkFn8NUCq0QaHVOz8Ialmob0uQ0ne3j7d2bfbac0HVORA25SzpIA4yJ6eFeH2Xf8d/uw==}
 
   '@choice-ui/shared@0.0.1':
     resolution: {integrity: sha512-3TBe8sa3qKuefddDJ/XFI54GesOqSHnJivW2DrLja0Bd1Ef29oHTNDwTRJcbRWM2A7H+rc+zLTuGRCQ/yQzzhQ==}
@@ -12114,6 +12117,10 @@ snapshots:
       fs-extra: 7.0.1
       human-id: 4.1.3
       prettier: 2.8.8
+
+  '@choice-ui/grid-areas@0.0.2':
+    dependencies:
+      tailwindcss: 4.1.13
 
   '@choice-ui/shared@0.0.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@4.1.17)':
     dependencies:

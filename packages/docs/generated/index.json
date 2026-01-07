@@ -56,16 +56,6 @@
       "version": "0.0.5"
     },
     {
-      "slug": "colors/check-color-contrast",
-      "name": "@choice-ui/colors",
-      "title": "CheckColorContrast",
-      "description": "",
-      "version": "0.3.34",
-      "tags": [
-        "experimental"
-      ]
-    },
-    {
       "slug": "buttons/chip",
       "name": "@choice-ui/chip",
       "title": "Chip",
@@ -101,14 +91,14 @@
       "version": "0.3.34"
     },
     {
-      "slug": "colors/paint/color-gradients-paint",
+      "slug": "colors/color-gradients-paint",
       "name": "@choice-ui/colors",
       "title": "ColorGradientsPaint",
       "description": "",
       "version": "0.3.34"
     },
     {
-      "slug": "colors/paint/color-image-paint",
+      "slug": "colors/color-image-paint",
       "name": "@choice-ui/colors",
       "title": "ColorImagePaint",
       "description": "",
@@ -116,13 +106,6 @@
       "tags": [
         "new"
       ]
-    },
-    {
-      "slug": "colors/fill-input/color-input",
-      "name": "@choice-ui/colors",
-      "title": "ColorInput",
-      "description": "",
-      "version": "0.3.34"
     },
     {
       "slug": "colors/color-picker-popover",
@@ -135,23 +118,6 @@
       ]
     },
     {
-      "slug": "colors/color-profile",
-      "name": "@choice-ui/colors",
-      "title": "ColorProfile",
-      "description": "",
-      "version": "0.3.34"
-    },
-    {
-      "slug": "colors/color-profile-test-grid",
-      "name": "@choice-ui/colors",
-      "title": "ColorProfileTestGrid",
-      "description": "",
-      "version": "0.3.34",
-      "tags": [
-        "code-only"
-      ]
-    },
-    {
       "slug": "colors/color-slider",
       "name": "@choice-ui/colors",
       "title": "ColorSlider",
@@ -159,9 +125,16 @@
       "version": "0.3.34"
     },
     {
-      "slug": "colors/paint/color-solid-paint",
+      "slug": "colors/color-solid-paint",
       "name": "@choice-ui/colors",
       "title": "ColorSolidPaint",
+      "description": "",
+      "version": "0.3.34"
+    },
+    {
+      "slug": "colors/colors-provider",
+      "name": "@choice-ui/colors",
+      "title": "ColorsProvider",
       "description": "",
       "version": "0.3.34"
     },
@@ -293,18 +266,18 @@
       ]
     },
     {
+      "slug": "colors/fill-input",
+      "name": "@choice-ui/colors",
+      "title": "FillInput",
+      "description": "",
+      "version": "0.3.34"
+    },
+    {
       "slug": "forms/form",
       "name": "@choice-ui/form",
       "title": "Form",
       "description": "Enhanced useForm hook",
       "version": "0.0.5"
-    },
-    {
-      "slug": "colors/fill-input/gradient-item",
-      "name": "@choice-ui/colors",
-      "title": "GradientItem",
-      "description": "",
-      "version": "0.3.34"
     },
     {
       "slug": "plugins/grid-areas",
@@ -343,13 +316,6 @@
       "title": "IconButton",
       "description": "",
       "version": "0.0.6"
-    },
-    {
-      "slug": "colors/fill-input/image-item",
-      "name": "@choice-ui/colors",
-      "title": "ImageItem",
-      "description": "",
-      "version": "0.3.34"
     },
     {
       "slug": "forms/input",

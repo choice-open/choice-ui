@@ -280,6 +280,7 @@ export const Basic: Story = {
         />
 
         <ColorPickerPopover
+          autoUpdate={true}
           triggerRef={triggerRef}
           pickerType={pickerType}
           onPickerTypeChange={handlePickerTypeChange}
@@ -311,10 +312,10 @@ export const Basic: Story = {
             showColorContrast,
             level,
             category,
-            backgroundColor: { r: 255, g: 255, b: 255 }, // TODO: 背景颜色需要传入
+            backgroundColor: { r: 255, g: 255, b: 255 }, // TODO: Background color should be passed in
             foregroundColor: color,
             foregroundAlpha: alpha,
-            selectedElementType: "graphics", // TODO: 需要传入元素类型
+            selectedElementType: "graphics", // TODO: Element type should be passed in
             handleLevelChange: setLevel,
             handleCategoryChange: setCategory,
             handleShowColorContrast: () => setShowColorContrast((prev) => !prev),
@@ -594,6 +595,22 @@ const FeaturesController = forwardRef<HTMLDivElement, FeaturesControllerProps>(
  *      }}
  *    />
  *    ```
+ *
+ * ### Color Contrast Checking (`checkColorContrast`)
+ *
+ * The `checkColorContrast` prop enables WCAG color contrast validation:
+ *
+ * - `showColorContrast`: Controls visibility of contrast checker UI (toolbar and boundary lines)
+ * - `level`: Target WCAG level ('AA' | 'AAA')
+ * - `category`: Content type ('auto' | 'large-text' | 'normal-text' | 'graphics')
+ * - `backgroundColor`: Background RGB color object
+ * - `foregroundColor`: Foreground RGB color (linked to picker's color state)
+ * - `foregroundAlpha`: Alpha value (0-1) of foreground color
+ * - `selectedElementType`: Element type ('text' | 'graphics') for 'auto' category behavior
+ * - `handleLevelChange`: Callback when contrast level changes
+ * - `handleCategoryChange`: Callback when category changes
+ * - `handleShowColorContrast`: Callback to toggle contrast checker visibility
+ * - `contrastInfo`: Optional override for calculated contrast ratio display
  */
 export const Features: Story = {
   render: function FeaturesControllerStory() {
@@ -721,42 +738,59 @@ export const Features: Story = {
 }
 
 /**
- * `DynamicTabs` 展示了如何使用 `additionalTabs` 属性来扩展颜色选择器的功能。
+ * `DynamicTabs` demonstrates how to use the `additionalTabs` prop to extend the color picker functionality.
  *
- * ### 动态标签页功能
+ * ### Dynamic Tabs Feature
  *
- * 通过 `additionalTabs` 属性，可以向颜色选择器添加自定义标签页内容，从而扩展其功能：
+ * The `additionalTabs` prop allows you to add custom tab content to the color picker, extending its capabilities.
  *
- * 1. 每个标签页由以下属性组成：
- *    - `value`: 标签页的唯一标识符
- *    - `label`: 显示在标签页上的文本
- *    - `content`: 标签页的内容组件
+ * ### Tab Object Structure
  *
- * 2. 实现方式：
- *    ```tsx
- *    const additionalTabs = [
- *      {
- *        value: "CUSTOM_TAB",
- *        label: "My Tab",
- *        content: <CustomTabContent />
- *      }
- *    ];
+ * Each tab consists of the following properties:
+ * - `value`: Unique identifier for the tab
+ * - `label`: Text displayed on the tab
+ * - `content`: Content component for the tab
  *
- *    <ColorPickerPopover
- *      additionalTabs={additionalTabs}
- *      // ...其他属性
- *    />
- *    ```
+ * ### Implementation
  *
- * 3. 用例示例：
- *    - 添加品牌色板或主题色选择器
- *    - 集成设计系统特定的颜色功能
- *    - 添加自定义的颜色工具或使用场景
+ * ```tsx
+ * const additionalTabs = [
+ *   {
+ *     value: "CUSTOM_TAB",
+ *     label: "My Tab",
+ *     content: <CustomTabContent />
+ *   }
+ * ];
  *
- * 4. 扩展建议：
- *    - 保持标签页内容简洁明了
- *    - 确保每个标签页提供独特的功能
- *    - 可以通过设计一致的视觉风格增强用户体验
+ * <ColorPickerPopover
+ *   additionalTabs={additionalTabs}
+ *   // ...other props
+ * />
+ * ```
+ *
+ * ### Example Usage
+ *
+ * In this demo, we've added "Palette" and "Theme" tabs alongside the default "Custom" tab.
+ * Try clicking on the different tabs to see how they work.
+ *
+ * ### Use Case Examples
+ *
+ * - Add brand color palettes or theme color selectors
+ * - Integrate design system specific color features
+ * - Add custom color tools or usage scenarios
+ *
+ * ### Benefits
+ *
+ * - Add custom color selection interfaces
+ * - Integrate with design systems
+ * - Create specialized color tools
+ * - Maintain consistent UI patterns
+ *
+ * ### Extension Recommendations
+ *
+ * - Keep tab content concise and clear
+ * - Ensure each tab provides unique functionality
+ * - Enhance user experience through consistent visual design
  */
 export const DynamicTabs: Story = {
   render: function DynamicTabsStory() {
@@ -777,7 +811,7 @@ export const DynamicTabs: Story = {
       handleGradientChange,
     } = useColorPicker()
 
-    // 自定义调色板标签页内容
+    // Custom palette tab content
     const customPaletteContent = (
       <div className="flex flex-col gap-3 p-4">
         <div className="text-body-small-strong">Custom Palette</div>
@@ -808,7 +842,7 @@ export const DynamicTabs: Story = {
       </div>
     )
 
-    // 主题色标签页内容
+    // Theme colors tab content
     const themesTabContent = (
       <div className="flex flex-col gap-3 p-4">
         <div className="text-body-small-strong">Theme</div>
@@ -850,7 +884,7 @@ export const DynamicTabs: Story = {
       </div>
     )
 
-    // 定义额外标签页
+    // Define additional tabs
     const additionalTabs = [
       {
         value: "CUSTOM_PALETTE",
@@ -865,94 +899,50 @@ export const DynamicTabs: Story = {
     ]
 
     return (
-      <div className="flex min-h-[500px] items-center justify-center gap-12">
-        <div className="flex max-w-md flex-col gap-6">
-          <h2 className="text-heading-large">Dynamic Tabs Feature</h2>
+      <div className="flex flex-col items-center gap-4">
+        <ColorSwatch
+          color={color}
+          alpha={alpha}
+          size={64}
+          className="rounded-md"
+        />
 
-          <div className="flex flex-col gap-2">
-            <h3 className="text-body-large-strong">How to use:</h3>
-            <p className="text-body-small text-gray-700">
-              Extend the color picker with custom tabs by passing an array of tab objects to the{" "}
-              <code className="rounded bg-gray-100 px-1 font-mono text-xs">additionalTabs</code>{" "}
-              prop.
-            </p>
-          </div>
+        <ColorPickerPopover
+          triggerRef={triggerRef}
+          draggable
+          rememberPosition
+          pickerType={pickerType}
+          onPickerTypeChange={handlePickerTypeChange}
+          paintsType={paintsType}
+          onPaintsTypeChange={handlePaintsTypeChange}
+          additionalTabs={additionalTabs}
+          solidPaint={
+            <ColorSolidPaint
+              colorSpace={colorSpace}
+              onColorSpaceChange={(value) => setColorSpace(value as ChannelFieldSpace)}
+              color={color}
+              alpha={alpha}
+              onColorChange={handleColorChange}
+              onAlphaChange={handleAlphaChange}
+            />
+          }
+          gradientPaint={
+            <ColorGradientsPaint
+              colorSpace={colorSpace}
+              onColorSpaceChange={(value) => setColorSpace(value as ChannelFieldSpace)}
+              gradient={gradient}
+              onGradientChange={handleGradientChange}
+            />
+          }
+          open={open}
+          onOpenChange={setOpen}
+        />
 
-          <div className="flex flex-col gap-2">
-            <h3 className="text-body-large-strong">Tab object structure:</h3>
-            <pre className="overflow-auto rounded bg-gray-100 p-2 font-mono text-xs">
-              {`{
-  value: "TAB_ID",      // Unique identifier
-  label: "Tab Label",   // Display text
-  content: <Component /> // React component
-}`}
-            </pre>
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <h3 className="text-body-large-strong">Example usage:</h3>
-            <p className="text-body-small text-gray-700">
-              In this demo, we've added "Palette" and "Theme" tabs alongside the default "Custom"
-              tab. Try clicking on the different tabs to see how they work.
-            </p>
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <h3 className="text-body-large-strong">Benefits:</h3>
-            <ul className="text-body-small list-disc pl-5 text-gray-700">
-              <li>Add custom color selection interfaces</li>
-              <li>Integrate with design systems</li>
-              <li>Create specialized color tools</li>
-              <li>Maintain consistent UI patterns</li>
-            </ul>
-          </div>
-        </div>
-
-        <div className="flex flex-col items-center gap-4">
-          <ColorSwatch
-            color={color}
-            alpha={alpha}
-            size={64}
-            className="rounded-md"
-          />
-
-          <ColorPickerPopover
-            triggerRef={triggerRef}
-            draggable
-            rememberPosition
-            pickerType={pickerType}
-            onPickerTypeChange={handlePickerTypeChange}
-            paintsType={paintsType}
-            onPaintsTypeChange={handlePaintsTypeChange}
-            additionalTabs={additionalTabs}
-            solidPaint={
-              <ColorSolidPaint
-                colorSpace={colorSpace}
-                onColorSpaceChange={(value) => setColorSpace(value as ChannelFieldSpace)}
-                color={color}
-                alpha={alpha}
-                onColorChange={handleColorChange}
-                onAlphaChange={handleAlphaChange}
-              />
-            }
-            gradientPaint={
-              <ColorGradientsPaint
-                colorSpace={colorSpace}
-                onColorSpaceChange={(value) => setColorSpace(value as ChannelFieldSpace)}
-                gradient={gradient}
-                onGradientChange={handleGradientChange}
-              />
-            }
-            open={open}
-            onOpenChange={setOpen}
-          />
-
-          <div
-            ref={triggerRef}
-            className="z-10"
-          >
-            <Button onClick={() => setOpen(!open)}>Open</Button>
-          </div>
+        <div
+          ref={triggerRef}
+          className="z-10"
+        >
+          <Button onClick={() => setOpen(!open)}>Open</Button>
         </div>
       </div>
     )

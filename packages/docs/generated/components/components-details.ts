@@ -18,88 +18,84 @@ import ComponentDetail14 from "./forms-checkbox.json"
 import ComponentDetail15 from "./buttons-chip.json"
 import ComponentDetail16 from "./forms-chips-input.json"
 import ComponentDetail17 from "./data-display-code-block.json"
-import ComponentDetail18 from "./colors-check-color-contrast.json"
-import ComponentDetail19 from "./colors-color-area.json"
-import ComponentDetail20 from "./colors-color-channel-field.json"
-import ComponentDetail21 from "./colors-paint-color-gradients-paint.json"
-import ComponentDetail22 from "./colors-paint-color-image-paint.json"
-import ComponentDetail23 from "./colors-fill-input-color-input.json"
-import ComponentDetail24 from "./colors-color-picker-popover.json"
-import ComponentDetail25 from "./colors-color-profile-test-grid.json"
-import ComponentDetail26 from "./colors-color-profile.json"
-import ComponentDetail27 from "./colors-color-slider.json"
-import ComponentDetail28 from "./colors-paint-color-solid-paint.json"
-import ComponentDetail29 from "./colors-color-swatch.json"
-import ComponentDetail30 from "./colors-fill-input-gradient-item.json"
-import ComponentDetail31 from "./colors-hex-input.json"
-import ComponentDetail32 from "./colors-fill-input-image-item.json"
-import ComponentDetail33 from "./colors-libraries.json"
-import ComponentDetail34 from "./colors-simple-color-picker.json"
-import ComponentDetail35 from "./collections-combobox.json"
-import ComponentDetail36 from "./collections-command.json"
-import ComponentDetail37 from "./components-comments.json"
-import ComponentDetail38 from "./components-conditions.json"
-import ComponentDetail39 from "./forms-context-input.json"
-import ComponentDetail40 from "./collections-context-menu.json"
-import ComponentDetail41 from "./forms-description.json"
-import ComponentDetail42 from "./overlays-dialog.json"
-import ComponentDetail43 from "./collections-dropdown.json"
-import ComponentDetail44 from "./pickers-emoji-picker.json"
-import ComponentDetail45 from "./forms-error-message.json"
-import ComponentDetail46 from "./forms-file-upload.json"
-import ComponentDetail47 from "./forms-form.json"
-import ComponentDetail48 from "./plugins-grid-areas.json"
-import ComponentDetail49 from "./feedback-hint.json"
-import ComponentDetail50 from "./buttons-icon-button.json"
-import ComponentDetail51 from "./forms-input.json"
-import ComponentDetail52 from "./data-display-kbd.json"
-import ComponentDetail53 from "./forms-label.json"
-import ComponentDetail54 from "./buttons-link-button.json"
-import ComponentDetail55 from "./collections-list.json"
-import ComponentDetail56 from "./layouts-loader.json"
-import ComponentDetail57 from "./forms-md-input.json"
-import ComponentDetail58 from "./data-display-md-render.json"
-import ComponentDetail59 from "./collections-menubar.json"
-import ComponentDetail60 from "./collections-menus.json"
-import ComponentDetail61 from "./overlays-modal.json"
-import ComponentDetail62 from "./collections-multi-select.json"
-import ComponentDetail63 from "./status-notifications.json"
-import ComponentDetail64 from "./forms-numeric-input.json"
-import ComponentDetail65 from "./forms-otp-input.json"
-import ComponentDetail66 from "./navigation-pagination.json"
-import ComponentDetail67 from "./layouts-panel.json"
-import ComponentDetail68 from "./data-display-picture-preview.json"
-import ComponentDetail69 from "./overlays-popover.json"
-import ComponentDetail70 from "./feedback-progress-bar.json"
-import ComponentDetail71 from "./feedback-progress-circle.json"
-import ComponentDetail72 from "./forms-radio.json"
-import ComponentDetail73 from "./forms-range.json"
-import ComponentDetail74 from "./forms-rich-input.json"
-import ComponentDetail75 from "./layouts-scroll-area.json"
-import ComponentDetail76 from "./forms-search-input.json"
-import ComponentDetail77 from "./buttons-segmented.json"
-import ComponentDetail78 from "./collections-select.json"
-import ComponentDetail79 from "./layouts-separator.json"
-import ComponentDetail80 from "./utils-date-formatting.json"
-import ComponentDetail81 from "./utils-i18n.json"
-import ComponentDetail82 from "./utils-tcx-tw-merge.json"
-import ComponentDetail83 from "./feedback-skeleton.json"
-import ComponentDetail84 from "./utils-slot.json"
-import ComponentDetail85 from "./status-spinner-spinner-bounce.json"
-import ComponentDetail86 from "./status-spinner-spinner-spin.json"
-import ComponentDetail87 from "./layouts-splitter.json"
-import ComponentDetail88 from "./utilities-spring-visualizer.json"
-import ComponentDetail89 from "./navigation-stackflow.json"
-import ComponentDetail90 from "./forms-switch.json"
-import ComponentDetail91 from "./data-display-table.json"
-import ComponentDetail92 from "./navigation-tabs.json"
-import ComponentDetail93 from "./forms-text-field.json"
-import ComponentDetail94 from "./forms-textarea.json"
-import ComponentDetail95 from "./feedback-toast.json"
-import ComponentDetail96 from "./buttons-toggle-button.json"
-import ComponentDetail97 from "./overlays-tooltip.json"
-import ComponentDetail98 from "./components-tree-list.json"
-import ComponentDetail99 from "./layouts-virtualized-grid.json"
+import ComponentDetail18 from "./colors-color-area.json"
+import ComponentDetail19 from "./colors-color-channel-field.json"
+import ComponentDetail20 from "./colors-color-gradients-paint.json"
+import ComponentDetail21 from "./colors-color-image-paint.json"
+import ComponentDetail22 from "./colors-color-picker-popover.json"
+import ComponentDetail23 from "./colors-color-slider.json"
+import ComponentDetail24 from "./colors-color-solid-paint.json"
+import ComponentDetail25 from "./colors-color-swatch.json"
+import ComponentDetail26 from "./colors-colors-provider.json"
+import ComponentDetail27 from "./colors-fill-input.json"
+import ComponentDetail28 from "./colors-hex-input.json"
+import ComponentDetail29 from "./colors-libraries.json"
+import ComponentDetail30 from "./colors-simple-color-picker.json"
+import ComponentDetail31 from "./collections-combobox.json"
+import ComponentDetail32 from "./collections-command.json"
+import ComponentDetail33 from "./components-comments.json"
+import ComponentDetail34 from "./components-conditions.json"
+import ComponentDetail35 from "./forms-context-input.json"
+import ComponentDetail36 from "./collections-context-menu.json"
+import ComponentDetail37 from "./forms-description.json"
+import ComponentDetail38 from "./overlays-dialog.json"
+import ComponentDetail39 from "./collections-dropdown.json"
+import ComponentDetail40 from "./pickers-emoji-picker.json"
+import ComponentDetail41 from "./forms-error-message.json"
+import ComponentDetail42 from "./forms-file-upload.json"
+import ComponentDetail43 from "./forms-form.json"
+import ComponentDetail44 from "./plugins-grid-areas.json"
+import ComponentDetail45 from "./feedback-hint.json"
+import ComponentDetail46 from "./buttons-icon-button.json"
+import ComponentDetail47 from "./forms-input.json"
+import ComponentDetail48 from "./data-display-kbd.json"
+import ComponentDetail49 from "./forms-label.json"
+import ComponentDetail50 from "./buttons-link-button.json"
+import ComponentDetail51 from "./collections-list.json"
+import ComponentDetail52 from "./layouts-loader.json"
+import ComponentDetail53 from "./forms-md-input.json"
+import ComponentDetail54 from "./data-display-md-render.json"
+import ComponentDetail55 from "./collections-menubar.json"
+import ComponentDetail56 from "./collections-menus.json"
+import ComponentDetail57 from "./overlays-modal.json"
+import ComponentDetail58 from "./collections-multi-select.json"
+import ComponentDetail59 from "./status-notifications.json"
+import ComponentDetail60 from "./forms-numeric-input.json"
+import ComponentDetail61 from "./forms-otp-input.json"
+import ComponentDetail62 from "./navigation-pagination.json"
+import ComponentDetail63 from "./layouts-panel.json"
+import ComponentDetail64 from "./data-display-picture-preview.json"
+import ComponentDetail65 from "./overlays-popover.json"
+import ComponentDetail66 from "./feedback-progress-bar.json"
+import ComponentDetail67 from "./feedback-progress-circle.json"
+import ComponentDetail68 from "./forms-radio.json"
+import ComponentDetail69 from "./forms-range.json"
+import ComponentDetail70 from "./forms-rich-input.json"
+import ComponentDetail71 from "./layouts-scroll-area.json"
+import ComponentDetail72 from "./forms-search-input.json"
+import ComponentDetail73 from "./buttons-segmented.json"
+import ComponentDetail74 from "./collections-select.json"
+import ComponentDetail75 from "./layouts-separator.json"
+import ComponentDetail76 from "./utils-date-formatting.json"
+import ComponentDetail77 from "./utils-i18n.json"
+import ComponentDetail78 from "./utils-tcx-tw-merge.json"
+import ComponentDetail79 from "./feedback-skeleton.json"
+import ComponentDetail80 from "./utils-slot.json"
+import ComponentDetail81 from "./status-spinner-spinner-bounce.json"
+import ComponentDetail82 from "./status-spinner-spinner-spin.json"
+import ComponentDetail83 from "./layouts-splitter.json"
+import ComponentDetail84 from "./utilities-spring-visualizer.json"
+import ComponentDetail85 from "./navigation-stackflow.json"
+import ComponentDetail86 from "./forms-switch.json"
+import ComponentDetail87 from "./data-display-table.json"
+import ComponentDetail88 from "./navigation-tabs.json"
+import ComponentDetail89 from "./forms-text-field.json"
+import ComponentDetail90 from "./forms-textarea.json"
+import ComponentDetail91 from "./feedback-toast.json"
+import ComponentDetail92 from "./buttons-toggle-button.json"
+import ComponentDetail93 from "./overlays-tooltip.json"
+import ComponentDetail94 from "./components-tree-list.json"
+import ComponentDetail95 from "./layouts-virtualized-grid.json"
 
 export const componentsDetails = {
   "overlays/alert-dialog": ComponentDetail0 as ComponentDetail,
@@ -120,86 +116,82 @@ export const componentsDetails = {
   "buttons/chip": ComponentDetail15 as ComponentDetail,
   "forms/chips-input": ComponentDetail16 as ComponentDetail,
   "data-display/code-block": ComponentDetail17 as ComponentDetail,
-  "colors/check-color-contrast": ComponentDetail18 as ComponentDetail,
-  "colors/color-area": ComponentDetail19 as ComponentDetail,
-  "colors/color-channel-field": ComponentDetail20 as ComponentDetail,
-  "colors/paint/color-gradients-paint": ComponentDetail21 as ComponentDetail,
-  "colors/paint/color-image-paint": ComponentDetail22 as ComponentDetail,
-  "colors/fill-input/color-input": ComponentDetail23 as ComponentDetail,
-  "colors/color-picker-popover": ComponentDetail24 as ComponentDetail,
-  "colors/color-profile-test-grid": ComponentDetail25 as ComponentDetail,
-  "colors/color-profile": ComponentDetail26 as ComponentDetail,
-  "colors/color-slider": ComponentDetail27 as ComponentDetail,
-  "colors/paint/color-solid-paint": ComponentDetail28 as ComponentDetail,
-  "colors/color-swatch": ComponentDetail29 as ComponentDetail,
-  "colors/fill-input/gradient-item": ComponentDetail30 as ComponentDetail,
-  "colors/hex-input": ComponentDetail31 as ComponentDetail,
-  "colors/fill-input/image-item": ComponentDetail32 as ComponentDetail,
-  "colors/libraries": ComponentDetail33 as ComponentDetail,
-  "colors/simple-color-picker": ComponentDetail34 as ComponentDetail,
-  "collections/combobox": ComponentDetail35 as ComponentDetail,
-  "collections/command": ComponentDetail36 as ComponentDetail,
-  "components/comments": ComponentDetail37 as ComponentDetail,
-  "components/conditions": ComponentDetail38 as ComponentDetail,
-  "forms/context-input": ComponentDetail39 as ComponentDetail,
-  "collections/context-menu": ComponentDetail40 as ComponentDetail,
-  "forms/description": ComponentDetail41 as ComponentDetail,
-  "overlays/dialog": ComponentDetail42 as ComponentDetail,
-  "collections/dropdown": ComponentDetail43 as ComponentDetail,
-  "pickers/emoji-picker": ComponentDetail44 as ComponentDetail,
-  "forms/error-message": ComponentDetail45 as ComponentDetail,
-  "forms/file-upload": ComponentDetail46 as ComponentDetail,
-  "forms/form": ComponentDetail47 as ComponentDetail,
-  "plugins/grid-areas": ComponentDetail48 as ComponentDetail,
-  "feedback/hint": ComponentDetail49 as ComponentDetail,
-  "buttons/icon-button": ComponentDetail50 as ComponentDetail,
-  "forms/input": ComponentDetail51 as ComponentDetail,
-  "data-display/kbd": ComponentDetail52 as ComponentDetail,
-  "forms/label": ComponentDetail53 as ComponentDetail,
-  "buttons/link-button": ComponentDetail54 as ComponentDetail,
-  "collections/list": ComponentDetail55 as ComponentDetail,
-  "layouts/loader": ComponentDetail56 as ComponentDetail,
-  "forms/md-input": ComponentDetail57 as ComponentDetail,
-  "data-display/md-render": ComponentDetail58 as ComponentDetail,
-  "collections/menubar": ComponentDetail59 as ComponentDetail,
-  "collections/menus": ComponentDetail60 as ComponentDetail,
-  "overlays/modal": ComponentDetail61 as ComponentDetail,
-  "collections/multi-select": ComponentDetail62 as ComponentDetail,
-  "status/notifications": ComponentDetail63 as ComponentDetail,
-  "forms/numeric-input": ComponentDetail64 as ComponentDetail,
-  "forms/otp-input": ComponentDetail65 as ComponentDetail,
-  "navigation/pagination": ComponentDetail66 as ComponentDetail,
-  "layouts/panel": ComponentDetail67 as ComponentDetail,
-  "data-display/picture-preview": ComponentDetail68 as ComponentDetail,
-  "overlays/popover": ComponentDetail69 as ComponentDetail,
-  "feedback/progress-bar": ComponentDetail70 as ComponentDetail,
-  "feedback/progress-circle": ComponentDetail71 as ComponentDetail,
-  "forms/radio": ComponentDetail72 as ComponentDetail,
-  "forms/range": ComponentDetail73 as ComponentDetail,
-  "forms/rich-input": ComponentDetail74 as ComponentDetail,
-  "layouts/scroll-area": ComponentDetail75 as ComponentDetail,
-  "forms/search-input": ComponentDetail76 as ComponentDetail,
-  "buttons/segmented": ComponentDetail77 as ComponentDetail,
-  "collections/select": ComponentDetail78 as ComponentDetail,
-  "layouts/separator": ComponentDetail79 as ComponentDetail,
-  "utils/date-formatting": ComponentDetail80 as ComponentDetail,
-  "utils/i18n": ComponentDetail81 as ComponentDetail,
-  "utils/tcx-tw-merge": ComponentDetail82 as ComponentDetail,
-  "feedback/skeleton": ComponentDetail83 as ComponentDetail,
-  "utils/slot": ComponentDetail84 as ComponentDetail,
-  "status/spinner/spinner-bounce": ComponentDetail85 as ComponentDetail,
-  "status/spinner/spinner-spin": ComponentDetail86 as ComponentDetail,
-  "layouts/splitter": ComponentDetail87 as ComponentDetail,
-  "utilities/spring-visualizer": ComponentDetail88 as ComponentDetail,
-  "navigation/stackflow": ComponentDetail89 as ComponentDetail,
-  "forms/switch": ComponentDetail90 as ComponentDetail,
-  "data-display/table": ComponentDetail91 as ComponentDetail,
-  "navigation/tabs": ComponentDetail92 as ComponentDetail,
-  "forms/text-field": ComponentDetail93 as ComponentDetail,
-  "forms/textarea": ComponentDetail94 as ComponentDetail,
-  "feedback/toast": ComponentDetail95 as ComponentDetail,
-  "buttons/toggle-button": ComponentDetail96 as ComponentDetail,
-  "overlays/tooltip": ComponentDetail97 as ComponentDetail,
-  "components/tree-list": ComponentDetail98 as ComponentDetail,
-  "layouts/virtualized-grid": ComponentDetail99 as ComponentDetail,
+  "colors/color-area": ComponentDetail18 as ComponentDetail,
+  "colors/color-channel-field": ComponentDetail19 as ComponentDetail,
+  "colors/color-gradients-paint": ComponentDetail20 as ComponentDetail,
+  "colors/color-image-paint": ComponentDetail21 as ComponentDetail,
+  "colors/color-picker-popover": ComponentDetail22 as ComponentDetail,
+  "colors/color-slider": ComponentDetail23 as ComponentDetail,
+  "colors/color-solid-paint": ComponentDetail24 as ComponentDetail,
+  "colors/color-swatch": ComponentDetail25 as ComponentDetail,
+  "colors/colors-provider": ComponentDetail26 as ComponentDetail,
+  "colors/fill-input": ComponentDetail27 as ComponentDetail,
+  "colors/hex-input": ComponentDetail28 as ComponentDetail,
+  "colors/libraries": ComponentDetail29 as ComponentDetail,
+  "colors/simple-color-picker": ComponentDetail30 as ComponentDetail,
+  "collections/combobox": ComponentDetail31 as ComponentDetail,
+  "collections/command": ComponentDetail32 as ComponentDetail,
+  "components/comments": ComponentDetail33 as ComponentDetail,
+  "components/conditions": ComponentDetail34 as ComponentDetail,
+  "forms/context-input": ComponentDetail35 as ComponentDetail,
+  "collections/context-menu": ComponentDetail36 as ComponentDetail,
+  "forms/description": ComponentDetail37 as ComponentDetail,
+  "overlays/dialog": ComponentDetail38 as ComponentDetail,
+  "collections/dropdown": ComponentDetail39 as ComponentDetail,
+  "pickers/emoji-picker": ComponentDetail40 as ComponentDetail,
+  "forms/error-message": ComponentDetail41 as ComponentDetail,
+  "forms/file-upload": ComponentDetail42 as ComponentDetail,
+  "forms/form": ComponentDetail43 as ComponentDetail,
+  "plugins/grid-areas": ComponentDetail44 as ComponentDetail,
+  "feedback/hint": ComponentDetail45 as ComponentDetail,
+  "buttons/icon-button": ComponentDetail46 as ComponentDetail,
+  "forms/input": ComponentDetail47 as ComponentDetail,
+  "data-display/kbd": ComponentDetail48 as ComponentDetail,
+  "forms/label": ComponentDetail49 as ComponentDetail,
+  "buttons/link-button": ComponentDetail50 as ComponentDetail,
+  "collections/list": ComponentDetail51 as ComponentDetail,
+  "layouts/loader": ComponentDetail52 as ComponentDetail,
+  "forms/md-input": ComponentDetail53 as ComponentDetail,
+  "data-display/md-render": ComponentDetail54 as ComponentDetail,
+  "collections/menubar": ComponentDetail55 as ComponentDetail,
+  "collections/menus": ComponentDetail56 as ComponentDetail,
+  "overlays/modal": ComponentDetail57 as ComponentDetail,
+  "collections/multi-select": ComponentDetail58 as ComponentDetail,
+  "status/notifications": ComponentDetail59 as ComponentDetail,
+  "forms/numeric-input": ComponentDetail60 as ComponentDetail,
+  "forms/otp-input": ComponentDetail61 as ComponentDetail,
+  "navigation/pagination": ComponentDetail62 as ComponentDetail,
+  "layouts/panel": ComponentDetail63 as ComponentDetail,
+  "data-display/picture-preview": ComponentDetail64 as ComponentDetail,
+  "overlays/popover": ComponentDetail65 as ComponentDetail,
+  "feedback/progress-bar": ComponentDetail66 as ComponentDetail,
+  "feedback/progress-circle": ComponentDetail67 as ComponentDetail,
+  "forms/radio": ComponentDetail68 as ComponentDetail,
+  "forms/range": ComponentDetail69 as ComponentDetail,
+  "forms/rich-input": ComponentDetail70 as ComponentDetail,
+  "layouts/scroll-area": ComponentDetail71 as ComponentDetail,
+  "forms/search-input": ComponentDetail72 as ComponentDetail,
+  "buttons/segmented": ComponentDetail73 as ComponentDetail,
+  "collections/select": ComponentDetail74 as ComponentDetail,
+  "layouts/separator": ComponentDetail75 as ComponentDetail,
+  "utils/date-formatting": ComponentDetail76 as ComponentDetail,
+  "utils/i18n": ComponentDetail77 as ComponentDetail,
+  "utils/tcx-tw-merge": ComponentDetail78 as ComponentDetail,
+  "feedback/skeleton": ComponentDetail79 as ComponentDetail,
+  "utils/slot": ComponentDetail80 as ComponentDetail,
+  "status/spinner/spinner-bounce": ComponentDetail81 as ComponentDetail,
+  "status/spinner/spinner-spin": ComponentDetail82 as ComponentDetail,
+  "layouts/splitter": ComponentDetail83 as ComponentDetail,
+  "utilities/spring-visualizer": ComponentDetail84 as ComponentDetail,
+  "navigation/stackflow": ComponentDetail85 as ComponentDetail,
+  "forms/switch": ComponentDetail86 as ComponentDetail,
+  "data-display/table": ComponentDetail87 as ComponentDetail,
+  "navigation/tabs": ComponentDetail88 as ComponentDetail,
+  "forms/text-field": ComponentDetail89 as ComponentDetail,
+  "forms/textarea": ComponentDetail90 as ComponentDetail,
+  "feedback/toast": ComponentDetail91 as ComponentDetail,
+  "buttons/toggle-button": ComponentDetail92 as ComponentDetail,
+  "overlays/tooltip": ComponentDetail93 as ComponentDetail,
+  "components/tree-list": ComponentDetail94 as ComponentDetail,
+  "layouts/virtualized-grid": ComponentDetail95 as ComponentDetail,
 } as Record<string, ComponentDetail>

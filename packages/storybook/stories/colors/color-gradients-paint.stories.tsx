@@ -7,7 +7,7 @@ import React, { useState } from "react"
 import { useEventCallback } from "usehooks-ts"
 
 const meta: Meta<typeof ColorGradientsPaint> = {
-  title: "Colors/Paint/ColorGradientsPaint",
+  title: "Colors/ColorGradientsPaint",
   component: ColorGradientsPaint,
 }
 

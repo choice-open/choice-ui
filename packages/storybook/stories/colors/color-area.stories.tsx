@@ -31,19 +31,30 @@ export default meta
 type Story = StoryObj<typeof ColorArea>
 
 /**
- * The ColorArea component is a 2D color selection surface that visualizes two color dimensions:
+ * `ColorArea` is a 2D color selection surface that visualizes two color dimensions.
  *
- * - Horizontal axis: Usually represents saturation (0-100%)
- * - Vertical axis: Can represent either lightness or brightness (0-100%)
+ * ### Axes
  *
- * This interactive example shows both modes side by side, with synchronized positions.
+ * - **Horizontal (X)**: Saturation (0-100%)
+ * - **Vertical (Y)**: Lightness or Brightness (0-100%)
+ *
+ * ### Types
+ *
+ * - `saturation-lightness`: HSL model - Lightness from white (top) to black (bottom)
+ * - `saturation-brightness`: HSB/HSV model - Brightness from maximum (top) to black (bottom)
+ *
+ * ### Key Properties
+ *
+ * - `position`: x,y coordinates (0-1) that determine the selected color
+ * - `hue`: Base color (0-360) applied to the color area
+ * - `thumbColor`: RGB color for the selection thumb
+ * - `areaSize`: Width and height in pixels
  */
 export const Basic: Story = {
   render: function BasicStory() {
     const [position, setPosition] = useState({ x: 0.5, y: 0.5 })
-    const [huePosition, setHuePosition] = useState(0.55) // ~200° in the hue wheel
+    const [huePosition, setHuePosition] = useState(0.55)
 
-    // Convert hue position (0-1) to degrees (0-360)
     const hue = useMemo(() => Math.round((huePosition * 360) % 360), [huePosition])
 
     const lightness = useMemo(() => {
@@ -59,21 +70,8 @@ export const Basic: Story = {
     return (
       <div className="w-md flex flex-col gap-6">
         <div className="grid grid-cols-[repeat(2,200px)] gap-x-8 gap-y-4">
-          <div className="flex flex-col gap-2">
-            <h3 className="font-strong">Saturation-Lightness (HSL)</h3>
-            <p className="text-secondary-foreground text-body-small">
-              The HSL model is more intuitive for some color selections. Lightness represents the
-              brightness relative to white (top) and black (bottom).
-            </p>
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <h3 className="font-strong">Saturation-Brightness (HSB/HSV)</h3>
-            <p className="text-secondary-foreground text-body-small">
-              The HSB model (also called HSV) is useful for selecting vibrant colors. Brightness
-              represents intensity from maximum (top) to black (bottom).
-            </p>
-          </div>
+          <h3 className="font-strong">Saturation-Lightness (HSL)</h3>
+          <h3 className="font-strong">Saturation-Brightness (HSB/HSV)</h3>
 
           <ColorArea
             position={position}
@@ -105,27 +103,17 @@ export const Basic: Story = {
             </div>
           </div>
 
-          <div className="flex flex-col gap-2">
-            <div className="flex items-center gap-2">
-              <ColorSwatch
-                color={brightness}
-                size={24}
-                className="rounded-md"
-              />
-              <div className="bg-secondary-background text-body-small grid grid-cols-3 items-center gap-2 rounded-md px-2 py-1">
-                <span>R: {brightness.r}</span>
-                <span>G: {brightness.g}</span>
-                <span>B: {brightness.b}</span>
-              </div>
+          <div className="flex items-center gap-2">
+            <ColorSwatch
+              color={brightness}
+              size={24}
+              className="rounded-md"
+            />
+            <div className="bg-secondary-background text-body-small grid grid-cols-3 items-center gap-2 rounded-md px-2 py-1">
+              <span>R: {brightness.r}</span>
+              <span>G: {brightness.g}</span>
+              <span>B: {brightness.b}</span>
             </div>
-          </div>
-
-          <div className="text-secondary-foreground text-body-small">
-            Position: x: {position.x.toFixed(2)}, y: {position.y.toFixed(2)}
-          </div>
-
-          <div className="text-secondary-foreground text-body-small">
-            HEX: {tinycolor(brightness).toHexString()}
           </div>
 
           <div className="flex max-w-md flex-col gap-3">
@@ -145,47 +133,18 @@ export const Basic: Story = {
             />
           </div>
         </div>
-
-        <div className="rounded-md border p-4">
-          <ul className="flex flex-col gap-2">
-            <li>
-              <b className="font-strong">Color Area</b>: A 2D surface for selecting saturation and
-              lightness/brightness values
-            </li>
-            <li>
-              <b className="font-strong">Position</b>: The x,y coordinates (0-1) that determine the
-              selected color
-            </li>
-            <li>
-              <b className="font-strong">Hue</b>: The base color (0-360) applied to the color area
-            </li>
-            <li>
-              <b className="font-strong">Types</b>:
-              <ul className="ml-6 mt-1">
-                <li>
-                  • saturation-lightness: X axis is saturation, Y axis is lightness (HSL model)
-                </li>
-                <li>
-                  • saturation-brightness: X axis is saturation, Y axis is brightness (HSB/HSV
-                  model)
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </div>
       </div>
     )
   },
 }
 
 /**
- * This example demonstrates different size configurations and how ColorArea
- * can be used in color picker interfaces with varying dimensions.
+ * The `areaSize` prop accepts width and height values in pixels to configure different dimensions.
  */
 export const Sizes: Story = {
   render: function SizesStory() {
     const [position, setPosition] = useState({ x: 0.5, y: 0.5 })
-    const [huePosition, setHuePosition] = useState(0.75) // ~270° Purple hue
+    const [huePosition, setHuePosition] = useState(0.75)
     const hue = Math.round((huePosition * 360) % 360)
 
     const rgbColor = useMemo(() => {
@@ -195,9 +154,9 @@ export const Sizes: Story = {
 
     return (
       <div className="flex flex-col items-start gap-6">
-        <div className="flex gap-6">
+        <div className="flex flex-wrap gap-4">
           <div className="flex flex-col items-center gap-2">
-            <h3 className="font-strong">Small (150×150)</h3>
+            <h3 className="font-strong">150×150</h3>
             <ColorArea
               position={position}
               onChange={setPosition}
@@ -206,11 +165,10 @@ export const Sizes: Story = {
               type="saturation-lightness"
               areaSize={{ width: 150, height: 150 }}
             />
-            <span className="text-secondary-foreground text-body-small">Compact UI</span>
           </div>
 
           <div className="flex flex-col items-center gap-2">
-            <h3 className="font-strong">Medium (220×220)</h3>
+            <h3 className="font-strong">220×220</h3>
             <ColorArea
               position={position}
               onChange={setPosition}
@@ -219,11 +177,10 @@ export const Sizes: Story = {
               type="saturation-lightness"
               areaSize={{ width: 220, height: 220 }}
             />
-            <span className="text-secondary-foreground text-body-small">Standard size</span>
           </div>
 
           <div className="flex flex-col items-center gap-2">
-            <h3 className="font-strong">Large (300×200)</h3>
+            <h3 className="font-strong">300×200</h3>
             <ColorArea
               position={position}
               onChange={setPosition}
@@ -232,14 +189,12 @@ export const Sizes: Story = {
               type="saturation-lightness"
               areaSize={{ width: 300, height: 200 }}
             />
-            <span className="text-secondary-foreground text-body-small">Custom dimensions</span>
           </div>
         </div>
 
         <div className="flex max-w-md flex-col gap-3">
           <div className="flex items-center justify-between">
-            <span className="font-strong">Adjust Hue</span>
-            <span className="text-secondary-foreground text-body-small">{hue}°</span>
+            <span className="font-strong">Hue: {hue}°</span>
           </div>
           <ColorSlider
             type="hue"
@@ -248,30 +203,15 @@ export const Sizes: Story = {
           />
         </div>
 
-        <div className="flex items-start justify-center gap-4">
+        <div className="flex items-center gap-4">
           <ColorSwatch
             color={rgbColor}
             size={48}
             className="rounded-md"
           />
-          <div>
-            <div className="font-strong">Selected Color</div>
-            <div className="text-secondary-foreground text-body-small">
-              RGB: {rgbColor.r}, {rgbColor.g}, {rgbColor.b}
-            </div>
-            <div className="text-secondary-foreground text-body-small">
-              HEX: {tinycolor(rgbColor).toHexString()}
-            </div>
+          <div className="text-secondary-foreground text-body-small">
+            RGB: {rgbColor.r}, {rgbColor.g}, {rgbColor.b} | HEX: {tinycolor(rgbColor).toHexString()}
           </div>
-        </div>
-
-        <div className="rounded-md border p-4">
-          <p>
-            The ColorArea component can be configured with different sizes to fit various UI
-            requirements. The{" "}
-            <code className="bg-secondary-background rounded px-1 py-0.5 font-mono">areaSize</code>{" "}
-            prop accepts width and height values in pixels.
-          </p>
         </div>
       </div>
     )

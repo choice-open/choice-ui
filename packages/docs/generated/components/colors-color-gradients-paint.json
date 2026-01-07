@@ -20,8 +20,10 @@
       "@choice-ui/scroll-area": "workspace:*",
       "@choice-ui/toggle-button": "workspace:*",
       "@choice-ui/range": "workspace:*",
+      "@choice-ui/input": "workspace:*",
       "@choiceform/icons-react": "^1.3.8",
       "chroma-js": "^3.2.0",
+      "fuse.js": "^7.1.0",
       "tinycolor2": "1.6.0",
       "ts-pattern": "^5.5.0",
       "usehooks-ts": "^3.1.0"
@@ -61,10 +63,17 @@
     "type ColorGradientsPaintProps",
     "ColorImagePaint",
     "type ColorImagePaintProps",
+    "SimpleColorPicker",
+    "Libraries",
+    "type LibrariesProps",
     "useColors",
+    "ColorsContext",
+    "ColorsProvider",
+    "type ColorsProviderProps",
     "useColorParser",
     "useColorPicker",
     "useImageFilterStyle",
+    "useColorProfile",
     "getContrastThreshold",
     "hsbToRgb",
     "hslToRgb",
@@ -158,9 +167,22 @@
     "type VariableOption",
     "type VariableType",
     "type VariableValue",
+    "type EffectItem",
+    "type EffectItemType",
+    "type EffectItemKey",
+    "type EffectItemValue",
+    "type SolidFillItem",
+    "type TextFillItem",
+    "type GradientFillItem",
+    "type ImageFillItem",
+    "type FillItem",
+    "type FillItemKey",
+    "type FillItemValue",
+    "type FillType",
     "COLOR_SPACES",
     "DEFAULT_COLOR",
-    "DEFAULT_GRADIENT_TRANSFORM"
+    "DEFAULT_GRADIENT_TRANSFORM",
+    "BLACK_RGBA"
   ],
   "props": [
     {
@@ -1598,6 +1620,613 @@
       ]
     },
     {
+      "displayName": "SimpleColorPicker",
+      "description": "",
+      "props": [
+        {
+          "name": "alpha",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "color",
+          "type": "RGB | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "colorAreaClassName",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "colorSpace",
+          "type": "undefined | \"hex\" | \"rgb\" | \"hsl\" | \"hsb\"",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "features",
+          "type": "SolidPaintFeature | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "labels",
+          "type": "ColorChannelLabels | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onAlphaChange",
+          "type": "((alpha: number) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChangeEnd",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChangeStart",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onColorChange",
+          "type": "((color: RGB) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onColorSpaceChange",
+          "type": "((colorSpace: ChannelFieldSpace) => void) | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "LibraryItem",
+      "description": "",
+      "props": [
+        {
+          "name": "displayType",
+          "type": "\"LIST\" | \"LARGE_GRID\" | \"SMALL_GRID\"",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "isDuplicate",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "isSelected",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "item",
+          "type": "Style | Variable",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "libraryType",
+          "type": "\"VARIABLE\" | \"STYLE\"",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "onLibraryChange",
+          "type": "((value: { item: Style | Variable; type: LibrariesType; }) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onSetupPreferencesClick",
+          "type": "((id: string) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onSwatchChange",
+          "type": "((value: { alpha: number; color: RGB; }) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "setupPreferencesState$",
+          "type": "string | null | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "LibraryListItem",
+      "description": "",
+      "props": [
+        {
+          "name": "isSelected",
+          "type": "boolean",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "StylePaintItem",
+      "description": "",
+      "props": [
+        {
+          "name": "displayType",
+          "type": "undefined | \"LIST\" | \"LARGE_GRID\" | \"SMALL_GRID\"",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "isDuplicate",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "isSelected",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "item",
+          "type": "Style",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "libraryType",
+          "type": "undefined | \"VARIABLE\" | \"STYLE\"",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "paletteSize",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "previewUrl",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "StyleTextItem",
+      "description": "",
+      "props": [
+        {
+          "name": "displayType",
+          "type": "undefined | \"LIST\" | \"LARGE_GRID\" | \"SMALL_GRID\"",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "isDuplicate",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "isSelected",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "item",
+          "type": "Style",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "libraryType",
+          "type": "undefined | \"VARIABLE\" | \"STYLE\"",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "paletteSize",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "previewUrl",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "StyleEffectItem",
+      "description": "",
+      "props": [
+        {
+          "name": "item",
+          "type": "EffectStyle",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "displayType",
+          "type": "undefined | \"LIST\" | \"LARGE_GRID\" | \"SMALL_GRID\"",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "isDuplicate",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "isSelected",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "libraryType",
+          "type": "undefined | \"VARIABLE\" | \"STYLE\"",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "paletteSize",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "previewUrl",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "VariableColorItem",
+      "description": "",
+      "props": [
+        {
+          "name": "displayType",
+          "type": "undefined | \"LIST\" | \"LARGE_GRID\" | \"SMALL_GRID\"",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "isDuplicate",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "isSelected",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "item",
+          "type": "Variable",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "libraryType",
+          "type": "undefined | \"VARIABLE\" | \"STYLE\"",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onSwatchChange",
+          "type": "((value: { alpha: number; color: RGB; }) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "paletteSize",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "LibrariesProps",
+      "description": "",
+      "props": [
+        {
+          "name": "features",
+          "type": "LibrariesFeature | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "styles",
+          "type": "Style[] | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "variables",
+          "type": "Variable[] | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "category",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onCategoryChange",
+          "type": "((category: string) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "displayType",
+          "type": "undefined | \"LIST\" | \"LARGE_GRID\" | \"SMALL_GRID\"",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onDisplayTypeChange",
+          "type": "((displayType: LibrariesDisplayType) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "duplicateIndex",
+          "type": "number | null | undefined",
+          "required": false,
+          "description": "重复项的索引，用于标记重复的颜色"
+        },
+        {
+          "name": "onLibraryChange",
+          "type": "((value: { item: Style | Variable; type: LibrariesType; }) => void) | undefined",
+          "required": false,
+          "description": "当选择库中的项目时的回调"
+        },
+        {
+          "name": "onSwatchChange",
+          "type": "((value: { alpha: number; color: RGB; }) => void) | undefined",
+          "required": false,
+          "description": "当色板颜色改变时的回调"
+        },
+        {
+          "name": "selectedItem",
+          "type": "{ item: Style | Variable; type: LibrariesType; } | null | undefined",
+          "required": false,
+          "description": "外部选中的项目，用于定位和高亮显示"
+        },
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "headerActionElement",
+          "type": "ReactNode",
+          "required": false,
+          "description": "头部右侧的元素"
+        }
+      ]
+    },
+    {
+      "displayName": "LibrariesHeader",
+      "description": "",
+      "props": [
+        {
+          "name": "actionElement",
+          "type": "ReactNode",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "allowDisplayTypeSwitch",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "categoryOptions",
+          "type": "{ label?: string | undefined; value?: string | undefined; }[]",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "displayType",
+          "type": "undefined | \"LIST\" | \"LARGE_GRID\" | \"SMALL_GRID\"",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "inputRef",
+          "type": "RefObject<HTMLInputElement>",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "((category: string) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onDisplayTypeChange",
+          "type": "((type: LibrariesDisplayType) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onSearchChange",
+          "type": "((value: string) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "searchValue",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "IfLibraryColorSwatch",
+      "description": "",
+      "props": [
+        {
+          "name": "category",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onCategoryChange",
+          "type": "((category: string) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onLibraryChange",
+          "type": "((value: { item: Style | Variable; type: LibrariesType; }) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onSwatchChange",
+          "type": "((value: { alpha: number; color: RGB; }) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "selectedItem",
+          "type": "{ item: Style | Variable; type: LibrariesType; } | null | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "variables",
+          "type": "Variable[] | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "IfLibrariesSearchInput",
+      "description": "",
+      "props": [
+        {
+          "name": "onSearchValueChange",
+          "type": "(value: string) => void",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "searchValue",
+          "type": "string",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "IfLibrariesContent",
+      "description": "",
+      "props": [
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "items",
+          "type": "unknown[]",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "libraryItem",
+          "type": "(item: unknown, style: CSSProperties) => ReactNode",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "LibrariesEmptyContent",
+      "description": "",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "ColorsProviderProps",
+      "description": "颜色配置 Provider - 提供广色域检测和用户偏好设置",
+      "props": [
+        {
+          "name": "defaultUserPreference",
+          "type": "ColorProfile | null | undefined",
+          "required": false,
+          "defaultValue": "null",
+          "description": "初始用户偏好设置"
+        }
+      ]
+    },
+    {
       "displayName": "useColors",
       "description": "使用颜色配置的钩子 - 从 Context 中获取颜色配置信息",
       "props": []
@@ -2203,7 +2832,7 @@
       "name": "Basic",
       "exportName": "Basic",
       "description": "The `ColorGradientsPaint` component is a professional gradient color editor designed for creating and editing complex gradient styles.\nIt provides a comprehensive set of controls for precise gradient manipulation, making it suitable for both basic and advanced gradient design needs.\n\n### Component Structure\n- **Gradient Type Selector**: Switch between linear, radial, and angular gradients\n- **Gradient Control Bar**: Visual representation of the gradient with interactive color stops\n- **Color Stop Controls**: Detailed controls for managing individual color stops\n- **Transform Tools**: Rotation and flip controls for adjusting gradient orientation\n\n### Usage Guidelines\n1. **Gradient Types**\n   - Linear: Creates straight-line color transitions\n   - Radial: Produces circular gradient patterns\n   - Angular: Generates sweeping circular gradients\n\n2. **Color Stop Management**\n   - Click on the gradient bar to add new color stops\n   - Drag stops to adjust their position\n   - Click a stop to edit its color and opacity\n   - Double-click to remove a stop\n\n3. **Transform Controls**\n   - Use rotation tool for 90-degree rotations\n   - Flip tool reverses the gradient direction\n\n4. **Variable Support**\n   - Bind color stops to design system variables\n   - Maintain consistency across your design system\n\n### Best Practices\n- Maintain at least two color stops for a valid gradient\n- Use alpha channels thoughtfully for transparency effects\n- Consider using preset gradients for consistency\n- Leverage variables for reusable gradient patterns",
-      "source": "import { ColorGradientsPaint } from \"@choice-ui/colors\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [gradient, setGradient] = useState<GradientPaint>({\n    gradientStops: [\n      { id: \"start\", position: 0, color: { r: 0, g: 80, b: 255 }, alpha: 0.5 },\n      { id: \"end\", position: 1, color: { r: 0, g: 80, b: 255 }, alpha: 1 },\n    ],\n    type: \"GRADIENT_LINEAR\",\n    gradientTransform: [\n      [1, 0, 0],\n      [0, 1, 0],\n    ],\n  })\n\n  const [colorSpace, setColorSpace] = useState<ChannelFieldSpace>(\"hex\")\n\n  const handleGradientChange = useEventCallback((gradient: GradientPaint) => {\n    setGradient(gradient)\n  })\n\n  return (\n    <>\n      <GradientBackground gradient={gradient} />\n\n      <GradientPopover handleGradientChange={handleGradientChange}>\n        <ColorGradientsPaint\n          colorSpace={colorSpace}\n          onColorSpaceChange={(newValue) => setColorSpace(newValue)}\n          gradient={gradient}\n          onGradientChange={handleGradientChange}\n          features={{\n            containerWidth: 240,\n          }}\n          onChangeStart={() => {\n            console.log(\"change start\")\n          }}\n          onChangeEnd={() => {\n            console.log(\"change end\")\n          }}\n        />\n      </GradientPopover>\n\n      <GradientString gradient={gradient} />\n    </>\n  )\n\n}"
+      "source": "import { ColorGradientsPaint } from \"@choice-ui/colors\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [gradient, setGradient] = useState<GradientPaint>({\n    gradientStops: [\n      { id: \"start\", position: 0, color: { r: 0, g: 80, b: 255 }, alpha: 0.5 },\n      { id: \"end\", position: 1, color: { r: 0, g: 80, b: 255 }, alpha: 1 },\n    ],\n    type: \"GRADIENT_LINEAR\",\n    gradientTransform: [\n      [1, 0, 0],\n      [0, 1, 0],\n    ],\n  })\n\n  const [colorSpace, setColorSpace] = useState<ChannelFieldSpace>(\"hex\")\n\n  const handleGradientChange = useEventCallback((gradient: GradientPaint) => {\n    setGradient(gradient)\n  })\n\n  return (\n    <div className=\"flex flex-col items-center justify-center gap-4\">\n      <GradientBackground gradient={gradient} />\n\n      <div className=\"bg-default-background z-10 flex flex-col rounded-xl pb-4 shadow-lg\">\n        <ColorGradientsPaint\n          colorSpace={colorSpace}\n          onColorSpaceChange={(newValue) => setColorSpace(newValue)}\n          gradient={gradient}\n          onGradientChange={handleGradientChange}\n          features={{\n            containerWidth: 240,\n          }}\n          onChangeStart={() => {\n            console.log(\"change start\")\n          }}\n          onChangeEnd={() => {\n            console.log(\"change end\")\n          }}\n        />\n        <PresetColors handleGradientChange={handleGradientChange} />\n      </div>\n\n      <GradientString gradient={gradient} />\n    </div>\n  )\n\n}"
     }
   ]
 }

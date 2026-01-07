@@ -7,7 +7,7 @@ import React, { useState } from "react"
 import { useEventCallback } from "usehooks-ts"
 
 const meta: Meta<typeof ColorSolidPaint> = {
-  title: "Colors/Paint/ColorSolidPaint",
+  title: "Colors/ColorSolidPaint",
   component: ColorSolidPaint,
 }
 
