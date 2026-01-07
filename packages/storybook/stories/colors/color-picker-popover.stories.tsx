@@ -22,12 +22,14 @@ import {
   ColorSolidPaint,
   ColorSwatch,
   GradientItem,
+  Label,
   Popover,
+  Select,
   useColorPicker,
   VariableItem,
 } from "@choice-ui/react"
 import { Meta, StoryObj } from "@storybook/react"
-import { RefObject, useRef, useState } from "react"
+import { forwardRef, RefObject, useRef, useState } from "react"
 import tinycolor from "tinycolor2"
 
 const meta: Meta<typeof ColorPickerPopover> = {
@@ -291,18 +293,6 @@ export const Basic: Story = {
               alpha={alpha}
               onColorChange={handleColorChange}
               onAlphaChange={handleAlphaChange}
-              checkColorContrast={{
-                showColorContrast,
-                level,
-                category,
-                backgroundColor: { r: 255, g: 255, b: 255 }, // TODO: 背景颜色需要传入
-                foregroundColor: color,
-                foregroundAlpha: alpha,
-                selectedElementType: "graphics", // TODO: 需要传入元素类型
-                handleLevelChange: setLevel,
-                handleCategoryChange: setCategory,
-                handleShowColorContrast: () => setShowColorContrast((prev) => !prev),
-              }}
             />
           }
           gradientPaint={
@@ -335,87 +325,174 @@ export const Basic: Story = {
   },
 }
 
-const FeaturesController = ({
-  features,
-  setFeatures,
-}: {
+interface FeaturesControllerProps {
   features: PickerFeatures
   setFeatures: (features: PickerFeatures) => void
-}) => {
-  return (
-    <div className="bg-default-background z-10 rounded-lg shadow-lg">
-      <div className="text-body-medium-strong flex h-10 items-center border-b pl-4 pr-2">
-        Features Controller
-      </div>
-      <div className="flex w-60 flex-col gap-2 p-3">
-        <Checkbox
-          value={features.pickerType}
-          onChange={(checked) => setFeatures({ ...features, pickerType: checked })}
-        >
-          <Checkbox.Label>Picker Type</Checkbox.Label>
-        </Checkbox>
-        {features.pickerType && (
-          <>
-            <Checkbox
-              label="Custom"
-              value={features.custom}
-              onChange={(checked) => setFeatures({ ...features, custom: checked })}
-            >
-              <Checkbox.Label>Custom</Checkbox.Label>
-            </Checkbox>
-            {/* <Checkbox
+  setShowColorContrast: (showColorContrast: boolean) => void
+  backgroundColor: RGB
+  selectedElementType: "text" | "graphics"
+  setBackgroundColor: (backgroundColor: RGB) => void
+  setSelectedElementType: (selectedElementType: "text" | "graphics") => void
+  children: React.ReactNode
+}
+
+const FeaturesController = forwardRef<HTMLDivElement, FeaturesControllerProps>(
+  function FeaturesController(props, ref) {
+    const {
+      features,
+      setFeatures,
+      setShowColorContrast,
+      backgroundColor,
+      selectedElementType,
+      setBackgroundColor,
+      setSelectedElementType,
+      children,
+    } = props
+
+    const triggerRef = useRef<HTMLDivElement>(null)
+    const [open, setOpen] = useState(false)
+    const [colorSpace, setColorSpace] = useState<ChannelFieldSpace>("hex")
+
+    return (
+      <div
+        ref={ref}
+        className="bg-default-background z-10 rounded-lg shadow-lg"
+      >
+        <div className="text-body-medium-strong flex h-10 items-center border-b pl-4 pr-2">
+          Features Controller
+        </div>
+        <div className="flex w-60 flex-col gap-2 p-3">
+          <Checkbox
+            value={features.pickerType}
+            onChange={(checked) => setFeatures({ ...features, pickerType: checked })}
+          >
+            <Checkbox.Label>Picker Type</Checkbox.Label>
+          </Checkbox>
+          {features.pickerType && (
+            <>
+              <Checkbox
+                label="Custom"
+                value={features.custom}
+                onChange={(checked) => setFeatures({ ...features, custom: checked })}
+              >
+                <Checkbox.Label>Custom</Checkbox.Label>
+              </Checkbox>
+              {/* <Checkbox
                   value={features.libraries}
                   onChange={(checked) => setFeatures({ ...features, libraries: checked })}
                 >
                   <Checkbox.Label>Libraries</Checkbox.Label>
                 </Checkbox> */}
-          </>
-        )}
-        <hr />
-        <Checkbox
-          value={features.paintsType}
-          onChange={(checked) => setFeatures({ ...features, paintsType: checked })}
-        >
-          <Checkbox.Label>paintsType</Checkbox.Label>
-        </Checkbox>
-        {features.paintsType && (
-          <>
-            <Checkbox
-              value={features.solid}
-              onChange={(checked) => setFeatures({ ...features, solid: checked })}
-            >
-              <Checkbox.Label>Solid</Checkbox.Label>
-            </Checkbox>
-            <Checkbox
-              value={features.gradient}
-              onChange={(checked) => setFeatures({ ...features, gradient: checked })}
-            >
-              <Checkbox.Label>Gradient</Checkbox.Label>
-            </Checkbox>
-            <Checkbox
-              value={features.pattern}
-              onChange={(checked) => setFeatures({ ...features, pattern: checked })}
-            >
-              <Checkbox.Label>Pattern</Checkbox.Label>
-            </Checkbox>
-            <Checkbox
-              value={features.image}
-              onChange={(checked) => setFeatures({ ...features, image: checked })}
-            >
-              <Checkbox.Label>Image</Checkbox.Label>
-            </Checkbox>
-            <Checkbox
-              value={features.checkColorContrast}
-              onChange={(checked) => setFeatures({ ...features, checkColorContrast: checked })}
-            >
-              <Checkbox.Label>Check Color Contrast</Checkbox.Label>
-            </Checkbox>
-          </>
-        )}
+            </>
+          )}
+
+          <hr />
+          <Checkbox
+            value={features.paintsType}
+            onChange={(checked) => setFeatures({ ...features, paintsType: checked })}
+          >
+            <Checkbox.Label>paintsType</Checkbox.Label>
+          </Checkbox>
+          {features.paintsType && (
+            <>
+              <Checkbox
+                value={features.solid}
+                onChange={(checked) => setFeatures({ ...features, solid: checked })}
+              >
+                <Checkbox.Label>Solid</Checkbox.Label>
+              </Checkbox>
+              <Checkbox
+                value={features.gradient}
+                onChange={(checked) => setFeatures({ ...features, gradient: checked })}
+              >
+                <Checkbox.Label>Gradient</Checkbox.Label>
+              </Checkbox>
+              <Checkbox
+                value={features.pattern}
+                onChange={(checked) => setFeatures({ ...features, pattern: checked })}
+              >
+                <Checkbox.Label>Pattern</Checkbox.Label>
+              </Checkbox>
+              <Checkbox
+                value={features.image}
+                onChange={(checked) => setFeatures({ ...features, image: checked })}
+              >
+                <Checkbox.Label>Image</Checkbox.Label>
+              </Checkbox>
+              <hr />
+              <Checkbox
+                value={features.checkColorContrast}
+                onChange={(checked) => {
+                  setFeatures({ ...features, checkColorContrast: checked })
+                  setShowColorContrast(false)
+                }}
+              >
+                <Checkbox.Label>Check Color Contrast</Checkbox.Label>
+              </Checkbox>
+              {features.checkColorContrast && (
+                <>
+                  <Select
+                    value={selectedElementType}
+                    onChange={(value) => setSelectedElementType(value as "text" | "graphics")}
+                  >
+                    <Select.Trigger>
+                      <span className="flex-1 truncate capitalize">{selectedElementType}</span>
+                    </Select.Trigger>
+                    <Select.Content>
+                      <Select.Label>Selected Element Type</Select.Label>
+                      <Select.Item value="text">
+                        <Select.Value>Text</Select.Value>
+                      </Select.Item>
+                      <Select.Item value="graphics">
+                        <Select.Value>Graphics</Select.Value>
+                      </Select.Item>
+                    </Select.Content>
+                  </Select>
+                  <ColorInput
+                    ref={triggerRef}
+                    color={backgroundColor}
+                    onColorChange={setBackgroundColor}
+                    onPickerClick={() => setOpen(!open)}
+                    alpha={1}
+                    features={{
+                      alpha: false,
+                    }}
+                  />
+                  <ColorPickerPopover
+                    triggerRef={triggerRef}
+                    labels={{
+                      custom: "Background Color",
+                    }}
+                    open={open}
+                    onOpenChange={setOpen}
+                    autoUpdate={true}
+                    placement="left-start"
+                    features={{
+                      pickerType: false,
+                      paintsType: false,
+                      alpha: false,
+                    }}
+                    solidPaint={
+                      <ColorSolidPaint
+                        colorSpace={colorSpace}
+                        onColorSpaceChange={(value) => setColorSpace(value as ChannelFieldSpace)}
+                        color={backgroundColor}
+                        alpha={1}
+                        onColorChange={(color) => setBackgroundColor(color)}
+                      />
+                    }
+                  />
+                </>
+              )}
+            </>
+          )}
+        </div>
+
+        {children}
       </div>
-    </div>
-  )
-}
+    )
+  },
+)
 
 /**
  * `Features` demonstrates the comprehensive feature configuration system of the ColorPickerPopover component.
@@ -540,8 +617,11 @@ export const Features: Story = {
       checkColorContrast: true,
     })
 
+    const triggerRef = useRef<HTMLDivElement>(null)
     const [open, setOpen] = useState(false)
     const [showColorContrast, setShowColorContrast] = useState(false)
+    const [backgroundColor, setBackgroundColor] = useState<RGB>({ r: 255, g: 255, b: 255 })
+    const [selectedElementType, setSelectedElementType] = useState<"text" | "graphics">("graphics")
     const [level, setLevel] = useState<CheckColorContrastLevel>("AA")
     const [category, setCategory] = useState<CheckColorContrastCategory>("auto")
     const [colorSpace, setColorSpace] = useState<ChannelFieldSpace>("hex")
@@ -562,68 +642,79 @@ export const Features: Story = {
     return (
       <>
         <SolidBackground
-          color={color}
+          color={features.checkColorContrast ? backgroundColor : color}
           alpha={alpha}
         />
 
         <div className="grid grid-cols-2 place-items-center gap-4">
-          <ColorPickerPopover
-            draggable
-            rememberPosition
-            features={features}
-            pickerType={pickerType}
-            onPickerTypeChange={handlePickerTypeChange}
-            paintsType={paintsType}
-            onPaintsTypeChange={handlePaintsTypeChange}
-            solidPaint={
-              <ColorSolidPaint
-                colorSpace={colorSpace}
-                onColorSpaceChange={(value) => setColorSpace(value as ChannelFieldSpace)}
-                color={color}
-                alpha={alpha}
-                onColorChange={handleColorChange}
-                onAlphaChange={handleAlphaChange}
-              />
-            }
-            gradientPaint={
-              <ColorGradientsPaint
-                colorSpace={colorSpace}
-                onColorSpaceChange={(value) => setColorSpace(value as ChannelFieldSpace)}
-                gradient={gradient}
-                onGradientChange={handleGradientChange}
-              />
-            }
-            open={open}
-            onOpenChange={setOpen}
-            placement="left"
-            checkColorContrast={{
-              showColorContrast,
-              level,
-              category,
-              backgroundColor: { r: 255, g: 255, b: 255 }, // TODO: 背景颜色需要传入
-              foregroundColor: color,
-              foregroundAlpha: alpha,
-              selectedElementType: "graphics", // TODO: 需要传入元素类型
-              handleLevelChange: setLevel,
-              handleCategoryChange: setCategory,
-              handleShowColorContrast: () => setShowColorContrast((prev) => !prev),
-            }}
-          >
-            <Popover.Trigger>
-              <Button
-                className="z-10"
-                onClick={() => setOpen(!open)}
-              >
-                Open
-              </Button>
-            </Popover.Trigger>
-          </ColorPickerPopover>
-
+          <ColorSwatch
+            color={color}
+            alpha={alpha}
+            size={64}
+            className="z-10 rounded-md"
+          />
           <FeaturesController
+            backgroundColor={backgroundColor}
+            selectedElementType={selectedElementType}
+            setBackgroundColor={setBackgroundColor}
+            setSelectedElementType={setSelectedElementType}
             features={features}
             setFeatures={setFeatures}
-          />
+            setShowColorContrast={setShowColorContrast}
+          >
+            <div
+              className="p-3"
+              ref={triggerRef}
+            >
+              <Button onClick={() => setOpen(!open)}>Open</Button>
+            </div>
+          </FeaturesController>
         </div>
+
+        <ColorPickerPopover
+          triggerRef={triggerRef}
+          draggable
+          rememberPosition
+          features={features}
+          pickerType={pickerType}
+          onPickerTypeChange={handlePickerTypeChange}
+          paintsType={paintsType}
+          onPaintsTypeChange={handlePaintsTypeChange}
+          solidPaint={
+            <ColorSolidPaint
+              colorSpace={colorSpace}
+              onColorSpaceChange={(value) => setColorSpace(value as ChannelFieldSpace)}
+              color={color}
+              alpha={alpha}
+              onColorChange={handleColorChange}
+              onAlphaChange={handleAlphaChange}
+            />
+          }
+          gradientPaint={
+            <ColorGradientsPaint
+              colorSpace={colorSpace}
+              onColorSpaceChange={(value) => setColorSpace(value as ChannelFieldSpace)}
+              gradient={gradient}
+              onGradientChange={handleGradientChange}
+            />
+          }
+          open={open}
+          onOpenChange={setOpen}
+          autoUpdate={true}
+          placement="right-start"
+          checkColorContrast={{
+            showColorContrast,
+            level,
+            category,
+            backgroundColor,
+            foregroundColor: color,
+            foregroundAlpha: alpha,
+            selectedElementType,
+            handleLevelChange: setLevel,
+            handleCategoryChange: setCategory,
+            handleShowColorContrast: () => setShowColorContrast((prev) => !prev),
+          }}
+        />
       </>
     )
   },
@@ -669,6 +760,7 @@ export const Features: Story = {
  */
 export const DynamicTabs: Story = {
   render: function DynamicTabsStory() {
+    const triggerRef = useRef<HTMLDivElement>(null)
     const [open, setOpen] = useState(false)
     const [colorSpace, setColorSpace] = useState<ChannelFieldSpace>("hex")
 
@@ -825,6 +917,7 @@ export const DynamicTabs: Story = {
           />
 
           <ColorPickerPopover
+            triggerRef={triggerRef}
             draggable
             rememberPosition
             pickerType={pickerType}
@@ -852,16 +945,14 @@ export const DynamicTabs: Story = {
             }
             open={open}
             onOpenChange={setOpen}
+          />
+
+          <div
+            ref={triggerRef}
+            className="z-10"
           >
-            <Popover.Trigger>
-              <Button
-                className="z-10"
-                onClick={() => setOpen(!open)}
-              >
-                Open
-              </Button>
-            </Popover.Trigger>
-          </ColorPickerPopover>
+            <Button onClick={() => setOpen(!open)}>Open</Button>
+          </div>
         </div>
       </div>
     )

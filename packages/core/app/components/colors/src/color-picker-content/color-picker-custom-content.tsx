@@ -1,4 +1,4 @@
-import { ReactNode } from "react"
+import { cloneElement, isValidElement, ReactElement, ReactNode } from "react"
 import { match } from "ts-pattern"
 import { translation } from "../contents"
 import type { ColorContrast, PaintType, PaintTypeLabels, PickerFeatures } from "../types"
@@ -16,6 +16,25 @@ type Props = {
   paintsTypeAvailable: boolean
   patternPaint?: ReactNode
   solidPaint: ReactNode
+}
+
+// Helper to inject checkColorContrast into a ReactElement if it doesn't already have one
+const injectCheckColorContrast = (
+  element: ReactNode,
+  checkColorContrast?: ColorContrast,
+): ReactNode => {
+  if (!checkColorContrast || !isValidElement(element)) {
+    return element
+  }
+
+  const elementProps = element.props as { checkColorContrast?: ColorContrast }
+
+  // Only inject if the element doesn't already have checkColorContrast prop
+  if (elementProps.checkColorContrast) {
+    return element
+  }
+
+  return cloneElement(element as ReactElement, { checkColorContrast })
 }
 
 export const ColorPickerCustomContent = (props: Props) => {
@@ -64,7 +83,7 @@ export const ColorPickerCustomContent = (props: Props) => {
         .with("SOLID", () => {
           if (!features.solid) return null
 
-          return solidPaint
+          return injectCheckColorContrast(solidPaint, checkColorContrast)
         })
         .when(
           (t) => ["GRADIENT_ANGULAR", "GRADIENT_LINEAR", "GRADIENT_RADIAL"].includes(t),
