@@ -24,7 +24,11 @@
       "@choice-ui/shared": ["../shared/src/index.ts"]
     }
   },
-  "include": ["app/**/*.ts", "app/**/*.tsx"],
+  "include": [
+    "app/**/*.ts",
+    "app/**/*.tsx",
+    "../storybook/stories/colors/simple-color-picker.stories.tsx"
+  ],
   "exclude": [
     "node_modules",
     "dist",

@@ -1,0 +1,516 @@
+{
+  "slug": "basic/color-slider",
+  "title": "ColorSlider",
+  "package": {
+    "name": "@choice-ui/colors",
+    "version": "0.3.34",
+    "description": "A modern React color system",
+    "dependencies": {
+      "@floating-ui/react": "0.27.15",
+      "@tanstack/react-virtual": "^3.13.13",
+      "@choice-ui/shared": "workspace:*",
+      "@choice-ui/icon-button": "workspace:*",
+      "@choiceform/icons-react": "^1.3.8",
+      "chroma-js": "^2.4.2",
+      "tinycolor2": "1.6.0",
+      "ts-pattern": "^5.5.0",
+      "usehooks-ts": "^3.1.0"
+    },
+    "peerDependencies": {
+      "react": ">=18.0.0",
+      "react-dom": ">=18.0.0"
+    }
+  },
+  "exports": [
+    "ColorArea",
+    "type ColorAreaProps",
+    "ColorSlider",
+    "type ColorSliderProps",
+    "ColorSwatch",
+    "type ColorSwatchProps",
+    "useColors",
+    "colorToAreaPosition",
+    "positionToAreaColor",
+    "rgbToHsl",
+    "hslToRgb",
+    "rgbToHsb",
+    "hsbToRgb",
+    "rgbToP3",
+    "p3ToRgb",
+    "p3StringToRgbString",
+    "profileConvertString",
+    "rgbaToRgb",
+    "stringToRgba",
+    "getContrastThreshold"
+  ],
+  "props": [
+    {
+      "displayName": "ColorAreaProps",
+      "description": "",
+      "props": [
+        {
+          "name": "areaSize",
+          "type": "{ height?: number | undefined; width?: number | undefined; } | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "hue",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "((position: Position) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChangeEnd",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChangeStart",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "position",
+          "type": "Position",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "thumbColor",
+          "type": "RGB | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "thumbSize",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "type",
+          "type": "\"saturation-lightness\" | \"saturation-brightness\"",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "ref",
+          "type": "((instance: HTMLDivElement | null) => void) | RefObject<HTMLDivElement> | null | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "ColorSliderProps",
+      "description": "",
+      "props": [
+        {
+          "name": "backgroundStyle",
+          "type": "CSSProperties | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "hue",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "((position: number) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChangeEnd",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChangeStart",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "position",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "thumbSize",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "trackSize",
+          "type": "{ height?: number | undefined; width?: number | undefined; } | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "type",
+          "type": "\"hue\" | \"saturation\" | \"lightness\" | \"alpha\"",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "ref",
+          "type": "((instance: HTMLDivElement | null) => void) | RefObject<HTMLDivElement> | null | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "ColorSwatchProps",
+      "description": "",
+      "props": [
+        {
+          "name": "color",
+          "type": "RGB | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "size",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "type",
+          "type": "undefined | \"VARIABLE\" | \"STYLE\"",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "alpha",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "gradient",
+          "type": "GradientPaint | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "useColors",
+      "description": "使用颜色配置的钩子 - 从 Context 中获取颜色配置信息",
+      "props": []
+    },
+    {
+      "displayName": "positionToAreaColor",
+      "description": "Convert position to color values based on color area type",
+      "props": []
+    },
+    {
+      "displayName": "colorToAreaPosition",
+      "description": "Convert color values to position based on color area type",
+      "props": []
+    },
+    {
+      "displayName": "hsbToHsl",
+      "description": "Convert HSB to HSL",
+      "props": [
+        {
+          "name": "b",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "h",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "s",
+          "type": "number",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "hslToHsb",
+      "description": "Convert HSL to HSB",
+      "props": [
+        {
+          "name": "h",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "l",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "s",
+          "type": "number",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "positionToSliderValue",
+      "description": "Convert slider position to color value string",
+      "props": []
+    },
+    {
+      "displayName": "ColorStabilizer",
+      "description": "Color value stabilizer for edge cases",
+      "props": []
+    },
+    {
+      "displayName": "isEdgeValue",
+      "description": "",
+      "props": []
+    },
+    {
+      "displayName": "hslToRgb",
+      "description": "",
+      "props": [
+        {
+          "name": "h",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "l",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "s",
+          "type": "number",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "rgbToHsb",
+      "description": "",
+      "props": [
+        {
+          "name": "b",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "g",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "r",
+          "type": "number",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "hsbToRgb",
+      "description": "",
+      "props": [
+        {
+          "name": "b",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "h",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "s",
+          "type": "number",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "rgbToP3",
+      "description": "",
+      "props": [
+        {
+          "name": "a",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "b",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "g",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "r",
+          "type": "number",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "p3ToRgb",
+      "description": "",
+      "props": [
+        {
+          "name": "a",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "b",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "g",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "r",
+          "type": "number",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "p3StringToRgbString",
+      "description": "",
+      "props": []
+    },
+    {
+      "displayName": "getContrastThreshold",
+      "description": "根据 WCAG 标准计算对比度阈值",
+      "props": []
+    },
+    {
+      "displayName": "rgbaToRgb",
+      "description": "",
+      "props": [
+        {
+          "name": "a",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "b",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "g",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "r",
+          "type": "number",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "stringToRgba",
+      "description": "",
+      "props": []
+    }
+  ],
+  "stories": [
+    {
+      "id": "basic-colorslider--basic",
+      "name": "Basic",
+      "exportName": "Basic",
+      "description": "",
+      "source": "import { ColorSlider, ColorSwatch, useColors, hslToRgb } from \"@choice-ui/colors\"\nimport { useState, useMemo } from \"react\"\n\nexport default function App() {\n\n  const [huePosition, setHuePosition] = useState(0.5)\n  const [saturationPosition, setSaturationPosition] = useState(0.5)\n  const [lightnessPosition, setLightnessPosition] = useState(0.5)\n  const [alphaPosition, setAlphaPosition] = useState(1)\n\n  const { colorProfile } = useColors()\n\n  const color = useMemo(() => {\n    return hslToRgb({\n      h: (huePosition * 360) % 360,\n      s: saturationPosition * 100,\n      l: lightnessPosition * 100,\n      a: alphaPosition,\n    })\n  }, [huePosition, saturationPosition, lightnessPosition, alphaPosition])\n\n  const options = [\n    {\n      type: \"hue\",\n      position: huePosition,\n      onChange: setHuePosition,\n    },\n    {\n      type: \"saturation\",\n      hue: (huePosition * 360) % 360,\n      position: saturationPosition,\n      onChange: setSaturationPosition,\n    },\n    {\n      type: \"lightness\",\n      hue: (huePosition * 360) % 360,\n      position: lightnessPosition,\n      onChange: setLightnessPosition,\n    },\n    {\n      type: \"alpha\",\n      hue: (huePosition * 360) % 360,\n      position: alphaPosition,\n      onChange: setAlphaPosition,\n    },\n  ]\n\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <ul className=\"flex flex-col gap-2 rounded-md border p-4\">\n        <li>\n          <b>Hue</b>: The hue property ranges from 0 to 360, representing the color wheel.\n        </li>\n        <li>\n          <b>Saturation</b>: The saturation property ranges from 0 to 1, representing the\n          intensity of the color.\n        </li>\n        <li>\n          <b>Lightness</b>: The lightness property ranges from 0 to 1, representing lightness of\n          the color.\n        </li>\n        <li>\n          <b>Alpha</b>: The alpha property ranges from 0 to 1, representing the opacity of the\n          color.\n        </li>\n      </ul>\n\n      <div className=\"grid grid-cols-2 gap-4\">\n        {options.map((option) => (\n          <div\n            key={option.type}\n            className=\"flex flex-col gap-2\"\n          >\n            <span className=\"text-secondary-foreground font-strong capitalize\">\n              {option.type} / {option.position.toFixed(2)}\n            </span>\n            <div className=\"flex items-center gap-2\">\n              <ColorSlider\n                hue={option.hue}\n                position={option.position}\n                onChange={option.onChange}\n                type={option.type as \"hue\" | \"saturation\" | \"lightness\" | \"alpha\"}\n              />\n            </div>\n          </div>\n        ))}\n        <ColorSwatch\n          className=\"rounded-md\"\n          color={color}\n          alpha={alphaPosition}\n          size={32}\n        />\n      </div>\n      <div className=\"text-secondary-foreground flex flex-col gap-1\">\n        <div>Position: {huePosition.toFixed(2)}</div>\n        <div>rgb: {`rgb(${color.r}, ${color.g}, ${color.b}, ${alphaPosition.toFixed(2)})`}</div>\n        <div>\n          display-p3:{\" \"}\n          {`color(display-p3 ${(color.r / 255).toFixed(2)} ${(color.g / 255).toFixed(\n            2,\n          )} ${(color.b / 255).toFixed(2)} / ${alphaPosition.toFixed(2)})`}\n        </div>\n      </div>\n    </div>\n  )\n\n}"
+    }
+  ]
+}

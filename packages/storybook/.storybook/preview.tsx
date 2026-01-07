@@ -1,4 +1,4 @@
-import { ChoiceUiProvider } from "@choice-ui/react"
+import { ChoiceUiProvider, ColorsProvider } from "@choice-ui/react"
 import { Preview } from "@storybook/react-vite"
 import "../styles/tailwind.css"
 import "./global.css"
@@ -8,7 +8,9 @@ const preview: Preview = {
   decorators: [
     (Story) => (
       <ChoiceUiProvider>
-        <Story />
+        <ColorsProvider>
+          <Story />
+        </ColorsProvider>
       </ChoiceUiProvider>
     ),
   ],

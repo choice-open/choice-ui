@@ -1,5 +1,5 @@
 import { ThemeProvider } from "@/components/providers"
-import { ChoiceUiProvider } from "@/components/ui"
+import { ChoiceUiProvider, ColorsProvider } from "@/components/ui"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
@@ -28,14 +28,16 @@ export default function RootLayout({
     >
       <body className="flex min-h-dvh flex-col bg-gray-50 dark:bg-gray-900">
         <ChoiceUiProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="light"
-            enableSystem
-            disableTransitionOnChange
-          >
-            {children}
-          </ThemeProvider>
+          <ColorsProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="light"
+              enableSystem
+              disableTransitionOnChange
+            >
+              {children}
+            </ThemeProvider>
+          </ColorsProvider>
         </ChoiceUiProvider>
         <Footer />
       </body>

@@ -1,0 +1,331 @@
+{
+  "slug": "basic/color-area",
+  "title": "ColorArea",
+  "package": {
+    "name": "@choice-ui/colors",
+    "version": "0.3.34",
+    "description": "A modern React color system",
+    "dependencies": {
+      "@floating-ui/react": "0.27.15",
+      "@tanstack/react-virtual": "^3.13.13",
+      "@choice-ui/shared": "workspace:*",
+      "@choice-ui/icon-button": "workspace:*",
+      "@choiceform/icons-react": "^1.3.8",
+      "chroma-js": "^2.4.2",
+      "tinycolor2": "1.6.0",
+      "ts-pattern": "^5.5.0",
+      "usehooks-ts": "^3.1.0"
+    },
+    "peerDependencies": {
+      "react": ">=18.0.0",
+      "react-dom": ">=18.0.0"
+    }
+  },
+  "exports": [
+    "ColorArea",
+    "type ColorAreaProps",
+    "ColorSlider",
+    "type ColorSliderProps",
+    "ColorSwatch",
+    "type ColorSwatchProps",
+    "colorToAreaPosition",
+    "hsbToHsl",
+    "hslToHsb",
+    "positionToAreaColor"
+  ],
+  "props": [
+    {
+      "displayName": "ColorAreaProps",
+      "description": "",
+      "props": [
+        {
+          "name": "areaSize",
+          "type": "{ height?: number | undefined; width?: number | undefined; } | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "hue",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "((position: Position) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChangeEnd",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChangeStart",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "position",
+          "type": "Position",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "thumbColor",
+          "type": "RGB | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "thumbSize",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "type",
+          "type": "\"saturation-lightness\" | \"saturation-brightness\"",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "ref",
+          "type": "((instance: HTMLDivElement | null) => void) | RefObject<HTMLDivElement> | null | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "ColorSliderProps",
+      "description": "",
+      "props": [
+        {
+          "name": "backgroundStyle",
+          "type": "CSSProperties | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "hue",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "((position: number) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChangeEnd",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChangeStart",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "position",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "thumbSize",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "trackSize",
+          "type": "{ height?: number | undefined; width?: number | undefined; } | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "type",
+          "type": "\"hue\" | \"saturation\" | \"lightness\" | \"alpha\"",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "ref",
+          "type": "((instance: HTMLDivElement | null) => void) | RefObject<HTMLDivElement> | null | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "ColorSwatchProps",
+      "description": "",
+      "props": [
+        {
+          "name": "color",
+          "type": "RGB | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "size",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "type",
+          "type": "undefined | \"VARIABLE\" | \"STYLE\"",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "alpha",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "gradient",
+          "type": "GradientPaint | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "positionToAreaColor",
+      "description": "Convert position to color values based on color area type",
+      "props": []
+    },
+    {
+      "displayName": "colorToAreaPosition",
+      "description": "Convert color values to position based on color area type",
+      "props": []
+    },
+    {
+      "displayName": "hsbToHsl",
+      "description": "Convert HSB to HSL",
+      "props": [
+        {
+          "name": "b",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "h",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "s",
+          "type": "number",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "hslToHsb",
+      "description": "Convert HSL to HSB",
+      "props": [
+        {
+          "name": "h",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "l",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "s",
+          "type": "number",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "positionToSliderValue",
+      "description": "Convert slider position to color value string",
+      "props": []
+    },
+    {
+      "displayName": "ColorStabilizer",
+      "description": "Color value stabilizer for edge cases",
+      "props": []
+    },
+    {
+      "displayName": "isEdgeValue",
+      "description": "",
+      "props": []
+    }
+  ],
+  "stories": [
+    {
+      "id": "basic-colorarea--basic",
+      "name": "Basic",
+      "exportName": "Basic",
+      "description": "The ColorArea component is a 2D color selection surface that visualizes two color dimensions:\n\n- Horizontal axis: Usually represents saturation (0-100%)\n- Vertical axis: Can represent either lightness or brightness (0-100%)\n\nThis interactive example shows both modes side by side, with synchronized positions.",
+      "source": "import { ColorArea, ColorSlider, ColorSwatch, positionToAreaColor } from \"@choice-ui/colors\"\nimport { useState, useMemo } from \"react\"\n\nexport default function App() {\n\n  const [position, setPosition] = useState({ x: 0.5, y: 0.5 })\n  const [huePosition, setHuePosition] = useState(0.55) // ~200° in the hue wheel\n\n  // Convert hue position (0-1) to degrees (0-360)\n  const hue = useMemo(() => Math.round((huePosition * 360) % 360), [huePosition])\n\n  const lightness = useMemo(() => {\n    const { h, s, l } = positionToAreaColor(position, \"saturation-lightness\", hue)\n    return tinycolor({ h, s, l }).toRgb()\n  }, [position, hue])\n\n  const brightness = useMemo(() => {\n    const { h, s, b } = positionToAreaColor(position, \"saturation-brightness\", hue)\n    return tinycolor({ h, s, v: b }).toRgb()\n  }, [position, hue])\n\n  return (\n    <div className=\"w-md flex flex-col gap-6\">\n      <div className=\"grid grid-cols-[repeat(2,200px)] gap-x-8 gap-y-4\">\n        <div className=\"flex flex-col gap-2\">\n          <h3 className=\"font-strong\">Saturation-Lightness (HSL)</h3>\n          <p className=\"text-secondary-foreground text-body-small\">\n            The HSL model is more intuitive for some color selections. Lightness represents the\n            brightness relative to white (top) and black (bottom).\n          </p>\n        </div>\n\n        <div className=\"flex flex-col gap-2\">\n          <h3 className=\"font-strong\">Saturation-Brightness (HSB/HSV)</h3>\n          <p className=\"text-secondary-foreground text-body-small\">\n            The HSB model (also called HSV) is useful for selecting vibrant colors. Brightness\n            represents intensity from maximum (top) to black (bottom).\n          </p>\n        </div>\n\n        <ColorArea\n          position={position}\n          onChange={setPosition}\n          hue={hue}\n          thumbColor={lightness}\n          type=\"saturation-lightness\"\n          areaSize={{ width: 200, height: 200 }}\n        />\n        <ColorArea\n          position={position}\n          onChange={setPosition}\n          hue={hue}\n          thumbColor={brightness}\n          type=\"saturation-brightness\"\n          areaSize={{ width: 200, height: 200 }}\n        />\n\n        <div className=\"flex items-center gap-2\">\n          <ColorSwatch\n            color={lightness}\n            size={24}\n            className=\"rounded-md\"\n          />\n          <div className=\"bg-secondary-background text-body-small grid grid-cols-3 items-center gap-2 rounded-md px-2 py-1\">\n            <span>R: {lightness.r}</span>\n            <span>G: {lightness.g}</span>\n            <span>B: {lightness.b}</span>\n          </div>\n        </div>\n\n        <div className=\"flex flex-col gap-2\">\n          <div className=\"flex items-center gap-2\">\n            <ColorSwatch\n              color={brightness}\n              size={24}\n              className=\"rounded-md\"\n            />\n            <div className=\"bg-secondary-background text-body-small grid grid-cols-3 items-center gap-2 rounded-md px-2 py-1\">\n              <span>R: {brightness.r}</span>\n              <span>G: {brightness.g}</span>\n              <span>B: {brightness.b}</span>\n            </div>\n          </div>\n        </div>\n\n        <div className=\"text-secondary-foreground text-body-small\">\n          Position: x: {position.x.toFixed(2)}, y: {position.y.toFixed(2)}\n        </div>\n\n        <div className=\"text-secondary-foreground text-body-small\">\n          HEX: {tinycolor(brightness).toHexString()}\n        </div>\n\n        <div className=\"flex max-w-md flex-col gap-3\">\n          <div className=\"flex items-center justify-between\">\n            <label className=\"font-strong\">Hue: {hue}°</label>\n            <ColorSwatch\n              color={tinycolor({ h: hue, s: 100, l: 50 }).toRgb()}\n              size={20}\n              className=\"rounded-sm\"\n            />\n          </div>\n          <ColorSlider\n            type=\"hue\"\n            position={huePosition}\n            onChange={setHuePosition}\n            trackSize={{ width: 200, height: 16 }}\n          />\n        </div>\n      </div>\n\n      <div className=\"rounded-md border p-4\">\n        <ul className=\"flex flex-col gap-2\">\n          <li>\n            <b className=\"font-strong\">Color Area</b>: A 2D surface for selecting saturation and\n            lightness/brightness values\n          </li>\n          <li>\n            <b className=\"font-strong\">Position</b>: The x,y coordinates (0-1) that determine the\n            selected color\n          </li>\n          <li>\n            <b className=\"font-strong\">Hue</b>: The base color (0-360) applied to the color area\n          </li>\n          <li>\n            <b className=\"font-strong\">Types</b>:\n            <ul className=\"ml-6 mt-1\">\n              <li>\n                • saturation-lightness: X axis is saturation, Y axis is lightness (HSL model)\n              </li>\n              <li>\n                • saturation-brightness: X axis is saturation, Y axis is brightness (HSB/HSV\n                model)\n              </li>\n            </ul>\n          </li>\n        </ul>\n      </div>\n    </div>\n  )\n\n}"
+    },
+    {
+      "id": "basic-colorarea--sizes",
+      "name": "Sizes",
+      "exportName": "Sizes",
+      "description": "This example demonstrates different size configurations and how ColorArea\ncan be used in color picker interfaces with varying dimensions.",
+      "source": "import { ColorArea, ColorSlider, ColorSwatch, positionToAreaColor } from \"@choice-ui/colors\"\nimport { useState, useMemo } from \"react\"\n\nexport default function App() {\n\n  const [position, setPosition] = useState({ x: 0.5, y: 0.5 })\n  const [huePosition, setHuePosition] = useState(0.75) // ~270° Purple hue\n  const hue = Math.round((huePosition * 360) % 360)\n\n  const rgbColor = useMemo(() => {\n    const { h, s, l } = positionToAreaColor(position, \"saturation-lightness\", hue)\n    return tinycolor({ h, s, l }).toRgb()\n  }, [position, hue])\n\n  return (\n    <div className=\"flex flex-col items-start gap-6\">\n      <div className=\"flex gap-6\">\n        <div className=\"flex flex-col items-center gap-2\">\n          <h3 className=\"font-strong\">Small (150×150)</h3>\n          <ColorArea\n            position={position}\n            onChange={setPosition}\n            hue={hue}\n            thumbColor={rgbColor}\n            type=\"saturation-lightness\"\n            areaSize={{ width: 150, height: 150 }}\n          />\n          <span className=\"text-secondary-foreground text-body-small\">Compact UI</span>\n        </div>\n\n        <div className=\"flex flex-col items-center gap-2\">\n          <h3 className=\"font-strong\">Medium (220×220)</h3>\n          <ColorArea\n            position={position}\n            onChange={setPosition}\n            hue={hue}\n            thumbColor={rgbColor}\n            type=\"saturation-lightness\"\n            areaSize={{ width: 220, height: 220 }}\n          />\n          <span className=\"text-secondary-foreground text-body-small\">Standard size</span>\n        </div>\n\n        <div className=\"flex flex-col items-center gap-2\">\n          <h3 className=\"font-strong\">Large (300×200)</h3>\n          <ColorArea\n            position={position}\n            onChange={setPosition}\n            hue={hue}\n            thumbColor={rgbColor}\n            type=\"saturation-lightness\"\n            areaSize={{ width: 300, height: 200 }}\n          />\n          <span className=\"text-secondary-foreground text-body-small\">Custom dimensions</span>\n        </div>\n      </div>\n\n      <div className=\"flex max-w-md flex-col gap-3\">\n        <div className=\"flex items-center justify-between\">\n          <span className=\"font-strong\">Adjust Hue</span>\n          <span className=\"text-secondary-foreground text-body-small\">{hue}°</span>\n        </div>\n        <ColorSlider\n          type=\"hue\"\n          position={huePosition}\n          onChange={setHuePosition}\n        />\n      </div>\n\n      <div className=\"flex items-start justify-center gap-4\">\n        <ColorSwatch\n          color={rgbColor}\n          size={48}\n          className=\"rounded-md\"\n        />\n        <div>\n          <div className=\"font-strong\">Selected Color</div>\n          <div className=\"text-secondary-foreground text-body-small\">\n            RGB: {rgbColor.r}, {rgbColor.g}, {rgbColor.b}\n          </div>\n          <div className=\"text-secondary-foreground text-body-small\">\n            HEX: {tinycolor(rgbColor).toHexString()}\n          </div>\n        </div>\n      </div>\n\n      <div className=\"rounded-md border p-4\">\n        <p>\n          The ColorArea component can be configured with different sizes to fit various UI\n          requirements. The{\" \"}\n          <code className=\"bg-secondary-background rounded px-1 py-0.5 font-mono\">areaSize</code>{\" \"}\n          prop accepts width and height values in pixels.\n        </p>\n      </div>\n    </div>\n  )\n\n}"
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "name": "@choice-ui/colors",
+  "version": "0.3.34",
+  "description": "A modern React color system",
+  "sideEffects": false,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./src/index.ts",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "development": "./src/index.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "publishConfig": {
+    "access": "public",
+    "types": "./dist/index.d.ts",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js"
+      }
+    }
+  },
+  "scripts": {
+    "build:worker": "tsx scripts/build-worker.ts",
+    "build": "pnpm build:worker && tsup",
+    "build:watch": "tsup --watch",
+    "clean": "rimraf dist"
+  },
+  "dependencies": {
+    "@floating-ui/react": "0.27.15",
+    "@tanstack/react-virtual": "^3.13.13",
+    "@choice-ui/shared": "workspace:*",
+    "@choice-ui/icon-button": "workspace:*",
+    "@choice-ui/numeric-input": "workspace:*",
+    "@choice-ui/tabs": "workspace:*",
+    "@choice-ui/popover": "workspace:*",
+    "@choice-ui/select": "workspace:*",
+    "@choice-ui/button": "workspace:*",
+    "@choice-ui/dropdown": "workspace:*",
+    "@choice-ui/tooltip": "workspace:*",
+    "@choice-ui/scroll-area": "workspace:*",
+    "@choice-ui/toggle-button": "workspace:*",
+    "@choice-ui/range": "workspace:*",
+    "@choice-ui/input": "workspace:*",
+    "@choiceform/icons-react": "^1.3.8",
+    "chroma-js": "^3.2.0",
+    "fuse.js": "^7.1.0",
+    "tinycolor2": "1.6.0",
+    "ts-pattern": "^5.5.0",
+    "usehooks-ts": "^3.1.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@types/tinycolor2": "^1.4.6",
+    "@types/chroma-js": "^3.1.2",
+    "esbuild": "^0.24.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "rimraf": "^6.0.1",
+    "tsup": "^8.5.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.5.3"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
+  "source": "./src/index.ts"
+}

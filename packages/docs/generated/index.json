@@ -56,6 +56,16 @@
       "version": "0.0.5"
     },
     {
+      "slug": "colors/check-color-contrast",
+      "name": "@choice-ui/colors",
+      "title": "CheckColorContrast",
+      "description": "",
+      "version": "0.3.34",
+      "tags": [
+        "experimental"
+      ]
+    },
+    {
       "slug": "buttons/chip",
       "name": "@choice-ui/chip",
       "title": "Chip",
@@ -75,6 +85,92 @@
       "title": "CodeBlock",
       "description": "",
       "version": "0.0.4"
+    },
+    {
+      "slug": "colors/color-area",
+      "name": "@choice-ui/colors",
+      "title": "ColorArea",
+      "description": "",
+      "version": "0.3.34"
+    },
+    {
+      "slug": "colors/color-channel-field",
+      "name": "@choice-ui/colors",
+      "title": "ColorChannelField",
+      "description": "",
+      "version": "0.3.34"
+    },
+    {
+      "slug": "colors/paint/color-gradients-paint",
+      "name": "@choice-ui/colors",
+      "title": "ColorGradientsPaint",
+      "description": "",
+      "version": "0.3.34"
+    },
+    {
+      "slug": "colors/paint/color-image-paint",
+      "name": "@choice-ui/colors",
+      "title": "ColorImagePaint",
+      "description": "",
+      "version": "0.3.34",
+      "tags": [
+        "new"
+      ]
+    },
+    {
+      "slug": "colors/fill-input/color-input",
+      "name": "@choice-ui/colors",
+      "title": "ColorInput",
+      "description": "",
+      "version": "0.3.34"
+    },
+    {
+      "slug": "colors/color-picker-popover",
+      "name": "@choice-ui/colors",
+      "title": "ColorPickerPopover",
+      "description": "",
+      "version": "0.3.34",
+      "tags": [
+        "upgrade"
+      ]
+    },
+    {
+      "slug": "colors/color-profile",
+      "name": "@choice-ui/colors",
+      "title": "ColorProfile",
+      "description": "",
+      "version": "0.3.34"
+    },
+    {
+      "slug": "colors/color-profile-test-grid",
+      "name": "@choice-ui/colors",
+      "title": "ColorProfileTestGrid",
+      "description": "",
+      "version": "0.3.34",
+      "tags": [
+        "code-only"
+      ]
+    },
+    {
+      "slug": "colors/color-slider",
+      "name": "@choice-ui/colors",
+      "title": "ColorSlider",
+      "description": "",
+      "version": "0.3.34"
+    },
+    {
+      "slug": "colors/paint/color-solid-paint",
+      "name": "@choice-ui/colors",
+      "title": "ColorSolidPaint",
+      "description": "",
+      "version": "0.3.34"
+    },
+    {
+      "slug": "colors/color-swatch",
+      "name": "@choice-ui/colors",
+      "title": "ColorSwatch",
+      "description": "",
+      "version": "0.3.34"
     },
     {
       "slug": "collections/combobox",
@@ -204,11 +300,25 @@
       "version": "0.0.5"
     },
     {
+      "slug": "colors/fill-input/gradient-item",
+      "name": "@choice-ui/colors",
+      "title": "GradientItem",
+      "description": "",
+      "version": "0.3.34"
+    },
+    {
       "slug": "plugins/grid-areas",
       "name": "@choice-ui/grid-areas",
       "title": "Grid Areas",
       "description": "",
       "version": "0.0.0"
+    },
+    {
+      "slug": "colors/hex-input",
+      "name": "@choice-ui/colors",
+      "title": "HexInput",
+      "description": "",
+      "version": "0.3.34"
     },
     {
       "slug": "feedback/hint",
@@ -235,6 +345,13 @@
       "version": "0.0.6"
     },
     {
+      "slug": "colors/fill-input/image-item",
+      "name": "@choice-ui/colors",
+      "title": "ImageItem",
+      "description": "",
+      "version": "0.3.34"
+    },
+    {
       "slug": "forms/input",
       "name": "@choice-ui/input",
       "title": "Input",
@@ -257,6 +374,13 @@
       "tags": [
         "new"
       ]
+    },
+    {
+      "slug": "colors/libraries",
+      "name": "@choice-ui/colors",
+      "title": "Libraries",
+      "description": "",
+      "version": "0.3.34"
     },
     {
       "slug": "buttons/link-button",
@@ -486,6 +610,13 @@
       "title": "Separator",
       "description": "Separator - Separator component",
       "version": "0.0.2"
+    },
+    {
+      "slug": "colors/simple-color-picker",
+      "name": "@choice-ui/colors",
+      "title": "SimpleColorPicker",
+      "description": "",
+      "version": "0.3.34"
     },
     {
       "slug": "feedback/skeleton",

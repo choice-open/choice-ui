@@ -1,0 +1,10 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "declaration": true,
+    "declarationDir": "./dist"
+  },
+  "include": ["src/**/*", "../../../../storybook/stories/colors/simple-color-picker.stories.tsx"],
+  "exclude": ["node_modules", "dist", "stories", "__tests__"]
+}

@@ -1,0 +1,1262 @@
+{
+  "slug": "basic/color-channel-field",
+  "title": "ColorChannelField",
+  "package": {
+    "name": "@choice-ui/colors",
+    "version": "0.3.34",
+    "description": "A modern React color system",
+    "dependencies": {
+      "@floating-ui/react": "0.27.15",
+      "@tanstack/react-virtual": "^3.13.13",
+      "@choice-ui/shared": "workspace:*",
+      "@choice-ui/icon-button": "workspace:*",
+      "@choice-ui/numeric-input": "workspace:*",
+      "@choice-ui/tabs": "workspace:*",
+      "@choice-ui/popover": "workspace:*",
+      "@choice-ui/select": "workspace:*",
+      "@choice-ui/button": "workspace:*",
+      "@choice-ui/dropdown": "workspace:*",
+      "@choice-ui/tooltip": "workspace:*",
+      "@choiceform/icons-react": "^1.3.8",
+      "chroma-js": "^3.2.0",
+      "tinycolor2": "1.6.0",
+      "ts-pattern": "^5.5.0",
+      "usehooks-ts": "^3.1.0"
+    },
+    "peerDependencies": {
+      "react": ">=18.0.0",
+      "react-dom": ">=18.0.0"
+    }
+  },
+  "exports": [
+    "ColorArea",
+    "type ColorAreaProps",
+    "ColorSlider",
+    "type ColorSliderProps",
+    "ColorSwatch",
+    "type ColorSwatchProps",
+    "ColorInput",
+    "AlphaInput",
+    "GradientItem",
+    "ImageItem",
+    "VariableItem",
+    "type ColorInputProps",
+    "type AlphaInputProps",
+    "type GradientItemProps",
+    "type ImageItemProps",
+    "type VariableItemProps",
+    "HexInput",
+    "type HexInputProps",
+    "ColorChannelField",
+    "type ColorChannelFieldProps",
+    "ColorSolidPaint",
+    "ColorNativePicker",
+    "type ColorSolidPaintProps",
+    "useColors",
+    "useColorParser",
+    "getContrastThreshold",
+    "hsbToRgb",
+    "hslToRgb",
+    "p3StringToRgbString",
+    "p3ToRgb",
+    "profileConvertString",
+    "rgbaToRgb",
+    "rgbToHsb",
+    "rgbToHsl",
+    "rgbToP3",
+    "stringToRgba",
+    "colorToAreaPosition",
+    "positionToAreaColor",
+    "type GradientPaint",
+    "type ImagePaint",
+    "type PatternPaint",
+    "type SolidPaint",
+    "type BezierCurveSegment",
+    "type BoundaryCalculationResult",
+    "type BoundaryInfo",
+    "type ChannelFieldFeature",
+    "type ChannelFieldSpace",
+    "type CheckColorContrastCategory",
+    "type CheckColorContrastLevel",
+    "type ColorContrast",
+    "type ColorProfile",
+    "type ColorStop",
+    "type HSB",
+    "type HSBA",
+    "type HSL",
+    "type HSLA",
+    "type HSV",
+    "type ImagePaintFeature",
+    "type PaintState",
+    "type PaletteType",
+    "type PickerAreaType",
+    "type PickerFeatures",
+    "type PickerGradientType",
+    "type PickerSliderType",
+    "type PickerType",
+    "type RecommendedPoint",
+    "type RGB",
+    "type RGBA",
+    "type SolidPaintFeature",
+    "type Transform",
+    "COLOR_SPACES"
+  ],
+  "props": [
+    {
+      "displayName": "ColorAreaProps",
+      "description": "",
+      "props": [
+        {
+          "name": "areaSize",
+          "type": "{ height?: number | undefined; width?: number | undefined; } | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "hue",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "((position: Position) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChangeEnd",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChangeStart",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "position",
+          "type": "Position",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "thumbColor",
+          "type": "RGB | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "thumbSize",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "type",
+          "type": "\"saturation-lightness\" | \"saturation-brightness\"",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "ref",
+          "type": "((instance: HTMLDivElement | null) => void) | RefObject<HTMLDivElement> | null | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "ColorSliderProps",
+      "description": "",
+      "props": [
+        {
+          "name": "backgroundStyle",
+          "type": "CSSProperties | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "hue",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "((position: number) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChangeEnd",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChangeStart",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "position",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "thumbSize",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "trackSize",
+          "type": "{ height?: number | undefined; width?: number | undefined; } | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "type",
+          "type": "\"hue\" | \"saturation\" | \"lightness\" | \"alpha\"",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "ref",
+          "type": "((instance: HTMLDivElement | null) => void) | RefObject<HTMLDivElement> | null | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "ColorSwatchProps",
+      "description": "",
+      "props": [
+        {
+          "name": "color",
+          "type": "RGB | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "size",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "type",
+          "type": "undefined | \"VARIABLE\" | \"STYLE\"",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "alpha",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "gradient",
+          "type": "GradientPaint | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "ColorInputProps",
+      "description": "",
+      "props": [
+        {
+          "name": "active",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "alpha",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "alphaTooltipLabel",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "classNames",
+          "type": "{ alpha?: string | undefined; container?: string | undefined; hex?: string | undefined; swatch?: string | undefined; wrapper?: string | undefined; } | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "color",
+          "type": "RGB | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "features",
+          "type": "{ alpha?: boolean | undefined; } | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onAlphaChange",
+          "type": "((alpha: number) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onAlphaChangeEnd",
+          "type": "(((event: PressEvent) => void) & ((e: PointerEvent) => void)) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onAlphaChangeStart",
+          "type": "(((event: PressEvent) => void) & ((e: PointerEvent) => void)) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onClick",
+          "type": "((e: MouseEvent<HTMLDivElement, MouseEvent>) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onColorChange",
+          "type": "((color: RGB) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onFocus",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onPickerClick",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "placeholder",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "selected",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "AlphaInputProps",
+      "description": "",
+      "props": [
+        {
+          "name": "active",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "((alpha: number) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onPressEnd",
+          "type": "(((event: PressEvent) => void) & ((e: PointerEvent) => void)) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onPressStart",
+          "type": "(((event: PressEvent) => void) & ((e: PointerEvent) => void)) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "tooltipLabel",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "value",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "GradientItemProps",
+      "description": "",
+      "props": [
+        {
+          "name": "active",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "alpha",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "classNames",
+          "type": "{ alpha?: string | undefined; container?: string | undefined; content?: string | undefined; swatch?: string | undefined; wrapper?: string | undefined; } | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "features",
+          "type": "{ alpha?: boolean | undefined; } | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "gradient",
+          "type": "GradientPaint | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "labels",
+          "type": "GradientFillLabels | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onAlphaChange",
+          "type": "((alpha: number) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onClick",
+          "type": "((e: MouseEvent<HTMLDivElement, MouseEvent>) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onGradientChange",
+          "type": "((gradient: GradientPaint) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onPickerClick",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "selected",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "ImageItemProps",
+      "description": "",
+      "props": [
+        {
+          "name": "active",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "alpha",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "classNames",
+          "type": "{ alpha?: string | undefined; container?: string | undefined; content?: string | undefined; wrapper?: string | undefined; } | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "features",
+          "type": "{ alpha?: boolean | undefined; } | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "image",
+          "type": "ImagePaint | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "imageUrl",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "label",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "labels",
+          "type": "FillItemLabels",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "onAlphaChange",
+          "type": "((alpha: number) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onClick",
+          "type": "((e: MouseEvent<HTMLDivElement, MouseEvent>) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onPickerClick",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "selected",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "VariableItemProps",
+      "description": "",
+      "props": [
+        {
+          "name": "active",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "classNames",
+          "type": "{ container?: string | undefined; content?: string | undefined; wrapper?: string | undefined; } | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "label",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "libraries",
+          "type": "{ item: Variable | Style; type: LibrariesType; } | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onClick",
+          "type": "((e: MouseEvent<HTMLDivElement, MouseEvent>) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onPickerClick",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "selected",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "HexInputProps",
+      "description": "",
+      "props": [
+        {
+          "name": "onChange",
+          "type": "((value: RGB) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onBlur",
+          "type": "((event: FocusEvent<HTMLInputElement, Element>) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "value",
+          "type": "RGB | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onFocus",
+          "type": "((event: FocusEvent<HTMLInputElement, Element>) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onAlphaChange",
+          "type": "((alpha: number) => void) | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "ColorChannelFieldProps",
+      "description": "",
+      "props": [
+        {
+          "name": "alpha",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "colorSpace",
+          "type": "undefined | \"hsb\" | \"hsl\" | \"rgb\" | \"hex\"",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "defaultColorSpace",
+          "type": "undefined | \"hsb\" | \"hsl\" | \"rgb\" | \"hex\"",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "features",
+          "type": "ChannelFieldFeature | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "hsb",
+          "type": "HSB | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "hsl",
+          "type": "HSL | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "labels",
+          "type": "ColorChannelLabels | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onAlphaChange",
+          "type": "((alpha: number) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onAlphaChangeEnd",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onAlphaChangeStart",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChangeColorSpace",
+          "type": "((colorSpace: ChannelFieldSpace) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onHsbChange",
+          "type": "((hsb: HSB) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onHslChange",
+          "type": "((hsl: HSL) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onRgbChange",
+          "type": "((rgb: RGB) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "rgb",
+          "type": "RGB | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "ref",
+          "type": "((instance: HTMLDivElement | null) => void) | RefObject<HTMLDivElement> | null | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "ColorNativePicker",
+      "description": "",
+      "props": [
+        {
+          "name": "onChange",
+          "type": "(color: RGB) => void",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "tooltip",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "ColorSolidPaintProps",
+      "description": "",
+      "props": [
+        {
+          "name": "alpha",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "checkColorContrast",
+          "type": "ColorContrast | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "color",
+          "type": "RGB | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "colorSpace",
+          "type": "\"hex\" | \"rgb\" | \"hsl\" | \"hsb\"",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "features",
+          "type": "SolidPaintFeature | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "labels",
+          "type": "SolidPaintLabels | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "library",
+          "type": "ReactNode",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onAlphaChange",
+          "type": "((alpha: number) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChangeEnd",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChangeStart",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onColorChange",
+          "type": "((color: RGB) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onColorSpaceChange",
+          "type": "(colorSpace: ChannelFieldSpace) => void",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "onLibraryChange",
+          "type": "((value: { item: Variable; type: LibrariesType; }) => void) | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "SolidPaintLibraryItem",
+      "description": "",
+      "props": [
+        {
+          "name": "color",
+          "type": "RGBA",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "onClick",
+          "type": "(color: RGBA) => void",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "size",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "useColors",
+      "description": "使用颜色配置的钩子 - 从 Context 中获取颜色配置信息",
+      "props": []
+    },
+    {
+      "displayName": "hslToRgb",
+      "description": "",
+      "props": [
+        {
+          "name": "h",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "l",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "s",
+          "type": "number",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "rgbToHsb",
+      "description": "",
+      "props": [
+        {
+          "name": "b",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "g",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "r",
+          "type": "number",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "hsbToRgb",
+      "description": "",
+      "props": [
+        {
+          "name": "b",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "h",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "s",
+          "type": "number",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "rgbToP3",
+      "description": "",
+      "props": [
+        {
+          "name": "a",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "b",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "g",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "r",
+          "type": "number",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "p3ToRgb",
+      "description": "",
+      "props": [
+        {
+          "name": "a",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "b",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "g",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "r",
+          "type": "number",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "p3StringToRgbString",
+      "description": "",
+      "props": []
+    },
+    {
+      "displayName": "getContrastThreshold",
+      "description": "根据 WCAG 标准计算对比度阈值",
+      "props": []
+    },
+    {
+      "displayName": "rgbaToRgb",
+      "description": "",
+      "props": [
+        {
+          "name": "a",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "b",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "g",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "r",
+          "type": "number",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "stringToRgba",
+      "description": "",
+      "props": []
+    },
+    {
+      "displayName": "positionToAreaColor",
+      "description": "Convert position to color values based on color area type",
+      "props": []
+    },
+    {
+      "displayName": "colorToAreaPosition",
+      "description": "Convert color values to position based on color area type",
+      "props": []
+    },
+    {
+      "displayName": "hsbToHsl",
+      "description": "Convert HSB to HSL",
+      "props": [
+        {
+          "name": "b",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "h",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "s",
+          "type": "number",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "hslToHsb",
+      "description": "Convert HSL to HSB",
+      "props": [
+        {
+          "name": "h",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "l",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "s",
+          "type": "number",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "positionToSliderValue",
+      "description": "Convert slider position to color value string",
+      "props": []
+    },
+    {
+      "displayName": "ColorStabilizer",
+      "description": "Color value stabilizer for edge cases",
+      "props": []
+    },
+    {
+      "displayName": "isEdgeValue",
+      "description": "",
+      "props": []
+    },
+    {
+      "displayName": "GRID_COLOR",
+      "description": "网格颜色",
+      "props": []
+    },
+    {
+      "displayName": "DEFAULT_BORDER_COLOR",
+      "description": "默认的边框颜色",
+      "props": []
+    }
+  ],
+  "stories": [
+    {
+      "id": "basic-colorchannelfield--basic",
+      "name": "Basic",
+      "exportName": "Basic",
+      "description": "The `ColorChannelField` component is a versatile color input field that supports multiple color space formats\nand provides precise control over color values through individual channel inputs.\n\n### Features\n- Multiple color space support: HEX, RGB, HSL, HSB\n- Alpha channel control\n- Color space switching via dropdown\n- Individual channel value inputs\n- Configurable feature toggles\n\n### Usage Guidelines\n1. **Color Space Management**\n   - Use `colorSpace` prop to control the active color format\n   - Set `defaultColorSpace` for initial format\n   - Handle format changes via `onChangeColorSpace`\n\n2. **Color Value Control**\n   - Provide color values in multiple formats (rgb, hsl, hsb)\n   - Use corresponding change handlers (onRgbChange, onHslChange, onHsbChange)\n   - Control alpha transparency with `alpha` prop and `onAlphaChange`\n\n3. **Feature Configuration**\n   - Toggle available features through the `features` prop:\n     ```ts\n     {\n       alpha: boolean        // Enable alpha channel input\n       spaceDropdown: boolean // Show color space dropdown\n       hex: boolean         // Enable HEX format\n       rgb: boolean         // Enable RGB format\n       hsl: boolean         // Enable HSL format\n       hsb: boolean         // Enable HSB format\n     }\n     ```\n\n### Best Practices\n- Always provide all color format values to ensure smooth format switching\n- Implement all change handlers to maintain color synchronization\n- Consider user needs when configuring available features\n- Use with color conversion utilities for accurate color representation\nBasic",
+      "source": "import { ColorChannelField, hsbToRgb, hslToRgb, rgbToHsb, rgbToHsl, COLOR_SPACES } from \"@choice-ui/colors\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [color, setColor] = useState<RGB>({ r: 0, g: 85, b: 255 })\n  const [alpha, setAlpha] = useState<number>(1)\n  const [colorSpace, setColorSpace] = useState<ChannelFieldSpace>(COLOR_SPACES.HEX)\n\n  const [features, setFeatures] = useState<ChannelFieldFeature>({\n    alpha: true,\n    spaceDropdown: true,\n    hex: true,\n    rgb: true,\n    hsl: true,\n    hsb: true,\n  })\n\n  return (\n    <>\n      <SolidBackground\n        color={color}\n        alpha={alpha}\n      />\n\n      <ChannelFieldPopover>\n        <ColorChannelField\n          features={features}\n          rgb={color}\n          hsl={rgbToHsl(color)}\n          hsb={rgbToHsb(color)}\n          alpha={alpha}\n          onRgbChange={setColor}\n          onHslChange={(hsl) => setColor(hslToRgb(hsl))}\n          onHsbChange={(hsb) => setColor(hsbToRgb(hsb))}\n          onAlphaChange={setAlpha}\n          colorSpace={colorSpace}\n          onChangeColorSpace={setColorSpace}\n        />\n\n        <FeaturesController\n          features={features}\n          setFeatures={setFeatures}\n        />\n      </ChannelFieldPopover>\n\n      <SolidString\n        color={color}\n        alpha={alpha}\n      />\n    </>\n  )\n\n}"
+    }
+  ]
+}

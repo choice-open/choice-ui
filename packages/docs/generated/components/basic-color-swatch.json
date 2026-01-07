@@ -1,0 +1,541 @@
+{
+  "slug": "basic/color-swatch",
+  "title": "ColorSwatch",
+  "package": {
+    "name": "@choice-ui/colors",
+    "version": "0.3.34",
+    "description": "A modern React color system",
+    "dependencies": {
+      "@floating-ui/react": "0.27.15",
+      "@tanstack/react-virtual": "^3.13.13",
+      "@choice-ui/shared": "workspace:*",
+      "@choice-ui/icon-button": "workspace:*",
+      "@choiceform/icons-react": "^1.3.8",
+      "chroma-js": "^2.4.2",
+      "tinycolor2": "1.6.0",
+      "ts-pattern": "^5.5.0",
+      "usehooks-ts": "^3.1.0"
+    },
+    "peerDependencies": {
+      "react": ">=18.0.0",
+      "react-dom": ">=18.0.0"
+    }
+  },
+  "exports": [
+    "ColorArea",
+    "type ColorAreaProps",
+    "ColorSlider",
+    "type ColorSliderProps",
+    "ColorSwatch",
+    "type ColorSwatchProps",
+    "useColors",
+    "colorToAreaPosition",
+    "positionToAreaColor",
+    "rgbToHsl",
+    "hslToRgb",
+    "rgbToHsb",
+    "hsbToRgb",
+    "rgbToP3",
+    "p3ToRgb",
+    "p3StringToRgbString",
+    "profileConvertString",
+    "rgbaToRgb",
+    "stringToRgba",
+    "getContrastThreshold",
+    "type GradientPaint",
+    "type SolidPaint",
+    "type ImagePaint",
+    "type PatternPaint"
+  ],
+  "props": [
+    {
+      "displayName": "ColorAreaProps",
+      "description": "",
+      "props": [
+        {
+          "name": "areaSize",
+          "type": "{ height?: number | undefined; width?: number | undefined; } | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "hue",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "((position: Position) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChangeEnd",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChangeStart",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "position",
+          "type": "Position",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "thumbColor",
+          "type": "RGB | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "thumbSize",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "type",
+          "type": "\"saturation-lightness\" | \"saturation-brightness\"",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "ref",
+          "type": "((instance: HTMLDivElement | null) => void) | RefObject<HTMLDivElement> | null | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "ColorSliderProps",
+      "description": "",
+      "props": [
+        {
+          "name": "backgroundStyle",
+          "type": "CSSProperties | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "hue",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChange",
+          "type": "((position: number) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChangeEnd",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChangeStart",
+          "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "position",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "thumbSize",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "trackSize",
+          "type": "{ height?: number | undefined; width?: number | undefined; } | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "type",
+          "type": "\"hue\" | \"saturation\" | \"lightness\" | \"alpha\"",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "ref",
+          "type": "((instance: HTMLDivElement | null) => void) | RefObject<HTMLDivElement> | null | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "ColorSwatchProps",
+      "description": "",
+      "props": [
+        {
+          "name": "color",
+          "type": "RGB | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "size",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "type",
+          "type": "undefined | \"VARIABLE\" | \"STYLE\"",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "alpha",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "gradient",
+          "type": "GradientPaint | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "useColors",
+      "description": "使用颜色配置的钩子 - 从 Context 中获取颜色配置信息",
+      "props": []
+    },
+    {
+      "displayName": "positionToAreaColor",
+      "description": "Convert position to color values based on color area type",
+      "props": []
+    },
+    {
+      "displayName": "colorToAreaPosition",
+      "description": "Convert color values to position based on color area type",
+      "props": []
+    },
+    {
+      "displayName": "hsbToHsl",
+      "description": "Convert HSB to HSL",
+      "props": [
+        {
+          "name": "b",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "h",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "s",
+          "type": "number",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "hslToHsb",
+      "description": "Convert HSL to HSB",
+      "props": [
+        {
+          "name": "h",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "l",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "s",
+          "type": "number",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "positionToSliderValue",
+      "description": "Convert slider position to color value string",
+      "props": []
+    },
+    {
+      "displayName": "ColorStabilizer",
+      "description": "Color value stabilizer for edge cases",
+      "props": []
+    },
+    {
+      "displayName": "isEdgeValue",
+      "description": "",
+      "props": []
+    },
+    {
+      "displayName": "hslToRgb",
+      "description": "",
+      "props": [
+        {
+          "name": "h",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "l",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "s",
+          "type": "number",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "rgbToHsb",
+      "description": "",
+      "props": [
+        {
+          "name": "b",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "g",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "r",
+          "type": "number",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "hsbToRgb",
+      "description": "",
+      "props": [
+        {
+          "name": "b",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "h",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "s",
+          "type": "number",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "rgbToP3",
+      "description": "",
+      "props": [
+        {
+          "name": "a",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "b",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "g",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "r",
+          "type": "number",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "p3ToRgb",
+      "description": "",
+      "props": [
+        {
+          "name": "a",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "b",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "g",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "r",
+          "type": "number",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "p3StringToRgbString",
+      "description": "",
+      "props": []
+    },
+    {
+      "displayName": "getContrastThreshold",
+      "description": "根据 WCAG 标准计算对比度阈值",
+      "props": []
+    },
+    {
+      "displayName": "rgbaToRgb",
+      "description": "",
+      "props": [
+        {
+          "name": "a",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "b",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "g",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "r",
+          "type": "number",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "stringToRgba",
+      "description": "",
+      "props": []
+    }
+  ],
+  "stories": [
+    {
+      "id": "basic-colorswatch--basic",
+      "name": "Basic",
+      "exportName": "Basic",
+      "description": "The \\`ColorSwatch\\` component is used to display a color swatch.\nIt can be used to display a single color, a gradient, or a color with alpha.\n\nBasic usage requires only an RGB color object with values between 0-255.",
+      "source": "import { ColorSwatch } from \"@choice-ui/colors\"\n\nexport default function App() {\n  return (\n\n    <div className=\"flex flex-col gap-4\">\n      <div className=\"flex flex-wrap gap-4\">\n        <ColorSwatch color={{ r: 0, g: 85, b: 255 }} />\n        <ColorSwatch color={{ r: 255, g: 0, b: 85 }} />\n        <ColorSwatch color={{ r: 85, g: 255, b: 0 }} />\n      </div>\n      <div className=\"rounded-md border p-4\">\n        <ul className=\"flex flex-col gap-2\">\n          <li>\n            <b className=\"font-strong\">Basic Usage</b>: Provide an RGB color object\n            <code className=\"ml-2 rounded bg-slate-100 px-1 py-0.5 font-mono\">\n              {\"{ r: 0-255, g: 0-255, b: 0-255 }\"}\n            </code>\n          </li>\n          <li>\n            <b className=\"font-strong\">Default Size</b>: 14px × 14px\n          </li>\n          <li>\n            <b className=\"font-strong\">Default Shape</b>: Square with slightly rounded corners\n          </li>\n        </ul>\n      </div>\n    </div>\n\n  );\n}"
+    },
+    {
+      "id": "basic-colorswatch--custom-options",
+      "name": "Custom Options",
+      "exportName": "CustomOptions",
+      "description": "The ColorSwatch component can be customized with various options.\n\n- `alpha`: Transparency value (0-1)\n- `size`: Size in pixels\n- `className`: Custom CSS classes for styling\n- `type`: Indicates if the swatch represents a variable or style",
+      "source": "import { ColorSwatch } from \"@choice-ui/colors\"\n\nexport default function App() {\n  return (\n\n    <div className=\"flex flex-col gap-4\">\n      <div className=\"grid grid-cols-4 gap-4\">\n        {/* Alpha variations */}\n        <div className=\"flex flex-col items-center gap-2\">\n          <ColorSwatch\n            color={{ r: 0, g: 85, b: 255 }}\n            alpha={0.25}\n            size={36}\n          />\n          <span className=\"text-body-small\">Alpha: 0.25</span>\n        </div>\n        <div className=\"flex flex-col items-center gap-2\">\n          <ColorSwatch\n            color={{ r: 0, g: 85, b: 255 }}\n            alpha={0.5}\n            size={36}\n          />\n          <span className=\"text-body-small\">Alpha: 0.5</span>\n        </div>\n        <div className=\"flex flex-col items-center gap-2\">\n          <ColorSwatch\n            color={{ r: 0, g: 85, b: 255 }}\n            alpha={0.75}\n            size={36}\n          />\n          <span className=\"text-body-small\">Alpha: 0.75</span>\n        </div>\n        <div className=\"flex flex-col items-center gap-2\">\n          <ColorSwatch\n            color={{ r: 0, g: 85, b: 255 }}\n            alpha={1}\n            size={36}\n          />\n          <span className=\"text-body-small\">Alpha: 1.0</span>\n        </div>\n\n        {/* Size variations */}\n        <div className=\"flex flex-col items-center gap-2\">\n          <ColorSwatch\n            color={{ r: 255, g: 85, b: 0 }}\n            size={16}\n          />\n          <span className=\"text-body-small\">Size: 16px</span>\n        </div>\n        <div className=\"flex flex-col items-center gap-2\">\n          <ColorSwatch\n            color={{ r: 255, g: 85, b: 0 }}\n            size={32}\n          />\n          <span className=\"text-body-small\">Size: 32px</span>\n        </div>\n        <div className=\"flex flex-col items-center gap-2\">\n          <ColorSwatch\n            color={{ r: 255, g: 85, b: 0 }}\n            size={48}\n          />\n          <span className=\"text-body-small\">Size: 48px</span>\n        </div>\n        <div className=\"flex flex-col items-center gap-2\">\n          <ColorSwatch\n            color={{ r: 255, g: 85, b: 0 }}\n            size={64}\n          />\n          <span className=\"text-body-small\">Size: 64px</span>\n        </div>\n\n        {/* Shape variations */}\n        <div className=\"flex flex-col items-center gap-2\">\n          <ColorSwatch\n            color={{ r: 85, g: 0, b: 255 }}\n            size={36}\n            className=\"rounded-none\"\n          />\n          <span className=\"text-body-small\">Sharp Square</span>\n        </div>\n        <div className=\"flex flex-col items-center gap-2\">\n          <ColorSwatch\n            color={{ r: 85, g: 0, b: 255 }}\n            size={36}\n            className=\"rounded-md\"\n          />\n          <span className=\"text-body-small\">Rounded</span>\n        </div>\n        <div className=\"flex flex-col items-center gap-2\">\n          <ColorSwatch\n            color={{ r: 85, g: 0, b: 255 }}\n            size={36}\n            className=\"rounded-full\"\n          />\n          <span className=\"text-body-small\">Circle</span>\n        </div>\n        <div className=\"flex flex-col items-center gap-2\">\n          <ColorSwatch\n            color={{ r: 85, g: 0, b: 255 }}\n            size={36}\n            className=\"rounded-full outline outline-2 outline-offset-2 outline-blue-400\"\n          />\n          <span className=\"text-body-small\">Custom Style</span>\n        </div>\n\n        {/* Type variations */}\n        <div className=\"flex flex-col items-center gap-2\">\n          <ColorSwatch\n            color={{ r: 0, g: 180, b: 120 }}\n            alpha={0.5}\n            size={36}\n            type=\"VARIABLE\"\n            className=\"rounded-md\"\n          />\n          <span className=\"text-body-small\">Variable Type</span>\n        </div>\n        <div className=\"flex flex-col items-center gap-2\">\n          <ColorSwatch\n            color={{ r: 0, g: 180, b: 120 }}\n            alpha={0.5}\n            size={36}\n            type=\"STYLE\"\n            className=\"rounded-full\"\n          />\n          <span className=\"text-body-small\">Style Type</span>\n        </div>\n      </div>\n      <div className=\"rounded-md border p-4\">\n        <ul className=\"flex flex-col gap-2\">\n          <li>\n            <b className=\"font-strong\">Alpha</b>: Controls transparency (0-1)\n          </li>\n          <li>\n            <b className=\"font-strong\">Size</b>: Sets dimensions in pixels\n          </li>\n          <li>\n            <b className=\"font-strong\">Shape</b>: Customizable with className (rounded-md,\n            rounded-full, etc.)\n          </li>\n          <li>\n            <b className=\"font-strong\">Type</b>: Indicates if the swatch represents a variable or\n            style\n            <ul className=\"ml-6 mt-1\">\n              <li>VARIABLE: Typically shown as rounded squares</li>\n              <li>STYLE: Typically shown as circles</li>\n            </ul>\n          </li>\n        </ul>\n      </div>\n    </div>\n\n  );\n}"
+    },
+    {
+      "id": "basic-colorswatch--gradients",
+      "name": "Gradients",
+      "exportName": "Gradients",
+      "description": "The ColorSwatch component can display gradients by providing a gradient object.\n\nSupported gradient types:\n- `GRADIENT_LINEAR`: Linear gradient\n- `GRADIENT_RADIAL`: Radial gradient\n- `GRADIENT_ANGULAR`: Angular gradient\n\nEach gradient requires stop points defining colors and positions.",
+      "source": "import { ColorSwatch } from \"@choice-ui/colors\"\n\nexport default function App() {\n  return (\n\n    <div className=\"flex flex-col items-start gap-4\">\n      <div className=\"grid grid-cols-3 gap-4\">\n        {/* Linear gradient */}\n        <div className=\"flex flex-col items-center gap-2\">\n          <ColorSwatch\n            gradient={{\n              type: \"GRADIENT_LINEAR\",\n              gradientTransform: [\n                [1, 0, 0],\n                [0, 1, 0],\n              ],\n              gradientStops: [\n                {\n                  id: nanoid(),\n                  color: { r: 0, g: 85, b: 255 },\n                  position: 0,\n                  alpha: 1,\n                },\n                {\n                  id: nanoid(),\n                  color: { r: 255, g: 0, b: 85 },\n                  position: 1,\n                  alpha: 1,\n                },\n              ],\n            }}\n            size={48}\n            className=\"rounded-md\"\n          />\n          <span className=\"text-body-small\">Linear Gradient</span>\n        </div>\n\n        {/* Radial gradient */}\n        <div className=\"flex flex-col items-center gap-2\">\n          <ColorSwatch\n            gradient={{\n              type: \"GRADIENT_RADIAL\",\n              gradientTransform: [\n                [1, 0, 0],\n                [0, 1, 0],\n              ],\n              gradientStops: [\n                {\n                  id: nanoid(),\n                  color: { r: 255, g: 85, b: 0 },\n                  position: 0,\n                  alpha: 1,\n                },\n                {\n                  id: nanoid(),\n                  color: { r: 85, g: 0, b: 255 },\n                  position: 1,\n                  alpha: 1,\n                },\n              ],\n            }}\n            size={48}\n            className=\"rounded-md\"\n          />\n          <span className=\"text-body-small\">Radial Gradient</span>\n        </div>\n\n        {/* Angular gradient */}\n        <div className=\"flex flex-col items-center gap-2\">\n          <ColorSwatch\n            gradient={{\n              type: \"GRADIENT_ANGULAR\",\n              gradientTransform: [\n                [1, 0, 0],\n                [0, 1, 0],\n              ],\n              gradientStops: [\n                {\n                  id: nanoid(),\n                  color: { r: 85, g: 255, b: 0 },\n                  position: 0,\n                  alpha: 1,\n                },\n                {\n                  id: nanoid(),\n                  color: { r: 0, g: 85, b: 255 },\n                  position: 0.5,\n                  alpha: 1,\n                },\n                {\n                  id: nanoid(),\n                  color: { r: 255, g: 0, b: 85 },\n                  position: 1,\n                  alpha: 1,\n                },\n              ],\n            }}\n            size={48}\n            className=\"rounded-md\"\n          />\n          <span className=\"text-body-small\">Angular Gradient</span>\n        </div>\n\n        {/* Gradient with transparency */}\n        <div className=\"flex flex-col items-center gap-2\">\n          <ColorSwatch\n            gradient={{\n              type: \"GRADIENT_LINEAR\",\n              gradientTransform: [\n                [1, 0, 0],\n                [0, 1, 0],\n              ],\n              gradientStops: [\n                {\n                  id: nanoid(),\n                  color: { r: 0, g: 85, b: 255 },\n                  position: 0,\n                  alpha: 0,\n                },\n                {\n                  id: nanoid(),\n                  color: { r: 0, g: 85, b: 255 },\n                  position: 1,\n                  alpha: 1,\n                },\n              ],\n            }}\n            size={48}\n            className=\"rounded-md\"\n          />\n          <span className=\"text-body-small\">Transparency Gradient</span>\n        </div>\n\n        {/* Multi-stop gradient */}\n        <div className=\"flex flex-col items-center gap-2\">\n          <ColorSwatch\n            gradient={{\n              type: \"GRADIENT_LINEAR\",\n              gradientTransform: [\n                [1, 0, 0],\n                [0, 1, 0],\n              ],\n              gradientStops: [\n                {\n                  id: nanoid(),\n                  color: { r: 255, g: 0, b: 0 },\n                  position: 0,\n                  alpha: 1,\n                },\n                {\n                  id: nanoid(),\n                  color: { r: 255, g: 255, b: 0 },\n                  position: 0.25,\n                  alpha: 1,\n                },\n                {\n                  id: nanoid(),\n                  color: { r: 0, g: 255, b: 0 },\n                  position: 0.5,\n                  alpha: 1,\n                },\n                {\n                  id: nanoid(),\n                  color: { r: 0, g: 0, b: 255 },\n                  position: 0.75,\n                  alpha: 1,\n                },\n                {\n                  id: nanoid(),\n                  color: { r: 128, g: 0, b: 128 },\n                  position: 1,\n                  alpha: 1,\n                },\n              ],\n            }}\n            size={48}\n            className=\"rounded-md\"\n          />\n          <span className=\"text-body-small\">Multi-stop Gradient</span>\n        </div>\n      </div>\n      <div className=\"rounded-md border p-4\">\n        <ul className=\"flex flex-col gap-2\">\n          <li>\n            <b className=\"font-strong\">Gradient Types</b>: Linear, Radial, and Angular\n          </li>\n          <li>\n            <b className=\"font-strong\">Gradient Stops</b>: Each stop defines a color, position\n            (0-1), and alpha\n          </li>\n          <li>\n            <b className=\"font-strong\">Transform</b>: Controls the direction and orientation of the\n            gradient\n          </li>\n          <li>\n            <b className=\"font-strong\">Applications</b>: Useful for representing gradient styles,\n            transitions, and multi-color elements\n          </li>\n        </ul>\n      </div>\n    </div>\n\n  );\n}"
+    },
+    {
+      "id": "basic-colorswatch--randomly",
+      "name": "Randomly",
+      "exportName": "Randomly",
+      "description": "Test various random colors and gradients to ensure the component handles diverse inputs.\n\nThis story uses memoization to control re-rendering and only regenerates colors\nwhen the regenerate button is clicked.",
+      "source": ""
+    }
+  ]
+}
