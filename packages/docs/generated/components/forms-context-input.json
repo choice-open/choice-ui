@@ -181,7 +181,7 @@
         },
         {
           "name": "variant",
-          "type": "undefined | \"default\" | \"dark\" | \"reset\" | \"secondary\" | \"solid\" | \"highlight\" | \"ghost\"",
+          "type": "undefined | \"default\" | \"dark\" | \"reset\" | \"secondary\" | \"solid\" | \"highlight\" | \"ghost\" | \"submit\"",
           "required": false,
           "description": ""
         },

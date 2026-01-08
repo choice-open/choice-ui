@@ -30,6 +30,8 @@ export function useEmojiScroll({
     useState<EmojiCategory>("frequently_used")
   const isScrollingToTarget = useRef(false)
   const isInternalUpdate = useRef(false)
+  const scrollingTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const internalUpdateTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   // virtualizer configuration
   const virtualizer = useVirtualizer({
@@ -116,7 +118,11 @@ export function useEmojiScroll({
         behavior: "auto",
       })
 
-      setTimeout(() => {
+      // clear previous timeout to avoid memory leak
+      if (scrollingTimeoutRef.current) {
+        clearTimeout(scrollingTimeoutRef.current)
+      }
+      scrollingTimeoutRef.current = setTimeout(() => {
         isScrollingToTarget.current = false
       }, 100)
     }
@@ -133,7 +139,11 @@ export function useEmojiScroll({
         behavior: "auto",
       })
 
-      setTimeout(() => {
+      // clear previous timeout to avoid memory leak
+      if (scrollingTimeoutRef.current) {
+        clearTimeout(scrollingTimeoutRef.current)
+      }
+      scrollingTimeoutRef.current = setTimeout(() => {
         isScrollingToTarget.current = false
       }, 100)
     }
@@ -143,10 +153,25 @@ export function useEmojiScroll({
   const markInternalUpdate = useEventCallback(() => {
     isInternalUpdate.current = true
     // briefly mark and reset, avoid affecting subsequent external updates
-    setTimeout(() => {
+    if (internalUpdateTimeoutRef.current) {
+      clearTimeout(internalUpdateTimeoutRef.current)
+    }
+    internalUpdateTimeoutRef.current = setTimeout(() => {
       isInternalUpdate.current = false
     }, 50)
   })
+
+  // cleanup timeouts on unmount
+  useEffect(() => {
+    return () => {
+      if (scrollingTimeoutRef.current) {
+        clearTimeout(scrollingTimeoutRef.current)
+      }
+      if (internalUpdateTimeoutRef.current) {
+        clearTimeout(internalUpdateTimeoutRef.current)
+      }
+    }
+  }, [])
 
   // when external value changes, automatically scroll to corresponding position (excluding internal updates)
   useEffect(() => {

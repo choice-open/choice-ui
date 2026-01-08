@@ -32,17 +32,17 @@ export type VirtualItem =
       type: "emojis"
     }
 
-// category configuration
+// category configuration (id and range only, names come from i18n)
 export const categories = [
-  { id: "frequently_used", name: "Frequently used" },
-  { id: "smileys_people", name: "Smileys & People", range: [1, 460] },
-  { id: "animals_nature", name: "Animals & Nature", range: [465, 591] },
-  { id: "food_drink", name: "Food & Drink", range: [592, 712] },
-  { id: "travel_places", name: "Travel & Places", range: [713, 922] },
-  { id: "activities", name: "Activities", range: [923, 1001] },
-  { id: "objects", name: "Objects", range: [1002, 1234] },
-  { id: "symbols", name: "Symbols", range: [1235, 1451] },
-  { id: "flags", name: "Flags", range: [1452, 1719] },
+  { id: "frequently_used" },
+  { id: "smileys_people", range: [1, 460] },
+  { id: "animals_nature", range: [465, 591] },
+  { id: "food_drink", range: [592, 712] },
+  { id: "travel_places", range: [713, 922] },
+  { id: "activities", range: [923, 1001] },
+  { id: "objects", range: [1002, 1234] },
+  { id: "symbols", range: [1235, 1451] },
+  { id: "flags", range: [1452, 1719] },
 ] as const
 
 const STORAGE_KEY = "emoji-picker-frequently-used"
@@ -90,13 +90,56 @@ function saveFrequentlyUsedEmoji(emojiId: number) {
   }
 }
 
+export interface CategoryNames {
+  activities: string
+  animalsNature: string
+  flags: string
+  foodDrink: string
+  frequentlyUsed: string
+  objects: string
+  smileysPeople: string
+  symbols: string
+  travelPlaces: string
+}
+
 interface UseEmojiDataProps {
+  categoryNames?: CategoryNames
   columns: number
   searchQuery: string
   showFrequentlyUsed: boolean
 }
 
-export function useEmojiData({ searchQuery, columns, showFrequentlyUsed }: UseEmojiDataProps) {
+const defaultCategoryNames: CategoryNames = {
+  frequentlyUsed: "Frequently used",
+  smileysPeople: "Smileys & People",
+  animalsNature: "Animals & Nature",
+  foodDrink: "Food & Drink",
+  travelPlaces: "Travel & Places",
+  activities: "Activities",
+  objects: "Objects",
+  symbols: "Symbols",
+  flags: "Flags",
+}
+
+// map category id to i18n key
+const categoryIdToI18nKey: Record<string, keyof CategoryNames> = {
+  frequently_used: "frequentlyUsed",
+  smileys_people: "smileysPeople",
+  animals_nature: "animalsNature",
+  food_drink: "foodDrink",
+  travel_places: "travelPlaces",
+  activities: "activities",
+  objects: "objects",
+  symbols: "symbols",
+  flags: "flags",
+}
+
+export function useEmojiData({
+  searchQuery,
+  columns,
+  showFrequentlyUsed,
+  categoryNames = defaultCategoryNames,
+}: UseEmojiDataProps) {
   const [frequentlyUsed, setFrequentlyUsed] = useState<EmojiData[]>([])
 
   // load frequently used emojis (only when enabled)
@@ -141,7 +184,7 @@ export function useEmojiData({ searchQuery, columns, showFrequentlyUsed }: UseEm
       items.push({
         type: "header",
         category: "frequently_used",
-        title: "Frequently used",
+        title: categoryNames.frequentlyUsed,
       })
 
       for (let i = 0; i < frequentlyUsed.length; i += columns) {
@@ -161,10 +204,11 @@ export function useEmojiData({ searchQuery, columns, showFrequentlyUsed }: UseEm
       )
 
       if (categoryEmojis.length > 0) {
+        const i18nKey = categoryIdToI18nKey[category.id]
         items.push({
           type: "header",
           category: category.id as EmojiCategory,
-          title: category.name,
+          title: i18nKey ? categoryNames[i18nKey] : category.id,
         })
 
         for (let i = 0; i < categoryEmojis.length; i += columns) {
@@ -177,7 +221,7 @@ export function useEmojiData({ searchQuery, columns, showFrequentlyUsed }: UseEm
     })
 
     return items
-  }, [searchQuery, searchResults, frequentlyUsed, columns, showFrequentlyUsed])
+  }, [searchQuery, searchResults, frequentlyUsed, columns, showFrequentlyUsed, categoryNames])
 
   // category index mapping
   const categoryIndexMap = useMemo(() => {

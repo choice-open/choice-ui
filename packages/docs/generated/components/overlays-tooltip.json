@@ -46,6 +46,12 @@
           "description": ""
         },
         {
+          "name": "interactive",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
           "name": "offset",
           "type": "number | undefined",
           "required": false,
@@ -152,6 +158,13 @@
       "exportName": "DelayGroup",
       "description": "DelayGroup: Use `TooltipProvider` for smooth transitions between tooltips.\nFirst tooltip has delay, subsequent ones appear instantly while moving quickly.",
       "source": "import { Tooltip, TooltipProvider } from \"@choice-ui/tooltip\"\n\nexport default function App() {\n  return (\n\n    <div className=\"space-y-8\">\n      <div>\n        <p className=\"text-body-small mb-4 text-gray-500\">\n          With TooltipProvider: hover first, wait 400ms, then move quickly between buttons.\n        </p>\n        <TooltipProvider delay={{ open: 400, close: 200 }}>\n          <div className=\"flex gap-4\">\n            <Tooltip content=\"First - 400ms delay\">\n              <Button>First</Button>\n            </Tooltip>\n            <Tooltip content=\"Second - instant\">\n              <Button>Second</Button>\n            </Tooltip>\n            <Tooltip content=\"Third - instant\">\n              <Button>Third</Button>\n            </Tooltip>\n          </div>\n        </TooltipProvider>\n      </div>\n\n      <div>\n        <p className=\"text-body-small mb-4 text-gray-500\">\n          Without TooltipProvider: independent tooltips.\n        </p>\n        <div className=\"flex gap-4\">\n          <Tooltip content=\"Independent 1\">\n            <Button variant=\"secondary\">First</Button>\n          </Tooltip>\n          <Tooltip content=\"Independent 2\">\n            <Button variant=\"secondary\">Second</Button>\n          </Tooltip>\n        </div>\n      </div>\n    </div>\n\n  );\n}"
+    },
+    {
+      "id": "overlays-tooltip--interactive",
+      "name": "Interactive",
+      "exportName": "Interactive",
+      "description": "Interactive: Control whether tooltip can be hovered and stays visible.\n\n- **interactive={true}** (default): Tooltip stays visible when mouse moves over it.\n  You can hover on the tooltip content itself.\n\n- **interactive={false}**: Tooltip dismisses immediately when mouse leaves the trigger.\n  Mouse cannot hover over tooltip content (pointer-events: none).\n  No text cursor appears when hovering over tooltip.\n\nTry hovering over both buttons and moving your mouse to the tooltip content:\n- Left button: You can hover on the tooltip, it stays visible\n- Right button: Tooltip disappears immediately when you move away from the button",
+      "source": "import { Tooltip, TooltipProvider } from \"@choice-ui/tooltip\"\n\nexport default function App() {\n  return (\n\n    <TooltipProvider delay={{ close: 1000 }}>\n      <div className=\"flex flex-col items-center gap-8\">\n        <div className=\"flex gap-8\">\n          <div className=\"flex flex-col items-center gap-2\">\n            <Tooltip\n              content=\"Interactive tooltip (default) - hover me!\"\n              interactive={true}\n            >\n              <Button variant=\"secondary\">Interactive (default)</Button>\n            </Tooltip>\n            <p className=\"text-body-small max-w-[200px] text-center text-gray-500\">\n              Hover button, then move mouse to tooltip - it stays visible\n            </p>\n          </div>\n\n          <div className=\"flex flex-col items-center gap-2\">\n            <Tooltip\n              content=\"Non-interactive tooltip - try hovering!\"\n              interactive={false}\n            >\n              <Button variant=\"secondary\">Non-Interactive</Button>\n            </Tooltip>\n            <p className=\"text-body-small max-w-[200px] text-center text-gray-500\">\n              Hover button, then move mouse away - tooltip disappears immediately\n            </p>\n          </div>\n        </div>\n      </div>\n    </TooltipProvider>\n\n  );\n}"
     }
   ]
 }

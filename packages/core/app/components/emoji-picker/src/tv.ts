@@ -138,7 +138,7 @@ export const emojiFooterTv = tcv({
 export const emojiEmptyTv = tcv({
   slots: {
     container: "flex h-32 flex-col items-center justify-center p-4 text-center",
-    title: "text-heading-display",
+    title: "text-body-large-strong",
     description: "mt-2 w-32",
   },
   variants: {

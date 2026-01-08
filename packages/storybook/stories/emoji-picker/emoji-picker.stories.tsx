@@ -227,6 +227,189 @@ export const MultipleControlled: Story = {
 }
 
 /**
+ * Internationalization (i18n) support for the emoji picker.
+ *
+ * ### Supported Languages
+ * - English (default)
+ * - Chinese (中文)
+ * - Japanese (日本語)
+ * - Korean (한국어)
+ * - Spanish (Español)
+ * - And more...
+ *
+ * ### Customizable Text
+ * - `searchPlaceholder`: Search input placeholder
+ * - `i18n.noEmojisFoundTitle`: Empty state title
+ * - `i18n.noEmojisFoundDescription`: Empty state description
+ * - `i18n.footerPickAnEmoji`: Footer placeholder text
+ * - `i18n.categories.*`: Category names (9 categories)
+ */
+export const Internationalization: Story = {
+  render: function InternationalizationStory() {
+    const [selectedEmoji, setSelectedEmoji] = useState<EmojiData | null>(null)
+    const [locale, setLocale] = useState<"en" | "zh" | "ja" | "ko" | "es">("en")
+
+    const i18nConfig = {
+      en: {
+        searchPlaceholder: "Search emoji...",
+        noEmojisFoundTitle: "No emoji found",
+        noEmojisFoundDescription:
+          "You can search for an emoji by name or use the search bar to find it.",
+        footerPickAnEmoji: "Pick an emoji...",
+        categories: {
+          frequentlyUsed: "Frequently used",
+          smileysPeople: "Smileys & People",
+          animalsNature: "Animals & Nature",
+          foodDrink: "Food & Drink",
+          travelPlaces: "Travel & Places",
+          activities: "Activities",
+          objects: "Objects",
+          symbols: "Symbols",
+          flags: "Flags",
+        },
+      },
+      zh: {
+        searchPlaceholder: "搜索表情...",
+        noEmojisFoundTitle: "未找到表情",
+        noEmojisFoundDescription: "您可以通过名称搜索表情符号，或使用搜索栏查找。",
+        footerPickAnEmoji: "选择一个表情...",
+        categories: {
+          frequentlyUsed: "常用",
+          smileysPeople: "笑脸与人物",
+          animalsNature: "动物与自然",
+          foodDrink: "食物与饮料",
+          travelPlaces: "旅行与地点",
+          activities: "活动",
+          objects: "物品",
+          symbols: "符号",
+          flags: "旗帜",
+        },
+      },
+      ja: {
+        searchPlaceholder: "絵文字を検索...",
+        noEmojisFoundTitle: "絵文字が見つかりません",
+        noEmojisFoundDescription: "名前で絵文字を検索するか、検索バーを使用してください。",
+        footerPickAnEmoji: "絵文字を選択...",
+        categories: {
+          frequentlyUsed: "よく使う",
+          smileysPeople: "スマイリーと人物",
+          animalsNature: "動物と自然",
+          foodDrink: "食べ物と飲み物",
+          travelPlaces: "旅行と場所",
+          activities: "アクティビティ",
+          objects: "オブジェクト",
+          symbols: "記号",
+          flags: "旗",
+        },
+      },
+      ko: {
+        searchPlaceholder: "이모지 검색...",
+        noEmojisFoundTitle: "이모지를 찾을 수 없습니다",
+        noEmojisFoundDescription: "이름으로 이모지를 검색하거나 검색창을 사용하세요.",
+        footerPickAnEmoji: "이모지 선택...",
+        categories: {
+          frequentlyUsed: "자주 사용",
+          smileysPeople: "스마일 & 사람",
+          animalsNature: "동물 & 자연",
+          foodDrink: "음식 & 음료",
+          travelPlaces: "여행 & 장소",
+          activities: "활동",
+          objects: "사물",
+          symbols: "기호",
+          flags: "깃발",
+        },
+      },
+      es: {
+        searchPlaceholder: "Buscar emoji...",
+        noEmojisFoundTitle: "No se encontró emoji",
+        noEmojisFoundDescription:
+          "Puedes buscar un emoji por nombre o usar la barra de búsqueda.",
+        footerPickAnEmoji: "Elige un emoji...",
+        categories: {
+          frequentlyUsed: "Frecuentes",
+          smileysPeople: "Caras y personas",
+          animalsNature: "Animales y naturaleza",
+          foodDrink: "Comida y bebida",
+          travelPlaces: "Viajes y lugares",
+          activities: "Actividades",
+          objects: "Objetos",
+          symbols: "Símbolos",
+          flags: "Banderas",
+        },
+      },
+    }
+
+    const currentI18n = i18nConfig[locale]
+
+    return (
+      <div className="flex flex-col gap-4">
+        <div className="flex items-center gap-2">
+          <span className="text-secondary-foreground">Language:</span>
+          <Select
+            value={locale}
+            onChange={(value) => setLocale(value as typeof locale)}
+          >
+            <Select.Trigger className="w-40">
+              <Select.Value>
+                {locale === "en"
+                  ? "English"
+                  : locale === "zh"
+                    ? "中文"
+                    : locale === "ja"
+                      ? "日本語"
+                      : locale === "ko"
+                        ? "한국어"
+                        : "Español"}
+              </Select.Value>
+            </Select.Trigger>
+            <Select.Content>
+              <Select.Item value="en">English</Select.Item>
+              <Select.Item value="zh">中文</Select.Item>
+              <Select.Item value="ja">日本語</Select.Item>
+              <Select.Item value="ko">한국어</Select.Item>
+              <Select.Item value="es">Español</Select.Item>
+            </Select.Content>
+          </Select>
+        </div>
+
+        <div className="text-center">
+          {selectedEmoji ? (
+            <div className="text-body-large">
+              {locale === "zh"
+                ? "已选择："
+                : locale === "ja"
+                  ? "選択済み："
+                  : locale === "ko"
+                    ? "선택됨: "
+                    : locale === "es"
+                      ? "Seleccionado: "
+                      : "Selected: "}
+              {selectedEmoji.emoji} ({selectedEmoji.name})
+            </div>
+          ) : (
+            <div className="text-secondary-foreground">{currentI18n.footerPickAnEmoji}</div>
+          )}
+        </div>
+
+        <EmojiPicker
+          value={selectedEmoji}
+          onChange={setSelectedEmoji}
+          height={384}
+          variant="dark"
+          searchPlaceholder={currentI18n.searchPlaceholder}
+          i18n={{
+            noEmojisFoundTitle: currentI18n.noEmojisFoundTitle,
+            noEmojisFoundDescription: currentI18n.noEmojisFoundDescription,
+            footerPickAnEmoji: currentI18n.footerPickAnEmoji,
+            categories: currentI18n.categories,
+          }}
+        />
+      </div>
+    )
+  },
+}
+
+/**
  * Control emoji picker value from external components.
  *
  * ### Features Demonstrated

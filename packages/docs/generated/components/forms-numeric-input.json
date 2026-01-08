@@ -297,7 +297,7 @@
         },
         {
           "name": "variant",
-          "type": "undefined | \"default\" | \"reset\" | \"secondary\" | \"solid\" | \"highlight\" | \"ghost\" | \"dark\"",
+          "type": "undefined | \"default\" | \"reset\" | \"secondary\" | \"solid\" | \"highlight\" | \"ghost\" | \"dark\" | \"submit\"",
           "required": false,
           "description": ""
         }

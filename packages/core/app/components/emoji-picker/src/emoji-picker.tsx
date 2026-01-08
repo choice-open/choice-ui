@@ -32,20 +32,23 @@ export interface EmojiPickerProps {
   showFooter?: boolean
   value?: EmojiData | null
   variant?: "default" | "dark" | "light"
+  i18n?: {
+    noEmojisFoundTitle?: string
+    noEmojisFoundDescription?: string
+    footerPickAnEmoji?: string
+    categories?: {
+      frequentlyUsed: string
+      smileysPeople: string
+      animalsNature: string
+      foodDrink: string
+      travelPlaces: string
+      activities: string
+      objects: string
+      symbols: string
+      flags: string
+    }
+  }
 }
-
-// category configuration (with icons)
-const categoriesWithIcons = [
-  { id: "frequently_used", name: "Frequently used", icon: <EmojiFrequentlyUsed /> },
-  { id: "smileys_people", name: "Smileys & People", icon: <EmojiSmileysPeople /> },
-  { id: "animals_nature", name: "Animals & Nature", icon: <EmojiAnimalsNature /> },
-  { id: "food_drink", name: "Food & Drink", icon: <EmojiFoodDrink /> },
-  { id: "travel_places", name: "Travel & Places", icon: <EmojiTravelPlaces /> },
-  { id: "activities", name: "Activities", icon: <EmojiActivity /> },
-  { id: "objects", name: "Objects", icon: <EmojiObjects /> },
-  { id: "symbols", name: "Symbols", icon: <EmojiSymbols /> },
-  { id: "flags", name: "Flags", icon: <EmojiFlags /> },
-] as const
 
 export const EmojiPicker = memo(function EmojiPicker({
   value,
@@ -60,11 +63,51 @@ export const EmojiPicker = memo(function EmojiPicker({
   showFooter = true,
   children,
   variant = "dark",
+  i18n = {
+    noEmojisFoundTitle: "No emoji found",
+    noEmojisFoundDescription:
+      "You can search for an emoji by name or use the search bar to find it.",
+    footerPickAnEmoji: "Pick an emoji...",
+    categories: {
+      frequentlyUsed: "Frequently used",
+      smileysPeople: "Smileys & People",
+      animalsNature: "Animals & Nature",
+      foodDrink: "Food & Drink",
+      travelPlaces: "Travel & Places",
+      activities: "Activities",
+      objects: "Objects",
+      symbols: "Symbols",
+      flags: "Flags",
+    },
+  },
 }: EmojiPickerProps) {
   const [searchQuery, setSearchQuery] = useState("")
   const [hoveredEmoji, setHoveredEmoji] = useState<EmojiData | null>(null)
 
+  // ensure columns is at least 1
+  const safeColumns = Math.max(1, columns)
+
   const tv = emojiTv({ variant })
+
+  // category configuration (with icons) - memoized to avoid recreation on each render
+  const categoriesWithIcons = useMemo(
+    () => [
+      {
+        id: "frequently_used",
+        name: i18n.categories?.frequentlyUsed,
+        icon: <EmojiFrequentlyUsed />,
+      },
+      { id: "smileys_people", name: i18n.categories?.smileysPeople, icon: <EmojiSmileysPeople /> },
+      { id: "animals_nature", name: i18n.categories?.animalsNature, icon: <EmojiAnimalsNature /> },
+      { id: "food_drink", name: i18n.categories?.foodDrink, icon: <EmojiFoodDrink /> },
+      { id: "travel_places", name: i18n.categories?.travelPlaces, icon: <EmojiTravelPlaces /> },
+      { id: "activities", name: i18n.categories?.activities, icon: <EmojiActivity /> },
+      { id: "objects", name: i18n.categories?.objects, icon: <EmojiObjects /> },
+      { id: "symbols", name: i18n.categories?.symbols, icon: <EmojiSymbols /> },
+      { id: "flags", name: i18n.categories?.flags, icon: <EmojiFlags /> },
+    ],
+    [i18n.categories],
+  )
 
   // data management
   const {
@@ -75,8 +118,9 @@ export const EmojiPicker = memo(function EmojiPicker({
     findEmojiByChar,
   } = useEmojiData({
     searchQuery,
-    columns,
+    columns: safeColumns,
     showFrequentlyUsed,
+    categoryNames: i18n.categories,
   })
 
   // scroll management
@@ -94,7 +138,7 @@ export const EmojiPicker = memo(function EmojiPicker({
     findEmojiPosition,
     searchQuery,
     value,
-    columns,
+    columns: safeColumns,
   })
 
   // filter categories by configuration (with icons)
@@ -105,7 +149,7 @@ export const EmojiPicker = memo(function EmojiPicker({
       }
       return true
     })
-  }, [showFrequentlyUsed])
+  }, [categoriesWithIcons, showFrequentlyUsed])
 
   // handle emoji select
   const handleEmojiSelect = useEventCallback((emoji: EmojiData) => {
@@ -129,7 +173,7 @@ export const EmojiPicker = memo(function EmojiPicker({
   const rootStyle = {
     "--emoji-height": `${height}px`,
     "--emoji-padding": `${PADDING}px`,
-    "--emoji-columns": `${columns}`,
+    "--emoji-columns": `${safeColumns}`,
   } as React.CSSProperties
 
   return (
@@ -237,7 +281,13 @@ export const EmojiPicker = memo(function EmojiPicker({
                 )
               })
             ) : (
-              <EmojiEmpty variant={variant} />
+              <EmojiEmpty
+                variant={variant}
+                i18n={{
+                  title: i18n.noEmojisFoundTitle,
+                  description: i18n.noEmojisFoundDescription,
+                }}
+              />
             )}
           </ScrollArea.Content>
         </ScrollArea.Viewport>
@@ -248,6 +298,9 @@ export const EmojiPicker = memo(function EmojiPicker({
           hoveredEmoji={hoveredEmoji}
           selectedEmoji={value || null}
           variant={variant}
+          i18n={{
+            pickAnEmoji: i18n.footerPickAnEmoji,
+          }}
         />
       )}
 
