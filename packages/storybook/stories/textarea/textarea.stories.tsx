@@ -135,6 +135,119 @@ export const Variants: Story = {
               placeholder="Dark variant - fixed dark..."
             />
           </div>
+          <div className="rounded-lg border p-4">
+            <Textarea
+              disabled={disabled}
+              variant="reset"
+              placeholder="Reset variant - no variant styling..."
+            />
+          </div>
+        </div>
+      </div>
+    )
+  },
+}
+
+/**
+ * Reset Variant: Textarea with no variant-specific styling for complete customization.
+ *
+ * Features:
+ * - Removes all variant-specific styles (borders, rounded corners, backgrounds)
+ * - Allows complete style customization via className
+ * - Maintains all functional features (auto-resize, scrolling, etc.)
+ * - Perfect for custom designs that don't fit standard variants
+ *
+ * Best Practices:
+ * - Use when you need a completely custom appearance
+ * - Apply your own borders, backgrounds, and spacing via className
+ * - Combine with custom CSS for unique designs
+ * - Still benefits from all functional features of the component
+ *
+ * Technical Details:
+ * - Removes: rounded-md, border, border-transparent from container
+ * - Preserves: placeholder color styling (placeholder:text-secondary-foreground)
+ * - Preserves: all functional styles (w-full, overflow-hidden, resize-none, etc.)
+ */
+export const ResetVariant: Story = {
+  render: function ResetVariant() {
+    const [value1, setValue1] = useState("")
+    const [value2, setValue2] = useState("Custom styled reset variant")
+    const [value3, setValue3] = useState("Another custom style example")
+
+    return (
+      <div className="space-y-8">
+        <div className="flex flex-col gap-4">
+          <h3 className="text-lg font-semibold">Basic Reset Variant</h3>
+          <p className="text-secondary-foreground">
+            Reset variant removes all variant-specific styling, allowing complete customization.
+          </p>
+          <Textarea
+            variant="reset"
+            value={value1}
+            onChange={setValue1}
+            placeholder="Reset variant - no borders, no rounded corners..."
+            className="w-64"
+            minRows={3}
+            maxRows={6}
+          />
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <h3 className="text-lg font-semibold">Custom Styled Reset Variant</h3>
+          <p className="text-secondary-foreground">
+            Apply your own styles via className for a completely custom appearance.
+          </p>
+          <Textarea
+            variant="reset"
+            value={value2}
+            onChange={setValue2}
+            placeholder="Custom styled reset variant..."
+            className="w-64 rounded-lg border-2 border-blue-500 bg-blue-50 p-3 text-blue-900 placeholder:text-blue-400 focus:border-blue-700 focus:bg-blue-100"
+            minRows={3}
+            maxRows={6}
+          />
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <h3 className="text-lg font-semibold">Another Custom Style Example</h3>
+          <p className="text-secondary-foreground">
+            Reset variant gives you full control over the appearance.
+          </p>
+          <Textarea
+            variant="reset"
+            value={value3}
+            onChange={setValue3}
+            placeholder="Another custom style example..."
+            className="w-64 border-b-2 border-purple-500 bg-transparent px-2 py-1 text-purple-900 placeholder:text-purple-300 focus:border-purple-700"
+            minRows={2}
+            maxRows={5}
+          />
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <h3 className="text-lg font-semibold">Comparison: Default vs Reset</h3>
+          <div className="flex flex-wrap gap-6">
+            <div className="flex flex-col gap-2">
+              <Label>Default Variant</Label>
+              <Textarea
+                variant="default"
+                placeholder="Default variant with built-in styling..."
+                className="w-64"
+                minRows={3}
+                maxRows={6}
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <Label>Reset Variant</Label>
+              <Textarea
+                variant="reset"
+                placeholder="Reset variant - no variant styling..."
+                className="w-64"
+                minRows={3}
+                maxRows={6}
+              />
+            </div>
+          </div>
         </div>
       </div>
     )

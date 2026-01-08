@@ -36,7 +36,9 @@ export const TextareaTv = tcv({
         container: "bg-gray-700",
         textarea: "text-white placeholder:text-white/40",
       },
-      reset: {},
+      reset: {
+        container: "rounded-none border-0",
+      },
     },
     resize: {
       auto: {},
