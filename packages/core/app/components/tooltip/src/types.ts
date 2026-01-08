@@ -5,6 +5,7 @@ import type { KbdKey } from "@choice-ui/kbd"
 export interface TooltipOptions {
   disabled?: boolean
   initialOpen?: boolean
+  interactive?: boolean
   offset?: number
   onOpenChange?: (open: boolean) => void
   open?: boolean
@@ -39,6 +40,7 @@ export interface TooltipProps {
   className?: string
   content?: React.ReactNode
   disabled?: boolean
+  interactive?: boolean
   offset?: number
   onOpenChange?: (open: boolean) => void
   open?: boolean
@@ -53,6 +55,7 @@ export interface TooltipProps {
 }
 
 export interface TooltipContentProps extends React.HTMLProps<HTMLDivElement> {
+  interactive?: boolean
   portalId?: string
   variant?: "default" | "light"
   withArrow?: boolean

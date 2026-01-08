@@ -431,3 +431,51 @@ export const DelayGroup: Story = {
     </div>
   ),
 }
+
+/**
+ * Interactive: Control whether tooltip can be hovered and stays visible.
+ *
+ * - **interactive={true}** (default): Tooltip stays visible when mouse moves over it.
+ *   You can hover on the tooltip content itself.
+ *
+ * - **interactive={false}**: Tooltip dismisses immediately when mouse leaves the trigger.
+ *   Mouse cannot hover over tooltip content (pointer-events: none).
+ *   No text cursor appears when hovering over tooltip.
+ *
+ * Try hovering over both buttons and moving your mouse to the tooltip content:
+ * - Left button: You can hover on the tooltip, it stays visible
+ * - Right button: Tooltip disappears immediately when you move away from the button
+ */
+export const Interactive: Story = {
+  render: () => (
+    <TooltipProvider delay={{ close: 1000 }}>
+      <div className="flex flex-col items-center gap-8">
+        <div className="flex gap-8">
+          <div className="flex flex-col items-center gap-2">
+            <Tooltip
+              content="Interactive tooltip (default) - hover me!"
+              interactive={true}
+            >
+              <Button variant="secondary">Interactive (default)</Button>
+            </Tooltip>
+            <p className="text-body-small max-w-[200px] text-center text-gray-500">
+              Hover button, then move mouse to tooltip - it stays visible
+            </p>
+          </div>
+
+          <div className="flex flex-col items-center gap-2">
+            <Tooltip
+              content="Non-interactive tooltip - try hovering!"
+              interactive={false}
+            >
+              <Button variant="secondary">Non-Interactive</Button>
+            </Tooltip>
+            <p className="text-body-small max-w-[200px] text-center text-gray-500">
+              Hover button, then move mouse away - tooltip disappears immediately
+            </p>
+          </div>
+        </div>
+      </div>
+    </TooltipProvider>
+  ),
+}

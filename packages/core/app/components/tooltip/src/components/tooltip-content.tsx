@@ -13,7 +13,15 @@ import { TooltipArrow } from "./tooltip-arrow"
 
 export const TooltipContent = forwardRef<HTMLDivElement, TooltipContentProps>(
   function TooltipContent(props, propRef) {
-    const { className, withArrow = true, variant = "default", children, portalId, ...rest } = props
+    const {
+      className,
+      withArrow = true,
+      variant = "default",
+      children,
+      portalId,
+      interactive = true,
+      ...rest
+    } = props
     const state = useTooltipState()
     const ref = useMergeRefs([state.refs.setFloating, propRef])
 
@@ -54,18 +62,29 @@ export const TooltipContent = forwardRef<HTMLDivElement, TooltipContentProps>(
     // If disabled or not mounted, do not render tooltip
     if (state.disabled || !isMounted) return null
 
+    // When interactive is false, pointer-events: none makes mouse unable to "find" the tooltip
+    // So mouse events won't trigger on tooltip, and close delay from TooltipProvider will be respected
+    const floatingProps = state.getFloatingProps(rest)
+
     return (
       <FloatingPortal id={portalId}>
         <div
           ref={ref}
-          style={state.floatingStyles}
-          {...state.getFloatingProps(rest)}
+          style={{
+            ...state.floatingStyles,
+            pointerEvents: interactive ? undefined : "none",
+          }}
+          {...floatingProps}
           className="z-tooltip"
         >
           <div
             className={tcx(tv.root({ className }))}
             data-state={state.open ? "open" : "closed"}
-            style={styles}
+            style={{
+              ...styles,
+              pointerEvents: interactive ? undefined : "none",
+              cursor: interactive ? undefined : "default",
+            }}
           >
             {children}
             {withArrow && <TooltipArrow variant={variant} />}

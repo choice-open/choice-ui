@@ -19,6 +19,7 @@ function TooltipRoot(props: TooltipProps) {
     variant = "default",
     offset = 8,
     portalId = PORTAL_ROOT_ID,
+    interactive = true,
   } = props
 
   const tooltip = useTooltip({
@@ -26,6 +27,7 @@ function TooltipRoot(props: TooltipProps) {
     open,
     onOpenChange,
     disabled,
+    interactive,
     offset,
   })
 
@@ -38,6 +40,7 @@ function TooltipRoot(props: TooltipProps) {
           variant={variant}
           portalId={portalId}
           className={className}
+          interactive={interactive}
         >
           {content}
           {shortcut && (
