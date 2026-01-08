@@ -72,6 +72,7 @@ export const Basic: Story = {
  * - `secondary`: Subdued styling for less prominent actions
  * - `solid`: Filled background for primary or important actions
  * - `highlight`: Visually distinctive for drawing attention
+ * - `submit`: Submit button styling with theme-aware colors (black/white background)
  *
  * Sizes:
  * - `default`: Standard size for most interfaces
@@ -86,6 +87,7 @@ export const Variants: Story = {
       Highlight = "highlight",
       Secondary = "secondary",
       Solid = "solid",
+      Submit = "submit",
     }
 
     enum State {
@@ -127,7 +129,7 @@ export const Variants: Story = {
         <div className="grid grid-cols-[auto_1fr] items-center gap-4">
           {Object.values(State).map((state) => (
             <Fragment key={state}>
-              <span className="text-pink-500 capitalize">{state}</span>
+              <span className="capitalize text-pink-500">{state}</span>
               <IconButton
                 variant={variant}
                 active={state === State.Active}

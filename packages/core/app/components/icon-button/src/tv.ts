@@ -24,6 +24,12 @@ export const iconButtonTv = tcv({
       highlight: {},
       ghost: {},
       dark: { button: "text-white" },
+      submit: {
+        button: [
+          "bg-[var(--theme-submit-btn-bg)] text-[var(--theme-submit-btn-text)]",
+          "focus-visible:border-transparent",
+        ],
+      },
       reset: {},
     },
     active: {
@@ -137,6 +143,29 @@ export const iconButtonTv = tcv({
       variant: "dark",
       disabled: true,
       class: { button: "text-gray-500" },
+    },
+    {
+      variant: "submit",
+      class: {
+        button: "focus-visible:shadow-focus",
+      },
+    },
+    {
+      variant: "submit",
+      focused: true,
+      class: {
+        button: ["shadow-focus", "border-transparent"],
+      },
+    },
+    {
+      variant: "submit",
+      loading: true,
+      class: { button: "opacity-70" },
+    },
+    {
+      variant: "submit",
+      disabled: true,
+      class: { button: "opacity-50" },
     },
   ],
   defaultVariants: {

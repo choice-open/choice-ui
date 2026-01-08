@@ -17,7 +17,7 @@ export interface IconButtonProps extends Omit<HTMLProps<HTMLElement>, "size" | "
   readOnly?: boolean
   size?: "default" | "large" | "reset"
   tooltip?: TooltipProps
-  variant?: "default" | "secondary" | "solid" | "highlight" | "ghost" | "dark" | "reset"
+  variant?: "default" | "secondary" | "solid" | "highlight" | "ghost" | "dark" | "submit" | "reset"
 }
 
 export const IconButton = forwardRef<HTMLElement, IconButtonProps>(function IconButton(props, ref) {

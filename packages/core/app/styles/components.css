@@ -26,6 +26,9 @@
   --animate-spinner-bounce-right: spinner-bounce-right 0.5s infinite alternate ease;
   --animate-indeterminate-bar: indeterminate-bar 1.5s cubic-bezier(0.65, 0.815, 0.735, 0.395)
     infinite normal none running;
+
+  --theme-submit-btn-bg: var(--default-theme-submit-btn-bg);
+  --theme-submit-btn-text: var(--default-theme-submit-btn-text);
 }
 
 /* Base styles */
@@ -653,4 +656,16 @@
       grid-column: 1 / 8;
     }
   }
+}
+
+/* Submit button theme variables */
+:root {
+  --default-theme-submit-btn-bg: #000;
+  --default-theme-submit-btn-text: #fff;
+}
+
+.dark,
+.light .dark {
+  --default-theme-submit-btn-bg: #fff;
+  --default-theme-submit-btn-text: #000;
 }
