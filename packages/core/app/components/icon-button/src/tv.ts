@@ -146,8 +146,18 @@ export const iconButtonTv = tcv({
     },
     {
       variant: "submit",
+      active: false,
+      disabled: false,
       class: {
-        button: "focus-visible:shadow-focus",
+        button: ["focus-visible:shadow-focus", "hover:opacity-70", "active:opacity-70"],
+      },
+    },
+    {
+      variant: "submit",
+      active: true,
+      disabled: false,
+      class: {
+        button: "opacity-70",
       },
     },
     {
