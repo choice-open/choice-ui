@@ -55,10 +55,11 @@ export const Basic: Story = {
  * WithLinks: Demonstrates Dropdown items with link functionality.
  *
  * Features:
- * - Items can be configured as links using `href` prop
- * - Link icon automatically appears on the right when `href` is provided
+ * - Items can be configured as links using `asLink` prop
+ * - Link icon automatically appears on the right when `asLink` is true
  * - Visual distinction between link items and regular items
  * - Works in both main menu and nested submenus
+ * - Actual navigation should be handled via onClick handler
  *
  * Use cases:
  * - Navigation menus
@@ -75,26 +76,57 @@ export const WithLinks: Story = {
         </Dropdown.Trigger>
         <Dropdown.Content>
           <Dropdown.Label>Navigation</Dropdown.Label>
-          <Dropdown.Item href="/dashboard">
+          <Dropdown.Item
+            asLink
+            onClick={() => {
+              // Handle navigation
+              console.log("Navigate to /dashboard")
+            }}
+          >
             <Dropdown.Value>Dashboard</Dropdown.Value>
           </Dropdown.Item>
-          <Dropdown.Item href="/settings">
+          <Dropdown.Item
+            asLink
+            onClick={() => {
+              console.log("Navigate to /settings")
+            }}
+          >
             <Dropdown.Value>Settings</Dropdown.Value>
           </Dropdown.Item>
-          <Dropdown.Item href="/profile">
+          <Dropdown.Item
+            asLink
+            onClick={() => {
+              console.log("Navigate to /profile")
+            }}
+          >
             <Dropdown.Value>Profile</Dropdown.Value>
           </Dropdown.Item>
 
           <Dropdown.Divider />
 
           <Dropdown.Label>External Resources</Dropdown.Label>
-          <Dropdown.Item href="https://github.com">
+          <Dropdown.Item
+            asLink
+            onClick={() => {
+              window.open("https://github.com", "_blank")
+            }}
+          >
             <Dropdown.Value>GitHub</Dropdown.Value>
           </Dropdown.Item>
-          <Dropdown.Item href="https://docs.example.com">
+          <Dropdown.Item
+            asLink
+            onClick={() => {
+              window.open("https://docs.example.com", "_blank")
+            }}
+          >
             <Dropdown.Value>Documentation</Dropdown.Value>
           </Dropdown.Item>
-          <Dropdown.Item href="https://support.example.com">
+          <Dropdown.Item
+            asLink
+            onClick={() => {
+              window.open("https://support.example.com", "_blank")
+            }}
+          >
             <Dropdown.Value>Support</Dropdown.Value>
           </Dropdown.Item>
           {/* Submenu with links for comparison */}
@@ -104,17 +136,32 @@ export const WithLinks: Story = {
             </Dropdown.SubTrigger>
             <Dropdown.Content>
               <Dropdown.Label>Submenu Comparison</Dropdown.Label>
-              <Dropdown.Item href="/submenu-link-1">
+              <Dropdown.Item
+                asLink
+                onClick={() => {
+                  console.log("Navigate to /submenu-link-1")
+                }}
+              >
                 <Dropdown.Value>Submenu Link 1</Dropdown.Value>
               </Dropdown.Item>
-              <Dropdown.Item href="/submenu-link-2">
+              <Dropdown.Item
+                asLink
+                onClick={() => {
+                  console.log("Navigate to /submenu-link-2")
+                }}
+              >
                 <Dropdown.Value>Submenu Link 2</Dropdown.Value>
               </Dropdown.Item>
               <Dropdown.Item>
                 <Dropdown.Value>Submenu Regular Item (no link)</Dropdown.Value>
               </Dropdown.Item>
               <Dropdown.Divider />
-              <Dropdown.Item href="https://external.com">
+              <Dropdown.Item
+                asLink
+                onClick={() => {
+                  window.open("https://external.com", "_blank")
+                }}
+              >
                 <Dropdown.Value>External Link in Submenu</Dropdown.Value>
               </Dropdown.Item>
             </Dropdown.Content>
@@ -155,14 +202,20 @@ export const WithLinksAndIcons: Story = {
         <Dropdown.Content>
           <Dropdown.Label>Quick Links</Dropdown.Label>
           <Dropdown.Item
-            href="https://github.com"
+            asLink
             prefixElement={<File />}
+            onClick={() => {
+              window.open("https://github.com", "_blank")
+            }}
           >
             <Dropdown.Value>View Source Code</Dropdown.Value>
           </Dropdown.Item>
           <Dropdown.Item
-            href="https://docs.example.com"
+            asLink
             prefixElement={<Search />}
+            onClick={() => {
+              window.open("https://docs.example.com", "_blank")
+            }}
           >
             <Dropdown.Value>Documentation</Dropdown.Value>
           </Dropdown.Item>
@@ -179,10 +232,13 @@ export const WithLinksAndIcons: Story = {
             <Dropdown.Value>Save</Dropdown.Value>
           </Dropdown.Item>
           <Dropdown.Item
-            href="/export"
+            asLink
             shortcut={{
               modifier: "command",
               keys: "E",
+            }}
+            onClick={() => {
+              console.log("Export")
             }}
           >
             <Dropdown.Value>Export</Dropdown.Value>
@@ -191,8 +247,11 @@ export const WithLinksAndIcons: Story = {
           <Dropdown.Divider />
 
           <Dropdown.Item
-            href="https://support.example.com"
+            asLink
             variant="highlight"
+            onClick={() => {
+              window.open("https://support.example.com", "_blank")
+            }}
           >
             <Dropdown.Value>Get Help</Dropdown.Value>
           </Dropdown.Item>

@@ -8,7 +8,11 @@ import { MenuContext } from "./menu-context"
 export interface MenuContextItemProps extends MenuItemProps {
   customActive?: boolean
   exclusiveIndex?: number
-  href?: string
+  /**
+   * Whether this item is a link item. When true, a link icon will be displayed on the right.
+   * The actual link navigation should be handled by the onClick handler.
+   */
+  asLink?: boolean
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void
   onKeyDown?: (e: React.KeyboardEvent<HTMLButtonElement>) => void
   onMouseUp?: (e: React.MouseEvent<HTMLButtonElement>) => void
@@ -37,7 +41,7 @@ export const MenuContextItem = memo(
         prefixElement,
         suffixElement,
         variant,
-        href,
+        asLink,
         onClick,
         onMouseUp,
         onTouchStart,
@@ -130,14 +134,14 @@ export const MenuContextItem = memo(
         [shortcut?.modifier, shortcut?.keys],
       )
 
-      // Suffix element configuration - show link icon when href is provided
+      // Suffix element configuration - show link icon when asLink is true
       const suffixConfig = useMemo(() => {
         if (suffixElement !== undefined) return suffixElement
-        if (href) {
-          return <Launch className="h-3 w-3" />
+        if (asLink) {
+          return <Launch className="h-3 w-3 text-current" />
         }
         return undefined
-      }, [suffixElement, href])
+      }, [suffixElement, asLink])
 
       // Combine ref processor, handling both item.ref and forwardedRef
       const combinedRef = useCallback(
