@@ -1,4 +1,4 @@
-import { Check } from "@choiceform/icons-react"
+import { Check, Launch } from "@choiceform/icons-react"
 import { useFloatingTree, useListItem } from "@floating-ui/react"
 import { forwardRef, memo, startTransition, useCallback, useContext, useMemo } from "react"
 import { useEventCallback } from "usehooks-ts"
@@ -8,6 +8,7 @@ import { MenuContext } from "./menu-context"
 export interface MenuContextItemProps extends MenuItemProps {
   customActive?: boolean
   exclusiveIndex?: number
+  href?: string
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void
   onKeyDown?: (e: React.KeyboardEvent<HTMLButtonElement>) => void
   onMouseUp?: (e: React.MouseEvent<HTMLButtonElement>) => void
@@ -34,7 +35,9 @@ export const MenuContextItem = memo(
         size,
         shortcut,
         prefixElement,
+        suffixElement,
         variant,
+        href,
         onClick,
         onMouseUp,
         onTouchStart,
@@ -127,6 +130,15 @@ export const MenuContextItem = memo(
         [shortcut?.modifier, shortcut?.keys],
       )
 
+      // Suffix element configuration - show link icon when href is provided
+      const suffixConfig = useMemo(() => {
+        if (suffixElement !== undefined) return suffixElement
+        if (href) {
+          return <Launch className="h-3 w-3" />
+        }
+        return undefined
+      }, [suffixElement, href])
+
       // Combine ref processor, handling both item.ref and forwardedRef
       const combinedRef = useCallback(
         (node: HTMLButtonElement | null) => {
@@ -153,6 +165,7 @@ export const MenuContextItem = memo(
           disabled={disabled}
           selected={selected}
           prefixElement={prefixConfig}
+          suffixElement={suffixConfig}
           shortcut={shortcutConfig}
           variant={variant}
           size={size}

@@ -52,6 +52,157 @@ export const Basic: Story = {
 }
 
 /**
+ * WithLinks: Demonstrates Dropdown items with link functionality.
+ *
+ * Features:
+ * - Items can be configured as links using `href` prop
+ * - Link icon automatically appears on the right when `href` is provided
+ * - Visual distinction between link items and regular items
+ * - Works in both main menu and nested submenus
+ *
+ * Use cases:
+ * - Navigation menus
+ * - External resource links
+ * - Documentation links
+ * - Help menus with links
+ */
+export const WithLinks: Story = {
+  render: function WithLinksStory() {
+    return (
+      <Dropdown>
+        <Dropdown.Trigger>
+          <Dropdown.Value>Links Menu</Dropdown.Value>
+        </Dropdown.Trigger>
+        <Dropdown.Content>
+          <Dropdown.Label>Navigation</Dropdown.Label>
+          <Dropdown.Item href="/dashboard">
+            <Dropdown.Value>Dashboard</Dropdown.Value>
+          </Dropdown.Item>
+          <Dropdown.Item href="/settings">
+            <Dropdown.Value>Settings</Dropdown.Value>
+          </Dropdown.Item>
+          <Dropdown.Item href="/profile">
+            <Dropdown.Value>Profile</Dropdown.Value>
+          </Dropdown.Item>
+
+          <Dropdown.Divider />
+
+          <Dropdown.Label>External Resources</Dropdown.Label>
+          <Dropdown.Item href="https://github.com">
+            <Dropdown.Value>GitHub</Dropdown.Value>
+          </Dropdown.Item>
+          <Dropdown.Item href="https://docs.example.com">
+            <Dropdown.Value>Documentation</Dropdown.Value>
+          </Dropdown.Item>
+          <Dropdown.Item href="https://support.example.com">
+            <Dropdown.Value>Support</Dropdown.Value>
+          </Dropdown.Item>
+          {/* Submenu with links for comparison */}
+          <Dropdown>
+            <Dropdown.SubTrigger>
+              <Dropdown.Value>More Options</Dropdown.Value>
+            </Dropdown.SubTrigger>
+            <Dropdown.Content>
+              <Dropdown.Label>Submenu Comparison</Dropdown.Label>
+              <Dropdown.Item href="/submenu-link-1">
+                <Dropdown.Value>Submenu Link 1</Dropdown.Value>
+              </Dropdown.Item>
+              <Dropdown.Item href="/submenu-link-2">
+                <Dropdown.Value>Submenu Link 2</Dropdown.Value>
+              </Dropdown.Item>
+              <Dropdown.Item>
+                <Dropdown.Value>Submenu Regular Item (no link)</Dropdown.Value>
+              </Dropdown.Item>
+              <Dropdown.Divider />
+              <Dropdown.Item href="https://external.com">
+                <Dropdown.Value>External Link in Submenu</Dropdown.Value>
+              </Dropdown.Item>
+            </Dropdown.Content>
+          </Dropdown>
+
+          <Dropdown.Divider />
+
+          <Dropdown.Item>
+            <Dropdown.Value>Regular Action (no link)</Dropdown.Value>
+          </Dropdown.Item>
+        </Dropdown.Content>
+      </Dropdown>
+    )
+  },
+}
+
+/**
+ * WithLinksAndIcons: Demonstrates Dropdown items with links combined with icons and shortcuts.
+ *
+ * Features:
+ * - Links can be combined with prefix icons
+ * - Links work with keyboard shortcuts display
+ * - Mixed menu items (links and regular actions)
+ * - Visual distinction between link and non-link items
+ *
+ * Use cases:
+ * - Application menus with navigation
+ * - Help menus with external resources
+ * - Settings menus with documentation links
+ */
+export const WithLinksAndIcons: Story = {
+  render: function WithLinksAndIconsStory() {
+    return (
+      <Dropdown>
+        <Dropdown.Trigger prefixElement={<Settings />}>
+          <Dropdown.Value>Resources</Dropdown.Value>
+        </Dropdown.Trigger>
+        <Dropdown.Content>
+          <Dropdown.Label>Quick Links</Dropdown.Label>
+          <Dropdown.Item
+            href="https://github.com"
+            prefixElement={<File />}
+          >
+            <Dropdown.Value>View Source Code</Dropdown.Value>
+          </Dropdown.Item>
+          <Dropdown.Item
+            href="https://docs.example.com"
+            prefixElement={<Search />}
+          >
+            <Dropdown.Value>Documentation</Dropdown.Value>
+          </Dropdown.Item>
+
+          <Dropdown.Divider />
+
+          <Dropdown.Label>Actions</Dropdown.Label>
+          <Dropdown.Item
+            shortcut={{
+              modifier: "command",
+              keys: "S",
+            }}
+          >
+            <Dropdown.Value>Save</Dropdown.Value>
+          </Dropdown.Item>
+          <Dropdown.Item
+            href="/export"
+            shortcut={{
+              modifier: "command",
+              keys: "E",
+            }}
+          >
+            <Dropdown.Value>Export</Dropdown.Value>
+          </Dropdown.Item>
+
+          <Dropdown.Divider />
+
+          <Dropdown.Item
+            href="https://support.example.com"
+            variant="highlight"
+          >
+            <Dropdown.Value>Get Help</Dropdown.Value>
+          </Dropdown.Item>
+        </Dropdown.Content>
+      </Dropdown>
+    )
+  },
+}
+
+/**
  * Disabled: Demonstrates disabled Dropdown functionality.
  *
  * Features:
