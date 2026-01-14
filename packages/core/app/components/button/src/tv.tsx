@@ -241,6 +241,13 @@ export const buttonTv = tcv({
       variant: "dark",
       class: { button: "active:bg-gray-600" },
     },
+    {
+      disabled: false,
+      loading: false,
+      variant: "secondary",
+      active: false,
+      class: { button: "hover:bg-secondary-background" },
+    },
   ],
   defaultVariants: {
     size: "default",
