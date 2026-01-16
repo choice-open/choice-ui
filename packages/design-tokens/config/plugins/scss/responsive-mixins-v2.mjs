@@ -7,8 +7,9 @@ export default function scssResponsiveMixinsV2() {
       try {
         const output = [];
 
-        // 添加 sass:math 导入
+        // 添加 sass 模块导入
         output.push('@use "sass:math";');
+        output.push('@use "sass:map";');
         output.push("");
 
         // 添加 Responsive Mixins 部分
@@ -56,15 +57,15 @@ export default function scssResponsiveMixinsV2() {
         output.push("  ");
         output.push("  @if type-of($breakpoint) == number {");
         output.push("    $value: $breakpoint;");
-        output.push("  } @else if map-has-key($breakpoints, $breakpoint) {");
-        output.push("    $value: map-get($breakpoints, $breakpoint);");
+        output.push("  } @else if map.has-key($breakpoints, $breakpoint) {");
+        output.push("    $value: map.get($breakpoints, $breakpoint);");
         output.push("  } @else {");
         output.push(
-          "    @error \"断点 '#{$breakpoint}' 不存在。可用断点: #{map-keys($breakpoints)}\";"
+          "    @error \"断点 '#{$breakpoint}' 不存在。可用断点: #{map.keys($breakpoints)}\";"
         );
         output.push("  }");
         output.push("  ");
-        output.push("  $rem-value: math.div($value, 1px) / 16 * 1rem;");
+        output.push("  $rem-value: math.div(math.div($value, 1px), 16) * 1rem;");
         output.push("  @media #{$type} and (min-width: #{$rem-value}) {");
         output.push("    @content;");
         output.push("  }");
@@ -86,15 +87,15 @@ export default function scssResponsiveMixinsV2() {
         output.push("  ");
         output.push("  @if type-of($breakpoint) == number {");
         output.push("    $value: $breakpoint;");
-        output.push("  } @else if map-has-key($breakpoints, $breakpoint) {");
-        output.push("    $value: map-get($breakpoints, $breakpoint);");
+        output.push("  } @else if map.has-key($breakpoints, $breakpoint) {");
+        output.push("    $value: map.get($breakpoints, $breakpoint);");
         output.push("  } @else {");
         output.push(
-          "    @error \"断点 '#{$breakpoint}' 不存在。可用断点: #{map-keys($breakpoints)}\";"
+          "    @error \"断点 '#{$breakpoint}' 不存在。可用断点: #{map.keys($breakpoints)}\";"
         );
         output.push("  }");
         output.push("  ");
-        output.push("  $rem-value: (math.div($value, 1px) - 0.02) / 16 * 1rem;");
+        output.push("  $rem-value: math.div(math.div($value, 1px) - 0.02, 16) * 1rem;");
         output.push("  @media #{$type} and (max-width: #{$rem-value}) {");
         output.push("    @content;");
         output.push("  }");
@@ -121,29 +122,29 @@ export default function scssResponsiveMixinsV2() {
         output.push("  @if type-of($min-breakpoint) == number {");
         output.push("    $min-value: $min-breakpoint;");
         output.push(
-          "  } @else if map-has-key($breakpoints, $min-breakpoint) {"
+          "  } @else if map.has-key($breakpoints, $min-breakpoint) {"
         );
-        output.push("    $min-value: map-get($breakpoints, $min-breakpoint);");
+        output.push("    $min-value: map.get($breakpoints, $min-breakpoint);");
         output.push("  } @else {");
         output.push(
-          "    @error \"最小断点 '#{$min-breakpoint}' 不存在。可用断点: #{map-keys($breakpoints)}\";"
+          "    @error \"最小断点 '#{$min-breakpoint}' 不存在。可用断点: #{map.keys($breakpoints)}\";"
         );
         output.push("  }");
         output.push("  ");
         output.push("  @if type-of($max-breakpoint) == number {");
         output.push("    $max-value: $max-breakpoint;");
         output.push(
-          "  } @else if map-has-key($breakpoints, $max-breakpoint) {"
+          "  } @else if map.has-key($breakpoints, $max-breakpoint) {"
         );
-        output.push("    $max-value: map-get($breakpoints, $max-breakpoint);");
+        output.push("    $max-value: map.get($breakpoints, $max-breakpoint);");
         output.push("  } @else {");
         output.push(
-          "    @error \"最大断点 '#{$max-breakpoint}' 不存在。可用断点: #{map-keys($breakpoints)}\";"
+          "    @error \"最大断点 '#{$max-breakpoint}' 不存在。可用断点: #{map.keys($breakpoints)}\";"
         );
         output.push("  }");
         output.push("  ");
-        output.push("  $min-rem: math.div($min-value, 1px) / 16 * 1rem;");
-        output.push("  $max-rem: (math.div($max-value, 1px) - 0.02) / 16 * 1rem;");
+        output.push("  $min-rem: math.div(math.div($min-value, 1px), 16) * 1rem;");
+        output.push("  $max-rem: math.div(math.div($max-value, 1px) - 0.02, 16) * 1rem;");
         output.push("  ");
         output.push(
           "  @media #{$type} and (min-width: #{$min-rem}) and (max-width: #{$max-rem}) {"
@@ -164,13 +165,13 @@ export default function scssResponsiveMixinsV2() {
         output.push("///     font-size: 1.2rem;");
         output.push("///   }");
         output.push("@mixin only($breakpoint, $type: 'screen') {");
-        output.push("  @if not map-has-key($breakpoints, $breakpoint) {");
+        output.push("  @if not map.has-key($breakpoints, $breakpoint) {");
         output.push(
-          "    @error \"断点 '#{$breakpoint}' 不存在。可用断点: #{map-keys($breakpoints)}\";"
+          "    @error \"断点 '#{$breakpoint}' 不存在。可用断点: #{map.keys($breakpoints)}\";"
         );
         output.push("  }");
         output.push("  ");
-        output.push("  $breakpoint-keys: map-keys($breakpoints);");
+        output.push("  $breakpoint-keys: map.keys($breakpoints);");
         output.push("  $current-index: index($breakpoint-keys, $breakpoint);");
         output.push("  ");
         output.push("  @if $current-index == length($breakpoint-keys) {");
@@ -249,16 +250,16 @@ export default function scssResponsiveMixinsV2() {
         output.push("///     @include container-max-width('lg');");
         output.push("///   }");
         output.push("@mixin container-max-width($breakpoint) {");
-        output.push("  @if not map-has-key($breakpoints, $breakpoint) {");
+        output.push("  @if not map.has-key($breakpoints, $breakpoint) {");
         output.push(
-          "    @error \"断点 '#{$breakpoint}' 不存在。可用断点: #{map-keys($breakpoints)}\";"
+          "    @error \"断点 '#{$breakpoint}' 不存在。可用断点: #{map.keys($breakpoints)}\";"
         );
         output.push("  }");
         output.push("  ");
-        output.push("  $value: map-get($breakpoints, $breakpoint);");
+        output.push("  $value: map.get($breakpoints, $breakpoint);");
         output.push("  $container-padding: 32; // 默认容器内边距 (px)");
         output.push("  ");
-        output.push("  max-width: #{(math.div($value, 1px) - $container-padding) / 16 * 1rem};");
+        output.push("  max-width: #{math.div(math.div($value, 1px) - $container-padding, 16) * 1rem};");
         output.push("  margin-left: auto;");
         output.push("  margin-right: auto;");
         output.push("}");
