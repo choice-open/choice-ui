@@ -7,6 +7,10 @@ export default function scssResponsiveMixinsV2() {
       try {
         const output = [];
 
+        // 添加 sass:math 导入
+        output.push('@use "sass:math";');
+        output.push("");
+
         // 添加 Responsive Mixins 部分
         output.push(
           "// ============================================================================"
@@ -60,7 +64,8 @@ export default function scssResponsiveMixinsV2() {
         );
         output.push("  }");
         output.push("  ");
-        output.push("  @media #{$type} and (min-width: #{$value / 16}rem) {");
+        output.push("  $rem-value: math.div($value, 1px) / 16 * 1rem;");
+        output.push("  @media #{$type} and (min-width: #{$rem-value}) {");
         output.push("    @content;");
         output.push("  }");
         output.push("}");
@@ -89,8 +94,8 @@ export default function scssResponsiveMixinsV2() {
         );
         output.push("  }");
         output.push("  ");
-        output.push("  $max-value: ($value - 0.02) / 16;");
-        output.push("  @media #{$type} and (max-width: #{$max-value}rem) {");
+        output.push("  $rem-value: (math.div($value, 1px) - 0.02) / 16 * 1rem;");
+        output.push("  @media #{$type} and (max-width: #{$rem-value}) {");
         output.push("    @content;");
         output.push("  }");
         output.push("}");
@@ -137,11 +142,11 @@ export default function scssResponsiveMixinsV2() {
         );
         output.push("  }");
         output.push("  ");
-        output.push("  $min-rem: $min-value / 16;");
-        output.push("  $max-rem: ($max-value - 0.02) / 16;");
+        output.push("  $min-rem: math.div($min-value, 1px) / 16 * 1rem;");
+        output.push("  $max-rem: (math.div($max-value, 1px) - 0.02) / 16 * 1rem;");
         output.push("  ");
         output.push(
-          "  @media #{$type} and (min-width: #{$min-rem}rem) and (max-width: #{$max-rem}rem) {"
+          "  @media #{$type} and (min-width: #{$min-rem}) and (max-width: #{$max-rem}) {"
         );
         output.push("    @content;");
         output.push("  }");
@@ -251,9 +256,9 @@ export default function scssResponsiveMixinsV2() {
         output.push("  }");
         output.push("  ");
         output.push("  $value: map-get($breakpoints, $breakpoint);");
-        output.push("  $container-padding: 32px; // 默认容器内边距");
+        output.push("  $container-padding: 32; // 默认容器内边距 (px)");
         output.push("  ");
-        output.push("  max-width: #{($value - $container-padding) / 16}rem;");
+        output.push("  max-width: #{(math.div($value, 1px) - $container-padding) / 16 * 1rem};");
         output.push("  margin-left: auto;");
         output.push("  margin-right: auto;");
         output.push("}");
