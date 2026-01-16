@@ -1,5 +1,5 @@
 import { Button, Checkbox, Dropdown, IconButton, Popover } from "@choice-ui/react"
-import { Add, File, Search, Settings } from "@choiceform/icons-react"
+import { Add, Check, File, Search, Settings } from "@choiceform/icons-react"
 import { faker } from "@faker-js/faker"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
@@ -2029,6 +2029,135 @@ export const Empty: Story = {
           )}
         </Dropdown.Content>
       </Dropdown>
+    )
+  },
+}
+
+/**
+ * SelectionWithPrefixIcons: Demonstrates selection functionality with prefix icons.
+ *
+ * Features:
+ * - When prefix icons exist, the Check icon appears at the suffix position (right side)
+ * - When no prefix icon exists, the Check icon appears at the prefix position (left side)
+ * - Maintains proper visual hierarchy and clarity
+ * - Works seamlessly with existing selection functionality
+ *
+ * Use cases:
+ * - Theme selection with icon indicators
+ * - Preference selection with visual cues
+ * - Single-choice menus with icons
+ */
+export const SelectionWithPrefixIcons: Story = {
+  render: function SelectionWithPrefixIconsStory() {
+    const [selected, setSelected] = useState<string | null>("option-2")
+
+    const options = [
+      { id: "option-1", label: "Light Mode", icon: <File /> },
+      { id: "option-2", label: "Dark Mode", icon: <Settings /> },
+      { id: "option-3", label: "Auto Mode", icon: <Search /> },
+    ]
+
+    const optionsWithoutIcons = [
+      { id: "option-4", label: "System Default" },
+      { id: "option-5", label: "Custom Theme" },
+    ]
+
+    return (
+      <div className="space-y-8">
+        <div>
+          <h3 className="text-body-large-strong mb-4">With Prefix Icons (Check icon on the right)</h3>
+          <Dropdown selection={true}>
+            <Dropdown.Trigger>
+              <Dropdown.Value>
+                Selected: {options.find((opt) => opt.id === selected)?.label || "None"}
+              </Dropdown.Value>
+            </Dropdown.Trigger>
+            <Dropdown.Content>
+              <Dropdown.Label>Select Theme</Dropdown.Label>
+              {options.map((option) => (
+                <Dropdown.Item
+                  key={option.id}
+                  selected={selected === option.id}
+                  prefixElement={option.icon}
+                  onClick={() => setSelected(option.id)}
+                >
+                  <Dropdown.Value>{option.label}</Dropdown.Value>
+                </Dropdown.Item>
+              ))}
+            </Dropdown.Content>
+          </Dropdown>
+          <p className="text-body-small text-secondary-foreground mt-2">
+            Notice: When prefix icons exist, the Check icon appears on the right side.
+          </p>
+        </div>
+
+        <div>
+          <h3 className="text-body-large-strong mb-4">Without Prefix Icons (Check icon on the left)</h3>
+          <Dropdown selection={true}>
+            <Dropdown.Trigger>
+              <Dropdown.Value>
+                Selected: {optionsWithoutIcons.find((opt) => opt.id === selected)?.label || "None"}
+              </Dropdown.Value>
+            </Dropdown.Trigger>
+            <Dropdown.Content>
+              <Dropdown.Label>Select Theme (No Icons)</Dropdown.Label>
+              {optionsWithoutIcons.map((option) => (
+                <Dropdown.Item
+                  key={option.id}
+                  selected={selected === option.id}
+                  onClick={() => setSelected(option.id)}
+                >
+                  <Dropdown.Value>{option.label}</Dropdown.Value>
+                </Dropdown.Item>
+              ))}
+            </Dropdown.Content>
+          </Dropdown>
+          <p className="text-body-small text-secondary-foreground mt-2">
+            Notice: When no prefix icons exist, the Check icon appears on the left side (standard
+            behavior).
+          </p>
+        </div>
+
+        <div>
+          <h3 className="text-body-large-strong mb-4">Mixed: With and Without Icons</h3>
+          <Dropdown selection={true}>
+            <Dropdown.Trigger>
+              <Dropdown.Value>
+                Selected:{" "}
+                {[...options, ...optionsWithoutIcons].find((opt) => opt.id === selected)?.label ||
+                  "None"}
+              </Dropdown.Value>
+            </Dropdown.Trigger>
+            <Dropdown.Content>
+              <Dropdown.Label>Select Theme (Mixed)</Dropdown.Label>
+              {options.map((option) => (
+                <Dropdown.Item
+                  key={option.id}
+                  selected={selected === option.id}
+                  prefixElement={option.icon}
+                  onClick={() => setSelected(option.id)}
+                >
+                  <Dropdown.Value>{option.label}</Dropdown.Value>
+                </Dropdown.Item>
+              ))}
+              <Dropdown.Divider />
+              {optionsWithoutIcons.map((option) => (
+                <Dropdown.Item
+                  key={option.id}
+                  selected={selected === option.id}
+                  onClick={() => setSelected(option.id)}
+                >
+                  <Dropdown.Value>{option.label}</Dropdown.Value>
+                </Dropdown.Item>
+              ))}
+            </Dropdown.Content>
+          </Dropdown>
+          <p className="text-body-small text-secondary-foreground mt-2">
+            Notice: Items with prefix icons show Check on the right, items without show Check on the
+            left.
+          </p>
+        </div>
+      </div>
     )
   },
 }

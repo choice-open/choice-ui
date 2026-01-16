@@ -117,6 +117,7 @@ export const MenuContextItem = memo(
       })
 
       // Prefix element configuration - use reusable empty Fragment
+      // If prefixElement exists, use it; otherwise show Check icon in selection mode
       const prefixConfig = useMemo(() => {
         if (prefixElement !== undefined) return prefixElement
         if (menu.selection && !customActive) {
@@ -134,14 +135,24 @@ export const MenuContextItem = memo(
         [shortcut?.modifier, shortcut?.keys],
       )
 
-      // Suffix element configuration - show link icon when asLink is true
+      // Suffix element configuration
+      // Priority: suffixElement > Check icon (when prefixElement exists and selected) > Link icon (when asLink)
       const suffixConfig = useMemo(() => {
+        // If suffixElement is explicitly provided, use it
         if (suffixElement !== undefined) return suffixElement
+
+        // If prefixElement exists and in selection mode and selected, show Check icon at suffix
+        if (prefixElement !== undefined && menu.selection && !customActive && selected) {
+          return <Check />
+        }
+
+        // Show link icon when asLink is true
         if (asLink) {
           return <Launch className="h-3 w-3 text-current" />
         }
+
         return undefined
-      }, [suffixElement, asLink])
+      }, [suffixElement, prefixElement, menu.selection, selected, customActive, asLink])
 
       // Combine ref processor, handling both item.ref and forwardedRef
       const combinedRef = useCallback(
