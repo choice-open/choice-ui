@@ -6,6 +6,8 @@ import { useIsomorphicLayoutEffect } from "@choice-ui/shared"
 import { MenuScrollArrowTv } from "../tv"
 
 const SCROLL_ARROW_PADDING = 16
+// Minimum height required to show scroll arrows (arrow height + padding)
+const MIN_HEIGHT_FOR_ARROWS = 48
 
 const shouldShowArrow = (
   scrollRef: React.MutableRefObject<HTMLDivElement | null>,
@@ -13,6 +15,12 @@ const shouldShowArrow = (
 ) => {
   if (scrollRef.current) {
     const { scrollTop, scrollHeight, clientHeight } = scrollRef.current
+    
+    // Don't show arrows if the visible height is too small
+    if (clientHeight < MIN_HEIGHT_FOR_ARROWS) {
+      return false
+    }
+    
     if (dir === "up") {
       return scrollTop >= SCROLL_ARROW_PADDING
     }

@@ -68,6 +68,12 @@ export interface DropdownProps {
    * @default true
    */
   autoSelectFirstItem?: boolean
+  /**
+   * Whether to avoid collisions by flipping or shifting the dropdown position.
+   * When false, the dropdown will strictly follow the placement direction.
+   * @default true
+   */
+  avoidCollisions?: boolean
   children?: React.ReactNode
   disabledNested?: boolean
   focusManagerProps?: Partial<FloatingFocusManagerProps>
@@ -118,6 +124,7 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
   const {
     children,
     autoSelectFirstItem = true,
+    avoidCollisions = true,
     disabledNested = false,
     offset: offsetDistance = DEFAULT_OFFSET,
     placement = "bottom-start",
@@ -208,11 +215,17 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
   const lastPositionRef = useRef<{ x: number; y: number } | null>(null)
 
   // Floating UI configuration - memoize middleware array to avoid recreating on each render
-  const middleware = useMemo(
-    () => [
+  const middleware = useMemo(() => {
+    const baseMiddleware = [
       offset({ mainAxis: isNested ? 10 : offsetDistance, alignmentAxis: isNested ? -4 : 0 }),
-      flip(),
-      shift(),
+    ]
+
+    // Add collision avoidance middleware only if avoidCollisions is true
+    if (avoidCollisions) {
+      baseMiddleware.push(flip(), shift())
+    }
+
+    baseMiddleware.push(
       size({
         padding: 4,
         apply({ elements, availableHeight, rects }) {
@@ -244,9 +257,10 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
           }
         },
       }),
-    ],
-    [isNested, offsetDistance, matchTriggerWidth, scrollRef],
-  )
+    )
+
+    return baseMiddleware
+  }, [isNested, offsetDistance, matchTriggerWidth, scrollRef, avoidCollisions])
 
   const { refs, floatingStyles, context, isPositioned } = useFloating({
     nodeId,

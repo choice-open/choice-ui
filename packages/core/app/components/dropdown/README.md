@@ -296,6 +296,9 @@ interface DropdownProps {
   /** Auto-select first item in coordinate mode */
   autoSelectFirstItem?: boolean
 
+  /** Whether to avoid collisions by flipping or shifting the dropdown position */
+  avoidCollisions?: boolean
+
   /** Dropdown content and components */
   children?: React.ReactNode
 
@@ -333,6 +336,7 @@ interface DropdownProps {
 
 - Defaults:
   - `autoSelectFirstItem`: `true`
+  - `avoidCollisions`: `true`
   - `disabledNested`: `false`
   - `matchTriggerWidth`: `false`
   - `offset`: `4`

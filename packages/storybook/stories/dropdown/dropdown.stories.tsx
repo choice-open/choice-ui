@@ -2161,3 +2161,203 @@ export const SelectionWithPrefixIcons: Story = {
     )
   },
 }
+
+/**
+ * AvoidCollisions: Demonstrates Dropdown with avoidCollisions set to false.
+ *
+ * Features:
+ * - When avoidCollisions is false, the dropdown strictly follows the placement direction
+ * - No automatic flipping or shifting to avoid viewport collisions
+ * - Useful when you need precise positioning control
+ * - May extend beyond viewport boundaries when false
+ *
+ * Use cases:
+ * - Custom positioning requirements
+ * - When you want dropdown to always appear in a specific direction
+ * - Context menus with strict positioning needs
+ */
+export const AvoidCollisions: Story = {
+  render: function AvoidCollisionsStory() {
+    return (
+      <div className="space-y-8">
+        <div className="rounded-xl border bg-stone-50 p-4 dark:bg-stone-900">
+          <h3 className="text-body-large-strong mb-2">Comparison: avoidCollisions</h3>
+          <p className="text-body-small text-stone-600 dark:text-stone-400">
+            When <code className="rounded bg-stone-200 px-1 dark:bg-stone-800">avoidCollisions=false</code>, the dropdown
+            will strictly follow the placement direction and may extend beyond the viewport. When{" "}
+            <code className="rounded bg-stone-200 px-1 dark:bg-stone-800">avoidCollisions=true</code> (default), it will
+            automatically adjust to stay within the viewport.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-2 gap-8">
+          {/* With avoidCollisions=true (default) */}
+          <div className="space-y-4">
+            <h4 className="text-body-medium-strong">avoidCollisions=true (default)</h4>
+            <p className="text-body-small text-secondary-foreground">
+              Dropdown will automatically adjust to avoid viewport collisions.
+            </p>
+            <div className="flex justify-end">
+              <Dropdown avoidCollisions={true} placement="bottom-end">
+                <Dropdown.Trigger>
+                  <Dropdown.Value>Open Menu (auto-adjust)</Dropdown.Value>
+                </Dropdown.Trigger>
+                <Dropdown.Content>
+                  <Dropdown.Label>Auto-Adjust Menu</Dropdown.Label>
+                  <Dropdown.Item>
+                    <Dropdown.Value>Option 1</Dropdown.Value>
+                  </Dropdown.Item>
+                  <Dropdown.Item>
+                    <Dropdown.Value>Option 2</Dropdown.Value>
+                  </Dropdown.Item>
+                  <Dropdown.Item>
+                    <Dropdown.Value>Option 3</Dropdown.Value>
+                  </Dropdown.Item>
+                  <Dropdown.Item>
+                    <Dropdown.Value>Option 4</Dropdown.Value>
+                  </Dropdown.Item>
+                </Dropdown.Content>
+              </Dropdown>
+            </div>
+          </div>
+
+          {/* With avoidCollisions=false */}
+          <div className="space-y-4">
+            <h4 className="text-body-medium-strong">avoidCollisions=false</h4>
+            <p className="text-body-small text-secondary-foreground">
+              Dropdown strictly follows placement direction, may extend beyond viewport.
+            </p>
+            <div className="flex justify-end">
+              <Dropdown avoidCollisions={false} placement="bottom-end">
+                <Dropdown.Trigger>
+                  <Dropdown.Value>Open Menu (strict)</Dropdown.Value>
+                </Dropdown.Trigger>
+                <Dropdown.Content>
+                  <Dropdown.Label>Strict Placement Menu</Dropdown.Label>
+                  <Dropdown.Item>
+                    <Dropdown.Value>Option 1</Dropdown.Value>
+                  </Dropdown.Item>
+                  <Dropdown.Item>
+                    <Dropdown.Value>Option 2</Dropdown.Value>
+                  </Dropdown.Item>
+                  <Dropdown.Item>
+                    <Dropdown.Value>Option 3</Dropdown.Value>
+                  </Dropdown.Item>
+                  <Dropdown.Item>
+                    <Dropdown.Value>Option 4</Dropdown.Value>
+                  </Dropdown.Item>
+                </Dropdown.Content>
+              </Dropdown>
+            </div>
+          </div>
+        </div>
+
+        {/* Edge case: Near viewport edges */}
+        <div className="space-y-4">
+          <h4 className="text-body-medium-strong">Edge Case: Near Viewport Edges</h4>
+          <p className="text-body-small text-secondary-foreground">
+            Positioned near the right edge to demonstrate the difference. Try opening both menus to see
+            the behavior difference.
+          </p>
+          <div className="flex justify-end gap-4">
+            <Dropdown avoidCollisions={true} placement="right-start">
+              <Dropdown.Trigger>
+                <Dropdown.Value>Auto (right-start)</Dropdown.Value>
+              </Dropdown.Trigger>
+              <Dropdown.Content>
+                <Dropdown.Item>
+                  <Dropdown.Value>Item 1</Dropdown.Value>
+                </Dropdown.Item>
+                <Dropdown.Item>
+                  <Dropdown.Value>Item 2</Dropdown.Value>
+                </Dropdown.Item>
+                <Dropdown.Item>
+                  <Dropdown.Value>Item 3</Dropdown.Value>
+                </Dropdown.Item>
+              </Dropdown.Content>
+            </Dropdown>
+
+            <Dropdown avoidCollisions={false} placement="right-start">
+              <Dropdown.Trigger>
+                <Dropdown.Value>Strict (right-start)</Dropdown.Value>
+              </Dropdown.Trigger>
+              <Dropdown.Content>
+                <Dropdown.Item>
+                  <Dropdown.Value>Item 1</Dropdown.Value>
+                </Dropdown.Item>
+                <Dropdown.Item>
+                  <Dropdown.Value>Item 2</Dropdown.Value>
+                </Dropdown.Item>
+                <Dropdown.Item>
+                  <Dropdown.Value>Item 3</Dropdown.Value>
+                </Dropdown.Item>
+              </Dropdown.Content>
+            </Dropdown>
+          </div>
+        </div>
+
+        {/* Different placements */}
+        <div className="space-y-4">
+          <h4 className="text-body-medium-strong">Different Placements with avoidCollisions=false</h4>
+          <div className="flex flex-wrap gap-4">
+            <Dropdown avoidCollisions={false} placement="top-start">
+              <Dropdown.Trigger>
+                <Dropdown.Value>Top Start</Dropdown.Value>
+              </Dropdown.Trigger>
+              <Dropdown.Content>
+                <Dropdown.Item>
+                  <Dropdown.Value>Option 1</Dropdown.Value>
+                </Dropdown.Item>
+                <Dropdown.Item>
+                  <Dropdown.Value>Option 2</Dropdown.Value>
+                </Dropdown.Item>
+              </Dropdown.Content>
+            </Dropdown>
+
+            <Dropdown avoidCollisions={false} placement="top-end">
+              <Dropdown.Trigger>
+                <Dropdown.Value>Top End</Dropdown.Value>
+              </Dropdown.Trigger>
+              <Dropdown.Content>
+                <Dropdown.Item>
+                  <Dropdown.Value>Option 1</Dropdown.Value>
+                </Dropdown.Item>
+                <Dropdown.Item>
+                  <Dropdown.Value>Option 2</Dropdown.Value>
+                </Dropdown.Item>
+              </Dropdown.Content>
+            </Dropdown>
+
+            <Dropdown avoidCollisions={false} placement="left-start">
+              <Dropdown.Trigger>
+                <Dropdown.Value>Left Start</Dropdown.Value>
+              </Dropdown.Trigger>
+              <Dropdown.Content>
+                <Dropdown.Item>
+                  <Dropdown.Value>Option 1</Dropdown.Value>
+                </Dropdown.Item>
+                <Dropdown.Item>
+                  <Dropdown.Value>Option 2</Dropdown.Value>
+                </Dropdown.Item>
+              </Dropdown.Content>
+            </Dropdown>
+
+            <Dropdown avoidCollisions={false} placement="right-end">
+              <Dropdown.Trigger>
+                <Dropdown.Value>Right End</Dropdown.Value>
+              </Dropdown.Trigger>
+              <Dropdown.Content>
+                <Dropdown.Item>
+                  <Dropdown.Value>Option 1</Dropdown.Value>
+                </Dropdown.Item>
+                <Dropdown.Item>
+                  <Dropdown.Value>Option 2</Dropdown.Value>
+                </Dropdown.Item>
+              </Dropdown.Content>
+            </Dropdown>
+          </div>
+        </div>
+      </div>
+    )
+  },
+}
