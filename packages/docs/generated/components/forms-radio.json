@@ -3,7 +3,7 @@
   "title": "Radio",
   "package": {
     "name": "@choice-ui/radio",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "description": "A radio button component for single selection from a group of mutually exclusive options",
     "dependencies": {
       "usehooks-ts": "^3.1.0",

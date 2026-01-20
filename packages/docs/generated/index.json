@@ -53,7 +53,7 @@
       "name": "@choice-ui/checkbox",
       "title": "Checkbox",
       "description": "",
-      "version": "0.0.5"
+      "version": "0.0.6"
     },
     {
       "slug": "buttons/chip",
@@ -81,28 +81,28 @@
       "name": "@choice-ui/colors",
       "title": "ColorArea",
       "description": "",
-      "version": "0.3.34"
+      "version": "0.3.35"
     },
     {
       "slug": "colors/color-channel-field",
       "name": "@choice-ui/colors",
       "title": "ColorChannelField",
       "description": "",
-      "version": "0.3.34"
+      "version": "0.3.35"
     },
     {
       "slug": "colors/color-gradients-paint",
       "name": "@choice-ui/colors",
       "title": "ColorGradientsPaint",
       "description": "",
-      "version": "0.3.34"
+      "version": "0.3.35"
     },
     {
       "slug": "colors/color-image-paint",
       "name": "@choice-ui/colors",
       "title": "ColorImagePaint",
       "description": "",
-      "version": "0.3.34",
+      "version": "0.3.35",
       "tags": [
         "new"
       ]
@@ -112,7 +112,7 @@
       "name": "@choice-ui/colors",
       "title": "ColorPickerPopover",
       "description": "",
-      "version": "0.3.34",
+      "version": "0.3.35",
       "tags": [
         "upgrade"
       ]
@@ -122,28 +122,28 @@
       "name": "@choice-ui/colors",
       "title": "ColorSlider",
       "description": "",
-      "version": "0.3.34"
+      "version": "0.3.35"
     },
     {
       "slug": "colors/color-solid-paint",
       "name": "@choice-ui/colors",
       "title": "ColorSolidPaint",
       "description": "",
-      "version": "0.3.34"
+      "version": "0.3.35"
     },
     {
       "slug": "colors/colors-provider",
       "name": "@choice-ui/colors",
       "title": "ColorsProvider",
       "description": "",
-      "version": "0.3.34"
+      "version": "0.3.35"
     },
     {
       "slug": "colors/color-swatch",
       "name": "@choice-ui/colors",
       "title": "ColorSwatch",
       "description": "",
-      "version": "0.3.34"
+      "version": "0.3.35"
     },
     {
       "slug": "collections/combobox",
@@ -270,7 +270,7 @@
       "name": "@choice-ui/colors",
       "title": "FillInput",
       "description": "",
-      "version": "0.3.34"
+      "version": "0.3.35"
     },
     {
       "slug": "forms/form",
@@ -291,7 +291,7 @@
       "name": "@choice-ui/colors",
       "title": "HexInput",
       "description": "",
-      "version": "0.3.34"
+      "version": "0.3.35"
     },
     {
       "slug": "feedback/hint",
@@ -346,7 +346,7 @@
       "name": "@choice-ui/colors",
       "title": "Libraries",
       "description": "",
-      "version": "0.3.34"
+      "version": "0.3.36"
     },
     {
       "slug": "buttons/link-button",
@@ -520,14 +520,14 @@
       "name": "@choice-ui/radio",
       "title": "Radio",
       "description": "",
-      "version": "0.0.5"
+      "version": "0.0.6"
     },
     {
       "slug": "forms/range",
       "name": "@choice-ui/range",
       "title": "Range",
       "description": "Width of the range track in pixels.",
-      "version": "0.0.5"
+      "version": "0.0.7"
     },
     {
       "slug": "forms/rich-input",
@@ -582,7 +582,7 @@
       "name": "@choice-ui/colors",
       "title": "SimpleColorPicker",
       "description": "",
-      "version": "0.3.34"
+      "version": "0.3.36"
     },
     {
       "slug": "feedback/skeleton",

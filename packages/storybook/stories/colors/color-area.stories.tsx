@@ -129,7 +129,7 @@ export const Basic: Story = {
               type="hue"
               position={huePosition}
               onChange={setHuePosition}
-              trackSize={{ width: 200, height: 16 }}
+              width={200}
             />
           </div>
         </div>

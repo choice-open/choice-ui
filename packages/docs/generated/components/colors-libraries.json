@@ -3,24 +3,24 @@
   "title": "Libraries",
   "package": {
     "name": "@choice-ui/colors",
-    "version": "0.3.34",
+    "version": "0.3.36",
     "description": "A modern React color system",
     "dependencies": {
       "@floating-ui/react": "0.27.15",
       "@tanstack/react-virtual": "^3.13.13",
-      "@choice-ui/shared": "workspace:*",
-      "@choice-ui/icon-button": "workspace:*",
-      "@choice-ui/numeric-input": "workspace:*",
-      "@choice-ui/tabs": "workspace:*",
-      "@choice-ui/popover": "workspace:*",
-      "@choice-ui/select": "workspace:*",
-      "@choice-ui/button": "workspace:*",
-      "@choice-ui/dropdown": "workspace:*",
-      "@choice-ui/tooltip": "workspace:*",
-      "@choice-ui/scroll-area": "workspace:*",
-      "@choice-ui/toggle-button": "workspace:*",
-      "@choice-ui/range": "workspace:*",
-      "@choice-ui/input": "workspace:*",
+      "@choice-ui/shared": "^0.0.1",
+      "@choice-ui/icon-button": "^0.0.6",
+      "@choice-ui/numeric-input": "^0.0.12",
+      "@choice-ui/tabs": "^0.0.5",
+      "@choice-ui/popover": "^0.0.11",
+      "@choice-ui/select": "^0.0.12",
+      "@choice-ui/button": "^0.0.7",
+      "@choice-ui/dropdown": "^0.0.12",
+      "@choice-ui/tooltip": "^0.0.9",
+      "@choice-ui/scroll-area": "^0.0.7",
+      "@choice-ui/toggle-button": "^0.0.5",
+      "@choice-ui/range": "^0.0.7",
+      "@choice-ui/input": "^0.0.6",
       "@choiceform/icons-react": "^1.3.8",
       "chroma-js": "^3.2.0",
       "fuse.js": "^7.1.0",
@@ -316,28 +316,58 @@
           "description": ""
         },
         {
-          "name": "thumbSize",
-          "type": "number | undefined",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "trackSize",
-          "type": "{ height?: number | undefined; width?: number | undefined; } | undefined",
-          "required": false,
-          "description": ""
-        },
-        {
           "name": "type",
           "type": "\"hue\" | \"saturation\" | \"lightness\" | \"alpha\"",
           "required": true,
           "description": ""
         },
         {
+          "name": "width",
+          "type": "number | boolean | undefined",
+          "required": false,
+          "description": "Width of the slider track in pixels.\nIf not provided (undefined or false), the width will be auto-calculated from the container."
+        },
+        {
           "name": "ref",
           "type": "((instance: HTMLDivElement | null) => void) | RefObject<HTMLDivElement> | null | undefined",
           "required": false,
           "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "ColorSliderThumb",
+      "description": "",
+      "props": [
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "size",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "ColorSliderTrack",
+      "description": "ColorSliderTrack - The track background of the color slider.\nRenders the gradient background based on slider type (hue, alpha, etc.)\nCan contain custom children for additional visual elements.",
+      "props": [
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "height",
+          "type": "number | undefined",
+          "required": false,
+          "description": "Height of the track in pixels.\nThis prop is extracted by the parent ColorSlider and passed via context."
         }
       ]
     },
@@ -1486,10 +1516,10 @@
           "description": ""
         },
         {
-          "name": "trackSize",
-          "type": "{ height?: number | undefined; width?: number | undefined; } | undefined",
+          "name": "width",
+          "type": "number | undefined",
           "required": false,
-          "description": ""
+          "description": "Width of the gradient slider track in pixels."
         },
         {
           "name": "value",

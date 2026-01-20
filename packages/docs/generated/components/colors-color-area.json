@@ -316,28 +316,58 @@
           "description": ""
         },
         {
-          "name": "thumbSize",
-          "type": "number | undefined",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "trackSize",
-          "type": "{ height?: number | undefined; width?: number | undefined; } | undefined",
-          "required": false,
-          "description": ""
-        },
-        {
           "name": "type",
           "type": "\"hue\" | \"saturation\" | \"lightness\" | \"alpha\"",
           "required": true,
           "description": ""
         },
         {
+          "name": "width",
+          "type": "number | boolean | undefined",
+          "required": false,
+          "description": "Width of the slider track in pixels.\nIf not provided (undefined or false), the width will be auto-calculated from the container."
+        },
+        {
           "name": "ref",
           "type": "((instance: HTMLDivElement | null) => void) | RefObject<HTMLDivElement> | null | undefined",
           "required": false,
           "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "ColorSliderThumb",
+      "description": "",
+      "props": [
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "size",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "ColorSliderTrack",
+      "description": "ColorSliderTrack - The track background of the color slider.\nRenders the gradient background based on slider type (hue, alpha, etc.)\nCan contain custom children for additional visual elements.",
+      "props": [
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "height",
+          "type": "number | undefined",
+          "required": false,
+          "description": "Height of the track in pixels.\nThis prop is extracted by the parent ColorSlider and passed via context."
         }
       ]
     },
@@ -1486,10 +1516,10 @@
           "description": ""
         },
         {
-          "name": "trackSize",
-          "type": "{ height?: number | undefined; width?: number | undefined; } | undefined",
+          "name": "width",
+          "type": "number | undefined",
           "required": false,
-          "description": ""
+          "description": "Width of the gradient slider track in pixels."
         },
         {
           "name": "value",
@@ -2832,7 +2862,7 @@
       "name": "Basic",
       "exportName": "Basic",
       "description": "`ColorArea` is a 2D color selection surface that visualizes two color dimensions.\n\n### Axes\n\n- **Horizontal (X)**: Saturation (0-100%)\n- **Vertical (Y)**: Lightness or Brightness (0-100%)\n\n### Types\n\n- `saturation-lightness`: HSL model - Lightness from white (top) to black (bottom)\n- `saturation-brightness`: HSB/HSV model - Brightness from maximum (top) to black (bottom)\n\n### Key Properties\n\n- `position`: x,y coordinates (0-1) that determine the selected color\n- `hue`: Base color (0-360) applied to the color area\n- `thumbColor`: RGB color for the selection thumb\n- `areaSize`: Width and height in pixels",
-      "source": "import { ColorArea, ColorSlider, ColorSwatch, positionToAreaColor } from \"@choice-ui/colors\"\nimport { useState, useMemo } from \"react\"\n\nexport default function App() {\n\n  const [position, setPosition] = useState({ x: 0.5, y: 0.5 })\n  const [huePosition, setHuePosition] = useState(0.55)\n\n  const hue = useMemo(() => Math.round((huePosition * 360) % 360), [huePosition])\n\n  const lightness = useMemo(() => {\n    const { h, s, l } = positionToAreaColor(position, \"saturation-lightness\", hue) as HSL\n    return tinycolor({ h, s, l }).toRgb()\n  }, [position, hue])\n\n  const brightness = useMemo(() => {\n    const { h, s, b } = positionToAreaColor(position, \"saturation-brightness\", hue) as HSB\n    return tinycolor({ h, s, v: b }).toRgb()\n  }, [position, hue])\n\n  return (\n    <div className=\"w-md flex flex-col gap-6\">\n      <div className=\"grid grid-cols-[repeat(2,200px)] gap-x-8 gap-y-4\">\n        <h3 className=\"font-strong\">Saturation-Lightness (HSL)</h3>\n        <h3 className=\"font-strong\">Saturation-Brightness (HSB/HSV)</h3>\n\n        <ColorArea\n          position={position}\n          onChange={setPosition}\n          hue={hue}\n          thumbColor={lightness}\n          type=\"saturation-lightness\"\n          areaSize={{ width: 200, height: 200 }}\n        />\n        <ColorArea\n          position={position}\n          onChange={setPosition}\n          hue={hue}\n          thumbColor={brightness}\n          type=\"saturation-brightness\"\n          areaSize={{ width: 200, height: 200 }}\n        />\n\n        <div className=\"flex items-center gap-2\">\n          <ColorSwatch\n            color={lightness}\n            size={24}\n            className=\"rounded-md\"\n          />\n          <div className=\"bg-secondary-background text-body-small grid grid-cols-3 items-center gap-2 rounded-md px-2 py-1\">\n            <span>R: {lightness.r}</span>\n            <span>G: {lightness.g}</span>\n            <span>B: {lightness.b}</span>\n          </div>\n        </div>\n\n        <div className=\"flex items-center gap-2\">\n          <ColorSwatch\n            color={brightness}\n            size={24}\n            className=\"rounded-md\"\n          />\n          <div className=\"bg-secondary-background text-body-small grid grid-cols-3 items-center gap-2 rounded-md px-2 py-1\">\n            <span>R: {brightness.r}</span>\n            <span>G: {brightness.g}</span>\n            <span>B: {brightness.b}</span>\n          </div>\n        </div>\n\n        <div className=\"flex max-w-md flex-col gap-3\">\n          <div className=\"flex items-center justify-between\">\n            <label className=\"font-strong\">Hue: {hue}°</label>\n            <ColorSwatch\n              color={tinycolor({ h: hue, s: 100, l: 50 }).toRgb()}\n              size={20}\n              className=\"rounded-sm\"\n            />\n          </div>\n          <ColorSlider\n            type=\"hue\"\n            position={huePosition}\n            onChange={setHuePosition}\n            trackSize={{ width: 200, height: 16 }}\n          />\n        </div>\n      </div>\n    </div>\n  )\n\n}"
+      "source": "import { ColorArea, ColorSlider, ColorSwatch, positionToAreaColor } from \"@choice-ui/colors\"\nimport { useState, useMemo } from \"react\"\n\nexport default function App() {\n\n  const [position, setPosition] = useState({ x: 0.5, y: 0.5 })\n  const [huePosition, setHuePosition] = useState(0.55)\n\n  const hue = useMemo(() => Math.round((huePosition * 360) % 360), [huePosition])\n\n  const lightness = useMemo(() => {\n    const { h, s, l } = positionToAreaColor(position, \"saturation-lightness\", hue) as HSL\n    return tinycolor({ h, s, l }).toRgb()\n  }, [position, hue])\n\n  const brightness = useMemo(() => {\n    const { h, s, b } = positionToAreaColor(position, \"saturation-brightness\", hue) as HSB\n    return tinycolor({ h, s, v: b }).toRgb()\n  }, [position, hue])\n\n  return (\n    <div className=\"w-md flex flex-col gap-6\">\n      <div className=\"grid grid-cols-[repeat(2,200px)] gap-x-8 gap-y-4\">\n        <h3 className=\"font-strong\">Saturation-Lightness (HSL)</h3>\n        <h3 className=\"font-strong\">Saturation-Brightness (HSB/HSV)</h3>\n\n        <ColorArea\n          position={position}\n          onChange={setPosition}\n          hue={hue}\n          thumbColor={lightness}\n          type=\"saturation-lightness\"\n          areaSize={{ width: 200, height: 200 }}\n        />\n        <ColorArea\n          position={position}\n          onChange={setPosition}\n          hue={hue}\n          thumbColor={brightness}\n          type=\"saturation-brightness\"\n          areaSize={{ width: 200, height: 200 }}\n        />\n\n        <div className=\"flex items-center gap-2\">\n          <ColorSwatch\n            color={lightness}\n            size={24}\n            className=\"rounded-md\"\n          />\n          <div className=\"bg-secondary-background text-body-small grid grid-cols-3 items-center gap-2 rounded-md px-2 py-1\">\n            <span>R: {lightness.r}</span>\n            <span>G: {lightness.g}</span>\n            <span>B: {lightness.b}</span>\n          </div>\n        </div>\n\n        <div className=\"flex items-center gap-2\">\n          <ColorSwatch\n            color={brightness}\n            size={24}\n            className=\"rounded-md\"\n          />\n          <div className=\"bg-secondary-background text-body-small grid grid-cols-3 items-center gap-2 rounded-md px-2 py-1\">\n            <span>R: {brightness.r}</span>\n            <span>G: {brightness.g}</span>\n            <span>B: {brightness.b}</span>\n          </div>\n        </div>\n\n        <div className=\"flex max-w-md flex-col gap-3\">\n          <div className=\"flex items-center justify-between\">\n            <label className=\"font-strong\">Hue: {hue}°</label>\n            <ColorSwatch\n              color={tinycolor({ h: hue, s: 100, l: 50 }).toRgb()}\n              size={20}\n              className=\"rounded-sm\"\n            />\n          </div>\n          <ColorSlider\n            type=\"hue\"\n            position={huePosition}\n            onChange={setHuePosition}\n            width={200}\n          />\n        </div>\n      </div>\n    </div>\n  )\n\n}"
     },
     {
       "id": "colors-colorarea--sizes",

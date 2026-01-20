@@ -88,7 +88,7 @@ export const ColorSolidPaint = forwardRef<HTMLDivElement, ColorSolidPaintProps>(
       onColorChange?.(rgb)
     })
 
-    const sliderTrackSize = useMemo(() => {
+    const sliderWidth = useMemo(() => {
       const getPadding = () => {
         if (!features.alpha && !features.nativePicker) {
           return 32
@@ -98,10 +98,7 @@ export const ColorSolidPaint = forwardRef<HTMLDivElement, ColorSolidPaintProps>(
         padding += features.nativePicker ? 48 : 0
         return padding
       }
-      return {
-        width: (features?.containerWidth ?? 240) - getPadding(),
-        height: 16,
-      }
+      return (features?.containerWidth ?? 240) - getPadding()
     }, [features.containerWidth, features.alpha, features.nativePicker])
 
     const styles = ColorSolidPaintTv({
@@ -277,7 +274,7 @@ export const ColorSolidPaint = forwardRef<HTMLDivElement, ColorSolidPaintProps>(
               onChangeEnd={onChangeEnd}
               onChange={onChangeEnd}
               type="hue"
-              trackSize={sliderTrackSize}
+              width={sliderWidth}
               updateSourceRef={updateSourceRef}
             />
 
@@ -287,7 +284,7 @@ export const ColorSolidPaint = forwardRef<HTMLDivElement, ColorSolidPaintProps>(
                 alpha={opacity}
                 onAlphaChange={onAlphaChange}
                 type="alpha"
-                trackSize={sliderTrackSize}
+                width={sliderWidth}
                 onChangeStart={onChangeStart}
                 onChangeEnd={onChangeEnd}
               />

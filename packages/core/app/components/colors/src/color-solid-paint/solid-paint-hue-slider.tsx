@@ -23,7 +23,7 @@ export const SolidPaintHueSlider = (props: Props) => {
     setHue,
     color,
     onColorChange,
-    trackSize,
+    width,
     onChangeStart,
     onChangeEnd,
     updateSourceRef,
@@ -51,7 +51,7 @@ export const SolidPaintHueSlider = (props: Props) => {
       position={hue / 360}
       onChange={handleHueChange}
       type="hue"
-      trackSize={trackSize}
+      width={width}
       onChangeStart={onChangeStart}
       onChangeEnd={() => {
         onChangeEnd?.()

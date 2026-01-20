@@ -63,16 +63,13 @@ export const SimpleColorPicker = forwardRef<HTMLDivElement, SimpleColorPickerPro
       ...featureProps,
     }
 
-    const sliderTrackSize = useMemo(() => {
+    const sliderWidth = useMemo(() => {
       const getPadding = () => {
         let padding = 0
         padding += 32
         return padding
       }
-      return {
-        width: 240 - getPadding(),
-        height: 16,
-      }
+      return 240 - getPadding()
     }, [])
 
     const styles = ColorSolidPaintTv({
@@ -120,7 +117,7 @@ export const SimpleColorPicker = forwardRef<HTMLDivElement, SimpleColorPickerPro
             onChangeEnd={onChangeEnd}
             onChange={onChangeEnd}
             type="hue"
-            trackSize={sliderTrackSize}
+            width={sliderWidth}
             updateSourceRef={updateSourceRef}
           />
 
@@ -129,7 +126,7 @@ export const SimpleColorPicker = forwardRef<HTMLDivElement, SimpleColorPickerPro
             alpha={opacity}
             onAlphaChange={onAlphaChange}
             type="alpha"
-            trackSize={sliderTrackSize}
+            width={sliderWidth}
             onChangeStart={onChangeStart}
             onChangeEnd={onChangeEnd}
           />

@@ -3,7 +3,7 @@
   "title": "ColorSlider",
   "package": {
     "name": "@choice-ui/colors",
-    "version": "0.3.34",
+    "version": "0.3.35",
     "description": "A modern React color system",
     "dependencies": {
       "@floating-ui/react": "0.27.15",
@@ -316,28 +316,58 @@
           "description": ""
         },
         {
-          "name": "thumbSize",
-          "type": "number | undefined",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "trackSize",
-          "type": "{ height?: number | undefined; width?: number | undefined; } | undefined",
-          "required": false,
-          "description": ""
-        },
-        {
           "name": "type",
           "type": "\"hue\" | \"saturation\" | \"lightness\" | \"alpha\"",
           "required": true,
           "description": ""
         },
         {
+          "name": "width",
+          "type": "number | boolean | undefined",
+          "required": false,
+          "description": "Width of the slider track in pixels.\nIf not provided (undefined or false), the width will be auto-calculated from the container."
+        },
+        {
           "name": "ref",
           "type": "((instance: HTMLDivElement | null) => void) | RefObject<HTMLDivElement> | null | undefined",
           "required": false,
           "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "ColorSliderThumb",
+      "description": "",
+      "props": [
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "size",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "ColorSliderTrack",
+      "description": "ColorSliderTrack - The track background of the color slider.\nRenders the gradient background based on slider type (hue, alpha, etc.)\nCan contain custom children for additional visual elements.",
+      "props": [
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "height",
+          "type": "number | undefined",
+          "required": false,
+          "description": "Height of the track in pixels.\nThis prop is extracted by the parent ColorSlider and passed via context."
         }
       ]
     },
@@ -1486,10 +1516,10 @@
           "description": ""
         },
         {
-          "name": "trackSize",
-          "type": "{ height?: number | undefined; width?: number | undefined; } | undefined",
+          "name": "width",
+          "type": "number | undefined",
           "required": false,
-          "description": ""
+          "description": "Width of the gradient slider track in pixels."
         },
         {
           "name": "value",
@@ -2832,7 +2862,28 @@
       "name": "Basic",
       "exportName": "Basic",
       "description": "`ColorSlider` is a slider component for adjusting color properties.\n\n### Slider Types\n\n- **Hue**: Ranges from 0 to 360, representing the color wheel\n- **Saturation**: Ranges from 0 to 1, representing the intensity of the color\n- **Lightness**: Ranges from 0 to 1, representing lightness of the color\n- **Alpha**: Ranges from 0 to 1, representing the opacity of the color\n\n### Key Properties\n\n- `type`: The type of slider (\"hue\" | \"saturation\" | \"lightness\" | \"alpha\")\n- `position`: Current position value (0-1 for saturation/lightness/alpha, 0-360 mapped to 0-1 for hue)\n- `onChange`: Callback when position changes\n- `hue`: Hue value for saturation/lightness/alpha sliders to show correct gradient",
-      "source": "import { ColorSlider, ColorSwatch, hslToRgb } from \"@choice-ui/colors\"\nimport { useState, useMemo } from \"react\"\n\nexport default function App() {\n\n  const [huePosition, setHuePosition] = useState(0.5)\n  const [saturationPosition, setSaturationPosition] = useState(0.5)\n  const [lightnessPosition, setLightnessPosition] = useState(0.5)\n  const [alphaPosition, setAlphaPosition] = useState(1)\n\n  const color = useMemo(() => {\n    return hslToRgb({\n      h: (huePosition * 360) % 360,\n      s: saturationPosition * 100,\n      l: lightnessPosition * 100,\n    })\n  }, [huePosition, saturationPosition, lightnessPosition, alphaPosition])\n\n  const options = [\n    {\n      type: \"hue\",\n      position: huePosition,\n      onChange: setHuePosition,\n    },\n    {\n      type: \"saturation\",\n      hue: (huePosition * 360) % 360,\n      position: saturationPosition,\n      onChange: setSaturationPosition,\n    },\n    {\n      type: \"lightness\",\n      hue: (huePosition * 360) % 360,\n      position: lightnessPosition,\n      onChange: setLightnessPosition,\n    },\n    {\n      type: \"alpha\",\n      hue: (huePosition * 360) % 360,\n      position: alphaPosition,\n      onChange: setAlphaPosition,\n    },\n  ]\n\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <div className=\"grid grid-cols-2 gap-4\">\n        {options.map((option) => (\n          <div\n            key={option.type}\n            className=\"flex flex-col gap-2\"\n          >\n            <span className=\"text-secondary-foreground font-strong capitalize\">\n              {option.type}\n            </span>\n            <ColorSlider\n              hue={option.hue}\n              position={option.position}\n              onChange={option.onChange}\n              type={option.type as \"hue\" | \"saturation\" | \"lightness\" | \"alpha\"}\n            />\n          </div>\n        ))}\n      </div>\n      <div className=\"flex flex-col gap-2\">\n        <ColorSwatch\n          className=\"rounded-md\"\n          color={color}\n          alpha={alphaPosition}\n          size={32}\n        />\n        <div className=\"text-secondary-foreground flex flex-col gap-1\">\n          <div>Position: {huePosition.toFixed(2)}</div>\n          <div>rgb: {`rgb(${color.r}, ${color.g}, ${color.b}, ${alphaPosition.toFixed(2)})`}</div>\n          <div>\n            display-p3:{\" \"}\n            {`color(display-p3 ${(color.r / 255).toFixed(2)} ${(color.g / 255).toFixed(\n              2,\n            )} ${(color.b / 255).toFixed(2)} / ${alphaPosition.toFixed(2)})`}\n          </div>\n        </div>\n      </div>\n    </div>\n  )\n\n}"
+      "source": "import { ColorSlider, ColorSwatch, hslToRgb } from \"@choice-ui/colors\"\nimport { useState, useMemo } from \"react\"\n\nexport default function App() {\n\n  const [huePosition, setHuePosition] = useState(0.5)\n  const [saturationPosition, setSaturationPosition] = useState(0.5)\n  const [lightnessPosition, setLightnessPosition] = useState(0.5)\n  const [alphaPosition, setAlphaPosition] = useState(1)\n\n  const color = useMemo(() => {\n    return hslToRgb({\n      h: (huePosition * 360) % 360,\n      s: saturationPosition * 100,\n      l: lightnessPosition * 100,\n    })\n  }, [huePosition, saturationPosition, lightnessPosition])\n\n  const options = [\n    {\n      type: \"hue\",\n      position: huePosition,\n      onChange: setHuePosition,\n    },\n    {\n      type: \"saturation\",\n      hue: (huePosition * 360) % 360,\n      position: saturationPosition,\n      onChange: setSaturationPosition,\n    },\n    {\n      type: \"lightness\",\n      hue: (huePosition * 360) % 360,\n      position: lightnessPosition,\n      onChange: setLightnessPosition,\n    },\n    {\n      type: \"alpha\",\n      hue: (huePosition * 360) % 360,\n      position: alphaPosition,\n      onChange: setAlphaPosition,\n    },\n  ]\n\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <div className=\"grid grid-cols-2 gap-4\">\n        {options.map((option) => (\n          <div\n            key={option.type}\n            className=\"flex flex-col gap-2\"\n          >\n            <span className=\"text-secondary-foreground font-strong capitalize\">\n              {option.type}\n            </span>\n            <ColorSlider\n              hue={option.hue}\n              position={option.position}\n              onChange={option.onChange}\n              type={option.type as \"hue\" | \"saturation\" | \"lightness\" | \"alpha\"}\n            />\n          </div>\n        ))}\n      </div>\n      <div className=\"flex flex-col gap-2\">\n        <ColorSwatch\n          className=\"rounded-md\"\n          color={color}\n          alpha={alphaPosition}\n          size={32}\n        />\n        <div className=\"text-secondary-foreground flex flex-col gap-1\">\n          <div>Position: {huePosition.toFixed(2)}</div>\n          <div>rgb: {`rgb(${color.r}, ${color.g}, ${color.b}, ${alphaPosition.toFixed(2)})`}</div>\n          <div>\n            display-p3:{\" \"}\n            {`color(display-p3 ${(color.r / 255).toFixed(2)} ${(color.g / 255).toFixed(\n              2,\n            )} ${(color.b / 255).toFixed(2)} / ${alphaPosition.toFixed(2)})`}\n          </div>\n        </div>\n      </div>\n    </div>\n  )\n\n}"
+    },
+    {
+      "id": "colors-colorslider--compound",
+      "name": "Compound",
+      "exportName": "Compound",
+      "description": "The ColorSlider supports a compound component pattern for advanced customization.\n\n### Available Subcomponents\n\n- `ColorSlider.Thumb` - The draggable thumb handle\n- `ColorSlider.Track` - The track background (optional, for custom height or styling)\n\n### Custom Styling\n\nUse `className` on subcomponents to customize their appearance:\n\n```tsx\n<ColorSlider type=\"hue\" position={position} onChange={setPosition}>\n  <ColorSlider.Thumb className=\"!bg-white !shadow-xs\" />\n</ColorSlider>\n```",
+      "source": "import { ColorSlider, ColorsProvider } from \"@choice-ui/colors\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [huePosition, setHuePosition] = useState(0.5)\n  const [alphaPosition, setAlphaPosition] = useState(0.8)\n\n  return (\n    <ColorsProvider>\n      <div className=\"flex flex-col gap-6\">\n        <div className=\"flex flex-col gap-2\">\n          <span className=\"text-secondary-foreground font-strong\">\n            Solid White Thumb\n          </span>\n          <ColorSlider\n            type=\"hue\"\n            position={huePosition}\n            onChange={setHuePosition}\n          >\n            <ColorSlider.Thumb className=\"!shadow-xs !bg-white\" />\n          </ColorSlider>\n        </div>\n\n        <div className=\"flex flex-col gap-2\">\n          <span className=\"text-secondary-foreground font-strong\">\n            Border Style Thumb\n          </span>\n          <ColorSlider\n            type=\"alpha\"\n            hue={huePosition * 360}\n            position={alphaPosition}\n            onChange={setAlphaPosition}\n          >\n            <ColorSlider.Thumb className=\"border-2 border-white !shadow-none\" />\n          </ColorSlider>\n        </div>\n\n        <div className=\"text-secondary-foreground text-sm\">\n          <div>Hue: {Math.round(huePosition * 360)}°</div>\n          <div>Alpha: {Math.round(alphaPosition * 100)}%</div>\n        </div>\n      </div>\n    </ColorsProvider>\n  )\n\n}"
+    },
+    {
+      "id": "colors-colorslider--custom-size",
+      "name": "Custom Size",
+      "exportName": "CustomSize",
+      "description": "Custom sized slider using the compound component pattern.\n\n### Size Customization\n\n- `ColorSlider.Track` - Use `height` prop to set track height\n- `ColorSlider.Thumb` - Use `size` prop to set thumb size (defaults to track height)\n- Additional styling can be applied via `className`\n\nNote: When `ColorSlider.Thumb` size is not specified, it defaults to the track height.",
+      "source": "import { ColorSlider, ColorsProvider } from \"@choice-ui/colors\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [position1, setPosition1] = useState(0.3)\n  const [position2, setPosition2] = useState(0.6)\n  const [position3, setPosition3] = useState(0.9)\n\n  return (\n    <ColorsProvider>\n      <div className=\"flex flex-col gap-6\">\n        <div className=\"flex flex-col gap-2\">\n          <span className=\"text-secondary-foreground font-strong\">\n            Slim Style (Track: 4px, Thumb: 10px)\n          </span>\n          <ColorSlider\n            type=\"hue\"\n            position={position1}\n            onChange={setPosition1}\n            width={200}\n          >\n            <ColorSlider.Track\n              height={4}\n              className=\"!shadow-none\"\n            />\n            <ColorSlider.Thumb\n              size={10}\n              className=\"!shadow-xs h-2 w-3.5 rounded-sm !bg-white\"\n            />\n          </ColorSlider>\n        </div>\n\n        <div className=\"flex flex-col gap-2\">\n          <span className=\"text-secondary-foreground font-strong\">\n            Default (Track: 16px, Thumb: 16px)\n          </span>\n          <ColorSlider\n            type=\"hue\"\n            position={position2}\n            onChange={setPosition2}\n          >\n            <ColorSlider.Thumb />\n          </ColorSlider>\n        </div>\n\n        <div className=\"flex flex-col gap-2\">\n          <span className=\"text-secondary-foreground font-strong\">\n            Large (Track: 24px, Thumb: 24px)\n          </span>\n          <ColorSlider\n            type=\"hue\"\n            position={position3}\n            onChange={setPosition3}\n            width={300}\n          >\n            <ColorSlider.Track height={24} />\n            <ColorSlider.Thumb />\n          </ColorSlider>\n        </div>\n      </div>\n    </ColorsProvider>\n  )\n\n}"
+    },
+    {
+      "id": "colors-colorslider--auto-width",
+      "name": "Auto Width",
+      "exportName": "AutoWidth",
+      "description": "Auto width using container width.\n\nWhen `width` is not provided or set to `false`, the slider will\nautomatically calculate its width from the container.",
+      "source": "import { ColorSlider, ColorsProvider } from \"@choice-ui/colors\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [position, setPosition] = useState(0.5)\n\n  return (\n    <ColorsProvider>\n      <div className=\"flex flex-col gap-6\">\n        <div className=\"flex flex-col gap-2\">\n          <span className=\"text-secondary-foreground font-strong\">\n            Auto Width (fills container)\n          </span>\n          <div className=\"w-64\">\n            <ColorSlider\n              type=\"hue\"\n              position={position}\n              onChange={setPosition}\n              width={false}\n            />\n          </div>\n        </div>\n\n        <div className=\"flex flex-col gap-2\">\n          <span className=\"text-secondary-foreground font-strong\">Responsive Width</span>\n          <div className=\"w-full max-w-md\">\n            <ColorSlider\n              type=\"saturation\"\n              hue={position * 360}\n              position={0.7}\n              onChange={() => {}}\n              width={false}\n            />\n          </div>\n        </div>\n      </div>\n    </ColorsProvider>\n  )\n\n}"
     }
   ]
 }

@@ -39,10 +39,7 @@ export const ColorGradientCombined = (props: ColorGradientCombinedProps) => {
         onChangeEnd={onChangeEnd}
         controlledSelectedStopId={selectedStopId}
         onSelectedStopIdChange={onSelectedStopIdChange}
-        trackSize={{
-          width: containerWidth - 32,
-          height: 16,
-        }}
+        width={containerWidth - 32}
         className="min-w-0 px-4 pb-4"
       />
 

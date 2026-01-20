@@ -10,7 +10,7 @@ type Props = Omit<ColorSliderProps, "position"> & {
 }
 
 export const SolidPaintAlphaSlider = (props: Props) => {
-  const { hue, alpha, onAlphaChange, onChangeStart, onChangeEnd, trackSize } = props
+  const { hue, alpha, onAlphaChange, onChangeStart, onChangeEnd, width } = props
 
   return (
     <ColorSlider
@@ -18,7 +18,7 @@ export const SolidPaintAlphaSlider = (props: Props) => {
       onChange={onAlphaChange}
       type="alpha"
       hue={hue}
-      trackSize={trackSize}
+      width={width}
       onChangeStart={onChangeStart}
       onChangeEnd={onChangeEnd}
     />

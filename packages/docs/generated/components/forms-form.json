@@ -2081,12 +2081,6 @@
           "description": ""
         },
         {
-          "name": "connectsClassName",
-          "type": "{ negative?: string | undefined; positive?: string | undefined; } | undefined",
-          "required": false,
-          "description": ""
-        },
-        {
           "name": "onChangeEnd",
           "type": "(() => void) | undefined",
           "required": false,
@@ -2239,12 +2233,6 @@
         {
           "name": "className",
           "type": "string | undefined",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "connectsClassName",
-          "type": "{ negative?: string | undefined; positive?: string | undefined; } | undefined",
           "required": false,
           "description": ""
         },

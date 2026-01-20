@@ -19,10 +19,10 @@ interface ColorGradientSliderProps {
   onChangeStart?: () => void
   onSelectedStopIdChange?: (id: string) => void
   stopSize?: number
-  trackSize?: {
-    height?: number
-    width?: number
-  }
+  /**
+   * Width of the gradient slider track in pixels.
+   */
+  width?: number
   value?: GradientPaint["gradientStops"]
 }
 
@@ -36,10 +36,13 @@ export const ColorGradientSlider = forwardRef<HTMLDivElement, ColorGradientSlide
       controlledSelectedStopId,
       onSelectedStopIdChange,
       disabled = false,
-      trackSize = { width: 224, height: 16 },
+      width: trackWidth = 224,
       stopSize = 18,
       className,
     } = props
+
+    // Track height is fixed at 16px
+    const trackHeight = 16
 
     const { colorProfile } = useColors()
 
@@ -278,16 +281,16 @@ export const ColorGradientSlider = forwardRef<HTMLDivElement, ColorGradientSlide
 
     const trackStyle = useMemo(() => {
       return {
-        width: trackSize?.width,
-        height: trackSize?.height,
+        width: trackWidth,
+        height: trackHeight,
         boxShadow: "inset 0 0 0 1px rgba(0,0,0,0.1)",
         background: gradientBackground,
       }
-    }, [gradientBackground, trackSize])
+    }, [gradientBackground, trackWidth, trackHeight])
 
     const stopStyle = useCallback(
       (stop: ColorStop) => {
-        const position = stop.position * (trackSize?.width ?? 0)
+        const position = stop.position * trackWidth
         return {
           width: stopSize,
           height: stopSize,
@@ -295,14 +298,14 @@ export const ColorGradientSlider = forwardRef<HTMLDivElement, ColorGradientSlide
           willChange: isDragging.current ? "transform" : "auto",
         }
       },
-      [stopSize, trackSize?.width],
+      [stopSize, trackWidth],
     )
 
     // 处理鼠标移动
     const handleMouseMove = useEventCallback((e: React.MouseEvent) => {
       if (disabled || isDragging.current) return
       const position = calculatePosition(e.clientX)
-      setHoverPosition(position * (trackSize?.width ?? 0))
+      setHoverPosition(position * trackWidth)
     })
 
     // 处理鼠标离开
@@ -321,7 +324,7 @@ export const ColorGradientSlider = forwardRef<HTMLDivElement, ColorGradientSlide
           className="relative"
           style={{
             height: 24,
-            width: trackSize?.width,
+            width: trackWidth,
           }}
         >
           {stops.map((stop) => (

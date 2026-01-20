@@ -3,7 +3,7 @@
   "title": "HexInput",
   "package": {
     "name": "@choice-ui/colors",
-    "version": "0.3.34",
+    "version": "0.3.35",
     "description": "A modern React color system",
     "dependencies": {
       "@floating-ui/react": "0.27.15",
@@ -316,28 +316,58 @@
           "description": ""
         },
         {
-          "name": "thumbSize",
-          "type": "number | undefined",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "trackSize",
-          "type": "{ height?: number | undefined; width?: number | undefined; } | undefined",
-          "required": false,
-          "description": ""
-        },
-        {
           "name": "type",
           "type": "\"hue\" | \"saturation\" | \"lightness\" | \"alpha\"",
           "required": true,
           "description": ""
         },
         {
+          "name": "width",
+          "type": "number | boolean | undefined",
+          "required": false,
+          "description": "Width of the slider track in pixels.\nIf not provided (undefined or false), the width will be auto-calculated from the container."
+        },
+        {
           "name": "ref",
           "type": "((instance: HTMLDivElement | null) => void) | RefObject<HTMLDivElement> | null | undefined",
           "required": false,
           "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "ColorSliderThumb",
+      "description": "",
+      "props": [
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "size",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "ColorSliderTrack",
+      "description": "ColorSliderTrack - The track background of the color slider.\nRenders the gradient background based on slider type (hue, alpha, etc.)\nCan contain custom children for additional visual elements.",
+      "props": [
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "height",
+          "type": "number | undefined",
+          "required": false,
+          "description": "Height of the track in pixels.\nThis prop is extracted by the parent ColorSlider and passed via context."
         }
       ]
     },
@@ -1486,10 +1516,10 @@
           "description": ""
         },
         {
-          "name": "trackSize",
-          "type": "{ height?: number | undefined; width?: number | undefined; } | undefined",
+          "name": "width",
+          "type": "number | undefined",
           "required": false,
-          "description": ""
+          "description": "Width of the gradient slider track in pixels."
         },
         {
           "name": "value",
