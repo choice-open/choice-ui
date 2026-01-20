@@ -2,6 +2,34 @@
 
 All notable changes to the Range component will be documented in this file.
 
+## [2026-01-20]
+
+### Added
+
+- **Compound Component Pattern**: Introduced a flexible compound component architecture
+  - `Range.Container` - Logical wrapper for track area and dots
+  - `Range.Connects` - Customizable connection bar with `data-connect-status` attribute
+  - `Range.Thumb` - Draggable handle with `data-status` for default value styling
+  - `Range.Dot` - Step markers with `data-status` for state-based styling
+  - Same pattern available for `RangeTuple` with corresponding subcomponents
+
+### Changed
+
+- **Breaking**: Removed unused `connectsClassName` prop from both `Range` and `RangeTuple`
+- Refactored `RangeContainer` and `RangeTupleContainer` from `forwardRef` to regular functions (they render Fragments, so ref forwarding was not applicable)
+- Improved decimal step support: Changed `safeStep` calculation from `Math.max(step, 1)` to `step > 0 ? step : 1` to allow steps like `0.0001`
+- Fixed snap-to-default behavior: Updated condition from `safeStep === 1` to `safeStep <= 1` to work with decimal steps
+
+### Fixed
+
+- Fixed React Hooks violation in `RangeDot` and `RangeTupleDot` where `useMemo` was incorrectly called inside `map` loops
+- Extracted `getDotStatus` helper function outside component to avoid recreation on each render
+
+### Performance
+
+- Moved `transforms` destructuring outside `map` loops in dot rendering to reduce redundant operations
+- Removed unnecessary intermediate variables (`hasChildConnects`)
+
 ## [2025-11-27]
 
 ### Changed

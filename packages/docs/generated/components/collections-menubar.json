@@ -103,6 +103,13 @@
           "description": "Whether to automatically select the first item in coordinate mode."
         },
         {
+          "name": "avoidCollisions",
+          "type": "boolean | undefined",
+          "required": false,
+          "defaultValue": "true",
+          "description": "Whether to avoid collisions by flipping or shifting the dropdown position.\nWhen false, the dropdown will strictly follow the placement direction."
+        },
+        {
           "name": "disabledNested",
           "type": "boolean | undefined",
           "required": false,

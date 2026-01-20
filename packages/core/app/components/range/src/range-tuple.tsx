@@ -1,8 +1,10 @@
-import { mergeRefs, tcx } from "@choice-ui/shared"
+import { mergeRefs, tcx, useIsomorphicLayoutEffect } from "@choice-ui/shared"
 import { clamp } from "es-toolkit"
 import React, {
+  Children,
   CSSProperties,
   forwardRef,
+  isValidElement,
   useCallback,
   useEffect,
   useMemo,
@@ -10,15 +12,20 @@ import React, {
   useState,
 } from "react"
 import { useEventCallback } from "usehooks-ts"
-import { useIsomorphicLayoutEffect } from "@choice-ui/shared"
+import {
+  RangeTupleConnects,
+  RangeTupleConnectsProps,
+  RangeTupleContainer,
+  RangeTupleContainerProps,
+} from "./components/connects"
+import { RangeTupleDot, RangeTupleDotProps } from "./components/dot"
+import { RangeTupleThumb, RangeTupleThumbProps } from "./components/thumb"
+import { RangeTupleContext, RangeTupleContextValue } from "./context"
 import { rangeTv } from "./tv"
 
 export interface RangeTupleProps {
+  children?: React.ReactNode
   className?: string
-  connectsClassName?: {
-    negative?: string
-    positive?: string
-  }
   defaultValue?: [number, number]
   disabled?: boolean
   max?: number
@@ -29,14 +36,24 @@ export interface RangeTupleProps {
   readOnly?: boolean
   step?: number
   thumbSize?: number
-  trackSize?: {
-    height?: number
-    width?: number | "auto"
-  }
   value?: [number, number]
+  /**
+   * Width of the range track in pixels.
+   * If not provided (undefined) or set to false, the width will be auto-calculated from the container.
+   */
+  width?: number | boolean
 }
 
 type ThumbIndex = 0 | 1
+
+interface RangeTupleComponent extends React.ForwardRefExoticComponent<
+  RangeTupleProps & React.RefAttributes<HTMLDivElement>
+> {
+  Container: typeof RangeTupleContainer
+  Connects: typeof RangeTupleConnects
+  Thumb: typeof RangeTupleThumb
+  Dot: typeof RangeTupleDot
+}
 
 /**
  * Normalize a value or tuple to a valid tuple within bounds
@@ -56,340 +73,216 @@ function normalizeTuple(
   return [clamp(value, min, max), max]
 }
 
-export const RangeTuple = forwardRef<HTMLDivElement, RangeTupleProps>(
-  function RangeTuple(props, ref) {
-    const {
-      defaultValue,
-      value,
-      onChange,
-      onChangeStart,
-      onChangeEnd,
-      min = 0,
-      max = 100,
-      step = 1,
-      disabled = false,
-      readOnly = false,
-      className,
-      connectsClassName = {
-        positive: "bg-accent-background",
-        negative: "bg-accent-background",
-      },
-      trackSize = {
-        width: 256,
-        height: 16,
-      },
-      thumbSize = 14,
-    } = props
+const RangeTupleRoot = forwardRef<HTMLDivElement, RangeTupleProps>(function RangeTuple(props, ref) {
+  const {
+    children,
+    defaultValue,
+    value,
+    onChange,
+    onChangeStart,
+    onChangeEnd,
+    min = 0,
+    max = 100,
+    step = 1,
+    disabled = false,
+    readOnly = false,
+    className,
+    width: propsWidth = 256,
+    thumbSize: propsThumbSize = 14,
+  } = props
 
-    const [actualTrackWidth, setActualTrackWidth] = useState<number | undefined>()
+  // Extract thumbSize, trackHeight and detect custom children from children if provided
+  const {
+    hasCustomChildren,
+    hasCustomDot,
+    hasCustomConnects,
+    extractedThumbSize,
+    extractedTrackHeight,
+  } = useMemo(() => {
+    const childArray = Children.toArray(children)
+    let hasCustom = false
+    let hasDot = false
+    let hasConnects = false
+    let thumbSizeFromChild: number | undefined
+    let trackHeightFromChild: number | undefined
 
-    const valueToPosition = useCallback((val: number) => (val - min) / (max - min), [min, max])
-
-    const positionToValue = useCallback(
-      (position: number) => min + position * (max - min),
-      [min, max],
-    )
-
-    const normalizedDefaultValue = useMemo(
-      () => (defaultValue ? normalizeTuple(defaultValue, min, max) : undefined),
-      [defaultValue, min, max],
-    )
-
-    const defaultStepValue = useMemo(() => {
-      if (!normalizedDefaultValue) return null
-      if (step > 1) {
-        return normalizedDefaultValue.map((v) => Math.round((v - min) / step) * step + min) as [
-          number,
-          number,
-        ]
+    for (const child of childArray) {
+      if (isValidElement(child)) {
+        const type = child.type as { displayName?: string }
+        if (child.type === RangeTupleThumb || type?.displayName === "RangeTupleThumb") {
+          hasCustom = true
+          const childProps = child.props as RangeTupleThumbProps
+          if (childProps.size !== undefined) {
+            thumbSizeFromChild = childProps.size
+          }
+        } else if (
+          child.type === RangeTupleContainer ||
+          type?.displayName === "RangeTupleContainer"
+        ) {
+          hasCustom = true
+          const childProps = child.props as RangeTupleContainerProps
+          if (childProps.height !== undefined) {
+            trackHeightFromChild = childProps.height
+          }
+        } else if (
+          child.type === RangeTupleConnects ||
+          type?.displayName === "RangeTupleConnects"
+        ) {
+          hasCustom = true
+          hasConnects = true
+        } else if (child.type === RangeTupleDot || type?.displayName === "RangeTupleDot") {
+          hasCustom = true
+          hasDot = true
+        }
       }
-      return normalizedDefaultValue
-    }, [normalizedDefaultValue, step, min])
+    }
 
-    const sliderRef = useRef<HTMLDivElement>(null)
-    const thumb0Ref = useRef<HTMLDivElement>(null)
-    const thumb1Ref = useRef<HTMLDivElement>(null)
-    const input0Ref = useRef<HTMLInputElement>(null)
-    const input1Ref = useRef<HTMLInputElement>(null)
-    const isDragging = useRef<ThumbIndex | null>(null)
+    return {
+      hasCustomChildren: hasCustom,
+      hasCustomDot: hasDot,
+      hasCustomConnects: hasConnects,
+      extractedThumbSize: thumbSizeFromChild,
+      extractedTrackHeight: trackHeightFromChild,
+    }
+  }, [children])
 
-    const [internalValue, setInternalValue] = useState<[number, number]>(
-      normalizeTuple(value, min, max),
-    )
-    const currentValue = useMemo(
-      () => (value ? normalizeTuple(value, min, max) : internalValue),
-      [value, min, max, internalValue],
-    )
-    const currentStepValue = useMemo(() => {
-      if (step > 1) {
-        return currentValue.map((v) => Math.round(v / step) * step) as [number, number]
-      }
-      return currentValue
-    }, [currentValue, step])
+  // Use extracted values from children if available, otherwise use props
+  const thumbSize = extractedThumbSize ?? propsThumbSize
+  const trackHeight = extractedTrackHeight ?? 16
 
-    const [transforms, setTransforms] = useState({
-      minTransform: 1,
-      maxTransform: 0,
-      transformX0: 0,
-      transformX1: 0,
-    })
+  // Normalize step to prevent division by zero or negative values
+  // Use a very small positive number as minimum to allow decimal steps like 0.0001
+  const safeStep = step > 0 ? step : 1
+  // Ensure min < max to prevent division by zero
+  const range = max - min || 1
 
-    const trackWidth = useMemo(() => {
-      if (trackSize?.width === "auto") {
-        return actualTrackWidth
-      }
-      return trackSize?.width
-    }, [trackSize?.width, actualTrackWidth])
+  const [actualTrackWidth, setActualTrackWidth] = useState<number | undefined>()
 
-    useIsomorphicLayoutEffect(() => {
-      if (trackSize?.width === "auto" && sliderRef.current) {
-        const updateWidth = () => {
-          if (sliderRef.current) {
-            const width = sliderRef.current.getBoundingClientRect().width
-            if (width > 0) {
-              setActualTrackWidth(width)
-            }
+  const valueToPosition = useCallback((val: number) => (val - min) / range, [min, range])
+
+  const positionToValue = useCallback((position: number) => min + position * range, [min, range])
+
+  const normalizedDefaultValue = useMemo(
+    () => (defaultValue ? normalizeTuple(defaultValue, min, max) : undefined),
+    [defaultValue, min, max],
+  )
+
+  const defaultStepValue = useMemo(() => {
+    if (!normalizedDefaultValue) return null
+    if (safeStep > 1) {
+      return normalizedDefaultValue.map(
+        (v) => Math.round((v - min) / safeStep) * safeStep + min,
+      ) as [number, number]
+    }
+    return normalizedDefaultValue
+  }, [normalizedDefaultValue, safeStep, min])
+
+  const sliderRef = useRef<HTMLDivElement>(null)
+  const thumb0Ref = useRef<HTMLDivElement>(null)
+  const thumb1Ref = useRef<HTMLDivElement>(null)
+  const input0Ref = useRef<HTMLInputElement>(null)
+  const input1Ref = useRef<HTMLInputElement>(null)
+  const isDragging = useRef<ThumbIndex | null>(null)
+  const cleanupRef = useRef<(() => void) | null>(null)
+
+  const [internalValue, setInternalValue] = useState<[number, number]>(
+    normalizeTuple(value, min, max),
+  )
+  const currentValue = useMemo(
+    () => (value ? normalizeTuple(value, min, max) : internalValue),
+    [value, min, max, internalValue],
+  )
+  const currentStepValue = useMemo(() => {
+    if (safeStep > 1) {
+      return currentValue.map((v) => Math.round(v / safeStep) * safeStep) as [number, number]
+    }
+    return currentValue
+  }, [currentValue, safeStep])
+
+  // If width prop is not a number (undefined or false), use auto-calculated width
+  const trackWidth = typeof propsWidth === "number" ? propsWidth : actualTrackWidth
+
+  // When width is not a number, auto-calculate from container
+  useIsomorphicLayoutEffect(() => {
+    if (typeof propsWidth !== "number" && sliderRef.current) {
+      const updateWidth = () => {
+        if (sliderRef.current) {
+          const width = sliderRef.current.getBoundingClientRect().width
+          if (width > 0) {
+            setActualTrackWidth(width)
           }
         }
+      }
 
+      updateWidth()
+
+      const resizeObserver = new ResizeObserver(() => {
         updateWidth()
-
-        const resizeObserver = new ResizeObserver(() => {
-          updateWidth()
-        })
-
-        resizeObserver.observe(sliderRef.current)
-
-        return () => {
-          resizeObserver.disconnect()
-        }
-      }
-    }, [trackSize?.width])
-
-    useEffect(() => {
-      const position0 = valueToPosition(currentValue[0])
-      const position1 = valueToPosition(currentValue[1])
-      const minTransform = 1
-      const maxTransform = (trackWidth ?? 0) - thumbSize - 1
-      const transformX0 = minTransform + position0 * (maxTransform - minTransform)
-      const transformX1 = minTransform + position1 * (maxTransform - minTransform)
-
-      setTransforms({
-        minTransform,
-        maxTransform,
-        transformX0,
-        transformX1,
       })
-    }, [currentValue, trackWidth, thumbSize, valueToPosition])
 
-    const dotsData = useMemo(() => {
-      if (!step || step <= 1) return null
+      resizeObserver.observe(sliderRef.current)
 
-      return Array.from({ length: Math.ceil((max - min) / step) + 1 }, (_, i) => {
-        const dotValue = min + i * step
-        const dotPosition = valueToPosition(dotValue)
-        return {
-          value: dotValue,
-          position: dotPosition,
-        }
-      })
-    }, [step, min, max, valueToPosition])
-
-    const defaultDotPositions = useMemo(() => {
-      if (!normalizedDefaultValue || step > 1) return null
-      return normalizedDefaultValue.map((v) => valueToPosition(v)) as [number, number]
-    }, [normalizedDefaultValue, step, valueToPosition])
-
-    const updatePosition = useEventCallback(
-      (clientX: number, thumbIndex: ThumbIndex, isEnd?: boolean) => {
-        if (readOnly) return // Prevent position update in readOnly mode
-        const rect = sliderRef.current?.getBoundingClientRect()
-        if (!rect) return
-
-        const newPosition = clamp((clientX - rect.left) / rect.width, 0, 1)
-        const newValue = Math.round(positionToValue(newPosition) / step) * step
-        let clampedValue = clamp(newValue, min, max)
-
-        // Snap to default value if close
-        if (normalizedDefaultValue && step === 1) {
-          const snapThreshold = (max - min) * 0.05
-          for (const defVal of normalizedDefaultValue) {
-            const distanceToDefault = Math.abs(clampedValue - defVal)
-            if (distanceToDefault <= snapThreshold) {
-              clampedValue = defVal
-              break
-            }
-          }
-        }
-
-        // Update the appropriate thumb while ensuring order
-        const newTuple: [number, number] = [...currentValue] as [number, number]
-        newTuple[thumbIndex] = clampedValue
-
-        // Ensure min <= max
-        if (newTuple[0] > newTuple[1]) {
-          if (thumbIndex === 0) {
-            newTuple[0] = newTuple[1]
-          } else {
-            newTuple[1] = newTuple[0]
-          }
-        }
-
-        if (isEnd) {
-          isDragging.current = null
-        }
-
-        if (value === undefined) {
-          setInternalValue(newTuple)
-        }
-        onChange?.(newTuple)
-      },
-    )
-
-    useEffect(() => {
-      if (value !== undefined) {
-        setInternalValue(normalizeTuple(value, min, max))
+      return () => {
+        resizeObserver.disconnect()
       }
-    }, [value, min, max])
+    }
+  }, [propsWidth])
 
-    const handlePointerDown = useCallback(
-      (e: React.PointerEvent, thumbIndex: ThumbIndex) => {
-        if (disabled || readOnly) return // Prevent drag in readOnly mode
-        e.preventDefault()
-        e.stopPropagation()
+  // Calculate transforms using useMemo instead of useState + useEffect
+  const transforms = useMemo(() => {
+    const position0 = valueToPosition(currentValue[0])
+    const position1 = valueToPosition(currentValue[1])
+    const minTransform = 1
+    const maxTransform = (trackWidth ?? 0) - thumbSize - 1
+    const transformX0 = minTransform + position0 * (maxTransform - minTransform)
+    const transformX1 = minTransform + position1 * (maxTransform - minTransform)
 
-        const thumb = thumbIndex === 0 ? thumb0Ref.current : thumb1Ref.current
-        const inputRef = thumbIndex === 0 ? input0Ref : input1Ref
-        if (!thumb) return
+    return { minTransform, maxTransform, transformX0, transformX1 }
+  }, [currentValue, trackWidth, thumbSize, valueToPosition])
 
-        onChangeStart?.()
+  const dotsData = useMemo(() => {
+    if (safeStep <= 1) return null
 
-        isDragging.current = thumbIndex
-        thumb.setPointerCapture(e.pointerId)
-        updatePosition(e.clientX, thumbIndex)
-        inputRef.current?.focus()
+    return Array.from({ length: Math.ceil((max - min) / safeStep) + 1 }, (_, i) => {
+      const dotValue = min + i * safeStep
+      const dotPosition = valueToPosition(dotValue)
+      return {
+        value: dotValue,
+        position: dotPosition,
+      }
+    })
+  }, [safeStep, min, max, valueToPosition])
 
-        const handleMove = (e: PointerEvent) => {
-          if (isDragging.current !== thumbIndex) return
-          e.preventDefault()
-          updatePosition(e.clientX, thumbIndex)
-        }
+  const defaultDotPositions = useMemo(() => {
+    if (!normalizedDefaultValue || safeStep > 1) return null
+    return normalizedDefaultValue.map((v) => valueToPosition(v)) as [number, number]
+  }, [normalizedDefaultValue, safeStep, valueToPosition])
 
-        const handleUp = (e: PointerEvent) => {
-          if (isDragging.current !== thumbIndex) return
-          e.preventDefault()
+  const updatePosition = useEventCallback(
+    (clientX: number, thumbIndex: ThumbIndex, isEnd?: boolean) => {
+      if (readOnly) return
+      const rect = sliderRef.current?.getBoundingClientRect()
+      if (!rect) return
 
-          if (thumb.hasPointerCapture(e.pointerId)) {
-            thumb.releasePointerCapture(e.pointerId)
+      const newPosition = clamp((clientX - rect.left) / rect.width, 0, 1)
+      const newValue = Math.round(positionToValue(newPosition) / safeStep) * safeStep
+      let clampedValue = clamp(newValue, min, max)
+
+      // Snap to default value if close (only when step <= 1, i.e., no dots shown)
+      if (normalizedDefaultValue && safeStep <= 1) {
+        const snapThreshold = (max - min) * 0.05
+        for (const defVal of normalizedDefaultValue) {
+          const distanceToDefault = Math.abs(clampedValue - defVal)
+          if (distanceToDefault <= snapThreshold) {
+            clampedValue = defVal
+            break
           }
-
-          updatePosition(e.clientX, thumbIndex, true)
-          isDragging.current = null
-
-          // 获取最终值并传递给 onChangeEnd
-          const rect = sliderRef.current?.getBoundingClientRect()
-          if (rect) {
-            const newPosition = clamp((e.clientX - rect.left) / rect.width, 0, 1)
-            const newValue = Math.round(positionToValue(newPosition) / step) * step
-            let clampedValue = clamp(newValue, min, max)
-
-            // Snap to default value if close
-            if (normalizedDefaultValue && step === 1) {
-              const snapThreshold = (max - min) * 0.05
-              for (const defVal of normalizedDefaultValue) {
-                const distanceToDefault = Math.abs(clampedValue - defVal)
-                if (distanceToDefault <= snapThreshold) {
-                  clampedValue = defVal
-                  break
-                }
-              }
-            }
-
-            const finalTuple: [number, number] = [...currentValue] as [number, number]
-            finalTuple[thumbIndex] = clampedValue
-
-            // Ensure min <= max
-            if (finalTuple[0] > finalTuple[1]) {
-              if (thumbIndex === 0) {
-                finalTuple[0] = finalTuple[1]
-              } else {
-                finalTuple[1] = finalTuple[0]
-              }
-            }
-
-            onChangeEnd?.(finalTuple)
-          }
-
-          window.removeEventListener("pointermove", handleMove)
-          window.removeEventListener("pointerup", handleUp)
-          window.removeEventListener("pointercancel", handleUp)
         }
-
-        window.addEventListener("pointermove", handleMove)
-        window.addEventListener("pointerup", handleUp)
-        window.addEventListener("pointercancel", handleUp)
-      },
-      [
-        disabled,
-        readOnly,
-        onChangeEnd,
-        onChangeStart,
-        updatePosition,
-        positionToValue,
-        step,
-        min,
-        max,
-        normalizedDefaultValue,
-        currentValue,
-      ],
-    )
-
-    const handleSliderPointerDown = useCallback(
-      (e: React.PointerEvent) => {
-        if (disabled || readOnly) return // Prevent slider drag in readOnly mode
-        if (e.target === thumb0Ref.current || e.target === thumb1Ref.current) return
-
-        // Determine which thumb to move based on proximity
-        const rect = sliderRef.current?.getBoundingClientRect()
-        if (!rect) return
-
-        const clickPosition = (e.clientX - rect.left) / rect.width
-        const clickValue = positionToValue(clickPosition)
-
-        // Calculate distances to both thumbs
-        const dist0 = Math.abs(clickValue - currentValue[0])
-        const dist1 = Math.abs(clickValue - currentValue[1])
-
-        // Move the closer thumb
-        const thumbIndex: ThumbIndex = dist0 <= dist1 ? 0 : 1
-        handlePointerDown(e, thumbIndex)
-      },
-      [disabled, readOnly, handlePointerDown, currentValue, positionToValue],
-    )
-
-    const handleKeyDown = useEventCallback((e: React.KeyboardEvent, thumbIndex: ThumbIndex) => {
-      if (disabled || readOnly) return // Prevent keyboard actions in readOnly mode
-
-      const stepValue = e.shiftKey ? step * 10 : step
-      let newValue = currentValue[thumbIndex]
-
-      switch (e.key) {
-        case "ArrowLeft":
-        case "ArrowDown":
-          e.preventDefault()
-          newValue = clamp(newValue - stepValue, min, max)
-          break
-        case "ArrowRight":
-        case "ArrowUp":
-          e.preventDefault()
-          newValue = clamp(newValue + stepValue, min, max)
-          break
-        default:
-          return
       }
 
+      // Update the appropriate thumb while ensuring order
       const newTuple: [number, number] = [...currentValue] as [number, number]
-      newTuple[thumbIndex] = newValue
+      newTuple[thumbIndex] = clampedValue
 
       // Ensure min <= max
       if (newTuple[0] > newTuple[1]) {
@@ -400,131 +293,238 @@ export const RangeTuple = forwardRef<HTMLDivElement, RangeTupleProps>(
         }
       }
 
+      if (isEnd) {
+        isDragging.current = null
+      }
+
+      if (value === undefined) {
+        setInternalValue(newTuple)
+      }
       onChange?.(newTuple)
-    })
+    },
+  )
 
-    useEffect(() => {
-      if (disabled) {
-        if (document.activeElement === input0Ref.current) {
-          input0Ref.current?.blur()
+  useEffect(() => {
+    if (value !== undefined) {
+      setInternalValue(normalizeTuple(value, min, max))
+    }
+  }, [value, min, max])
+
+  // Store latest value in ref for onChangeEnd callback
+  const latestValueRef = useRef(currentValue)
+  latestValueRef.current = currentValue
+
+  const handlePointerDown = useCallback(
+    (e: React.PointerEvent, thumbIndex: ThumbIndex) => {
+      if (disabled || readOnly) return
+      e.preventDefault()
+      e.stopPropagation()
+
+      const thumb = thumbIndex === 0 ? thumb0Ref.current : thumb1Ref.current
+      const inputRef = thumbIndex === 0 ? input0Ref : input1Ref
+      if (!thumb) return
+
+      onChangeStart?.()
+
+      isDragging.current = thumbIndex
+      thumb.setPointerCapture(e.pointerId)
+      updatePosition(e.clientX, thumbIndex)
+      inputRef.current?.focus()
+
+      const handleMove = (e: PointerEvent) => {
+        if (isDragging.current !== thumbIndex) return
+        e.preventDefault()
+        updatePosition(e.clientX, thumbIndex)
+      }
+
+      const cleanup = () => {
+        window.removeEventListener("pointermove", handleMove)
+        window.removeEventListener("pointerup", handleUp)
+        window.removeEventListener("pointercancel", handleUp)
+        cleanupRef.current = null
+      }
+
+      const handleUp = (e: PointerEvent) => {
+        if (isDragging.current !== thumbIndex) return
+        e.preventDefault()
+
+        if (thumb.hasPointerCapture(e.pointerId)) {
+          thumb.releasePointerCapture(e.pointerId)
         }
-        if (document.activeElement === input1Ref.current) {
-          input1Ref.current?.blur()
-        }
-      }
-    }, [disabled])
 
-    const tv = useMemo(
-      () =>
-        rangeTv({
-          hasStepOrDefault: step > 1 || normalizedDefaultValue !== undefined,
-          disabled,
-        }),
-      [step, normalizedDefaultValue, disabled],
-    )
+        updatePosition(e.clientX, thumbIndex, true)
+        isDragging.current = null
 
-    const connectsClass = useMemo(() => {
-      if (disabled) return "bg-disabled-background"
-      return connectsClassName.positive
-    }, [disabled, connectsClassName])
-
-    // Connector between the two thumbs
-    const connectStyle = useMemo(() => {
-      return {
-        left: `${transforms.transformX0 + thumbSize / 2}px`,
-        right: `calc(100% - ${transforms.transformX1 + thumbSize / 2}px)`,
-        height: trackSize?.height,
-      }
-    }, [transforms.transformX0, transforms.transformX1, thumbSize, trackSize?.height])
-
-    const renderDots = useCallback(() => {
-      if (dotsData) {
-        return dotsData.map(({ value: dotValue, position: dotPosition }) => {
-          const { minTransform, maxTransform } = transforms
-          const dotTransform = minTransform + dotPosition * (maxTransform - minTransform)
-
-          // Check if dot is within the selected range
-          const isWithinRange = dotValue >= currentValue[0] && dotValue <= currentValue[1]
-          const isDefaultValue = defaultStepValue?.includes(dotValue)
-
-          const { dot } = rangeTv({
-            defaultStepValue: isDefaultValue,
-            overStepValue: isWithinRange,
-          })
-
-          return (
-            <div
-              key={dotValue}
-              className={dot()}
-              style={{
-                left: dotTransform + thumbSize / 2,
-              }}
-            />
-          )
-        })
+        // Use latest value from ref instead of recalculating
+        onChangeEnd?.(latestValueRef.current)
+        cleanup()
       }
 
-      if (defaultDotPositions) {
-        return defaultDotPositions.map((position, idx) => (
-          <div
-            key={`default-${idx}`}
-            className={rangeTv({ defaultStepValue: true }).dot()}
-            style={{
-              left:
-                transforms.minTransform +
-                position * (transforms.maxTransform - transforms.minTransform) +
-                thumbSize / 2,
-            }}
-          />
-        ))
+      // Store cleanup for unmount
+      cleanupRef.current = cleanup
+
+      window.addEventListener("pointermove", handleMove)
+      window.addEventListener("pointerup", handleUp)
+      window.addEventListener("pointercancel", handleUp)
+    },
+    [disabled, readOnly, onChangeEnd, onChangeStart, updatePosition],
+  )
+
+  // Cleanup event listeners on unmount
+  useEffect(() => {
+    return () => {
+      cleanupRef.current?.()
+    }
+  }, [])
+
+  const handleSliderPointerDown = useCallback(
+    (e: React.PointerEvent) => {
+      if (disabled || readOnly) return
+      if (e.target === thumb0Ref.current || e.target === thumb1Ref.current) return
+
+      // Determine which thumb to move based on proximity
+      const rect = sliderRef.current?.getBoundingClientRect()
+      if (!rect) return
+
+      const clickPosition = (e.clientX - rect.left) / rect.width
+      const clickValue = positionToValue(clickPosition)
+
+      // Calculate distances to both thumbs
+      const dist0 = Math.abs(clickValue - currentValue[0])
+      const dist1 = Math.abs(clickValue - currentValue[1])
+
+      // Move the closer thumb
+      const thumbIndex: ThumbIndex = dist0 <= dist1 ? 0 : 1
+      handlePointerDown(e, thumbIndex)
+    },
+    [disabled, readOnly, handlePointerDown, currentValue, positionToValue],
+  )
+
+  const handleKeyDown = useEventCallback((e: React.KeyboardEvent, thumbIndex: ThumbIndex) => {
+    if (disabled || readOnly) return
+
+    const stepValue = e.shiftKey ? safeStep * 10 : safeStep
+    let newValue = currentValue[thumbIndex]
+
+    switch (e.key) {
+      case "ArrowLeft":
+      case "ArrowDown":
+        e.preventDefault()
+        newValue = clamp(newValue - stepValue, min, max)
+        break
+      case "ArrowRight":
+      case "ArrowUp":
+        e.preventDefault()
+        newValue = clamp(newValue + stepValue, min, max)
+        break
+      default:
+        return
+    }
+
+    const newTuple: [number, number] = [...currentValue] as [number, number]
+    newTuple[thumbIndex] = newValue
+
+    // Ensure min <= max
+    if (newTuple[0] > newTuple[1]) {
+      if (thumbIndex === 0) {
+        newTuple[0] = newTuple[1]
+      } else {
+        newTuple[1] = newTuple[0]
       }
+    }
 
-      return null
-    }, [dotsData, defaultDotPositions, defaultStepValue, transforms, thumbSize, currentValue])
+    onChange?.(newTuple)
+  })
 
-    useEffect(() => {
-      const noop = () => {}
-      return () => {
-        if (typeof window !== "undefined") {
-          window.removeEventListener("pointermove", noop)
-          window.removeEventListener("pointerup", noop)
-          window.removeEventListener("pointercancel", noop)
-        }
+  useEffect(() => {
+    if (disabled) {
+      if (document.activeElement === input0Ref.current) {
+        input0Ref.current?.blur()
       }
-    }, [])
+      if (document.activeElement === input1Ref.current) {
+        input1Ref.current?.blur()
+      }
+    }
+  }, [disabled])
 
-    // Determine thumb colors based on whether they're at default values
-    const thumb0IsDefault = useMemo(() => {
-      if (!defaultStepValue) return false
-      return currentStepValue[0] === defaultStepValue[0]
-    }, [currentStepValue, defaultStepValue])
+  const hasStepOrDefault = safeStep > 1 || normalizedDefaultValue !== undefined
 
-    const thumb1IsDefault = useMemo(() => {
-      if (!defaultStepValue) return false
-      return currentStepValue[1] === defaultStepValue[1]
-    }, [currentStepValue, defaultStepValue])
+  const tv = useMemo(() => rangeTv({ hasStepOrDefault, disabled }), [hasStepOrDefault, disabled])
 
-    const thumbTv0 = useMemo(
-      () =>
-        rangeTv({
-          currentDefaultValue: thumb0IsDefault,
-          hasStepOrDefault: step > 1 || normalizedDefaultValue !== undefined,
-          disabled,
-        }),
-      [thumb0IsDefault, step, normalizedDefaultValue, disabled],
-    )
+  // Simple boolean calculations - no useMemo needed
+  const thumb0IsDefault = defaultStepValue ? currentStepValue[0] === defaultStepValue[0] : false
+  const thumb1IsDefault = defaultStepValue ? currentStepValue[1] === defaultStepValue[1] : false
 
-    const thumbTv1 = useMemo(
-      () =>
-        rangeTv({
-          currentDefaultValue: thumb1IsDefault,
-          hasStepOrDefault: step > 1 || normalizedDefaultValue !== undefined,
-          disabled,
-        }),
-      [thumb1IsDefault, step, normalizedDefaultValue, disabled],
-    )
+  const thumbTv0 = useMemo(
+    () => rangeTv({ currentDefaultValue: thumb0IsDefault, hasStepOrDefault, disabled }),
+    [thumb0IsDefault, hasStepOrDefault, disabled],
+  )
 
-    return (
+  const thumbTv1 = useMemo(
+    () => rangeTv({ currentDefaultValue: thumb1IsDefault, hasStepOrDefault, disabled }),
+    [thumb1IsDefault, hasStepOrDefault, disabled],
+  )
+
+  // Create context value
+  const contextValue = useMemo<RangeTupleContextValue>(
+    () => ({
+      currentValue,
+      disabled,
+      readOnly,
+      min,
+      max,
+      step: safeStep,
+      thumbSize,
+      trackHeight,
+      transforms,
+      defaultStepValue,
+      currentStepValue,
+      dotsData,
+      defaultDotPositions,
+      normalizedDefaultValue,
+      thumb0Ref,
+      thumb1Ref,
+      input0Ref,
+      input1Ref,
+      isDragging,
+      handlePointerDown,
+      handleKeyDown,
+      tv,
+      thumbTv0,
+      thumbTv1,
+      hasCustomDot,
+      hasCustomConnects,
+      isDefaultValue: thumb0IsDefault && thumb1IsDefault,
+    }),
+    [
+      currentValue,
+      disabled,
+      readOnly,
+      min,
+      max,
+      safeStep,
+      thumbSize,
+      trackHeight,
+      transforms,
+      defaultStepValue,
+      currentStepValue,
+      dotsData,
+      defaultDotPositions,
+      normalizedDefaultValue,
+      handlePointerDown,
+      handleKeyDown,
+      tv,
+      thumbTv0,
+      thumbTv1,
+      hasCustomDot,
+      hasCustomConnects,
+      thumb0IsDefault,
+      thumb1IsDefault,
+    ],
+  )
+
+  return (
+    <RangeTupleContext.Provider value={contextValue}>
       <div
         ref={mergeRefs(sliderRef, ref)}
         onPointerDown={handleSliderPointerDown}
@@ -532,65 +532,37 @@ export const RangeTuple = forwardRef<HTMLDivElement, RangeTupleProps>(
         style={
           {
             "--width": `${trackWidth}px`,
-            "--height": `${trackSize?.height ?? 16}px`,
+            "--height": `${trackHeight}px`,
+            "--thumb-size": `${thumbSize}px`,
           } as CSSProperties
         }
       >
-        <div
-          className={tcx(tv.connect(), connectsClass)}
-          style={connectStyle}
-        />
-
-        {(step > 1 || normalizedDefaultValue !== undefined) && (
-          <div className={tv.dotContainer()}>{renderDots()}</div>
+        {hasCustomChildren ? (
+          children
+        ) : (
+          <>
+            <RangeTupleContainer />
+            <RangeTupleThumb index={0} />
+            <RangeTupleThumb index={1} />
+          </>
         )}
-
-        {/* Thumb 0 (min value) */}
-        <div
-          ref={thumb0Ref}
-          onPointerDown={(e) => handlePointerDown(e, 0)}
-          className={thumbTv0.thumb()}
-          style={{
-            width: thumbSize,
-            height: thumbSize,
-            transform: `translate(${transforms.transformX0}px, -50%)`,
-            willChange: isDragging.current === 0 ? "transform" : "auto",
-          }}
-        >
-          <input
-            ref={input0Ref}
-            type="text"
-            onKeyDown={(e) => handleKeyDown(e, 0)}
-            className={tv.input()}
-            tabIndex={disabled || readOnly ? -1 : 0}
-            readOnly
-          />
-        </div>
-
-        {/* Thumb 1 (max value) */}
-        <div
-          ref={thumb1Ref}
-          onPointerDown={(e) => handlePointerDown(e, 1)}
-          className={thumbTv1.thumb()}
-          style={{
-            width: thumbSize,
-            height: thumbSize,
-            transform: `translate(${transforms.transformX1}px, -50%)`,
-            willChange: isDragging.current === 1 ? "transform" : "auto",
-          }}
-        >
-          <input
-            ref={input1Ref}
-            type="text"
-            onKeyDown={(e) => handleKeyDown(e, 1)}
-            className={tv.input()}
-            tabIndex={disabled || readOnly ? -1 : 0}
-            readOnly
-          />
-        </div>
       </div>
-    )
-  },
-)
+    </RangeTupleContext.Provider>
+  )
+})
 
-RangeTuple.displayName = "RangeTuple"
+RangeTupleRoot.displayName = "RangeTuple"
+
+export const RangeTuple = Object.assign(RangeTupleRoot, {
+  Container: RangeTupleContainer,
+  Connects: RangeTupleConnects,
+  Thumb: RangeTupleThumb,
+  Dot: RangeTupleDot,
+}) as RangeTupleComponent
+
+export type {
+  RangeTupleConnectsProps,
+  RangeTupleContainerProps,
+  RangeTupleDotProps,
+  RangeTupleThumbProps,
+}

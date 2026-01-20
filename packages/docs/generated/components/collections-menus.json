@@ -1000,6 +1000,12 @@
           "description": ""
         },
         {
+          "name": "asLink",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": "Whether this item is a link item. When true, a link icon will be displayed on the right.\nThe actual link navigation should be handled by the onClick handler."
+        },
+        {
           "name": "onClick",
           "type": "((e: MouseEvent<HTMLButtonElement, MouseEvent>) => void) | undefined",
           "required": false,

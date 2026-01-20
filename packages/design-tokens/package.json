@@ -1,6 +1,6 @@
 {
   "name": "@choice-ui/design-tokens",
-  "version": "0.2.15",
+  "version": "0.2.16",
   "description": "Design tokens generator for Choice UI - converts TypeScript tokens to W3C format and outputs to multiple formats",
   "main": "dist/tokens.js",
   "types": "dist/tokens.d.ts",

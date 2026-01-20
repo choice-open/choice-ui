@@ -260,7 +260,7 @@ export const ColorImagePaint = memo(function ColorImagePaint(props: ColorImagePa
               min={-100}
               max={100}
               defaultValue={0}
-              trackSize={{ width: 128 }}
+              width={128}
               value={filters[filterName as keyof typeof filters]}
               onChange={(value) =>
                 setFilters({

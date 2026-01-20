@@ -1,6 +1,6 @@
 # Range
 
-A customizable slider component family that allows users to select numeric values within a specified range. Includes both single-value (`Range`) and dual-thumb range selection (`RangeTuple`) variants, with support for step intervals, default value indicators, and responsive sizing.
+A customizable slider component family that allows users to select numeric values within a specified range. Includes both single-value (`Range`) and dual-thumb range selection (`RangeTuple`) variants, with support for step intervals, default value indicators, compound component customization, and responsive sizing.
 
 ## Import
 
@@ -10,12 +10,17 @@ import { Range, RangeTuple } from "@choice-ui/react"
 
 ## Features
 
+- **Compound Component Pattern**: Flexible architecture with customizable subcomponents
+  - `Range.Container` - Logical wrapper for track area and dots
+  - `Range.Connects` - Connection bar with `data-connect-status` attribute
+  - `Range.Thumb` - Draggable handle with `data-status` for default value styling
+  - `Range.Dot` - Step markers with `data-status` for state-based styling
 - Customizable minimum and maximum values
-- Optional step intervals with visual tick marks
+- Optional step intervals with visual tick marks (supports decimal steps like `0.0001`)
 - Default value indicator with snap effect
 - Configurable track and thumb sizes
 - Support for negative value ranges
-- Disabled state support
+- Disabled and read-only state support
 - Controlled and uncontrolled usage patterns
 - Automatic and fixed width sizing options
 - Smooth drag interaction with pointer capture
@@ -79,21 +84,6 @@ const [value, setValue] = useState(10)
 />
 ```
 
-### Combined step marks and default value
-
-```tsx
-const [value, setValue] = useState(10)
-
-<Range
-  value={value}
-  onChange={setValue}
-  min={0}
-  max={100}
-  defaultValue={50}
-  step={10}
-/>
-```
-
 ### Disabled
 
 ```tsx
@@ -146,69 +136,93 @@ const [value, setValue] = useState(0)
 </div>
 ```
 
-### In a popover
+## Compound Component Pattern
+
+The Range component supports a flexible compound component architecture for advanced customization. When no children are provided, the component renders with default subcomponents (backward compatible).
+
+### Available Subcomponents
+
+| Component | Description |
+|-----------|-------------|
+| `Range.Container` | Logical wrapper containing connects, dots, and custom children |
+| `Range.Connects` | The connection bar showing selected value range |
+| `Range.Thumb` | The draggable handle |
+| `Range.Dot` | Step markers and default value indicators |
+
+### Custom Connects Styling
+
+Use the compound pattern to apply custom styles to the connection bar:
 
 ```tsx
-import { Popover, Button } from "@choice-ui/react"
+const [value, setValue] = useState(50)
 
-const [value, setValue] = useState(0)
-
-<Popover draggable>
-  <Popover.Trigger>
-    <Button>Settings</Button>
-  </Popover.Trigger>
-  <Popover.Header title="Adjust Value" />
-  <Popover.Content className="grid w-64 grid-cols-[180px_auto] gap-2 p-3">
-    <Range
-      className="flex-1"
-      value={value}
-      onChange={setValue}
-      min={0}
-      max={100}
-      defaultValue={50}
-      trackSize={{
-        width: 180,
-        height: 16,
-      }}
-    />
-    <div className="w-10 flex-1 text-right">{value}%</div>
-  </Popover.Content>
-</Popover>
+<Range value={value} onChange={setValue} min={0} max={100} step={10}>
+  <Range.Container>
+    <Range.Connects className="bg-gradient-to-r from-blue-500 to-purple-500" />
+  </Range.Container>
+  <Range.Thumb />
+</Range>
 ```
 
-### With numeric input
+### Custom Dots
+
+Override dot rendering with custom styles:
 
 ```tsx
-import { NumericInput } from "@choice-ui/react"
+const [value, setValue] = useState(50)
 
-const [value, setValue] = useState(0)
+<Range value={value} onChange={setValue} min={0} max={100} step={10} defaultValue={50}>
+  <Range.Container>
+    <Range.Connects />
+    <Range.Dot className="size-3 rounded-full border-2 border-blue-500" />
+  </Range.Container>
+  <Range.Thumb />
+</Range>
+```
 
-<div className="grid w-40 grid-cols-[1fr_2.5rem] gap-px">
-  <div className="bg-secondary-background flex items-center rounded-l-md px-2">
-    <Range
-      className="bg-default-boundary flex-1"
-      value={value}
-      onChange={setValue}
-      min={0}
-      max={100}
-      trackSize={{
-        width: "auto",
-        height: 6,
-      }}
-      thumbSize={10}
-    />
-  </div>
-  <NumericInput
-    className="before:rounded-l-none"
-    expression="{value}%"
-    value={value}
-    onChange={(value) => setValue(value as number)}
-    min={0}
-    max={100}
-  >
-    <NumericInput.Prefix className="w-2 rounded-l-none" />
-  </NumericInput>
-</div>
+### Data Attributes
+
+The compound components expose data attributes for CSS-based styling:
+
+**Range.Connects:**
+- `data-connect-status="positive"` - Value is positive or zero
+- `data-connect-status="negative"` - Value is negative
+- `data-connect-status="disabled"` - Component is disabled
+
+**Range.Thumb:**
+- `data-status="default"` - Thumb is at the default value position
+- `data-status="normal"` - Thumb is not at default value
+
+**Range.Dot:**
+- `data-status="default"` - Dot represents default value, current value below
+- `data-status="default-over"` - Dot represents default value, current value at/above
+- `data-status="over"` - Current value is at or above this dot
+- `data-status="under"` - Current value is below this dot
+
+Example CSS styling with data attributes:
+
+```css
+/* Style connects based on value direction */
+[data-connect-status="positive"] {
+  background: linear-gradient(to right, #3b82f6, #8b5cf6);
+}
+[data-connect-status="negative"] {
+  background: linear-gradient(to left, #ef4444, #f97316);
+}
+
+/* Style thumb at default position */
+[data-status="default"] {
+  border-color: #10b981;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.3);
+}
+
+/* Style dots based on state */
+[data-status="over"] {
+  background-color: #3b82f6;
+}
+[data-status="default"] {
+  border: 2px solid #10b981;
+}
 ```
 
 ## Props
@@ -218,17 +232,17 @@ interface RangeProps {
   /** Additional CSS class names */
   className?: string
 
-  /** Custom styling for positive and negative value connections */
-  connectsClassName?: {
-    negative?: string
-    positive?: string
-  }
+  /** Compound component children */
+  children?: React.ReactNode
 
   /** Default value indicator position (not initial value) */
   defaultValue?: number
 
   /** Whether the range is disabled */
   disabled?: boolean
+
+  /** Whether the range is read-only */
+  readOnly?: boolean
 
   /** Maximum value */
   max?: number
@@ -245,7 +259,7 @@ interface RangeProps {
   /** Callback fired when drag starts */
   onChangeStart?: () => void
 
-  /** Step interval for discrete values */
+  /** Step interval for discrete values (supports decimals like 0.0001) */
   step?: number
 
   /** Size of the thumb/handle */
@@ -262,29 +276,34 @@ interface RangeProps {
 }
 ```
 
-- Defaults:
-  - `min`: 0
-  - `max`: 100
-  - `step`: 1
-  - `disabled`: false
-  - `connectsClassName`: `{ positive: "bg-accent-background", negative: "bg-accent-background" }`
-  - `trackSize`: `{ width: 256, height: 16 }`
-  - `thumbSize`: 14
+### Defaults
 
-- Accessibility:
-  - Keyboard navigation with arrow keys
-  - Shift+arrow for 10x step movement
-  - Focus management and visible focus states
-  - Proper ARIA attributes for screen readers
-  - Touch-friendly interaction
+| Prop | Default Value |
+|------|---------------|
+| `min` | `0` |
+| `max` | `100` |
+| `step` | `1` |
+| `disabled` | `false` |
+| `readOnly` | `false` |
+| `trackSize` | `{ width: 256, height: 16 }` |
+| `thumbSize` | `14` |
+
+### Accessibility
+
+- Keyboard navigation with arrow keys
+- Shift+arrow for 10x step movement
+- Focus management and visible focus states
+- Proper ARIA attributes for screen readers
+- Touch-friendly interaction
 
 ## Styling
 
 - This component uses Tailwind CSS via `tailwind-variants` in `tv.ts` to create variants and slots.
-- Customize using the `className` prop and `connectsClassName` for the fill area.
+- Customize using the `className` prop or compound component pattern.
 - Slots available in `tv.ts`: `container`, `connect`, `thumb`, `dotContainer`, `dot`, `input`.
+- Use data attributes for state-based CSS styling.
 
-## Best practices
+## Best Practices
 
 - Use for selecting values from a continuous or stepped range
 - Provide appropriate min, max, and step values for your use case
@@ -293,7 +312,8 @@ interface RangeProps {
 - Use `defaultValue` to indicate recommended or factory settings
 - Specify explicit width for consistent appearance, or use "auto" for responsive layouts
 - Provide `onChangeStart` and `onChangeEnd` for expensive operations
-- Consider snap behavior with `defaultValue` for important reference points
+- Use compound components when you need custom styling beyond className props
+- Prefer data attributes for state-based styling over conditional className logic
 
 ## Examples
 
@@ -316,43 +336,17 @@ const [volume, setVolume] = useState(50)
 </div>
 ```
 
-### Color opacity
+### Custom gradient connects
 
 ```tsx
-const [opacity, setOpacity] = useState(100)
+const [value, setValue] = useState(50)
 
-<div className="space-y-2">
-  <label>Opacity: {opacity}%</label>
-  <Range
-    value={opacity}
-    onChange={setOpacity}
-    min={0}
-    max={100}
-    step={5}
-    defaultValue={100}
-  />
-</div>
-```
-
-### Temperature range
-
-```tsx
-const [temp, setTemp] = useState(20)
-
-<div className="space-y-2">
-  <label>Temperature: {temp}°C</label>
-  <Range
-    value={temp}
-    onChange={setTemp}
-    min={-10}
-    max={40}
-    defaultValue={20}
-    connectsClassName={{
-      negative: "bg-blue-400",
-      positive: "bg-red-400"
-    }}
-  />
-</div>
+<Range value={value} onChange={setValue} min={0} max={100}>
+  <Range.Container>
+    <Range.Connects className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600" />
+  </Range.Container>
+  <Range.Thumb />
+</Range>
 ```
 
 ### Zoom level with steps
@@ -399,7 +393,7 @@ const [value, setValue] = useState(75)
 - The component uses pointer capture for smooth dragging across the entire screen
 - Auto-width calculation uses ResizeObserver for responsive behavior
 - Negative ranges show different visual styling for values below zero
-- Loading states and validation can be handled in the `onChange` callback
+- Decimal step values (like `0.0001`) are fully supported
 - The component is optimized for performance with proper memoization of expensive calculations
 
 ---
@@ -412,20 +406,14 @@ A dual-thumb range slider component that allows users to select a range of value
 
 - Dual independent thumbs for min and max value selection
 - Visual highlight of the selected range between thumbs
-- All features from the single Range component:
-  - Customizable minimum and maximum bounds
-  - Optional step intervals with visual tick marks
-  - Default value indicators with snap effect
-  - Configurable track and thumb sizes
-  - Support for negative value ranges
-  - Disabled state support
-  - Controlled usage patterns
-  - Automatic and fixed width sizing options
-  - Smooth drag interaction with pointer capture
-  - Keyboard navigation support (arrow keys for both thumbs)
-  - Proper accessibility with ARIA attributes
+- **Compound Component Pattern**: Same flexible architecture as Range
+  - `RangeTuple.Container` - Logical wrapper for track area and dots
+  - `RangeTuple.Connects` - Connection bar showing selected range
+  - `RangeTuple.Thumb` - Draggable handles (renders both thumbs)
+  - `RangeTuple.Dot` - Step markers with range-aware styling
+- All features from the single Range component
 - Smart thumb selection: clicking the track moves the nearest thumb
-- Thumbs change color when at default positions
+- Thumbs change styling when at default positions
 - Proper handling of thumb ordering (min cannot exceed max)
 
 ## Usage
@@ -499,55 +487,62 @@ const [value, setValue] = useState<[number, number]>([30, 70])
 />
 ```
 
-### Custom sizing
+## Compound Component Pattern
+
+RangeTuple supports the same compound component pattern as Range for advanced customization.
+
+### Available Subcomponents
+
+| Component | Description |
+|-----------|-------------|
+| `RangeTuple.Container` | Logical wrapper containing connects, dots, and custom children |
+| `RangeTuple.Connects` | The connection bar showing selected range |
+| `RangeTuple.Thumb` | Both draggable handles |
+| `RangeTuple.Dot` | Step markers with range-aware state |
+
+### Custom Connects Styling
 
 ```tsx
-const [value, setValue] = useState<[number, number]>([20, 80])
-
-<RangeTuple
-  value={value}
-  onChange={setValue}
-  min={0}
-  max={100}
-  trackSize={{
-    width: 200,
-    height: 10,
-  }}
-  thumbSize={10}
-/>
-```
-
-### In a popover
-
-```tsx
-import { Popover, Button } from "@choice-ui/react"
-
 const [value, setValue] = useState<[number, number]>([25, 75])
 
-<Popover draggable>
-  <Popover.Trigger>
-    <Button>Open Range Filter</Button>
-  </Popover.Trigger>
-  <Popover.Header title="Select Range" />
-  <Popover.Content className="grid w-64 grid-cols-[180px_auto] gap-2 p-3">
-    <RangeTuple
-      className="flex-1"
-      value={value}
-      onChange={setValue}
-      min={0}
-      max={100}
-      defaultValue={[25, 75]}
-      trackSize={{
-        width: 180,
-        height: 16,
-      }}
-    />
-    <div className="text-body-medium w-14 flex-1 text-right">
-      {value[0]}-{value[1]}%
-    </div>
-  </Popover.Content>
-</Popover>
+<RangeTuple value={value} onChange={setValue} min={0} max={100} step={10}>
+  <RangeTuple.Container>
+    <RangeTuple.Connects className="bg-gradient-to-r from-green-400 to-emerald-600" />
+  </RangeTuple.Container>
+  <RangeTuple.Thumb />
+</RangeTuple>
 ```
+
+### Custom Dots
+
+```tsx
+const [value, setValue] = useState<[number, number]>([25, 75])
+
+<RangeTuple value={value} onChange={setValue} min={0} max={100} step={10} defaultValue={[25, 75]}>
+  <RangeTuple.Container>
+    <RangeTuple.Connects />
+    <RangeTuple.Dot className="size-2.5 rounded-full border-2 border-emerald-500" />
+  </RangeTuple.Container>
+  <RangeTuple.Thumb />
+</RangeTuple>
+```
+
+### Data Attributes
+
+**RangeTuple.Thumb:**
+- `data-status="default"` - Thumb is at its default value position
+- `data-status="normal"` - Thumb is not at default value
+- `data-position="left"` - Left (min) thumb
+- `data-position="right"` - Right (max) thumb
+
+**RangeTuple.Dot:**
+- `data-status="default-over"` - Default value dot within selected range
+- `data-status="over"` - Dot within selected range
+- `data-status="default"` - Default value dot outside selected range
+- `data-status="under"` - Dot outside selected range
+- `data-status="left-over"` - Left default dot, left thumb at/past position
+- `data-status="right-over"` - Right default dot, right thumb at/past position
+- `data-position="left"` / `data-position="right"` - Position indicator
 
 ## Props
 
@@ -556,17 +551,17 @@ interface RangeTupleProps {
   /** Additional CSS class names */
   className?: string
 
-  /** Custom styling for positive and negative value connections */
-  connectsClassName?: {
-    negative?: string
-    positive?: string
-  }
+  /** Compound component children */
+  children?: React.ReactNode
 
   /** Default value indicator positions (not initial values) */
   defaultValue?: [number, number]
 
   /** Whether the range is disabled */
   disabled?: boolean
+
+  /** Whether the range is read-only */
+  readOnly?: boolean
 
   /** Maximum value */
   max?: number
@@ -583,7 +578,7 @@ interface RangeTupleProps {
   /** Callback fired when drag starts */
   onChangeStart?: () => void
 
-  /** Step interval for discrete values */
+  /** Step interval for discrete values (supports decimals) */
   step?: number
 
   /** Size of the thumbs/handles */
@@ -600,41 +595,26 @@ interface RangeTupleProps {
 }
 ```
 
-- Defaults:
-  - `min`: 0
-  - `max`: 100
-  - `step`: 1
-  - `disabled`: false
-  - `connectsClassName`: `{ positive: "bg-accent-background", negative: "bg-accent-background" }`
-  - `trackSize`: `{ width: 256, height: 16 }`
-  - `thumbSize`: 14
+### Defaults
 
-- Accessibility:
-  - Keyboard navigation with arrow keys for both thumbs
-  - Shift+arrow for 10x step movement
-  - Focus management for both thumbs
-  - Visible focus states
-  - Proper ARIA attributes for screen readers
-  - Touch-friendly interaction for both thumbs
+| Prop | Default Value |
+|------|---------------|
+| `min` | `0` |
+| `max` | `100` |
+| `step` | `1` |
+| `disabled` | `false` |
+| `readOnly` | `false` |
+| `trackSize` | `{ width: 256, height: 16 }` |
+| `thumbSize` | `14` |
 
-## Styling
+### Accessibility
 
-- This component uses the same Tailwind CSS variants as `Range` via `tailwind-variants` in `tv.ts`.
-- Customize using the `className` prop and `connectsClassName` for the highlighted range area.
-- Slots available in `tv.ts`: `container`, `connect`, `thumb`, `dotContainer`, `dot`, `input`.
-- Thumbs automatically change visual styling when at default value positions.
-
-## Best practices
-
-- Use for selecting a range or interval (e.g., price range, date range, time slots)
-- Display the current range values for better usability (e.g., "25 - 75" or "$25 - $75")
-- Use `defaultValue` to indicate recommended or typical ranges
-- Specify explicit width for consistent appearance, or use "auto" for responsive layouts
-- Provide appropriate min, max, and step values for your use case
-- Consider using step marks for discrete intervals
-- Provide `onChangeStart` and `onChangeEnd` for expensive operations like API calls
-- Ensure the selected range is visually distinct from unselected areas
-- Consider showing the range span (e.g., "Range: 50 units") when useful
+- Keyboard navigation with arrow keys for both thumbs
+- Shift+arrow for 10x step movement
+- Focus management for both thumbs
+- Visible focus states
+- Proper ARIA attributes for screen readers
+- Touch-friendly interaction for both thumbs
 
 ## Examples
 
@@ -658,6 +638,19 @@ const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000])
 </div>
 ```
 
+### Custom gradient range
+
+```tsx
+const [range, setRange] = useState<[number, number]>([20, 80])
+
+<RangeTuple value={range} onChange={setRange} min={0} max={100}>
+  <RangeTuple.Container>
+    <RangeTuple.Connects className="bg-gradient-to-r from-amber-400 via-orange-500 to-red-500" />
+  </RangeTuple.Container>
+  <RangeTuple.Thumb />
+</RangeTuple>
+```
+
 ### Time slot selection
 
 ```tsx
@@ -676,23 +669,6 @@ const [timeSlot, setTimeSlot] = useState<[number, number]>([9, 17])
 </div>
 ```
 
-### Age range filter
-
-```tsx
-const [ageRange, setAgeRange] = useState<[number, number]>([18, 65])
-
-<div className="space-y-2">
-  <label>Age Range: {ageRange[0]} - {ageRange[1]} years</label>
-  <RangeTuple
-    value={ageRange}
-    onChange={setAgeRange}
-    min={0}
-    max={100}
-    step={5}
-  />
-</div>
-```
-
 ### Temperature comfort zone
 
 ```tsx
@@ -706,50 +682,7 @@ const [comfortZone, setComfortZone] = useState<[number, number]>([18, 24])
     min={-10}
     max={40}
     defaultValue={[18, 24]}
-    connectsClassName={{
-      positive: "bg-green-400"
-    }}
   />
-</div>
-```
-
-### Date range (days)
-
-```tsx
-const [dayRange, setDayRange] = useState<[number, number]>([1, 30])
-
-<div className="space-y-2">
-  <label>Select Days: Day {dayRange[0]} to Day {dayRange[1]}</label>
-  <RangeTuple
-    value={dayRange}
-    onChange={setDayRange}
-    min={1}
-    max={365}
-    step={1}
-  />
-  <span className="text-body-small text-secondary-text">
-    Duration: {dayRange[1] - dayRange[0] + 1} days
-  </span>
-</div>
-```
-
-### Percentage range with display
-
-```tsx
-const [percentRange, setPercentRange] = useState<[number, number]>([25, 75])
-
-<div className="flex items-center gap-4">
-  <RangeTuple
-    value={percentRange}
-    onChange={setPercentRange}
-    min={0}
-    max={100}
-    step={5}
-    defaultValue={[0, 100]}
-  />
-  <div className="text-body-medium w-24 text-right">
-    {percentRange[0]}% - {percentRange[1]}%
-  </div>
 </div>
 ```
 
@@ -761,6 +694,5 @@ const [percentRange, setPercentRange] = useState<[number, number]>([25, 75])
 - With `defaultValue` tuple, both thumbs show visual indicators when at default positions
 - Step behavior applies to both thumbs independently
 - Both thumbs can be controlled via keyboard navigation when focused
-- The highlighted area between thumbs can be styled via `connectsClassName.positive`
-- For negative ranges, the component intelligently handles the visual styling
+- The highlighted area between thumbs can be styled via compound components or data attributes
 - The component automatically normalizes the tuple to ensure min <= max

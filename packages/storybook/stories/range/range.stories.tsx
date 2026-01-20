@@ -1,4 +1,4 @@
-import { Button, NumericInput, Popover, Range, RangeTuple } from "@choice-ui/react"
+import { Button, Label, NumericInput, Popover, Range, RangeTuple, tcx } from "@choice-ui/react"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { useState } from "react"
 
@@ -15,28 +15,38 @@ type Story = StoryObj<typeof Range>
 /**
  * `Range` is a slider component that allows users to select a numeric value within a specified range.
  *
- * Features:
- * - Customizable minimum and maximum values
+ * ## Features
+ * - Customizable minimum and maximum values (including negative ranges)
  * - Optional step intervals with visual tick marks
- * - Default value indicator with snap effect
- * - Configurable track and thumb sizes
- * - Disabled state support
- * - Controlled and uncontrolled usage
- * - Smooth drag interaction
+ * - Default value indicator with snap-to-default behavior
+ * - Compound component pattern for advanced customization
+ * - Auto-width calculation or explicit width specification
+ * - Disabled and read-only state support
  *
- * Usage Guidelines:
- * - Use for selecting a value from a continuous range
- * - Provide appropriate min, max, and step values for your use case
- * - Consider using step marks for discrete values
- * - Display the current value for better usability
- * - Use defaultValue to indicate recommended or factory settings
- * - Specify explicit width for consistent appearance
+ * ## Compound Components
+ * The Range component supports a compound pattern for fine-grained control:
+ * - `Range.Container` - Wraps the track area and renders dots (accepts custom `Range.Connects` as children)
+ * - `Range.Connects` - The colored connection bar (supports `data-connect-status` for positive/negative styling)
+ * - `Range.Thumb` - The draggable handle (supports `data-status` for default value styling)
+ * - `Range.Dot` - Step markers or default value indicator (supports `data-status` for state styling)
  *
- * Accessibility:
- * - Keyboard support (arrow keys, home/end)
- * - Proper ARIA attributes
- * - Focus management
- * - Screen reader compatibility
+ * ## Usage
+ * ```tsx
+ * // Basic usage
+ * <Range value={value} onChange={setValue} />
+ *
+ * // With compound components for custom styling
+ * <Range value={value} onChange={setValue}>
+ *   <Range.Container>
+ *     <Range.Connects className="bg-gradient-to-r from-blue-500 to-purple-500" />
+ *   </Range.Container>
+ *   <Range.Thumb size={18} className="bg-purple-500" />
+ * </Range>
+ * ```
+ *
+ * ## Accessibility
+ * - Keyboard support (arrow keys with shift for larger steps)
+ * - Focus management with visible focus states
  * - Appropriate contrast ratios
  */
 
@@ -225,18 +235,13 @@ export const Disabled: Story = {
 /**
  * CustomSize: Demonstrates configuring the Range component dimensions.
  *
- * Features:
- * - Custom track width and height
- * - Custom thumb size
- * - Proportional adjustments to all visual elements
+ * Use compound components to customize dimensions:
+ * - `Range.Container height={number}` - Sets track height
+ * - `Range.Thumb size={number}` - Sets thumb size
+ * - `width={number}` prop on Range - Sets track width
  *
- * Use custom sizing when:
- * - Fitting into space-constrained layouts
- * - Creating more compact or larger controls based on context
- * - Matching specific design requirements
- *
- * Note: The Range component needs explicit width specification for proper
- * calculation of step positions and thumb movement.
+ * The `thumbSize` prop on Range is used for calculations when not using
+ * compound components, but `Range.Thumb size` takes precedence when specified.
  */
 export const CustomSize: Story = {
   render: function CustomSizeStory() {
@@ -249,14 +254,262 @@ export const CustomSize: Story = {
           onChange={setValue}
           min={0}
           max={100}
-          trackSize={{
-            width: 200,
-            height: 10,
-          }}
+          width={200}
           thumbSize={10}
-        />
+        >
+          <Range.Container height={10} />
+          <Range.Thumb size={10} />
+        </Range>
         <div className="w-10 text-right">{value}%</div>
       </>
+    )
+  },
+}
+
+/**
+ * Compound: Demonstrates the compound component pattern for custom styling.
+ *
+ * The Range component uses a compound pattern with these subcomponents:
+ * - `Range.Container` - Renders the track background and dots
+ * - `Range.Thumb` - The draggable handle with customizable size and className
+ *
+ * When using compound components, the parent Range only provides the container
+ * wrapper and context. All visual elements are explicitly rendered as children.
+ *
+ * ```tsx
+ * <Range value={value} onChange={setValue}>
+ *   <Range.Container height={4} />
+ *   <Range.Thumb size={6} className="rounded-sm" />
+ * </Range>
+ * ```
+ */
+export const Compound: Story = {
+  render: function CompoundStory() {
+    const [value, setValue] = useState(50)
+
+    return (
+      <div className="flex flex-col gap-6">
+        <div className="flex items-center gap-4">
+          <Range
+            value={value}
+            onChange={setValue}
+          >
+            <Range.Container />
+            <Range.Thumb
+              size={18}
+              className="bg-blue-500"
+            />
+          </Range>
+          <div className="w-10 text-right">{value}%</div>
+        </div>
+
+        <div className="flex items-center gap-4">
+          <Range
+            value={value}
+            onChange={setValue}
+            className="bg-red-500"
+          >
+            <Range.Container height={4} />
+            <Range.Thumb
+              className="h-2 w-3 rounded-sm"
+              size={6}
+            />
+          </Range>
+          <div className="w-10 text-right">{value}%</div>
+        </div>
+      </div>
+    )
+  },
+}
+
+/**
+ * CustomConnects: Demonstrates custom styling for the connection bar.
+ *
+ * Use `Range.Container` with a nested `Range.Connects` for fine-grained control
+ * over the connection bar styling (gradients, conditional colors, etc.).
+ *
+ * ## Component Structure
+ * - `Range.Container` - Logical wrapper that renders connects + dots
+ * - `Range.Connects` - The actual colored bar element
+ *
+ * ## Data Attributes
+ * `Range.Connects` exposes `data-connect-status` for conditional styling:
+ * - `positive` - when value >= 0 (or min >= 0)
+ * - `negative` - when value < 0 (only for ranges with min < 0)
+ * - `disabled` - when the range is disabled
+ *
+ * ```tsx
+ * <Range.Connects className="data-[connect-status=negative]:bg-red-500 data-[connect-status=positive]:bg-green-500" />
+ * ```
+ */
+export const CustomConnects: Story = {
+  render: function CustomConnectsStory() {
+    const [value, setValue] = useState(50)
+    const [negativeValue, setNegativeValue] = useState(0)
+
+    return (
+      <div className="flex flex-col gap-8">
+        {/* Gradient connects */}
+        <div className="flex flex-col gap-2">
+          <Label>Gradient connection bar</Label>
+          <div className="flex items-center gap-4">
+            <Range
+              value={value}
+              onChange={setValue}
+            >
+              <Range.Container>
+                <Range.Connects className="bg-gradient-to-r from-blue-500 to-purple-500" />
+              </Range.Container>
+              <Range.Thumb
+                size={18}
+                className="bg-purple-500"
+              />
+            </Range>
+            <div className="w-10 text-right">{value}%</div>
+          </div>
+        </div>
+
+        {/* Custom styled connects with dots */}
+        <div className="flex flex-col gap-2">
+          <Label>Custom connects with step dots</Label>
+          <div className="flex items-center gap-4">
+            <Range
+              value={value}
+              onChange={setValue}
+              step={10}
+              defaultValue={50}
+            >
+              <Range.Container>
+                <Range.Connects className="bg-gradient-to-r from-green-400 to-blue-500" />
+              </Range.Container>
+              <Range.Thumb
+                size={18}
+                className="bg-blue-500 data-[status=default]:bg-white"
+              />
+              <Range.Dot className="size-1.5 bg-blue-400/30 data-[status=default]:bg-orange-400 data-[status=over]:bg-blue-500" />
+            </Range>
+            <div className="w-10 text-right">{value}%</div>
+          </div>
+        </div>
+
+        {/* Negative range with different positive/negative colors */}
+        <div className="flex flex-col gap-2">
+          <Label>Negative range with data-connect-status styling</Label>
+          <div className="flex items-center gap-4">
+            <Range
+              value={negativeValue}
+              onChange={setNegativeValue}
+              min={-100}
+              max={100}
+              defaultValue={0}
+            >
+              <Range.Container>
+                <Range.Connects className="data-[connect-status=negative]:bg-red-500 data-[connect-status=positive]:bg-green-500" />
+              </Range.Container>
+              <Range.Thumb
+                size={18}
+                className={tcx(
+                  negativeValue < 0 ? "bg-red-500" : "bg-green-500",
+                  "data-[status=default]:bg-white",
+                )}
+              />
+            </Range>
+            <div className="w-10 text-right">{negativeValue}</div>
+          </div>
+        </div>
+      </div>
+    )
+  },
+}
+
+/**
+ * CustomDot: Demonstrates custom styling for step markers and default value indicators.
+ *
+ * Use `Range.Dot` to customize the appearance of dots that appear when using
+ * `step` (tick marks) or `defaultValue` (default indicator).
+ *
+ * ## Data Attributes
+ * `Range.Dot` exposes `data-status` for conditional styling:
+ * - `under` - dots above current value
+ * - `over` - dots at or below current value
+ * - `default` - the default value dot (when not passed)
+ * - `default-over` - default value dot when current value >= default
+ *
+ * ```tsx
+ * <Range.Dot className="size-1.5 data-[status=default]:bg-orange-400 data-[status=over]:bg-blue-500" />
+ * ```
+ */
+export const CustomDot: Story = {
+  render: function CustomDotStory() {
+    const [value, setValue] = useState(50)
+
+    return (
+      <div className="flex flex-col gap-8">
+        {/* With step */}
+        <div className="flex flex-col gap-2">
+          <Label>Step with custom dots</Label>
+          <div className="flex items-center gap-4">
+            <Range
+              value={value}
+              onChange={setValue}
+              step={10}
+            >
+              <Range.Container />
+              <Range.Thumb
+                size={18}
+                className="bg-blue-500"
+              />
+              <Range.Dot />
+            </Range>
+            <div className="w-10 text-right">{value}%</div>
+          </div>
+        </div>
+
+        {/* With defaultValue */}
+        <div className="flex flex-col gap-2">
+          <Label>Default value with custom dot</Label>
+          <div className="flex items-center gap-4">
+            <Range
+              value={value}
+              onChange={setValue}
+              defaultValue={50}
+            >
+              <Range.Container>
+                <Range.Connects className="bg-gradient-to-r from-green-400 to-blue-500" />
+              </Range.Container>
+              <Range.Thumb
+                size={18}
+                className="bg-green-500 data-[status=default]:border-green-500"
+              />
+              <Range.Dot className="size-2 bg-green-400 data-[status=over]:bg-pink-400" />
+            </Range>
+            <div className="w-10 text-right">{value}%</div>
+          </div>
+        </div>
+
+        {/* Step + defaultValue with custom dots */}
+        <div className="flex flex-col gap-2">
+          <Label>Step + Default value with custom dots</Label>
+          <div className="flex items-center gap-4">
+            <Range
+              value={value}
+              onChange={setValue}
+              step={10}
+              defaultValue={50}
+            >
+              <Range.Container>
+                <Range.Connects className="bg-purple-500" />
+              </Range.Container>
+              <Range.Thumb
+                size={18}
+                className="bg-purple-500 data-[status=default]:bg-white"
+              />
+              <Range.Dot className="size-1 rotate-45 rounded-none bg-purple-400/20 data-[status=default-over]:bg-white data-[status=default]:bg-red-400 data-[status=over]:bg-purple-600" />
+            </Range>
+            <div className="w-10 text-right">{value}%</div>
+          </div>
+        </div>
+      </div>
     )
   },
 }
@@ -293,10 +546,7 @@ export const DraggableRangePopover: Story = {
             min={0}
             max={100}
             defaultValue={50}
-            trackSize={{
-              width: 180,
-              height: 16,
-            }}
+            width={180}
           />
           <div className="w-10 flex-1 text-right">{value}%</div>
         </Popover.Content>
@@ -306,25 +556,22 @@ export const DraggableRangePopover: Story = {
 }
 
 /**
- * Auto width: Demonstrates the Range component with automatic width calculation.
+ * AutoWidth: Demonstrates automatic width calculation from the container.
  *
- * Features:
- * - Automatic width calculation based on the parent container
- * - Smooth sliding interaction
- * - Proper value display
+ * Set `width={false}` to enable auto-width mode. The Range component will
+ * use a ResizeObserver to calculate its width from the parent container,
+ * making it responsive to layout changes.
+ *
+ * This is useful for:
+ * - Fluid layouts where the slider should fill available space
+ * - Integration with other form elements (like NumericInput)
+ * - Responsive designs without fixed widths
  *
  * ```tsx
- * <Range
- *   value={value}
- *   onChange={setValue}
- *   min={0}
- *   max={100}
- *   trackSize={{
- *     width: "auto",
- *     height: 6,
- *   }}
- *   thumbSize={12}
- * />
+ * <Range value={value} onChange={setValue} width={false}>
+ *   <Range.Container height={6} />
+ *   <Range.Thumb size={10} />
+ * </Range>
  * ```
  */
 export const AutoWidth: Story = {
@@ -340,12 +587,12 @@ export const AutoWidth: Story = {
             onChange={setValue}
             min={0}
             max={100}
-            trackSize={{
-              width: "auto",
-              height: 6,
-            }}
             thumbSize={10}
-          />
+            width={false}
+          >
+            <Range.Container height={6} />
+            <Range.Thumb size={10} />
+          </Range>
         </div>
         <NumericInput
           className="before:rounded-l-none"
@@ -386,6 +633,77 @@ export const BasicTuple: Story = {
         />
         <div className="text-body-medium w-20 text-right">
           {value[0]} - {value[1]}
+        </div>
+      </div>
+    )
+  },
+}
+
+/**
+ * TupleCompound: Demonstrates the compound component pattern for RangeTuple.
+ *
+ * RangeTuple uses the same compound pattern as Range:
+ * - `RangeTuple.Container` - Renders the track background and dots
+ * - `RangeTuple.Thumb` - The draggable handles (requires `index` prop: 0 or 1)
+ *
+ * Each thumb must specify its index to identify which end of the range it controls.
+ *
+ * ```tsx
+ * <RangeTuple value={value} onChange={setValue}>
+ *   <RangeTuple.Container height={4} />
+ *   <RangeTuple.Thumb index={0} size={8} className="rounded-sm" />
+ *   <RangeTuple.Thumb index={1} size={8} className="rounded-sm" />
+ * </RangeTuple>
+ * ```
+ */
+export const TupleCompound: Story = {
+  render: function TupleCompoundStory() {
+    const [value, setValue] = useState<[number, number]>([25, 75])
+
+    return (
+      <div className="flex flex-col gap-6">
+        <div className="flex items-center gap-4">
+          <RangeTuple
+            value={value}
+            onChange={setValue}
+          >
+            <RangeTuple.Container height={4} />
+            <RangeTuple.Thumb
+              index={0}
+              size={8}
+              className="rounded-sm"
+            />
+            <RangeTuple.Thumb
+              index={1}
+              size={8}
+              className="rounded-sm"
+            />
+          </RangeTuple>
+          <div className="text-body-medium w-20 text-right">
+            {value[0]} - {value[1]}
+          </div>
+        </div>
+
+        <div className="flex items-center gap-4">
+          <RangeTuple
+            value={value}
+            onChange={setValue}
+          >
+            <RangeTuple.Container />
+            <RangeTuple.Thumb
+              index={0}
+              size={18}
+              className="bg-blue-500"
+            />
+            <RangeTuple.Thumb
+              index={1}
+              size={18}
+              className="bg-blue-500"
+            />
+          </RangeTuple>
+          <div className="text-body-medium w-20 text-right">
+            {value[0]} - {value[1]}
+          </div>
         </div>
       </div>
     )
@@ -555,12 +873,19 @@ export const TupleCustomSize: Story = {
           onChange={setValue}
           min={0}
           max={100}
-          trackSize={{
-            width: 200,
-            height: 10,
-          }}
+          width={200}
           thumbSize={10}
-        />
+        >
+          <RangeTuple.Container height={10} />
+          <RangeTuple.Thumb
+            index={0}
+            size={10}
+          />
+          <RangeTuple.Thumb
+            index={1}
+            size={10}
+          />
+        </RangeTuple>
         <div className="text-body-medium w-20 text-right">
           {value[0]} - {value[1]}%
         </div>
@@ -601,10 +926,7 @@ export const TupleInPopover: Story = {
             min={0}
             max={100}
             defaultValue={[25, 75]}
-            trackSize={{
-              width: 180,
-              height: 16,
-            }}
+            width={180}
           />
           <div className="text-body-medium w-14 flex-1 text-right">
             {value[0]}-{value[1]}%
@@ -765,6 +1087,207 @@ export const TupleReadonly: Story = {
           💡 Try dragging the thumbs or using arrow keys on both range tuples - only the normal one
           should change the values and increment the count. The readonly one should not respond to
           any interactions.
+        </div>
+      </div>
+    )
+  },
+}
+
+/**
+ * TupleCustomConnects: Demonstrates custom styling for the connection bar in RangeTuple.
+ *
+ * Use `RangeTuple.Container` with a nested `RangeTuple.Connects` for custom connection bar styling.
+ * The connection bar spans between the two thumbs.
+ *
+ * ## Component Structure
+ * - `RangeTuple.Container` - Logical wrapper that renders connects + dots
+ * - `RangeTuple.Connects` - The colored bar between the two thumbs
+ *
+ * ```tsx
+ * <RangeTuple value={value} onChange={setValue}>
+ *   <RangeTuple.Container>
+ *     <RangeTuple.Connects className="bg-gradient-to-r from-pink-500 to-orange-500" />
+ *   </RangeTuple.Container>
+ *   <RangeTuple.Thumb index={0} className="bg-pink-500" />
+ *   <RangeTuple.Thumb index={1} className="bg-orange-500" />
+ * </RangeTuple>
+ * ```
+ */
+export const TupleCustomConnects: Story = {
+  render: function TupleCustomConnectsStory() {
+    const [value, setValue] = useState<[number, number]>([30, 70])
+
+    return (
+      <div className="flex flex-col gap-8">
+        {/* Gradient connects */}
+        <div className="flex flex-col gap-2">
+          <Label>Gradient connection bar</Label>
+          <div className="flex items-center gap-4">
+            <RangeTuple
+              value={value}
+              onChange={setValue}
+            >
+              <RangeTuple.Container>
+                <RangeTuple.Connects className="bg-gradient-to-r from-pink-500 to-orange-500" />
+              </RangeTuple.Container>
+              <RangeTuple.Thumb
+                index={0}
+                size={18}
+                className="bg-pink-500"
+              />
+              <RangeTuple.Thumb
+                index={1}
+                size={18}
+                className="bg-orange-500"
+              />
+            </RangeTuple>
+            <div className="text-body-medium w-20 text-right">
+              {value[0]} - {value[1]}%
+            </div>
+          </div>
+        </div>
+
+        {/* Custom styled connects with dots */}
+        <div className="flex flex-col gap-2">
+          <Label>Custom connects with step dots</Label>
+          <div className="flex items-center gap-4">
+            <RangeTuple
+              value={value}
+              onChange={setValue}
+              step={10}
+            >
+              <RangeTuple.Container>
+                <RangeTuple.Connects className="bg-gradient-to-r from-cyan-400 to-emerald-500" />
+              </RangeTuple.Container>
+              <RangeTuple.Thumb
+                index={0}
+                size={18}
+                className="bg-cyan-500"
+              />
+              <RangeTuple.Thumb
+                index={1}
+                size={18}
+                className="bg-emerald-500"
+              />
+              <RangeTuple.Dot className="size-1.5 bg-emerald-400/30 data-[status=over]:bg-emerald-500" />
+            </RangeTuple>
+            <div className="text-body-medium w-20 text-right">
+              {value[0]} - {value[1]}%
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  },
+}
+
+/**
+ * TupleCustomDot: Demonstrates custom styling for step markers in RangeTuple.
+ *
+ * Use `RangeTuple.Dot` to customize the appearance of dots that appear when using
+ * `step` (tick marks) or `defaultValue` (default indicators for both ends).
+ *
+ * ## Data Attributes
+ * `RangeTuple.Dot` exposes `data-status` for conditional styling:
+ * - `under` - dots outside the selected range
+ * - `over` - dots within the selected range
+ * - `default` - default value dots (when not within range)
+ * - `default-over` - default value dots when within range
+ * - `left-over` / `right-over` - specific default dot states
+ *
+ * ```tsx
+ * <RangeTuple.Dot className="size-1.5 data-[status=over]:bg-emerald-500" />
+ * ```
+ */
+export const TupleCustomDot: Story = {
+  render: function TupleCustomDotStory() {
+    const [value, setValue] = useState<[number, number]>([30, 70])
+
+    return (
+      <div className="flex flex-col gap-8">
+        {/* With step */}
+        <div className="flex flex-col gap-2">
+          <div className="text-body-small-strong">Step with custom dots</div>
+          <div className="flex items-center gap-4">
+            <RangeTuple
+              value={value}
+              onChange={setValue}
+              step={10}
+            >
+              <RangeTuple.Container />
+              <RangeTuple.Thumb
+                index={0}
+                size={18}
+                className="bg-blue-500"
+              />
+              <RangeTuple.Thumb
+                index={1}
+                size={18}
+                className="bg-blue-500"
+              />
+              <RangeTuple.Dot />
+            </RangeTuple>
+            <div className="text-body-medium w-20 text-right">
+              {value[0]} - {value[1]}%
+            </div>
+          </div>
+        </div>
+
+        {/* With defaultValue */}
+        <div className="flex flex-col gap-2">
+          <Label>Default value with custom dots</Label>
+          <div className="flex items-center gap-4">
+            <RangeTuple
+              value={value}
+              onChange={setValue}
+              defaultValue={[25, 75]}
+            >
+              <RangeTuple.Container />
+              <RangeTuple.Thumb
+                index={0}
+                size={18}
+                className="bg-green-500"
+              />
+              <RangeTuple.Thumb
+                index={1}
+                size={18}
+                className="bg-green-500"
+              />
+              <RangeTuple.Dot className="size-2 data-[status=default]:bg-green-400 data-[status=left-over]:bg-pink-400 data-[status=right-over]:bg-pink-400" />
+            </RangeTuple>
+            <div className="text-body-medium w-20 text-right">
+              {value[0]} - {value[1]}%
+            </div>
+          </div>
+        </div>
+
+        {/* Step + defaultValue with custom dots */}
+        <div className="flex flex-col gap-2">
+          <Label>Step + Default value with custom dots</Label>
+          <div className="flex items-center gap-4">
+            <RangeTuple
+              value={value}
+              onChange={setValue}
+              step={10}
+              defaultValue={[30, 70]}
+            >
+              <RangeTuple.Container />
+              <RangeTuple.Thumb
+                index={0}
+                size={18}
+                className="bg-purple-500"
+              />
+              <RangeTuple.Thumb
+                index={1}
+                size={18}
+                className="bg-purple-500"
+              />
+              <RangeTuple.Dot className="size-1 rotate-45 rounded-none bg-purple-400/20 data-[status=default-over]:bg-white data-[status=default]:bg-red-400 data-[status=over]:bg-purple-600" />
+            </RangeTuple>
+            <div className="text-body-medium w-20 text-right">
+              {value[0]} - {value[1]}%
+            </div>
+          </div>
         </div>
       </div>
     )

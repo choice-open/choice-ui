@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@choice-ui/react": "workspace:*",
-    "@choice-ui/grid-areas": "workspace:*",
+    "@choice-ui/grid-areas": "^0.0.2",
     "@choiceform/icons-react": "^1.3.8",
     "@choice-ui/design-tokens": "workspace:*"
   },

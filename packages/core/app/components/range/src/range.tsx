@@ -1,8 +1,10 @@
 import { mergeRefs, tcx } from "@choice-ui/shared"
 import { clamp } from "es-toolkit"
 import React, {
+  Children,
   CSSProperties,
   forwardRef,
+  isValidElement,
   useCallback,
   useEffect,
   useMemo,
@@ -11,14 +13,20 @@ import React, {
 } from "react"
 import { useEventCallback } from "usehooks-ts"
 import { useIsomorphicLayoutEffect } from "@choice-ui/shared"
+import { RangeContext, RangeContextValue } from "./context"
+import {
+  RangeConnects,
+  RangeConnectsProps,
+  RangeContainer,
+  RangeContainerProps,
+} from "./components/connects"
+import { RangeThumb, RangeThumbProps } from "./components/thumb"
+import { RangeDot, RangeDotProps } from "./components/dot"
 import { rangeTv } from "./tv"
 
 export interface RangeProps {
+  children?: React.ReactNode
   className?: string
-  connectsClassName?: {
-    negative?: string
-    positive?: string
-  }
   defaultValue?: number
   disabled?: boolean
   max?: number
@@ -29,15 +37,26 @@ export interface RangeProps {
   readOnly?: boolean
   step?: number
   thumbSize?: number
-  trackSize?: {
-    height?: number
-    width?: number | "auto"
-  }
   value?: number
+  /**
+   * Width of the range track in pixels.
+   * If not provided (undefined), the width will be auto-calculated from the container.
+   */
+  width?: number | boolean
 }
 
-export const Range = forwardRef<HTMLDivElement, RangeProps>(function Range(props, ref) {
+interface RangeComponent extends React.ForwardRefExoticComponent<
+  RangeProps & React.RefAttributes<HTMLDivElement>
+> {
+  Container: typeof RangeContainer
+  Connects: typeof RangeConnects
+  Thumb: typeof RangeThumb
+  Dot: typeof RangeDot
+}
+
+const RangeRoot = forwardRef<HTMLDivElement, RangeProps>(function Range(props, ref) {
   const {
+    children,
     defaultValue,
     value,
     onChange,
@@ -49,62 +68,104 @@ export const Range = forwardRef<HTMLDivElement, RangeProps>(function Range(props
     disabled = false,
     readOnly = false,
     className,
-    connectsClassName = {
-      positive: "bg-accent-background",
-      negative: "bg-accent-background",
-    },
-    trackSize = {
-      width: 256,
-      height: 16,
-    },
-    thumbSize = 14,
+    width: propsWidth = 256,
+    thumbSize: propsThumbSize = 14,
   } = props
+
+  // Extract thumbSize, trackHeight and detect custom children from children if provided
+  const {
+    hasCustomChildren,
+    hasCustomDot,
+    hasCustomConnects,
+    extractedThumbSize,
+    extractedTrackHeight,
+  } = useMemo(() => {
+    const childArray = Children.toArray(children)
+    let hasCustom = false
+    let hasDot = false
+    let hasConnects = false
+    let thumbSizeFromChild: number | undefined
+    let trackHeightFromChild: number | undefined
+
+    for (const child of childArray) {
+      if (isValidElement(child)) {
+        const type = child.type as { displayName?: string }
+        if (child.type === RangeThumb || type?.displayName === "RangeThumb") {
+          hasCustom = true
+          const childProps = child.props as RangeThumbProps
+          if (childProps.size !== undefined) {
+            thumbSizeFromChild = childProps.size
+          }
+        } else if (child.type === RangeContainer || type?.displayName === "RangeContainer") {
+          hasCustom = true
+          const childProps = child.props as RangeContainerProps
+          if (childProps.height !== undefined) {
+            trackHeightFromChild = childProps.height
+          }
+        } else if (child.type === RangeConnects || type?.displayName === "RangeConnects") {
+          hasCustom = true
+          hasConnects = true
+        } else if (child.type === RangeDot || type?.displayName === "RangeDot") {
+          hasCustom = true
+          hasDot = true
+        }
+      }
+    }
+
+    return {
+      hasCustomChildren: hasCustom,
+      hasCustomDot: hasDot,
+      hasCustomConnects: hasConnects,
+      extractedThumbSize: thumbSizeFromChild,
+      extractedTrackHeight: trackHeightFromChild,
+    }
+  }, [children])
+
+  // Use extracted values from children if available, otherwise use props
+  const thumbSize = extractedThumbSize ?? propsThumbSize
+  const trackHeight = extractedTrackHeight ?? 16
+
+  // Normalize step to prevent division by zero or negative values
+  // Use a very small positive number as minimum to allow decimal steps like 0.0001
+  const safeStep = step > 0 ? step : 1
+  // Ensure min < max to prevent division by zero
+  const range = max - min || 1
+
   // Use state to store dynamically calculated width
   const [actualTrackWidth, setActualTrackWidth] = useState<number | undefined>()
 
-  const valueToPosition = useCallback((val: number) => (val - min) / (max - min), [min, max])
+  const valueToPosition = useCallback((val: number) => (val - min) / range, [min, range])
 
-  const positionToValue = useCallback(
-    (position: number) => min + position * (max - min),
-    [min, max],
-  )
+  const positionToValue = useCallback((position: number) => min + position * range, [min, range])
 
   const defaultStepValue = useMemo(() => {
     if (defaultValue === undefined || defaultValue === null) return null
-    if (step > 1) {
-      return Math.round((defaultValue - min) / step) * step + min
+    if (safeStep > 1) {
+      return Math.round((defaultValue - min) / safeStep) * safeStep + min
     }
     return defaultValue
-  }, [defaultValue, step, min])
+  }, [defaultValue, safeStep, min])
 
   const sliderRef = useRef<HTMLDivElement>(null)
   const thumbRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const isDragging = useRef(false)
+  const cleanupRef = useRef<(() => void) | null>(null)
 
   const [internalValue, setInternalValue] = useState(value ?? min)
   const currentValue = value ?? internalValue
   const currentStepValue = useMemo(
-    () => (step > 1 ? Math.round(currentValue / step) * step : currentValue),
-    [currentValue, step],
+    () => (safeStep > 1 ? Math.round(currentValue / safeStep) * safeStep : currentValue),
+    [currentValue, safeStep],
   )
 
-  const [transforms, setTransforms] = useState({
-    minTransform: 1,
-    maxTransform: 0,
-    transformX: 0,
-  })
-
-  const trackWidth = useMemo(() => {
-    if (trackSize?.width === "auto") {
-      return actualTrackWidth
-    }
-    return trackSize?.width
-  }, [trackSize?.width, actualTrackWidth])
+  // If width prop is undefined, use auto-calculated width
+  const trackWidth = typeof propsWidth === "number" ? propsWidth : actualTrackWidth
 
   // Use useIsomorphicLayoutEffect to get the actual size after DOM update
+  // When width is not a number (undefined or false), auto-calculate from container
   useIsomorphicLayoutEffect(() => {
-    if (trackSize?.width === "auto" && sliderRef.current) {
+    if (typeof propsWidth !== "number" && sliderRef.current) {
       const updateWidth = () => {
         if (sliderRef.current) {
           const width = sliderRef.current.getBoundingClientRect().width
@@ -128,38 +189,35 @@ export const Range = forwardRef<HTMLDivElement, RangeProps>(function Range(props
         resizeObserver.disconnect()
       }
     }
-  }, [trackSize?.width])
+  }, [propsWidth])
 
-  useEffect(() => {
+  // Calculate transforms using useMemo instead of useState + useEffect
+  const transforms = useMemo(() => {
     const position = valueToPosition(currentValue)
     const minTransform = 1
-    const maxTransform = (trackWidth ?? 0) - thumbSize - 1
+    const maxTransform = (typeof trackWidth === "number" ? trackWidth : 0) - thumbSize - 1
     const transformX = minTransform + position * (maxTransform - minTransform)
 
-    setTransforms({
-      minTransform,
-      maxTransform,
-      transformX,
-    })
+    return { minTransform, maxTransform, transformX }
   }, [currentValue, trackWidth, thumbSize, valueToPosition])
 
   const dotsData = useMemo(() => {
-    if (!step || step <= 1) return null
+    if (safeStep <= 1) return null
 
-    return Array.from({ length: Math.ceil((max - min) / step) + 1 }, (_, i) => {
-      const dotValue = min + i * step
+    return Array.from({ length: Math.ceil((max - min) / safeStep) + 1 }, (_, i) => {
+      const dotValue = min + i * safeStep
       const dotPosition = valueToPosition(dotValue)
       return {
         value: dotValue,
         position: dotPosition,
       }
     })
-  }, [step, min, max, valueToPosition])
+  }, [safeStep, min, max, valueToPosition])
 
   const defaultDotPosition = useMemo(() => {
-    if (defaultValue === undefined || defaultValue === null || step > 1) return null
+    if (defaultValue === undefined || defaultValue === null || safeStep > 1) return null
     return valueToPosition(defaultValue)
-  }, [defaultValue, step, valueToPosition])
+  }, [defaultValue, safeStep, valueToPosition])
 
   const updatePosition = useEventCallback((clientX: number, isEnd?: boolean) => {
     if (readOnly) return
@@ -168,11 +226,11 @@ export const Range = forwardRef<HTMLDivElement, RangeProps>(function Range(props
     if (!rect) return
 
     const newPosition = clamp((clientX - rect.left) / rect.width, 0, 1)
-    const newValue = Math.round(positionToValue(newPosition) / step) * step
+    const newValue = Math.round(positionToValue(newPosition) / safeStep) * safeStep
     let clampedValue = clamp(newValue, min, max)
 
-    if (defaultValue !== undefined && defaultValue !== null && step === 1) {
-      const snapThreshold = (max - min) * 0.05
+    if (defaultValue !== undefined && defaultValue !== null && safeStep <= 1) {
+      const snapThreshold = range * 0.05
       const distanceToDefault = Math.abs(clampedValue - defaultValue)
 
       if (distanceToDefault <= snapThreshold) {
@@ -218,6 +276,13 @@ export const Range = forwardRef<HTMLDivElement, RangeProps>(function Range(props
         updatePosition(e.clientX)
       }
 
+      const cleanup = () => {
+        window.removeEventListener("pointermove", handleMove)
+        window.removeEventListener("pointerup", handleUp)
+        window.removeEventListener("pointercancel", handleUp)
+        cleanupRef.current = null
+      }
+
       const handleUp = (e: PointerEvent) => {
         if (!isDragging.current) return
         e.preventDefault()
@@ -230,11 +295,11 @@ export const Range = forwardRef<HTMLDivElement, RangeProps>(function Range(props
         isDragging.current = false
 
         onChangeEnd?.()
-
-        window.removeEventListener("pointermove", handleMove)
-        window.removeEventListener("pointerup", handleUp)
-        window.removeEventListener("pointercancel", handleUp)
+        cleanup()
       }
+
+      // Store cleanup for unmount
+      cleanupRef.current = cleanup
 
       window.addEventListener("pointermove", handleMove)
       window.addEventListener("pointerup", handleUp)
@@ -242,6 +307,13 @@ export const Range = forwardRef<HTMLDivElement, RangeProps>(function Range(props
     },
     [disabled, readOnly, onChangeEnd, onChangeStart, updatePosition],
   )
+
+  // Cleanup event listeners on unmount
+  useEffect(() => {
+    return () => {
+      cleanupRef.current?.()
+    }
+  }, [])
 
   const handleSliderPointerDown = useCallback(
     (e: React.PointerEvent) => {
@@ -254,7 +326,7 @@ export const Range = forwardRef<HTMLDivElement, RangeProps>(function Range(props
   const handleKeyDown = useEventCallback((e: React.KeyboardEvent) => {
     if (disabled || readOnly) return
 
-    const stepValue = e.shiftKey ? step * 10 : step
+    const stepValue = e.shiftKey ? safeStep * 10 : safeStep
     let newValue = currentValue
 
     switch (e.key) {
@@ -283,135 +355,102 @@ export const Range = forwardRef<HTMLDivElement, RangeProps>(function Range(props
     }
   }, [disabled])
 
+  const hasStepOrDefault = safeStep > 1 || defaultValue !== undefined
+
   const tv = useMemo(
     () =>
       rangeTv({
         currentDefaultValue: defaultStepValue === currentStepValue,
-        hasStepOrDefault: step > 1 || defaultValue !== undefined,
+        hasStepOrDefault,
         disabled,
       }),
-    [defaultStepValue, currentStepValue, step, defaultValue, disabled],
+    [defaultStepValue, currentStepValue, hasStepOrDefault, disabled],
   )
 
-  const connectsClass = useMemo(() => {
-    if (disabled) return "bg-disabled-background"
-    if (currentValue < 0) return connectsClassName.negative
-    return connectsClassName.positive
-  }, [disabled, currentValue, connectsClassName])
-
-  const connectStyle = useMemo(() => {
-    return {
-      left:
-        min < 0
-          ? currentValue < 0
-            ? `${transforms.transformX + thumbSize / 2}px`
-            : "50%"
-          : (trackSize?.height ?? 0) / 2 + "px",
-      right:
-        min < 0
-          ? currentValue >= 0
-            ? `calc(100% - ${transforms.transformX + thumbSize / 2}px)`
-            : "50%"
-          : `calc(100% - ${transforms.transformX + thumbSize / 2}px)`,
-      height: trackSize?.height,
-    }
-  }, [min, currentValue, transforms.transformX, thumbSize, trackSize?.height])
-
-  const renderDots = useCallback(() => {
-    if (dotsData) {
-      return dotsData.map(({ value: dotValue, position: dotPosition }) => {
-        const { minTransform, maxTransform } = transforms
-        const dotTransform = minTransform + dotPosition * (maxTransform - minTransform)
-        const { dot } = rangeTv({
-          defaultStepValue: defaultStepValue === dotValue,
-          overStepValue: dotValue <= currentValue,
-        })
-        return (
-          <div
-            key={dotValue}
-            className={dot()}
-            style={{
-              left: dotTransform + thumbSize / 2,
-            }}
-          />
-        )
-      })
-    }
-
-    if (defaultDotPosition !== null && defaultDotPosition !== undefined) {
-      return (
-        <div
-          className={rangeTv({ defaultStepValue: true }).dot()}
-          style={{
-            left:
-              transforms.minTransform +
-              defaultDotPosition * (transforms.maxTransform - transforms.minTransform) +
-              thumbSize / 2,
-          }}
-        />
-      )
-    }
-
-    return null
-  }, [dotsData, defaultDotPosition, transforms, defaultStepValue, currentValue, thumbSize])
-
-  useEffect(() => {
-    const noop = () => {}
-    return () => {
-      // Clean up possible leftover event listeners when component unmounts
-      if (typeof window !== "undefined") {
-        window.removeEventListener("pointermove", noop)
-        window.removeEventListener("pointerup", noop)
-        window.removeEventListener("pointercancel", noop)
-      }
-    }
-  }, [])
+  // Create context value
+  const contextValue = useMemo<RangeContextValue>(
+    () => ({
+      currentValue,
+      disabled,
+      readOnly,
+      min,
+      max,
+      step: safeStep,
+      thumbSize,
+      trackHeight,
+      transforms,
+      defaultStepValue,
+      currentStepValue,
+      dotsData,
+      defaultDotPosition,
+      thumbRef,
+      inputRef,
+      isDragging,
+      handlePointerDown,
+      handleKeyDown,
+      tv,
+      defaultValue,
+      hasCustomDot,
+      hasCustomConnects,
+      isDefaultValue: defaultStepValue === currentStepValue && hasStepOrDefault,
+    }),
+    [
+      currentValue,
+      disabled,
+      readOnly,
+      min,
+      max,
+      safeStep,
+      thumbSize,
+      trackHeight,
+      transforms,
+      defaultStepValue,
+      currentStepValue,
+      dotsData,
+      defaultDotPosition,
+      handlePointerDown,
+      handleKeyDown,
+      tv,
+      defaultValue,
+      hasCustomDot,
+      hasCustomConnects,
+    ],
+  )
 
   return (
-    <div
-      ref={mergeRefs(sliderRef, ref)}
-      onPointerDown={handleSliderPointerDown}
-      className={tcx(tv.container(), className)}
-      style={
-        {
-          "--width": `${trackWidth}px`,
-          "--height": `${trackSize?.height ?? 16}px`,
-        } as CSSProperties
-      }
-    >
+    <RangeContext.Provider value={contextValue}>
       <div
-        className={tcx(tv.connect(), connectsClass)}
-        style={connectStyle}
-      />
-
-      {step > 1 || defaultValue !== undefined ? (
-        <div className={tv.dotContainer()}>{renderDots()}</div>
-      ) : (
-        ""
-      )}
-
-      <div
-        ref={thumbRef}
-        onPointerDown={handlePointerDown}
-        className={tv.thumb()}
-        style={{
-          width: thumbSize,
-          height: thumbSize,
-          transform: `translate(${transforms.transformX}px, -50%)`,
-          willChange: isDragging.current ? "transform" : "auto",
-        }}
+        ref={mergeRefs(sliderRef, ref)}
+        onPointerDown={handleSliderPointerDown}
+        className={tcx(tv.container(), className)}
+        style={
+          {
+            "--width": `${typeof trackWidth === "number" ? trackWidth : actualTrackWidth}px`,
+            "--height": `${trackHeight}px`,
+            "--thumb-size": `${thumbSize}px`,
+          } as CSSProperties
+        }
       >
-        <input
-          ref={inputRef}
-          type="text"
-          onKeyDown={handleKeyDown}
-          className={tv.input()}
-          tabIndex={disabled || readOnly ? -1 : 0}
-          readOnly
-        />
+        {hasCustomChildren ? (
+          children
+        ) : (
+          <>
+            <RangeContainer />
+            <RangeThumb />
+          </>
+        )}
       </div>
-    </div>
+    </RangeContext.Provider>
   )
 })
 
-Range.displayName = "Range"
+RangeRoot.displayName = "Range"
+
+export const Range = Object.assign(RangeRoot, {
+  Container: RangeContainer,
+  Connects: RangeConnects,
+  Thumb: RangeThumb,
+  Dot: RangeDot,
+}) as RangeComponent
+
+export type { RangeContainerProps, RangeConnectsProps, RangeThumbProps, RangeDotProps }

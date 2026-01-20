@@ -10,6 +10,7 @@ export default function scssResponsiveMixinsV2() {
         // 添加 sass 模块导入
         output.push('@use "sass:math";');
         output.push('@use "sass:map";');
+        output.push('@use "sass:meta";');
         output.push("");
 
         // 添加 Responsive Mixins 部分
@@ -55,7 +56,7 @@ export default function scssResponsiveMixinsV2() {
         output.push("@mixin up($breakpoint, $type: 'screen') {");
         output.push("  $value: null;");
         output.push("  ");
-        output.push("  @if type-of($breakpoint) == number {");
+        output.push("  @if meta.type-of($breakpoint) == number {");
         output.push("    $value: $breakpoint;");
         output.push("  } @else if map.has-key($breakpoints, $breakpoint) {");
         output.push("    $value: map.get($breakpoints, $breakpoint);");
@@ -85,7 +86,7 @@ export default function scssResponsiveMixinsV2() {
         output.push("@mixin down($breakpoint, $type: 'screen') {");
         output.push("  $value: null;");
         output.push("  ");
-        output.push("  @if type-of($breakpoint) == number {");
+        output.push("  @if meta.type-of($breakpoint) == number {");
         output.push("    $value: $breakpoint;");
         output.push("  } @else if map.has-key($breakpoints, $breakpoint) {");
         output.push("    $value: map.get($breakpoints, $breakpoint);");
@@ -119,7 +120,7 @@ export default function scssResponsiveMixinsV2() {
         output.push("  $min-value: null;");
         output.push("  $max-value: null;");
         output.push("  ");
-        output.push("  @if type-of($min-breakpoint) == number {");
+        output.push("  @if meta.type-of($min-breakpoint) == number {");
         output.push("    $min-value: $min-breakpoint;");
         output.push(
           "  } @else if map.has-key($breakpoints, $min-breakpoint) {"
@@ -131,7 +132,7 @@ export default function scssResponsiveMixinsV2() {
         );
         output.push("  }");
         output.push("  ");
-        output.push("  @if type-of($max-breakpoint) == number {");
+        output.push("  @if meta.type-of($max-breakpoint) == number {");
         output.push("    $max-value: $max-breakpoint;");
         output.push(
           "  } @else if map.has-key($breakpoints, $max-breakpoint) {"

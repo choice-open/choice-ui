@@ -246,7 +246,7 @@
       "name": "@choice-ui/emoji-picker",
       "title": "EmojiPicker",
       "description": "",
-      "version": "0.0.6"
+      "version": "0.0.7"
     },
     {
       "slug": "forms/error-message",
@@ -526,7 +526,7 @@
       "slug": "forms/range",
       "name": "@choice-ui/range",
       "title": "Range",
-      "description": "",
+      "description": "Width of the range track in pixels.",
       "version": "0.0.5"
     },
     {

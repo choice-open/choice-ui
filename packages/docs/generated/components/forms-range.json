@@ -18,23 +18,31 @@
   "exports": [
     "Range",
     "RangeTuple",
+    "RangeContext",
+    "RangeTupleContext",
+    "useRangeContext",
+    "useRangeTupleContext",
+    "type RangeContextValue",
+    "type RangeTupleContextValue",
+    "type RangeConnectsProps",
+    "type RangeContainerProps",
+    "type RangeDotProps",
     "type RangeProps",
-    "type RangeTupleProps"
+    "type RangeThumbProps",
+    "type RangeTupleConnectsProps",
+    "type RangeTupleContainerProps",
+    "type RangeTupleDotProps",
+    "type RangeTupleProps",
+    "type RangeTupleThumbProps"
   ],
   "props": [
     {
-      "displayName": "RangeProps",
+      "displayName": "RangeContextValue",
       "description": "",
       "props": [
         {
           "name": "className",
           "type": "string | undefined",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "connectsClassName",
-          "type": "{ negative?: string | undefined; positive?: string | undefined; } | undefined",
           "required": false,
           "description": ""
         },
@@ -99,32 +107,26 @@
           "description": ""
         },
         {
-          "name": "trackSize",
-          "type": "{ height?: number | undefined; width?: number | \"auto\" | undefined; } | undefined",
-          "required": false,
-          "description": ""
-        },
-        {
           "name": "value",
           "type": "number | undefined",
           "required": false,
           "description": ""
+        },
+        {
+          "name": "width",
+          "type": "number | boolean | undefined",
+          "required": false,
+          "description": "Width of the range track in pixels.\nIf not provided (undefined), the width will be auto-calculated from the container."
         }
       ]
     },
     {
-      "displayName": "RangeTupleProps",
+      "displayName": "RangeTupleContextValue",
       "description": "",
       "props": [
         {
           "name": "className",
           "type": "string | undefined",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "connectsClassName",
-          "type": "{ negative?: string | undefined; positive?: string | undefined; } | undefined",
           "required": false,
           "description": ""
         },
@@ -189,16 +191,16 @@
           "description": ""
         },
         {
-          "name": "trackSize",
-          "type": "{ height?: number | undefined; width?: number | \"auto\" | undefined; } | undefined",
-          "required": false,
-          "description": ""
-        },
-        {
           "name": "value",
           "type": "[number, number] | undefined",
           "required": false,
           "description": ""
+        },
+        {
+          "name": "width",
+          "type": "number | boolean | undefined",
+          "required": false,
+          "description": "Width of the range track in pixels.\nIf not provided (undefined) or set to false, the width will be auto-calculated from the container."
         }
       ]
     }
@@ -208,7 +210,7 @@
       "id": "forms-range--basic",
       "name": "Basic",
       "exportName": "Basic",
-      "description": "`Range` is a slider component that allows users to select a numeric value within a specified range.\n\nFeatures:\n- Customizable minimum and maximum values\n- Optional step intervals with visual tick marks\n- Default value indicator with snap effect\n- Configurable track and thumb sizes\n- Disabled state support\n- Controlled and uncontrolled usage\n- Smooth drag interaction\n\nUsage Guidelines:\n- Use for selecting a value from a continuous range\n- Provide appropriate min, max, and step values for your use case\n- Consider using step marks for discrete values\n- Display the current value for better usability\n- Use defaultValue to indicate recommended or factory settings\n- Specify explicit width for consistent appearance\n\nAccessibility:\n- Keyboard support (arrow keys, home/end)\n- Proper ARIA attributes\n- Focus management\n- Screen reader compatibility\n- Appropriate contrast ratios\nBasic: Demonstrates the simplest Range implementation.\n\nFeatures:\n- Controlled component with value and onChange props\n- Default sizing and appearance\n- Smooth sliding interaction\n\nThis example shows a minimal Range implementation with default props.\nThe slider uses its default min (0), max (100), and step values.",
+      "description": "`Range` is a slider component that allows users to select a numeric value within a specified range.\n\n## Features\n- Customizable minimum and maximum values (including negative ranges)\n- Optional step intervals with visual tick marks\n- Default value indicator with snap-to-default behavior\n- Compound component pattern for advanced customization\n- Auto-width calculation or explicit width specification\n- Disabled and read-only state support\n\n## Compound Components\nThe Range component supports a compound pattern for fine-grained control:\n- `Range.Container` - Wraps the track area and renders dots (accepts custom `Range.Connects` as children)\n- `Range.Connects` - The colored connection bar (supports `data-connect-status` for positive/negative styling)\n- `Range.Thumb` - The draggable handle (supports `data-status` for default value styling)\n- `Range.Dot` - Step markers or default value indicator (supports `data-status` for state styling)\n\n## Usage\n```tsx\n// Basic usage\n<Range value={value} onChange={setValue} />\n\n// With compound components for custom styling\n<Range value={value} onChange={setValue}>\n  <Range.Container>\n    <Range.Connects className=\"bg-gradient-to-r from-blue-500 to-purple-500\" />\n  </Range.Container>\n  <Range.Thumb size={18} className=\"bg-purple-500\" />\n</Range>\n```\n\n## Accessibility\n- Keyboard support (arrow keys with shift for larger steps)\n- Focus management with visible focus states\n- Appropriate contrast ratios\nBasic: Demonstrates the simplest Range implementation.\n\nFeatures:\n- Controlled component with value and onChange props\n- Default sizing and appearance\n- Smooth sliding interaction\n\nThis example shows a minimal Range implementation with default props.\nThe slider uses its default min (0), max (100), and step values.",
       "source": "import { Range } from \"@choice-ui/range\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [value, setValue] = useState(0)\n\n  return (\n    <>\n      <Range\n        value={value}\n        onChange={setValue}\n      />\n    </>\n  )\n\n}"
     },
     {
@@ -250,22 +252,43 @@
       "id": "forms-range--custom-size",
       "name": "Custom Size",
       "exportName": "CustomSize",
-      "description": "CustomSize: Demonstrates configuring the Range component dimensions.\n\nFeatures:\n- Custom track width and height\n- Custom thumb size\n- Proportional adjustments to all visual elements\n\nUse custom sizing when:\n- Fitting into space-constrained layouts\n- Creating more compact or larger controls based on context\n- Matching specific design requirements\n\nNote: The Range component needs explicit width specification for proper\ncalculation of step positions and thumb movement.",
-      "source": "import { Range } from \"@choice-ui/range\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [value, setValue] = useState(50)\n\n  return (\n    <>\n      <Range\n        value={value}\n        onChange={setValue}\n        min={0}\n        max={100}\n        trackSize={{\n          width: 200,\n          height: 10,\n        }}\n        thumbSize={10}\n      />\n      <div className=\"w-10 text-right\">{value}%</div>\n    </>\n  )\n\n}"
+      "description": "CustomSize: Demonstrates configuring the Range component dimensions.\n\nUse compound components to customize dimensions:\n- `Range.Container height={number}` - Sets track height\n- `Range.Thumb size={number}` - Sets thumb size\n- `width={number}` prop on Range - Sets track width\n\nThe `thumbSize` prop on Range is used for calculations when not using\ncompound components, but `Range.Thumb size` takes precedence when specified.",
+      "source": "import { Range } from \"@choice-ui/range\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [value, setValue] = useState(50)\n\n  return (\n    <>\n      <Range\n        value={value}\n        onChange={setValue}\n        min={0}\n        max={100}\n        width={200}\n        thumbSize={10}\n      >\n        <Range.Container height={10} />\n        <Range.Thumb size={10} />\n      </Range>\n      <div className=\"w-10 text-right\">{value}%</div>\n    </>\n  )\n\n}"
+    },
+    {
+      "id": "forms-range--compound",
+      "name": "Compound",
+      "exportName": "Compound",
+      "description": "Compound: Demonstrates the compound component pattern for custom styling.\n\nThe Range component uses a compound pattern with these subcomponents:\n- `Range.Container` - Renders the track background and dots\n- `Range.Thumb` - The draggable handle with customizable size and className\n\nWhen using compound components, the parent Range only provides the container\nwrapper and context. All visual elements are explicitly rendered as children.\n\n```tsx\n<Range value={value} onChange={setValue}>\n  <Range.Container height={4} />\n  <Range.Thumb size={6} className=\"rounded-sm\" />\n</Range>\n```",
+      "source": "import { Range } from \"@choice-ui/range\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [value, setValue] = useState(50)\n\n  return (\n    <div className=\"flex flex-col gap-6\">\n      <div className=\"flex items-center gap-4\">\n        <Range\n          value={value}\n          onChange={setValue}\n        >\n          <Range.Container />\n          <Range.Thumb\n            size={18}\n            className=\"bg-blue-500\"\n          />\n        </Range>\n        <div className=\"w-10 text-right\">{value}%</div>\n      </div>\n\n      <div className=\"flex items-center gap-4\">\n        <Range\n          value={value}\n          onChange={setValue}\n          className=\"bg-red-500\"\n        >\n          <Range.Container height={4} />\n          <Range.Thumb\n            className=\"h-2 w-3 rounded-sm\"\n            size={6}\n          />\n        </Range>\n        <div className=\"w-10 text-right\">{value}%</div>\n      </div>\n    </div>\n  )\n\n}"
+    },
+    {
+      "id": "forms-range--custom-connects",
+      "name": "Custom Connects",
+      "exportName": "CustomConnects",
+      "description": "CustomConnects: Demonstrates custom styling for the connection bar.\n\nUse `Range.Container` with a nested `Range.Connects` for fine-grained control\nover the connection bar styling (gradients, conditional colors, etc.).\n\n## Component Structure\n- `Range.Container` - Logical wrapper that renders connects + dots\n- `Range.Connects` - The actual colored bar element\n\n## Data Attributes\n`Range.Connects` exposes `data-connect-status` for conditional styling:\n- `positive` - when value >= 0 (or min >= 0)\n- `negative` - when value < 0 (only for ranges with min < 0)\n- `disabled` - when the range is disabled\n\n```tsx\n<Range.Connects className=\"data-[connect-status=negative]:bg-red-500 data-[connect-status=positive]:bg-green-500\" />\n```",
+      "source": "import { Range } from \"@choice-ui/range\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [value, setValue] = useState(50)\n  const [negativeValue, setNegativeValue] = useState(0)\n\n  return (\n    <div className=\"flex flex-col gap-8\">\n      {/* Gradient connects */}\n      <div className=\"flex flex-col gap-2\">\n        <Label>Gradient connection bar</Label>\n        <div className=\"flex items-center gap-4\">\n          <Range\n            value={value}\n            onChange={setValue}\n          >\n            <Range.Container>\n              <Range.Connects className=\"bg-gradient-to-r from-blue-500 to-purple-500\" />\n            </Range.Container>\n            <Range.Thumb\n              size={18}\n              className=\"bg-purple-500\"\n            />\n          </Range>\n          <div className=\"w-10 text-right\">{value}%</div>\n        </div>\n      </div>\n\n      {/* Custom styled connects with dots */}\n      <div className=\"flex flex-col gap-2\">\n        <Label>Custom connects with step dots</Label>\n        <div className=\"flex items-center gap-4\">\n          <Range\n            value={value}\n            onChange={setValue}\n            step={10}\n            defaultValue={50}\n          >\n            <Range.Container>\n              <Range.Connects className=\"bg-gradient-to-r from-green-400 to-blue-500\" />\n            </Range.Container>\n            <Range.Thumb\n              size={18}\n              className=\"bg-blue-500 data-[status=default]:bg-white\"\n            />\n            <Range.Dot className=\"size-1.5 bg-blue-400/30 data-[status=default]:bg-orange-400 data-[status=over]:bg-blue-500\" />\n          </Range>\n          <div className=\"w-10 text-right\">{value}%</div>\n        </div>\n      </div>\n\n      {/* Negative range with different positive/negative colors */}\n      <div className=\"flex flex-col gap-2\">\n        <Label>Negative range with data-connect-status styling</Label>\n        <div className=\"flex items-center gap-4\">\n          <Range\n            value={negativeValue}\n            onChange={setNegativeValue}\n            min={-100}\n            max={100}\n            defaultValue={0}\n          >\n            <Range.Container>\n              <Range.Connects className=\"data-[connect-status=negative]:bg-red-500 data-[connect-status=positive]:bg-green-500\" />\n            </Range.Container>\n            <Range.Thumb\n              size={18}\n              className={tcx(\n                negativeValue < 0 ? \"bg-red-500\" : \"bg-green-500\",\n                \"data-[status=default]:bg-white\",\n              )}\n            />\n          </Range>\n          <div className=\"w-10 text-right\">{negativeValue}</div>\n        </div>\n      </div>\n    </div>\n  )\n\n}"
+    },
+    {
+      "id": "forms-range--custom-dot",
+      "name": "Custom Dot",
+      "exportName": "CustomDot",
+      "description": "CustomDot: Demonstrates custom styling for step markers and default value indicators.\n\nUse `Range.Dot` to customize the appearance of dots that appear when using\n`step` (tick marks) or `defaultValue` (default indicator).\n\n## Data Attributes\n`Range.Dot` exposes `data-status` for conditional styling:\n- `under` - dots above current value\n- `over` - dots at or below current value\n- `default` - the default value dot (when not passed)\n- `default-over` - default value dot when current value >= default\n\n```tsx\n<Range.Dot className=\"size-1.5 data-[status=default]:bg-orange-400 data-[status=over]:bg-blue-500\" />\n```",
+      "source": "import { Range } from \"@choice-ui/range\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [value, setValue] = useState(50)\n\n  return (\n    <div className=\"flex flex-col gap-8\">\n      {/* With step */}\n      <div className=\"flex flex-col gap-2\">\n        <Label>Step with custom dots</Label>\n        <div className=\"flex items-center gap-4\">\n          <Range\n            value={value}\n            onChange={setValue}\n            step={10}\n          >\n            <Range.Container />\n            <Range.Thumb\n              size={18}\n              className=\"bg-blue-500\"\n            />\n            <Range.Dot />\n          </Range>\n          <div className=\"w-10 text-right\">{value}%</div>\n        </div>\n      </div>\n\n      {/* With defaultValue */}\n      <div className=\"flex flex-col gap-2\">\n        <Label>Default value with custom dot</Label>\n        <div className=\"flex items-center gap-4\">\n          <Range\n            value={value}\n            onChange={setValue}\n            defaultValue={50}\n          >\n            <Range.Container>\n              <Range.Connects className=\"bg-gradient-to-r from-green-400 to-blue-500\" />\n            </Range.Container>\n            <Range.Thumb\n              size={18}\n              className=\"bg-green-500 data-[status=default]:border-green-500\"\n            />\n            <Range.Dot className=\"size-2 bg-green-400 data-[status=over]:bg-pink-400\" />\n          </Range>\n          <div className=\"w-10 text-right\">{value}%</div>\n        </div>\n      </div>\n\n      {/* Step + defaultValue with custom dots */}\n      <div className=\"flex flex-col gap-2\">\n        <Label>Step + Default value with custom dots</Label>\n        <div className=\"flex items-center gap-4\">\n          <Range\n            value={value}\n            onChange={setValue}\n            step={10}\n            defaultValue={50}\n          >\n            <Range.Container>\n              <Range.Connects className=\"bg-purple-500\" />\n            </Range.Container>\n            <Range.Thumb\n              size={18}\n              className=\"bg-purple-500 data-[status=default]:bg-white\"\n            />\n            <Range.Dot className=\"size-1 rotate-45 rounded-none bg-purple-400/20 data-[status=default-over]:bg-white data-[status=default]:bg-red-400 data-[status=over]:bg-purple-600\" />\n          </Range>\n          <div className=\"w-10 text-right\">{value}%</div>\n        </div>\n      </div>\n    </div>\n  )\n\n}"
     },
     {
       "id": "forms-range--draggable-range-popover",
       "name": "Draggable Range Popover",
       "exportName": "DraggableRangePopover",
       "description": "DraggableRangePopover: Demonstrates Range inside a draggable Popover component.\n\nFeatures:\n- Integration with Popover for contextual settings\n- Properly sized for compact display\n- Value display alongside the slider\n- Draggable container with proper interaction handling\n\nThis pattern is useful for:\n- Quick adjustment panels that don't require dedicated forms\n- Property inspectors or editing tools\n- Settings that should be adjustable without navigating to a new screen",
-      "source": "import { Range } from \"@choice-ui/range\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [value, setValue] = useState(0)\n\n  return (\n    <Popover draggable>\n      <Popover.Trigger>\n        <Button>Open</Button>\n      </Popover.Trigger>\n      <Popover.Header title=\"Range\" />\n      <Popover.Content className=\"grid w-64 grid-cols-[180px_auto] gap-2 p-3\">\n        <Range\n          className=\"flex-1\"\n          value={value}\n          onChange={setValue}\n          min={0}\n          max={100}\n          defaultValue={50}\n          trackSize={{\n            width: 180,\n            height: 16,\n          }}\n        />\n        <div className=\"w-10 flex-1 text-right\">{value}%</div>\n      </Popover.Content>\n    </Popover>\n  )\n\n}"
+      "source": "import { Range } from \"@choice-ui/range\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [value, setValue] = useState(0)\n\n  return (\n    <Popover draggable>\n      <Popover.Trigger>\n        <Button>Open</Button>\n      </Popover.Trigger>\n      <Popover.Header title=\"Range\" />\n      <Popover.Content className=\"grid w-64 grid-cols-[180px_auto] gap-2 p-3\">\n        <Range\n          className=\"flex-1\"\n          value={value}\n          onChange={setValue}\n          min={0}\n          max={100}\n          defaultValue={50}\n          width={180}\n        />\n        <div className=\"w-10 flex-1 text-right\">{value}%</div>\n      </Popover.Content>\n    </Popover>\n  )\n\n}"
     },
     {
       "id": "forms-range--auto-width",
       "name": "Auto Width",
       "exportName": "AutoWidth",
-      "description": "Auto width: Demonstrates the Range component with automatic width calculation.\n\nFeatures:\n- Automatic width calculation based on the parent container\n- Smooth sliding interaction\n- Proper value display\n\n```tsx\n<Range\n  value={value}\n  onChange={setValue}\n  min={0}\n  max={100}\n  trackSize={{\n    width: \"auto\",\n    height: 6,\n  }}\n  thumbSize={12}\n/>\n```",
-      "source": "import { Range } from \"@choice-ui/range\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [value, setValue] = useState(0)\n\n  return (\n    <div className=\"grid w-40 grid-cols-[1fr_2.5rem] gap-px\">\n      <div className=\"bg-secondary-background flex items-center rounded-l-md px-2\">\n        <Range\n          className=\"bg-default-boundary flex-1\"\n          value={value}\n          onChange={setValue}\n          min={0}\n          max={100}\n          trackSize={{\n            width: \"auto\",\n            height: 6,\n          }}\n          thumbSize={10}\n        />\n      </div>\n      <NumericInput\n        className=\"before:rounded-l-none\"\n        expression=\"{value}%\"\n        value={value}\n        onChange={(value) => setValue(value as number)}\n        min={0}\n        max={100}\n      >\n        <NumericInput.Prefix className=\"w-2 rounded-l-none\" />\n      </NumericInput>\n    </div>\n  )\n\n}"
+      "description": "AutoWidth: Demonstrates automatic width calculation from the container.\n\nSet `width={false}` to enable auto-width mode. The Range component will\nuse a ResizeObserver to calculate its width from the parent container,\nmaking it responsive to layout changes.\n\nThis is useful for:\n- Fluid layouts where the slider should fill available space\n- Integration with other form elements (like NumericInput)\n- Responsive designs without fixed widths\n\n```tsx\n<Range value={value} onChange={setValue} width={false}>\n  <Range.Container height={6} />\n  <Range.Thumb size={10} />\n</Range>\n```",
+      "source": "import { Range } from \"@choice-ui/range\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [value, setValue] = useState(0)\n\n  return (\n    <div className=\"grid w-40 grid-cols-[1fr_2.5rem] gap-px\">\n      <div className=\"bg-secondary-background flex items-center rounded-l-md px-2\">\n        <Range\n          className=\"bg-default-boundary flex-1\"\n          value={value}\n          onChange={setValue}\n          min={0}\n          max={100}\n          thumbSize={10}\n          width={false}\n        >\n          <Range.Container height={6} />\n          <Range.Thumb size={10} />\n        </Range>\n      </div>\n      <NumericInput\n        className=\"before:rounded-l-none\"\n        expression=\"{value}%\"\n        value={value}\n        onChange={(value) => setValue(value as number)}\n        min={0}\n        max={100}\n      >\n        <NumericInput.Prefix className=\"w-2 rounded-l-none\" />\n      </NumericInput>\n    </div>\n  )\n\n}"
     },
     {
       "id": "forms-range--basic-tuple",
@@ -273,6 +296,13 @@
       "exportName": "BasicTuple",
       "description": "BasicTuple: Demonstrates the simplest RangeTuple implementation for selecting a range.\n\nFeatures:\n- Dual thumbs for selecting min and max values\n- Controlled component with tuple value [min, max]\n- Highlighted area between thumbs\n- Independent thumb dragging\n\nThis example shows a minimal RangeTuple implementation for selecting a range\nof values between two endpoints. Both thumbs can be dragged independently.",
       "source": "import { RangeTuple } from \"@choice-ui/range\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [value, setValue] = useState<[number, number]>([25, 75])\n\n  return (\n    <div className=\"flex items-center gap-4\">\n      <RangeTuple\n        value={value}\n        onChange={setValue}\n      />\n      <div className=\"text-body-medium w-20 text-right\">\n        {value[0]} - {value[1]}\n      </div>\n    </div>\n  )\n\n}"
+    },
+    {
+      "id": "forms-range--tuple-compound",
+      "name": "Tuple Compound",
+      "exportName": "TupleCompound",
+      "description": "TupleCompound: Demonstrates the compound component pattern for RangeTuple.\n\nRangeTuple uses the same compound pattern as Range:\n- `RangeTuple.Container` - Renders the track background and dots\n- `RangeTuple.Thumb` - The draggable handles (requires `index` prop: 0 or 1)\n\nEach thumb must specify its index to identify which end of the range it controls.\n\n```tsx\n<RangeTuple value={value} onChange={setValue}>\n  <RangeTuple.Container height={4} />\n  <RangeTuple.Thumb index={0} size={8} className=\"rounded-sm\" />\n  <RangeTuple.Thumb index={1} size={8} className=\"rounded-sm\" />\n</RangeTuple>\n```",
+      "source": "import { RangeTuple } from \"@choice-ui/range\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [value, setValue] = useState<[number, number]>([25, 75])\n\n  return (\n    <div className=\"flex flex-col gap-6\">\n      <div className=\"flex items-center gap-4\">\n        <RangeTuple\n          value={value}\n          onChange={setValue}\n        >\n          <RangeTuple.Container height={4} />\n          <RangeTuple.Thumb\n            index={0}\n            size={8}\n            className=\"rounded-sm\"\n          />\n          <RangeTuple.Thumb\n            index={1}\n            size={8}\n            className=\"rounded-sm\"\n          />\n        </RangeTuple>\n        <div className=\"text-body-medium w-20 text-right\">\n          {value[0]} - {value[1]}\n        </div>\n      </div>\n\n      <div className=\"flex items-center gap-4\">\n        <RangeTuple\n          value={value}\n          onChange={setValue}\n        >\n          <RangeTuple.Container />\n          <RangeTuple.Thumb\n            index={0}\n            size={18}\n            className=\"bg-blue-500\"\n          />\n          <RangeTuple.Thumb\n            index={1}\n            size={18}\n            className=\"bg-blue-500\"\n          />\n        </RangeTuple>\n        <div className=\"text-body-medium w-20 text-right\">\n          {value[0]} - {value[1]}\n        </div>\n      </div>\n    </div>\n  )\n\n}"
     },
     {
       "id": "forms-range--tuple-with-step",
@@ -307,14 +337,14 @@
       "name": "Tuple Custom Size",
       "exportName": "TupleCustomSize",
       "description": "TupleCustomSize: Demonstrates configuring the RangeTuple component dimensions.\n\nFeatures:\n- Custom track width and height\n- Custom thumb size for both handles\n- Proportional adjustments to all visual elements\n\nUse custom sizing when:\n- Fitting into space-constrained layouts\n- Creating more compact or larger range controls\n- Matching specific design requirements",
-      "source": "import { RangeTuple } from \"@choice-ui/range\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [value, setValue] = useState<[number, number]>([20, 80])\n\n  return (\n    <div className=\"flex items-center gap-4\">\n      <RangeTuple\n        value={value}\n        onChange={setValue}\n        min={0}\n        max={100}\n        trackSize={{\n          width: 200,\n          height: 10,\n        }}\n        thumbSize={10}\n      />\n      <div className=\"text-body-medium w-20 text-right\">\n        {value[0]} - {value[1]}%\n      </div>\n    </div>\n  )\n\n}"
+      "source": "import { RangeTuple } from \"@choice-ui/range\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [value, setValue] = useState<[number, number]>([20, 80])\n\n  return (\n    <div className=\"flex items-center gap-4\">\n      <RangeTuple\n        value={value}\n        onChange={setValue}\n        min={0}\n        max={100}\n        width={200}\n        thumbSize={10}\n      >\n        <RangeTuple.Container height={10} />\n        <RangeTuple.Thumb\n          index={0}\n          size={10}\n        />\n        <RangeTuple.Thumb\n          index={1}\n          size={10}\n        />\n      </RangeTuple>\n      <div className=\"text-body-medium w-20 text-right\">\n        {value[0]} - {value[1]}%\n      </div>\n    </div>\n  )\n\n}"
     },
     {
       "id": "forms-range--tuple-in-popover",
       "name": "Tuple In Popover",
       "exportName": "TupleInPopover",
       "description": "TupleInPopover: Demonstrates RangeTuple inside a draggable Popover component.\n\nFeatures:\n- Integration with Popover for contextual range selection\n- Properly sized for compact display\n- Range value display alongside the slider\n- Draggable container with proper interaction handling\n\nThis pattern is useful for:\n- Filter panels that require range selection\n- Property inspectors with range constraints\n- Settings that should be adjustable without navigating away",
-      "source": "import { Range, RangeTuple } from \"@choice-ui/range\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [value, setValue] = useState<[number, number]>([25, 75])\n\n  return (\n    <Popover draggable>\n      <Popover.Trigger>\n        <Button>Open Range Filter</Button>\n      </Popover.Trigger>\n      <Popover.Header title=\"Select Range\" />\n      <Popover.Content className=\"grid grid-cols-[180px_auto] gap-2 p-3\">\n        <RangeTuple\n          className=\"flex-1\"\n          value={value}\n          onChange={setValue}\n          min={0}\n          max={100}\n          defaultValue={[25, 75]}\n          trackSize={{\n            width: 180,\n            height: 16,\n          }}\n        />\n        <div className=\"text-body-medium w-14 flex-1 text-right\">\n          {value[0]}-{value[1]}%\n        </div>\n      </Popover.Content>\n    </Popover>\n  )\n\n}"
+      "source": "import { Range, RangeTuple } from \"@choice-ui/range\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [value, setValue] = useState<[number, number]>([25, 75])\n\n  return (\n    <Popover draggable>\n      <Popover.Trigger>\n        <Button>Open Range Filter</Button>\n      </Popover.Trigger>\n      <Popover.Header title=\"Select Range\" />\n      <Popover.Content className=\"grid grid-cols-[180px_auto] gap-2 p-3\">\n        <RangeTuple\n          className=\"flex-1\"\n          value={value}\n          onChange={setValue}\n          min={0}\n          max={100}\n          defaultValue={[25, 75]}\n          width={180}\n        />\n        <div className=\"text-body-medium w-14 flex-1 text-right\">\n          {value[0]}-{value[1]}%\n        </div>\n      </Popover.Content>\n    </Popover>\n  )\n\n}"
     },
     {
       "id": "forms-range--tuple-sentiment-neutral-range",
@@ -322,6 +352,20 @@
       "exportName": "TupleSentimentNeutralRange",
       "description": "TupleSentimentNeutralRange: Demonstrates RangeTuple for sentiment analysis neutral range.\n\nFeatures:\n- Range from -1 to 1 representing sentiment values\n- Default neutral range of [-0.2, 0.2]\n- Symmetrical range around zero\n- Decimal value display with precision\n\nUse this pattern for:\n- Sentiment analysis configuration\n- Defining neutral zones in bipolar scales\n- Setting thresholds for classification systems\n- Any measurement requiring a neutral range around zero",
       "source": "import { RangeTuple } from \"@choice-ui/range\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [value, setValue] = useState<[number, number]>([-0.2, 0.2])\n\n  return (\n    <div className=\"flex items-center gap-4\">\n      <RangeTuple\n        value={value}\n        step={0.0001}\n        onChange={(value) => {\n          console.log(\"value\", value)\n          setValue(value)\n        }}\n        min={-1}\n        max={1}\n        defaultValue={[-0.25, 0.25]}\n      />\n      <div className=\"text-body-medium w-28 text-right\">\n        {value[0].toFixed(3)} - {value[1].toFixed(3)}\n      </div>\n    </div>\n  )\n\n}"
+    },
+    {
+      "id": "forms-range--tuple-custom-connects",
+      "name": "Tuple Custom Connects",
+      "exportName": "TupleCustomConnects",
+      "description": "TupleCustomConnects: Demonstrates custom styling for the connection bar in RangeTuple.\n\nUse `RangeTuple.Container` with a nested `RangeTuple.Connects` for custom connection bar styling.\nThe connection bar spans between the two thumbs.\n\n## Component Structure\n- `RangeTuple.Container` - Logical wrapper that renders connects + dots\n- `RangeTuple.Connects` - The colored bar between the two thumbs\n\n```tsx\n<RangeTuple value={value} onChange={setValue}>\n  <RangeTuple.Container>\n    <RangeTuple.Connects className=\"bg-gradient-to-r from-pink-500 to-orange-500\" />\n  </RangeTuple.Container>\n  <RangeTuple.Thumb index={0} className=\"bg-pink-500\" />\n  <RangeTuple.Thumb index={1} className=\"bg-orange-500\" />\n</RangeTuple>\n```",
+      "source": "import { RangeTuple } from \"@choice-ui/range\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [value, setValue] = useState<[number, number]>([30, 70])\n\n  return (\n    <div className=\"flex flex-col gap-8\">\n      {/* Gradient connects */}\n      <div className=\"flex flex-col gap-2\">\n        <Label>Gradient connection bar</Label>\n        <div className=\"flex items-center gap-4\">\n          <RangeTuple\n            value={value}\n            onChange={setValue}\n          >\n            <RangeTuple.Container>\n              <RangeTuple.Connects className=\"bg-gradient-to-r from-pink-500 to-orange-500\" />\n            </RangeTuple.Container>\n            <RangeTuple.Thumb\n              index={0}\n              size={18}\n              className=\"bg-pink-500\"\n            />\n            <RangeTuple.Thumb\n              index={1}\n              size={18}\n              className=\"bg-orange-500\"\n            />\n          </RangeTuple>\n          <div className=\"text-body-medium w-20 text-right\">\n            {value[0]} - {value[1]}%\n          </div>\n        </div>\n      </div>\n\n      {/* Custom styled connects with dots */}\n      <div className=\"flex flex-col gap-2\">\n        <Label>Custom connects with step dots</Label>\n        <div className=\"flex items-center gap-4\">\n          <RangeTuple\n            value={value}\n            onChange={setValue}\n            step={10}\n          >\n            <RangeTuple.Container>\n              <RangeTuple.Connects className=\"bg-gradient-to-r from-cyan-400 to-emerald-500\" />\n            </RangeTuple.Container>\n            <RangeTuple.Thumb\n              index={0}\n              size={18}\n              className=\"bg-cyan-500\"\n            />\n            <RangeTuple.Thumb\n              index={1}\n              size={18}\n              className=\"bg-emerald-500\"\n            />\n            <RangeTuple.Dot className=\"size-1.5 bg-emerald-400/30 data-[status=over]:bg-emerald-500\" />\n          </RangeTuple>\n          <div className=\"text-body-medium w-20 text-right\">\n            {value[0]} - {value[1]}%\n          </div>\n        </div>\n      </div>\n    </div>\n  )\n\n}"
+    },
+    {
+      "id": "forms-range--tuple-custom-dot",
+      "name": "Tuple Custom Dot",
+      "exportName": "TupleCustomDot",
+      "description": "TupleCustomDot: Demonstrates custom styling for step markers in RangeTuple.\n\nUse `RangeTuple.Dot` to customize the appearance of dots that appear when using\n`step` (tick marks) or `defaultValue` (default indicators for both ends).\n\n## Data Attributes\n`RangeTuple.Dot` exposes `data-status` for conditional styling:\n- `under` - dots outside the selected range\n- `over` - dots within the selected range\n- `default` - default value dots (when not within range)\n- `default-over` - default value dots when within range\n- `left-over` / `right-over` - specific default dot states\n\n```tsx\n<RangeTuple.Dot className=\"size-1.5 data-[status=over]:bg-emerald-500\" />\n```",
+      "source": "import { RangeTuple } from \"@choice-ui/range\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [value, setValue] = useState<[number, number]>([30, 70])\n\n  return (\n    <div className=\"flex flex-col gap-8\">\n      {/* With step */}\n      <div className=\"flex flex-col gap-2\">\n        <div className=\"text-body-small-strong\">Step with custom dots</div>\n        <div className=\"flex items-center gap-4\">\n          <RangeTuple\n            value={value}\n            onChange={setValue}\n            step={10}\n          >\n            <RangeTuple.Container />\n            <RangeTuple.Thumb\n              index={0}\n              size={18}\n              className=\"bg-blue-500\"\n            />\n            <RangeTuple.Thumb\n              index={1}\n              size={18}\n              className=\"bg-blue-500\"\n            />\n            <RangeTuple.Dot />\n          </RangeTuple>\n          <div className=\"text-body-medium w-20 text-right\">\n            {value[0]} - {value[1]}%\n          </div>\n        </div>\n      </div>\n\n      {/* With defaultValue */}\n      <div className=\"flex flex-col gap-2\">\n        <Label>Default value with custom dots</Label>\n        <div className=\"flex items-center gap-4\">\n          <RangeTuple\n            value={value}\n            onChange={setValue}\n            defaultValue={[25, 75]}\n          >\n            <RangeTuple.Container />\n            <RangeTuple.Thumb\n              index={0}\n              size={18}\n              className=\"bg-green-500\"\n            />\n            <RangeTuple.Thumb\n              index={1}\n              size={18}\n              className=\"bg-green-500\"\n            />\n            <RangeTuple.Dot className=\"size-2 data-[status=default]:bg-green-400 data-[status=left-over]:bg-pink-400 data-[status=right-over]:bg-pink-400\" />\n          </RangeTuple>\n          <div className=\"text-body-medium w-20 text-right\">\n            {value[0]} - {value[1]}%\n          </div>\n        </div>\n      </div>\n\n      {/* Step + defaultValue with custom dots */}\n      <div className=\"flex flex-col gap-2\">\n        <Label>Step + Default value with custom dots</Label>\n        <div className=\"flex items-center gap-4\">\n          <RangeTuple\n            value={value}\n            onChange={setValue}\n            step={10}\n            defaultValue={[30, 70]}\n          >\n            <RangeTuple.Container />\n            <RangeTuple.Thumb\n              index={0}\n              size={18}\n              className=\"bg-purple-500\"\n            />\n            <RangeTuple.Thumb\n              index={1}\n              size={18}\n              className=\"bg-purple-500\"\n            />\n            <RangeTuple.Dot className=\"size-1 rotate-45 rounded-none bg-purple-400/20 data-[status=default-over]:bg-white data-[status=default]:bg-red-400 data-[status=over]:bg-purple-600\" />\n          </RangeTuple>\n          <div className=\"text-body-medium w-20 text-right\">\n            {value[0]} - {value[1]}%\n          </div>\n        </div>\n      </div>\n    </div>\n  )\n\n}"
     }
   ]
 }

@@ -1,6 +1,6 @@
 {
   "name": "@choice-ui/range",
-  "version": "0.0.5",
+  "version": "0.0.7",
   "description": "A range slider component for selecting numeric values within a min-max range",
   "sideEffects": false,
   "type": "module",

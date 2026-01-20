@@ -8,19 +8,19 @@ export const rangeTv = tcv({
       "bg-secondary-background shadow-inset-border rounded-full",
     ],
     connect: [
-      "pointer-events-none absolute",
+      "pointer-events-none absolute h-(--height)",
       "after:absolute",
       "after:content-['']",
       "after:rounded-full",
-      "after:bg-inherit",
-      "after:h-[var(--height)]",
+      "after:[background:inherit]",
+      "after:h-[inherit]",
       "after:left-[calc(var(--height)/-2)]",
       "after:right-[calc(var(--height)/-2)]",
     ],
+    thumbWrapper: ["absolute top-1/2 box-border origin-center z-2"],
     thumb: [
-      "absolute top-1/2 box-border origin-center rounded-full",
-      "shadow-range-thumb border-2 border-white",
-      "bg-white",
+      "shadow-range-thumb border-2 border-white rounded-full size-(--thumb-size)",
+      "bg-white absolute -translate-y-1/2 -translate-x-1/2 left-1/2 top-1/2",
     ],
     dotContainer: "pointer-events-none absolute inset-0",
     dot: ["size-1 rounded-full", "absolute top-1/2", "-translate-x-1/2 -translate-y-1/2"],
@@ -50,9 +50,12 @@ export const rangeTv = tcv({
     },
     disabled: {
       true: {
+        connect: "bg-disabled-background",
         thumb: "bg-secondary-background",
       },
-      false: {},
+      false: {
+        connect: "bg-accent-background",
+      },
     },
   },
   compoundVariants: [
