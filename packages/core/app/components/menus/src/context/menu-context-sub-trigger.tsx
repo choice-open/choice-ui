@@ -30,7 +30,15 @@ export const MenuContextSubTrigger = memo(
     }
 
     const isActive = useMemo(
-      () => item.index === menu.activeIndex || !!active,
+      () => {
+        // When activeIndex exists, only highlight if this item matches the activeIndex
+        // This prevents multiple items from being highlighted simultaneously
+        if (menu.activeIndex !== null && menu.activeIndex !== undefined) {
+          return item.index === menu.activeIndex
+        }
+        // Only use the active prop when there's no activeIndex
+        return !!active
+      },
       [item.index, menu.activeIndex, active],
     )
 

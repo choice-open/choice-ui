@@ -66,11 +66,20 @@ export function useMenuTree(config: MenuTreeConfig): MenuTreeResult {
     }
   })
 
+  // Handle parent navigation event - close submenu if parent navigates away from this item
+  const handleParentNavigate = useEventCallback((event: { nodeId: string; index: number }) => {
+    // If parent menu is navigating and not to this item's index, close this submenu
+    if (event.nodeId === parentId && event.index !== item.index && isControlledOpen) {
+      handleOpenChange(false)
+    }
+  })
+
   // Clean up event listening
   const cleanupTreeEvents = useEventCallback(() => {
     if (tree) {
       tree.events.off("click", handleTreeClick)
       tree.events.off("menuopen", handleSubMenuOpen)
+      tree.events.off("navigate", handleParentNavigate)
     }
   })
 
@@ -80,9 +89,10 @@ export function useMenuTree(config: MenuTreeConfig): MenuTreeResult {
 
     tree.events.on("click", handleTreeClick)
     tree.events.on("menuopen", handleSubMenuOpen)
+    tree.events.on("navigate", handleParentNavigate)
 
     return cleanupTreeEvents
-  }, [tree, nodeId, parentId, handleTreeClick, handleSubMenuOpen, cleanupTreeEvents])
+  }, [tree, nodeId, parentId, handleTreeClick, handleSubMenuOpen, handleParentNavigate, cleanupTreeEvents])
 
   // When the menu is opened, send the menuopen event
   useEffect(() => {

@@ -186,7 +186,7 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
   })
 
   // Use unified tree management
-  const { nodeId, item, isNested } = useMenuTree({
+  const { nodeId, item, isNested, tree } = useMenuTree({
     disabledNested,
     handleOpenChange,
     isControlledOpen,
@@ -348,11 +348,20 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
     escapeKey: true,
   })
 
+  // Handle navigation in parent menu - notify children to close if navigating away
+  const handleNavigate = useEventCallback((index: number | null) => {
+    setActiveIndex(index)
+    // When navigating in a nested menu, emit event to close sibling submenus
+    if (tree && index !== null) {
+      tree.events.emit("navigate", { nodeId, index })
+    }
+  })
+
   const listNavigation = useListNavigation(context, {
     listRef: elementsRef,
     activeIndex,
     nested: isNested,
-    onNavigate: setActiveIndex,
+    onNavigate: handleNavigate,
     loop: true,
   })
 
