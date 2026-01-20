@@ -1,4 +1,4 @@
-import { Checkbox } from "@choice-ui/react"
+import { Checkbox, Label, tcx } from "@choice-ui/react"
 import { Story } from "@storybook/addon-docs/blocks"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { Fragment, useState } from "react"
@@ -21,7 +21,7 @@ type Story = StoryObj<typeof Checkbox>
  * - Supports three states: checked, unchecked, and mixed (indeterminate)
  * - Multiple visual variants: default, accent, outline
  * - Disabled and focused states for accessibility and usability
- * - Two label approaches: simple string children or explicit `<Checkbox.Label>` for complex content
+ * - Compound component pattern with `Checkbox.Icon` and `Checkbox.Label`
  * - Can be grouped for multi-select scenarios
  *
  * Usage:
@@ -30,11 +30,13 @@ type Story = StoryObj<typeof Checkbox>
  * - Combine with labels for clarity and accessibility
  * - Simple labels: `<Checkbox>Label text</Checkbox>`
  * - Complex labels: `<Checkbox><Checkbox.Label>Complex content</Checkbox.Label></Checkbox>`
+ * - Custom icons: `<Checkbox><Checkbox.Icon /><Checkbox.Label>...</Checkbox.Label></Checkbox>`
  *
  * Best Practices:
  * - Always provide a visible label (string or `<Checkbox.Label>`)
  * - Use simple string children for basic labels
  * - Use `<Checkbox.Label>` for labels with formatting or complex content
+ * - Use `<Checkbox.Icon>` when you need custom icon positioning or content
  * - Use the controlled pattern for predictable state management
  * - Clearly indicate disabled and mixed states
  * - Group related checkboxes for multi-select scenarios
@@ -80,7 +82,7 @@ export const Basic: Story = {
             <div className="grid grid-cols-4 gap-2">
               {Object.values(State).map((state) => (
                 <Fragment key={state}>
-                  <span className="text-pink-500 capitalize">{state}</span>
+                  <span className="capitalize text-pink-500">{state}</span>
 
                   {Object.values(Interaction).map((interaction) => (
                     <Fragment key={interaction}>
@@ -233,6 +235,56 @@ export const LabelUsage: Story = {
               <span className="text-accent-foreground">Complex</span> label with{" "}
               <strong>formatting</strong>
             </Checkbox.Label>
+          </Checkbox>
+        </div>
+      </div>
+    )
+  },
+}
+
+/**
+ * Custom Icon: Demonstrates how to use Checkbox.Icon for custom icon rendering.
+ * - Use Checkbox.Icon to customize the checkbox icon position or content
+ * - Supports render props pattern for dynamic icon rendering
+ * - Useful when you need full control over the icon appearance
+ */
+export const CustomIcon: Story = {
+  render: function CustomIconStory() {
+    const [value1, setValue1] = useState(false)
+    const [value2, setValue2] = useState(false)
+
+    return (
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-2">
+          <Label>Default Checkbox.Icon:</Label>
+          <Checkbox
+            value={value1}
+            onChange={setValue1}
+          >
+            <Checkbox.Icon
+              className={tcx(
+                value1 &&
+                  "text-accent-foreground border-selected-boundary bg-default-background ring-accent-foreground/20 ring-2",
+              )}
+            />
+            <Checkbox.Label>Uses default icon</Checkbox.Label>
+          </Checkbox>
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <Label>Custom icon content:</Label>
+          <Checkbox
+            value={value2}
+            onChange={setValue2}
+          >
+            <Checkbox.Icon
+              className={tcx(
+                value2 && "text-on-accent-foreground border-selected-boundary bg-accent-background",
+              )}
+            >
+              {value2 ? "✓" : "○"}
+            </Checkbox.Icon>
+            <Checkbox.Label>Custom emoji icon</Checkbox.Label>
           </Checkbox>
         </div>
       </div>

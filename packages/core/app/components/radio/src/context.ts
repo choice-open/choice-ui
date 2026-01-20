@@ -5,6 +5,8 @@ export interface RadioContextType {
   descriptionId: string
   disabled?: boolean
   id: string
+  value?: boolean
+  variant?: "default" | "accent" | "outline"
 }
 
 export const RadioContext = createContext<RadioContextType | null>(null)

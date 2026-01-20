@@ -1,4 +1,4 @@
-import { Radio, RadioGroup } from "@choice-ui/react"
+import { Label, Radio, RadioGroup, tcx } from "@choice-ui/react"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { Fragment, useState } from "react"
 
@@ -18,7 +18,7 @@ type Story = StoryObj<typeof Radio>
  * Features:
  * - Multiple visual variants (default, accent, outline)
  * - Support for disabled and focused states
- * - Two label approaches: simple string children or explicit `<Radio.Label>` for complex content
+ * - Compound component pattern with `Radio.Icon` and `Radio.Label`
  * - Controlled usage for reliable state management
  * - Group functionality via RadioGroup component
  * - Proper keyboard and screen reader accessibility
@@ -30,6 +30,7 @@ type Story = StoryObj<typeof Radio>
  * - Always show all available options
  * - Simple labels: `<Radio>Label text</Radio>`
  * - Complex labels: `<Radio><Radio.Label>Complex content</Radio.Label></Radio>`
+ * - Custom icons: `<Radio><Radio.Icon /><Radio.Label>...</Radio.Label></Radio>`
  * - Consider appropriate variant based on your UI
  *
  * Accessibility:
@@ -78,7 +79,7 @@ export const Basic: Story = {
             <div className="grid grid-cols-3 gap-2">
               {Object.values(State).map((state) => (
                 <Fragment key={state}>
-                  <span className="text-pink-500 capitalize">{state}</span>
+                  <span className="capitalize text-pink-500">{state}</span>
 
                   {Object.values(Interaction).map((interaction) => (
                     <Fragment key={interaction}>
@@ -184,6 +185,56 @@ export const Variant: Story = {
           Outline
         </Radio>
       </>
+    )
+  },
+}
+
+/**
+ * Custom Icon: Demonstrates how to use Radio.Icon for custom icon rendering.
+ * - Use Radio.Icon to customize the radio icon position or content
+ * - Supports render props pattern for dynamic icon rendering
+ * - Useful when you need full control over the icon appearance
+ */
+export const CustomIcon: Story = {
+  render: function CustomIconStory() {
+    const [value1, setValue1] = useState(false)
+    const [value2, setValue2] = useState(false)
+
+    return (
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-2">
+          <Label>Default Radio.Icon:</Label>
+          <Radio
+            value={value1}
+            onChange={setValue1}
+          >
+            <Radio.Icon
+              className={tcx(
+                value1 &&
+                  "text-accent-foreground border-selected-boundary bg-default-background ring-accent-foreground/20 ring-2",
+              )}
+            />
+            <Radio.Label>Uses default icon</Radio.Label>
+          </Radio>
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <Label>Custom icon content:</Label>
+          <Radio
+            value={value2}
+            onChange={setValue2}
+          >
+            <Radio.Icon
+              className={tcx(
+                value2 && "text-on-accent-foreground border-selected-boundary bg-accent-background",
+              )}
+            >
+              {value2 ? "✓" : ""}
+            </Radio.Icon>
+            <Radio.Label>Custom emoji icon</Radio.Label>
+          </Radio>
+        </div>
+      </div>
     )
   },
 }

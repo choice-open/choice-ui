@@ -1,7 +1,8 @@
 import { tcx } from "@choice-ui/shared"
 import { Check, Indeterminate } from "@choiceform/icons-react"
-import { forwardRef, HTMLProps, memo, ReactNode, useId } from "react"
+import { Children, forwardRef, HTMLProps, isValidElement, memo, ReactNode, useId } from "react"
 import { useEventCallback } from "usehooks-ts"
+import { CheckboxIcon } from "./checkbox-icon"
 import { CheckboxLabel } from "./checkbox-label"
 import { CheckboxContext } from "./context"
 import { checkboxTv } from "./tv"
@@ -59,13 +60,31 @@ const CheckboxBase = forwardRef<HTMLInputElement, CheckboxProps>(function Checkb
     onKeyDown?.(e)
   })
 
+  // Separate Icon from other children
+  const isIconElement = (child: unknown): child is React.ReactElement =>
+    isValidElement(child) &&
+    (child.type === CheckboxIcon ||
+      (child.type as { displayName?: string })?.displayName === "Checkbox.Icon")
+
+  const childArray = Children.toArray(children)
+  const iconChild = childArray.find(isIconElement)
+  const otherChildren = childArray.filter((child) => !isIconElement(child))
+
   // Automatically wrap string-type children into CheckboxLabel
   const renderChildren = () => {
-    if (typeof children === "string" || typeof children === "number") {
-      return <CheckboxLabel>{children}</CheckboxLabel>
+    if (otherChildren.length === 1) {
+      const child = otherChildren[0]
+      if (typeof child === "string" || typeof child === "number") {
+        return <CheckboxLabel>{child}</CheckboxLabel>
+      }
     }
-    return children
+    return otherChildren
   }
+
+  // Render default icon (used when no custom Checkbox.Icon is provided)
+  const renderDefaultIcon = () => (
+    <div className={tv.box()}>{mixed ? <Indeterminate /> : value ? <Check /> : null}</div>
+  )
 
   return (
     <CheckboxContext.Provider
@@ -98,7 +117,7 @@ const CheckboxBase = forwardRef<HTMLInputElement, CheckboxProps>(function Checkb
             {...rest}
           />
 
-          <div className={tv.box()}>{mixed ? <Indeterminate /> : value ? <Check /> : null}</div>
+          {iconChild ?? renderDefaultIcon()}
         </div>
 
         {renderChildren()}
@@ -111,10 +130,12 @@ const MemoizedCheckbox = memo(CheckboxBase) as unknown as CheckboxType
 
 interface CheckboxType {
   (props: CheckboxProps & { ref?: React.Ref<HTMLInputElement> }): JSX.Element
+  Icon: typeof CheckboxIcon
   Label: typeof CheckboxLabel
   displayName?: string
 }
 
 export const Checkbox = MemoizedCheckbox as CheckboxType
+Checkbox.Icon = CheckboxIcon
 Checkbox.Label = CheckboxLabel
 Checkbox.displayName = "Checkbox"

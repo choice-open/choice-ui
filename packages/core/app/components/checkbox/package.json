@@ -1,6 +1,6 @@
 {
   "name": "@choice-ui/checkbox",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "A checkbox component for binary selection with support for checked, unchecked, and indeterminate states",
   "sideEffects": false,
   "type": "module",

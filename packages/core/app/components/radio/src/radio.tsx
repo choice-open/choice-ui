@@ -1,8 +1,9 @@
 import { tcx } from "@choice-ui/shared"
 import { Dot } from "@choiceform/icons-react"
-import { forwardRef, HTMLProps, memo, ReactNode, useId } from "react"
+import { Children, forwardRef, HTMLProps, isValidElement, memo, ReactNode, useId } from "react"
 import { useEventCallback } from "usehooks-ts"
 import { RadioContext } from "./context"
+import { RadioIcon } from "./radio-icon"
 import { RadioLabel } from "./radio-label"
 import { radioTv } from "./tv"
 
@@ -57,16 +58,34 @@ const RadioBase = forwardRef<HTMLInputElement, RadioProps>(function Radio(props,
     onKeyDown?.(e)
   })
 
+  // Separate Icon from other children
+  const isIconElement = (child: unknown): child is React.ReactElement =>
+    isValidElement(child) &&
+    (child.type === RadioIcon ||
+      (child.type as { displayName?: string })?.displayName === "Radio.Icon")
+
+  const childArray = Children.toArray(children)
+  const iconChild = childArray.find(isIconElement)
+  const otherChildren = childArray.filter((child) => !isIconElement(child))
+
   // Automatically wrap string-type children into RadioLabel
   const renderChildren = () => {
-    if (typeof children === "string" || typeof children === "number") {
-      return <RadioLabel>{children}</RadioLabel>
+    if (otherChildren.length === 1) {
+      const child = otherChildren[0]
+      if (typeof child === "string" || typeof child === "number") {
+        return <RadioLabel>{child}</RadioLabel>
+      }
     }
-    return children
+    return otherChildren
   }
 
+  // Render default icon (used when no custom Radio.Icon is provided)
+  const renderDefaultIcon = () => (
+    <div className={tv.box()}>{value && <Dot />}</div>
+  )
+
   return (
-    <RadioContext.Provider value={{ id, descriptionId, disabled }}>
+    <RadioContext.Provider value={{ id, descriptionId, disabled, value, variant }}>
       <div className={tcx(tv.root(), className)}>
         <div className="pointer-events-none relative">
           <input
@@ -86,7 +105,7 @@ const RadioBase = forwardRef<HTMLInputElement, RadioProps>(function Radio(props,
             onKeyDown={handleKeyDown}
             {...rest}
           />
-          <div className={tv.box()}>{value && <Dot />}</div>
+          {iconChild ?? renderDefaultIcon()}
         </div>
 
         {renderChildren()}
@@ -99,11 +118,13 @@ const MemoizedRadio = memo(RadioBase) as unknown as RadioType
 
 interface RadioType {
   (props: RadioProps & { ref?: React.Ref<HTMLInputElement> }): JSX.Element
+  Icon: typeof RadioIcon
   Label: typeof RadioLabel
   displayName?: string
 }
 
 export const Radio = MemoizedRadio as RadioType
 
+Radio.Icon = RadioIcon
 Radio.Label = RadioLabel
 Radio.displayName = "Radio"

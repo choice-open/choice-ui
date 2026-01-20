@@ -17,7 +17,9 @@
   },
   "exports": [
     "Checkbox",
-    "type CheckboxProps"
+    "type CheckboxProps",
+    "type CheckboxIconProps",
+    "type CheckboxLabelProps"
   ],
   "props": [
     {
@@ -67,6 +69,30 @@
           "description": ""
         }
       ]
+    },
+    {
+      "displayName": "Checkbox.Icon",
+      "description": "",
+      "props": [
+        {
+          "name": "ref",
+          "type": "((instance: HTMLDivElement | null) => void) | RefObject<HTMLDivElement> | null | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "Checkbox.Label",
+      "description": "",
+      "props": [
+        {
+          "name": "ref",
+          "type": "((instance: HTMLLabelElement | null) => void) | RefObject<HTMLLabelElement> | null | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
     }
   ],
   "stories": [
@@ -74,8 +100,8 @@
       "id": "forms-checkbox--basic",
       "name": "Basic",
       "exportName": "Basic",
-      "description": "`Checkbox` is a flexible, accessible component for binary and mixed (indeterminate) selection states.\n\nFeatures:\n- Controlled component: requires `value` and `onChange` for state management\n- Supports three states: checked, unchecked, and mixed (indeterminate)\n- Multiple visual variants: default, accent, outline\n- Disabled and focused states for accessibility and usability\n- Two label approaches: simple string children or explicit `<Checkbox.Label>` for complex content\n- Can be grouped for multi-select scenarios\n\nUsage:\n- Use for toggling settings, selecting items, or multi-select lists\n- Use the mixed state for parent checkboxes representing a partially selected group\n- Combine with labels for clarity and accessibility\n- Simple labels: `<Checkbox>Label text</Checkbox>`\n- Complex labels: `<Checkbox><Checkbox.Label>Complex content</Checkbox.Label></Checkbox>`\n\nBest Practices:\n- Always provide a visible label (string or `<Checkbox.Label>`)\n- Use simple string children for basic labels\n- Use `<Checkbox.Label>` for labels with formatting or complex content\n- Use the controlled pattern for predictable state management\n- Clearly indicate disabled and mixed states\n- Group related checkboxes for multi-select scenarios\n\nAccessibility:\n- Fully accessible to screen readers and keyboard users\n- Properly associates label and input for assistive technology\n- Mixed state is announced to screen readers\nBasic: Demonstrates all variants, states, and interaction states of the Checkbox component.\n- Shows default, accent, and outline variants.\n- Demonstrates rest, focused, and disabled states.\n- Shows checked, unchecked, and mixed (indeterminate) states.\n- Use as a reference for all visual and interaction possibilities.",
-      "source": "import { Checkbox } from \"@choice-ui/checkbox\"\n\nexport default function App() {\n\n  enum State {\n    Disabled = \"disabled\",\n    Focused = \"focused\",\n    Rest = \"rest\",\n  }\n\n  enum Interaction {\n    Mixed = \"mixed\",\n    Off = \"off\",\n    On = \"on\",\n  }\n\n  enum Variant {\n    Accent = \"accent\",\n    Default = \"default\",\n    Outline = \"outline\",\n  }\n\n  return (\n    <div className=\"flex flex-col items-start gap-4\">\n      {Object.values(Variant).map((variant, index) => (\n        <Fragment key={variant}>\n          <span className=\"capitalize\">{variant}</span>\n          <div className=\"grid grid-cols-4 gap-2\">\n            {Object.values(State).map((state) => (\n              <Fragment key={state}>\n                <span className=\"text-pink-500 capitalize\">{state}</span>\n\n                {Object.values(Interaction).map((interaction) => (\n                  <Fragment key={interaction}>\n                    <Checkbox\n                      value={interaction === Interaction.On || interaction === Interaction.Mixed}\n                      mixed={interaction === Interaction.Mixed}\n                      disabled={state === State.Disabled}\n                      focused={state === State.Focused}\n                      variant={variant}\n                    >\n                      {interaction}\n                    </Checkbox>\n                  </Fragment>\n                ))}\n              </Fragment>\n            ))}\n          </div>\n          {index !== Object.values(Variant).length - 1 && <hr className=\"w-full\" />}\n        </Fragment>\n      ))}\n    </div>\n  )\n\n}"
+      "description": "`Checkbox` is a flexible, accessible component for binary and mixed (indeterminate) selection states.\n\nFeatures:\n- Controlled component: requires `value` and `onChange` for state management\n- Supports three states: checked, unchecked, and mixed (indeterminate)\n- Multiple visual variants: default, accent, outline\n- Disabled and focused states for accessibility and usability\n- Compound component pattern with `Checkbox.Icon` and `Checkbox.Label`\n- Can be grouped for multi-select scenarios\n\nUsage:\n- Use for toggling settings, selecting items, or multi-select lists\n- Use the mixed state for parent checkboxes representing a partially selected group\n- Combine with labels for clarity and accessibility\n- Simple labels: `<Checkbox>Label text</Checkbox>`\n- Complex labels: `<Checkbox><Checkbox.Label>Complex content</Checkbox.Label></Checkbox>`\n- Custom icons: `<Checkbox><Checkbox.Icon /><Checkbox.Label>...</Checkbox.Label></Checkbox>`\n\nBest Practices:\n- Always provide a visible label (string or `<Checkbox.Label>`)\n- Use simple string children for basic labels\n- Use `<Checkbox.Label>` for labels with formatting or complex content\n- Use `<Checkbox.Icon>` when you need custom icon positioning or content\n- Use the controlled pattern for predictable state management\n- Clearly indicate disabled and mixed states\n- Group related checkboxes for multi-select scenarios\n\nAccessibility:\n- Fully accessible to screen readers and keyboard users\n- Properly associates label and input for assistive technology\n- Mixed state is announced to screen readers\nBasic: Demonstrates all variants, states, and interaction states of the Checkbox component.\n- Shows default, accent, and outline variants.\n- Demonstrates rest, focused, and disabled states.\n- Shows checked, unchecked, and mixed (indeterminate) states.\n- Use as a reference for all visual and interaction possibilities.",
+      "source": "import { Checkbox } from \"@choice-ui/checkbox\"\n\nexport default function App() {\n\n  enum State {\n    Disabled = \"disabled\",\n    Focused = \"focused\",\n    Rest = \"rest\",\n  }\n\n  enum Interaction {\n    Mixed = \"mixed\",\n    Off = \"off\",\n    On = \"on\",\n  }\n\n  enum Variant {\n    Accent = \"accent\",\n    Default = \"default\",\n    Outline = \"outline\",\n  }\n\n  return (\n    <div className=\"flex flex-col items-start gap-4\">\n      {Object.values(Variant).map((variant, index) => (\n        <Fragment key={variant}>\n          <span className=\"capitalize\">{variant}</span>\n          <div className=\"grid grid-cols-4 gap-2\">\n            {Object.values(State).map((state) => (\n              <Fragment key={state}>\n                <span className=\"capitalize text-pink-500\">{state}</span>\n\n                {Object.values(Interaction).map((interaction) => (\n                  <Fragment key={interaction}>\n                    <Checkbox\n                      value={interaction === Interaction.On || interaction === Interaction.Mixed}\n                      mixed={interaction === Interaction.Mixed}\n                      disabled={state === State.Disabled}\n                      focused={state === State.Focused}\n                      variant={variant}\n                    >\n                      {interaction}\n                    </Checkbox>\n                  </Fragment>\n                ))}\n              </Fragment>\n            ))}\n          </div>\n          {index !== Object.values(Variant).length - 1 && <hr className=\"w-full\" />}\n        </Fragment>\n      ))}\n    </div>\n  )\n\n}"
     },
     {
       "id": "forms-checkbox--disabled",
@@ -104,6 +130,13 @@
       "exportName": "LabelUsage",
       "description": "Label Usage: Demonstrates two ways to use labels with Checkbox.\n- Simple string children: automatically wrapped with Checkbox.Label\n- Explicit Checkbox.Label: for more complex label content",
       "source": "import { Checkbox } from \"@choice-ui/checkbox\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [simple, setSimple] = useState(false)\n  const [explicit, setExplicit] = useState(false)\n\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <div>\n        <h4 className=\"font-strong mb-2\">Simple string label (auto-wrapped):</h4>\n        <Checkbox\n          value={simple}\n          onChange={setSimple}\n        >\n          Simple text label\n        </Checkbox>\n      </div>\n\n      <div>\n        <h4 className=\"font-strong mb-2\">Explicit Checkbox.Label (for complex content):</h4>\n        <Checkbox\n          value={explicit}\n          onChange={setExplicit}\n        >\n          <Checkbox.Label>\n            <span className=\"text-accent-foreground\">Complex</span> label with{\" \"}\n            <strong>formatting</strong>\n          </Checkbox.Label>\n        </Checkbox>\n      </div>\n    </div>\n  )\n\n}"
+    },
+    {
+      "id": "forms-checkbox--custom-icon",
+      "name": "Custom Icon",
+      "exportName": "CustomIcon",
+      "description": "Custom Icon: Demonstrates how to use Checkbox.Icon for custom icon rendering.\n- Use Checkbox.Icon to customize the checkbox icon position or content\n- Supports render props pattern for dynamic icon rendering\n- Useful when you need full control over the icon appearance",
+      "source": "import { Checkbox } from \"@choice-ui/checkbox\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [value1, setValue1] = useState(false)\n  const [value2, setValue2] = useState(false)\n\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <div className=\"flex flex-col gap-2\">\n        <Label>Default Checkbox.Icon:</Label>\n        <Checkbox\n          value={value1}\n          onChange={setValue1}\n        >\n          <Checkbox.Icon\n            className={tcx(\n              value1 &&\n                \"text-accent-foreground border-selected-boundary bg-default-background ring-accent-foreground/20 ring-2\",\n            )}\n          />\n          <Checkbox.Label>Uses default icon</Checkbox.Label>\n        </Checkbox>\n      </div>\n\n      <div className=\"flex flex-col gap-2\">\n        <Label>Custom icon content:</Label>\n        <Checkbox\n          value={value2}\n          onChange={setValue2}\n        >\n          <Checkbox.Icon\n            className={tcx(\n              value2 && \"text-on-accent-foreground border-selected-boundary bg-accent-background\",\n            )}\n          >\n            {value2 ? \"✓\" : \"○\"}\n          </Checkbox.Icon>\n          <Checkbox.Label>Custom emoji icon</Checkbox.Label>\n        </Checkbox>\n      </div>\n    </div>\n  )\n\n}"
     }
   ]
 }
