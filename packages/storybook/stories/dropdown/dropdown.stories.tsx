@@ -2163,6 +2163,263 @@ export const SelectionWithPrefixIcons: Story = {
 }
 
 /**
+ * SlashCommandWithInput: Demonstrates slash command menu triggered by typing "/" in an input field.
+ *
+ * Features:
+ * - Type / to trigger command menu
+ * - Dropdown positioned at cursor location
+ * - Input field remains editable while dropdown is open
+ * - Keyboard navigation: Arrow Up/Down to navigate, Enter to select, Escape to close
+ * - Focus stays in input field during navigation
+ * - Integration with Slate.js editor
+ *
+ * Use cases:
+ * - Rich text editors with slash commands
+ * - Command palettes in editors
+ * - Quick action menus
+ * - Note-taking apps with commands
+ */
+export const SlashCommandWithInput: Story = {
+  render: function SlashCommandStory() {
+    const [isOpen, setIsOpen] = useState(false)
+    const [position, setPosition] = useState<{ x: number; y: number } | null>(null)
+    const [activeIndex, setActiveIndex] = useState<number | null>(0)
+    const editorRef = useRef<HTMLDivElement>(null)
+
+    const editor = useMemo(() => withReact(createEditor()), [])
+
+    const initialValue: Descendant[] = [
+      {
+        type: "paragraph",
+        children: [{ text: "" }],
+      } as Descendant,
+    ]
+    const [value, setValue] = useState<Descendant[]>(initialValue)
+
+    const commands = useMemo(
+      () => [
+        {
+          id: "heading",
+          name: "Heading",
+          icon: <Add />,
+        },
+        {
+          id: "list",
+          name: "List",
+          icon: <Check />,
+        },
+        {
+          id: "todo",
+          name: "Todo",
+          icon: <File />,
+        },
+        {
+          id: "code",
+          name: "Code Block",
+          icon: <Settings />,
+        },
+      ],
+      [],
+    )
+
+    const getEditorText = useCallback(() => {
+      return value.map((n) => Node.string(n)).join("\n")
+    }, [value])
+
+    const handleChange = useCallback((newValue: Descendant[]) => {
+      setValue(newValue)
+
+      const text = newValue.map((n) => Node.string(n)).join("\n")
+      const lastSlashIndex = text.lastIndexOf("/")
+
+      if (lastSlashIndex !== -1) {
+        const afterSlash = text.substring(lastSlashIndex + 1)
+        const hasSpaceAfterSlash = afterSlash.includes(" ") || afterSlash.includes("\n")
+
+        if (!hasSpaceAfterSlash) {
+          // Update position
+          const domSelection = window.getSelection()
+          if (domSelection && domSelection.rangeCount > 0) {
+            const range = domSelection.getRangeAt(0)
+            const rect = range.getBoundingClientRect()
+            setPosition({
+              x: rect.left,
+              y: rect.bottom + 4,
+            })
+          } else if (editorRef.current) {
+            const rect = editorRef.current.getBoundingClientRect()
+            setPosition({
+              x: rect.left,
+              y: rect.bottom + 4,
+            })
+          }
+
+          if (!isOpen) {
+            setIsOpen(true)
+            setActiveIndex(0)
+          }
+        } else {
+          setIsOpen(false)
+        }
+      } else {
+        setIsOpen(false)
+      }
+    }, [isOpen])
+
+
+    const handleSelectCommand = useCallback(
+      (command: (typeof commands)[0]) => {
+        const { selection } = editor
+
+        if (selection) {
+          const text = getEditorText()
+          const lastSlashIndex = text.lastIndexOf("/")
+
+          if (lastSlashIndex !== -1) {
+            const afterSlashText = text.substring(lastSlashIndex + 1)
+
+            const start = { path: [0, 0], offset: lastSlashIndex }
+            const end = {
+              path: [0, 0],
+              offset: lastSlashIndex + 1 + afterSlashText.length,
+            }
+            const range = { anchor: start, focus: end }
+
+            Transforms.select(editor, range)
+            Transforms.insertText(editor, `/${command.name} `)
+          }
+        }
+
+        setIsOpen(false)
+        setActiveIndex(0)
+        ReactEditor.focus(editor)
+      },
+      [editor, getEditorText],
+    )
+
+    // Handle keyboard navigation
+    const handleKeyDown = useCallback(
+      (event: React.KeyboardEvent) => {
+        if (!isOpen || commands.length === 0) return
+
+        switch (event.key) {
+          case "ArrowDown":
+            event.preventDefault()
+            event.stopPropagation()
+            setActiveIndex((prev) => ((prev ?? -1) + 1) % commands.length)
+            // Keep focus on editor
+            setTimeout(() => ReactEditor.focus(editor), 0)
+            break
+          case "ArrowUp":
+            event.preventDefault()
+            event.stopPropagation()
+            setActiveIndex((prev) => ((prev ?? 0) - 1 + commands.length) % commands.length)
+            // Keep focus on editor
+            setTimeout(() => ReactEditor.focus(editor), 0)
+            break
+          case "Enter":
+            event.preventDefault()
+            event.stopPropagation()
+            if (activeIndex !== null && commands[activeIndex]) {
+              handleSelectCommand(commands[activeIndex])
+            }
+            break
+          case "Escape":
+            event.preventDefault()
+            event.stopPropagation()
+            setIsOpen(false)
+            setActiveIndex(0)
+            break
+        }
+      },
+      [isOpen, commands, activeIndex, handleSelectCommand, editor],
+    )
+
+    return (
+      <div className="w-80 space-y-4">
+        <div className="rounded-xl border bg-stone-50 p-4 dark:bg-stone-900">
+          <h3 className="text-body-large-strong mb-2">Keyboard Shortcuts</h3>
+          <ul className="text-body-small space-y-1 text-stone-600 dark:text-stone-400">
+            <li>
+              <kbd className="rounded bg-stone-200 px-1.5 py-0.5 dark:bg-stone-800">/</kbd> - Open
+              command menu
+            </li>
+            <li>
+              <kbd className="rounded bg-stone-200 px-1.5 py-0.5 dark:bg-stone-800">↑</kbd> /{" "}
+              <kbd className="rounded bg-stone-200 px-1.5 py-0.5 dark:bg-stone-800">↓</kbd> -
+              Navigate commands
+            </li>
+            <li>
+              <kbd className="rounded bg-stone-200 px-1.5 py-0.5 dark:bg-stone-800">Enter</kbd> -
+              Select command
+            </li>
+            <li>
+              <kbd className="rounded bg-stone-200 px-1.5 py-0.5 dark:bg-stone-800">Esc</kbd> - Close
+              menu
+            </li>
+          </ul>
+        </div>
+
+        <div
+          ref={editorRef}
+          className="focus-within:border-selected-boundary min-h-[80px] w-full rounded-lg border p-2"
+        >
+          <Slate
+            editor={editor}
+            initialValue={initialValue}
+            onChange={handleChange}
+          >
+            <Editable
+              placeholder="Type / to open command menu..."
+              className="outline-none"
+              style={{ minHeight: "56px" }}
+              onKeyDown={handleKeyDown}
+            />
+          </Slate>
+        </div>
+
+        <div>
+          <Dropdown
+            position={position}
+            open={isOpen}
+            onOpenChange={setIsOpen}
+            activeIndex={activeIndex}
+            onActiveIndexChange={setActiveIndex}
+            placement="bottom-start"
+            autoSelectFirstItem={false}
+            disableKeyboardNavigation={true}
+            focusManagerProps={{
+              // Completely disable focus management to keep focus on input
+              modal: false,
+              disabled: true,
+              returnFocus: false,
+              restoreFocus: false,
+            }}
+          >
+            <Dropdown.Content>
+              {commands.map((command, index) => (
+                <Dropdown.Item
+                  key={command.id}
+                  onClick={() => handleSelectCommand(command)}
+                  onMouseEnter={() => setActiveIndex(index)}
+                  prefixElement={command.icon}
+                >
+                  <Dropdown.Value>{command.name}</Dropdown.Value>
+                </Dropdown.Item>
+              ))}
+            </Dropdown.Content>
+          </Dropdown>
+        </div>
+
+        <div className="bg-secondary-background text-secondary-foreground rounded-lg p-2">
+          <div>Current text: &ldquo;{getEditorText()}&rdquo;</div>
+        </div>
+      </div>
+    )
+  },
+}
+
+/**
  * AvoidCollisions: Demonstrates Dropdown with avoidCollisions set to false.
  *
  * Features:

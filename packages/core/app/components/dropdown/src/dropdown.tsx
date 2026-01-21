@@ -64,6 +64,11 @@ const DEFAULT_OFFSET = 4
 
 export interface DropdownProps {
   /**
+   * Active index for keyboard navigation (controlled).
+   * When provided, the component becomes controlled for activeIndex.
+   */
+  activeIndex?: number | null
+  /**
    * Whether to automatically select the first item in coordinate mode.
    * @default true
    */
@@ -75,10 +80,21 @@ export interface DropdownProps {
    */
   avoidCollisions?: boolean
   children?: React.ReactNode
+  /**
+   * Disable internal keyboard navigation.
+   * Useful when implementing custom keyboard handling externally.
+   * @default false
+   */
+  disableKeyboardNavigation?: boolean
   disabledNested?: boolean
   focusManagerProps?: Partial<FloatingFocusManagerProps>
   matchTriggerWidth?: boolean
   offset?: number
+  /**
+   * Callback when active index changes.
+   * Use with activeIndex prop for controlled keyboard navigation.
+   */
+  onActiveIndexChange?: (index: number | null) => void
   onOpenChange?: (open: boolean) => void
   open?: boolean
   placement?: Placement
@@ -123,8 +139,10 @@ interface DropdownComponentType extends React.ForwardRefExoticComponent<
 const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) {
   const {
     children,
+    activeIndex: controlledActiveIndex,
     autoSelectFirstItem = true,
     avoidCollisions = true,
+    disableKeyboardNavigation = false,
     disabledNested = false,
     offset: offsetDistance = DEFAULT_OFFSET,
     placement = "bottom-start",
@@ -134,6 +152,7 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
     selection = false,
     matchTriggerWidth = false,
     open: controlledOpen,
+    onActiveIndexChange,
     onOpenChange,
     triggerRef,
     triggerSelector,
@@ -155,10 +174,14 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
   // State management
   const [isOpen, setIsOpen] = useState(false)
   const [hasFocusInside, setHasFocusInside] = useState(false)
-  const [activeIndex, setActiveIndex] = useState<number | null>(null)
+  const [internalActiveIndex, setInternalActiveIndex] = useState<number | null>(null)
   const [scrollTop, setScrollTop] = useState(0)
   const [touch, setTouch] = useState(false)
   const [isMouseOverMenu, setIsMouseOverMenu] = useState(false)
+
+  // Controlled/uncontrolled activeIndex handling
+  const isControlledActiveIndex = controlledActiveIndex !== undefined
+  const activeIndex = isControlledActiveIndex ? controlledActiveIndex : internalActiveIndex
 
   // Coordinate mode detection
   const isCoordinateMode = position !== null && position !== undefined
@@ -271,6 +294,14 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
     whileElementsMounted: autoUpdate,
   })
 
+  // Unified handler for setting activeIndex (supports both controlled and uncontrolled)
+  const handleSetActiveIndex = useEventCallback((index: number | null) => {
+    if (!isControlledActiveIndex) {
+      setInternalActiveIndex(index)
+    }
+    onActiveIndexChange?.(index)
+  })
+
   // Sync virtual position - used in coordinate mode
   useIsomorphicLayoutEffect(() => {
     if (
@@ -289,16 +320,16 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
   // Auto-activate first option when menu opens in coordinate mode (only when mouse not over menu)
   useEffect(() => {
     if (isCoordinateMode && isControlledOpen && activeIndex === null && !isMouseOverMenu) {
-      setActiveIndex(autoSelectFirstItem ? 0 : null)
+      handleSetActiveIndex(autoSelectFirstItem ? 0 : null)
     }
-  }, [isCoordinateMode, isControlledOpen, activeIndex, isMouseOverMenu, autoSelectFirstItem])
+  }, [isCoordinateMode, isControlledOpen, activeIndex, isMouseOverMenu, autoSelectFirstItem, handleSetActiveIndex])
 
   // Reset activeIndex when menu closes in coordinate mode
   useEffect(() => {
     if (isCoordinateMode && !isControlledOpen) {
-      setActiveIndex(null)
+      handleSetActiveIndex(null)
     }
-  }, [isCoordinateMode, isControlledOpen])
+  }, [isCoordinateMode, isControlledOpen, handleSetActiveIndex])
 
   // Store current open state in ref to avoid useEffect dependency on isControlledOpen
   const isOpenRef = useRef(isControlledOpen)
@@ -350,7 +381,7 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
 
   // Handle navigation in parent menu - notify children to close if navigating away
   const handleNavigate = useEventCallback((index: number | null) => {
-    setActiveIndex(index)
+    handleSetActiveIndex(index)
     // When navigating in a nested menu, emit event to close sibling submenus
     if (tree && index !== null) {
       tree.events.emit("navigate", { nodeId, index })
@@ -363,12 +394,14 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
     nested: isNested,
     onNavigate: handleNavigate,
     loop: true,
+    enabled: !disableKeyboardNavigation,
   })
 
   const typeahead = useTypeahead(context, {
     listRef: labelsRef,
-    onMatch: isControlledOpen ? setActiveIndex : undefined,
+    onMatch: isControlledOpen ? handleSetActiveIndex : undefined,
     activeIndex,
+    enabled: !disableKeyboardNavigation,
   })
 
   const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions([
@@ -492,7 +525,7 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
   const contextValue = useMemo(
     () => ({
       activeIndex,
-      setActiveIndex,
+      setActiveIndex: handleSetActiveIndex,
       getItemProps,
       setHasFocusInside,
       isOpen: isControlledOpen,
@@ -501,7 +534,7 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
       close: handleClose,
       variant,
     }),
-    [activeIndex, getItemProps, handleClose, isControlledOpen, readOnly, selection, variant],
+    [activeIndex, getItemProps, handleClose, handleSetActiveIndex, isControlledOpen, readOnly, selection, variant],
   )
 
   // Cache Slot props to avoid unnecessary re-renders
