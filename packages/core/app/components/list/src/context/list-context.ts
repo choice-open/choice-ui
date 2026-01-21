@@ -59,7 +59,7 @@ interface StructureContextValue {
   shouldShowReferenceLine?: boolean
   size?: "default" | "large"
   unregisterItem: (id: string) => void
-  variant?: "default" | "primary"
+  variant?: "default" | "primary" | "dark" | "reset"
 }
 
 export const StructureContext = createContext<StructureContextValue | undefined>(undefined)

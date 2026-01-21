@@ -1,12 +1,14 @@
 import { tcx } from "@choice-ui/shared"
 import { forwardRef } from "react"
 import { ListDividerTv } from "../tv"
+import { useStructureContext } from "../context"
 
 export const ListDivider = forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement>>(
   (props, ref) => {
     const { className, ...rest } = props
+    const { variant = "default" } = useStructureContext()
 
-    const tv = ListDividerTv()
+    const tv = ListDividerTv({ variant })
 
     return (
       <div

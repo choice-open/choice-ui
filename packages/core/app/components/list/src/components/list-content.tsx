@@ -13,7 +13,7 @@ export const ListContent = forwardRef<HTMLDivElement, ListContentProps>((props, 
   const { as: As = "div", children, className, parentId, ...rest } = props
 
   const { isSubListExpanded } = useExpandContext()
-  const { itemsMap, shouldShowReferenceLine, size } = useStructureContext()
+  const { itemsMap, shouldShowReferenceLine, size, variant } = useStructureContext()
 
   const level = useMemo(() => {
     if (!parentId) return 0
@@ -53,6 +53,7 @@ export const ListContent = forwardRef<HTMLDivElement, ListContentProps>((props, 
     showReferenceLine: shouldShowReferenceLine,
     level: safeLevel,
     size,
+    variant,
   })
 
   return (

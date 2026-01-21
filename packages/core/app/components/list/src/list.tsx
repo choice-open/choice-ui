@@ -17,7 +17,7 @@ export interface ListProps extends Omit<HTMLProps<HTMLDivElement>, "size" | "as"
   selection?: boolean
   shouldShowReferenceLine?: boolean
   size?: "default" | "large"
-  variant?: "default" | "primary"
+  variant?: "default" | "primary" | "dark" | "reset"
 }
 
 interface ListComponentProps extends React.ForwardRefExoticComponent<

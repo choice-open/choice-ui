@@ -12,7 +12,7 @@ interface ListProviderProps {
   selection?: boolean
   shouldShowReferenceLine?: boolean
   size?: "default" | "large"
-  variant?: "default" | "primary"
+  variant?: "default" | "primary" | "dark" | "reset"
 }
 
 // Use reducer to manage complex state, reduce re-rendering

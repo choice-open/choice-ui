@@ -80,27 +80,121 @@ export const WithIcons: Story = {
  *
  * ```tsx
  * <List variant="primary">...</List>
+ * <List variant="dark">...</List>
  * ```
  */
 export const Variant: Story = {
-  render: () => (
-    <List
-      className="w-64"
-      variant="primary"
-    >
-      <List.Content>
-        <List.Item prefixElement={<House />}>
-          <List.Value>Home</List.Value>
-        </List.Item>
-        <List.Item prefixElement={<File />}>
-          <List.Value>Documents</List.Value>
-        </List.Item>
-        <List.Item prefixElement={<Settings />}>
-          <List.Value>Settings</List.Value>
-        </List.Item>
-      </List.Content>
-    </List>
-  ),
+  render: () => {
+    const createNestedItems = (level: number, parentId: string = "", maxDepth: number = 5) => {
+      // Stop recursion when reaching the maximum depth
+      if (level > maxDepth) return null
+
+      const currentId = parentId ? `${parentId}-level${level}` : `level${level}`
+      const items: React.ReactNode[] = []
+
+      // Create title for the current level
+      items.push(
+        <List.SubTrigger
+          key={`trigger-${currentId}`}
+          id={currentId}
+          parentId={parentId || undefined}
+          prefixElement={<Folder />}
+          defaultOpen={level <= 3} // Default open for the first three levels
+        >
+          <List.Value>{`Level ${level} Folder`}</List.Value>
+        </List.SubTrigger>,
+      )
+
+      // Create content container for the current level
+      items.push(
+        <List.Content
+          key={`content-${currentId}`}
+          parentId={currentId}
+        >
+          {/* Add some file items for the current level */}
+          {[1, 2].map((fileIndex) => (
+            <List.Item
+              key={`file-${currentId}-${fileIndex}`}
+              parentId={currentId}
+              prefixElement={<File />}
+            >
+              <List.Value>{`File ${fileIndex} (Level ${level})`}</List.Value>
+            </List.Item>
+          ))}
+
+          {/* Recursively create the next level */}
+          {level < maxDepth && createNestedItems(level + 1, currentId, maxDepth)}
+        </List.Content>,
+      )
+
+      return items
+    }
+
+    return (
+      <div className="flex">
+        <div className="rounded-lg p-4">
+          <List shouldShowReferenceLine>
+            <List.Label>Default</List.Label>
+            <List.Divider />
+            <List.Content>
+              <List.Item prefixElement={<House />}>
+                <List.Value>Home</List.Value>
+              </List.Item>
+
+              {/* Create nested items from level 1 */}
+              {createNestedItems(1)}
+
+              <List.Item prefixElement={<ViewCalendar />}>
+                <List.Value>Calendar</List.Value>
+              </List.Item>
+            </List.Content>
+          </List>
+        </div>
+        <div className="rounded-lg p-4">
+          <List
+            variant="primary"
+            shouldShowReferenceLine
+          >
+            <List.Label>Primary</List.Label>
+            <List.Divider />
+            <List.Content>
+              <List.Item prefixElement={<House />}>
+                <List.Value>Home</List.Value>
+              </List.Item>
+
+              {/* Create nested items from level 1 */}
+              {createNestedItems(1)}
+
+              <List.Item prefixElement={<ViewCalendar />}>
+                <List.Value>Calendar</List.Value>
+              </List.Item>
+            </List.Content>
+          </List>
+        </div>
+        <div className="rounded-lg bg-gray-800 p-4 text-white">
+          <List
+            variant="dark"
+            shouldShowReferenceLine
+          >
+            <List.Label>Dark</List.Label>
+            <List.Divider />
+            <List.Content>
+              <List.Item prefixElement={<House />}>
+                <List.Value>Home</List.Value>
+              </List.Item>
+
+              {/* Create nested items from level 1 */}
+              {createNestedItems(1)}
+
+              <List.Item prefixElement={<ViewCalendar />}>
+                <List.Value>Calendar</List.Value>
+              </List.Item>
+            </List.Content>
+          </List>
+        </div>
+      </div>
+    )
+  },
 }
 
 /**

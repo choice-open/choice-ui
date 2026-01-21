@@ -49,6 +49,8 @@ export const ListItemTv = tcv({
     variant: {
       default: {},
       primary: {},
+      dark: {},
+      reset: {},
     },
     size: {
       default: {
@@ -91,6 +93,15 @@ export const ListItemTv = tcv({
       class: {
         root: "bg-selected-background",
         shortcut: "text-default-foreground",
+      },
+    },
+    {
+      disabled: false,
+      active: true,
+      variant: "dark",
+      class: {
+        root: "bg-white/10",
+        shortcut: "text-white",
       },
     },
     {
@@ -212,9 +223,25 @@ export const ListLabelTv = tcv({
 export const ListDividerTv = tcv({
   slots: {
     root: "flex h-4 w-full flex-none items-center",
-    divider: "bg-default-boundary h-px flex-1",
+    divider: "h-px flex-1",
   },
-  defaultVariants: {},
+  variants: {
+    variant: {
+      default: {
+        divider: "bg-default-boundary",
+      },
+      primary: {
+        divider: "bg-default-boundary",
+      },
+      dark: {
+        divider: "bg-white/10",
+      },
+      reset: {},
+    },
+  },
+  defaultVariants: {
+    variant: "default",
+  },
 })
 
 export const ListContentTv = tcv({
@@ -227,6 +254,12 @@ export const ListContentTv = tcv({
     size: {
       default: {},
       large: {},
+    },
+    variant: {
+      default: {},
+      primary: {},
+      dark: {},
+      reset: {},
     },
     level: {
       0: "",
@@ -244,8 +277,15 @@ export const ListContentTv = tcv({
       class: [
         "relative",
         "before:absolute before:inset-y-0 before:z-1 before:w-px before:content-['']",
-        "group-hover/list:before:bg-default-boundary",
       ],
+    },
+    {
+      variant: ["default", "primary"],
+      class: "group-hover/list:before:bg-default-boundary",
+    },
+    {
+      variant: "dark",
+      class: "group-hover/list:before:bg-white/10",
     },
     {
       size: "default",
