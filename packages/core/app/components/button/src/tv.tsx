@@ -248,6 +248,13 @@ export const buttonTv = tcv({
       active: false,
       class: { button: "hover:bg-secondary-background" },
     },
+    {
+      disabled: false,
+      loading: false,
+      variant: "secondary-destruct",
+      active: false,
+      class: { button: "hover:bg-danger-background/10" },
+    },
   ],
   defaultVariants: {
     size: "default",
