@@ -12,9 +12,11 @@ import {
   Input,
   Kbd,
   Label,
+  Popover,
   useCommandState,
 } from "@choice-ui/react"
 import {
+  Check,
   ChevronLeftSmall,
   ColorAlpha,
   ColorOpacity,
@@ -2525,6 +2527,82 @@ export const WithTabs: Story = {
             <div className="text-secondary-foreground">{filteredItems.length} items</div>
           </Command.Footer>
         </Command>
+      </div>
+    )
+  },
+}
+
+/**
+ * **Selection Mode**
+ *
+ * Demonstrates the `selection` prop on `Command` and the `selected` prop on `Command.Item`.
+ * When `selection` is enabled, the item with `selected` will be highlighted and scrolled into view on mount.
+ *
+ * Click the button to open the popover — "TypeScript" is pre-selected and the list automatically scrolls to show it.
+ */
+export const Selection: Story = {
+  render: function SelectionExample() {
+    const languages = [
+      "HTML",
+      "CSS",
+      "JavaScript",
+      "TypeScript",
+      "Python",
+      "Ruby",
+      "Go",
+      "Rust",
+      "Java",
+      "Kotlin",
+      "Swift",
+      "C++",
+      "C#",
+      "PHP",
+      "Dart",
+      "Scala",
+      "Elixir",
+      "Haskell",
+      "Clojure",
+      "Lua",
+    ]
+
+    const [open, setOpen] = useState(false)
+    const [selected, setSelected] = useState("TypeScript")
+
+    return (
+      <div className="flex w-96 flex-col items-start gap-4">
+        <div className="text-secondary-foreground text-sm">
+          Selected: <strong>{selected}</strong>
+        </div>
+        <Popover
+          open={open}
+          onOpenChange={setOpen}
+        >
+          <Popover.Trigger>
+            <Button variant="secondary">{selected || "Select a language..."}</Button>
+          </Popover.Trigger>
+          <Popover.Content className="w-72 overflow-hidden p-0">
+            <Command selection>
+              <Command.Input placeholder="Search languages..." />
+              <Command.List className="h-64">
+                <Command.Group heading="Languages">
+                  {languages.map((lang) => (
+                    <Command.Item
+                      key={lang}
+                      selected={lang === selected}
+                      onSelect={() => {
+                        setSelected(lang)
+                        setOpen(false)
+                      }}
+                      prefixElement={lang === selected ? <Check /> : <></>}
+                    >
+                      {lang}
+                    </Command.Item>
+                  ))}
+                </Command.Group>
+              </Command.List>
+            </Command>
+          </Popover.Content>
+        </Popover>
       </div>
     )
   },

@@ -30,6 +30,11 @@ export interface CommandProps extends Omit<React.HTMLAttributes<HTMLDivElement>,
    */
   onChange?: (value: string) => void
   /**
+   * Optionally set to `true` to enable selection mode.
+   * When enabled, items with `selected` prop will be scrolled into view on mount.
+   */
+  selection?: boolean
+  /**
    * Optionally set to `false` to turn off the automatic filtering and sorting.
    * If `false`, you must conditionally render valid items based on the search query yourself.
    */
@@ -64,6 +69,7 @@ export type Context = {
   labelId: string
   listId: string
   listInnerRef: React.MutableRefObject<HTMLDivElement | null>
+  selection?: boolean
   size?: "default" | "large"
   store: Store
   value: (id: string, value?: string, keywords?: string[]) => void

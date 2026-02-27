@@ -64,6 +64,7 @@ export const CommandList = forwardRef<HTMLDivElement, CommandListProps>((props, 
         }}
         {...rest}
         className={tcx(tv.root({ className }))}
+        style={context.selection ? { scrollPaddingBlock: 8 } : undefined}
         role="listbox"
         tabIndex={-1}
         aria-activedescendant={selectedItemId}

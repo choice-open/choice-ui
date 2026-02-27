@@ -11,6 +11,10 @@ export interface CommandItemProps extends Omit<HTMLProps<HTMLDivElement>, "onSel
   keywords?: string[]
   onSelect?: (value: string) => void
   prefixElement?: ReactNode
+  /**
+   * When true, this item will be set as the selected item and scrolled into view.
+   */
+  selected?: boolean
   shortcut?: {
     keys?: ReactNode
     modifier?: KbdKey | KbdKey[] | undefined
@@ -27,6 +31,7 @@ export const CommandItem = memo(
       forceMount,
       keywords,
       onSelect,
+      selected: selectedProp,
       value,
       children,
       prefixElement,
@@ -68,6 +73,15 @@ export const CommandItem = memo(
     const valueRef = useValue(id, ref, valueDeps, stableKeywords)
 
     const store = context.store
+
+    // When `selected` prop is true and selection mode is enabled on Command root,
+    // set this item as the active selection and scroll into view
+    useEffect(() => {
+      if (context.selection && selectedProp && valueRef.current) {
+        store.setState("value", valueRef.current)
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [selectedProp])
 
     const selected = useCommandState((state) =>
       Boolean(state.value && state.value === valueRef?.current),

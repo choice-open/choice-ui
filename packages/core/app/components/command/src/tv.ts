@@ -8,7 +8,7 @@ export const commandTv = tcv({
   variants: {
     variant: {
       default: {
-        root: "bg-default-background text-default-foreground",
+        root: "text-default-foreground",
         divider: "bg-default-boundary",
       },
       dark: {

@@ -15,6 +15,7 @@ interface CreateCommandContextOptions {
   propsRef: React.MutableRefObject<CommandProps>
   schedule: (id: string | number, cb: () => void) => void
   selectFirstItem: () => void
+  selection?: boolean
   size?: "default" | "large"
   sort: () => void
   state: React.MutableRefObject<State>
@@ -36,6 +37,7 @@ export function createCommandContext(options: CreateCommandContextOptions): Cont
     propsRef,
     schedule,
     selectFirstItem,
+    selection,
     size,
     sort,
     state,
@@ -133,6 +135,7 @@ export function createCommandContext(options: CreateCommandContextOptions): Cont
     inputId,
     labelId,
     listInnerRef,
+    selection,
     store,
     size,
     variant,
