@@ -7,7 +7,6 @@ import {
   Range,
   ScrollArea,
   Tooltip,
-  useScrollPerformanceMonitor,
 } from "@choice-ui/react"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { useVirtualizer } from "@tanstack/react-virtual"
@@ -748,118 +747,6 @@ export const HoverBoundary: Story = {
                     <p className="text-body-small text-secondary-foreground mt-1">
                       {item.description}
                     </p>
-                  </div>
-                ))}
-              </div>
-            </ScrollArea.Content>
-          </ScrollArea.Viewport>
-        </ScrollArea>
-      </div>
-    )
-  },
-}
-
-/**
- * [TEST] PerformanceMonitoring: Demonstrates useScrollPerformanceMonitor hook.
- *
- * Features:
- * - Real-time FPS and dropped frames monitoring
- * - Configurable item count for stress testing
- * - Performance metrics displayed in UI
- *
- * Performance guidelines:
- * - Average frame time should be < 16.67ms (60fps)
- * - Dropped frames should be minimal
- * - Check browser console for detailed reports when enabled
- *
- * Use cases:
- * - Debugging scroll performance issues
- * - Testing with large datasets
- * - Identifying rendering bottlenecks
- */
-export const PerformanceMonitoring: Story = {
-  render: function PerformanceMonitoringStory() {
-    const [monitoringEnabled, setMonitoringEnabled] = useState(false)
-    const [itemCount, setItemCount] = useState(1000)
-    const [viewport, setViewport] = useState<HTMLDivElement | null>(null)
-
-    const performanceMetrics = useScrollPerformanceMonitor(viewport, {
-      enabled: monitoringEnabled,
-      logInterval: 3000,
-      frameTimeThreshold: 16.67,
-    })
-
-    const items = useMemo(() => {
-      return Array.from({ length: itemCount }, (_, i) => ({
-        id: i,
-        title: `Item ${i + 1}`,
-        content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-        value: Math.floor(Math.random() * 1000),
-      }))
-    }, [itemCount])
-
-    return (
-      <div className="space-y-4">
-        <div className="flex flex-wrap items-center gap-4">
-          <div className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              id="monitoring"
-              checked={monitoringEnabled}
-              onChange={(e) => setMonitoringEnabled(e.target.checked)}
-              className="rounded"
-            />
-            <Label htmlFor="monitoring">Enable Monitoring</Label>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <Label>Items:</Label>
-            <select
-              value={itemCount}
-              onChange={(e) => setItemCount(Number(e.target.value))}
-              className="rounded border px-2 py-1"
-            >
-              <option value={100}>100</option>
-              <option value={500}>500</option>
-              <option value={1000}>1000</option>
-              <option value={5000}>5000</option>
-            </select>
-          </div>
-
-          {monitoringEnabled && performanceMetrics && (
-            <Badge>
-              FPS:{" "}
-              {performanceMetrics.averageFrameTime > 0
-                ? (1000 / performanceMetrics.averageFrameTime).toFixed(1)
-                : "0"}{" "}
-              | Dropped: {performanceMetrics.droppedFrames}
-            </Badge>
-          )}
-        </div>
-
-        <ScrollArea
-          className="relative h-80 w-full overflow-hidden rounded-xl border"
-          orientation="vertical"
-          type="auto"
-        >
-          <ScrollArea.Viewport
-            className="h-full"
-            ref={setViewport}
-          >
-            <ScrollArea.Content className="p-4">
-              <div className="space-y-2">
-                {items.map((item) => (
-                  <div
-                    key={item.id}
-                    className="bg-secondary-background rounded-lg p-3"
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="font-strong">{item.title}</div>
-                      <Badge>{item.value}</Badge>
-                    </div>
-                    <div className="text-body-small text-secondary-foreground mt-1">
-                      {item.content}
-                    </div>
                   </div>
                 ))}
               </div>

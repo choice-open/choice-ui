@@ -1,12 +1,16 @@
 import { tcx } from "@choice-ui/shared"
 import { forwardRef, useId, useMemo, useState } from "react"
-import { ScrollAreaContext } from "../context/scroll-area-context"
+import {
+  ScrollAreaConfigContext,
+  ScrollAreaStateContext,
+} from "../context/scroll-area-context"
 import { useScrollStateAndVisibility } from "../hooks"
 import { ScrollTv } from "../tv"
 import type {
-  ScrollAreaContextType,
+  ScrollAreaConfigContextType,
   ScrollAreaProps,
   ScrollAreaRenderProp,
+  ScrollAreaStateContextType,
   ScrollPosition,
 } from "../types"
 import { ScrollAreaCorner } from "./scroll-area-corner"
@@ -45,7 +49,7 @@ export const ScrollAreaRoot = forwardRef<HTMLDivElement, ScrollAreaProps>(
     const scrollbarYId = `scroll-y${reactId}`
 
     const { scrollState, isHovering, isScrolling, handleMouseEnter, handleMouseLeave } =
-      useScrollStateAndVisibility(viewport)
+      useScrollStateAndVisibility(viewport, content)
 
     // Cache static configuration, avoid recreating on each render
     const staticConfig = useMemo(
@@ -59,12 +63,17 @@ export const ScrollAreaRoot = forwardRef<HTMLDivElement, ScrollAreaProps>(
       [orientation, scrollbarMode, hoverBoundary, variant, type],
     )
 
-    // Cache Context values, only update when related states change
-    const contextValue: ScrollAreaContextType = useMemo(
+    // State context: changes on every scroll event — only Scrollbar/Thumb/Corner subscribe
+    const stateValue: ScrollAreaStateContextType = useMemo(
+      () => ({ scrollState, isHovering, isScrolling }),
+      [scrollState, isHovering, isScrolling],
+    )
+
+    // Config context: rarely changes — Viewport/Content subscribe without scroll overhead
+    const configValue: ScrollAreaConfigContextType = useMemo(
       () => ({
         content,
         orientation: staticConfig.orientation,
-        scrollState,
         scrollbarMode: staticConfig.scrollbarMode,
         hoverBoundary: staticConfig.hoverBoundary,
         scrollbarX,
@@ -80,9 +89,6 @@ export const ScrollAreaRoot = forwardRef<HTMLDivElement, ScrollAreaProps>(
         variant: staticConfig.variant,
         viewport,
         type: staticConfig.type,
-        isHovering,
-        isScrolling,
-        // Add ID-related values
         rootId,
         viewportId,
         scrollbarXId,
@@ -90,14 +96,11 @@ export const ScrollAreaRoot = forwardRef<HTMLDivElement, ScrollAreaProps>(
       }),
       [
         content,
-        scrollState,
         scrollbarX,
         scrollbarY,
         thumbX,
         thumbY,
         viewport,
-        isHovering,
-        isScrolling,
         staticConfig,
         rootId,
         viewportId,
@@ -180,22 +183,24 @@ export const ScrollAreaRoot = forwardRef<HTMLDivElement, ScrollAreaProps>(
     }, [orientation])
 
     return (
-      <ScrollAreaContext.Provider value={contextValue}>
-        <div
-          ref={ref}
-          id={rootId}
-          className={tcx(tv.root(), className)}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-          // WAI-ARIA attributes
-          aria-label={ariaLabel}
-          aria-labelledby={ariaLabelledBy}
-          {...props}
-        >
-          {renderedChildren}
-          {autoScrollbars}
-        </div>
-      </ScrollAreaContext.Provider>
+      <ScrollAreaConfigContext.Provider value={configValue}>
+        <ScrollAreaStateContext.Provider value={stateValue}>
+          <div
+            ref={ref}
+            id={rootId}
+            className={tcx(tv.root(), className)}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            // WAI-ARIA attributes
+            aria-label={ariaLabel}
+            aria-labelledby={ariaLabelledBy}
+            {...props}
+          >
+            {renderedChildren}
+            {autoScrollbars}
+          </div>
+        </ScrollAreaStateContext.Provider>
+      </ScrollAreaConfigContext.Provider>
     )
   },
 )

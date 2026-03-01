@@ -1,10 +1,10 @@
 import { tcx } from "@choice-ui/shared"
 import React, { forwardRef, useCallback, useMemo } from "react"
-import { useScrollAreaContext } from "../context/scroll-area-context"
+import { useScrollAreaConfigContext } from "../context/scroll-area-context"
 
 export const ScrollAreaViewport = forwardRef<HTMLDivElement, React.ComponentPropsWithoutRef<"div">>(
   ({ className, children, ...props }, ref) => {
-    const { setViewport, orientation, viewportId } = useScrollAreaContext()
+    const { setViewport, orientation, viewportId } = useScrollAreaConfigContext()
 
     // Cache scroll class name
     const scrollClass = useMemo(() => {

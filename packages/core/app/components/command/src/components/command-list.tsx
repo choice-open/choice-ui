@@ -7,7 +7,9 @@ import { commandListTv } from "../tv"
 export interface CommandListProps extends ScrollAreaProps {
   children: React.ReactNode
   className?: string
-  contentClassName?: string
+  classNames?: {
+    content?: string
+  }
   label?: string
 }
 
@@ -18,7 +20,9 @@ export const CommandList = forwardRef<HTMLDivElement, CommandListProps>((props, 
     label = "Suggestions",
     hoverBoundary = "none",
     scrollbarMode = "padding-b",
-    contentClassName = "",
+    classNames = {
+      content: "",
+    },
     orientation,
     variant,
     type,
@@ -74,7 +78,7 @@ export const CommandList = forwardRef<HTMLDivElement, CommandListProps>((props, 
         id={context.listId}
       >
         <ScrollArea.Content
-          className={tcx(tv.content(), contentClassName)}
+          className={tcx(tv.content(), classNames?.content)}
           ref={(el) => {
             height.current = el
             if (context.listInnerRef) {

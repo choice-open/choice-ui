@@ -35,15 +35,23 @@ export interface ScrollPosition {
  */
 export type ScrollAreaRenderProp = (position: ScrollPosition) => React.ReactNode
 
-export interface ScrollAreaContextType {
-  content: HTMLDivElement | null
-  hoverBoundary: HoverBoundary
+/**
+ * Frequently changing state — triggers re-renders on scroll
+ */
+export interface ScrollAreaStateContextType {
   isHovering: boolean
   isScrolling: boolean
-  orientation: ScrollOrientation
-  // ID related properties
-  rootId: string
   scrollState: ScrollState
+}
+
+/**
+ * Rarely changing config, refs, setters — does NOT change on scroll
+ */
+export interface ScrollAreaConfigContextType {
+  content: HTMLDivElement | null
+  hoverBoundary: HoverBoundary
+  orientation: ScrollOrientation
+  rootId: string
   scrollbarMode: ScrollbarMode
   scrollbarX: HTMLDivElement | null
   scrollbarXId: string
@@ -62,6 +70,11 @@ export interface ScrollAreaContextType {
   viewport: HTMLDivElement | null
   viewportId: string
 }
+
+/**
+ * Combined context type for components that need both state and config
+ */
+export type ScrollAreaContextType = ScrollAreaStateContextType & ScrollAreaConfigContextType
 
 export interface ScrollAreaProps extends Omit<React.ComponentPropsWithoutRef<"div">, "children"> {
   /** Accessible name */

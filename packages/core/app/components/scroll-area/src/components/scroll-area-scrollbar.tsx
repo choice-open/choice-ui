@@ -1,5 +1,5 @@
 import { tcx } from "@choice-ui/shared"
-import React, { forwardRef, useCallback, useMemo } from "react"
+import React, { forwardRef, useCallback, useMemo, useRef } from "react"
 import { useScrollAreaContext } from "../context/scroll-area-context"
 import { useHasOverflow, useScrollbarShouldShow } from "../hooks"
 import { ScrollTv } from "../tv"
@@ -24,6 +24,10 @@ export const ScrollAreaScrollbar = forwardRef<HTMLDivElement, ScrollbarProps>(
       scrollbarYId,
     } = useScrollAreaContext()
 
+    // Use ref to avoid recreating handleTrackClick on every scroll
+    const scrollStateRef = useRef(scrollState)
+    scrollStateRef.current = scrollState
+
     // Use optimized hooks
     const hasOverflow = useHasOverflow(scrollState, orientation)
     const shouldShow = useScrollbarShouldShow(type, hasOverflow, isScrolling, isHovering)
@@ -37,17 +41,25 @@ export const ScrollAreaScrollbar = forwardRef<HTMLDivElement, ScrollbarProps>(
         const maxScroll = scrollState.scrollWidth - scrollState.clientWidth
         return maxScroll > 0 ? Math.round((scrollState.scrollLeft / maxScroll) * 100) : 0
       }
-    }, [scrollState, orientation])
+    }, [
+      orientation,
+      scrollState.scrollTop,
+      scrollState.scrollLeft,
+      scrollState.scrollHeight,
+      scrollState.clientHeight,
+      scrollState.scrollWidth,
+      scrollState.clientWidth,
+    ])
 
-    // Cache event handlers
+    // Stable callback — reads scrollState from ref at click time
     const handleTrackClick = useCallback(
       (e: React.MouseEvent) => {
         if (!viewport) return
         if (e.target === e.currentTarget) {
-          handleScrollbarTrackClick(e, viewport, scrollState, orientation)
+          handleScrollbarTrackClick(e, viewport, scrollStateRef.current, orientation)
         }
       },
-      [viewport, scrollState, orientation],
+      [viewport, orientation],
     )
 
     // Cache TV configuration

@@ -7,7 +7,6 @@ import type { ScrollState } from "../types"
 export function useThumbStyle(scrollState: ScrollState, orientation: "vertical" | "horizontal") {
   return useMemo(() => {
     if (orientation === "vertical") {
-      // 🔧 Add stricter checks to ensure values are valid
       const hasValidDimensions =
         scrollState.scrollHeight > 0 &&
         scrollState.clientHeight > 0 &&
@@ -29,7 +28,6 @@ export function useThumbStyle(scrollState: ScrollState, orientation: "vertical" 
         top: `${Math.max(0, Math.min(thumbTop, 100 - thumbHeight))}%`,
       }
     } else {
-      // 🔧 Add stricter checks to ensure values are valid
       const hasValidDimensions =
         scrollState.scrollWidth > 0 &&
         scrollState.clientWidth > 0 &&
@@ -63,7 +61,7 @@ export function useThumbStyle(scrollState: ScrollState, orientation: "vertical" 
 }
 
 /**
- * 🚀 High-performance thumb drag hook - optimize drag responsiveness and performance
+ * High-performance thumb drag hook
  */
 export function useThumbDrag(
   viewport: HTMLDivElement | null,
@@ -73,10 +71,12 @@ export function useThumbDrag(
   const isDragging = useRef(false)
   const startPos = useRef(0)
   const startScroll = useRef(0)
-  const rafId = useRef<number>()
   const cleanupRef = useRef<(() => void) | null>(null)
+  const scrollStateRef = useRef(scrollState)
 
-  // 🚀 Performance optimization: cache drag calculation parameters, avoid duplicate calculations
+  // Keep ref in sync — runs on every render, no useEffect needed
+  scrollStateRef.current = scrollState
+
   const dragContextRef = useRef<{
     scrollableRange: number
     scrollbarRange: number
@@ -86,16 +86,7 @@ export function useThumbDrag(
   // Ensure event listeners are cleaned up when the component unmounts
   useEffect(() => {
     return () => {
-      // Clean up drag state
       isDragging.current = false
-
-      // Clean up RAF
-      if (rafId.current) {
-        cancelAnimationFrame(rafId.current)
-        rafId.current = undefined
-      }
-
-      // Clean up event listeners
       if (cleanupRef.current) {
         cleanupRef.current()
         cleanupRef.current = null
@@ -107,20 +98,32 @@ export function useThumbDrag(
     (e: React.MouseEvent) => {
       if (!viewport) return
 
-      // 🔧 Get scrollbar element
+      const currentScrollState = scrollStateRef.current
+
       const target = e.currentTarget as HTMLElement
       const scrollbar = target.closest('[role="scrollbar"]') as HTMLElement
       if (!scrollbar) return
 
-      // 🚀 Performance optimization: pre-calculate drag context, avoid duplicate calculations in mousemove
       const scrollbarRect = scrollbar.getBoundingClientRect()
       const scrollableRange =
         orientation === "vertical"
-          ? Math.max(0, scrollState.scrollHeight - scrollState.clientHeight)
-          : Math.max(0, scrollState.scrollWidth - scrollState.clientWidth)
+          ? Math.max(0, currentScrollState.scrollHeight - currentScrollState.clientHeight)
+          : Math.max(0, currentScrollState.scrollWidth - currentScrollState.clientWidth)
       const scrollbarRange = orientation === "vertical" ? scrollbarRect.height : scrollbarRect.width
 
       if (scrollableRange <= 0 || scrollbarRange <= 0) return
+
+      // Calculate thumb size in pixels to get the effective track range
+      const thumbFraction = Math.max(
+        0.1,
+        orientation === "vertical"
+          ? currentScrollState.clientHeight / currentScrollState.scrollHeight
+          : currentScrollState.clientWidth / currentScrollState.scrollWidth,
+      )
+      const thumbSizePixels = scrollbarRange * thumbFraction
+      const effectiveTrackRange = scrollbarRange - thumbSizePixels
+
+      if (effectiveTrackRange <= 0) return
 
       dragContextRef.current = {
         scrollbarRect,
@@ -131,52 +134,38 @@ export function useThumbDrag(
       isDragging.current = true
       startPos.current = orientation === "vertical" ? e.clientY : e.clientX
       startScroll.current =
-        orientation === "vertical" ? scrollState.scrollTop : scrollState.scrollLeft
+        orientation === "vertical" ? currentScrollState.scrollTop : currentScrollState.scrollLeft
 
-      // 🚀 Performance optimization: pre-calculate conversion ratio, avoid duplicate division operations in mousemove
-      const scrollRatio = scrollableRange / scrollbarRange
+      // Use effective track range (excluding thumb size) for accurate 1:1 mouse tracking
+      const scrollRatio = scrollableRange / effectiveTrackRange
 
       const handleMouseMove = (e: MouseEvent) => {
         if (!isDragging.current || !viewport || !dragContextRef.current) return
 
-        // Use RAF throttling, ensure drag is smooth and does not block UI
-        if (rafId.current) {
-          cancelAnimationFrame(rafId.current)
+        const currentPos = orientation === "vertical" ? e.clientY : e.clientX
+        const delta = currentPos - startPos.current
+
+        const scrollDelta = delta * scrollRatio
+        const newScrollValue = Math.max(
+          0,
+          Math.min(startScroll.current + scrollDelta, dragContextRef.current!.scrollableRange),
+        )
+
+        if (orientation === "vertical") {
+          viewport.scrollTop = newScrollValue
+        } else {
+          viewport.scrollLeft = newScrollValue
         }
-
-        rafId.current = requestAnimationFrame(() => {
-          const currentPos = orientation === "vertical" ? e.clientY : e.clientX
-          const delta = currentPos - startPos.current
-
-          // 🚀 Performance optimization: use pre-calculated ratio, avoid duplicate division operations
-          const scrollDelta = delta * scrollRatio
-          const newScrollValue = Math.max(
-            0,
-            Math.min(startScroll.current + scrollDelta, dragContextRef.current!.scrollableRange),
-          )
-
-          // 🚀 Performance optimization: reduce DOM operations, directly set scroll value for corresponding direction
-          if (orientation === "vertical") {
-            viewport.scrollTop = newScrollValue
-          } else {
-            viewport.scrollLeft = newScrollValue
-          }
-        })
       }
 
       const handleMouseUp = () => {
         isDragging.current = false
-        // 🚀 Performance optimization: clean up drag context
         dragContextRef.current = null
-        if (rafId.current) {
-          cancelAnimationFrame(rafId.current)
-        }
         document.removeEventListener("mousemove", handleMouseMove)
         document.removeEventListener("mouseup", handleMouseUp)
         cleanupRef.current = null
       }
 
-      // Create cleanup function
       const cleanup = () => {
         document.removeEventListener("mousemove", handleMouseMove)
         document.removeEventListener("mouseup", handleMouseUp)
@@ -189,7 +178,7 @@ export function useThumbDrag(
 
       e.preventDefault()
     },
-    [viewport, orientation, scrollState],
+    [viewport, orientation],
   )
 
   return {

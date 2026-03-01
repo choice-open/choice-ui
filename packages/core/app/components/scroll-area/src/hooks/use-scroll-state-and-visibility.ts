@@ -2,9 +2,12 @@ import { useCallback, useEffect, useRef, useState } from "react"
 import type { ScrollState } from "../types"
 
 /**
- * Merged scroll state and visibility management hook - avoid duplicate scroll event listening
+ * Merged scroll state and visibility management hook
  */
-export function useScrollStateAndVisibility(viewport: HTMLDivElement | null) {
+export function useScrollStateAndVisibility(
+  viewport: HTMLDivElement | null,
+  content: HTMLDivElement | null,
+) {
   const [scrollState, setScrollState] = useState<ScrollState>({
     scrollLeft: 0,
     scrollTop: 0,
@@ -19,93 +22,89 @@ export function useScrollStateAndVisibility(viewport: HTMLDivElement | null) {
   const scrollTimeoutRef = useRef<number>()
   const rafRef = useRef<number>()
   const resizeObserverRef = useRef<ResizeObserver>()
-  const mutationObserverRef = useRef<MutationObserver>()
-  const mutationTimeoutRef = useRef<number>()
 
-  // 🚀 Performance optimization: prevent duplicate state caching
+  // Throttle: prevent duplicate state updates
   const lastUpdateTimeRef = useRef<number>(0)
   const minUpdateIntervalRef = useRef<number>(16) // ~60fps
 
-  // 🚀 Performance optimization: smart update strategy - adjust update frequency based on scroll speed
+  // Synchronous DOM read + smart setState with shallow comparison
   const updateScrollState = useCallback(() => {
     if (!viewport) return
 
     const now = performance.now()
     const timeSinceLastUpdate = now - lastUpdateTimeRef.current
 
-    // Prevent too frequent updates
+    // If updating too frequently, schedule a deferred update via single RAF
     if (timeSinceLastUpdate < minUpdateIntervalRef.current) {
       if (rafRef.current) {
         cancelAnimationFrame(rafRef.current)
       }
       rafRef.current = requestAnimationFrame(() => {
+        rafRef.current = undefined
         updateScrollState()
       })
       return
     }
 
+    // Cancel any pending deferred update since we're doing it now
     if (rafRef.current) {
       cancelAnimationFrame(rafRef.current)
+      rafRef.current = undefined
     }
 
-    rafRef.current = requestAnimationFrame(() => {
-      const newState = {
-        scrollLeft: viewport.scrollLeft,
-        scrollTop: viewport.scrollTop,
-        scrollWidth: viewport.scrollWidth,
-        scrollHeight: viewport.scrollHeight,
-        clientWidth: viewport.clientWidth,
-        clientHeight: viewport.clientHeight,
+    // Read DOM values synchronously — these reads are cheap
+    const newState: ScrollState = {
+      scrollLeft: viewport.scrollLeft,
+      scrollTop: viewport.scrollTop,
+      scrollWidth: viewport.scrollWidth,
+      scrollHeight: viewport.scrollHeight,
+      clientWidth: viewport.clientWidth,
+      clientHeight: viewport.clientHeight,
+    }
+
+    // Only update state when there is a real change (with floating-point tolerance)
+    setScrollState((prevState) => {
+      const scrollLeftChanged = Math.abs(prevState.scrollLeft - newState.scrollLeft) > 0.5
+      const scrollTopChanged = Math.abs(prevState.scrollTop - newState.scrollTop) > 0.5
+      const scrollWidthChanged = prevState.scrollWidth !== newState.scrollWidth
+      const scrollHeightChanged = prevState.scrollHeight !== newState.scrollHeight
+      const clientWidthChanged = prevState.clientWidth !== newState.clientWidth
+      const clientHeightChanged = prevState.clientHeight !== newState.clientHeight
+
+      const hasChanges =
+        scrollLeftChanged ||
+        scrollTopChanged ||
+        scrollWidthChanged ||
+        scrollHeightChanged ||
+        clientWidthChanged ||
+        clientHeightChanged
+
+      if (hasChanges) {
+        lastUpdateTimeRef.current = now
+        return newState
       }
 
-      // 🚀 Performance optimization: use more precise shallow comparison, only update state when there is a real change
-      setScrollState((prevState) => {
-        // Use stricter comparison, avoid floating point precision issues
-        const scrollLeftChanged = Math.abs(prevState.scrollLeft - newState.scrollLeft) > 0.5
-        const scrollTopChanged = Math.abs(prevState.scrollTop - newState.scrollTop) > 0.5
-        const scrollWidthChanged = prevState.scrollWidth !== newState.scrollWidth
-        const scrollHeightChanged = prevState.scrollHeight !== newState.scrollHeight
-        const clientWidthChanged = prevState.clientWidth !== newState.clientWidth
-        const clientHeightChanged = prevState.clientHeight !== newState.clientHeight
-
-        const hasChanges =
-          scrollLeftChanged ||
-          scrollTopChanged ||
-          scrollWidthChanged ||
-          scrollHeightChanged ||
-          clientWidthChanged ||
-          clientHeightChanged
-
-        if (hasChanges) {
-          lastUpdateTimeRef.current = now
-          return newState
-        }
-
-        return prevState
-      })
+      return prevState
     })
   }, [viewport])
 
   // Delay updating scroll state, used to handle layout delay when initializing dialog/popover
   const delayedUpdateScrollState = useCallback(() => {
-    // Use setTimeout to ensure update after DOM layout is complete
     setTimeout(() => {
       updateScrollState()
     }, 0)
   }, [updateScrollState])
 
-  // 🚀 Performance optimization: smart scroll detection - adjust detection sensitivity based on scroll speed
+  // Smart scroll detection — adjust detection sensitivity based on scroll speed
   const handleScroll = useCallback(() => {
     const now = performance.now()
     const timeSinceLastScroll = now - (lastUpdateTimeRef.current || 0)
 
     // Dynamically adjust update interval based on scroll frequency
     if (timeSinceLastScroll < 8) {
-      // Reduce update frequency when fast scrolling
-      minUpdateIntervalRef.current = 32 // ~30fps
+      minUpdateIntervalRef.current = 32 // ~30fps for fast scrolling
     } else if (timeSinceLastScroll > 100) {
-      // Increase update precision when slow scrolling
-      minUpdateIntervalRef.current = 16 // ~60fps
+      minUpdateIntervalRef.current = 16 // ~60fps for slow scrolling
     }
 
     updateScrollState()
@@ -117,7 +116,6 @@ export function useScrollStateAndVisibility(viewport: HTMLDivElement | null) {
     }
     scrollTimeoutRef.current = window.setTimeout(() => {
       setIsScrolling(false)
-      // Reset update interval
       minUpdateIntervalRef.current = 16
     }, 1000)
   }, [updateScrollState])
@@ -129,15 +127,14 @@ export function useScrollStateAndVisibility(viewport: HTMLDivElement | null) {
       updateScrollState()
     }
 
-    // 🚀 Performance optimization: use AbortController and passive event listeners
+    // Use AbortController and passive event listeners
     const abortController = new AbortController()
     const signal = abortController.signal
 
-    // Use passive event listeners to improve scroll performance
     viewport.addEventListener("scroll", handleScroll, {
       passive: true,
       signal,
-      capture: false, // Avoid unnecessary event capture
+      capture: false,
     })
 
     window.addEventListener("resize", handleResize, {
@@ -145,94 +142,39 @@ export function useScrollStateAndVisibility(viewport: HTMLDivElement | null) {
       signal,
     })
 
-    // 🔧 ResizeObserver listen to viewport size changes
+    // ResizeObserver: observe both viewport and content element
     if (window.ResizeObserver) {
-      resizeObserverRef.current = new ResizeObserver((entries) => {
-        // 🚀 Performance optimization: batch process ResizeObserver callbacks
-        for (const entry of entries) {
-          // Only process elements we care about
-          if (entry.target === viewport) {
-            updateScrollState()
-            break
-          }
-        }
+      resizeObserverRef.current = new ResizeObserver(() => {
+        updateScrollState()
       })
       resizeObserverRef.current.observe(viewport)
+      if (content) {
+        resizeObserverRef.current.observe(content)
+      }
     }
 
-    // 🔧 MutationObserver listen to content changes (throttling)
-    if (window.MutationObserver) {
-      mutationObserverRef.current = new MutationObserver((mutations) => {
-        // 🚀 Performance optimization: smart change detection - only respond to changes that affect layout
-        const hasLayoutChanges = mutations.some((mutation) => {
-          if (mutation.type === "childList") {
-            return mutation.addedNodes.length > 0 || mutation.removedNodes.length > 0
-          }
-          if (mutation.type === "attributes") {
-            const attr = mutation.attributeName
-            return attr === "style" || attr === "class"
-          }
-          return mutation.type === "characterData"
-        })
-
-        if (!hasLayoutChanges) return
-
-        // Throttling to avoid too frequent updates
-        if (mutationTimeoutRef.current) {
-          clearTimeout(mutationTimeoutRef.current)
-        }
-        mutationTimeoutRef.current = window.setTimeout(() => {
-          updateScrollState()
-        }, 16) // ~60fps update frequency
-      })
-
-      mutationObserverRef.current.observe(viewport, {
-        childList: true,
-        subtree: true,
-        attributes: true,
-        attributeFilter: ["style", "class"], // Only listen to attributes that affect layout
-        characterData: true,
-        characterDataOldValue: false, // No need for old value, improve performance
-        attributeOldValue: false,
-      })
-    }
-
-    // 🔧 Use delayed update when initializing, handle dialog/popover layout delay
+    // Delayed initial update for dialog/popover layout
     delayedUpdateScrollState()
 
     return () => {
-      // Clean up all resources
       abortController.abort()
 
-      // Clean up timers
       if (scrollTimeoutRef.current) {
         clearTimeout(scrollTimeoutRef.current)
         scrollTimeoutRef.current = undefined
       }
 
-      if (mutationTimeoutRef.current) {
-        clearTimeout(mutationTimeoutRef.current)
-        mutationTimeoutRef.current = undefined
-      }
-
-      // Clean up RAF
       if (rafRef.current) {
         cancelAnimationFrame(rafRef.current)
         rafRef.current = undefined
       }
 
-      // 🔧 Clean up observers
       if (resizeObserverRef.current) {
         resizeObserverRef.current.disconnect()
         resizeObserverRef.current = undefined
       }
-
-      if (mutationObserverRef.current) {
-        mutationObserverRef.current.disconnect()
-        mutationObserverRef.current = undefined
-      }
     }
-  }, [viewport, handleScroll, delayedUpdateScrollState])
+  }, [viewport, content, handleScroll, delayedUpdateScrollState, updateScrollState])
 
   const handleMouseEnter = useCallback(() => setIsHovering(true), [])
   const handleMouseLeave = useCallback(() => setIsHovering(false), [])
