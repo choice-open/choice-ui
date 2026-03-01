@@ -26,6 +26,7 @@ import {
   Variable,
 } from "@choiceform/icons-react"
 import type { Meta, StoryObj } from "@storybook/react-vite"
+import { expect, fireEvent, waitFor, within } from "storybook/test"
 import { useState } from "react"
 import { useCounter, useEventCallback } from "usehooks-ts"
 
@@ -1344,5 +1345,83 @@ export const LinkedInputs: Story = {
         </div>
       </div>
     )
+  },
+}
+
+/**
+ * OnChangeEndInteraction: Interaction test for drag-end callback behavior.
+ *
+ * This story verifies:
+ * - `onChange` is emitted continuously while dragging
+ * - `onChangeEnd` is emitted only once when drag ends
+ * - `onChangeEnd` receives the final value after drag
+ */
+export const OnChangeEndInteraction: Story = {
+  render: function OnChangeEndInteractionStory() {
+    const [value, setValue] = useState(10)
+    const [endCount, setEndCount] = useState(0)
+    const [lastEndValue, setLastEndValue] = useState<number | null>(null)
+
+    return (
+      <div className="flex w-72 flex-col gap-3">
+        <NumericInput
+          className="w-64"
+          value={value}
+          step={1}
+          onChange={(newValue) => setValue(newValue as number)}
+          onChangeEnd={(newValue) => {
+            setEndCount((prev) => prev + 1)
+            setLastEndValue(newValue as number)
+          }}
+        >
+          <NumericInput.Suffix>
+            <Relative />
+          </NumericInput.Suffix>
+        </NumericInput>
+
+        <div className="bg-secondary-background rounded-md p-2 text-sm">
+          <div data-testid="current-value">current: {value}</div>
+          <div data-testid="end-count">end-count: {endCount}</div>
+          <div data-testid="last-end-value">last-end: {lastEndValue ?? "-"}</div>
+        </div>
+      </div>
+    )
+  },
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement)
+
+    if (!("requestPointerLock" in document.documentElement)) {
+      Object.defineProperty(document.documentElement, "requestPointerLock", {
+        configurable: true,
+        writable: true,
+        value: () => {},
+      })
+    }
+
+    if (!("exitPointerLock" in document)) {
+      Object.defineProperty(document, "exitPointerLock", {
+        configurable: true,
+        writable: true,
+        value: () => {},
+      })
+    }
+
+    const handler = canvasElement.querySelector('[data-element-type="handler"]') as HTMLElement | null
+    if (!handler) {
+      throw new Error("NumericInput drag handler not found in canvas")
+    }
+
+    await step("drag twice and release pointer", async () => {
+      fireEvent.pointerDown(handler, { button: 0, clientX: 100, clientY: 10 })
+      fireEvent.pointerMove(document, { movementX: 10, movementY: 0, buttons: 1 })
+      fireEvent.pointerMove(document, { movementX: 10, movementY: 0, buttons: 1 })
+      fireEvent.pointerUp(document)
+    })
+
+    await waitFor(() => {
+      expect(canvas.getByTestId("current-value")).toHaveTextContent("14")
+      expect(canvas.getByTestId("end-count")).toHaveTextContent("1")
+      expect(canvas.getByTestId("last-end-value")).toHaveTextContent("14")
+    })
   },
 }

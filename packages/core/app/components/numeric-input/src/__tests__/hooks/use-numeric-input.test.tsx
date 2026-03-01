@@ -18,6 +18,7 @@ function TestComponent({
   readOnly,
   expression,
   onChange = jest.fn(),
+  onChangeEnd = jest.fn(),
   onEmpty = jest.fn(),
 }: {
   decimal?: number
@@ -27,6 +28,7 @@ function TestComponent({
   max?: number
   min?: number
   onChange?: jest.Mock
+  onChangeEnd?: jest.Mock
   onEmpty?: jest.Mock
   readOnly?: boolean
   shiftStep?: number
@@ -43,6 +45,7 @@ function TestComponent({
     readOnly,
     expression,
     onChange,
+    onChangeEnd,
     onEmpty,
   })
 
@@ -321,13 +324,48 @@ describe("useNumericInput", () => {
       fireEvent.pointerDown(handler)
 
       // Simulate drag movement
-      fireEvent.pointerMove(handler, {
-        clientX: 20, // Moving right by 20px
+      fireEvent.pointerMove(document, {
+        movementX: 20, // Moving right by 20px
         buttons: 1,
       })
 
       // Should have changed the value
       expect(onChange).toHaveBeenCalled()
+    })
+
+    it("calls onChangeEnd once with final value after drag ends", () => {
+      const onChange = jest.fn()
+      const onChangeEnd = jest.fn()
+
+      render(
+        <TestComponent
+          onChange={onChange}
+          onChangeEnd={onChangeEnd}
+        />,
+      )
+
+      const handler = screen.getByTestId("handler")
+
+      fireEvent.pointerDown(handler)
+      fireEvent.pointerMove(document, { movementX: 5, buttons: 1 })
+      fireEvent.pointerMove(document, { movementX: 5, buttons: 1 })
+      fireEvent.pointerUp(document)
+
+      expect(onChange).toHaveBeenCalledTimes(2)
+      expect(onChangeEnd).toHaveBeenCalledTimes(1)
+      expect(onChangeEnd).toHaveBeenCalledWith(52, expect.objectContaining({ string: "52" }))
+    })
+
+    it("does not call onChangeEnd when drag ends without value change", () => {
+      const onChangeEnd = jest.fn()
+
+      render(<TestComponent onChangeEnd={onChangeEnd} />)
+
+      const handler = screen.getByTestId("handler")
+      fireEvent.pointerDown(handler)
+      fireEvent.pointerUp(document)
+
+      expect(onChangeEnd).not.toHaveBeenCalled()
     })
   })
 

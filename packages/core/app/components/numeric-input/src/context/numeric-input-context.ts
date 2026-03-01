@@ -13,6 +13,7 @@ export interface NumericInputContextValue {
   max?: number
   min?: number
   onChange?: (value: NumericInputValue, detail: NumericChangeDetail) => void
+  onChangeEnd?: (value: NumericInputValue, detail: NumericChangeDetail) => void
   onEmpty?: () => void
   onIsEditingChange?: (isEditing: boolean) => void
   onPressEnd?: PressMoveProps["onPressEnd"]

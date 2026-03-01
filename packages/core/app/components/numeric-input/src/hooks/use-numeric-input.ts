@@ -19,6 +19,7 @@ interface UseNumericInputProps<T extends NumericInputValue> extends Omit<
   max?: number
   min?: number
   onChange?: (value: T, obj: NumberResult) => void
+  onChangeEnd?: (value: T, obj: NumberResult) => void
   onEmpty?: () => void
   onPressEnd?: PressMoveProps["onPressEnd"]
   onPressStart?: PressMoveProps["onPressStart"]
@@ -48,12 +49,16 @@ export function useNumericInput<T extends NumericInputValue>(props: UseNumericIn
     step = 1,
     value,
     onChange,
+    onChangeEnd,
     onEmpty,
     onPressEnd,
     onPressStart,
   } = props
 
   const innerRef = useRef<HTMLInputElement>(null)
+  const dragHasChangedRef = useRef(false)
+  const dragEndValueRef = useRef<T | undefined>(undefined)
+  const dragEndDetailRef = useRef<NumberResult | undefined>(undefined)
   const [isFocused, setIsFocused] = useState(false)
   const [displayValue, setDisplayValue] = useState("")
 
@@ -75,6 +80,18 @@ export function useNumericInput<T extends NumericInputValue>(props: UseNumericIn
     defaultValue: defaultValuePre,
     allowEmpty: true,
   })
+
+  const mapResultToOutputValue = useCallback(
+    (result: NumberResult) =>
+      (typeof value === "string"
+        ? result.string
+        : typeof value === "number"
+          ? result.array[0]
+          : Array.isArray(value)
+            ? result.array
+            : result.object) as T,
+    [value],
+  )
 
   // 3. Update display value and synchronize to input
   useEffect(() => {
@@ -102,7 +119,7 @@ export function useNumericInput<T extends NumericInputValue>(props: UseNumericIn
 
   // 4. Value update processing
   const updateValue = useCallback(
-    (updateFn?: (value: number) => number) => {
+    (updateFn?: (value: number) => number, options?: { source?: "drag" | "keyboard" }) => {
       if (disabled || readOnly) return
 
       setValue((prev) => {
@@ -117,16 +134,14 @@ export function useNumericInput<T extends NumericInputValue>(props: UseNumericIn
             decimal,
           })
 
-          onChange?.(
-            (typeof value === "string"
-              ? initialValue.string
-              : typeof value === "number"
-                ? initialValue.array[0]
-                : Array.isArray(value)
-                  ? initialValue.array
-                  : initialValue.object) as T,
-            initialValue,
-          )
+          const nextValue = mapResultToOutputValue(initialValue)
+          onChange?.(nextValue, initialValue)
+
+          if (options?.source === "drag") {
+            dragHasChangedRef.current = true
+            dragEndValueRef.current = nextValue
+            dragEndDetailRef.current = initialValue
+          }
 
           return initialValue
         }
@@ -163,21 +178,19 @@ export function useNumericInput<T extends NumericInputValue>(props: UseNumericIn
         })()
 
         if (hasChanged) {
-          onChange?.(
-            (typeof value === "string"
-              ? valuePre.string
-              : typeof value === "number"
-                ? valuePre.array[0]
-                : Array.isArray(value)
-                  ? valuePre.array
-                  : valuePre.object) as T,
-            valuePre,
-          )
+          const nextValue = mapResultToOutputValue(valuePre)
+          onChange?.(nextValue, valuePre)
+
+          if (options?.source === "drag") {
+            dragHasChangedRef.current = true
+            dragEndValueRef.current = nextValue
+            dragEndDetailRef.current = valuePre
+          }
         }
         return valuePre
       })
     },
-    [disabled, readOnly, setValue, max, min, decimal, onChange, value],
+    [disabled, readOnly, setValue, max, min, decimal, onChange, expressionRef, mapResultToOutputValue],
   )
 
   // 5. Input interaction processing
@@ -206,6 +219,10 @@ export function useNumericInput<T extends NumericInputValue>(props: UseNumericIn
   const { isPressed: handlerPressed, pressMoveProps } = usePressMove({
     disabled,
     onPressStart: (e) => {
+      dragHasChangedRef.current = false
+      dragEndValueRef.current = undefined
+      dragEndDetailRef.current = undefined
+
       // Save current focus state
       const wasFocused = isFocused
       if (onPressStart && "nativeEvent" in e) {
@@ -235,12 +252,24 @@ export function useNumericInput<T extends NumericInputValue>(props: UseNumericIn
       }
 
       onPressEnd?.(e as PointerEvent)
+
+      if (
+        dragHasChangedRef.current &&
+        dragEndValueRef.current !== undefined &&
+        dragEndDetailRef.current !== undefined
+      ) {
+        onChangeEnd?.(dragEndValueRef.current, dragEndDetailRef.current)
+      }
+
+      dragHasChangedRef.current = false
+      dragEndValueRef.current = undefined
+      dragEndDetailRef.current = undefined
     },
     onPressMoveLeft: (delta) => {
-      updateValue((value) => value - delta * getCurrentStep())
+      updateValue((value) => value - delta * getCurrentStep(), { source: "drag" })
     },
     onPressMoveRight: (delta) => {
-      updateValue((value) => value + delta * getCurrentStep())
+      updateValue((value) => value + delta * getCurrentStep(), { source: "drag" })
     },
   })
 

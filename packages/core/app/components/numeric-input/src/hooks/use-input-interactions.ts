@@ -20,7 +20,10 @@ interface UseInputInteractionsProps<T extends NumericInputValue> {
   setDisplayValue: (value: string) => void
   setIsFocused: (focused: boolean) => void
   setValue: (value: NumberResult | ((prev: NumberResult | undefined) => NumberResult)) => void
-  updateValue: (updateFn?: (value: number) => number) => void
+  updateValue: (
+    updateFn?: (value: number) => number,
+    options?: { source?: "drag" | "keyboard" },
+  ) => void
   value?: T
 }
 

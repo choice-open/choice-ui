@@ -49,6 +49,7 @@ export interface NumericInputProps
   disabled?: boolean
   id?: string
   onChange?: (value: NumericInputValue, detail: NumericChangeDetail) => void
+  onChangeEnd?: (value: NumericInputValue, detail: NumericChangeDetail) => void
   tooltip?: TooltipProps
   triggerRef?: React.RefObject<HTMLDivElement> | ((el: HTMLDivElement | null) => void)
 }
@@ -86,6 +87,7 @@ export const NumericInputBase = forwardRef<HTMLInputElement, NumericInputProps>(
     selected = false,
     tooltip,
     onChange,
+    onChangeEnd,
     onEmpty,
     onPressEnd,
     onPressStart,
@@ -112,6 +114,7 @@ export const NumericInputBase = forwardRef<HTMLInputElement, NumericInputProps>(
     step,
     value,
     onChange,
+    onChangeEnd,
     onEmpty,
     onPressEnd,
     onPressStart,
@@ -159,6 +162,7 @@ export const NumericInputBase = forwardRef<HTMLInputElement, NumericInputProps>(
 
       // Event handling methods
       onChange,
+      onChangeEnd,
       onEmpty,
       onPressStart,
       onPressEnd,
@@ -184,6 +188,7 @@ export const NumericInputBase = forwardRef<HTMLInputElement, NumericInputProps>(
       decimal,
       expression,
       onChange,
+      onChangeEnd,
       onEmpty,
       onPressStart,
       onPressEnd,

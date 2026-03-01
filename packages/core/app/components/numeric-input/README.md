@@ -270,6 +270,9 @@ interface NumericInputProps {
   /** Callback when value changes */
   onChange?: (value: NumericInputValue, detail: NumberResult) => void
 
+  /** Callback when drag interaction ends with a value change */
+  onChangeEnd?: (value: NumericInputValue, detail: NumberResult) => void
+
   /** Callback when input is cleared */
   onEmpty?: () => void
 
