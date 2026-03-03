@@ -102,10 +102,16 @@ export const Command = forwardRef<HTMLDivElement, CommandProps>((props, forwarde
             else document.getElementById(listId)?.focus()
           }
 
-          schedule(7, () => {
-            state.current.selectedItemId = getSelectedItem()?.id
-            store.emit()
-          })
+          // Compute selectedItemId synchronously from the ids map
+          // instead of scheduling a DOM query + second emit
+          let newSelectedId: string | undefined
+          for (const [itemId, data] of ids.current.entries()) {
+            if (data.value === value) {
+              newSelectedId = itemId
+              break
+            }
+          }
+          state.current.selectedItemId = newSelectedId
 
           // opts is a boolean referring to whether it should NOT be scrolled into view
           if (!opts) {

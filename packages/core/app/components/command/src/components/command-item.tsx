@@ -120,6 +120,8 @@ export const CommandItem = memo(
 
     const handlePointerMove = useEventCallback(() => {
       if (disabled || context.getDisablePointerSelection()) return
+      // Skip if this item is already selected, avoids unnecessary store work on every pixel of movement
+      if (context.store.snapshot().value === valueRef.current) return
       select()
     })
 
