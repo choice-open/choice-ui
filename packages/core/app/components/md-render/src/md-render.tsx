@@ -71,6 +71,8 @@ export const MdRender = memo(
       mentionItems,
       allowedPrefixes,
       customColor,
+      linkBlockPolicy,
+      imageBlockPolicy,
       size = "default",
       variant = "default",
     } = props
@@ -120,6 +122,8 @@ export const MdRender = memo(
             key={`${blockId}-block-${index}`}
             content={block}
             components={components}
+            linkBlockPolicy={linkBlockPolicy}
+            imageBlockPolicy={imageBlockPolicy}
             allowedLinkPrefixes={allowedPrefixes}
             allowedImagePrefixes={allowedPrefixes}
           />

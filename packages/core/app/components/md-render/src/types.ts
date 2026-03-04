@@ -1,3 +1,4 @@
+import type { BlockPolicyType } from "harden-react-markdown"
 import type { Components } from "react-markdown"
 
 interface MentionItemProps {
@@ -8,6 +9,8 @@ interface MentionItemProps {
 
 export interface MdRenderProps {
   allowedPrefixes?: string[]
+  linkBlockPolicy?: BlockPolicyType;
+  imageBlockPolicy?: BlockPolicyType;
   children?: string
   className?: string
   components?: Partial<Components>

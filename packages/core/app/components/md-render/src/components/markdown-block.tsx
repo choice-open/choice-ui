@@ -27,6 +27,8 @@ type HardenedMarkdownComponent = ComponentType<
   Options & {
     allowedImagePrefixes?: string[]
     allowedLinkPrefixes?: string[]
+    linkBlockPolicy?: BlockPolicyType;
+    imageBlockPolicy?: BlockPolicyType;
     defaultOrigin?: string
   }
 >
