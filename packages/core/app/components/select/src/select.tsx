@@ -535,6 +535,7 @@ const SelectComponent = memo(function SelectComponent(props: SelectProps) {
           selected={isSelected}
           disabled={isDisabled}
           size={sizeProp}
+          variant={childProps?.variant}
           customActive={customActive ? true : undefined}
           {...eventHandlers}
         >

@@ -221,6 +221,49 @@ export const LightVariant: Story = {
 }
 
 /**
+ * DangerVariant: Demonstrates Select.Item with danger variant (destructive action).
+ *
+ * Features:
+ * - Danger variant shows red text when not hovered (consistent with Dropdown)
+ * - Hover/focus uses danger background (bg-danger-background)
+ * - Use for destructive options (e.g. Delete, Remove)
+ */
+export const DangerVariant: Story = {
+  render: function DangerVariantStory() {
+    const [value, setValue] = useState<string>("Option 2")
+
+    return (
+      <Select
+        value={value}
+        onChange={setValue}
+      >
+        <Select.Trigger>
+          <Select.Value>{value || "Select an option..."}</Select.Value>
+        </Select.Trigger>
+        <Select.Content>
+          <Select.Item value="Option 1">
+            <Select.Value>Option 1</Select.Value>
+          </Select.Item>
+          <Select.Item value="Option 2">
+            <Select.Value>Option 2</Select.Value>
+          </Select.Item>
+          <Select.Item value="Option 3">
+            <Select.Value>Option 3</Select.Value>
+          </Select.Item>
+          <Select.Divider />
+          <Select.Item
+            value="delete"
+            variant="danger"
+          >
+            <Select.Value>Option Delete</Select.Value>
+          </Select.Item>
+        </Select.Content>
+      </Select>
+    )
+  },
+}
+
+/**
  * WithIcons: Demonstrates Select with icons for visual recognition.
  *
  * Features:
