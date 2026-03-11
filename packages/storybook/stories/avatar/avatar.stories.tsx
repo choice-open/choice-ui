@@ -165,6 +165,7 @@ export const States: Story = {
       Default = "default",
       Design = "design",
       Spotlight = "spotlight",
+      Anonymous = "anonymous",
     }
 
     return (

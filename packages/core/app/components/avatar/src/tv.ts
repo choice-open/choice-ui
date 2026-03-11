@@ -26,6 +26,7 @@ export const avatarTv = tcv({
       dash: {},
       design: {},
       spotlight: {},
+      anonymous: {},
     },
     isLoading: {
       true: {
