@@ -124,6 +124,7 @@ export const NumericInputBase = forwardRef<HTMLInputElement, NumericInputProps>(
   const { disableScrollProps } = useDisableScroll({ ref: inputRef })
 
   const [isFocused, setIsFocused] = useState(false)
+  const mergedFocused = focused || isFocused
 
   const handleFocus = useEventCallback((e: React.FocusEvent<HTMLInputElement>) => {
     onIsEditingChange?.(true)
@@ -149,7 +150,7 @@ export const NumericInputBase = forwardRef<HTMLInputElement, NumericInputProps>(
       disabled,
       readOnly,
       selected,
-      focused,
+      focused: mergedFocused,
       handlerPressed,
 
       // Configuration
@@ -179,7 +180,7 @@ export const NumericInputBase = forwardRef<HTMLInputElement, NumericInputProps>(
       disabled,
       readOnly,
       selected,
-      focused,
+      mergedFocused,
       handlerPressed,
       min,
       max,
@@ -241,7 +242,7 @@ export const NumericInputBase = forwardRef<HTMLInputElement, NumericInputProps>(
     variant,
     size,
     selected: selected || handlerPressed,
-    focused,
+    focused: mergedFocused,
     disabled,
     prefixElement: !!prefixNode,
     suffixElement: !!suffixNode,
@@ -287,7 +288,7 @@ export const NumericInputBase = forwardRef<HTMLInputElement, NumericInputProps>(
 
         {suffixNode && cloneElement(suffixNode, { position: "suffix" })}
 
-        {tooltip && !isFocused && (
+        {tooltip && !mergedFocused && (
           <Tooltip {...tooltip}>
             <span
               tabIndex={-1}

@@ -1,10 +1,11 @@
 import React, { RefObject, useRef } from "react"
 import { useEventCallback } from "usehooks-ts"
 import { NumberResult, NumericInputValue } from "../types"
-import { dealWithNumericInputValue, compareNumberResults, isExpressionInput } from "../utils"
+import { dealWithNumericInputValue, compareNumberResults } from "../utils"
 
 interface UseInputInteractionsProps<T extends NumericInputValue> {
   decimal?: number
+  defaultValue?: T
   disabled?: boolean
   displayValue: string
   expression: string
@@ -15,6 +16,7 @@ interface UseInputInteractionsProps<T extends NumericInputValue> {
   max?: number
   min?: number
   onChange?: (value: T, detail: NumberResult) => void
+  onRawInputEditingChange?: (editing: boolean) => void
   onEmpty?: () => void
   readOnly?: boolean
   setDisplayValue: (value: string) => void
@@ -42,6 +44,7 @@ export function useInputInteractions<T extends NumericInputValue>({
   min,
   max,
   decimal,
+  defaultValue,
   disabled,
   readOnly,
   innerValue,
@@ -49,12 +52,15 @@ export function useInputInteractions<T extends NumericInputValue>({
   updateValue,
   getCurrentStep,
   onChange,
+  onRawInputEditingChange,
   onEmpty,
   value,
 }: UseInputInteractionsProps<T>) {
   const initialValueRef = useRef<string>("")
+  const outputShapeSource = value ?? defaultValue
 
   const handleInputChange = useEventCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    onRawInputEditingChange?.(true)
     setDisplayValue(e.target.value)
   })
 
@@ -65,6 +71,7 @@ export function useInputInteractions<T extends NumericInputValue>({
   })
 
   const handleInputBlur = useEventCallback(() => {
+    onRawInputEditingChange?.(false)
     setIsFocused(false)
     if (disabled || readOnly) return
 
@@ -78,7 +85,6 @@ export function useInputInteractions<T extends NumericInputValue>({
       })
 
       // Use separated comparison logic
-      const isExpressionInputValue = isExpressionInput(displayValue, valuePre)
       const isSameValue = compareNumberResults(innerValue, valuePre)
 
       if (isSameValue) {
@@ -90,11 +96,11 @@ export function useInputInteractions<T extends NumericInputValue>({
 
       setValue(valuePre)
       onChange?.(
-        (typeof value === "string"
+        (typeof outputShapeSource === "string"
           ? valuePre.string
-          : typeof value === "number"
+          : typeof outputShapeSource === "number"
             ? valuePre.array[0]
-            : Array.isArray(value)
+            : Array.isArray(outputShapeSource)
               ? valuePre.array
               : valuePre.object) as T,
         valuePre,

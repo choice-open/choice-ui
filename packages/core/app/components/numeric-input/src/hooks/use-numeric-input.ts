@@ -59,6 +59,7 @@ export function useNumericInput<T extends NumericInputValue>(props: UseNumericIn
   const dragHasChangedRef = useRef(false)
   const dragEndValueRef = useRef<T | undefined>(undefined)
   const dragEndDetailRef = useRef<NumberResult | undefined>(undefined)
+  const hasPendingRawInputRef = useRef(false)
   const [isFocused, setIsFocused] = useState(false)
   const [displayValue, setDisplayValue] = useState("")
 
@@ -81,22 +82,26 @@ export function useNumericInput<T extends NumericInputValue>(props: UseNumericIn
     allowEmpty: true,
   })
 
+  const outputShapeSource = value ?? defaultValue
+
   const mapResultToOutputValue = useCallback(
     (result: NumberResult) =>
-      (typeof value === "string"
+      (typeof outputShapeSource === "string"
         ? result.string
-        : typeof value === "number"
+        : typeof outputShapeSource === "number"
           ? result.array[0]
-          : Array.isArray(value)
+          : Array.isArray(outputShapeSource)
             ? result.array
             : result.object) as T,
-    [value],
+    [outputShapeSource],
   )
 
   // 3. Update display value and synchronize to input
   useEffect(() => {
     if (!innerValue) {
-      setDisplayValue("")
+      if (!hasPendingRawInputRef.current) {
+        setDisplayValue("")
+      }
       return
     }
 
@@ -114,7 +119,9 @@ export function useNumericInput<T extends NumericInputValue>(props: UseNumericIn
       setValue(valuePre)
     }
 
-    setDisplayValue(valuePre.string)
+    if (!hasPendingRawInputRef.current) {
+      setDisplayValue(valuePre.string)
+    }
   }, [innerValue, expression, max, min, decimal, setValue])
 
   // 4. Value update processing
@@ -122,6 +129,7 @@ export function useNumericInput<T extends NumericInputValue>(props: UseNumericIn
     (updateFn?: (value: number) => number, options?: { source?: "drag" | "keyboard" }) => {
       if (disabled || readOnly) return
 
+      hasPendingRawInputRef.current = false
       setValue((prev) => {
         if (!prev) {
           // Handle prev is empty case, create an initial value based on 0
@@ -204,6 +212,7 @@ export function useNumericInput<T extends NumericInputValue>(props: UseNumericIn
     min,
     max,
     decimal,
+    defaultValue,
     disabled,
     readOnly,
     innerValue,
@@ -211,6 +220,9 @@ export function useNumericInput<T extends NumericInputValue>(props: UseNumericIn
     updateValue,
     getCurrentStep,
     onChange,
+    onRawInputEditingChange: (editing) => {
+      hasPendingRawInputRef.current = editing
+    },
     onEmpty,
     value,
   })

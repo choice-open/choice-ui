@@ -111,6 +111,23 @@ describe("NumericInput", () => {
 
       expect(input).toHaveValue("30")
     })
+
+    it("keeps scalar onChange payloads in uncontrolled number mode", async () => {
+      const handleChange = jest.fn()
+      render(
+        <NumericInput
+          defaultValue={25}
+          onChange={handleChange}
+        />,
+      )
+
+      const input = screen.getByRole("textbox")
+      await userEvent.clear(input)
+      await userEvent.type(input, "30")
+      await userEvent.tab()
+
+      expect(handleChange).toHaveBeenLastCalledWith(30, expect.anything())
+    })
   })
 
   // Expression support
