@@ -81,28 +81,28 @@
       "name": "@choice-ui/colors",
       "title": "ColorArea",
       "description": "",
-      "version": "0.3.35"
+      "version": "0.3.36"
     },
     {
       "slug": "colors/color-channel-field",
       "name": "@choice-ui/colors",
       "title": "ColorChannelField",
       "description": "",
-      "version": "0.3.35"
+      "version": "0.3.36"
     },
     {
       "slug": "colors/color-gradients-paint",
       "name": "@choice-ui/colors",
       "title": "ColorGradientsPaint",
       "description": "",
-      "version": "0.3.35"
+      "version": "0.3.36"
     },
     {
       "slug": "colors/color-image-paint",
       "name": "@choice-ui/colors",
       "title": "ColorImagePaint",
       "description": "",
-      "version": "0.3.35",
+      "version": "0.3.36",
       "tags": [
         "new"
       ]
@@ -112,7 +112,7 @@
       "name": "@choice-ui/colors",
       "title": "ColorPickerPopover",
       "description": "",
-      "version": "0.3.35",
+      "version": "0.3.36",
       "tags": [
         "upgrade"
       ]
@@ -122,28 +122,28 @@
       "name": "@choice-ui/colors",
       "title": "ColorSlider",
       "description": "",
-      "version": "0.3.35"
+      "version": "0.3.36"
     },
     {
       "slug": "colors/color-solid-paint",
       "name": "@choice-ui/colors",
       "title": "ColorSolidPaint",
       "description": "",
-      "version": "0.3.35"
+      "version": "0.3.36"
     },
     {
       "slug": "colors/colors-provider",
       "name": "@choice-ui/colors",
       "title": "ColorsProvider",
       "description": "",
-      "version": "0.3.35"
+      "version": "0.3.36"
     },
     {
       "slug": "colors/color-swatch",
       "name": "@choice-ui/colors",
       "title": "ColorSwatch",
       "description": "",
-      "version": "0.3.35"
+      "version": "0.3.36"
     },
     {
       "slug": "collections/combobox",
@@ -157,7 +157,7 @@
       "name": "@choice-ui/command",
       "title": "Command",
       "description": "Value of the search query.",
-      "version": "0.0.5"
+      "version": "0.0.9"
     },
     {
       "slug": "components/comments",
@@ -238,7 +238,7 @@
       "slug": "collections/dropdown",
       "name": "@choice-ui/dropdown",
       "title": "Dropdown",
-      "description": "Whether to automatically select the first item in coordinate mode.",
+      "description": "Active index for keyboard navigation (controlled).",
       "version": "0.0.12"
     },
     {
@@ -270,7 +270,7 @@
       "name": "@choice-ui/colors",
       "title": "FillInput",
       "description": "",
-      "version": "0.3.35"
+      "version": "0.3.36"
     },
     {
       "slug": "forms/form",
@@ -291,7 +291,7 @@
       "name": "@choice-ui/colors",
       "title": "HexInput",
       "description": "",
-      "version": "0.3.35"
+      "version": "0.3.36"
     },
     {
       "slug": "feedback/hint",
@@ -360,7 +360,7 @@
       "name": "@choice-ui/list",
       "title": "List",
       "description": "",
-      "version": "0.0.6"
+      "version": "0.0.7"
     },
     {
       "slug": "layouts/loader",
@@ -442,7 +442,7 @@
       "name": "@choice-ui/numeric-input",
       "title": "NumericInput",
       "description": "",
-      "version": "0.0.12",
+      "version": "0.0.14",
       "tags": [
         "upgrade"
       ]
@@ -544,7 +544,7 @@
       "name": "@choice-ui/scroll-area",
       "title": "ScrollArea",
       "description": "",
-      "version": "0.0.7",
+      "version": "0.0.8",
       "tags": [
         "upgrade"
       ]

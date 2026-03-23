@@ -1439,6 +1439,12 @@
           "description": ""
         },
         {
+          "name": "onChangeEnd",
+          "type": "((value: NumericInputValue, detail: NumberResult) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
           "name": "tooltip",
           "type": "TooltipProps | undefined",
           "required": false,
@@ -1663,6 +1669,12 @@
         {
           "name": "classNames",
           "type": "{ container?: string | undefined; input?: string | undefined; } | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChangeEnd",
+          "type": "((value: NumericInputValue, detail: NumberResult) => void) | undefined",
           "required": false,
           "description": ""
         },

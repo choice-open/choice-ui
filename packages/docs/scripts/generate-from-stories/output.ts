@@ -53,31 +53,24 @@ ${componentMap}
   const componentsDetailsPath = path.join(outputComponentsDir, "components-details.ts")
   fs.writeFileSync(componentsDetailsPath, componentsDetailsContent, "utf8")
 
-  // 生成 registry.ts - 直接使用 DocsData 中保存的 storyPath
-  const registryEntries = entries.map(([, { detail, storyPath }], idx) => {
-    const importVar = `StoryModule${idx}`
+  // 生成 registry.ts - 使用动态 import() 实现按需加载，避免一次性加载所有 story 模块
+  const registryEntries = entries.map(([, { detail, storyPath }]) => {
     const importPath = path
       .relative(path.dirname(outputRegistry), storyPath)
       .replace(/\\/g, "/")
       .replace(/\.tsx?$/, "")
 
-    return { importVar, importPath, slug: detail.slug }
+    return { importPath, slug: detail.slug }
   })
 
-  const imports = registryEntries
+  const registryMap = registryEntries
     .map(
-      ({ importVar, importPath }) =>
-        `import * as ${importVar} from "${importPath.startsWith(".") ? importPath : `./${importPath}`}"`,
+      ({ importPath, slug }) =>
+        `  "${slug}": () => import("${importPath.startsWith(".") ? importPath : `./${importPath}`}"),`,
     )
     .join("\n")
 
-  const registryMap = registryEntries
-    .map(({ importVar, slug }) => `  "${slug}": ${importVar},`)
-    .join("\n")
-
-  const registryContent = `${imports}
-
-export const storyRegistry: Record<string, Record<string, unknown>> = {
+  const registryContent = `export const storyRegistry: Record<string, () => Promise<Record<string, unknown>>> = {
 ${registryMap}
 }
 `

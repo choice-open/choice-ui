@@ -56,7 +56,7 @@
         },
         {
           "name": "states",
-          "type": "undefined | \"default\" | \"dash\" | \"design\" | \"spotlight\"",
+          "type": "undefined | \"default\" | \"anonymous\" | \"dash\" | \"design\" | \"spotlight\"",
           "required": false,
           "description": ""
         },
@@ -96,7 +96,7 @@
       "name": "States",
       "exportName": "States",
       "description": "States: Demonstrates the different visual states for the Avatar component.\n- Shows how to use the states prop: \"default\", \"dash\", \"design\", and \"spotlight\".\n- Each state may represent a different user status, role, or highlight in your application.\n- Useful for indicating user activity, special roles, or featured users.",
-      "source": "import { Avatar } from \"@choice-ui/avatar\"\n\nexport default function App() {\n\n  enum States {\n    Dash = \"dash\",\n    Default = \"default\",\n    Design = \"design\",\n    Spotlight = \"spotlight\",\n  }\n\n  return (\n    <div className=\"grid grid-cols-4 gap-4\">\n      {Object.values(States).map((state) => (\n        <div\n          className=\"flex flex-col items-center gap-2\"\n          key={state}\n        >\n          <Avatar\n            name={state}\n            states={state}\n          />\n          <p>{state}</p>\n        </div>\n      ))}\n    </div>\n  )\n\n}"
+      "source": "import { Avatar } from \"@choice-ui/avatar\"\n\nexport default function App() {\n\n  enum States {\n    Dash = \"dash\",\n    Default = \"default\",\n    Design = \"design\",\n    Spotlight = \"spotlight\",\n    Anonymous = \"anonymous\",\n  }\n\n  return (\n    <div className=\"grid grid-cols-4 gap-4\">\n      {Object.values(States).map((state) => (\n        <div\n          className=\"flex flex-col items-center gap-2\"\n          key={state}\n        >\n          <Avatar\n            name={state}\n            states={state}\n          />\n          <p>{state}</p>\n        </div>\n      ))}\n    </div>\n  )\n\n}"
     },
     {
       "id": "feedback-avatar--rounded",

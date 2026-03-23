@@ -3,7 +3,7 @@
   "title": "ScrollArea",
   "package": {
     "name": "@choice-ui/scroll-area",
-    "version": "0.0.7",
+    "version": "0.0.8",
     "description": "A customizable scroll area component with native-like scrolling and custom scrollbar styling",
     "dependencies": {
       "@choice-ui/shared": "workspace:*"
@@ -22,8 +22,7 @@
     "useThumbStyle",
     "useThumbDrag",
     "useHasOverflow",
-    "useScrollbarShouldShow",
-    "useScrollPerformanceMonitor"
+    "useScrollbarShouldShow"
   ],
   "props": [
     {
@@ -82,7 +81,7 @@
     },
     {
       "displayName": "useScrollStateAndVisibility",
-      "description": "Merged scroll state and visibility management hook - avoid duplicate scroll event listening",
+      "description": "Merged scroll state and visibility management hook",
       "props": []
     },
     {
@@ -92,7 +91,7 @@
     },
     {
       "displayName": "useThumbDrag",
-      "description": "🚀 High-performance thumb drag hook - optimize drag responsiveness and performance",
+      "description": "High-performance thumb drag hook",
       "props": []
     },
     {
@@ -103,11 +102,6 @@
     {
       "displayName": "useScrollbarShouldShow",
       "description": "Cached scrollbar display judgment hook",
-      "props": []
-    },
-    {
-      "displayName": "useScrollPerformanceMonitor",
-      "description": "🔍 ScrollArea performance monitoring Hook\n\nUsed to monitor and diagnose scroll performance issues, including:\n- Frame rate monitoring\n- Event frequency statistics\n- Performance bottleneck detection\n- Real-time performance reporting",
       "props": []
     }
   ],

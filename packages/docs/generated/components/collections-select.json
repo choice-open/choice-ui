@@ -156,6 +156,13 @@
       "source": "import { Select } from \"@choice-ui/select\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [value, setValue] = useState<string>(\"Option 2\")\n  return (\n    <Select\n      variant=\"light\"\n      value={value}\n      onChange={setValue}\n    >\n      <Select.Trigger>\n        <Select.Value>{value || \"Select an option...\"}</Select.Value>\n      </Select.Trigger>\n      <Select.Content>\n        {Array.from({ length: 5 }, (_, i) => (\n          <Select.Item\n            key={i}\n            value={`Option ${i + 1}`}\n          >\n            <Select.Value>Option {i + 1}</Select.Value>\n          </Select.Item>\n        ))}\n      </Select.Content>\n    </Select>\n  )\n\n}"
     },
     {
+      "id": "collections-select--danger-variant",
+      "name": "Danger Variant",
+      "exportName": "DangerVariant",
+      "description": "DangerVariant: Demonstrates Select.Item with danger variant (destructive action).\n\nFeatures:\n- Danger variant shows red text when not hovered (consistent with Dropdown)\n- Hover/focus uses danger background (bg-danger-background)\n- Use for destructive options (e.g. Delete, Remove)",
+      "source": "import { Select } from \"@choice-ui/select\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [value, setValue] = useState<string>(\"Option 2\")\n\n  return (\n    <Select\n      value={value}\n      onChange={setValue}\n    >\n      <Select.Trigger>\n        <Select.Value>{value || \"Select an option...\"}</Select.Value>\n      </Select.Trigger>\n      <Select.Content>\n        <Select.Item value=\"Option 1\">\n          <Select.Value>Option 1</Select.Value>\n        </Select.Item>\n        <Select.Item value=\"Option 2\">\n          <Select.Value>Option 2</Select.Value>\n        </Select.Item>\n        <Select.Item value=\"Option 3\">\n          <Select.Value>Option 3</Select.Value>\n        </Select.Item>\n        <Select.Divider />\n        <Select.Item\n          value=\"delete\"\n          variant=\"danger\"\n        >\n          <Select.Value>Option Delete</Select.Value>\n        </Select.Item>\n      </Select.Content>\n    </Select>\n  )\n\n}"
+    },
+    {
       "id": "collections-select--with-icons",
       "name": "With Icons",
       "exportName": "WithIcons",

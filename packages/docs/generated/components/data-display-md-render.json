@@ -7,11 +7,11 @@
     "description": "A markdown renderer component that converts markdown text into formatted HTML with syntax highlighting",
     "dependencies": {
       "marked": "^15.0.7",
-      "react-markdown": "^9.0.3",
+      "react-markdown": "^10.1.0",
       "remark-gfm": "^4.0.1",
       "remark-breaks": "^4.0.0",
       "remark-math": "^6.0.0",
-      "harden-react-markdown": "^1.0.4",
+      "harden-react-markdown": "^1.1.8",
       "@choice-ui/code-block": "workspace:*",
       "@choice-ui/shared": "workspace:*",
       "@choiceform/icons-react": "^1.3.8",
@@ -35,6 +35,18 @@
         {
           "name": "allowedPrefixes",
           "type": "string[] | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "linkBlockPolicy",
+          "type": "undefined | \"indicator\" | \"remove\" | \"text-only\"",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "imageBlockPolicy",
+          "type": "undefined | \"indicator\" | \"remove\" | \"text-only\"",
           "required": false,
           "description": ""
         },

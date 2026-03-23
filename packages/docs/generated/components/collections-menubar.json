@@ -96,6 +96,12 @@
           "description": ""
         },
         {
+          "name": "activeIndex",
+          "type": "number | null | undefined",
+          "required": false,
+          "description": "Active index for keyboard navigation (controlled).\nWhen provided, the component becomes controlled for activeIndex."
+        },
+        {
           "name": "autoSelectFirstItem",
           "type": "boolean | undefined",
           "required": false,
@@ -108,6 +114,13 @@
           "required": false,
           "defaultValue": "true",
           "description": "Whether to avoid collisions by flipping or shifting the dropdown position.\nWhen false, the dropdown will strictly follow the placement direction."
+        },
+        {
+          "name": "disableKeyboardNavigation",
+          "type": "boolean | undefined",
+          "required": false,
+          "defaultValue": "false",
+          "description": "Disable internal keyboard navigation.\nUseful when implementing custom keyboard handling externally."
         },
         {
           "name": "disabledNested",
@@ -132,6 +145,12 @@
           "type": "number | undefined",
           "required": false,
           "description": ""
+        },
+        {
+          "name": "onActiveIndexChange",
+          "type": "((index: number | null) => void) | undefined",
+          "required": false,
+          "description": "Callback when active index changes.\nUse with activeIndex prop for controlled keyboard navigation."
         },
         {
           "name": "portalId",

@@ -105,7 +105,7 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
       <SiteHeader />
       <div className="mx-auto w-full max-w-[80rem] flex-1 items-start px-4 md:grid md:grid-cols-[16rem_minmax(0,1fr)] md:gap-6 lg:grid-cols-[16rem_minmax(0,1fr)] lg:gap-8">
         <aside className="fixed top-14 z-30 hidden h-[calc(100vh-3.5rem)] w-full shrink-0 md:sticky md:block">
-          <div className="h-full py-6 pr-6 lg:py-8">
+          <div className="flex h-full flex-col pt-4 pr-6 lg:pt-8">
             <Sidebar items={docsConfig.sidebarNav} />
           </div>
         </aside>

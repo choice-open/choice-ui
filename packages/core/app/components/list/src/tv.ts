@@ -1,12 +1,7 @@
 import { tcv } from "@choice-ui/shared"
 
 export const ListTv = tcv({
-  base: [
-    "relative flex flex-col",
-    "p-2",
-    "scrollbar-hide overflow-y-auto overscroll-contain",
-    "pointer-events-auto select-none",
-  ],
+  base: ["relative flex flex-col", "p-2", "overscroll-contain", "pointer-events-auto select-none"],
 })
 
 export const ListItemTv = tcv({

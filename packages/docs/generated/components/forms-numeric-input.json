@@ -3,7 +3,7 @@
   "title": "NumericInput",
   "package": {
     "name": "@choice-ui/numeric-input",
-    "version": "0.0.12",
+    "version": "0.0.14",
     "description": "A numeric input component with increment/decrement controls and number validation",
     "dependencies": {
       "@choice-ui/chip": "workspace:*",
@@ -112,6 +112,12 @@
         {
           "name": "classNames",
           "type": "{ container?: string | undefined; input?: string | undefined; } | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onChangeEnd",
+          "type": "((value: NumericInputValue, detail: NumberResult) => void) | undefined",
           "required": false,
           "description": ""
         },
@@ -398,6 +404,12 @@
           "description": ""
         },
         {
+          "name": "onChangeEnd",
+          "type": "((value: T, obj: NumberResult) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
           "name": "onEmpty",
           "type": "(() => void) | undefined",
           "required": false,
@@ -505,6 +517,12 @@
           "description": ""
         },
         {
+          "name": "defaultValue",
+          "type": "NumericInputValue | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
           "name": "disabled",
           "type": "boolean | undefined",
           "required": false,
@@ -565,6 +583,12 @@
           "description": ""
         },
         {
+          "name": "onRawInputEditingChange",
+          "type": "((editing: boolean) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
           "name": "onEmpty",
           "type": "(() => void) | undefined",
           "required": false,
@@ -596,7 +620,7 @@
         },
         {
           "name": "updateValue",
-          "type": "(updateFn?: ((value: number) => number) | undefined) => void",
+          "type": "(updateFn?: ((value: number) => number) | undefined, options?: { source?: \"drag\" | \"keyboard\" | undefined; } | undefined) => void",
           "required": true,
           "description": ""
         },
@@ -747,6 +771,13 @@
       "exportName": "LinkedInputs",
       "description": "LinkedInputs: Demonstrates coordinated multiple inputs with shared state.\n\nFeatures:\n- Coordinated multiple inputs\n- Shared state management\n- Visual result feedback\n- Practical example: RGB color picker\n\nUsage:\n- Example of coordinated multiple NumericInput components\n- Each input controls a different color channel (R, G, B)\n- Changes are reflected in real-time visual preview",
       "source": "import { NumericInput } from \"@choice-ui/numeric-input\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [color, setColor] = useState({ r: 255, g: 100, b: 50 })\n\n  const rgbToHex = (r: number, g: number, b: number) => {\n    return `#${r.toString(16).padStart(2, \"0\")}${g.toString(16).padStart(2, \"0\")}${b.toString(16).padStart(2, \"0\")}`\n  }\n\n  const hexColor = rgbToHex(color.r, color.g, color.b)\n\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <div className=\"grid max-w-md grid-cols-3 gap-4\">\n        <div className=\"flex flex-col gap-2\">\n          <Label className=\"text-red-600\">Red</Label>\n          <NumericInput\n            value={color.r}\n            min={0}\n            max={255}\n            step={1}\n            onChange={(value) => setColor((prev) => ({ ...prev, r: value as number }))}\n          >\n            <NumericInput.Prefix>\n              <ColorTypeSolid />\n            </NumericInput.Prefix>\n          </NumericInput>\n        </div>\n\n        <div className=\"flex flex-col gap-2\">\n          <Label className=\"text-green-600\">Green</Label>\n          <NumericInput\n            value={color.g}\n            min={0}\n            max={255}\n            step={1}\n            onChange={(value) => setColor((prev) => ({ ...prev, g: value as number }))}\n          >\n            <NumericInput.Prefix>\n              <ColorTypeSolid />\n            </NumericInput.Prefix>\n          </NumericInput>\n        </div>\n\n        <div className=\"flex flex-col gap-2\">\n          <Label className=\"text-blue-600\">Blue</Label>\n          <NumericInput\n            value={color.b}\n            min={0}\n            max={255}\n            step={1}\n            onChange={(value) => setColor((prev) => ({ ...prev, b: value as number }))}\n          >\n            <NumericInput.Prefix>\n              <ColorTypeSolid />\n            </NumericInput.Prefix>\n          </NumericInput>\n        </div>\n      </div>\n\n      <div className=\"flex items-center gap-4\">\n        <div\n          style={{\n            backgroundColor: hexColor,\n            width: \"100px\",\n            height: \"50px\",\n            borderRadius: \"6px\",\n          }}\n        />\n        <div className=\"flex flex-col\">\n          <div className=\"text-body-large font-mono\">{hexColor}</div>\n          <div className=\"text-secondary-foreground\">\n            rgb({color.r}, {color.g}, {color.b})\n          </div>\n        </div>\n      </div>\n    </div>\n  )\n\n}"
+    },
+    {
+      "id": "forms-numericinput--on-change-end-interaction",
+      "name": "On Change End Interaction",
+      "exportName": "OnChangeEndInteraction",
+      "description": "OnChangeEndInteraction: Interaction test for drag-end callback behavior.\n\nThis story verifies:\n- `onChange` is emitted continuously while dragging\n- `onChangeEnd` is emitted only once when drag ends\n- `onChangeEnd` receives the final value after drag",
+      "source": "import { NumericInput } from \"@choice-ui/numeric-input\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [value, setValue] = useState(10)\n  const [endCount, setEndCount] = useState(0)\n  const [lastEndValue, setLastEndValue] = useState<number | null>(null)\n\n  return (\n    <div className=\"flex w-72 flex-col gap-3\">\n      <NumericInput\n        className=\"w-64\"\n        value={value}\n        step={1}\n        onChange={(newValue) => setValue(newValue as number)}\n        onChangeEnd={(newValue) => {\n          setEndCount((prev) => prev + 1)\n          setLastEndValue(newValue as number)\n        }}\n      >\n        <NumericInput.Suffix>\n          <Relative />\n        </NumericInput.Suffix>\n      </NumericInput>\n\n      <div className=\"bg-secondary-background rounded-md p-2 text-sm\">\n        <div data-testid=\"current-value\">current: {value}</div>\n        <div data-testid=\"end-count\">end-count: {endCount}</div>\n        <div data-testid=\"last-end-value\">last-end: {lastEndValue ?? \"-\"}</div>\n      </div>\n    </div>\n  )\n\n}"
     }
   ],
   "tags": [

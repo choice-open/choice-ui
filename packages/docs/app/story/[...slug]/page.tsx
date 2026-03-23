@@ -1,9 +1,12 @@
 "use client"
 
 import { ThemeToggle } from "@/components/theme-toggle"
-import { storyRegistry } from "@/generated/registry"
+import { storyRegistry } from "@/generated/registry" // lazy: () => import(...)
+
+type StoryLoader = () => Promise<Record<string, unknown>>
+const registry = storyRegistry as unknown as Record<string, StoryLoader>
 import type { ReactNode } from "react"
-import { use, useEffect, useRef } from "react"
+import { use, useEffect, useRef, useState } from "react"
 import Stats from "stats.js"
 
 type StoryExport = { render?: () => ReactNode } | ((props?: Record<string, unknown>) => ReactNode)
@@ -15,6 +18,24 @@ function slugifyPart(part: string): string {
     .replace(/[^a-zA-Z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "")
     .toLowerCase()
+}
+
+function useStoryModule(slugKey: string) {
+  const [mod, setMod] = useState<Record<string, unknown> | undefined>(undefined)
+
+  useEffect(() => {
+    let cancelled = false
+    if (slugKey in registry) {
+      registry[slugKey]().then((m) => {
+        if (!cancelled) setMod(m as Record<string, unknown>)
+      })
+    }
+    return () => {
+      cancelled = true
+    }
+  }, [slugKey])
+
+  return mod
 }
 
 function StoryRenderer({
@@ -115,7 +136,7 @@ export default function StoryPage({ params }: { params: Promise<{ slug?: string[
   const exportName = slug[slug.length - 1]
   const componentSlug = slug.slice(0, -1).map(slugifyPart).join("/")
 
-  const storyModule = storyRegistry[componentSlug] as Record<string, unknown> | undefined
+  const storyModule = useStoryModule(componentSlug)
 
   return (
     <>

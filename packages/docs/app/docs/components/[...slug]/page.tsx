@@ -6,9 +6,12 @@ import { ApiTable } from "@/components/api-table"
 import { Installation } from "@/components/installation"
 import indexData from "@/generated/index.json"
 import { componentsDetails } from "@/generated/components/components-details"
-import { storyRegistry } from "@/generated/registry"
+import { storyRegistry } from "@/generated/registry" // lazy: () => import(...)
+
+type StoryLoader = () => Promise<Record<string, unknown>>
+const registry = storyRegistry as unknown as Record<string, StoryLoader>
 import type { ReactNode } from "react"
-import { use } from "react"
+import { use, useEffect, useState } from "react"
 import { MdRender } from "~/components/md-render"
 import type { PropsGroup } from "@/components/api-table"
 
@@ -62,10 +65,12 @@ function StoryRenderer({
   exportName: string
 }) {
   const emptyMessage = (
-    <span className="text-muted-foreground text-sm">该 story 暂无可渲染内容。</span>
+    <span className="text-muted-foreground text-sm">No renderable content for this story.</span>
   )
 
-  if (!moduleExports) return emptyMessage
+  if (!moduleExports) {
+    return <span className="text-muted-foreground text-sm">Loading...</span>
+  }
 
   const storyExport = moduleExports[exportName] as StoryExport | undefined
   if (!storyExport) return emptyMessage
@@ -86,6 +91,24 @@ function StoryRenderer({
   }
 
   return emptyMessage
+}
+
+function useStoryModule(slugKey: string) {
+  const [mod, setMod] = useState<Record<string, unknown> | undefined>(undefined)
+
+  useEffect(() => {
+    let cancelled = false
+    if (slugKey in registry) {
+      registry[slugKey]().then((m) => {
+        if (!cancelled) setMod(m as Record<string, unknown>)
+      })
+    }
+    return () => {
+      cancelled = true
+    }
+  }, [slugKey])
+
+  return mod
 }
 
 function getStoryCode(source?: string): string {
@@ -109,19 +132,16 @@ export default function DocsCatchAllPage({ params }: { params: Promise<{ slug?: 
   const slug = resolvedParams.slug ?? []
   const slugKey = slug.map(slugifyPart).join("/")
 
-  // 查找索引项
   const indexItem = (indexData.components as IndexItem[]).find((item) => item.slug === slugKey)
-  const storyModule = storyRegistry[slugKey] as Record<string, unknown> | undefined
+  const storyModule = useStoryModule(slugKey)
 
-  // 直接从静态导入的映射文件中获取组件详情（无需动态加载，提升性能）
-  // Next.js 会自动进行代码分割，只加载当前需要的组件数据
   const detail = componentsDetails[slugKey] as ComponentDetail | undefined
 
   if (!indexItem) {
     return (
       <div className="space-y-4">
-        <h1 className="text-2xl font-semibold">未找到组件</h1>
-        <p className="text-muted-foreground text-sm">请检查路径或选择侧栏中的组件。</p>
+        <h1 className="text-2xl font-semibold">Component Not Found</h1>
+        <p className="text-muted-foreground text-sm">Please check the path or select a component from the sidebar.</p>
       </div>
     )
   }
@@ -129,8 +149,8 @@ export default function DocsCatchAllPage({ params }: { params: Promise<{ slug?: 
   if (!detail) {
     return (
       <div className="space-y-4">
-        <h1 className="text-2xl font-semibold">加载失败</h1>
-        <p className="text-muted-foreground text-sm">无法加载组件详情。</p>
+        <h1 className="text-2xl font-semibold">Loading...</h1>
+        <p className="text-muted-foreground text-sm">Loading component details.</p>
       </div>
     )
   }

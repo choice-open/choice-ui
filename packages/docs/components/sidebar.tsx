@@ -187,16 +187,17 @@ export function Sidebar({ items, className, ...props }: SidebarNavProps) {
   return (
     <ActiveRefContext.Provider value={activeRef}>
       <ScrollArea
+        hoverBoundary="none"
         className={className}
         {...props}
       >
-        <ScrollArea.Viewport className="pb-16">
-          <ScrollArea.Content>
+        <ScrollArea.Viewport className="pr-4 pb-16">
+          <ScrollArea.Content className="w-full min-w-0">
             <List
               selection
               shouldShowReferenceLine
               size="large"
-              className="py-0 pr-4 pl-0"
+              className="overflow-visible py-0 pl-0"
             >
               <List.Content>
                 <NavTree
