@@ -53,17 +53,21 @@ describe("Combobox bugs", () => {
         </Combobox>,
       )
 
-      const triggerButton = document.querySelector("[data-combobox-trigger]")
-      if (triggerButton) {
-        await user.click(triggerButton)
-        expect(onOpenChange).toHaveBeenCalledWith(false, "click")
-      } else {
-        const chevron = document.querySelector("button")
-        if (chevron) {
-          await user.click(chevron)
-          expect(onOpenChange).toHaveBeenCalledWith(false, "click")
-        }
-      }
+      // The Combobox trigger is an IconButton rendered next to the
+      // role="combobox" input. Query it explicitly — if the trigger wiring or
+      // markup breaks so the chevron button isn't rendered, this test must
+      // fail rather than silently skip its assertion.
+      const triggerButton = document.querySelector<HTMLButtonElement>(
+        '[data-combobox-trigger], button',
+      )
+      expect(triggerButton).not.toBeNull()
+
+      await user.click(triggerButton!)
+
+      // BUG: combobox.tsx:211 always calls `onOpenChange?.(true, "click")`
+      // regardless of current state. Controlled combobox with open={true}
+      // receiving a trigger click should emit (false, "click") to close.
+      expect(onOpenChange).toHaveBeenCalledWith(false, "click")
     })
   })
 
