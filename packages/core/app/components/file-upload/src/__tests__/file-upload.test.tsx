@@ -12,11 +12,11 @@
  * BUG 8: Extension matching is case-sensitive in drag-and-drop
  *   - User scenario: accept=".jpg", user drops PHOTO.JPG — rejected incorrectly.
  *   - Regression it prevents: Uppercase extensions rejected during drag-and-drop
- *   - Logic change: Line 225 `type === fileExtension` is case-sensitive.
- *     Fix = compare lowercase.
+ *   - Logic change: file-upload.tsx:225-227 — `type === fileExtension` is
+ *     case-sensitive. Fix = compare lowercase.
  */
 import "@testing-library/jest-dom"
-import { render, screen, waitFor } from "@testing-library/react"
+import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { describe, expect, it, vi } from "vitest"
 
@@ -64,20 +64,55 @@ describe("File Upload bugs", () => {
   })
 
   describe("BUG 8: drag-and-drop must accept files with uppercase extensions", () => {
-    it("accepts .JPG when accept is .jpg", () => {
-      const accept = ".jpg,.png"
-      const acceptTypes = accept.split(",").map((t) => t.trim())
-      const file = new File(["data"], "photo.JPG", { type: "image/jpeg" })
-      const fileExtension = `.${file.name.split(".").pop()}`
+    it("does not reject a dropped .JPG file when accept is '.jpg'", async () => {
+      const { FileUpload } = await import("../file-upload")
+      const onFileAccept = vi.fn()
+      const onFileReject = vi.fn()
 
-      const matches = acceptTypes.some(
-        (type) =>
-          type === file.type ||
-          type.toLowerCase() === fileExtension.toLowerCase() ||
-          (type.includes("/*") && file.type.startsWith(type.replace("/*", "/"))),
+      render(
+        <FileUpload
+          accept=".jpg"
+          onFileAccept={onFileAccept}
+          onFileReject={onFileReject}
+        >
+          <FileUpload.Dropzone data-testid="dropzone">
+            <FileUpload.Button>Upload</FileUpload.Button>
+          </FileUpload.Dropzone>
+        </FileUpload>,
       )
 
-      expect(matches).toBe(true)
+      const dropzone = screen.getByTestId("dropzone")
+      const file = new File(["data"], "PHOTO.JPG", { type: "image/jpeg" })
+
+      // Build a DataTransfer-shaped mock that the dropzone's onDrop handler
+      // can read via `event.dataTransfer.files`. The dropzone then forwards
+      // the files through the hidden input's change event, which is where the
+      // extension-matching logic actually runs inside FileUpload.
+      const dataTransfer = {
+        files: [file],
+        items: [
+          {
+            kind: "file",
+            type: file.type,
+            getAsFile: () => file,
+          },
+        ],
+        types: ["Files"],
+      }
+
+      fireEvent.drop(dropzone, { dataTransfer })
+
+      // With the bug, ".jpg" is compared against ".JPG" with strict equality
+      // and the file is rejected as "File type not accepted". A correct fix
+      // (lowercase compare) accepts it — so onFileAccept fires and
+      // onFileReject is never called with the type-rejection message.
+      await waitFor(() => {
+        expect(onFileAccept).toHaveBeenCalledWith(file)
+      })
+      expect(onFileReject).not.toHaveBeenCalledWith(
+        expect.anything(),
+        "File type not accepted",
+      )
     })
   })
 })
