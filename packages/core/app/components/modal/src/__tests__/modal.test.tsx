@@ -40,8 +40,8 @@ describe("Modal bugs", () => {
       const htmlFor = labelElement?.getAttribute("for")
       expect(htmlFor).toBeTruthy()
 
-      const selectTrigger = document.querySelector(`[id="${htmlFor}"], [data-slot="trigger"]`)
-      expect(selectTrigger).toBeTruthy()
+      const targetById = document.getElementById(htmlFor!)
+      expect(targetById).toBeTruthy()
     })
   })
 
@@ -178,12 +178,11 @@ describe("Modal bugs", () => {
 
       const input = screen.getByRole("textbox")
       const describedBy = input.getAttribute("aria-describedby")
+      expect(describedBy).toBeTruthy()
 
-      if (describedBy) {
-        const descriptionEl = document.getElementById(describedBy)
-        expect(descriptionEl).toBeTruthy()
-        expect(descriptionEl?.textContent).toContain("Enter your work email")
-      }
+      const descriptionEl = document.getElementById(describedBy!)
+      expect(descriptionEl).toBeTruthy()
+      expect(descriptionEl?.textContent).toContain("Enter your work email")
     })
   })
 })

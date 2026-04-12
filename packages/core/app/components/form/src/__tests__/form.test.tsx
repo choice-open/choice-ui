@@ -80,17 +80,10 @@ describe("Form adapter bugs", () => {
       )
 
       const slider = document.querySelector('[role="slider"]') as HTMLElement | null
+      expect(slider).toBeTruthy()
 
-      if (slider) {
-        slider.dispatchEvent(new FocusEvent("blur", { bubbles: true }))
-        expect(onBlur).toHaveBeenCalled()
-      } else {
-        const rangeContainer = document.querySelector('[data-slot="root"]')
-        if (rangeContainer) {
-          rangeContainer.dispatchEvent(new FocusEvent("blur", { bubbles: true }))
-          expect(onBlur).toHaveBeenCalled()
-        }
-      }
+      slider!.dispatchEvent(new FocusEvent("blur", { bubbles: true }))
+      expect(onBlur).toHaveBeenCalled()
     })
 
     it("calls onFocus when the Range slider gains focus", () => {
@@ -106,17 +99,10 @@ describe("Form adapter bugs", () => {
       )
 
       const slider = document.querySelector('[role="slider"]') as HTMLElement | null
+      expect(slider).toBeTruthy()
 
-      if (slider) {
-        slider.dispatchEvent(new FocusEvent("focus", { bubbles: true }))
-        expect(onFocus).toHaveBeenCalled()
-      } else {
-        const rangeContainer = document.querySelector('[data-slot="root"]')
-        if (rangeContainer) {
-          rangeContainer.dispatchEvent(new FocusEvent("focus", { bubbles: true }))
-          expect(onFocus).toHaveBeenCalled()
-        }
-      }
+      slider!.dispatchEvent(new FocusEvent("focus", { bubbles: true }))
+      expect(onFocus).toHaveBeenCalled()
     })
   })
 })

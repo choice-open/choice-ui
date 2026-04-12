@@ -90,10 +90,8 @@ describe("Table bugs", () => {
 
       const table = screen.getByRole("table")
       const rowCount = table.getAttribute("aria-rowcount")
-
-      if (rowCount) {
-        expect(Number(rowCount)).toBe(data.length + 1)
-      }
+      expect(rowCount).toBeTruthy()
+      expect(Number(rowCount)).toBe(data.length + 1)
     })
   })
 

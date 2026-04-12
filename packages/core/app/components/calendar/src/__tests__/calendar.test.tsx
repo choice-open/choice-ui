@@ -43,15 +43,15 @@ describe("Calendar bugs", () => {
         (el) => el.getAttribute("role") === "gridcell" || el.closest("button"),
       )
 
-      if (jan15Button) {
-        const cell = jan15Button.closest("[aria-disabled]") || jan15Button
-        const isDisabled =
-          cell.getAttribute("aria-disabled") === "true" ||
-          cell.closest("[data-disabled]") !== null ||
-          cell.className.includes("disabled")
+      expect(jan15Button).toBeTruthy()
 
-        expect(isDisabled).toBe(false)
-      }
+      const cell = jan15Button!.closest("[aria-disabled]") || jan15Button!
+      const isDisabled =
+        cell.getAttribute("aria-disabled") === "true" ||
+        cell.closest("[data-disabled]") !== null ||
+        cell.className.includes("disabled")
+
+      expect(isDisabled).toBe(false)
     })
   })
 })
