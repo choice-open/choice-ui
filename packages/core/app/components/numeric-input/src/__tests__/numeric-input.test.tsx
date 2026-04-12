@@ -89,7 +89,7 @@ describe("Numeric Input bugs", () => {
 
       const buttons = container.querySelectorAll("button")
       const incrementBtn = buttons[buttons.length - 1]
-      if (!incrementBtn) return
+      expect(incrementBtn).toBeTruthy()
 
       act(() => {
         fireEvent.pointerDown(incrementBtn, { pointerId: 1, button: 0 })

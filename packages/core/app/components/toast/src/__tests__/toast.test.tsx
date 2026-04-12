@@ -118,10 +118,9 @@ describe("Toast bugs", () => {
       })
 
       const dismissButton = screen.queryByText("Dismiss")
-      if (dismissButton) {
-        dismissButton.click()
-        expect(cancelOnClick).toHaveBeenCalled()
-      }
+      expect(dismissButton).toBeTruthy()
+      dismissButton!.click()
+      expect(cancelOnClick).toHaveBeenCalled()
     })
   })
 })

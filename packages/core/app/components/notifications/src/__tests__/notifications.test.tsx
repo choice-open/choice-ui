@@ -66,12 +66,11 @@ describe("Notifications bugs", () => {
       }
 
       const notification = screen.queryByText("Test notification")
-      if (notification) {
-        const rootDiv = notification.closest("[class]")
-        expect(rootDiv).toBeTruthy()
-        const role = rootDiv?.getAttribute("role")
-        expect(role).toBeTruthy()
-      }
+      expect(notification).toBeTruthy()
+      const rootDiv = notification!.closest("[class]")
+      expect(rootDiv).toBeTruthy()
+      const role = rootDiv?.getAttribute("role")
+      expect(role).toBe("status")
     })
   })
 
