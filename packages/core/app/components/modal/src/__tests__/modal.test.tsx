@@ -38,11 +38,10 @@ describe("Modal bugs", () => {
       expect(labelElement).toBeTruthy()
 
       const htmlFor = labelElement?.getAttribute("for")
+      expect(htmlFor).toBeTruthy()
 
-      if (htmlFor) {
-        const selectTrigger = document.querySelector(`[id="${htmlFor}"], [data-slot="trigger"]`)
-        expect(selectTrigger).toBeTruthy()
-      }
+      const selectTrigger = document.querySelector(`[id="${htmlFor}"], [data-slot="trigger"]`)
+      expect(selectTrigger).toBeTruthy()
     })
   })
 

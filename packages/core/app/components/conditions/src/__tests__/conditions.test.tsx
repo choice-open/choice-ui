@@ -76,15 +76,9 @@ describe("Conditions bugs", () => {
         />,
       )
 
-      const select =
-        screen.getByRole("combobox") ||
-        screen.getByRole("listbox") ||
-        document.querySelector("select")
-      expect(select).toBeTruthy()
-
-      if (select instanceof HTMLSelectElement) {
-        expect(select.multiple).toBe(true)
-      }
+      const select = document.querySelector("select")
+      expect(select).toBeInstanceOf(HTMLSelectElement)
+      expect((select as HTMLSelectElement).multiple).toBe(true)
     })
   })
 

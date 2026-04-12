@@ -112,10 +112,9 @@ describe("MultiSelect bugs", () => {
         (btn) => btn.getAttribute("data-remove-button") !== null,
       )
 
-      if (chipRemoveButton) {
-        await user.click(chipRemoveButton)
-        expect(onChange).not.toHaveBeenCalled()
-      }
+      expect(chipRemoveButton).toBeTruthy()
+      await user.click(chipRemoveButton!)
+      expect(onChange).not.toHaveBeenCalled()
     })
   })
 

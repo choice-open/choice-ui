@@ -56,10 +56,9 @@ describe("File Upload bugs", () => {
         .closest("label")
         ?.querySelector("input[type=file]") as HTMLInputElement
 
-      if (input) {
-        await user.upload(input, file)
-        expect(onValueChange).toHaveBeenCalledTimes(1)
-      }
+      expect(input).toBeTruthy()
+      await user.upload(input, file)
+      expect(onValueChange).toHaveBeenCalledTimes(1)
     })
   })
 
@@ -109,10 +108,7 @@ describe("File Upload bugs", () => {
       await waitFor(() => {
         expect(onFileAccept).toHaveBeenCalledWith(file)
       })
-      expect(onFileReject).not.toHaveBeenCalledWith(
-        expect.anything(),
-        "File type not accepted",
-      )
+      expect(onFileReject).not.toHaveBeenCalledWith(expect.anything(), "File type not accepted")
     })
   })
 })
