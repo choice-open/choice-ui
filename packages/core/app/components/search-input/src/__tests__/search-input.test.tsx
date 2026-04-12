@@ -80,10 +80,9 @@ describe("Search Input bugs", () => {
         document.querySelector("[data-clear-button]") ||
         screen.queryByRole("button", { hidden: true })
 
-      if (clearButton) {
-        await user.click(clearButton)
-        expect(input).toHaveFocus()
-      }
+      expect(clearButton).toBeTruthy()
+      await user.click(clearButton!)
+      expect(input).toHaveFocus()
     })
   })
 

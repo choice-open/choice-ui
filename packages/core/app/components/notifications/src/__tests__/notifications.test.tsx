@@ -78,26 +78,19 @@ describe("Notifications bugs", () => {
       const mod = await import("../notifications")
       const Toast = (mod as any).default || mod.notifications
 
-      const TestWrapper = () => {
-        const ToastComp = typeof Toast === "function" ? Toast : null
-        if (!ToastComp) return null
-        return (
-          <ToastComp
-            id="test-1"
-            text="Test notification"
-          />
-        )
-      }
+      const ToastComp = typeof Toast === "function" ? Toast : null
+      expect(ToastComp).toBeTruthy()
 
-      try {
-        render(<TestWrapper />)
-      } catch {
-        return
-      }
+      render(
+        <ToastComp!
+          id="test-1"
+          text="Test notification"
+        />,
+      )
 
-      const notification = screen.queryByText("Test notification")
+      const notification = screen.getByText("Test notification")
       expect(notification).toBeTruthy()
-      const rootDiv = notification!.closest("[class]")
+      const rootDiv = notification.closest("[class]")
       expect(rootDiv).toBeTruthy()
       const role = rootDiv?.getAttribute("role")
       expect(role).toBe("status")
@@ -128,9 +121,11 @@ describe("Notifications bugs", () => {
   describe("BUG 5: dismiss button must call sonnerToast.dismiss", () => {
     it("calls sonnerToast.dismiss when dismiss button is clicked", async () => {
       const { default: ToastBase } = await import("../notifications")
+      const sonnerModule = await import("sonner")
 
       const Toast = (ToastBase as any).type || ToastBase
       const dismissOnClick = vi.fn()
+      const dismissSpy = vi.spyOn(sonnerModule.toast, "dismiss")
 
       render(
         <Toast
@@ -146,6 +141,7 @@ describe("Notifications bugs", () => {
       fireEvent.click(dismissButton)
 
       expect(dismissOnClick).toHaveBeenCalled()
+      expect(dismissSpy).toHaveBeenCalledWith("dismiss-test")
     })
   })
 

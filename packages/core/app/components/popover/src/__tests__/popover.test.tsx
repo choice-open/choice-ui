@@ -102,13 +102,15 @@ describe("Popover bugs", () => {
    *     pattern or a state-based approach to detect when the floating element mounts.
    */
   describe("BUG: useDrag does not detect floatingRef.current changes", () => {
-    it("should not leave stale drag state when floating element remounts", async () => {
+    it("resets drag state when floating element remounts after close/reopen", async () => {
       const { Popover } = await import("../popover")
       const user = userEvent.setup()
+      const onOpenChange = vi.fn()
 
-      render(
+      const { rerender } = render(
         <Popover
-          defaultOpen
+          open
+          onOpenChange={onOpenChange}
           draggable
         >
           <Popover.Trigger>
@@ -124,7 +126,38 @@ describe("Popover bugs", () => {
         expect(screen.getByTestId("drag-content")).toBeInTheDocument()
       })
 
-      expect(screen.getByTestId("drag-content")).toBeInTheDocument()
+      const popoverEl = screen.getByTestId("drag-content").closest("[style]") as HTMLElement
+      expect(popoverEl).toBeTruthy()
+      const styleBefore = popoverEl?.getAttribute("style")
+
+      await user.keyboard("{Escape}")
+      await waitFor(() => {
+        expect(screen.queryByTestId("drag-content")).not.toBeInTheDocument()
+      })
+
+      rerender(
+        <Popover
+          open
+          onOpenChange={onOpenChange}
+          draggable
+        >
+          <Popover.Trigger>
+            <button>Trigger</button>
+          </Popover.Trigger>
+          <Popover.Content>
+            <div data-testid="drag-content">Drag me</div>
+          </Popover.Content>
+        </Popover>,
+      )
+
+      await waitFor(() => {
+        expect(screen.getByTestId("drag-content")).toBeInTheDocument()
+      })
+
+      const popoverElAfter = screen.getByTestId("drag-content").closest("[style]") as HTMLElement
+      expect(popoverElAfter).toBeTruthy()
+      const styleAfter = popoverElAfter?.getAttribute("style")
+      expect(styleAfter).toBe(styleBefore)
     })
   })
 })
