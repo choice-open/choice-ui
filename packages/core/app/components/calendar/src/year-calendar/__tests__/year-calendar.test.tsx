@@ -536,4 +536,111 @@ describe("YearCalendar", () => {
       expect(screen.getByTestId("next-button")).toBeDisabled()
     })
   })
+
+  /**
+   * BUG: "Today" button bypasses disabled and readOnly props in YearCalendar
+   *   - User scenario: Developer sets disabled=true on YearCalendar, expecting no
+   *     interactions to change state. User clicks "Today" button and the calendar
+   *     navigates to current year range AND selects current year.
+   *   - Regression it prevents: Disabled year calendar allows state changes via Today.
+   *   - Logic change that makes it fail: In year-calendar.tsx:149-155, handleToday
+   *     calls setInternalStartYear() and setSelectedYear() without checking disabled/readOnly.
+   *     Fix = add `if (disabled || readOnly) return` guard at the top of handleToday.
+   */
+  describe("BUG: Today button bypasses disabled prop in YearCalendar", () => {
+    it("should not navigate or select when disabled=true and Today button is clicked", async () => {
+      const user = userEvent.setup()
+      const handleChange = vi.fn()
+
+      render(
+        <YearCalendar
+          startYear={createTestDate(2000)}
+          yearCount={12}
+          disabled={true}
+          onChange={handleChange}
+        />,
+      )
+
+      const todayButton = screen.getByTestId("today-button")
+      expect(todayButton).toBeInTheDocument()
+
+      await user.click(todayButton)
+
+      expect(handleChange).not.toHaveBeenCalled()
+    })
+
+    it("should not navigate or select when readOnly=true and Today button is clicked", async () => {
+      const user = userEvent.setup()
+      const handleChange = vi.fn()
+
+      render(
+        <YearCalendar
+          startYear={createTestDate(2000)}
+          yearCount={12}
+          readOnly={true}
+          onChange={handleChange}
+        />,
+      )
+
+      const todayButton = screen.getByTestId("today-button")
+      await user.click(todayButton)
+
+      expect(handleChange).not.toHaveBeenCalled()
+    })
+  })
+
+  /**
+   * BUG: YearCalendarCell has no role, tabIndex, or keyboard handler
+   *   - User scenario: Keyboard-only user tries to Tab into the year grid and press
+   *     Enter/Space to select a year. The cell div has no role="button", no tabIndex,
+   *     and no onKeyDown handler.
+   *   - Regression it prevents: Year calendar is completely inaccessible via keyboard.
+   *   - Logic change that makes it fail: In year-calendar-cell.tsx:24-36, the cell
+   *     is a plain <div> with onClick but no role, tabIndex, or keyboard event handler.
+   *     Fix = add role="gridcell" or "button", tabIndex={0}, and handleKeyDown for
+   *     Enter/Space keys.
+   */
+  describe("BUG: YearCalendarCell missing role and tabIndex for accessibility", () => {
+    it("should have role attribute on year cells for keyboard accessibility", () => {
+      render(
+        <YearCalendar
+          startYear={createTestDate(2020)}
+          yearCount={4}
+        />,
+      )
+
+      const year2020 = screen.getByTestId("2020")
+      const role = year2020.getAttribute("role")
+      expect(role).toBeTruthy()
+    })
+
+    it("should have tabIndex on year cells so keyboard users can focus them", () => {
+      render(
+        <YearCalendar
+          startYear={createTestDate(2020)}
+          yearCount={4}
+        />,
+      )
+
+      const year2020 = screen.getByTestId("2020")
+      expect(year2020).toHaveAttribute("tabindex")
+    })
+
+    it("should respond to Enter or Space key to select a year", async () => {
+      const handleChange = vi.fn()
+
+      render(
+        <YearCalendar
+          startYear={createTestDate(2020)}
+          yearCount={4}
+          onChange={handleChange}
+        />,
+      )
+
+      const year2020 = screen.getByTestId("2020")
+      fireEvent.keyDown(year2020, { key: "Enter" })
+
+      expect(handleChange).toHaveBeenCalled()
+    })
+  })
 })

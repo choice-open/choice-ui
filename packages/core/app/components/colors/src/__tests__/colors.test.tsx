@@ -32,6 +32,7 @@ import { act, fireEvent, render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import React from "react"
 import { beforeAll, describe, expect, it, vi } from "vitest"
+import { ColorArea } from "../color-area/color-area"
 import { ColorGradientSlider } from "../color-gradients-paint/color-gradient-slider"
 import { ColorGradientsPaint } from "../color-gradients-paint/color-gradients-paint"
 import { ColorSlider } from "../color-slider/color-slider"
@@ -267,6 +268,72 @@ describe("Colors bugs", () => {
           expect(Math.abs(value)).toBeLessThanOrEqual(1)
         }
       }
+    })
+  })
+
+  describe("BUG 4: ColorArea onChange not called on pointer release", () => {
+    /**
+     * User scenario: User drags the color area thumb to a new position and releases.
+     * Regression it prevents: Final position after release is lost. Consumer only gets
+     *   intermediate drag positions, never the committed final value.
+     * Logic change that makes it fail: color-area.tsx:82-86 - the isEnd=true branch
+     *   sets isDragging=false but does NOT call onChange(newPosition). Only the
+     *   intermediate branch calls onChange. Fix = call onChange in isEnd branch too.
+     */
+    it("calls onChange with the final position when pointer is released after drag on color area", async () => {
+      const onChange = vi.fn()
+      const onChangeEnd = vi.fn()
+
+      const { container } = renderWithProvider(
+        <ColorArea
+          position={{ x: 0.5, y: 0.5 }}
+          onChange={onChange}
+          onChangeEnd={onChangeEnd}
+          type="saturation"
+          areaSize={{ width: 256, height: 192 }}
+        />,
+      )
+
+      const area = container.firstChild as HTMLDivElement
+      const thumb = area.children[0] as HTMLDivElement
+
+      mockRect(area, { left: 0, top: 0, width: 256, height: 192 })
+      mockPointerCapture(thumb)
+
+      await act(async () => {
+        fireEvent.pointerDown(area, { clientX: 128, clientY: 96, pointerId: 1 })
+      })
+
+      await act(async () => {
+        fireEvent(
+          window,
+          new PointerEvent("pointermove", {
+            clientX: 200,
+            clientY: 50,
+            pointerId: 1,
+            bubbles: true,
+          }),
+        )
+      })
+
+      await act(async () => {
+        fireEvent(
+          window,
+          new PointerEvent("pointerup", {
+            clientX: 220,
+            clientY: 40,
+            pointerId: 1,
+            bubbles: true,
+          }),
+        )
+      })
+
+      expect(onChangeEnd).toHaveBeenCalledTimes(1)
+
+      const lastCall = onChange.mock.calls[onChange.mock.calls.length - 1]
+      expect(lastCall).toBeTruthy()
+      const lastPosition = lastCall[0] as { x: number; y: number }
+      expect(lastPosition.x).toBeGreaterThan(0.8)
     })
   })
 })

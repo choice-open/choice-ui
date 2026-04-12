@@ -2,15 +2,23 @@
  * Chip bug-focused tests
  *
  * BUG 8: Missing space in close button aria-label
- *   - User scenario: Screen reader user encounters a chip with text "React".
- *     The close button aria-label is "Remove chip:React" (no space) instead of
- *     "Remove chip: React". Screen readers may read it as a single garbled word.
+ *   - User scenario: Screen reader encounters chip "React". Close button aria-label
+ *     is "Remove chip:React" (no space). Screen readers read it as one garbled word.
  *   - Regression it prevents: Unreadable close button labels for screen readers
- *   - Logic change that makes it fail: Line 86 concatenates i18n.remove + children
- *     without a separator. Fix = add a space or use template literal.
+ *   - Logic change: chip.tsx line 86 concatenates i18n.remove + children without separator.
+ *     Fix = add a space or use template literal.
+ *
+ * BUG 1: onClick fires when chip is disabled
+ *   - User scenario: Developer renders a chip with disabled={true}. The chip looks
+ *     visually disabled but clicking it still fires onClick. No aria-disabled is set.
+ *   - Regression it prevents: Disabled chips being interactive
+ *   - Logic change: chip.tsx lines 68-71. onClick handler has no disabled guard.
+ *     disabled is destructured out and only used for visual styling. Fix = guard
+ *     onClick with `if (disabled) return` and add `aria-disabled`.
  */
 import "@testing-library/jest-dom"
-import { render, screen } from "@testing-library/react"
+import { fireEvent, render, screen } from "@testing-library/react"
+import userEvent from "@testing-library/user-event"
 import { describe, expect, it, vi } from "vitest"
 import { Chip } from "../chip"
 
@@ -23,6 +31,34 @@ describe("Chip bugs", () => {
       const ariaLabel = closeButton.getAttribute("aria-label") || ""
 
       expect(ariaLabel).toMatch(/chip[:\s]\s*React/i)
+    })
+  })
+
+  describe("BUG 1: onClick must NOT fire when chip is disabled", () => {
+    it("does not call onClick when a disabled chip is clicked", async () => {
+      const onClick = vi.fn()
+      const user = userEvent.setup()
+
+      render(
+        <Chip
+          disabled
+          onClick={onClick}
+        >
+          React
+        </Chip>,
+      )
+
+      const chip = screen.getByText("React")
+      await user.click(chip)
+
+      expect(onClick).not.toHaveBeenCalled()
+    })
+
+    it("has aria-disabled=true when disabled prop is set", () => {
+      render(<Chip disabled>React</Chip>)
+
+      const chip = screen.getByText("React").closest("[aria-disabled]")
+      expect(chip).toHaveAttribute("aria-disabled", "true")
     })
   })
 })

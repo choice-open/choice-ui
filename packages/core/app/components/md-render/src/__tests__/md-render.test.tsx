@@ -20,12 +20,25 @@
  *   - Logic change that makes it fail: The memo comparison in markdown-block.tsx line 107
  *     only compares `prevProps.content === nextProps.content`. Fix = also compare
  *     `components`, `linkBlockPolicy`, and `imageBlockPolicy`.
+ *
+ * BUG 3: allowedPrefixes applied to both links and images independently
+ *   - User scenario: Developer wants to allow image URLs from any source but
+ *     restrict link URLs to https:// only. They set `allowedPrefixes={["https://"]}`
+ *     expecting it to apply only to links. But images from http:// are also blocked.
+ *   - Regression it prevents: Cannot configure independent URL policies for links vs images
+ *   - Logic change that makes it fail: md-render.tsx:127-128 — the same `allowedPrefixes`
+ *     value is passed to both `allowedLinkPrefixes` and `allowedImagePrefixes`.
+ *     The props type has separate `linkBlockPolicy` and `imageBlockPolicy` but
+ *     no separate `allowedLinkPrefixes`/`allowedImagePrefixes` prop.
+ *     Fix = add separate `allowedLinkPrefixes` and `allowedImagePrefixes` props
+ *     to MdRenderProps, falling back to `allowedPrefixes` if not provided.
  */
 import "@testing-library/jest-dom"
 import { render, screen, waitFor } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 import { MarkdownBlock } from "../components/markdown-block"
 import { MdRender } from "../md-render"
+import type { MdRenderProps } from "../types"
 
 vi.mock("harden-react-markdown", () => ({
   default: (Component: any) => Component,
@@ -164,6 +177,20 @@ describe("MdRender bugs", () => {
       await waitFor(() => {
         expect(screen.getByTestId("second-code")).toBeInTheDocument()
       })
+    })
+  })
+
+  describe("BUG 3: MdRender forces same allowedPrefixes for links and images", () => {
+    it("passes the same allowedPrefixes array to both MarkdownBlock link and image props", () => {
+      const fs = require("fs")
+      const path = require("path")
+      const source = fs.readFileSync(path.resolve(__dirname, "../md-render.tsx"), "utf-8")
+
+      const passesSameValue =
+        source.includes("allowedLinkPrefixes={allowedPrefixes}") &&
+        source.includes("allowedImagePrefixes={allowedPrefixes}")
+
+      expect(passesSameValue).toBe(true)
     })
   })
 })

@@ -36,9 +36,40 @@
  *     check the `disableKeyboardNavigation` flag before calling
  *     `activeElement.click()`. Fix = guard the handler with
  *     `if (disableKeyboardNavigation) return`.
+ *
+ * BUG 4 (Medium): isMouseOverMenu state is never reset when coordinate-mode dropdown closes
+ *   - User scenario: User opens a coordinate-mode dropdown, moves mouse over it
+ *     (setting isMouseOverMenu=true), then closes it. On next open, the stale
+ *     isMouseOverMenu=true may cause incorrect behavior.
+ *   - Regression it prevents: Stale mouse-over state leaking across open/close cycles
+ *     in coordinate mode, potentially causing hover detection bugs.
+ *   - Logic change that makes it fail: Line 180 sets isMouseOverMenu state,
+ *     lines 449-460 set it on mouseEnter/Leave, but no effect resets it when
+ *     isControlledOpen transitions from true to false. Fix = add useEffect to reset.
+ *
+ * BUG 5 (Medium): loop:true on useListNavigation causes unexpected wrap-around
+ *   - User scenario: User navigates with ArrowDown past the last item in a dropdown.
+ *     Instead of stopping at the bottom, focus wraps back to the first item,
+ *     which is unexpected in a dropdown menu (unlike a tab list).
+ *   - Regression it prevents: Users accidentally selecting wrong items due to
+ *     unexpected focus wrapping in dropdown menus.
+ *   - Logic change that makes it fail: Line 396 hardcodes loop:true in
+ *     useListNavigation. Fix = set loop:false or make it configurable.
+ *
+ * BUG 7 (Medium): touch state is never reset when dropdown closes
+ *   - User scenario: User opens dropdown via touch (setting touch=true),
+ *     then closes it. On next open via mouse, the stale touch=true state
+ *     causes FloatingOverlay to skip scroll lock (lockScroll={!touch}),
+ *     leading to page scroll behind the dropdown.
+ *   - Regression it prevents: Stale touch state causes incorrect scroll
+ *     lock behavior on subsequent opens.
+ *   - Logic change that makes it fail: Line 179 sets touch state,
+ *     lines 438-446 set it on touchStart/pointerMove, but no effect
+ *     resets it when isControlledOpen transitions to false.
+ *     Fix = add useEffect to reset touch on close.
  */
 import "@testing-library/jest-dom"
-import { render, screen, waitFor } from "@testing-library/react"
+import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { beforeAll, describe, expect, it, vi } from "vitest"
 import { Dropdown } from "../dropdown"
@@ -148,6 +179,157 @@ describe("Dropdown bugs", () => {
       })
 
       expect(trigger).not.toHaveAttribute("data-focus-inside")
+    })
+  })
+
+  describe("BUG 4: isMouseOverMenu state must be reset when coordinate-mode dropdown closes", () => {
+    it("does not retain isMouseOverMenu=true after closing coordinate-mode dropdown", async () => {
+      const onOpenChange = vi.fn()
+      const user = userEvent.setup()
+
+      const { rerender } = render(
+        <Dropdown
+          open={true}
+          onOpenChange={onOpenChange}
+          position={{ x: 100, y: 100 }}
+        >
+          <Dropdown.Content>
+            <Dropdown.Item onClick={() => {}}>Item 1</Dropdown.Item>
+          </Dropdown.Content>
+        </Dropdown>,
+      )
+
+      await waitFor(() => {
+        expect(getOuterMenu()).toBeInTheDocument()
+      })
+
+      const menu = getOuterMenu()
+      fireEvent.mouseEnter(menu)
+
+      rerender(
+        <Dropdown
+          open={false}
+          onOpenChange={onOpenChange}
+          position={{ x: 100, y: 100 }}
+        >
+          <Dropdown.Content>
+            <Dropdown.Item onClick={() => {}}>Item 1</Dropdown.Item>
+          </Dropdown.Content>
+        </Dropdown>,
+      )
+
+      await waitFor(() => {
+        expect(screen.queryAllByRole("menu").length).toBe(0)
+      })
+
+      rerender(
+        <Dropdown
+          open={true}
+          onOpenChange={onOpenChange}
+          position={{ x: 100, y: 100 }}
+        >
+          <Dropdown.Content>
+            <Dropdown.Item onClick={() => {}}>Item 1</Dropdown.Item>
+          </Dropdown.Content>
+        </Dropdown>,
+      )
+
+      await waitFor(() => {
+        expect(getOuterMenu()).toBeInTheDocument()
+      })
+
+      expect(document.querySelector('[data-mouse-over-menu="true"]')).toBeNull()
+    })
+  })
+
+  describe("BUG 5: loop:true on useListNavigation causes unexpected wrap-around", () => {
+    it("ArrowDown on last item wraps to first item when loop is true", async () => {
+      const user = userEvent.setup()
+
+      render(
+        <Dropdown>
+          <Dropdown.Trigger>Open</Dropdown.Trigger>
+          <Dropdown.Content>
+            <Dropdown.Item onClick={() => {}}>First</Dropdown.Item>
+            <Dropdown.Item onClick={() => {}}>Second</Dropdown.Item>
+            <Dropdown.Item onClick={() => {}}>Third</Dropdown.Item>
+          </Dropdown.Content>
+        </Dropdown>,
+      )
+
+      await user.click(screen.getByRole("button"))
+      await waitFor(() => {
+        expect(getOuterMenu()).toBeInTheDocument()
+      })
+
+      const thirdItem = screen.getByRole("menuitem", { name: "Third" })
+      thirdItem.focus()
+
+      await user.keyboard("{ArrowDown}")
+
+      const firstItem = screen.getByRole("menuitem", { name: "First" })
+      expect(document.activeElement).not.toBe(firstItem)
+    })
+  })
+
+  describe("BUG 7: touch state must be reset when dropdown closes", () => {
+    it("resets touch state on close so scroll lock works correctly on next open", async () => {
+      const user = userEvent.setup()
+
+      const { rerender } = render(
+        <Dropdown
+          open={true}
+          onOpenChange={() => {}}
+        >
+          <Dropdown.Trigger>Open</Dropdown.Trigger>
+          <Dropdown.Content>
+            <Dropdown.Item onClick={() => {}}>Item 1</Dropdown.Item>
+          </Dropdown.Content>
+        </Dropdown>,
+      )
+
+      await waitFor(() => {
+        expect(getOuterMenu()).toBeInTheDocument()
+      })
+
+      const menu = getOuterMenu()
+      fireEvent.touchStart(menu)
+
+      rerender(
+        <Dropdown
+          open={false}
+          onOpenChange={() => {}}
+        >
+          <Dropdown.Trigger>Open</Dropdown.Trigger>
+          <Dropdown.Content>
+            <Dropdown.Item onClick={() => {}}>Item 1</Dropdown.Item>
+          </Dropdown.Content>
+        </Dropdown>,
+      )
+
+      await waitFor(() => {
+        expect(screen.queryAllByRole("menu").length).toBe(0)
+      })
+
+      rerender(
+        <Dropdown
+          open={true}
+          onOpenChange={() => {}}
+        >
+          <Dropdown.Trigger>Open</Dropdown.Trigger>
+          <Dropdown.Content>
+            <Dropdown.Item onClick={() => {}}>Item 1</Dropdown.Item>
+          </Dropdown.Content>
+        </Dropdown>,
+      )
+
+      await waitFor(() => {
+        expect(getOuterMenu()).toBeInTheDocument()
+      })
+
+      const overlay = document.querySelector("[data-floating-ui-overlay]")
+      const overlayClass = typeof overlay?.className === "string" ? overlay.className : ""
+      expect(overlayClass).not.toContain("pointer-events-none")
     })
   })
 

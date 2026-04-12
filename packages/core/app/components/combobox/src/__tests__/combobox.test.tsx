@@ -1,19 +1,27 @@
 /**
  * Combobox bug-focused tests
  *
- * BUG 1: handleTriggerClick always calls onOpenChange(true) — can never close via trigger
+ * BUG 1: handleTriggerClick always calls onOpenChange(true) -- can never close via trigger
  *   - User scenario: Controlled combobox, user clicks trigger to open, clicks again to close.
- *     Second click sends onOpenChange(true) again — menu stays open forever.
+ *     Second click sends onOpenChange(true) again -- menu stays open forever.
  *   - Regression it prevents: Trigger click being unable to close controlled combobox
  *   - Logic change that makes it fail: Line 211 always passes true: `onOpenChange?.(true, "click")`.
  *     Should be `onOpenChange?.(!isOpen, "click")` or `onOpenChange?.(!controlledOpen, "click")`.
  *
  * BUG 2: onBlur typed as (value: string) => void but receives FocusEvent at runtime
  *   - User scenario: Consumer writes `<Combobox onBlur={(v) => v.toUpperCase()} />`.
- *     At runtime, v is actually a FocusEvent — crash: ".toUpperCase is not a function".
+ *     At runtime, v is actually a FocusEvent -- crash: ".toUpperCase is not a function".
  *   - Regression it prevents: Runtime crash from type/implementation mismatch
  *   - Logic change that makes it fail: combobox-trigger.tsx line 81 calls `onBlur?.(event)`
  *     passing a FocusEvent, but ComboboxProps declares `onBlur?: (value: string) => void`.
+ *
+ * BUG 3: handleInputFocus never opens menu in uncontrolled mode
+ *   - User scenario: User focuses the combobox input when it already has a value.
+ *     The dropdown should appear but stays closed.
+ *   - Regression it prevents: Focus-triggered dropdown not opening
+ *   - Logic change: combobox.tsx lines 222-229. handleInputFocus calls onOpenChange(true)
+ *     but never calls setIsOpen(true). In uncontrolled mode, isControlledOpen resolves
+ *     to isOpen which stays false. Fix = add setIsOpen(true) for uncontrolled mode.
  */
 import "@testing-library/jest-dom"
 import { render, screen, waitFor } from "@testing-library/react"
@@ -58,7 +66,7 @@ describe("Combobox bugs", () => {
       // markup breaks so the chevron button isn't rendered, this test must
       // fail rather than silently skip its assertion.
       const triggerButton = document.querySelector<HTMLButtonElement>(
-        '[data-combobox-trigger], button',
+        "[data-combobox-trigger], button",
       )
       expect(triggerButton).not.toBeNull()
 
@@ -97,6 +105,36 @@ describe("Combobox bugs", () => {
       expect(onBlur).toHaveBeenCalled()
       const receivedArg = onBlur.mock.calls[0][0]
       expect(typeof receivedArg).toBe("string")
+    })
+  })
+
+  describe("BUG 3: focusing input with value must open dropdown in uncontrolled mode", () => {
+    it("opens the dropdown when the input is focused and has a value", async () => {
+      const user = userEvent.setup()
+
+      render(
+        <Combobox
+          value="hello"
+          onChange={vi.fn()}
+        >
+          <Combobox.Input />
+          <Combobox.Trigger />
+          <Combobox.Content>
+            <Combobox.Item value="hello">Hello</Combobox.Item>
+            <Combobox.Item value="world">World</Combobox.Item>
+          </Combobox.Content>
+        </Combobox>,
+      )
+
+      const input = screen.getByRole("combobox")
+      await user.click(input)
+
+      await waitFor(
+        () => {
+          expect(screen.getByRole("listbox")).toBeInTheDocument()
+        },
+        { timeout: 3000 },
+      )
     })
   })
 })

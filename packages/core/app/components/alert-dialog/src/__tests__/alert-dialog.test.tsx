@@ -5,11 +5,21 @@
  *   - User scenario: Destructive confirm dialog "Delete everything?". User Tabs to
  *     Cancel button, presses Enter expecting cancel. Dialog resolves true instead.
  *   - Regression it prevents: Enter on Cancel performing destructive action
- *   - Logic change: alert-dialog.tsx:67-75 — the global capture keydown listener
+ *   - Logic change: alert-dialog.tsx:67-75 - the global capture keydown listener
  *     unconditionally resolves confirm=true on Enter, ignoring document.activeElement.
  *     Fix = check if activeElement is the Cancel button (or any non-confirm button)
  *     and either skip the listener so the native button click fires, or resolve
  *     with the focused button's value.
+ *
+ * BUG 2: closeAll() leaves pending dialog promises unresolved forever
+ *   - User scenario: App calls `await alertDialog.confirm("Delete?")`, then
+ *     immediately calls `alertDialog.closeAll()` (e.g., on navigation). The `await`
+ *     never completes, freezing the app or leaking memory.
+ *   - Regression it prevents: Promise leaks on unmount/navigation
+ *   - Logic change: utils/index.ts:110-120 - CLEAR_QUEUE action sets resolve=null
+ *     and clears queue WITHOUT calling any pending resolvers. The HIDE action at
+ *     line 61 properly calls state.resolve(value). Fix = call state.resolve(false)
+ *     and resolve all queued items before clearing.
  */
 import "@testing-library/jest-dom"
 import { render, screen, waitFor } from "@testing-library/react"
@@ -72,6 +82,55 @@ describe("Alert Dialog bugs", () => {
       // promise with `true` even though Cancel had focus. With a correct fix,
       // focusing Cancel + Enter resolves with `false` (either by letting the
       // button's native Enter-to-click fire, or by checking activeElement).
+      await waitFor(() => {
+        expect(onResult).toHaveBeenCalledWith(false)
+      })
+    })
+  })
+
+  describe("BUG 2: closeAll must resolve pending dialog promises, not leak them", () => {
+    it("resolves pending confirm promise with false when closeAll is called", async () => {
+      const user = userEvent.setup()
+      const onResult = vi.fn()
+
+      function Harness() {
+        const alertDialog = useAlertDialog()
+        return (
+          <div>
+            <button
+              type="button"
+              onClick={() => {
+                alertDialog.confirm({ title: "Save changes?" }).then(onResult)
+              }}
+            >
+              Open
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                alertDialog.closeAll()
+              }}
+            >
+              Close All
+            </button>
+          </div>
+        )
+      }
+
+      render(
+        <AlertDialogProvider>
+          <Harness />
+        </AlertDialogProvider>,
+      )
+
+      await user.click(screen.getByRole("button", { name: "Open" }))
+
+      await waitFor(() => {
+        expect(screen.getByText("Save changes?")).toBeInTheDocument()
+      })
+
+      await user.click(screen.getByRole("button", { name: "Close All" }))
+
       await waitFor(() => {
         expect(onResult).toHaveBeenCalledWith(false)
       })

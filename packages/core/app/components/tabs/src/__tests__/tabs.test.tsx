@@ -3,11 +3,38 @@
  *
  * BUG 5.1: Right-click and middle-click trigger tab change via onMouseDown
  *   - User scenario: User right-clicks a tab to open browser context menu,
- *     but the tab changes first — disorienting and broken UX
+ *     but the tab changes first -- disorienting and broken UX
  *   - Regression it prevents: Non-left-click interactions changing the active tab
  *   - Logic change that makes it fail: handleMouseDown in tab-item.tsx (line 47-58)
  *     fires onChange for ALL mouse buttons without checking e.button === 0.
  *     Fix = add `if (e.button !== 0) return` at the top.
+ *
+ * BUG 5.2: Clicking a tab does not move focus to it
+ *   - User scenario: User clicks a tab. The tab activates but focus stays on the
+ *     previously focused element. Next Tab key press moves focus from wrong element.
+ *   - Regression it prevents: Keyboard navigation disoriented after mouse click
+ *   - Logic change that makes it fail: tab-item.tsx:51 -- handleMouseDown calls
+ *     e.preventDefault() which prevents the browser's default focus behavior.
+ *     The CSS already uses select-none so preventDefault is unnecessary for text
+ *     selection. Fix = remove e.preventDefault(), or add e.currentTarget.focus().
+ *
+ * BUG 6: aria-label prop silently dropped on icon-only tabs
+ *   - User scenario: Developer renders icon-only tabs with aria-label for
+ *     accessibility. Screen readers announce "tab, not selected" with no name.
+ *   - Regression it prevents: Icon-only tabs inaccessible to screen readers
+ *   - Logic change: tab-item.tsx line 22 destructures "aria-label" out of props.
+ *     The value is placed into a span with aria-hidden="true" (line 93), so screen
+ *     readers skip it. The tab element itself never receives aria-label.
+ *     Fix = apply aria-label to the rendered tab element directly.
+ *
+ * BUG 7: User event handlers silently dropped when Tabs is readOnly
+ *   - User scenario: Developer passes onMouseDown or onKeyDown to a TabItem inside
+ *     a readOnly Tabs container. The handlers never fire because the readOnly check
+ *     returns early before calling user handlers.
+ *   - Regression it prevents: Custom event handlers broken in readOnly mode
+ *   - Logic change: tab-item.tsx lines 48, 61. `if (contextReadOnly) return` exits
+ *     before calling user's onMouseDown/onKeyDown. Compare with disabled mode which
+ *     still calls user handlers. Fix = only suppress onChange, not user handlers.
  */
 import "@testing-library/jest-dom"
 import { fireEvent, render, screen } from "@testing-library/react"
@@ -71,6 +98,72 @@ describe("TabItem bugs", () => {
       fireEvent(tabB, new MouseEvent("mousedown", { button: 1, bubbles: true }))
 
       expect(onChange).not.toHaveBeenCalled()
+    })
+  })
+
+  describe("BUG 5.2: clicking a tab must move focus to it", () => {
+    it("focuses the clicked tab so subsequent keyboard navigation works", async () => {
+      const onChange = vi.fn()
+      const user = userEvent.setup()
+
+      render(
+        <Tabs
+          value="a"
+          onChange={onChange}
+        >
+          <Tabs.Item value="a">Tab A</Tabs.Item>
+          <Tabs.Item value="b">Tab B</Tabs.Item>
+        </Tabs>,
+      )
+
+      const tabB = screen.getByRole("tab", { name: "Tab B" })
+      await user.click(tabB)
+
+      expect(tabB).toHaveFocus()
+    })
+  })
+
+  describe("BUG 6: icon-only tabs must have accessible name via aria-label", () => {
+    it("applies aria-label to the tab element for screen readers", () => {
+      render(
+        <Tabs value="a">
+          <Tabs.Item
+            value="a"
+            aria-label="Settings"
+          >
+            <svg data-testid="icon" />
+          </Tabs.Item>
+        </Tabs>,
+      )
+
+      const tab = screen.getByRole("tab")
+      expect(tab).toHaveAttribute("aria-label", "Settings")
+    })
+  })
+
+  describe("BUG 7: user event handlers must fire in readOnly mode", () => {
+    it("calls onMouseDown when Tabs is readOnly", async () => {
+      const onMouseDown = vi.fn()
+      const user = userEvent.setup()
+
+      render(
+        <Tabs
+          value="a"
+          readOnly
+        >
+          <Tabs.Item
+            value="b"
+            onMouseDown={onMouseDown}
+          >
+            Tab B
+          </Tabs.Item>
+        </Tabs>,
+      )
+
+      const tabB = screen.getByRole("tab", { name: "Tab B" })
+      await user.click(tabB)
+
+      expect(onMouseDown).toHaveBeenCalled()
     })
   })
 })

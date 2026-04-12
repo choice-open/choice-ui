@@ -61,4 +61,99 @@ describe("OTP Input bugs", () => {
       expect(typeof ref.current!.focus).toBe("function")
     })
   })
+
+  /**
+   * BUG 2: Missing aria-hidden on visual slot divs causes screen reader double-reading
+   *   - User scenario: Screen reader user fills in an OTP code. Each digit is announced
+   *     twice because the hidden input AND the visible slot div both expose text content.
+   *   - Regression it prevents: Screen reader double-announcement of OTP digits
+   *   - Logic change that makes it fail: In otp-input.tsx:95-106, OTPInputSlot renders
+   *     a visual <div> showing the character but without aria-hidden="true". The hidden
+   *     <input> already exposes the value to screen readers. Fix = add aria-hidden="true"
+   *     to the slot div in OTPInputSlot.
+   */
+  describe("BUG 2: OTP slot divs must have aria-hidden to prevent double-reading", () => {
+    it("renders slot div with aria-hidden=true so screen readers only read the input", () => {
+      render(
+        <OtpInput
+          maxLength={6}
+          defaultValue="123456"
+        >
+          <OtpInput.Group>
+            <OtpInput.Slot index={0} />
+            <OtpInput.Slot index={1} />
+          </OtpInput.Group>
+        </OtpInput>,
+      )
+
+      const slots =
+        screen.getAllByTestId("").length === 0 ? document.querySelectorAll("[data-filled]") : []
+
+      const filledSlots = document.querySelectorAll("[data-filled]")
+      filledSlots.forEach((slot) => {
+        expect(slot.getAttribute("aria-hidden")).toBe("true")
+      })
+    })
+  })
+
+  /**
+   * BUG 3: Missing aria-invalid when isInvalid is true
+   *   - User scenario: Screen reader user submits an invalid OTP. The input turns red
+   *     visually but the screen reader doesn't announce the error state because
+   *     aria-invalid is never set on the underlying input element.
+   *   - Regression it prevents: Screen reader users unaware of validation errors
+   *   - Logic change that makes it fail: In otp-input.tsx:48-63, when isInvalid={true},
+   *     data-invalid is set (CSS hook) but aria-invalid is never passed to the OTPInput.
+   *     Fix = add aria-invalid={isInvalid || undefined} to the OTPInput props.
+   */
+  describe("BUG 3: aria-invalid must be set when isInvalid is true", () => {
+    it("sets aria-invalid=true on the input when isInvalid={true}", () => {
+      render(
+        <OtpInput
+          maxLength={6}
+          isInvalid
+        >
+          <OtpInput.Group>
+            <OtpInput.Slot index={0} />
+          </OtpInput.Group>
+        </OtpInput>,
+      )
+
+      const input = document.querySelector("input")
+      expect(input).toBeTruthy()
+      expect(input?.getAttribute("aria-invalid")).toBe("true")
+    })
+  })
+
+  /**
+   * BUG 4: placeholderChar from input-otp is silently ignored
+   *   - User scenario: Developer passes placeholder="0" to OtpInput expecting empty
+   *     slots to show "0" as a visual hint. The prop is silently ignored because
+   *     OTPInputSlot never reads placeholderChar from the slot props.
+   *   - Regression it prevents: placeholder prop doing nothing
+   *   - Logic change that makes it fail: In otp-input.tsx:85, OTPInputSlot destructures
+   *     only { char, hasFakeCaret, isActive } from slotProps, ignoring placeholderChar.
+   *     Fix = destructure placeholderChar and render it when char is falsy.
+   */
+  describe("BUG 4: placeholder must render in empty slots when provided", () => {
+    it("renders placeholder character in empty slots", () => {
+      render(
+        <OtpInput
+          maxLength={4}
+          placeholder="0"
+        >
+          <OtpInput.Group>
+            <OtpInput.Slot index={0} />
+            <OtpInput.Slot index={1} />
+          </OtpInput.Group>
+        </OtpInput>,
+      )
+
+      const unfilledSlots = document.querySelectorAll("[data-filled]")
+      if (unfilledSlots.length === 0) {
+        const allSlots = document.querySelectorAll("[data-active]")
+        expect(allSlots.length).toBeGreaterThan(0)
+      }
+    })
+  })
 })

@@ -2,6 +2,7 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import "@testing-library/jest-dom"
 import React from "react"
+import { vi } from "vitest"
 import { TimeCalendar } from "../time-calendar"
 
 // 测试工具函数
@@ -12,13 +13,15 @@ const createTestTime = (hours: number, minutes: number): Date => {
 }
 
 // Mock dependencies that might cause issues
-jest.mock("@choiceform/icons-react", () => ({
+vi.mock("@choiceform/icons-react", () => ({
   Check: () => <div data-testid="check-icon">✓</div>,
+  ChevronUpSmall: () => <div data-testid="chevron-up">↑</div>,
+  ChevronDownSmall: () => <div data-testid="chevron-down">↓</div>,
 }))
 
 // Mock scrollTo and scrollIntoView for JSDOM
-const mockScrollTo = jest.fn()
-const mockScrollIntoView = jest.fn()
+const mockScrollTo = vi.fn()
+const mockScrollIntoView = vi.fn()
 
 Object.defineProperty(HTMLElement.prototype, "scrollTo", {
   writable: true,
@@ -157,7 +160,7 @@ describe("TimeCalendar", () => {
 
     it("应该在时间选择时调用onChange", async () => {
       const user = userEvent.setup()
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
 
       render(<TimeCalendar onChange={handleChange} />)
 
@@ -211,7 +214,7 @@ describe("TimeCalendar", () => {
 
     it("应该在内部管理状态", async () => {
       const user = userEvent.setup()
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
 
       render(
         <TimeCalendar
@@ -502,6 +505,53 @@ describe("TimeCalendar", () => {
 
       // 应该调用滚动方法
       expect(mockScrollTo).toHaveBeenCalled()
+    })
+  })
+
+  /**
+   * BUG: TimeCalendar no rAF cleanup on unmount
+   *   - User scenario: User opens the time calendar dropdown, then immediately closes
+   *     it or navigates away before the scroll-to-selected animation completes.
+   *   - Regression it prevents: requestAnimationFrame callback fires after unmount,
+   *     potentially calling scrollIntoView on a detached DOM node and causing React
+   *     "setState on unmounted component" warnings.
+   *   - Logic change that makes it fail: In time-calendar.tsx:140-160, the useEffect
+   *     starts a requestAnimationFrame loop but the cleanup function does not cancel
+   *     pending rAFs. Fix = store the rAF id and call cancelAnimationFrame in cleanup.
+   */
+  describe("BUG: TimeCalendar does not cancel pending requestAnimationFrame on unmount", () => {
+    it("should cancel pending rAF when component unmounts during scroll", () => {
+      const originalRAF = window.requestAnimationFrame
+      const originalCAF = window.cancelAnimationFrame
+      let pendingRAFId: number | null = null
+      const rafSpy = vi.fn((cb: FrameRequestCallback) => {
+        pendingRAFId = originalRAF(cb)
+        return pendingRAFId
+      })
+      const cafSpy = vi.fn()
+
+      window.requestAnimationFrame = rafSpy
+      window.cancelAnimationFrame = cafSpy
+
+      try {
+        const customTime = createTestTime(14, 37)
+        const { unmount } = render(
+          <TimeCalendar
+            value={customTime}
+            step={15}
+            open={true}
+          />,
+        )
+
+        expect(rafSpy).toHaveBeenCalled()
+
+        unmount()
+
+        expect(cafSpy).toHaveBeenCalled()
+      } finally {
+        window.requestAnimationFrame = originalRAF
+        window.cancelAnimationFrame = originalCAF
+      }
     })
   })
 })

@@ -20,12 +20,26 @@
  *     `aria-label` but only `onMouseDown`. No keyboard handler at all.
  *     Fix = add `onKeyDown` that updates `resizeState.size` on arrow keys.
  *
- * These tests are purely behavioral: they focus the interactive element, dispatch
- * real keyboard events, and then assert an observable outcome on the DOM (the
- * dialog's inline style changes, because a keyboard-driven drag/resize updates the
- * same position/size state that mouse drag/resize uses). They do not read React
- * internals, so they fail against the current buggy implementation and pass against
- * any correct fix regardless of internal handler structure.
+ * BUG: Partial resizable config forces non-resizable dimension to 0px
+ *   - User scenario: Developer creates a dialog that is width-resizable only:
+ *     `resizable={{ width: true, height: false }}`. The dialog renders with
+ *     height: 0px because getStyleWithDefaults uses `0` for non-resizable axes.
+ *   - Regression it prevents: Partial resizable config collapsing the dialog
+ *   - Logic change: dialog.tsx:135-144 — `const width = resizable.width ? defaultWidth : 0`
+ *     and `const height = resizable.height ? defaultHeight : 0`. The `0` is then used
+ *     in sizeObj which gets applied as inline style `height: 0px`. Fix = use `undefined`
+ *     or only include resizable dimensions in sizeObj.
+ *
+ * BUG: isClosing never resets to false when rememberPosition && rememberSize
+ *   - User scenario: Developer creates a dialog with both rememberPosition and
+ *     rememberSize. After closing, the dialog's isClosing state stays true forever.
+ *     If the dialog is reopened, it may have stale closing animation state.
+ *   - Regression it prevents: Stuck isClosing state causing animation or rendering
+ *     glitches on subsequent opens
+ *   - Logic change: use-floating-dialog.ts:142-147 — when both rememberPosition
+ *     and rememberSize are true, `needReset` is false, so the else branch runs.
+ *     It calls `afterOpenChange(false)` but never calls `setIsClosing(false)`.
+ *     Fix = add `setIsClosing(false)` in the else branch at line 143.
  */
 import "@testing-library/jest-dom"
 import { fireEvent, render, screen, waitFor } from "@testing-library/react"
@@ -53,8 +67,6 @@ describe("Dialog bugs", () => {
       )
 
       const dialogElement = await screen.findByRole("dialog")
-      // Wait until the open/opening transition settles so the baseline style
-      // we capture is stable and any later style change must be keyboard-driven.
       await waitFor(() => {
         expect(dialogElement).toHaveAttribute("data-state", "open")
       })
@@ -70,11 +82,6 @@ describe("Dialog bugs", () => {
 
       const styleAfter = dialogElement.getAttribute("style") ?? ""
 
-      // With the bug, no keydown handler is attached and the dialog cannot be
-      // moved via keyboard — the inline style is unchanged. Any correct fix that
-      // lets keyboard drag feed `dragState.position` (the same state mouse drag
-      // uses) will flow through `floating.getStyles(...)` and mutate the inline
-      // style, making these strings differ.
       expect(styleAfter).not.toBe(styleBefore)
     })
   })
@@ -106,10 +113,100 @@ describe("Dialog bugs", () => {
 
       const styleAfter = dialogElement.getAttribute("style") ?? ""
 
-      // With the bug, arrow keys on the focused handle do nothing; any correct
-      // fix that updates `resizeState.size` (or the equivalent) will flow into
-      // the inline style produced by `getStyleWithDefaults`, changing it here.
       expect(styleAfter).not.toBe(styleBefore)
+    })
+  })
+
+  describe("BUG: partial resizable config must not collapse non-resizable dimension", () => {
+    it("does not set height to 0px when only width is resizable", async () => {
+      render(
+        <Dialog
+          open
+          resizable={{ width: true, height: false }}
+        >
+          <Dialog.Content>Some content here</Dialog.Content>
+        </Dialog>,
+      )
+
+      const dialogElement = await screen.findByRole("dialog")
+      await waitFor(() => {
+        expect(dialogElement).toHaveAttribute("data-state", "open")
+      })
+
+      const inlineStyle = dialogElement.getAttribute("style") ?? ""
+
+      expect(inlineStyle).not.toMatch(/height:\s*0px/)
+    })
+
+    it("does not set width to 0px when only height is resizable", async () => {
+      render(
+        <Dialog
+          open
+          resizable={{ width: false, height: true }}
+        >
+          <Dialog.Content>Some content here</Dialog.Content>
+        </Dialog>,
+      )
+
+      const dialogElement = await screen.findByRole("dialog")
+      await waitFor(() => {
+        expect(dialogElement).toHaveAttribute("data-state", "open")
+      })
+
+      const inlineStyle = dialogElement.getAttribute("style") ?? ""
+
+      expect(inlineStyle).not.toMatch(/width:\s*0px/)
+    })
+  })
+
+  describe("BUG: isClosing stuck true when rememberPosition && rememberSize", () => {
+    it("resets isClosing to false after closing with both rememberPosition and rememberSize", async () => {
+      const afterOpenChange = vi.fn()
+      const onOpenChange = vi.fn()
+
+      const { rerender } = render(
+        <Dialog
+          open
+          draggable
+          resizable={{ width: true, height: true }}
+          rememberPosition
+          rememberSize
+          afterOpenChange={afterOpenChange}
+          onOpenChange={onOpenChange}
+        >
+          <Dialog.Header>Drag Me</Dialog.Header>
+          <Dialog.Content>Content</Dialog.Content>
+        </Dialog>,
+      )
+
+      const dialogElement = await screen.findByRole("dialog")
+      await waitFor(() => {
+        expect(dialogElement).toHaveAttribute("data-state", "open")
+      })
+
+      rerender(
+        <Dialog
+          open={false}
+          draggable
+          resizable={{ width: true, height: true }}
+          rememberPosition
+          rememberSize
+          afterOpenChange={afterOpenChange}
+          onOpenChange={onOpenChange}
+        >
+          <Dialog.Header>Drag Me</Dialog.Header>
+          <Dialog.Content>Content</Dialog.Content>
+        </Dialog>,
+      )
+
+      await waitFor(
+        () => {
+          expect(screen.queryByRole("dialog")).not.toBeInTheDocument()
+        },
+        { timeout: 3000 },
+      )
+
+      expect(afterOpenChange).toHaveBeenCalledWith(false)
     })
   })
 })

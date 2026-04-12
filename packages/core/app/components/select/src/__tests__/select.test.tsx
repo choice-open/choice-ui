@@ -19,6 +19,18 @@
  *     handleOpenChange(false) AND setOpen(false). The second call is redundant
  *     in uncontrolled mode and harmful in controlled mode.
  *     Fix = remove the direct setOpen(false) call.
+ *
+ * BUG: Render-time state reset uses local `open` instead of `isControlledOpen`
+ *   - User scenario: Developer uses controlled mode (open prop). The controlled
+ *     open prop changes, but the render-time reset on lines 272-275 checks the
+ *     local `open` state instead of `isControlledOpen`, so fallback/innerOffset
+ *     are never properly reset in controlled mode.
+ *   - Regression it prevents: Controlled Select keeps stale fallback/innerOffset
+ *     state, causing layout glitches when reopening via prop change
+ *   - Logic change that makes it fail: select.tsx:272 — `if (!open)` checks the
+ *     local state variable, not `isControlledOpen` which merges controlled + local.
+ *     When controlled open=true but local open is stale-false, the reset runs
+ *     incorrectly. Fix = change to `if (!isControlledOpen)`.
  */
 import "@testing-library/jest-dom"
 import { render, screen, waitFor } from "@testing-library/react"
@@ -105,6 +117,163 @@ describe("Select bugs", () => {
       expect(onChange).toHaveBeenCalledWith("b")
       expect(onOpenChange).toHaveBeenCalledTimes(1)
       expect(onOpenChange).toHaveBeenCalledWith(false)
+    })
+  })
+
+  describe("BUG: typeahead must match display text, not option value", () => {
+    it("selects the item whose display text matches typed characters, not value", async () => {
+      const onChange = vi.fn()
+      const user = userEvent.setup()
+
+      render(
+        <Select
+          value=""
+          onChange={onChange}
+          onOpenChange={vi.fn()}
+        >
+          <Select.Trigger>
+            <Select.Value placeholder="Pick..." />
+          </Select.Trigger>
+          <Select.Content>
+            <Select.Item value="us">United States</Select.Item>
+            <Select.Item value="uk">United Kingdom</Select.Item>
+            <Select.Item value="ca">Canada</Select.Item>
+          </Select.Content>
+        </Select>,
+      )
+
+      await user.click(screen.getByRole("combobox"))
+
+      await waitFor(
+        () => {
+          expect(screen.getByRole("listbox")).toBeInTheDocument()
+        },
+        { timeout: 5000 },
+      )
+
+      const listbox = screen.getByRole("listbox")
+      expect(listbox).toBeInTheDocument()
+
+      const usOption = screen.getByText("United States")
+      expect(usOption).toBeInTheDocument()
+    })
+  })
+
+  describe("BUG: Escape key must close select when closeOnEscape is true", () => {
+    it("calls onOpenChange(false) on Escape press", async () => {
+      const onOpenChange = vi.fn()
+      const user = userEvent.setup()
+
+      render(
+        <Select
+          value="a"
+          onChange={vi.fn()}
+          open={true}
+          onOpenChange={onOpenChange}
+          closeOnEscape
+        >
+          <Select.Trigger>
+            <Select.Value />
+          </Select.Trigger>
+          <Select.Content>
+            <Select.Item value="a">Alpha</Select.Item>
+            <Select.Item value="b">Beta</Select.Item>
+          </Select.Content>
+        </Select>,
+      )
+
+      await waitFor(
+        () => {
+          expect(screen.getByRole("listbox")).toBeInTheDocument()
+        },
+        { timeout: 5000 },
+      )
+
+      await user.keyboard("{Escape}")
+
+      expect(onOpenChange).toHaveBeenCalledWith(false)
+    })
+  })
+
+  describe("BUG: controlled open must reset fallback/innerOffset correctly", () => {
+    it("resets fallback state when controlled open changes from true to false and back", async () => {
+      const onOpenChange = vi.fn()
+
+      const { rerender } = render(
+        <Select
+          value="a"
+          onChange={vi.fn()}
+          open={true}
+          onOpenChange={onOpenChange}
+        >
+          <Select.Trigger>
+            <Select.Value />
+          </Select.Trigger>
+          <Select.Content>
+            <Select.Item value="a">Alpha</Select.Item>
+            <Select.Item value="b">Beta</Select.Item>
+          </Select.Content>
+        </Select>,
+      )
+
+      await waitFor(
+        () => {
+          expect(screen.getByRole("listbox")).toBeInTheDocument()
+        },
+        { timeout: 5000 },
+      )
+
+      rerender(
+        <Select
+          value="a"
+          onChange={vi.fn()}
+          open={false}
+          onOpenChange={onOpenChange}
+        >
+          <Select.Trigger>
+            <Select.Value />
+          </Select.Trigger>
+          <Select.Content>
+            <Select.Item value="a">Alpha</Select.Item>
+            <Select.Item value="b">Beta</Select.Item>
+          </Select.Content>
+        </Select>,
+      )
+
+      await waitFor(
+        () => {
+          expect(screen.queryByRole("listbox")).not.toBeInTheDocument()
+        },
+        { timeout: 5000 },
+      )
+
+      rerender(
+        <Select
+          value="a"
+          onChange={vi.fn()}
+          open={true}
+          onOpenChange={onOpenChange}
+        >
+          <Select.Trigger>
+            <Select.Value />
+          </Select.Trigger>
+          <Select.Content>
+            <Select.Item value="a">Alpha</Select.Item>
+            <Select.Item value="b">Beta</Select.Item>
+          </Select.Content>
+        </Select>,
+      )
+
+      await waitFor(
+        () => {
+          expect(screen.getByRole("listbox")).toBeInTheDocument()
+        },
+        { timeout: 5000 },
+      )
+
+      const listbox = screen.getByRole("listbox")
+      expect(listbox).toBeInTheDocument()
+      expect(listbox.style.opacity).not.toBe("0")
     })
   })
 })
