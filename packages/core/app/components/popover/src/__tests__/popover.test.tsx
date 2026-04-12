@@ -82,9 +82,8 @@ describe("Popover bugs", () => {
       })
 
       const popover = screen.getByTestId("popover-content").closest("[aria-modal]")
-      if (popover) {
-        expect(popover.getAttribute("aria-modal")).toBe("false")
-      }
+      expect(popover).toBeTruthy()
+      expect(popover!.getAttribute("aria-modal")).toBe("false")
     })
   })
 

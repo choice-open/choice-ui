@@ -121,10 +121,9 @@ describe("Modal bugs", () => {
       )
 
       const backdrop = document.querySelector("[aria-hidden]")
-      if (backdrop) {
-        fireEvent.click(backdrop)
-        expect(onClose).toHaveBeenCalled()
-      }
+      expect(backdrop).toBeTruthy()
+      fireEvent.click(backdrop!)
+      expect(onClose).toHaveBeenCalled()
     })
   })
 
@@ -148,10 +147,9 @@ describe("Modal bugs", () => {
       )
 
       const backdrop = document.querySelector("[aria-hidden]")
-      if (backdrop) {
-        fireEvent.keyDown(backdrop, { key: "Escape" })
-        expect(onClose).toHaveBeenCalled()
-      }
+      expect(backdrop).toBeTruthy()
+      fireEvent.keyDown(backdrop!, { key: "Escape" })
+      expect(onClose).toHaveBeenCalled()
     })
   })
 

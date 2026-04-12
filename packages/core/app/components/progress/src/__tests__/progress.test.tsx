@@ -87,11 +87,10 @@ describe("Progress bugs", () => {
 
       const progressbar = screen.getByRole("progressbar")
       const fill = progressbar.querySelector("[class*='connect']") as HTMLElement
-      if (fill) {
-        const bgColor = fill.style.backgroundColor
-        expect(bgColor).toBeTruthy()
-        expect(bgColor).not.toBe("")
-      }
+      expect(fill).toBeTruthy()
+      const bgColor = fill!.style.backgroundColor
+      expect(bgColor).toBeTruthy()
+      expect(bgColor).not.toBe("")
     })
   })
 

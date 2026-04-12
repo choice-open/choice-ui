@@ -83,11 +83,9 @@ describe("Segmented bugs", () => {
 
       const alphaText = screen.getByText("Alpha")
       const label = alphaText.closest("label")
-
-      if (label) {
-        fireEvent.mouseEnter(label)
-        expect(onHoverChange).toHaveBeenCalledWith(true)
-      }
+      expect(label).toBeTruthy()
+      fireEvent.mouseEnter(label!)
+      expect(onHoverChange).toHaveBeenCalledWith(true)
     })
   })
 
