@@ -5,10 +5,22 @@
  *   - User scenario: Consumer passes <ToggleButton value={false} checked={true} />
  *     thinking "checked" is the API. The spread puts checked=true after the explicit
  *     checked={value}, overriding it. Now native checkbox is checked but aria-checked
- *     is false — visual/semantic contradiction.
+ *     is false - visual/semantic contradiction.
  *   - Regression it prevents: Conflicting HTML attributes breaking state
  *   - Logic change: Line 84 {...rest} is spread after checked={value} (line 73).
  *     Fix = omit `checked`, `type`, `defaultChecked` from rest, or move spread before.
+ *
+ * BUG 11: sr-only text is orphaned, not associated with the input
+ *   - User scenario: Screen reader encounters a ToggleButton. The sr-only span on line 65
+ *     announces "Enabled"/"Disabled" but is not associated with the input via aria-label,
+ *     aria-describedby, or aria-labelledby. Meanwhile aria-checked={value} on line 80
+ *     already communicates the checked state. The sr-only span is dead code that duplicates
+ *     information and may cause confusing double-announcements.
+ *   - Regression it prevents: Redundant/confusing screen reader announcements
+ *   - Logic change: toggle-button.tsx:65 - `<span className="sr-only">{value ? "Enabled" :
+ *     "Disabled"}</span>` sits inside a role="presentation" div with no ARIA association.
+ *     Fix = remove the sr-only span (aria-checked already conveys state), or connect it
+ *     via aria-describedby on the input.
  */
 import "@testing-library/jest-dom"
 import { render, screen } from "@testing-library/react"
@@ -47,6 +59,25 @@ describe("Toggle Button bugs", () => {
       const input = screen.getByRole("checkbox")
       expect(input).toHaveAttribute("aria-checked", "true")
       expect(input.checked).toBe(true)
+    })
+  })
+
+  describe("BUG 11: sr-only text must be properly associated with the input", () => {
+    it("does not render orphaned sr-only text that duplicates aria-checked", () => {
+      render(
+        <ToggleButton
+          value={true}
+          onChange={vi.fn()}
+        >
+          Toggle
+        </ToggleButton>,
+      )
+
+      const container = screen.getByRole("checkbox").closest("[role=presentation]")
+      expect(container).toBeTruthy()
+
+      const srOnly = container!.querySelector(".sr-only")
+      expect(srOnly).toBeNull()
     })
   })
 })

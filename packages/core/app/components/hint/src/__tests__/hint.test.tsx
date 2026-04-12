@@ -7,7 +7,7 @@
  *     the component is re-enabled. The tooltip should NOT reappear without a fresh
  *     hover interaction.
  *   - Regression it prevents: Ghost tooltips that reappear without user action after a
- *     disabled→enabled transition, violating the user's expectation that they dismissed
+ *     disabled to enabled transition, violating the user's expectation that they dismissed
  *     the tooltip.
  *   - Logic change that makes it fail: In `hooks/use-hint.ts:88-101`, when `disabled`
  *     changes to `true`, `useHover` is disabled via `enabled: false` but the `open`
@@ -16,11 +16,22 @@
  *     disabled returns to false, isMounted is still true so the tooltip reappears.
  *     Fix = add a useEffect in useHint that calls setOpen(false) when disabled
  *     becomes true.
+ *
+ * BUG 6: Only detects Hint.Trigger as a direct child
+ *   - User scenario: Developer wraps Hint.Trigger in a styling element like
+ *     <span className="ml-2"><Hint.Trigger /></span>. Children.toArray only finds
+ *     direct children, so the trigger is not detected. A duplicate default trigger
+ *     renders (hint.tsx:52), causing two reference elements and incorrect tooltip
+ *     positioning with no error thrown.
+ *   - Regression it prevents: Nested triggers silently produce broken tooltip positioning
+ *   - Logic change: hint.tsx:38-43 - `Children.toArray(children).find(...)` only
+ *     inspects top-level children. Fix = recursively search children or document
+ *     that Trigger must be a direct child.
  */
 import "@testing-library/jest-dom"
 import { render, screen, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
-import { describe, expect, it } from "vitest"
+import { describe, expect, it, vi } from "vitest"
 import { Hint } from "../hint"
 
 class ResizeObserverMock {
@@ -30,9 +41,13 @@ class ResizeObserverMock {
 }
 global.ResizeObserver = ResizeObserverMock as typeof ResizeObserver
 
+vi.mock("@choiceform/icons-react", () => ({
+  InfoCircle: () => <svg data-testid="info-icon" />,
+}))
+
 describe("Hint bugs", () => {
   describe("BUG 1: tooltip must not reappear when disabled toggles back to false", () => {
-    it("does not reopen after disabled→enabled transition without a new hover", async () => {
+    it("does not reopen after disabled to enabled transition without a new hover", async () => {
       const user = userEvent.setup()
 
       const { rerender } = render(
@@ -41,7 +56,6 @@ describe("Hint bugs", () => {
         </Hint>,
       )
 
-      // Step 1: hover trigger to open tooltip
       const trigger = screen.getByRole("button")
       await user.hover(trigger)
 
@@ -49,7 +63,6 @@ describe("Hint bugs", () => {
         expect(screen.getByRole("tooltip")).toHaveTextContent("Tooltip text")
       })
 
-      // Step 2: disable while tooltip is open — content returns null visually
       rerender(
         <Hint
           delay={0}
@@ -63,23 +76,34 @@ describe("Hint bugs", () => {
         expect(screen.queryByRole("tooltip")).not.toBeInTheDocument()
       })
 
-      // Step 3: re-enable without any new user interaction
       rerender(
         <Hint delay={0}>
           <Hint.Content>Tooltip text</Hint.Content>
         </Hint>,
       )
 
-      // BUG: open state was never reset to false, so isMounted stays true and
-      // HintContent re-renders the tooltip immediately.
-      // Expected: tooltip stays hidden until user hovers again.
-      // This assertion FAILS — the tooltip IS present in the document.
       await waitFor(
         () => {
           expect(screen.queryByRole("tooltip")).not.toBeInTheDocument()
         },
         { timeout: 500 },
       )
+    })
+  })
+
+  describe("BUG 6: must detect Hint.Trigger even when wrapped in another element", () => {
+    it("does not render a duplicate default trigger when Trigger is nested", () => {
+      render(
+        <Hint delay={0}>
+          <span data-testid="wrapper">
+            <Hint.Trigger />
+          </span>
+          <Hint.Content>Tooltip text</Hint.Content>
+        </Hint>,
+      )
+
+      const triggers = screen.getAllByRole("button")
+      expect(triggers.length).toBe(1)
     })
   })
 })

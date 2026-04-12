@@ -18,6 +18,16 @@
  *   - Regression it prevents: Accessibility violation for nameless avatars
  *   - Logic change that makes it fail: Line 66 `alt={name}`. When name is undefined,
  *     no alt attribute is rendered. Fix = `alt={name ?? ""}`.
+ *
+ * BUG 9: isLoading and imageLoadedError state not reset when photo prop changes
+ *   - User scenario: Avatar loads with a broken URL (imageLoadedError=true, shows fallback).
+ *     Then the photo prop changes to a valid URL. The avatar stays stuck on the fallback
+ *     because imageLoadedError is never reset. The new image is never shown.
+ *   - Regression it prevents: Avatar stuck showing fallback after photo URL update
+ *   - Logic change that makes it fail: Lines 31-32 - useState for isLoading and
+ *     imageLoadedError only initialize once. No useEffect resets them when photo changes.
+ *     The condition `photo && !imageLoadedError` (line 62) stays false.
+ *     Fix = add useEffect to reset imageLoadedError=false when photo changes.
  */
 import "@testing-library/jest-dom"
 import { render, screen } from "@testing-library/react"
@@ -46,6 +56,32 @@ describe("Avatar bugs", () => {
 
       const img = screen.getByRole("img")
       expect(img).toHaveAttribute("alt")
+    })
+  })
+
+  describe("BUG 9: must reset error state when photo prop changes", () => {
+    it("attempts to load the new photo after a broken photo fails", () => {
+      const { rerender } = render(
+        <Avatar
+          photo="/broken.jpg"
+          name="John"
+        />,
+      )
+
+      const img = screen.getByRole("img")
+      expect(img).toBeTruthy()
+      expect(img).toHaveAttribute("src", "/broken.jpg")
+
+      rerender(
+        <Avatar
+          photo="/valid.jpg"
+          name="John"
+        />,
+      )
+
+      const newImg = screen.queryByRole("img")
+      expect(newImg).toBeTruthy()
+      expect(newImg).toHaveAttribute("src", "/valid.jpg")
     })
   })
 })

@@ -7,8 +7,24 @@
  *     link variant only blocks onClick for `readOnly`, NOT `disabled`. Clicking a
  *     disabled link still fires the callback.
  *   - Regression it prevents: Disabled links being clickable
- *   - Logic change: link-button.tsx:76-78 — `handleClick` only checks `readOnly`,
+ *   - Logic change: link-button.tsx:76-78 - `handleClick` only checks `readOnly`,
  *     not `disabled`. Fix = check both: `readOnly || disabled ? undefined : onClick`.
+ *
+ * BUG 9: Case-sensitive external link detection misses uppercase protocols
+ *   - User scenario: Developer passes href="HTTP://example.com". The check at line 67
+ *     `href.startsWith("http")` is case-sensitive, so uppercase protocols are not
+ *     detected as external. The link misses rel="noopener noreferrer" and target="_blank".
+ *   - Regression it prevents: Security attributes missing on uppercase external URLs
+ *   - Logic change: link-button.tsx:67 - `href.startsWith("http")` is case-sensitive.
+ *     Fix = use `href.toLowerCase().startsWith("http")` or a regex.
+ *
+ * BUG 10: href="" treated as button instead of anchor
+ *   - User scenario: Developer passes href="" expecting a self-referencing link. The
+ *     truthy check at line 62 `props.href` fails for empty string, so it renders as
+ *     <button> instead of <a>. The TypeScript type allows href: string which includes "".
+ *   - Regression it prevents: Unexpected element type for empty href
+ *   - Logic change: link-button.tsx:62 - `"href" in props && props.href` uses truthy
+ *     check. Empty string is falsy. Fix = check `"href" in props` alone.
  */
 import "@testing-library/jest-dom"
 import { render, screen } from "@testing-library/react"
@@ -38,6 +54,28 @@ describe("Link Button bugs", () => {
       await user.click(link)
 
       expect(onClick).not.toHaveBeenCalled()
+    })
+  })
+
+  describe("BUG 9: uppercase protocol URLs must be detected as external", () => {
+    it("adds rel=noopener noreferrer for HTTP:// protocol (uppercase)", () => {
+      render(<LinkButton href="HTTP://example.com">External Link</LinkButton>)
+
+      const link = screen.getByRole("link")
+      expect(link).toHaveAttribute("target", "_blank")
+      expect(link).toHaveAttribute("rel")
+      const rel = link.getAttribute("rel") || ""
+      expect(rel).toContain("noopener")
+      expect(rel).toContain("noreferrer")
+    })
+  })
+
+  describe("BUG 10: href='' must render as anchor, not button", () => {
+    it("renders an anchor element when href is empty string", () => {
+      render(<LinkButton href="">Self Link</LinkButton>)
+
+      const anchor = screen.queryByRole("link")
+      expect(anchor).toBeTruthy()
     })
   })
 })

@@ -4,7 +4,7 @@
  * BUG 6.1: allowNewline=false does NOT block Shift+Enter
  *   - User scenario: Single-line chat input with allowNewline=false. User presses Shift+Enter
  *     expecting no newline (it's documented as "disable newlines"), but newline is inserted.
- *   - Regression it prevents: allowNewline=false becomes a lie — it only blocks plain Enter
+ *   - Regression it prevents: allowNewline=false becomes a lie - it only blocks plain Enter
  *   - Logic change that makes it fail: handleKeyDown (line 124) has `!e.shiftKey` guard,
  *     explicitly allowing Shift+Enter through. Fix = remove the shiftKey guard.
  *
@@ -14,6 +14,24 @@
  *   - Regression it prevents: Consumers waste time debugging why style doesn't work
  *   - Logic change that makes it fail: line 131 destructures style out of rest into
  *     restWithoutStyle, but `style` is never used anywhere.
+ *
+ * BUG 4: Compound pattern silently drops onChange from Textarea.Content
+ *   - User scenario: Developer uses <Textarea><Textarea.Content onChange={fn}/></Textarea>.
+ *     The child's onChange is overridden by handleChange (line 303) which comes AFTER
+ *     {...child.props} (line 298). The child's onChange is never called.
+ *   - Regression it prevents: Consumer's onChange handler silently ignored in compound pattern
+ *   - Logic change: textarea.tsx:295-306 - {...textareaAutosizeProps} then {...child.props}
+ *     then onChange={handleChange}. The last onChange wins, discarding child.props.onChange.
+ *     Fix = merge the handlers or call child.props.onChange inside handleChange.
+ *
+ * BUG 2: resize={false} does not disable auto-resize without explicit rows
+ *   - User scenario: Developer sets resize={false} expecting a fixed-height textarea.
+ *     Without also passing a rows prop, viewportStyle is undefined (line 240) so the
+ *     textarea auto-grows identically to resize="auto".
+ *   - Regression it prevents: resize={false} silently broken unless rows is also supplied
+ *   - Logic change: textarea.tsx:235-241 - `if (resize === false && rest.rows)` only
+ *     returns a fixed height when rows is explicitly set. Without rows, returns undefined.
+ *     Fix = use minRows to compute a fixed height when resize=false and rows is not set.
  */
 import "@testing-library/jest-dom"
 import { act, render, screen } from "@testing-library/react"
@@ -78,6 +96,44 @@ describe("Textarea bugs", () => {
       const container = screen.getByRole("textbox").closest("[class]")
       const styledElement = container?.parentElement || container
       expect(styledElement).toHaveStyle("border: 1px solid red")
+    })
+  })
+
+  describe("BUG 4: compound pattern must not silently drop child onChange", () => {
+    it("calls the child onChange handler when using compound pattern", async () => {
+      const parentOnChange = vi.fn()
+      const childOnChange = vi.fn()
+      const user = userEvent.setup()
+
+      render(
+        <Textarea onChange={parentOnChange}>
+          <Textarea.Content onChange={childOnChange} />
+        </Textarea>,
+      )
+
+      const textarea = screen.getByRole("textbox")
+      await user.type(textarea, "hello")
+
+      expect(childOnChange).toHaveBeenCalled()
+    })
+  })
+
+  describe("BUG 2: resize=false must produce a fixed height without needing rows", () => {
+    it("applies a fixed height style when resize is false and no rows prop", () => {
+      const { container } = render(
+        <Textarea
+          resize={false}
+          minRows={3}
+        />,
+      )
+
+      const viewport =
+        container.querySelector("[data-slot=viewport]") ||
+        container.querySelector("[class*='overflow']")
+      expect(viewport).toBeTruthy()
+
+      const hasFixedHeight = container.innerHTML.includes("height:")
+      expect(hasFixedHeight).toBe(true)
     })
   })
 })

@@ -14,11 +14,27 @@
  *   - Regression it prevents: Broken search UX flow after clearing
  *   - Logic change: Line 34-36 `handleClear` only calls onChange(""), doesn't refocus.
  *     Fix = add inputRef.current?.focus() after clearing.
+ *
+ * BUG 8: i18n.placeholder is declared in interface but never used
+ *   - User scenario: Developer passes i18n={{ clear: "Effacer", placeholder: "Rechercher..." }}
+ *     to localize the search input. The clear button tooltip uses i18n.clear, but the
+ *     input placeholder ignores i18n.placeholder entirely. It always uses the top-level
+ *     `placeholder` prop (default "Search...").
+ *   - Regression it prevents: Incomplete internationalization - placeholder not localizable via i18n
+ *   - Logic change: search-input.tsx:14-17 declares `i18n.placeholder` in the interface,
+ *     line 22 uses `placeholder = "Search..."` (top-level prop), line 28-30 default i18n
+ *     has no placeholder key, line 43 uses `placeholder={placeholder}` (top-level only).
+ *     Fix = use `i18n.placeholder ?? placeholder` as the fallback.
  */
 import "@testing-library/jest-dom"
 import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { describe, expect, it, vi } from "vitest"
+
+vi.mock("@choiceform/icons-react", () => ({
+  Search: () => <svg data-testid="search-icon" />,
+  RemoveSmall: () => <svg data-testid="remove-icon" />,
+}))
 
 describe("Search Input bugs", () => {
   describe("BUG 4: clear button must appear in uncontrolled mode after typing", () => {
@@ -68,6 +84,17 @@ describe("Search Input bugs", () => {
         await user.click(clearButton)
         expect(input).toHaveFocus()
       }
+    })
+  })
+
+  describe("BUG 8: i18n.placeholder must override default placeholder text", () => {
+    it("uses i18n.placeholder when provided", async () => {
+      const { SearchInput } = await import("../search-input")
+
+      render(<SearchInput i18n={{ clear: "Effacer", placeholder: "Rechercher..." }} />)
+
+      const input = screen.getByPlaceholderText("Rechercher...")
+      expect(input).toBeTruthy()
     })
   })
 })
