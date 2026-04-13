@@ -21,6 +21,15 @@ export function Conditions({
   renderers,
   localization = DEFAULT_LOCALIZATION,
 }: ConditionsProps) {
+  const normalizedFields = useMemo(
+    () =>
+      fields.map((f) => ({
+        ...f,
+        key: (f as Record<string, unknown>).key || (f as Record<string, unknown>).name || "",
+      })),
+    [fields],
+  )
+
   const [conditions, setConditions] = useState<ConditionsRoot>(
     value || {
       id: "root",
@@ -41,6 +50,14 @@ export function Conditions({
       ],
     },
   )
+
+  const isInitialMountRef = useRef(true)
+
+  useEffect(() => {
+    if (value) {
+      setConditions(value)
+    }
+  }, [value])
 
   // 全局拖拽状态管理
   const [globalDragData, setGlobalDragData] = useState<{
@@ -90,6 +107,10 @@ export function Conditions({
 
   // 当内部状态变化时通知父组件
   useEffect(() => {
+    if (isInitialMountRef.current) {
+      isInitialMountRef.current = false
+      return
+    }
     onChange?.(conditions)
   }, [conditions, onChange])
 
@@ -278,7 +299,7 @@ export function Conditions({
 
               <CustomGroupComponent
                 group={group}
-                fields={fields}
+                fields={normalizedFields}
                 onUpdate={(updatedGroup) => {
                   handleGroupUpdate(group.id, updatedGroup)
                 }}
