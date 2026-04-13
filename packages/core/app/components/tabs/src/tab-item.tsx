@@ -45,27 +45,32 @@ export const TabItem = memo(
     }
 
     const handleMouseDown = useEventCallback((e: MouseEvent<HTMLElement>) => {
+      if (e.button !== 0) return
+
+      if (onMouseDown) {
+        onMouseDown(e)
+      }
+
       if (contextReadOnly) return
 
       if (!contextDisabled && !disabled) {
         e.preventDefault()
+        e.currentTarget.focus()
         onChange(value)
       }
       e.stopPropagation()
-      if (onMouseDown) {
-        onMouseDown(e)
-      }
     })
 
     const handleKeyDown = useEventCallback((e: KeyboardEvent<HTMLElement>) => {
+      if (onKeyDown) {
+        onKeyDown(e)
+      }
+
       if (contextReadOnly) return
 
       if (!contextDisabled && !disabled && (e.key === "Enter" || e.key === " ")) {
         e.preventDefault()
         onChange(value)
-      }
-      if (onKeyDown) {
-        onKeyDown(e)
       }
     })
 
@@ -78,13 +83,14 @@ export const TabItem = memo(
         type="button"
         aria-selected={isActive}
         aria-disabled={contextDisabled || disabled || contextReadOnly}
+        aria-label={ariaLabelText}
         tabIndex={isActive ? 0 : -1}
         id={tabId}
         className={tcx(tv.tab(), className)}
         onMouseDown={handleMouseDown}
         onKeyDown={handleKeyDown}
         value={value}
-        disabled={contextDisabled || disabled || contextReadOnly}
+        disabled={contextDisabled || disabled}
         {...props}
       >
         <>

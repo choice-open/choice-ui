@@ -20,6 +20,10 @@ const LoaderRoot = forwardRef<HTMLDivElement, LoaderProps>((props, ref) => {
   const iconIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const stageIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
+  if (stages.length === 0) {
+    return null
+  }
+
   const actualStage = controlledStage ?? currentStage
   const stage = stages[actualStage]
   const icons = Array.isArray(stage?.icon) ? stage.icon : stage?.icon ? [stage.icon] : []

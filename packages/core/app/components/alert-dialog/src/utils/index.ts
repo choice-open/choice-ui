@@ -108,7 +108,12 @@ export const alertDialogReducer = (
     }
 
     case "CLEAR_QUEUE": {
-      // Clear queue and close dialog
+      if (state.resolve) {
+        state.resolve(false)
+      }
+      for (const item of state.queue) {
+        item.resolve(false)
+      }
       return {
         ...state,
         isOpen: false,

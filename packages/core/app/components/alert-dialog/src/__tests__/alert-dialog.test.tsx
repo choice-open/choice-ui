@@ -90,30 +90,21 @@ describe("Alert Dialog bugs", () => {
 
   describe("BUG 2: closeAll must resolve pending dialog promises, not leak them", () => {
     it("resolves pending confirm promise with false when closeAll is called", async () => {
-      const user = userEvent.setup()
       const onResult = vi.fn()
+      let alertDialogRef: ReturnType<typeof useAlertDialog> | null = null
 
       function Harness() {
         const alertDialog = useAlertDialog()
+        alertDialogRef = alertDialog
         return (
-          <div>
-            <button
-              type="button"
-              onClick={() => {
-                alertDialog.confirm({ title: "Save changes?" }).then(onResult)
-              }}
-            >
-              Open
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                alertDialog.closeAll()
-              }}
-            >
-              Close All
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={() => {
+              alertDialog.confirm({ title: "Save changes?" }).then(onResult)
+            }}
+          >
+            Open
+          </button>
         )
       }
 
@@ -123,13 +114,13 @@ describe("Alert Dialog bugs", () => {
         </AlertDialogProvider>,
       )
 
-      await user.click(screen.getByRole("button", { name: "Open" }))
+      await screen.getByRole("button", { name: "Open" }).click()
 
       await waitFor(() => {
         expect(screen.getByText("Save changes?")).toBeInTheDocument()
       })
 
-      await user.click(screen.getByRole("button", { name: "Close All" }))
+      alertDialogRef!.closeAll()
 
       await waitFor(() => {
         expect(onResult).toHaveBeenCalledWith(false)
