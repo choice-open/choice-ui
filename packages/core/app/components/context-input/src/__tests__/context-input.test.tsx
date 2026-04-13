@@ -151,11 +151,14 @@ describe("ContextInput bugs", () => {
 
       const editor = screen.getByRole("textbox")
       await user.click(editor)
-      await user.type(editor, "@ali")
+      for (const char of "@ali") {
+        await user.type(editor, char)
+      }
 
       await waitFor(
         () => {
-          expect(screen.getByRole("listbox")).toBeInTheDocument()
+          const items = document.querySelectorAll('[role="menuitem"]')
+          expect(items.length).toBeGreaterThan(0)
         },
         { timeout: 3000 },
       )

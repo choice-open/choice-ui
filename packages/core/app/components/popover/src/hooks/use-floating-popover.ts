@@ -107,12 +107,26 @@ export function useFloatingPopover({
     changed: false,
   })
 
-  // Use official recommended controlled/uncontrolled state management
+  const [forceDismissed, setForceDismissed] = useState(false)
+
   const [innerOpen, setInnerOpen] = useMergedValue({
     value: open,
     defaultValue: defaultOpen,
     onChange: onOpenChange,
   })
+
+  const effectiveOpen = innerOpen && !forceDismissed
+
+  const forceDismissedTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  useEffect(() => {
+    return () => {
+      if (forceDismissedTimerRef.current !== null) {
+        clearTimeout(forceDismissedTimerRef.current)
+        forceDismissedTimerRef.current = null
+      }
+    }
+  }, [])
 
   // Use useMemo to cache middleware array, avoid creating them again on each render
   const middleware = useMemo(() => {
@@ -141,7 +155,16 @@ export function useFloatingPopover({
   // Cache onOpenChange callback, avoid creating them again on each render
   const handleOpenChange = useEventCallback((nextOpen: boolean) => {
     if (!nextOpen) {
-      // Close logic
+      setForceDismissed(true)
+      if (forceDismissedTimerRef.current !== null) {
+        clearTimeout(forceDismissedTimerRef.current)
+      }
+      forceDismissedTimerRef.current = setTimeout(() => {
+        forceDismissedTimerRef.current = null
+        if (open) {
+          setForceDismissed(false)
+        }
+      }, 200)
       setIsClosing(true)
       resetDragState()
       setInnerOpen(false)
@@ -165,7 +188,7 @@ export function useFloatingPopover({
   // Use official recommended useFloating mode
   const { refs, floatingStyles, context, x, y, isPositioned } = useFloating({
     nodeId,
-    open: innerOpen, // Pass state directly
+    open: effectiveOpen,
     onOpenChange: handleOpenChange,
     placement,
     middleware,
@@ -174,11 +197,10 @@ export function useFloatingPopover({
 
   // Use official recommended isPositioned to manage position state
   useEffect(() => {
-    if (innerOpen && isPositioned && x !== null && y !== null) {
-      // Save position information
+    if (effectiveOpen && isPositioned && x !== null && y !== null) {
       positionRef.current = { x, y }
     }
-  }, [innerOpen, isPositioned, x, y])
+  }, [effectiveOpen, isPositioned, x, y])
 
   const hover = useHover(context, {
     enabled: interactions === "hover",
@@ -271,14 +293,13 @@ export function useFloatingPopover({
   )
 
   const handleClose = useCallback(() => {
-    if (innerOpen) {
+    if (effectiveOpen) {
       context.onOpenChange(false)
     }
-  }, [innerOpen, context])
+  }, [effectiveOpen, context])
 
   useEffect(() => {
-    // Only listen when popover is open and Escape close is allowed and interactions is not none
-    if (!innerOpen || !closeOnEscape || interactions === "none") {
+    if (!effectiveOpen || !closeOnEscape || interactions === "none") {
       return
     }
 
@@ -291,11 +312,9 @@ export function useFloatingPopover({
       }
     }
 
-    // Use bubble phase (default) instead of capture phase
-    // This allows child elements (like Input) to handle ESC first
     window.addEventListener("keydown", handleEscape)
     return () => window.removeEventListener("keydown", handleEscape)
-  }, [innerOpen, closeOnEscape, interactions, handleClose])
+  }, [effectiveOpen, closeOnEscape, interactions, handleClose])
 
   const handleTriggerRef = useCallback(
     (triggerRef: RefObject<HTMLElement | null>) => {
@@ -340,7 +359,7 @@ export function useFloatingPopover({
     triggerRefs,
     context,
     positionReady: isPositioned,
-    innerOpen,
+    innerOpen: effectiveOpen,
     setInnerOpen,
     x,
     y,

@@ -114,6 +114,9 @@ export const PaginationSpinner = forwardRef<HTMLDivElement, PaginationSpinnerPro
         <Button
           variant="solid"
           disabled={currentPage === 1 || disabled}
+          onMouseDown={() => {
+            blurFromInternalButtonRef.current = true
+          }}
           onClick={handlePrevious}
           aria-label="Previous page"
           className={tv.button({ position: "left" })}
@@ -153,6 +156,9 @@ export const PaginationSpinner = forwardRef<HTMLDivElement, PaginationSpinnerPro
         <Button
           variant="solid"
           disabled={currentPage === totalPages || disabled}
+          onMouseDown={() => {
+            blurFromInternalButtonRef.current = true
+          }}
           onClick={handleNext}
           aria-label="Next page"
           className={tv.button({ position: "right" })}

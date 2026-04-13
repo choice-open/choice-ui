@@ -152,21 +152,27 @@ const ContextInputBase = forwardRef<ContextInputRef, ContextInputProps>(function
   // Wrap handleChange to check mention on content change
   const handleChange = useEventCallback((newValue: import("slate").Descendant[]) => {
     baseHandleChange(newValue)
-    // Defer mention check to avoid multiple state updates in same render cycle causing focus loss
-    requestAnimationFrame(() => {
-      mentions.checkMentionSearch()
-    })
+    mentions.checkMentionSearch()
   })
 
   // Keyboard event handler
   const handleKeyDown = useEventCallback((event: React.KeyboardEvent) => {
-    // First try to let MentionMenu handle keyboard events
+    if (mentions.handleKeyDown(event)) {
+      return
+    }
+
     if (mentionMenuRef.current?.handleKeyDown(event)) {
       return
     }
 
-    // Handle other keyboard events
     onKeyDown?.(event)
+  })
+
+  const handleKeyUp = useEventCallback((event: React.KeyboardEvent) => {
+    if (mentions.searchState.isSearching) {
+      return
+    }
+    mentions.checkMentionSearch()
   })
 
   // Handle suggestion selection
@@ -204,6 +210,7 @@ const ContextInputBase = forwardRef<ContextInputRef, ContextInputProps>(function
           renderMention={renderMention}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
+          onKeyUp={handleKeyUp}
           onCompositionStart={onCompositionStart}
           onCompositionEnd={onCompositionEnd}
           onFocus={onFocus}
@@ -219,11 +226,11 @@ const ContextInputBase = forwardRef<ContextInputRef, ContextInputProps>(function
       <MentionMenu
         ref={mentionMenuRef}
         disabled={disabled}
-        isOpen={mentions.searchState.isSearching && !!mentions.searchState.position}
+        isOpen={mentions.searchState.isSearching}
         onClose={mentions.closeMentionSearch}
         suggestions={mentions.searchState.suggestions}
         loading={mentions.searchState.loading}
-        position={mentions.searchState.position}
+        position={mentions.searchState.position ?? { x: 0, y: 0 }}
         onSelect={handleSuggestionSelect}
         renderSuggestion={renderSuggestion}
       />

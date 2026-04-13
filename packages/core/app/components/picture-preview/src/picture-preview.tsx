@@ -281,9 +281,9 @@ export const PicturePreview = forwardRef<HTMLDivElement, PicturePreviewProps>(
       setIsLoading(true)
       setIsError(false)
       setNaturalSize(null)
+      setZoom(INITIAL_ZOOM)
       zoomRef.current = INITIAL_ZOOM
       updatePosition({ x: 0, y: 0 })
-      scheduleUpdate()
 
       const img = new Image()
       let isCancelled = false

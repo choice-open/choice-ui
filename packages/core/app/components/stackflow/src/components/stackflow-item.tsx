@@ -55,7 +55,7 @@ export const StackflowItem = forwardRef<HTMLDivElement, StackflowItemProps>(
           className={tcx(tv.item(), className)}
           style={style}
         >
-          {isActive ? children : null}
+          {children}
         </motion.div>
       </AnimatePresence>
     )

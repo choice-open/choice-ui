@@ -1,5 +1,5 @@
 import { Combobox } from "@choice-ui/combobox"
-import React, { forwardRef, memo, useImperativeHandle } from "react"
+import React, { forwardRef, memo, useId, useImperativeHandle, useRef, useState } from "react"
 import type { ContextMentionItemProps } from "../types"
 
 // Focus management disabled config - as constant to avoid creating new object on each render
@@ -48,6 +48,17 @@ export const MentionMenu = memo(
       disabled = false,
     } = props
 
+    const instanceId = useId()
+    const [activeIndex, setActiveIndex] = useState(0)
+
+    const getListboxElement = () => {
+      const portalRoot = document.getElementById(`mention-menu-portal-${instanceId}`)
+      if (portalRoot) {
+        return portalRoot.querySelector('[role="listbox"]') as HTMLElement
+      }
+      return document.querySelector('[role="listbox"]') as HTMLElement
+    }
+
     // Expose keyboard handler method - same approach as MentionsWithSlate story
     useImperativeHandle(
       ref,
@@ -57,7 +68,6 @@ export const MentionMenu = memo(
             return false
           }
 
-          // If menu is open, intercept arrow up/down and enter keys
           if (
             event.key === "ArrowDown" ||
             event.key === "ArrowUp" ||
@@ -68,10 +78,8 @@ export const MentionMenu = memo(
             event.preventDefault()
             event.stopPropagation()
 
-            // Get menu element and dispatch keyboard event - same approach as MentionsWithSlate
-            const menuElement = document.querySelector('[role="listbox"]') as HTMLElement
+            const menuElement = getListboxElement()
             if (menuElement) {
-              // Directly trigger keyboard event on menu element
               const keyEvent = new KeyboardEvent("keydown", {
                 key: event.key,
                 code: event.code || event.key,
@@ -84,13 +92,19 @@ export const MentionMenu = memo(
               })
               menuElement.dispatchEvent(keyEvent)
             }
+
+            if (event.key === "ArrowDown") {
+              setActiveIndex((prev) => (prev + 1) % suggestions.length)
+            } else if (event.key === "ArrowUp") {
+              setActiveIndex((prev) => (prev === 0 ? suggestions.length - 1 : prev - 1))
+            }
             return true
           }
 
           return false
         },
       }),
-      [isOpen, suggestions.length],
+      [isOpen, suggestions.length, instanceId],
     )
 
     return loading || disabled ? null : (
@@ -103,6 +117,7 @@ export const MentionMenu = memo(
         autoSelection={true}
         value=""
         onChange={() => {}}
+        portalId={`mention-menu-portal-${instanceId}`}
         root={root}
         focusManagerProps={FOCUS_MANAGER_PROPS}
       >
@@ -115,7 +130,7 @@ export const MentionMenu = memo(
                 prefixElement={item.prefix}
               >
                 {renderSuggestion ? (
-                  renderSuggestion(item, false)
+                  renderSuggestion(item, index === activeIndex)
                 ) : (
                   <Combobox.Value>{item.label}</Combobox.Value>
                 )}

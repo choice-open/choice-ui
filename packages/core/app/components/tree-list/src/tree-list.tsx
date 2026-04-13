@@ -33,7 +33,7 @@ const DEFAULT_NODE_HEIGHT = 32
 export const TreeList = React.forwardRef<TreeListHandle, TreeListProps>((props, ref) => {
   const {
     data,
-    selectedNodeIds,
+    selectedNodeIds: selectedNodeIdsProp,
     initialExpandedNodeIds,
     className,
     style,
@@ -57,6 +57,8 @@ export const TreeList = React.forwardRef<TreeListHandle, TreeListProps>((props, 
     onMouseDown,
     showFullPathOnRename,
   } = props
+
+  const selectedNodeIds = selectedNodeIdsProp ?? new Set<string>()
 
   // 跟踪节点最大宽度的状态
   const [maxNodeWidth, setMaxNodeWidth] = useState<number>(0)

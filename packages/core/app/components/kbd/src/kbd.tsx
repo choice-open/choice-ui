@@ -39,6 +39,7 @@ export const Kbd = (props: KbdProps) => {
   return (
     <kbd
       {...rest}
+      role="text"
       className={tcx(tv.base(), className)}
       aria-label={ariaLabel}
     >

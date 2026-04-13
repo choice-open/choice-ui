@@ -1,10 +1,56 @@
 import { expect, vi } from "vitest"
 import * as matchers from "@testing-library/jest-dom/matchers"
 
-// 扩展 Vitest 的断言功能
 expect.extend(matchers)
 
-// 模拟 window.matchMedia
+// Polyfill InputEvent.getTargetRanges for Slate (jsdom doesn't implement it)
+if (
+  typeof globalThis.InputEvent !== "undefined" &&
+  !(globalThis.InputEvent as any).prototype.getTargetRanges
+) {
+  ;(globalThis.InputEvent as any).prototype.getTargetRanges = function () {
+    return []
+  }
+}
+
+// Polyfill HTMLElement.isContentEditable for Slate (jsdom doesn't implement it)
+if (typeof HTMLElement !== "undefined" && !("isContentEditable" in HTMLElement.prototype)) {
+  Object.defineProperty(HTMLElement.prototype, "isContentEditable", {
+    get() {
+      const attr = this.getAttribute("contenteditable")
+      if (attr === "true" || attr === "") return true
+      if (attr === "false") return false
+      const parent = this.parentElement as HTMLElement | null
+      return parent ? parent.isContentEditable : false
+    },
+    configurable: true,
+  })
+}
+
+// Polyfill: fire 'input' event after 'beforeinput' on contenteditable elements.
+// In a real browser, after beforeinput the browser performs text insertion natively
+// and then fires the 'input' event. jsdom doesn't do native contenteditable insertion,
+// so 'input' events never fire. Slate flushes deferred text insertions in its onInput
+// handler, so without this polyfill only the first character gets inserted.
+document.addEventListener("beforeinput", (e) => {
+  const target = e.target as HTMLElement | null
+  if (target && target.isContentEditable) {
+    const ie = e as InputEvent
+    const inputType = ie.inputType
+    const data = ie.data
+    setTimeout(() => {
+      target.dispatchEvent(
+        new InputEvent("input", {
+          inputType,
+          data,
+          bubbles: true,
+          composed: true,
+        }),
+      )
+    }, 0)
+  }
+})
+
 Object.defineProperty(window, "matchMedia", {
   writable: true,
   value: vi.fn().mockImplementation((query) => ({
@@ -19,7 +65,12 @@ Object.defineProperty(window, "matchMedia", {
   })),
 })
 
-// 自定义匹配器：检查下拉菜单选项
+globalThis.ResizeObserver = class ResizeObserver {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+} as any
+
 expect.extend({
   toBeRenderedWithOptions(element, options) {
     if (!element) {
@@ -31,7 +82,6 @@ expect.extend({
 
     const container = element.parentElement
     const menuItems = container?.querySelectorAll('[role="menuitem"]') || []
-    // Convert NodeList to array and extract text content
     const menuItemTexts: (string | null)[] = []
     menuItems.forEach((item) => menuItemTexts.push(item.textContent))
 

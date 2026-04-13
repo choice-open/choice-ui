@@ -31,6 +31,13 @@ import { CommandInput } from "../components/command-input"
 import { CommandItem } from "../components/command-item"
 import { CommandList } from "../components/command-list"
 
+class ResizeObserverMock {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+}
+global.ResizeObserver = ResizeObserverMock as typeof ResizeObserver
+
 const Command = Object.assign(CommandRoot, {
   Group: CommandGroup,
   Input: CommandInput,

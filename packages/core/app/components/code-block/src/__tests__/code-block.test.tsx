@@ -91,13 +91,13 @@ describe("CodeBlock bugs", () => {
 
   describe("BUG 2: copy must extract code from fragment-wrapped content", () => {
     it("copies actual code text when Content is wrapped in a React fragment", async () => {
+      const user = userEvent.setup()
+
       const writeTextSpy = vi.fn().mockResolvedValue(undefined)
       Object.defineProperty(navigator, "clipboard", {
         value: { writeText: writeTextSpy },
         configurable: true,
       })
-
-      const user = userEvent.setup()
 
       render(
         <CodeBlock language="tsx">
@@ -133,13 +133,13 @@ describe("CodeBlock bugs", () => {
 
   describe("BUG 3: extractCodeFromChildren must handle string array children", () => {
     it("extracts concatenated text when children is an array of strings", async () => {
+      const user = userEvent.setup()
+
       const writeTextSpy = vi.fn().mockResolvedValue(undefined)
       Object.defineProperty(navigator, "clipboard", {
         value: { writeText: writeTextSpy },
         configurable: true,
       })
-
-      const user = userEvent.setup()
 
       render(
         <CodeBlock language="tsx">
