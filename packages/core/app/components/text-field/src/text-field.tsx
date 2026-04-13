@@ -109,7 +109,6 @@ const TextFieldBase = forwardRef<HTMLInputElement, TextFieldProps>((props, ref) 
           htmlFor: uuid,
         })}
       <TextFieldContent
-        className={className}
         prefixNode={prefixNode}
         suffixNode={suffixNode}
         tv={tv}

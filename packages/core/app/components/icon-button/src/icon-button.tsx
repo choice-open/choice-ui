@@ -56,9 +56,13 @@ export const IconButton = forwardRef<HTMLElement, IconButtonProps>(function Icon
     <As
       {...rest}
       ref={ref}
-      type={(rest.type as "button" | "submit" | "reset" | undefined) || "button"}
+      type={
+        !asChild ? (rest.type as "button" | "submit" | "reset" | undefined) || "button" : undefined
+      }
       className={tcx(tv.button(), className)}
       disabled={disabled || loading}
+      aria-disabled={disabled || loading || undefined}
+      aria-busy={loading || undefined}
       onClick={handleClick}
     >
       {loading ? <LoaderCircle className="animate-spin" /> : children}

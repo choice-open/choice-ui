@@ -59,7 +59,7 @@ describe("Switch bugs", () => {
         </Switch>,
       )
 
-      const input = screen.getByRole("checkbox")
+      const input = screen.getByRole("switch")
       expect(input).toHaveAttribute("aria-label", "42")
     })
   })

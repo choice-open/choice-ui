@@ -38,7 +38,7 @@ const TitleContent = memo(function TitleContent({
       onClick={onClick}
       className={tcx(tv.title(), titleClassName)}
     >
-      <span aria-hidden="true">{title}</span>
+      {title}
     </button>
   ) : (
     <span className={tcx(tv.title(), titleClassName)}>{title}</span>
@@ -90,7 +90,12 @@ export const PanelTitle = forwardRef<HTMLDivElement, PanelTitleProps>(
           </div>
 
           {children && (
-            <div className={tcx(tv.actionWrapper(), classNames?.actionWrapper)}>{children}</div>
+            <div
+              className={tcx(tv.actionWrapper(), classNames?.actionWrapper)}
+              onMouseDown={(e) => e.stopPropagation()}
+            >
+              {children}
+            </div>
           )}
         </div>
       </div>

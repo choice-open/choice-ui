@@ -156,14 +156,20 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
     onOpenChange,
     triggerRef,
     triggerSelector,
-    focusManagerProps = {
-      returnFocus: false,
-      modal: position ? false : true,
-      ...(position && { disabled: true }), // Disable focus management in coordinate mode
-    },
+    focusManagerProps: userFocusManagerProps,
     root,
     variant = "default",
   } = props
+
+  const focusManagerProps = useMemo(
+    () => ({
+      returnFocus: false,
+      modal: position ? false : true,
+      ...(position && { disabled: true }),
+      ...userFocusManagerProps,
+    }),
+    [position, userFocusManagerProps],
+  )
 
   // Whether using external trigger (triggerRef or triggerSelector)
   const hasExternalTrigger = Boolean(triggerRef || triggerSelector)
@@ -322,7 +328,14 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
     if (isCoordinateMode && isControlledOpen && activeIndex === null && !isMouseOverMenu) {
       handleSetActiveIndex(autoSelectFirstItem ? 0 : null)
     }
-  }, [isCoordinateMode, isControlledOpen, activeIndex, isMouseOverMenu, autoSelectFirstItem, handleSetActiveIndex])
+  }, [
+    isCoordinateMode,
+    isControlledOpen,
+    activeIndex,
+    isMouseOverMenu,
+    autoSelectFirstItem,
+    handleSetActiveIndex,
+  ])
 
   // Reset activeIndex when menu closes in coordinate mode
   useEffect(() => {
@@ -330,6 +343,14 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
       handleSetActiveIndex(null)
     }
   }, [isCoordinateMode, isControlledOpen, handleSetActiveIndex])
+
+  useEffect(() => {
+    if (!isControlledOpen) {
+      setHasFocusInside(false)
+      setIsMouseOverMenu(false)
+      setTouch(false)
+    }
+  }, [isControlledOpen])
 
   // Store current open state in ref to avoid useEffect dependency on isControlledOpen
   const isOpenRef = useRef(isControlledOpen)
@@ -393,7 +414,7 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
     activeIndex,
     nested: isNested,
     onNavigate: handleNavigate,
-    loop: true,
+    loop: false,
     enabled: !disableKeyboardNavigation,
   })
 
@@ -459,8 +480,18 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
     }
   })
 
+  const handleFloatingKeyDownCapture = useEventCallback((e: React.KeyboardEvent) => {
+    if (disableKeyboardNavigation) {
+      if (e.key === "Enter" || e.key === "ArrowRight" || e.key.startsWith("Arrow")) {
+        e.preventDefault()
+        e.stopPropagation()
+      }
+    }
+  })
+
   // Handle keyboard events - for triggering SubTrigger to open submenu
   const handleFloatingKeyDown = useEventCallback((e: React.KeyboardEvent) => {
+    if (disableKeyboardNavigation) return
     if (activeIndex !== null && (e.key === "Enter" || e.key === "ArrowRight")) {
       const activeElement = elementsRef.current[activeIndex]
       if (activeElement) {
@@ -534,7 +565,16 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
       close: handleClose,
       variant,
     }),
-    [activeIndex, getItemProps, handleClose, handleSetActiveIndex, isControlledOpen, readOnly, selection, variant],
+    [
+      activeIndex,
+      getItemProps,
+      handleClose,
+      handleSetActiveIndex,
+      isControlledOpen,
+      readOnly,
+      selection,
+      variant,
+    ],
   )
 
   // Cache Slot props to avoid unnecessary re-renders
@@ -623,6 +663,7 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
                   onPointerMove={handlePointerMove}
                   onMouseEnter={handleMouseEnterMenu}
                   onMouseLeave={handleMouseLeaveMenu}
+                  onKeyDownCapture={handleFloatingKeyDownCapture}
                   {...getFloatingProps({
                     onContextMenu(e: React.MouseEvent) {
                       e.preventDefault()
@@ -636,6 +677,7 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
                         ref: scrollRef,
                         matchTriggerWidth: matchTriggerWidth,
                         variant,
+                        role: "presentation",
                         ...scrollProps,
                       })}
                   </MenuContext.Provider>

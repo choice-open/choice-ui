@@ -33,13 +33,23 @@ export const Label = memo(function Label(props: LabelProps) {
 
   const Component = as || "label"
 
+  const { htmlFor, ...restFiltered } = rest as typeof rest & { htmlFor?: string }
+  const finalProps = as === "legend" ? restFiltered : rest
+
   return (
     <Component
       className={tv.root({ className })}
-      {...rest}
+      {...finalProps}
     >
       {children && <span className={tv.content()}>{children}</span>}
-      {required && <span className={tv.required()}>*</span>}
+      {required && (
+        <span
+          aria-label="required"
+          className={tv.required()}
+        >
+          *
+        </span>
+      )}
       {description && <span className={tv.description()}>{description}</span>}
       {action && <span className={tv.action()}>{action}</span>}
     </Component>

@@ -56,7 +56,7 @@ export const MenuItem = memo(
         {...rest}
         ref={ref}
         type="button"
-        role="menuitem"
+        role={rest.role ?? "menuitem"}
         className={tcx(tv.root(), className)}
         tabIndex={active ? 0 : -1}
         disabled={disabled}

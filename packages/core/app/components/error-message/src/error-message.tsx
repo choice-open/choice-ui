@@ -10,13 +10,13 @@ export const ErrorMessage = memo(function ErrorMessage(props: ErrorMessageProps)
   const { children, className, disabled, ...rest } = props
 
   return (
-    <em
+    <p
       className={errorMessageTv({ disabled, className })}
       slot="errorMessage"
-      role="alert"
       {...rest}
+      role="alert"
     >
       {children}
-    </em>
+    </p>
   )
 })

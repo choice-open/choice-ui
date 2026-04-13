@@ -59,12 +59,12 @@ export const LinkButton = forwardRef<HTMLAnchorElement | HTMLButtonElement, Link
     const tv = linkButtonTv({ variant, disabled })
 
     // If href exists, render as link
-    if ("href" in props && props.href) {
+    if ("href" in props) {
       const { href, target, rel, ...anchorProps } =
         rest as React.AnchorHTMLAttributes<HTMLAnchorElement> & { href: string }
 
       // Security handling: external links automatically add safe attributes
-      const isExternal = href.startsWith("http") || href.startsWith("//")
+      const isExternal = href.toLowerCase().startsWith("http") || href.startsWith("//")
       const safeRel = isExternal
         ? rel
           ? `${rel} noopener noreferrer`
@@ -73,14 +73,16 @@ export const LinkButton = forwardRef<HTMLAnchorElement | HTMLButtonElement, Link
       const safeTarget = isExternal && !target ? "_blank" : target
 
       // Prevent onClick event when in readOnly mode
-      const handleClick = readOnly
-        ? undefined
-        : (onClick as React.MouseEventHandler<HTMLAnchorElement> | undefined)
+      const handleClick =
+        readOnly || disabled
+          ? undefined
+          : (onClick as React.MouseEventHandler<HTMLAnchorElement> | undefined)
 
       return (
         <a
           ref={ref as React.ForwardedRef<HTMLAnchorElement>}
-          href={disabled || readOnly ? undefined : href}
+          href={readOnly ? undefined : href || undefined}
+          role={!href ? "link" : undefined}
           target={safeTarget}
           rel={safeRel}
           className={tcx(tv, className)}

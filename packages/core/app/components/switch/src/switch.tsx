@@ -114,19 +114,24 @@ const SwitchBase = forwardRef<HTMLInputElement, SwitchProps>(function Switch(pro
       className={tcx(tv.root(), className)}
       htmlFor={props.id || internalId}
     >
-      <span className="sr-only">{value ? "Enabled" : "Disabled"}</span>
       <input
         ref={ref}
         className={tv.input()}
         type="checkbox"
+        role="switch"
         id={props.id || internalId}
         checked={value}
-        disabled={disabled || readOnly}
+        disabled={disabled}
         onChange={(e) => {
           if (readOnly) return
           onChange(e.target.checked)
         }}
-        aria-label={ariaLabel || (typeof children === "string" ? children : label?.toString())}
+        aria-label={
+          ariaLabel ||
+          (typeof children === "string" || typeof children === "number"
+            ? String(children)
+            : label?.toString())
+        }
         aria-describedby={ariaDescribedby || (hasLabel ? descriptionId : undefined)}
         aria-checked={value}
         aria-disabled={disabled || readOnly}
