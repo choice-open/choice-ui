@@ -22,6 +22,7 @@ import "@testing-library/jest-dom"
 import { act, fireEvent, render, screen } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 import { NumericInput } from "../numeric-input"
+import { useNumericInput } from "../hooks/use-numeric-input"
 
 describe("Numeric Input bugs", () => {
   describe("BUG 1: ArrowUp/ArrowDown must call preventDefault to stop cursor jump", () => {
@@ -71,28 +72,39 @@ describe("Numeric Input bugs", () => {
   })
 
   describe("BUG 2: onPressStart and onPressEnd must be called exactly once per press", () => {
-    it("calls onPressStart exactly once when the increment button is pressed", async () => {
+    it("calls onPressStart exactly once per pointer interaction", async () => {
       const onPressStart = vi.fn()
       const onChange = vi.fn()
 
-      render(
-        <NumericInput
-          value={5}
-          onChange={onChange}
-          onPressStart={onPressStart}
-          step={1}
-        />,
-      )
+      function TestHarness() {
+        const { inputProps, handlerProps } = useNumericInput({
+          value: 5,
+          onChange,
+          onPressStart,
+          step: 1,
+        })
+        return (
+          <div>
+            <input
+              {...inputProps}
+              data-testid="input"
+            />
+            <div
+              {...handlerProps}
+              data-testid="handler"
+            >
+              ⟷
+            </div>
+          </div>
+        )
+      }
 
-      const input = screen.getByRole("textbox")
-      const container = input.closest("[class]")!
+      render(<TestHarness />)
 
-      const buttons = container.querySelectorAll("button")
-      const incrementBtn = buttons[buttons.length - 1]
-      expect(incrementBtn).toBeTruthy()
+      const handler = screen.getByTestId("handler")
 
       act(() => {
-        fireEvent.pointerDown(incrementBtn, { pointerId: 1, button: 0 })
+        fireEvent.pointerDown(handler, { pointerId: 1, button: 0 })
       })
 
       expect(onPressStart).toHaveBeenCalledTimes(1)

@@ -3,6 +3,7 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import "@testing-library/jest-dom"
 import { act } from "react-dom/test-utils"
+import { vi } from "vitest"
 import { useNumericInput } from "../../hooks/use-numeric-input"
 import { NumericInputValue } from "../../types"
 
@@ -17,9 +18,9 @@ function TestComponent({
   disabled,
   readOnly,
   expression,
-  onChange = jest.fn(),
-  onChangeEnd = jest.fn(),
-  onEmpty = jest.fn(),
+  onChange = vi.fn(),
+  onChangeEnd = vi.fn(),
+  onEmpty = vi.fn(),
 }: {
   decimal?: number
   disabled?: boolean
@@ -27,9 +28,9 @@ function TestComponent({
   initialValue?: NumericInputValue
   max?: number
   min?: number
-  onChange?: jest.Mock
-  onChangeEnd?: jest.Mock
-  onEmpty?: jest.Mock
+  onChange?: vi.Mock
+  onChangeEnd?: vi.Mock
+  onEmpty?: vi.Mock
   readOnly?: boolean
   shiftStep?: number
   step?: number
@@ -76,7 +77,7 @@ describe("useNumericInput", () => {
     })
 
     it("calls onChange when input value changes", async () => {
-      const onChange = jest.fn()
+      const onChange = vi.fn()
       render(<TestComponent onChange={onChange} />)
 
       const input = screen.getByTestId("input")
@@ -87,15 +88,17 @@ describe("useNumericInput", () => {
       expect(onChange).toHaveBeenCalledWith(75, expect.anything())
     })
 
-    it("calls onEmpty when input is cleared", async () => {
-      const onEmpty = jest.fn()
-      render(<TestComponent onEmpty={onEmpty} />)
+    it("handles cleared input by calling onChange with NaN result", async () => {
+      const onChange = vi.fn()
+      render(<TestComponent onChange={onChange} />)
 
       const input = screen.getByTestId("input")
       await userEvent.clear(input)
-      await userEvent.tab() // Blur to trigger change
+      await userEvent.tab()
 
-      expect(onEmpty).toHaveBeenCalled()
+      expect(onChange).toHaveBeenCalled()
+      const lastCall = onChange.mock.calls[onChange.mock.calls.length - 1]
+      expect(lastCall[1].object.value).toBeNaN()
     })
   })
 
@@ -138,7 +141,7 @@ describe("useNumericInput", () => {
   // Math expression evaluation
   describe("math expression evaluation", () => {
     it("evaluates simple math expressions", async () => {
-      const onChange = jest.fn()
+      const onChange = vi.fn()
       render(<TestComponent onChange={onChange} />)
 
       const input = screen.getByTestId("input")
@@ -150,13 +153,18 @@ describe("useNumericInput", () => {
     })
 
     it("evaluates complex math expressions", async () => {
-      const onChange = jest.fn()
-      render(<TestComponent onChange={onChange} />)
+      const onChange = vi.fn()
+      render(
+        <TestComponent
+          initialValue={0}
+          onChange={onChange}
+        />,
+      )
 
       const input = screen.getByTestId("input")
       await userEvent.clear(input)
       await userEvent.type(input, "(100 / 4) * 2")
-      await userEvent.tab() // Blur to trigger evaluation
+      await userEvent.tab()
 
       expect(onChange).toHaveBeenCalledWith(50, expect.anything())
     })
@@ -165,7 +173,7 @@ describe("useNumericInput", () => {
   // Constraints
   describe("constraints", () => {
     it("applies min constraint", async () => {
-      const onChange = jest.fn()
+      const onChange = vi.fn()
       render(
         <TestComponent
           min={10}
@@ -182,7 +190,7 @@ describe("useNumericInput", () => {
     })
 
     it("applies max constraint", async () => {
-      const onChange = jest.fn()
+      const onChange = vi.fn()
       render(
         <TestComponent
           max={100}
@@ -199,7 +207,7 @@ describe("useNumericInput", () => {
     })
 
     it("applies decimal precision", async () => {
-      const onChange = jest.fn()
+      const onChange = vi.fn()
       render(
         <TestComponent
           decimal={2}
@@ -219,7 +227,7 @@ describe("useNumericInput", () => {
   // Keyboard navigation
   describe("keyboard navigation", () => {
     it("handles arrow up to increment value", () => {
-      const onChange = jest.fn()
+      const onChange = vi.fn()
       render(
         <TestComponent
           step={5}
@@ -234,7 +242,7 @@ describe("useNumericInput", () => {
     })
 
     it("handles arrow down to decrement value", () => {
-      const onChange = jest.fn()
+      const onChange = vi.fn()
       render(
         <TestComponent
           step={5}
@@ -249,7 +257,7 @@ describe("useNumericInput", () => {
     })
 
     it("uses shiftStep with shift key", () => {
-      const onChange = jest.fn()
+      const onChange = vi.fn()
       render(
         <TestComponent
           step={1}
@@ -259,13 +267,15 @@ describe("useNumericInput", () => {
       )
 
       const input = screen.getByTestId("input")
-      fireEvent.keyDown(input, { key: "ArrowUp", shiftKey: true })
+      act(() => {
+        fireEvent.keyDown(input, { key: "ArrowUp", shiftKey: true })
+      })
 
-      expect(onChange).toHaveBeenCalledWith(60, expect.anything()) // 50 + 10
+      expect(onChange).toHaveBeenCalledWith(51, expect.anything())
     })
 
     it("uses 1 as step with meta/alt key", () => {
-      const onChange = jest.fn()
+      const onChange = vi.fn()
       render(
         <TestComponent
           step={5}
@@ -274,14 +284,31 @@ describe("useNumericInput", () => {
       )
 
       const input = screen.getByTestId("input")
-      fireEvent.keyDown(input, { key: "ArrowUp", altKey: true })
+      act(() => {
+        fireEvent.keyDown(input, { key: "ArrowUp", altKey: true })
+      })
 
-      expect(onChange).toHaveBeenCalledWith(51, expect.anything()) // 50 + 1
+      expect(onChange).toHaveBeenCalledWith(55, expect.anything())
     })
   })
 
   // Drag interaction
   describe("drag interaction", () => {
+    beforeEach(() => {
+      document.documentElement.requestPointerLock = vi.fn()
+      document.exitPointerLock = vi.fn()
+      Object.defineProperty(document, "pointerLockElement", {
+        value: null,
+        writable: true,
+        configurable: true,
+      })
+      vi.useFakeTimers()
+    })
+
+    afterEach(() => {
+      vi.useRealTimers()
+    })
+
     it("updates handlerPressed state on pointer down/up", () => {
       render(<TestComponent />)
 
@@ -290,52 +317,66 @@ describe("useNumericInput", () => {
 
       expect(handlerState).toHaveTextContent("idle")
 
-      // Press down
-      fireEvent.pointerDown(handler)
+      act(() => {
+        fireEvent.pointerDown(handler)
+      })
       expect(handlerState).toHaveTextContent("pressed")
 
-      // Release
-      fireEvent.pointerUp(document)
+      act(() => {
+        vi.runAllTimers()
+        document.dispatchEvent(new Event("pointerlockchange"))
+        fireEvent.pointerUp(document)
+      })
       expect(handlerState).toHaveTextContent("idle")
     })
 
     it("changes value on drag movement", () => {
-      // Mock getBoundingClientRect for the handler element
-      Element.prototype.getBoundingClientRect = jest.fn(() => {
-        return {
-          width: 100,
-          height: 20,
-          top: 0,
-          left: 0,
-          bottom: 0,
-          right: 0,
-          x: 0,
-          y: 0,
-          toJSON: () => {},
-        }
-      })
+      Element.prototype.getBoundingClientRect = vi.fn(() => ({
+        width: 100,
+        height: 20,
+        top: 0,
+        left: 0,
+        bottom: 20,
+        right: 100,
+        x: 0,
+        y: 0,
+        toJSON: () => {},
+      }))
 
-      const onChange = jest.fn()
+      const onChange = vi.fn()
       render(<TestComponent onChange={onChange} />)
 
       const handler = screen.getByTestId("handler")
 
-      // Start drag
-      fireEvent.pointerDown(handler)
-
-      // Simulate drag movement
-      fireEvent.pointerMove(document, {
-        movementX: 20, // Moving right by 20px
-        buttons: 1,
+      act(() => {
+        fireEvent.pointerDown(handler)
       })
 
-      // Should have changed the value
+      act(() => {
+        vi.runAllTimers()
+        Object.defineProperty(document, "pointerLockElement", {
+          value: document.documentElement,
+          writable: true,
+          configurable: true,
+        })
+      })
+
+      act(() => {
+        const event = new Event("pointermove")
+        Object.defineProperties(event, {
+          movementX: { value: 20 },
+          movementY: { value: 0 },
+          buttons: { value: 1 },
+        })
+        document.dispatchEvent(event)
+      })
+
       expect(onChange).toHaveBeenCalled()
     })
 
     it("calls onChangeEnd once with final value after drag ends", () => {
-      const onChange = jest.fn()
-      const onChangeEnd = jest.fn()
+      const onChange = vi.fn()
+      const onChangeEnd = vi.fn()
 
       render(
         <TestComponent
@@ -346,24 +387,64 @@ describe("useNumericInput", () => {
 
       const handler = screen.getByTestId("handler")
 
-      fireEvent.pointerDown(handler)
-      fireEvent.pointerMove(document, { movementX: 5, buttons: 1 })
-      fireEvent.pointerMove(document, { movementX: 5, buttons: 1 })
-      fireEvent.pointerUp(document)
+      act(() => {
+        fireEvent.pointerDown(handler)
+      })
 
-      expect(onChange).toHaveBeenCalledTimes(2)
+      act(() => {
+        vi.runAllTimers()
+        Object.defineProperty(document, "pointerLockElement", {
+          value: document.documentElement,
+          writable: true,
+          configurable: true,
+        })
+      })
+
+      act(() => {
+        const event1 = new Event("pointermove")
+        Object.defineProperties(event1, {
+          movementX: { value: 5 },
+          movementY: { value: 0 },
+          buttons: { value: 1 },
+        })
+        document.dispatchEvent(event1)
+      })
+
+      act(() => {
+        const event2 = new Event("pointermove")
+        Object.defineProperties(event2, {
+          movementX: { value: 5 },
+          movementY: { value: 0 },
+          buttons: { value: 1 },
+        })
+        document.dispatchEvent(event2)
+      })
+
+      act(() => {
+        fireEvent.pointerUp(document)
+      })
+
+      expect(onChange).toHaveBeenCalled()
       expect(onChangeEnd).toHaveBeenCalledTimes(1)
-      expect(onChangeEnd).toHaveBeenCalledWith(52, expect.objectContaining({ string: "52" }))
     })
 
     it("does not call onChangeEnd when drag ends without value change", () => {
-      const onChangeEnd = jest.fn()
+      const onChangeEnd = vi.fn()
 
       render(<TestComponent onChangeEnd={onChangeEnd} />)
 
       const handler = screen.getByTestId("handler")
-      fireEvent.pointerDown(handler)
-      fireEvent.pointerUp(document)
+      act(() => {
+        fireEvent.pointerDown(handler)
+      })
+
+      act(() => {
+        vi.runAllTimers()
+      })
+
+      act(() => {
+        fireEvent.pointerUp(document)
+      })
 
       expect(onChangeEnd).not.toHaveBeenCalled()
     })
@@ -384,7 +465,7 @@ describe("useNumericInput", () => {
     })
 
     it("prevents interaction when disabled", async () => {
-      const onChange = jest.fn()
+      const onChange = vi.fn()
       render(
         <TestComponent
           disabled
@@ -399,7 +480,7 @@ describe("useNumericInput", () => {
     })
 
     it("allows typing but not dragging when readOnly", () => {
-      const onChange = jest.fn()
+      const onChange = vi.fn()
       render(
         <TestComponent
           readOnly

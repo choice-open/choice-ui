@@ -18,7 +18,7 @@
 import "@testing-library/jest-dom"
 import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
-import { describe, expect, it, vi } from "vitest"
+import { beforeAll, describe, expect, it, vi } from "vitest"
 
 window.IntersectionObserver = vi.fn().mockImplementation(() => ({
   observe: () => null,
@@ -31,6 +31,55 @@ window.ResizeObserver = vi.fn().mockImplementation(() => ({
   disconnect: () => null,
 }))
 
+function createFileList(files: File[]): FileList {
+  const fileList = Object.create(FileList.prototype) as FileList
+  for (let i = 0; i < files.length; i++) {
+    Object.defineProperty(fileList, i, { value: files[i], enumerable: true, configurable: true })
+  }
+  Object.defineProperty(fileList, "length", {
+    value: files.length,
+    enumerable: true,
+    configurable: true,
+  })
+  Object.defineProperty(fileList, Symbol.iterator, {
+    value: function* () {
+      for (let i = 0; i < files.length; i++) yield files[i]
+    },
+    configurable: true,
+  })
+  return fileList
+}
+
+beforeAll(() => {
+  if (typeof DataTransfer === "undefined") {
+    ;(globalThis as any).DataTransfer = class MockDataTransfer {
+      private _files: File[] = []
+
+      get files(): FileList {
+        return createFileList(this._files)
+      }
+
+      get items() {
+        const self = this
+        return {
+          add(data: File | string, _type?: string) {
+            if (data instanceof File) {
+              self._files.push(data)
+            }
+          },
+          get length() {
+            return self._files.length
+          },
+        }
+      }
+
+      get types() {
+        return this._files.length > 0 ? ["Files"] : []
+      }
+    }
+  }
+})
+
 describe("File Upload bugs", () => {
   describe("BUG 2: onValueChange must be called exactly once per file addition", () => {
     it("calls onValueChange once when a file is selected in controlled mode", async () => {
@@ -38,7 +87,7 @@ describe("File Upload bugs", () => {
       const onValueChange = vi.fn()
       const user = userEvent.setup()
 
-      render(
+      const { container } = render(
         <FileUpload
           value={[]}
           onValueChange={onValueChange}
@@ -51,10 +100,7 @@ describe("File Upload bugs", () => {
       )
 
       const file = new File(["hello"], "hello.png", { type: "image/png" })
-      const input = screen
-        .getByRole("button", { name: "Upload" })
-        .closest("label")
-        ?.querySelector("input[type=file]") as HTMLInputElement
+      const input = container.querySelector('input[type="file"]') as HTMLInputElement
 
       expect(input).toBeTruthy()
       await user.upload(input, file)
@@ -83,10 +129,6 @@ describe("File Upload bugs", () => {
       const dropzone = screen.getByTestId("dropzone")
       const file = new File(["data"], "PHOTO.JPG", { type: "image/jpeg" })
 
-      // Build a DataTransfer-shaped mock that the dropzone's onDrop handler
-      // can read via `event.dataTransfer.files`. The dropzone then forwards
-      // the files through the hidden input's change event, which is where the
-      // extension-matching logic actually runs inside FileUpload.
       const dataTransfer = {
         files: [file],
         items: [
@@ -101,10 +143,6 @@ describe("File Upload bugs", () => {
 
       fireEvent.drop(dropzone, { dataTransfer })
 
-      // With the bug, ".jpg" is compared against ".JPG" with strict equality
-      // and the file is rejected as "File type not accepted". A correct fix
-      // (lowercase compare) accepts it — so onFileAccept fires and
-      // onFileReject is never called with the type-rejection message.
       await waitFor(() => {
         expect(onFileAccept).toHaveBeenCalledWith(file)
       })

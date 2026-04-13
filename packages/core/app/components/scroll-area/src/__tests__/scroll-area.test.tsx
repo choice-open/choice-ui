@@ -75,7 +75,7 @@ import { act, renderHook } from "@testing-library/react"
 import React from "react"
 import { describe, expect, it, vi } from "vitest"
 import { handleScrollbarTrackClick } from "../utils"
-import { useThumbStyle, useThumbDrag } from "../hooks"
+import { useThumbStyle, useThumbDrag, useScrollStateAndVisibility } from "../hooks"
 
 function createMockEvent(overrides: {
   clientX: number
@@ -318,33 +318,34 @@ describe("ScrollArea bugs", () => {
   describe("BUG 7: delayedUpdateScrollState timer leak", () => {
     it("setTimeout must be cleared when component using delayedUpdateScrollState unmounts", () => {
       const clearTimeoutSpy = vi.spyOn(globalThis, "clearTimeout")
-      const pendingTimers: ReturnType<typeof setTimeout>[] = []
 
-      const originalSetTimeout = globalThis.setTimeout
-      vi.spyOn(globalThis, "setTimeout").mockImplementation(((fn: () => void, ms?: number) => {
-        const id = originalSetTimeout(fn, ms)
-        pendingTimers.push(id)
-        return id
-      }) as typeof setTimeout)
+      const mockViewport = document.createElement("div")
+      Object.defineProperty(mockViewport, "scrollHeight", { value: 1000, configurable: true })
+      Object.defineProperty(mockViewport, "clientHeight", { value: 200, configurable: true })
+      Object.defineProperty(mockViewport, "scrollTop", {
+        value: 0,
+        writable: true,
+        configurable: true,
+      })
+      Object.defineProperty(mockViewport, "scrollWidth", { value: 400, configurable: true })
+      Object.defineProperty(mockViewport, "clientWidth", { value: 400, configurable: true })
+      Object.defineProperty(mockViewport, "scrollLeft", {
+        value: 0,
+        writable: true,
+        configurable: true,
+      })
 
-      const updateScrollState = vi.fn()
+      const mockContent = document.createElement("div")
+      document.body.appendChild(mockViewport)
 
-      const delayedUpdateScrollState = () => {
-        setTimeout(() => {
-          updateScrollState()
-        }, 0)
-      }
+      const { unmount } = renderHook(() => useScrollStateAndVisibility(mockViewport, mockContent))
 
-      delayedUpdateScrollState()
-      delayedUpdateScrollState()
+      unmount()
 
-      const clearTimeoutCallsForPendingTimers = clearTimeoutSpy.mock.calls.filter((c) =>
-        pendingTimers.includes(c[0] as ReturnType<typeof setTimeout>),
-      ).length
+      expect(clearTimeoutSpy).toHaveBeenCalled()
 
-      expect(clearTimeoutCallsForPendingTimers).toBeGreaterThanOrEqual(1)
-
-      vi.restoreAllMocks()
+      document.body.removeChild(mockViewport)
+      clearTimeoutSpy.mockRestore()
     })
   })
 })

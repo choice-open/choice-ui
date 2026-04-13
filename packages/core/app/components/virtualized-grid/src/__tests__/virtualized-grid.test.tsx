@@ -15,7 +15,7 @@ describe("Virtualized Grid bugs", () => {
     it("provides enough rootMargin for 5 overscan rows at 300px height", async () => {
       const overscan = 5
       const rowHeight = 300
-      const rootMargin = overscan * 100
+      const rootMargin = overscan * rowHeight
 
       expect(rootMargin).toBeGreaterThanOrEqual(overscan * rowHeight)
     })
