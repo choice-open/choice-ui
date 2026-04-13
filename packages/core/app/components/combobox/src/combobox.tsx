@@ -208,7 +208,7 @@ const ComboboxComponent = memo(function ComboboxComponent(props: ComboboxProps) 
     if (controlledOpen === undefined) {
       setIsOpen(!isOpen)
     }
-    onOpenChange?.(true, "click")
+    onOpenChange?.(!isControlledOpen, "click")
   })
 
   // DOM event handlers
@@ -223,6 +223,9 @@ const ComboboxComponent = memo(function ComboboxComponent(props: ComboboxProps) 
     const activeIndex = autoSelection ? 0 : null
     // Show menu on focus if there's a value
     if (inputValue.trim()) {
+      if (controlledOpen === undefined) {
+        setIsOpen(true)
+      }
       onOpenChange?.(true, "focus")
       setActiveIndex(activeIndex)
     }

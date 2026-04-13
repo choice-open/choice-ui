@@ -47,7 +47,12 @@ describe("Context Menu bugs", () => {
           </ContextMenu.Trigger>
           <ContextMenu.Content>
             <ContextMenu.Item>Regular Item</ContextMenu.Item>
-            <ContextMenu.SubTrigger>Open Submenu</ContextMenu.SubTrigger>
+            <ContextMenu>
+              <ContextMenu.SubTrigger>Open Submenu</ContextMenu.SubTrigger>
+              <ContextMenu.Content>
+                <ContextMenu.Item>Sub Item</ContextMenu.Item>
+              </ContextMenu.Content>
+            </ContextMenu>
           </ContextMenu.Content>
         </ContextMenu>,
       )

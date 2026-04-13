@@ -80,7 +80,10 @@ describe("MultiSelect bugs", () => {
         </MultiSelect>,
       )
 
-      expect(screen.getByRole("combobox")).toHaveAttribute("aria-expanded", "true")
+      expect(screen.getByRole("combobox", { hidden: true })).toHaveAttribute(
+        "aria-expanded",
+        "true",
+      )
     })
   })
 

@@ -262,8 +262,8 @@ const SelectComponent = memo(function SelectComponent(props: SelectProps) {
   // Determine current selected index
   const currentSelectedIndex = useMemo(() => {
     if (value === undefined) return selectedIndex
+    if (value === null) return -1
 
-    // Find index in selectable options
     const index = selectableOptions.findIndex((option) => option.value === value)
     return index === -1 ? selectedIndex : index
   }, [value, selectedIndex, selectableOptions])
@@ -413,7 +413,6 @@ const SelectComponent = memo(function SelectComponent(props: SelectProps) {
     if (refs.allowSelect.current) {
       setSelectedIndex(index)
       handleOpenChange(false)
-      setOpen(false)
 
       const selectedOption = selectableOptions[index]
       if (selectedOption) {
@@ -498,6 +497,7 @@ const SelectComponent = memo(function SelectComponent(props: SelectProps) {
           if (customActive) {
             childProps.onClick?.(e)
           } else {
+            refs.allowSelect.current = true
             handleSelect(currentSelectableIndex)
           }
         },
@@ -537,6 +537,7 @@ const SelectComponent = memo(function SelectComponent(props: SelectProps) {
           size={sizeProp}
           variant={childProps?.variant}
           customActive={customActive ? true : undefined}
+          role="option"
           {...eventHandlers}
         >
           {option.children}

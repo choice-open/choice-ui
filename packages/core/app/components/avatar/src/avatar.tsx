@@ -1,6 +1,6 @@
 import { tcx } from "@choice-ui/shared"
 import { Use } from "@choiceform/icons-react"
-import { ElementType, forwardRef, memo, useMemo, useState, type HTMLProps } from "react"
+import { ElementType, forwardRef, memo, useEffect, useMemo, useState, type HTMLProps } from "react"
 import tinycolor from "tinycolor2"
 import { InitialLetter } from "./letter"
 import { avatarTv } from "./tv"
@@ -28,8 +28,13 @@ export const Avatar = memo(
       states = "default",
       ...rest
     } = props
-    const [isLoading, setIsLoading] = useState(!!photo)
+    const [isLoading, setIsLoading] = useState(states !== "anonymous" && !!photo)
     const [imageLoadedError, setImageLoadedError] = useState(false)
+
+    useEffect(() => {
+      setImageLoadedError(false)
+      setIsLoading(states !== "anonymous" && !!photo)
+    }, [photo, states])
 
     const isNumericSize = typeof size === "number"
     const tvSize: "small" | "medium" | "large" = isNumericSize ? "medium" : (size ?? "medium")
@@ -45,6 +50,7 @@ export const Avatar = memo(
         data-slot="anonymous-icon"
         viewBox="0 0 24 24"
         className="h-full w-full"
+        role="img"
         aria-hidden="true"
       >
         <path
@@ -63,7 +69,7 @@ export const Avatar = memo(
         <img
           data-slot="image"
           src={photo}
-          alt={name}
+          alt={name ?? "avatar"}
           className={tv.image()}
           onLoad={() => {
             setIsLoading(false)

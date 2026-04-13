@@ -36,7 +36,6 @@ import {
   useHover,
   useInteractions,
   useListNavigation,
-  useRole,
   useTypeahead,
   type FloatingFocusManagerProps,
   type Placement,
@@ -163,6 +162,7 @@ const ContextMenuComponent = memo(function ContextMenuComponent(props: ContextMe
   // References
   const { scrollRef, elementsRef, labelsRef, selectTimeoutRef } = useMenuBaseRefs()
   const allowMouseUpCloseRef = useRef(false)
+  const mouseUpTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   // State management
   const [isOpen, setIsOpen] = useState(false)
@@ -256,7 +256,6 @@ const ContextMenuComponent = memo(function ContextMenuComponent(props: ContextMe
     stickIfOpen: false,
   })
 
-  const role = useRole(context, { role: "menu" })
   const dismiss = useDismiss(context, {
     bubbles: true,
     escapeKey: true,
@@ -279,7 +278,6 @@ const ContextMenuComponent = memo(function ContextMenuComponent(props: ContextMe
   const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions([
     hover,
     click,
-    role,
     dismiss,
     listNavigation,
     typeahead,
@@ -311,13 +309,15 @@ const ContextMenuComponent = memo(function ContextMenuComponent(props: ContextMe
 
     handleOpenChange(true)
 
-    // Handle mouse up close behavior
-    allowMouseUpCloseRef.current = false
-    const timeout = setTimeout(() => {
-      allowMouseUpCloseRef.current = true
-    }, 200)
+    if (mouseUpTimeoutRef.current !== null) {
+      clearTimeout(mouseUpTimeoutRef.current)
+    }
 
-    return () => clearTimeout(timeout)
+    allowMouseUpCloseRef.current = false
+    mouseUpTimeoutRef.current = setTimeout(() => {
+      allowMouseUpCloseRef.current = true
+      mouseUpTimeoutRef.current = null
+    }, 200)
   })
 
   // Tree event handling is managed by useMenuTree
@@ -523,6 +523,16 @@ const ContextMenuComponent = memo(function ContextMenuComponent(props: ContextMe
                     {...getFloatingProps({
                       onContextMenu(e: React.MouseEvent) {
                         e.preventDefault()
+                      },
+                      onKeyDown(e: React.KeyboardEvent) {
+                        const target = e.target as HTMLElement
+                        if (
+                          (e.key === "Enter" || e.key === "ArrowRight") &&
+                          target.getAttribute("aria-haspopup") === "menu"
+                        ) {
+                          e.preventDefault()
+                          target.click()
+                        }
                       },
                     })}
                   >
