@@ -277,8 +277,8 @@ export function useFloatingPopover({
   }, [innerOpen, context])
 
   useEffect(() => {
-    // Only listen when popover is open and Escape close is allowed
-    if (!innerOpen || !closeOnEscape) {
+    // Only listen when popover is open and Escape close is allowed and interactions is not none
+    if (!innerOpen || !closeOnEscape || interactions === "none") {
       return
     }
 
@@ -295,7 +295,7 @@ export function useFloatingPopover({
     // This allows child elements (like Input) to handle ESC first
     window.addEventListener("keydown", handleEscape)
     return () => window.removeEventListener("keydown", handleEscape)
-  }, [innerOpen, closeOnEscape, handleClose])
+  }, [innerOpen, closeOnEscape, interactions, handleClose])
 
   const handleTriggerRef = useCallback(
     (triggerRef: RefObject<HTMLElement | null>) => {

@@ -1,4 +1,4 @@
-import { forwardRef, useMemo } from "react"
+import { forwardRef, useEffect, useMemo, useRef } from "react"
 import { Editable, Slate } from "slate-react"
 import { useRichInputContext } from "../context"
 import { richInputTv } from "../tv"
@@ -13,6 +13,38 @@ export const RichInputEditableComponent = forwardRef<HTMLDivElement, RichInputEd
   ({ className }, ref) => {
     const context = useRichInputContext()
     const tv = useMemo(() => richInputTv(), [])
+    const editorRef = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+      if (editorRef.current && context.placeholder) {
+        editorRef.current.setAttribute("placeholder", context.placeholder)
+      }
+    }, [context.placeholder])
+
+    useEffect(() => {
+      const el = editorRef.current
+      if (!el) return
+
+      const handleFocusIn = () => {
+        context.onFocus()
+      }
+
+      const handleFocusOut = () => {
+        context.onBlur()
+      }
+
+      el.addEventListener("focusin", handleFocusIn)
+      el.addEventListener("focusout", handleFocusOut)
+
+      if (document.activeElement === el) {
+        handleFocusIn()
+      }
+
+      return () => {
+        el.removeEventListener("focusin", handleFocusIn)
+        el.removeEventListener("focusout", handleFocusOut)
+      }
+    }, [context.onFocus, context.onBlur])
 
     // Prepare editor style
     const editableStyle = useMemo(() => ({ minHeight: context.minHeight }), [context.minHeight])
@@ -54,6 +86,7 @@ export const RichInputEditableComponent = forwardRef<HTMLDivElement, RichInputEd
         onChange={context.handleEditorChange}
       >
         <Editable
+          ref={editorRef}
           className={tv.editable({ className })}
           renderElement={context.renderElement}
           renderLeaf={context.renderLeaf}
@@ -68,6 +101,7 @@ export const RichInputEditableComponent = forwardRef<HTMLDivElement, RichInputEd
           spellCheck={false}
           tabIndex={context.disableTabFocus ? -1 : undefined}
           style={editableStyle}
+          aria-placeholder={context.placeholder}
           {...context.editableProps}
         />
 

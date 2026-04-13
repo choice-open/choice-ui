@@ -160,6 +160,18 @@ export function useDrag(elementRef: React.RefObject<HTMLElement>, options: UseDr
     }
   }, [elementRef, enabled, onDragEnd])
 
+  const moveByKeyboard = useEventCallback((deltaX: number, deltaY: number) => {
+    if (!enabled) return
+    const rect = elementRef.current?.getBoundingClientRect()
+    if (!rect) return
+
+    const currentX = positionRef.current?.x ?? rect.left
+    const currentY = positionRef.current?.y ?? rect.top
+    const newPosition = { x: currentX + deltaX, y: currentY + deltaY }
+    positionRef.current = newPosition
+    setState((prev) => ({ ...prev, position: newPosition }))
+  })
+
   // Reset drag state
   const resetDragState = useCallback(() => {
     setState({
@@ -229,6 +241,7 @@ export function useDrag(elementRef: React.RefObject<HTMLElement>, options: UseDr
   return {
     state,
     handleDragStart,
+    moveByKeyboard,
     resetDragState,
     resetPosition,
     reset,

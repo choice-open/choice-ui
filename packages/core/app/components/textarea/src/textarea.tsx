@@ -121,7 +121,7 @@ const TextareaBase = forwardRef<HTMLTextAreaElement, TextareaProps>(
 
     const handleKeyDown = useEventCallback((e: React.KeyboardEvent<HTMLTextAreaElement>) => {
       // Prevent newline if allowNewline is false
-      if (!allowNewline && e.key === "Enter" && !e.shiftKey) {
+      if (!allowNewline && e.key === "Enter") {
         e.preventDefault()
       }
       // Pass through original onKeyDown if exists
@@ -292,6 +292,12 @@ const TextareaBase = forwardRef<HTMLTextAreaElement, TextareaProps>(
               ...child.props.style,
             }
 
+            const childOnChange = child.props.onChange as ((value: string) => void) | undefined
+            const mergedOnChange = useEventCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
+              handleChange(e)
+              childOnChange?.(e.target.value)
+            })
+
             return (
               <TextareaAutosize
                 {...textareaAutosizeProps}
@@ -300,7 +306,7 @@ const TextareaBase = forwardRef<HTMLTextAreaElement, TextareaProps>(
                 style={mergedStyle}
                 onFocus={handleFocus}
                 onBlur={handleBlur}
-                onChange={handleChange}
+                onChange={mergedOnChange}
                 onKeyDown={handleKeyDown}
               />
             )
@@ -324,7 +330,7 @@ const TextareaBase = forwardRef<HTMLTextAreaElement, TextareaProps>(
               className={tx.content()}
               style={contentStyle}
             >
-              {renderContent()}
+              <div style={style}>{renderContent()}</div>
             </ScrollArea.Content>
           </ScrollArea.Viewport>
         </ScrollArea>

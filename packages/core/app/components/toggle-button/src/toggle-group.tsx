@@ -91,6 +91,7 @@ const ToggleGroupBase = forwardRef<HTMLDivElement, ToggleGroupProps>(
       multiple = false,
       orientation = "horizontal",
       loopFocus = true,
+      onKeyDown: userOnKeyDown,
       ...rest
     } = props
 
@@ -193,7 +194,11 @@ const ToggleGroupBase = forwardRef<HTMLDivElement, ToggleGroupProps>(
           data-orientation={orientation}
           data-disabled={disabled ? "" : undefined}
           data-multiple={multiple ? "" : undefined}
-          onKeyDown={handleKeyDown}
+          aria-multiselectable={multiple || undefined}
+          onKeyDown={(e) => {
+            handleKeyDown(e)
+            userOnKeyDown?.(e)
+          }}
           {...rest}
         >
           {children}

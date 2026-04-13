@@ -1,5 +1,5 @@
 import { tcx } from "@choice-ui/shared"
-import { forwardRef, HTMLProps, useCallback } from "react"
+import { forwardRef, HTMLProps, useCallback, useRef } from "react"
 import { useUnmount } from "usehooks-ts"
 import { InputTv } from "./tv"
 
@@ -34,8 +34,12 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(pro
     ...rest
   } = props
 
+  const editingStartedRef = useRef(false)
+
   useUnmount(() => {
-    onIsEditingChange?.(false)
+    if (editingStartedRef.current) {
+      onIsEditingChange?.(false)
+    }
   })
 
   const tv = InputTv({ variant, selected, disabled, readOnly, size })
@@ -70,6 +74,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(pro
         // focusSelection === "none" - don't change selection
 
         onFocus?.(e)
+        editingStartedRef.current = true
         onIsEditingChange?.(true)
       },
       onBlur: (e: React.FocusEvent<HTMLInputElement>) => {

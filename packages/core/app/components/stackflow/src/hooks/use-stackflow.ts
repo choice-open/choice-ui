@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react"
+import { useEffect, useState, useCallback } from "react"
 
 export interface StackflowItem {
   content: React.ReactNode
@@ -33,6 +33,18 @@ export function useStackflow(items: StackflowItem[], initialId?: string): Stackf
     direction: "forward",
     isInitial: true,
   })
+
+  useEffect(() => {
+    if (!state.currentId && items.length > 0) {
+      const firstId = items[0].id
+      setState({
+        currentId: firstId,
+        history: [firstId],
+        direction: "forward",
+        isInitial: true,
+      })
+    }
+  }, [items, state.currentId])
 
   const push = useCallback(
     (id: string) => {

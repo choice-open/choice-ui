@@ -50,7 +50,6 @@ export const ColorGradientSlider = forwardRef<HTMLDivElement, ColorGradientSlide
     const stopsContainerRef = useRef<HTMLDivElement>(null)
     const stopRefs = useRef<Map<string, HTMLDivElement>>(new Map())
     const isDragging = useRef(false)
-    const uuid = nanoid()
     const [hoverPosition, setHoverPosition] = useState<number | null>(null)
 
     // 内部状态仅在非受控模式下使用
@@ -148,7 +147,7 @@ export const ColorGradientSlider = forwardRef<HTMLDivElement, ColorGradientSlide
       const alpha = beforeStop.alpha + (afterStop.alpha - beforeStop.alpha) * relativePosition
 
       const newStop: ColorStop = {
-        id: uuid,
+        id: nanoid(),
         position,
         color: { r, g, b },
         alpha,

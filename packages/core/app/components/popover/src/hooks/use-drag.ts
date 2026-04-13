@@ -57,11 +57,12 @@ function adjustPosition(
  * @returns drag state and control methods
  */
 export function useDrag({ draggable, floatingRef, rememberPosition = false }: UseDragOptions) {
-  // Use useState to manage active state
   const [state, setState] = useState<DragState>({
     isDragging: false,
     position: null,
   })
+
+  const [floatingElement, setFloatingElement] = useState<HTMLElement | null>(null)
 
   // Use useRef to store position, avoid unnecessary re-rendering
   const positionRef = useRef<Position | null>(null)
@@ -194,17 +195,16 @@ export function useDrag({ draggable, floatingRef, rememberPosition = false }: Us
     }
   }, [draggable, state.isDragging, handleDrag, handleDragEnd])
 
-  // Listen for floatingRef.current changes, reset initial position and drag state.
   useEffect(() => {
     if (rememberPosition) return
+    if (!floatingElement) return
     initialPositionRef.current = null
     positionRef.current = null
     setState({
       isDragging: false,
       position: null,
     })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [floatingRef.current])
+  }, [floatingElement, rememberPosition])
 
   // When rememberPosition changes
   useEffect(() => {
@@ -231,5 +231,6 @@ export function useDrag({ draggable, floatingRef, rememberPosition = false }: Us
     handleDragStart,
     resetDragState,
     resetPosition,
+    setFloatingElement,
   }
 }

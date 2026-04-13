@@ -23,8 +23,6 @@ export const StackflowItem = forwardRef<HTMLDivElement, StackflowItemProps>(
     const isActive = current?.id === id
     const tv = stackflowTv({ active: isActive })
 
-    if (!isActive) return null
-
     const variants = {
       enter: (direction: string) => ({
         x: direction === "forward" ? "100%" : "-100%",
@@ -57,7 +55,7 @@ export const StackflowItem = forwardRef<HTMLDivElement, StackflowItemProps>(
           className={tcx(tv.item(), className)}
           style={style}
         >
-          {children}
+          {isActive ? children : null}
         </motion.div>
       </AnimatePresence>
     )

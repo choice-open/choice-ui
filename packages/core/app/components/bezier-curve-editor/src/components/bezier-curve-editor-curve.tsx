@@ -101,7 +101,7 @@ export const BezierCurveEditorCurve = memo<Props>((props) => {
   const previewStyle = useMemo(
     () => ({
       offsetPath: `path('${pathString}')`,
-      animationTimingFunction: `cubic-bezier(${value})`,
+      animationTimingFunction: `cubic-bezier(${value[2]},${value[3]},${value[4]},${value[5]})`,
       animationPlayState: previewState,
       animationName: "preview-loop",
       animationDuration: `${duration}s`,

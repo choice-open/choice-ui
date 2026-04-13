@@ -46,7 +46,8 @@ export const SegmentedItem = memo(
       variant,
     })
 
-    const optionId = `${groupId}-${value}`
+    const safeValue = value.replace(/[^a-zA-Z0-9]/g, "_")
+    const optionId = `seg_${groupId.replace(/[^a-zA-Z0-9]/g, "")}_${safeValue}`
 
     const ariaLabelProp = typeof children === "string" ? children : ariaLabel
 
@@ -87,6 +88,7 @@ export const SegmentedItem = memo(
       <div
         className={optionClassName}
         aria-hidden="true"
+        data-selected={isActive ? "true" : undefined}
       >
         {children}
       </div>

@@ -110,17 +110,21 @@ const RichInputBase = forwardRef<HTMLDivElement, RichInputProps>((props, ref) =>
   // Convert event handler types to ensure component interface compatibility
   const handleFocus = useCallback(() => {
     if (onFocus) {
-      const mockEvent = {} as React.FocusEvent<HTMLDivElement>
+      const mockEvent = {
+        target: floatingUI.slateRef.current,
+      } as unknown as React.FocusEvent<HTMLDivElement>
       onFocus(mockEvent)
     }
-  }, [onFocus])
+  }, [onFocus, floatingUI.slateRef])
 
   const handleBlur = useCallback(() => {
     if (onBlur) {
-      const mockEvent = {} as React.FocusEvent<HTMLDivElement>
+      const mockEvent = {
+        target: floatingUI.slateRef.current,
+      } as unknown as React.FocusEvent<HTMLDivElement>
       onBlur(mockEvent)
     }
-  }, [onBlur])
+  }, [onBlur, floatingUI.slateRef])
 
   const handleCompositionStart = useCallback(
     (event: React.CompositionEvent) => {

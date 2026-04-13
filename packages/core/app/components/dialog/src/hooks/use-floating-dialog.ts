@@ -140,7 +140,7 @@ export function useFloatingDialog({
             }
           })
         } else {
-          // No need to reset anything
+          setIsClosing(false)
           if (afterOpenChange) {
             afterOpenChange(false)
           }
@@ -153,6 +153,8 @@ export function useFloatingDialog({
   })
 
   const { isMounted, styles } = useTransitionStyles(context, transitionStylesProps)
+
+  const prevOpenRef = useRef(open)
 
   useEffect(() => {
     if (innerOpen) {
@@ -167,6 +169,15 @@ export function useFloatingDialog({
       return () => cancelAnimationFrame(frameId)
     }
   }, [innerOpen, afterOpenChange])
+
+  useEffect(() => {
+    if (prevOpenRef.current === true && open === false) {
+      if (afterOpenChange) {
+        afterOpenChange(false)
+      }
+    }
+    prevOpenRef.current = open
+  }, [open, afterOpenChange])
 
   const click = useClick(context)
   const dismiss = useDismiss(context, {

@@ -84,6 +84,7 @@ const DialogComponent = memo(function DialogComponent({
   const {
     state: dragState,
     handleDragStart,
+    moveByKeyboard,
     resetDragState,
     resetPosition,
   } = useDrag(dialogRef, {
@@ -94,6 +95,7 @@ const DialogComponent = memo(function DialogComponent({
   const {
     state: resizeState,
     handleResizeStart,
+    resizeByKeyboard,
     resetResizeState,
     resetSize,
   } = useResize(dialogRef, {
@@ -133,13 +135,13 @@ const DialogComponent = memo(function DialogComponent({
         height: resizeState.size.height,
       }
     } else if (isResizable) {
-      const width = resizable.width ? defaultWidth : 0
-      const height = resizable.height ? defaultHeight : 0
+      const width = resizable.width ? defaultWidth : undefined
+      const height = resizable.height ? defaultHeight : undefined
 
-      if (width > 0 || height > 0) {
+      if (width !== undefined || height !== undefined) {
         sizeObj = {
-          width: width > 0 ? width : 0,
-          height: height > 0 ? height : 0,
+          width: width ?? defaultWidth,
+          height: height ?? defaultHeight,
         }
       }
     }
@@ -168,6 +170,33 @@ const DialogComponent = memo(function DialogComponent({
     return (
       <Slot
         onMouseDown={draggable ? handleDragStart : undefined}
+        onKeyDown={
+          draggable
+            ? (e: React.KeyboardEvent) => {
+                const STEP = 10
+                switch (e.key) {
+                  case "ArrowLeft":
+                    e.preventDefault()
+                    moveByKeyboard(-STEP, 0)
+                    break
+                  case "ArrowRight":
+                    e.preventDefault()
+                    moveByKeyboard(STEP, 0)
+                    break
+                  case "ArrowUp":
+                    e.preventDefault()
+                    moveByKeyboard(0, -STEP)
+                    break
+                  case "ArrowDown":
+                    e.preventDefault()
+                    moveByKeyboard(0, STEP)
+                    break
+                  default:
+                    break
+                }
+              }
+            : undefined
+        }
         role={draggable ? "button" : undefined}
         aria-label={draggable ? "Drag to move popover" : undefined}
         tabIndex={draggable ? 0 : undefined}
@@ -281,6 +310,19 @@ const DialogComponent = memo(function DialogComponent({
                       e.preventDefault()
                       handleResizeStart(e, { width: true, height: false })
                     }}
+                    onKeyDown={(e) => {
+                      const STEP = 10
+                      switch (e.key) {
+                        case "ArrowRight":
+                          e.preventDefault()
+                          resizeByKeyboard(STEP, 0)
+                          break
+                        case "ArrowLeft":
+                          e.preventDefault()
+                          resizeByKeyboard(-STEP, 0)
+                          break
+                      }
+                    }}
                   />
                 )}
 
@@ -292,6 +334,19 @@ const DialogComponent = memo(function DialogComponent({
                     onMouseDown={(e) => {
                       e.preventDefault()
                       handleResizeStart(e, { width: false, height: true })
+                    }}
+                    onKeyDown={(e) => {
+                      const STEP = 10
+                      switch (e.key) {
+                        case "ArrowDown":
+                          e.preventDefault()
+                          resizeByKeyboard(0, STEP)
+                          break
+                        case "ArrowUp":
+                          e.preventDefault()
+                          resizeByKeyboard(0, -STEP)
+                          break
+                      }
                     }}
                   />
                 )}

@@ -43,6 +43,8 @@ export interface TableColumnDef<T = unknown> {
   className?: string
   /** Custom header className */
   headerClassName?: string
+  /** Accessor key for auto-rendering cell values from row data */
+  accessorKey?: keyof T & string
 }
 
 /** Column width state */
@@ -229,8 +231,10 @@ export interface TableProps<T> {
   onScroll?: (event: { scrollTop: number; scrollHeight: number; clientHeight: number }) => void
   /** Ref to table instance */
   tableRef?: RefObject<TableInstance<T> | null>
+  /** Column definitions for simplified usage (auto-renders header + body) */
+  columns?: TableColumnDef<T>[]
   /** Children (Table.Header, Table.Body) */
-  children: ReactNode
+  children?: ReactNode
 }
 
 /** Props for Table.Header */

@@ -1,4 +1,4 @@
-import { useCallback, useImperativeHandle, useMemo, useRef, useState } from "react"
+import { useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react"
 import type {
   InternalRow,
   RowKey,
@@ -21,6 +21,7 @@ interface UseTableOptions<T> {
   defaultSorting?: SortingState[]
   onSortingChange?: (sorting: SortingState[]) => void
   tableRef?: TableProps<T>["tableRef"]
+  columns?: import("../types").TableColumnDef<T>[]
 }
 
 export function useTable<T>(options: UseTableOptions<T>) {
@@ -35,10 +36,11 @@ export function useTable<T>(options: UseTableOptions<T>) {
     defaultSorting = [],
     onSortingChange,
     tableRef,
+    columns: columnsProp,
   } = options
 
   // Column registration
-  const [columns, setColumns] = useState<TableColumnDef<T>[]>([])
+  const [columns, setColumns] = useState<TableColumnDef<T>[]>(columnsProp ?? [])
 
   const registerColumn = useCallback((column: TableColumnDef<T>) => {
     setColumns((prev) => {
@@ -51,6 +53,13 @@ export function useTable<T>(options: UseTableOptions<T>) {
   const unregisterColumn = useCallback((id: string) => {
     setColumns((prev) => prev.filter((c) => c.id !== id))
   }, [])
+
+  // Sync columns from prop when provided
+  useEffect(() => {
+    if (columnsProp) {
+      setColumns(columnsProp)
+    }
+  }, [columnsProp])
 
   // Selection state
   const isSelectionControlled = controlledSelectedKeys !== undefined
@@ -270,7 +279,10 @@ export function useTable<T>(options: UseTableOptions<T>) {
   const tableInstance: TableInstance<T> = useMemo(
     () => ({
       getData: () => data,
-      getSelectedKeys: () => Array.from(selectedKeys),
+      getSelectedKeys: () => {
+        const currentRowKeys = new Set(rows.map((r) => r.key))
+        return Array.from(selectedKeys).filter((key) => currentRowKeys.has(key))
+      },
       getSelectedRows: () => rows.filter((row) => selectedKeys.has(row.key)).map((row) => row.data),
       isRowSelected,
       selectRow,

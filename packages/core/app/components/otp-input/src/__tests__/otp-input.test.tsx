@@ -86,9 +86,6 @@ describe("OTP Input bugs", () => {
         </OtpInput>,
       )
 
-      const slots =
-        screen.getAllByTestId("").length === 0 ? document.querySelectorAll("[data-filled]") : []
-
       const filledSlots = document.querySelectorAll("[data-filled]")
       filledSlots.forEach((slot) => {
         expect(slot.getAttribute("aria-hidden")).toBe("true")
@@ -140,7 +137,7 @@ describe("OTP Input bugs", () => {
       render(
         <OtpInput
           maxLength={4}
-          placeholder="0"
+          placeholder="00"
         >
           <OtpInput.Group>
             <OtpInput.Slot index={0} />
@@ -149,11 +146,12 @@ describe("OTP Input bugs", () => {
         </OtpInput>,
       )
 
-      const unfilledSlots = document.querySelectorAll("[data-filled]")
-      if (unfilledSlots.length === 0) {
-        const allSlots = document.querySelectorAll("[data-active]")
-        expect(allSlots.length).toBeGreaterThan(0)
-      }
+      const slotDivs = document.querySelectorAll("[aria-hidden]")
+      const emptySlots = Array.from(slotDivs).filter((slot) => !slot.hasAttribute("data-filled"))
+      expect(emptySlots.length).toBeGreaterThan(0)
+      emptySlots.forEach((slot) => {
+        expect(slot.textContent).toContain("0")
+      })
     })
   })
 })

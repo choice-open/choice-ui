@@ -125,9 +125,11 @@ export function useInputInteractions<T extends NumericInputValue>({
       inputRef.current?.blur()
     }
     if (e.key === "ArrowUp") {
+      e.preventDefault()
       updateValue((value) => value + getCurrentStep())
     }
     if (e.key === "ArrowDown") {
+      e.preventDefault()
       updateValue((value) => value - getCurrentStep())
     }
   })

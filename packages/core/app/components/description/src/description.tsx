@@ -13,6 +13,7 @@ export const Description = memo(function Description(props: DescriptionProps) {
     <p
       className={descriptionTv({ disabled, className })}
       slot="description"
+      aria-disabled={disabled || undefined}
       {...rest}
     >
       {children}

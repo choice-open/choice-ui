@@ -40,6 +40,9 @@ export const ToggleButton = forwardRef<HTMLInputElement, ToggleButtonProps>(
       onChange,
       onMouseDown,
       onContextMenu,
+      checked: restChecked,
+      defaultChecked,
+      type: restType,
       ...rest
     } = props
 
@@ -62,8 +65,6 @@ export const ToggleButton = forwardRef<HTMLInputElement, ToggleButtonProps>(
         role="presentation"
         onContextMenu={onContextMenu}
       >
-        <span className="sr-only">{value ? "Enabled" : "Disabled"}</span>
-
         <input
           ref={ref}
           id={id}

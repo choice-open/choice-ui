@@ -12,6 +12,7 @@ export const PaginationSpinner = forwardRef<HTMLDivElement, PaginationSpinnerPro
     const { className, ...rest } = props
     const [inputValue, setInputValue] = useState("")
     const [isEditing, setIsEditing] = useState(false)
+    const blurFromInternalButtonRef = useRef(false)
 
     const inputWrapperRef = useRef<HTMLDivElement>(null)
     const inputRef = useRef<HTMLInputElement>(null)
@@ -81,16 +82,24 @@ export const PaginationSpinner = forwardRef<HTMLDivElement, PaginationSpinnerPro
     })
 
     const handleInputBlur = useEventCallback(() => {
+      if (blurFromInternalButtonRef.current) {
+        blurFromInternalButtonRef.current = false
+        setIsEditing(false)
+        setInputValue("")
+        return
+      }
       submitPageChange()
     })
 
     const handlePrevious = useEventCallback(() => {
+      blurFromInternalButtonRef.current = true
       if (currentPage > 1) {
         handlePageChange(currentPage - 1)
       }
     })
 
     const handleNext = useEventCallback(() => {
+      blurFromInternalButtonRef.current = true
       if (currentPage < totalPages) {
         handlePageChange(currentPage + 1)
       }
@@ -116,7 +125,7 @@ export const PaginationSpinner = forwardRef<HTMLDivElement, PaginationSpinnerPro
           ref={inputWrapperRef}
           className={tv.inputWrapper()}
           onClick={() => {
-            if (!isEditing) {
+            if (!isEditing && !disabled) {
               setIsEditing(true)
             }
           }}

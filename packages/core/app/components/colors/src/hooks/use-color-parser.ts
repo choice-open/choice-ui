@@ -75,31 +75,44 @@ export function useColorParser() {
   }
 
   const parseHsl = (value: string): ColorParseResult => {
+    let alpha = 1
+    let hasAlpha = false
+    let alphaStr: string | undefined
+
+    const slashAlphaMatch = value.match(/\/\s*([\d.]+)%?\s*\)$/)
+    if (slashAlphaMatch) {
+      alphaStr = slashAlphaMatch[1]
+      hasAlpha = true
+    }
+
+    const commaAlphaMatch = value.match(
+      /^hsla\(\s*([\d.]+)\s*,\s*([\d.]+)%?\s*,\s*([\d.]+)%?\s*,\s*([\d.]+)\s*\)$/,
+    )
+    if (commaAlphaMatch) {
+      alphaStr = commaAlphaMatch[4]
+      hasAlpha = true
+    }
+
+    if (alphaStr) {
+      alpha = parseFloat(alphaStr) / (alphaStr.includes("%") ? 100 : 1)
+    }
+
     const processedHsl = value
-      .replace(/(\d+)deg/g, "$1") // 移除 deg 单位
+      .replace(/(\d+)deg/g, "$1")
       .replace(/hsla?\((.*?)\)/, (_: string, p1: string) => {
-        const parts = p1
+        const stripped = p1.replace(/\/\s*([\d.]+)%?\s*$/, "").trim()
+        const parts = stripped
           .split(/[\s,]+/)
           .filter(Boolean)
           .map((part: string) => part.trim())
-        if (parts.length === 4) {
-          // HSLA 格式
+        if (parts.length >= 3) {
           return `hsl(${parts[0]}, ${parts[1]}, ${parts[2]})`
         }
-        // HSL 格式
         return `hsl(${parts.join(", ")})`
       })
 
     try {
       const color = chroma(processedHsl)
-      const hasAlpha = value.startsWith("hsla") || value.includes("/")
-      let alpha = 1
-      if (hasAlpha) {
-        const alphaMatch = value.match(/\/\s*([\d.]+)%?\s*\)$/)
-        if (alphaMatch) {
-          alpha = parseFloat(alphaMatch[1]) / (alphaMatch[1].includes("%") ? 100 : 1)
-        }
-      }
       return { color, hasAlpha, alpha }
     } catch {
       return { color: null, hasAlpha: false, alpha: 1 }
