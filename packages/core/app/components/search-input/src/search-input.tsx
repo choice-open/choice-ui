@@ -61,7 +61,7 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>((props
         else if (ref) ref.current = el
       }}
       placeholder={i18n.placeholder ?? placeholder}
-      value={valueProp}
+      value={displayValue}
       onChange={handleChange}
       variant={variant}
       disabled={disabled}

@@ -78,7 +78,7 @@ export const ComboboxTrigger = memo(
 
     const handleBlur = useEventCallback((event: React.FocusEvent<HTMLInputElement>) => {
       setIsFocused(false)
-      onBlur?.(value)
+      onBlur?.(value, event)
     })
 
     return (

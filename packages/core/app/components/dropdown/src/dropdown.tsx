@@ -482,7 +482,12 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
 
   const handleFloatingKeyDownCapture = useEventCallback((e: React.KeyboardEvent) => {
     if (disableKeyboardNavigation) {
-      if (e.key === "Enter" || e.key === "ArrowRight" || e.key.startsWith("Arrow")) {
+      const target = e.target as HTMLElement
+      const isEditable = target.tagName === "INPUT" || target.tagName === "TEXTAREA"
+      if (
+        !isEditable &&
+        (e.key === "Enter" || e.key === "ArrowRight" || e.key.startsWith("Arrow"))
+      ) {
         e.preventDefault()
         e.stopPropagation()
       }

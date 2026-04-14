@@ -156,6 +156,17 @@ describe("Select bugs", () => {
 
       const usOption = screen.getByText("United States")
       expect(usOption).toBeInTheDocument()
+
+      await user.type(listbox, "c")
+
+      await waitFor(
+        () => {
+          const options = screen.getAllByRole("option")
+          const canadaOption = options.find((o) => o.textContent === "Canada")
+          expect(canadaOption).toBeTruthy()
+        },
+        { timeout: 3000 },
+      )
     })
   })
 

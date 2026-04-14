@@ -20,16 +20,13 @@ const LoaderRoot = forwardRef<HTMLDivElement, LoaderProps>((props, ref) => {
   const iconIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const stageIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
-  if (stages.length === 0) {
-    return null
-  }
-
   const actualStage = controlledStage ?? currentStage
   const stage = stages[actualStage]
   const icons = Array.isArray(stage?.icon) ? stage.icon : stage?.icon ? [stage.icon] : []
 
   // Handle stage progression
   useEffect(() => {
+    if (stages.length === 0) return
     if (controlledStage !== undefined) return
 
     if (stageIntervalRef.current) {
@@ -54,6 +51,7 @@ const LoaderRoot = forwardRef<HTMLDivElement, LoaderProps>((props, ref) => {
 
   // Handle icon cycling
   useEffect(() => {
+    if (stages.length === 0) return
     if (iconIntervalRef.current) {
       clearInterval(iconIntervalRef.current)
     }
@@ -72,7 +70,11 @@ const LoaderRoot = forwardRef<HTMLDivElement, LoaderProps>((props, ref) => {
         clearInterval(iconIntervalRef.current)
       }
     }
-  }, [actualStage, icons.length])
+  }, [actualStage, icons.length, stages.length])
+
+  if (stages.length === 0) {
+    return null
+  }
 
   const styles = loaderVariants()
 

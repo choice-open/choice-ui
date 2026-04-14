@@ -73,7 +73,7 @@ export interface ComboboxProps {
    * @default true
    */
   matchTriggerWidth?: boolean
-  onBlur?: (value: string) => void
+  onBlur?: (value: string, event?: React.FocusEvent<HTMLInputElement>) => void
   onChange?: (value: string) => void
   onOpenChange?: (open: boolean, trigger?: "click" | "focus" | "input") => void
   open?: boolean

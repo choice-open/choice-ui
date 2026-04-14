@@ -42,10 +42,7 @@ export function RangeAdapter<T extends number>({
       legendMode={true}
     >
       <div className="flex items-center gap-2">
-        <div
-          ref={sliderRef}
-          role="slider"
-        >
+        <div ref={sliderRef}>
           <Range
             value={value}
             onChange={(inputValue) => onChange(inputValue as T)}

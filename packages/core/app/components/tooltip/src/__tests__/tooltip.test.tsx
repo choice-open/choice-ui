@@ -93,11 +93,21 @@ describe("Tooltip bugs", () => {
     it("uses offset=8 as default, matching the Tooltip component", async () => {
       const { useTooltip } = await import("../hooks/use-tooltip")
 
-      let result: ReturnType<typeof useTooltip> | undefined
+      let hookResult: ReturnType<typeof useTooltip> | undefined
 
       const TestHook = () => {
-        result = useTooltip()
-        return null
+        hookResult = useTooltip()
+        return (
+          <>
+            <div ref={hookResult!.refs.setReference}>trigger</div>
+            <div
+              ref={hookResult!.refs.setFloating}
+              role="tooltip"
+            >
+              tip
+            </div>
+          </>
+        )
       }
 
       render(
@@ -106,7 +116,12 @@ describe("Tooltip bugs", () => {
         </TooltipProvider>,
       )
 
-      expect(result).toBeTruthy()
+      await waitFor(() => {
+        expect(screen.getByRole("tooltip")).toBeInTheDocument()
+      })
+
+      expect(hookResult).toBeTruthy()
+      expect(hookResult!.floatingStyles).toBeDefined()
     })
   })
 })

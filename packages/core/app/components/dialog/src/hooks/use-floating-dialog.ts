@@ -170,9 +170,18 @@ export function useFloatingDialog({
     }
   }, [innerOpen, afterOpenChange])
 
+  const afterOpenChangeCalledRef = useRef(false)
+
+  useEffect(() => {
+    if (innerOpen) {
+      afterOpenChangeCalledRef.current = false
+    }
+  }, [innerOpen])
+
   useEffect(() => {
     if (prevOpenRef.current === true && open === false) {
-      if (afterOpenChange) {
+      if (afterOpenChange && !afterOpenChangeCalledRef.current) {
+        afterOpenChangeCalledRef.current = true
         afterOpenChange(false)
       }
     }

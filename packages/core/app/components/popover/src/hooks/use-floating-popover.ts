@@ -161,9 +161,7 @@ export function useFloatingPopover({
       }
       forceDismissedTimerRef.current = setTimeout(() => {
         forceDismissedTimerRef.current = null
-        if (open) {
-          setForceDismissed(false)
-        }
+        setForceDismissed(false)
       }, 200)
       setIsClosing(true)
       resetDragState()

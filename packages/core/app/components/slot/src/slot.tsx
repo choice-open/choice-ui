@@ -84,7 +84,7 @@ function mergeProps(slotProps: Record<string, unknown>, childProps: Record<strin
       result[propName] = { ...(slotPropValue as object), ...(childPropValue as object) }
     } else if (propName === "className") {
       result[propName] = [slotPropValue, childPropValue].filter(Boolean).join(" ")
-    } else if (propName in slotProps) {
+    } else if (propName in slotProps && slotProps[propName] !== undefined) {
       result[propName] = slotPropValue
     } else {
       result[propName] = childPropValue
