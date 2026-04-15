@@ -23,7 +23,7 @@
  *     currentIndex and appends. If this cursor logic is removed, the bug returns.
  */
 import "@testing-library/jest-dom"
-import { render, screen, waitFor, act } from "@testing-library/react"
+import { render, screen, waitFor, act, fireEvent } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { describe, expect, it, vi } from "vitest"
 import React from "react"
@@ -31,10 +31,13 @@ import { Stackflow } from "../stackflow"
 import { useStackflowContext } from "../context"
 
 vi.mock("framer-motion", () => ({
-  AnimatePresence: ({ children }: any) => children,
+  AnimatePresence: ({ children, onExitComplete }: any) => {
+    if (typeof children === "function") return children({ current: null })
+    return children
+  },
   motion: {
     div: ({ initial, animate, exit, variants, transition, custom, ...rest }: any) => (
-      <div {...rest} />
+      <div {...rest}>{rest.children}</div>
     ),
   },
 }))
@@ -61,51 +64,46 @@ describe("Stackflow bugs", () => {
 
   describe("BUG: StackflowItem return null prevents exit animation", () => {
     it("should render both items during transition so exit animation can play", async () => {
-      const TestComponent = () => {
-        const [activeId, setActiveId] = React.useState("first")
+      function NavButtons() {
+        const ctx = useStackflowContext()
 
         return (
           <div>
-            <Stackflow initialId={activeId}>
-              <Stackflow.Item id="first">
-                <div data-testid="first-content">First Content</div>
-              </Stackflow.Item>
-              <Stackflow.Item id="second">
-                <div data-testid="second-content">Second Content</div>
-              </Stackflow.Item>
-            </Stackflow>
             <button
-              data-testid="go-second"
-              onClick={() => setActiveId("second")}
+              data-testid="push-second"
+              onClick={() => ctx.push("second")}
             >
               Go Second
-            </button>
-            <button
-              data-testid="go-first"
-              onClick={() => setActiveId("first")}
-            >
-              Go First
             </button>
           </div>
         )
       }
 
-      render(<TestComponent />)
+      render(
+        <Stackflow initialId="first">
+          <Stackflow.Item id="first">
+            <div data-testid="first-content">First Content</div>
+          </Stackflow.Item>
+          <Stackflow.Item id="second">
+            <div data-testid="second-content">Second Content</div>
+          </Stackflow.Item>
+          <Stackflow.Suffix>
+            <NavButtons />
+          </Stackflow.Suffix>
+        </Stackflow>,
+      )
 
       await waitFor(() => {
         expect(screen.getByTestId("first-content")).toBeInTheDocument()
       })
 
-      await act(async () => {
-        screen.getByTestId("go-second").click()
-      })
+      fireEvent.click(screen.getByTestId("push-second"))
 
       await waitFor(() => {
         expect(screen.getByTestId("second-content")).toBeInTheDocument()
       })
 
-      const firstContent = screen.queryByTestId("first-content")
-      expect(firstContent).toBeInTheDocument()
+      expect(screen.getByTestId("first-content")).toBeInTheDocument()
     })
   })
 })

@@ -32,6 +32,10 @@ export const StackflowItem = forwardRef<HTMLDivElement, StackflowItemProps>(
       setPrevActive(isActive)
     }, [isActive, prevActive])
 
+    if (!isActive && !isTransitioningOut) {
+      return null
+    }
+
     const variants = {
       enter: (direction: string) => ({
         x: direction === "forward" ? "100%" : "-100%",
