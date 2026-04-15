@@ -75,14 +75,10 @@ describe("Notifications bugs", () => {
 
   describe("BUG 2: Notification root must have role=status for screen readers", () => {
     it("renders the notification with role=status attribute", async () => {
-      const mod = await import("../notifications")
-      const Toast = (mod as any).default || mod.notifications
-
-      const ToastComp = typeof Toast === "function" ? Toast : null
-      expect(ToastComp).toBeTruthy()
+      const { Toast } = await import("../notifications")
 
       render(
-        <ToastComp!
+        <Toast
           id="test-1"
           text="Test notification"
         />,
@@ -90,18 +86,32 @@ describe("Notifications bugs", () => {
 
       const notification = screen.getByText("Test notification")
       expect(notification).toBeTruthy()
-      const rootDiv = notification.closest("[class]")
+      const rootDiv = notification.closest("[role]")
       expect(rootDiv).toBeTruthy()
       const role = rootDiv?.getAttribute("role")
       expect(role).toBe("status")
+    })
+
+    it("has aria-live=polite for screen reader compatibility", async () => {
+      const { Toast } = await import("../notifications")
+
+      render(
+        <Toast
+          id="test-live"
+          text="Live notification"
+        />,
+      )
+
+      const notification = screen.getByText("Live notification")
+      const rootDiv = notification.closest("[aria-live]")
+      expect(rootDiv).toBeTruthy()
+      expect(rootDiv?.getAttribute("aria-live")).toBe("polite")
     })
   })
 
   describe("BUG 3: Notification buttons must have type=button", () => {
     it("renders action button with type=button, not type=submit", async () => {
-      const { default: ToastBase } = await import("../notifications")
-
-      const Toast = (ToastBase as any).type || ToastBase
+      const { Toast } = await import("../notifications")
 
       render(
         <Toast
@@ -120,10 +130,9 @@ describe("Notifications bugs", () => {
 
   describe("BUG 5: dismiss button must call sonnerToast.dismiss", () => {
     it("calls sonnerToast.dismiss when dismiss button is clicked", async () => {
-      const { default: ToastBase } = await import("../notifications")
+      const { Toast } = await import("../notifications")
       const sonnerModule = await import("sonner")
 
-      const Toast = (ToastBase as any).type || ToastBase
       const dismissOnClick = vi.fn()
       const dismissSpy = vi.spyOn(sonnerModule.toast, "dismiss")
 
@@ -147,9 +156,7 @@ describe("Notifications bugs", () => {
 
   describe("BUG 6: notification must not render empty shell when text and html are missing", () => {
     it("renders nothing when both text and html are undefined", async () => {
-      const { default: ToastBase } = await import("../notifications")
-
-      const Toast = (ToastBase as any).type || ToastBase
+      const { Toast } = await import("../notifications")
 
       const { container } = render(<Toast id="empty-test" />)
 

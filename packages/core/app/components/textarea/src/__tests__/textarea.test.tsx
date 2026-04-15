@@ -32,6 +32,16 @@
  *   - Logic change: textarea.tsx:235-241 - `if (resize === false && rest.rows)` only
  *     returns a fixed height when rows is explicitly set. Without rows, returns undefined.
  *     Fix = use minRows to compute a fixed height when resize=false and rows is not set.
+ *
+ * BUG 5: onIsEditingChange(false) fires on unmount even if editing was never started
+ *   - User scenario: Parent renders a Textarea with onIsEditingChange to track editing
+ *     state. The component unmounts before the user ever focused it.
+ *   - Regression it prevents: Parent receives a spurious onIsEditingChange(false)
+ *     callback on unmount, corrupting state machines (e.g. draft indicator toggled off
+ *     when it was never shown).
+ *   - Logic change: textarea.tsx:86-88 — useUnmount unconditionally calls
+ *     onIsEditingChange(false). Input (input.tsx:37-43) has an editingStartedRef guard
+ *     that Textarea lacks. Fix = add the same guard.
  */
 import "@testing-library/jest-dom"
 import { act, render, screen } from "@testing-library/react"
@@ -115,6 +125,36 @@ describe("Textarea bugs", () => {
       await user.type(textarea, "hello")
 
       expect(childOnChange).toHaveBeenCalled()
+    })
+  })
+
+  describe("BUG 5: onIsEditingChange must not fire on unmount if editing was never started", () => {
+    it("does not call onIsEditingChange when unmounted without ever being focused", () => {
+      const onIsEditingChange = vi.fn()
+
+      const { unmount } = render(<Textarea onIsEditingChange={onIsEditingChange} />)
+
+      expect(screen.getByRole("textbox")).toBeInTheDocument()
+
+      unmount()
+
+      expect(onIsEditingChange).not.toHaveBeenCalled()
+    })
+
+    it("calls onIsEditingChange(false) on unmount only after editing was started", async () => {
+      const onIsEditingChange = vi.fn()
+      const user = userEvent.setup()
+
+      const { unmount } = render(<Textarea onIsEditingChange={onIsEditingChange} />)
+
+      expect(onIsEditingChange).not.toHaveBeenCalled()
+
+      const textarea = screen.getByRole("textbox")
+      await user.click(textarea)
+      expect(onIsEditingChange).toHaveBeenCalledWith(true)
+
+      unmount()
+      expect(onIsEditingChange).toHaveBeenCalledWith(false)
     })
   })
 

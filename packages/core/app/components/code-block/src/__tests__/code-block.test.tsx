@@ -38,6 +38,13 @@
  *     splits the strings, then the `.map()` checks `React.isValidElement(child)` which
  *     returns false for plain strings. The fallback returns "" for each string child.
  *     Fix = add an `else if (typeof child === "string")` branch before the empty return.
+ *
+ * BUG 4 (High): Copy button must call navigator.clipboard.writeText with the code content
+ *   - User scenario: User clicks the copy button on a code block. The code text should
+ *     be written to the clipboard.
+ *   - Regression it prevents: Copy button not working for normal single-child content
+ *   - Logic change: If handleCopy stops calling writeText or extractCodeFromChildren
+ *     returns empty for normal content.
  */
 import "@testing-library/jest-dom"
 import { render, screen, waitFor } from "@testing-library/react"
@@ -161,6 +168,39 @@ describe("CodeBlock bugs", () => {
       await waitFor(
         () => {
           expect(writeTextSpy).toHaveBeenCalledWith("const x = 1;\nconst y = 2;\n")
+        },
+        { timeout: 500 },
+      )
+    })
+  })
+
+  describe("BUG 4: copy button must write code to clipboard for normal content", () => {
+    it("calls navigator.clipboard.writeText with the code content", async () => {
+      const user = userEvent.setup()
+
+      const writeTextSpy = vi.fn().mockResolvedValue(undefined)
+      Object.defineProperty(navigator, "clipboard", {
+        value: { writeText: writeTextSpy },
+        configurable: true,
+      })
+
+      render(
+        <CodeBlock language="tsx">
+          <CodeBlock.Header />
+          <CodeBlock.Content>{"console.log('hello')"}</CodeBlock.Content>
+        </CodeBlock>,
+      )
+
+      await waitFor(() => {
+        expect(screen.getAllByRole("button").length).toBeGreaterThanOrEqual(1)
+      })
+
+      const [copyButton] = screen.getAllByRole("button")
+      await user.click(copyButton)
+
+      await waitFor(
+        () => {
+          expect(writeTextSpy).toHaveBeenCalledWith("console.log('hello')")
         },
         { timeout: 500 },
       )

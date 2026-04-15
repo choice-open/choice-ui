@@ -15,6 +15,13 @@
  *   - Logic change: chip.tsx lines 68-71. onClick handler has no disabled guard.
  *     disabled is destructured out and only used for visual styling. Fix = guard
  *     onClick with `if (disabled) return` and add `aria-disabled`.
+ *
+ * BUG 4: onRemove must fire when close button is clicked
+ *   - User scenario: User clicks the X button on a chip to remove it. The onRemove
+ *     callback should fire. If it doesn't, chips can never be removed.
+ *   - Regression it prevents: Chip close button not working
+ *   - Logic change: If the close button stops calling onRemove or if stopPropagation
+ *     prevents the event from reaching the handler.
  */
 import "@testing-library/jest-dom"
 import { fireEvent, render, screen } from "@testing-library/react"
@@ -59,6 +66,20 @@ describe("Chip bugs", () => {
 
       const chip = screen.getByText("React").closest("[aria-disabled]")
       expect(chip).toHaveAttribute("aria-disabled", "true")
+    })
+  })
+
+  describe("BUG 4: clicking close button must call onRemove", () => {
+    it("calls onRemove when the close button is clicked", async () => {
+      const onRemove = vi.fn()
+      const user = userEvent.setup()
+
+      render(<Chip onRemove={onRemove}>React</Chip>)
+
+      const closeButton = screen.getByRole("button", { hidden: true })
+      await user.click(closeButton)
+
+      expect(onRemove).toHaveBeenCalled()
     })
   })
 })

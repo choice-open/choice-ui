@@ -21,9 +21,17 @@
  *     "Disabled"}</span>` sits inside a role="presentation" div with no ARIA association.
  *     Fix = remove the sr-only span (aria-checked already conveys state), or connect it
  *     via aria-describedby on the input.
+ *
+ * BUG 3: Clicking the toggle must call onChange with the new value
+ *   - User scenario: User clicks the toggle switch. onChange should fire with the
+ *     opposite boolean value. If it was true, onChange receives false.
+ *   - Regression it prevents: Click not toggling the value
+ *   - Logic change: If the input's onChange handler stops firing or stops calling
+ *     the external onChange callback.
  */
 import "@testing-library/jest-dom"
-import { render, screen } from "@testing-library/react"
+import { fireEvent, render, screen } from "@testing-library/react"
+import userEvent from "@testing-library/user-event"
 import { describe, expect, it, vi } from "vitest"
 import { ToggleButton } from "../toggle-button"
 
@@ -78,6 +86,46 @@ describe("Toggle Button bugs", () => {
 
       const srOnly = container!.querySelector(".sr-only")
       expect(srOnly).toBeNull()
+    })
+  })
+
+  describe("BUG 3: clicking toggle must call onChange with new value", () => {
+    it("calls onChange(false) when clicking a toggle that is currently true", async () => {
+      const onChange = vi.fn()
+      const user = userEvent.setup()
+
+      render(
+        <ToggleButton
+          value={true}
+          onChange={onChange}
+        >
+          Toggle
+        </ToggleButton>,
+      )
+
+      const input = screen.getByRole("checkbox")
+      await user.click(input)
+
+      expect(onChange).toHaveBeenCalledWith(false)
+    })
+
+    it("calls onChange(true) when clicking a toggle that is currently false", async () => {
+      const onChange = vi.fn()
+      const user = userEvent.setup()
+
+      render(
+        <ToggleButton
+          value={false}
+          onChange={onChange}
+        >
+          Toggle
+        </ToggleButton>,
+      )
+
+      const input = screen.getByRole("checkbox")
+      await user.click(input)
+
+      expect(onChange).toHaveBeenCalledWith(true)
     })
   })
 })

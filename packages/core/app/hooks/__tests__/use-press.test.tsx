@@ -23,6 +23,14 @@
  *     `pointercancel`. When the pointer is cancelled, the cleanup listener never
  *     fires, leaving isPressed=true forever. Fix = also listen for `pointercancel`
  *     and set isPressed=false.
+ *
+ * BUG 3: disabled prop must prevent all press interactions
+ *   - User scenario: Developer renders a button with disabled=true. User clicks
+ *     it or presses Enter/Space. onPress, onPressStart, onPressEnd must not fire,
+ *     and isPressed must stay false.
+ *   - Regression it prevents: Press events firing on disabled elements
+ *   - Logic change: use-press.ts:22, 46-49, 63-65 — `!disabled` guard in all
+ *     three handlers. If any guard is removed, disabled elements become pressable.
  */
 import "@testing-library/jest-dom"
 import { act, render, screen } from "@testing-library/react"
@@ -120,6 +128,43 @@ describe("usePress bugs", () => {
         document.dispatchEvent(new MouseEvent("pointercancel", { bubbles: true }))
       })
 
+      expect(button).toHaveAttribute("data-pressed", "false")
+    })
+  })
+
+  describe("BUG 3: disabled must prevent all press interactions", () => {
+    it("does not fire callbacks or set isPressed when disabled", () => {
+      const onPress = vi.fn()
+      const onPressStart = vi.fn()
+      const onPressEnd = vi.fn()
+
+      render(
+        <PressableButton
+          disabled
+          onPress={onPress}
+          onPressStart={onPressStart}
+          onPressEnd={onPressEnd}
+        />,
+      )
+
+      const button = screen.getByTestId("pressable")
+
+      act(() => {
+        button.dispatchEvent(new MouseEvent("pointerdown", { bubbles: true }))
+      })
+      act(() => {
+        button.dispatchEvent(new MouseEvent("pointerup", { bubbles: true }))
+      })
+      act(() => {
+        button.dispatchEvent(new KeyboardEvent("keydown", { key: " ", bubbles: true }))
+      })
+      act(() => {
+        button.dispatchEvent(new KeyboardEvent("keyup", { key: " ", bubbles: true }))
+      })
+
+      expect(onPress).not.toHaveBeenCalled()
+      expect(onPressStart).not.toHaveBeenCalled()
+      expect(onPressEnd).not.toHaveBeenCalled()
       expect(button).toHaveAttribute("data-pressed", "false")
     })
   })

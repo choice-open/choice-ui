@@ -40,6 +40,16 @@
  *   - Logic change that makes it fail: switch.tsx line 124 sets
  *     `disabled={disabled || readOnly}` on the input element. Fix = use
  *     aria-readonly + tabIndex for readOnly mode instead of disabled.
+ *
+ * BUG 3.5: aria-describedby points to label element, causing double-announce
+ *   - User scenario: Screen reader encounters a switch with label "Dark Mode".
+ *     The label is announced once via native <label htmlFor> association, and
+ *     again via aria-describedby pointing to the same label text in a <span>.
+ *   - Regression it prevents: Confusing double-announcement for screen reader users
+ *   - Logic change: switch.tsx:96 sets `id={descriptionId}` on the label <span>,
+ *     and switch.tsx:135 sets `aria-describedby={descriptionId}` on the input.
+ *     The describedby points to the label content itself. Fix = only set
+ *     aria-describedby when an explicit description is provided, not for the label.
  */
 import "@testing-library/jest-dom"
 import { render, screen, fireEvent } from "@testing-library/react"
@@ -132,6 +142,28 @@ describe("Switch bugs", () => {
       const input = document.querySelector('input[type="checkbox"]') as HTMLInputElement
       await user.click(input)
       expect(onChange).not.toHaveBeenCalled()
+    })
+  })
+
+  describe("BUG 3.5: aria-describedby must not point to the label itself", () => {
+    it("does not set aria-describedby to the label span when only children are provided", () => {
+      render(
+        <Switch
+          value={true}
+          onChange={vi.fn()}
+        >
+          Dark Mode
+        </Switch>,
+      )
+
+      const input = document.querySelector('input[type="checkbox"]') as HTMLInputElement
+      const describedBy = input.getAttribute("aria-describedby")
+
+      if (describedBy) {
+        const describedByEl = document.getElementById(describedBy)
+        const textContent = describedByEl?.textContent?.trim()
+        expect(textContent).not.toBe("Dark Mode")
+      }
     })
   })
 })

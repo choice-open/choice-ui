@@ -20,6 +20,12 @@
  *   - Logic change: toggle-group.tsx:195 - `data-multiple={multiple ? "" : undefined}`
  *     is set but `aria-multiselectable` is not. Fix = add
  *     `aria-multiselectable={multiple || undefined}`.
+ *
+ * BUG 16: Clicking a ToggleGroup.Item must call onChange with updated value array
+ *   - User scenario: User clicks an unselected item in a ToggleGroup. The group's
+ *     onChange should fire with the new value array including the clicked item.
+ *   - Regression it prevents: Item clicks not updating group selection
+ *   - Logic change: If ToggleGroupItem's handleChange stops calling context.onChange.
  */
 import { fireEvent, render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
@@ -75,6 +81,48 @@ describe("Toggle Group bugs", () => {
 
       const group = screen.getByRole("group")
       expect(group).not.toHaveAttribute("aria-multiselectable")
+    })
+  })
+
+  describe("BUG 16: clicking item must call onChange with updated value", () => {
+    it("calls onChange with clicked item value when an unselected item is clicked", async () => {
+      const user = userEvent.setup()
+      const onChange = vi.fn()
+
+      render(
+        <ToggleGroup
+          value={[]}
+          onChange={onChange}
+        >
+          <ToggleGroup.Item value="a">A</ToggleGroup.Item>
+          <ToggleGroup.Item value="b">B</ToggleGroup.Item>
+        </ToggleGroup>,
+      )
+
+      const inputs = screen.getAllByRole("checkbox")
+      await user.click(inputs[0])
+
+      expect(onChange).toHaveBeenCalledWith(["a"])
+    })
+
+    it("calls onChange with removed item when a selected item is clicked again", async () => {
+      const user = userEvent.setup()
+      const onChange = vi.fn()
+
+      render(
+        <ToggleGroup
+          value={["a"]}
+          onChange={onChange}
+        >
+          <ToggleGroup.Item value="a">A</ToggleGroup.Item>
+          <ToggleGroup.Item value="b">B</ToggleGroup.Item>
+        </ToggleGroup>,
+      )
+
+      const inputs = screen.getAllByRole("checkbox")
+      await user.click(inputs[0])
+
+      expect(onChange).toHaveBeenCalledWith([])
     })
   })
 })

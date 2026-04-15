@@ -17,6 +17,15 @@
  *   - Logic change: label.tsx:34-39 — `{...rest}` spreads all props including
  *     `htmlFor` onto the Component, which may be `<legend>`.
  *     Fix = filter out `htmlFor` when `as="legend"`.
+ *
+ * BUG 3: default as="label" must preserve htmlFor attribute
+ *   - User scenario: Developer renders <Label htmlFor="name-input">Name</Label>.
+ *     The rendered <label> must have for="name-input" so clicking the label
+ *     focuses the associated input.
+ *   - Regression it prevents: htmlFor being accidentally filtered on label elements
+ *   - Logic change: label.tsx:36-37 — `as === "legend" ? restFiltered : rest`
+ *     returns full `rest` for label, including `htmlFor`. If the condition is
+ *     inverted or `restFiltered` always used, htmlFor is lost.
  */
 import "@testing-library/jest-dom"
 import { render, screen } from "@testing-library/react"
@@ -47,6 +56,16 @@ describe("Label bugs", () => {
       const legend = screen.getByText("Legend Text").closest("legend")
       expect(legend).toBeTruthy()
       expect(legend).not.toHaveAttribute("for")
+    })
+  })
+
+  describe("BUG 3: default as=label must preserve htmlFor attribute", () => {
+    it("passes htmlFor to the rendered label element", () => {
+      render(<Label htmlFor="name-input">Name</Label>)
+
+      const label = screen.getByText("Name").closest("label")
+      expect(label).toBeTruthy()
+      expect(label).toHaveAttribute("for", "name-input")
     })
   })
 })

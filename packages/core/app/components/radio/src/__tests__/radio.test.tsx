@@ -19,6 +19,21 @@
  *     radio.tsx line 101 sets `aria-describedby={ariaDescribedby || descriptionId}`.
  *     When no custom ariaDescribedby is provided, aria-describedby points to the label.
  *     Fix = only set aria-describedby when an explicit description or custom value exists.
+ *
+ * BUG 3: Clicking an unchecked radio must call onChange(true)
+ *   - User scenario: User clicks an unchecked radio button. The radio should become
+ *     selected and onChange should fire with true.
+ *   - Regression it prevents: Radio not selectable via click
+ *   - Logic change: If the input onChange handler stops firing or the checked guard
+ *     incorrectly prevents selection.
+ *
+ * BUG 4: readOnly sets disabled on the native input, making it unfocusable
+ *   - User scenario: Form with readOnly radio. User tabs through form fields but
+ *     the readOnly radio is skipped because disabled=true on the native input.
+ *   - Regression it prevents: readOnly radio becomes unreachable via keyboard navigation
+ *   - Logic change: radio.tsx:96 — `disabled={disabled || readOnly}` on the <input>.
+ *     This matches Switch's bug (switch.tsx:96). Fix = remove readOnly from disabled,
+ *     use aria-disabled={disabled || readOnly} only (already present on line 101).
  */
 import "@testing-library/jest-dom"
 import { render, screen } from "@testing-library/react"
@@ -86,6 +101,45 @@ describe("Radio bugs", () => {
         const tagName = describedByElement?.tagName.toLowerCase()
         expect(tagName).not.toBe("label")
       }
+    })
+  })
+
+  describe("BUG 3: clicking unchecked radio must call onChange(true)", () => {
+    it("calls onChange(true) when user clicks an unchecked radio", async () => {
+      const onChange = vi.fn()
+      const user = userEvent.setup()
+
+      render(
+        <Radio
+          value={false}
+          onChange={onChange}
+        >
+          Option A
+        </Radio>,
+      )
+
+      const radio = screen.getByRole("radio", { name: "Option A" })
+      await user.click(radio)
+
+      expect(onChange).toHaveBeenCalledWith(true)
+    })
+  })
+
+  describe("BUG 4: readOnly must not set disabled on the native input", () => {
+    it("readOnly radio remains focusable (not disabled)", () => {
+      render(
+        <Radio
+          value={true}
+          onChange={vi.fn()}
+          readOnly
+        >
+          Read Only
+        </Radio>,
+      )
+
+      const input = screen.getByRole("radio", { name: "Read Only" }) as HTMLInputElement
+      expect(input.disabled).toBe(false)
+      expect(input).toHaveAttribute("aria-disabled", "true")
     })
   })
 })

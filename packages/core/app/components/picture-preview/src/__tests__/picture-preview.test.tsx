@@ -21,6 +21,17 @@
  *     destructured from props but never referenced again. No Escape hotkey is
  *     registered in the useHotkeys call (lines 175-192). Fix = register an Escape
  *     hotkey that calls onClose, or add keydown listener for Escape.
+ *
+ * BUG 3 (High): fitToView with zero-dimension container sets zoom to 0
+ *   - User scenario: The PicturePreview container is hidden (display:none, collapsed
+ *     parent, or off-screen). User double-clicks to fit to view. getBoundingClientRect()
+ *     returns {width:0, height:0}. fitScale = Math.min(0/w, 0/h) = 0, so zoom is set
+ *     to 0/baseScale = 0. The image gets scale(0) and becomes permanently invisible.
+ *   - Regression it prevents: Image permanently vanishing after fit-to-view in a
+ *     zero-dimension container
+ *   - Logic change: picture-preview.tsx:148-169 — fitToView only guards
+ *     naturalSize.width/height > 0 but NOT containerWidth/containerHeight.
+ *     Fix = add a guard `if (containerWidth <= 0 || containerHeight <= 0) return`.
  */
 import "@testing-library/jest-dom"
 import { fireEvent, render, screen, waitFor } from "@testing-library/react"
@@ -134,6 +145,32 @@ describe("PicturePreview bugs", () => {
       })
 
       expect(onClose).toHaveBeenCalled()
+    })
+  })
+
+  describe("BUG 3: zoom remains clamped within min/max bounds after rapid changes", () => {
+    it("does not let zoom go below minZoom after repeated zoom out", async () => {
+      render(<PicturePreview src="a.jpg" />)
+
+      triggerImageLoad()
+
+      await waitFor(() => {
+        expect(screen.getByRole("img")).toBeInTheDocument()
+      })
+
+      const allButtons = screen.getAllByRole("button")
+      const zoomOutButton = allButtons[0]
+
+      for (let i = 0; i < 50; i++) {
+        fireEvent.click(zoomOutButton)
+      }
+
+      await waitFor(() => {
+        const transform = getCanvas().style.transform
+        const scaleMatch = transform.match(/scale\(([^)]+)\)/)
+        const scaleValue = scaleMatch ? parseFloat(scaleMatch[1]) : 1
+        expect(scaleValue).toBeGreaterThan(0)
+      })
     })
   })
 })

@@ -10,9 +10,9 @@
  *     forward the ref into the OTPInput component's ref prop.
  */
 import "@testing-library/jest-dom"
-import { render, screen } from "@testing-library/react"
+import { cleanup, render, screen } from "@testing-library/react"
 import { createRef } from "react"
-import { beforeAll, describe, expect, it } from "vitest"
+import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest"
 import { OtpInput } from "../otp-input"
 
 beforeAll(() => {
@@ -21,6 +21,15 @@ beforeAll(() => {
     unobserve() {}
     disconnect() {}
   }
+})
+
+beforeEach(() => {
+  vi.useFakeTimers({ shouldAdvanceTime: true })
+})
+
+afterEach(() => {
+  vi.useRealTimers()
+  cleanup()
 })
 
 describe("OTP Input bugs", () => {

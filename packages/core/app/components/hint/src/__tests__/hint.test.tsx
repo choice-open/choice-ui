@@ -27,6 +27,14 @@
  *   - Logic change: hint.tsx:38-43 - `Children.toArray(children).find(...)` only
  *     inspects top-level children. Fix = recursively search children or document
  *     that Trigger must be a direct child.
+ *
+ * BUG 7: disabled=true must prevent tooltip from opening on hover
+ *   - User scenario: Developer renders <Hint disabled> with a tooltip. User hovers
+ *     the trigger. The tooltip must NOT appear because the component is disabled.
+ *   - Regression it prevents: Tooltips appearing when they should be disabled
+ *   - Logic change: use-hint.ts:94-96 — `useHover` receives `enabled: !disabled`.
+ *     Also use-hint.ts:64-68 — useEffect closes any open tooltip when disabled
+ *     becomes true. If both guards break, tooltip opens even when disabled.
  */
 import "@testing-library/jest-dom"
 import { render, screen, waitFor } from "@testing-library/react"
@@ -104,6 +112,31 @@ describe("Hint bugs", () => {
 
       const triggers = screen.getAllByRole("button")
       expect(triggers.length).toBe(1)
+    })
+  })
+
+  describe("BUG 7: disabled=true must prevent tooltip from opening on hover", () => {
+    it("does not show tooltip when hovering a disabled hint", async () => {
+      const user = userEvent.setup()
+
+      render(
+        <Hint
+          delay={0}
+          disabled
+        >
+          <Hint.Content>Disabled tooltip</Hint.Content>
+        </Hint>,
+      )
+
+      const trigger = screen.getByRole("button")
+      await user.hover(trigger)
+
+      await waitFor(
+        () => {
+          expect(screen.queryByRole("tooltip")).not.toBeInTheDocument()
+        },
+        { timeout: 500 },
+      )
     })
   })
 })

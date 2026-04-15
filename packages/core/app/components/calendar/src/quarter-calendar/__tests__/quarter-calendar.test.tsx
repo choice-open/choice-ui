@@ -1,3 +1,4 @@
+import { vi } from "vitest"
 import { render, screen, fireEvent, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import "@testing-library/jest-dom"
@@ -46,7 +47,7 @@ describe("QuarterCalendar", () => {
 
     it("应该在点击季度时调用onChange", async () => {
       const user = userEvent.setup()
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
 
       render(
         <QuarterCalendar
@@ -112,7 +113,7 @@ describe("QuarterCalendar", () => {
 
     it("应该在内部管理状态", async () => {
       const user = userEvent.setup()
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
 
       render(
         <QuarterCalendar
@@ -168,7 +169,7 @@ describe("QuarterCalendar", () => {
 
     it("应该在点击导航按钮时调用onNavigate", async () => {
       const user = userEvent.setup()
-      const handleNavigate = jest.fn()
+      const handleNavigate = vi.fn()
 
       render(<QuarterCalendar onNavigate={handleNavigate} />)
 
@@ -207,7 +208,7 @@ describe("QuarterCalendar", () => {
 
     it("应该在点击今年按钮时跳转到当前年份", async () => {
       const user = userEvent.setup()
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
 
       render(
         <QuarterCalendar
@@ -276,7 +277,7 @@ describe("QuarterCalendar", () => {
 
     it("不应该选择禁用的季度", async () => {
       const user = userEvent.setup()
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
       const disabledQuarters = [{ quarter: 2, year: 2020 }]
 
       render(
@@ -334,7 +335,7 @@ describe("QuarterCalendar", () => {
 
     it("不应该在禁用状态下响应点击", async () => {
       const user = userEvent.setup()
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
 
       render(
         <QuarterCalendar
@@ -495,7 +496,7 @@ describe("QuarterCalendar", () => {
   describe("集成测试", () => {
     it("应该完整的季度选择流程", async () => {
       const user = userEvent.setup()
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
 
       const TestComponent = () => {
         const [currentYear, setCurrentYear] = React.useState(2020)

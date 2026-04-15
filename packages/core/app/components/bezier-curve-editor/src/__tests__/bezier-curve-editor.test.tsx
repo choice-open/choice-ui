@@ -21,7 +21,7 @@
  *     `cubic-bezier(${value[2]},${value[3]},${value[4]},${value[5]})`.
  */
 import "@testing-library/jest-dom"
-import { render } from "@testing-library/react"
+import { fireEvent, render } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 import { BezierCurveEditor } from "../bezier-curve-editor"
 
@@ -42,12 +42,6 @@ describe("BezierCurveEditor bugs", () => {
       const timingFn = (preview as Element).style.animationTimingFunction
       expect(timingFn).toBeTruthy()
 
-      // The expanded value is [0, 0, 0.42, 0, 0.58, 1, 1, 1].
-      // Control points are at indices [2..5]: 0.42, 0, 0.58, 1.
-      // cubic-bezier() CSS requires exactly 4 arguments.
-      //
-      // Buggy code produces: cubic-bezier(0,0,0.42,0,0.58,1,1,1) — 8 args, invalid
-      // Fixed code produces:  cubic-bezier(0.42,0,0.58,1)         — 4 args, valid
       const args = timingFn
         .match(/cubic-bezier\((.+)\)/)?.[1]
         .split(",")
@@ -55,6 +49,90 @@ describe("BezierCurveEditor bugs", () => {
 
       expect(args).toHaveLength(4)
       expect(args).toEqual(["0.42", "0", "0.58", "1"])
+    })
+  })
+
+  /**
+   * DISABLED POINTS: disabledPoints=[true,false] hides first handle line
+   *   User scenario: Developer renders editor with disabledPoints=[true, false].
+   *     The start handle line (interactive drag target) must NOT be rendered.
+   *   Regression it prevents: Disabled handle still rendered and interactive
+   *   Logic change: bezier-curve-editor-curve.tsx checks `disabledPoints[0] ? null : <line>`.
+   *     If this conditional breaks, disabled lines are still draggable.
+   */
+  describe("disabledPoints hides handle lines", () => {
+    it("does not render start handle line when disabledPoints[0] is true", () => {
+      render(
+        <BezierCurveEditor
+          allowNodeEditing
+          value={[0, 0, 0.42, 0, 0.58, 1, 1, 1]}
+          disabledPoints={[true, false]}
+        />,
+      )
+
+      const lines = document.querySelectorAll('line[data-slot="line"]')
+
+      lines.forEach((line) => {
+        const style = (line as HTMLElement).style
+        if (style.pointerEvents === "auto") {
+          const x1 = line.getAttribute("x1")
+          const y1 = line.getAttribute("y1")
+          expect(x1).not.toBe("0")
+        }
+      })
+    })
+
+    it("does not render start handle button when disabledPoints[0] is true", () => {
+      render(
+        <BezierCurveEditor
+          allowNodeEditing
+          value={[0, 0, 0.42, 0, 0.58, 1, 1, 1]}
+          disabledPoints={[true, false]}
+        />,
+      )
+
+      const startHandles = document.querySelectorAll('[data-slot="handle"][data-state="start"]')
+      expect(startHandles).toHaveLength(0)
+
+      const endHandles = document.querySelectorAll('[data-slot="handle"][data-state="end"]')
+      expect(endHandles).toHaveLength(1)
+    })
+  })
+
+  /**
+   * PREVIEW STATE: previewState changes between running/paused/hidden
+   *   User scenario: Preview is enabled. When no drag is happening, the preview circle
+   *     should have animationPlayState="running".
+   *   Regression it prevents: Preview always paused or always hidden
+   *   Logic change: previewState is "hidden" when enablePreview is false, "running" when
+   *     no drag is happening, "paused" during drag. If the logic breaks, the preview
+   *     circle has wrong play state.
+   */
+  describe("previewState", () => {
+    it("hides preview circle when enablePreview is not set", () => {
+      render(
+        <BezierCurveEditor
+          allowNodeEditing
+          value={[0, 0, 0.42, 0, 0.58, 1, 1, 1]}
+        />,
+      )
+
+      const preview = document.querySelector('[data-slot="preview"]')
+      expect(preview).toBeNull()
+    })
+
+    it("shows running preview when enablePreview is true and no drag is active", () => {
+      render(
+        <BezierCurveEditor
+          allowNodeEditing
+          value={[0, 0, 0.42, 0, 0.58, 1, 1, 1]}
+          enablePreview
+        />,
+      )
+
+      const preview = document.querySelector('[data-slot="preview"]')
+      expect(preview).not.toBeNull()
+      expect((preview as HTMLElement).style.animationPlayState).toBe("running")
     })
   })
 })

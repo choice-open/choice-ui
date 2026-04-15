@@ -20,6 +20,12 @@
  *   - Logic change that makes it fail: pagination-spinner.tsx lines 118-122: the onClick
  *     handler on the input wrapper checks `!isEditing` but never checks `disabled`.
  *     Fix = add `|| disabled` to the guard condition.
+ *
+ * BUG 3: Clicking prev/next must call onPageChange with correct page number
+ *   - User scenario: User is on page 5 and clicks "Next page". onPageChange should
+ *     fire with page 6. Clicks "Previous page" — should fire with page 4.
+ *   - Regression it prevents: Navigation buttons not triggering page change
+ *   - Logic change: If PaginationNavigation stops calling onPageChange on button click.
  */
 import "@testing-library/jest-dom"
 import { render, screen } from "@testing-library/react"
@@ -86,6 +92,26 @@ describe("Pagination bugs", () => {
       await user.click(pageNumber)
 
       expect(screen.queryByRole("spinbutton")).not.toBeInTheDocument()
+    })
+  })
+
+  describe("BUG 3: clicking prev/next must call onPageChange", () => {
+    it("calls onPageChange with next page when Next is clicked", async () => {
+      const user = userEvent.setup()
+      const { onPageChange } = renderPagination({ currentPage: 5 })
+
+      await user.click(screen.getByLabelText("Next page"))
+
+      expect(onPageChange).toHaveBeenCalledWith(6)
+    })
+
+    it("calls onPageChange with previous page when Previous is clicked", async () => {
+      const user = userEvent.setup()
+      const { onPageChange } = renderPagination({ currentPage: 5 })
+
+      await user.click(screen.getByLabelText("Previous page"))
+
+      expect(onPageChange).toHaveBeenCalledWith(4)
     })
   })
 })

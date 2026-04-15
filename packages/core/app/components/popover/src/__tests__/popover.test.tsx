@@ -99,6 +99,22 @@ describe("Popover bugs", () => {
    *     include `floatingRef.current`, but refs don't trigger React re-renders.
    *     The ESLint disable comment acknowledges this. Fix = use a callback ref
    *     pattern or a state-based approach to detect when the floating element mounts.
+   *
+   * BUG 6: Clicking trigger toggles popover open/close
+   *   - User scenario: User clicks a popover trigger button to open it, then clicks
+   *     again to close. The popover should appear and disappear accordingly.
+   *   - Regression it prevents: Trigger click not toggling popover visibility
+   *   - Logic change: If useClick stops toggling on mousedown or handleOpenChange
+   *     stops updating innerOpen.
+   *
+   * BUG 7: 200ms forceDismissed must not block controlled prop changes
+   *   - User scenario: Controlled popover. Application sets open=false then open=true
+   *     in rapid succession (e.g. switching tabs). The popover must reappear immediately.
+   *   - Regression it prevents: Controlled popover stuck in forceDismissed state
+   *   - Logic change: use-floating-popover.ts:157-165 — handleOpenChange(false) sets
+   *     forceDismissed=true with 200ms timer. But useMergedValue syncs from the `open`
+   *     prop via useEffect, bypassing handleOpenChange. If useMergedValue behavior
+   *     changes to route through handleOpenChange, this test catches the regression.
    */
   describe("BUG: useDrag does not detect floatingRef.current changes", () => {
     it("resets drag state when floating element remounts after close/reopen", async () => {
@@ -157,6 +173,77 @@ describe("Popover bugs", () => {
       expect(popoverElAfter).toBeTruthy()
       const styleAfter = popoverElAfter?.getAttribute("style")
       expect(styleAfter).toBe(styleBefore)
+    })
+  })
+
+  describe("BUG 6: clicking trigger toggles popover open/close", () => {
+    it("opens popover on first trigger click and closes on second", async () => {
+      const { Popover } = await import("../popover")
+      const user = userEvent.setup()
+
+      render(
+        <Popover>
+          <Popover.Trigger>
+            <button>Toggle</button>
+          </Popover.Trigger>
+          <Popover.Content>
+            <div data-testid="popover-body">Body</div>
+          </Popover.Content>
+        </Popover>,
+      )
+
+      expect(screen.queryByTestId("popover-body")).not.toBeInTheDocument()
+
+      await user.click(screen.getByText("Toggle"))
+
+      await waitFor(() => {
+        expect(screen.getByTestId("popover-body")).toBeInTheDocument()
+      })
+
+      await user.click(screen.getByText("Toggle"))
+
+      await waitFor(() => {
+        expect(screen.queryByTestId("popover-body")).not.toBeInTheDocument()
+      })
+    })
+  })
+
+  describe("BUG 7: 200ms forceDismissed dead zone must not block controlled reopen", () => {
+    it("allows controlled popover to reopen immediately after close", async () => {
+      const { Popover } = await import("../popover")
+      const user = userEvent.setup()
+
+      const TestComp = ({ open }: { open: boolean }) => (
+        <Popover open={open}>
+          <Popover.Trigger>
+            <button>Trigger</button>
+          </Popover.Trigger>
+          <Popover.Content>
+            <div data-testid="popover-body">Body</div>
+          </Popover.Content>
+        </Popover>
+      )
+
+      const { rerender } = render(<TestComp open={true} />)
+
+      await waitFor(() => {
+        expect(screen.getByTestId("popover-body")).toBeInTheDocument()
+      })
+
+      rerender(<TestComp open={false} />)
+
+      await waitFor(() => {
+        expect(screen.queryByTestId("popover-body")).not.toBeInTheDocument()
+      })
+
+      rerender(<TestComp open={true} />)
+
+      await waitFor(
+        () => {
+          expect(screen.getByTestId("popover-body")).toBeInTheDocument()
+        },
+        { timeout: 250 },
+      )
     })
   })
 })

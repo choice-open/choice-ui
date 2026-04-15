@@ -35,6 +35,21 @@
  *   - Logic change: tab-item.tsx lines 48, 61. `if (contextReadOnly) return` exits
  *     before calling user's onMouseDown/onKeyDown. Compare with disabled mode which
  *     still calls user handlers. Fix = only suppress onChange, not user handlers.
+ *
+ * BUG 8: disabled prop on parent Tabs must prevent tab activation
+ *   - User scenario: Developer renders <Tabs disabled><Tabs.Item value="b">B</Tabs.Item></Tabs>.
+ *     User clicks tab B. onChange must not fire because the Tabs container is disabled.
+ *   - Regression it prevents: Clicking disabled tabs still changing the active tab
+ *   - Logic change: tab-item.tsx:56 — `if (!contextDisabled && !disabled)` guard.
+ *     If removed, disabled tabs respond to clicks.
+ *
+ * BUG 9: Enter and Space keys must activate a tab
+ *   - User scenario: Keyboard user navigates to a tab and presses Enter or Space.
+ *     The tab should activate (onChange fires).
+ *   - Regression it prevents: Keyboard activation of tabs broken
+ *   - Logic change: tab-item.tsx:71 — `if (!contextDisabled && !disabled &&
+ *     (e.key === "Enter" || e.key === " "))` calls onChange. If guard breaks,
+ *     keyboard can't activate tabs.
  */
 import "@testing-library/jest-dom"
 import { fireEvent, render, screen } from "@testing-library/react"
@@ -164,6 +179,71 @@ describe("TabItem bugs", () => {
       await user.click(tabB)
 
       expect(onMouseDown).toHaveBeenCalled()
+    })
+  })
+
+  describe("BUG 8: disabled Tabs must not activate on click", () => {
+    it("does not fire onChange when the Tabs container is disabled", async () => {
+      const onChange = vi.fn()
+      const user = userEvent.setup()
+
+      render(
+        <Tabs
+          value="a"
+          onChange={onChange}
+          disabled
+        >
+          <Tabs.Item value="a">Tab A</Tabs.Item>
+          <Tabs.Item value="b">Tab B</Tabs.Item>
+        </Tabs>,
+      )
+
+      await user.click(screen.getByRole("tab", { name: "Tab B" }))
+      expect(onChange).not.toHaveBeenCalled()
+    })
+  })
+
+  describe("BUG 9: Enter and Space keys must activate a tab", () => {
+    it("fires onChange when Enter is pressed on a focused tab", async () => {
+      const onChange = vi.fn()
+      const user = userEvent.setup()
+
+      render(
+        <Tabs
+          value="a"
+          onChange={onChange}
+        >
+          <Tabs.Item value="a">Tab A</Tabs.Item>
+          <Tabs.Item value="b">Tab B</Tabs.Item>
+        </Tabs>,
+      )
+
+      const tabB = screen.getByRole("tab", { name: "Tab B" })
+      tabB.focus()
+      await user.keyboard("{Enter}")
+
+      expect(onChange).toHaveBeenCalledWith("b")
+    })
+
+    it("fires onChange when Space is pressed on a focused tab", async () => {
+      const onChange = vi.fn()
+      const user = userEvent.setup()
+
+      render(
+        <Tabs
+          value="a"
+          onChange={onChange}
+        >
+          <Tabs.Item value="a">Tab A</Tabs.Item>
+          <Tabs.Item value="b">Tab B</Tabs.Item>
+        </Tabs>,
+      )
+
+      const tabB = screen.getByRole("tab", { name: "Tab B" })
+      tabB.focus()
+      await user.keyboard(" ")
+
+      expect(onChange).toHaveBeenCalledWith("b")
     })
   })
 })

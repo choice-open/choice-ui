@@ -28,9 +28,16 @@
  *     imageLoadedError only initialize once. No useEffect resets them when photo changes.
  *     The condition `photo && !imageLoadedError` (line 62) stays false.
  *     Fix = add useEffect to reset imageLoadedError=false when photo changes.
+ *
+ * BUG 10: Image onError must trigger fallback rendering
+ *   - User scenario: Avatar is given a broken photo URL. The image fails to load.
+ *     The avatar should transition to showing the initial letter fallback.
+ *   - Regression it prevents: Broken image showing forever instead of fallback
+ *   - Logic change: If onError stops setting imageLoadedError or the fallback
+ *     condition breaks.
  */
 import "@testing-library/jest-dom"
-import { render, screen } from "@testing-library/react"
+import { act, fireEvent, render, screen } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 import { Avatar } from "../avatar"
 
@@ -82,6 +89,26 @@ describe("Avatar bugs", () => {
       const newImg = screen.queryByRole("img")
       expect(newImg).toBeTruthy()
       expect(newImg).toHaveAttribute("src", "/valid.jpg")
+    })
+  })
+
+  describe("BUG 10: image error must trigger fallback rendering", () => {
+    it("shows fallback after image fails to load", () => {
+      render(
+        <Avatar
+          photo="/broken.jpg"
+          name="John"
+        />,
+      )
+
+      const img = screen.getByRole("img")
+      expect(img).toHaveAttribute("src", "/broken.jpg")
+
+      act(() => {
+        fireEvent.error(img)
+      })
+
+      expect(screen.queryByRole("img")).toBeNull()
     })
   })
 })

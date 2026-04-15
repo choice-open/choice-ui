@@ -24,9 +24,15 @@
  *   - Regression it prevents: Non-collapsible panels incorrectly announced as expandable
  *   - Logic change: panel.tsx:126 — `aria-expanded={!isCollapsed}` always rendered.
  *     Fix = `aria-expanded={collapsible ? !isCollapsed : undefined}`.
+ *
+ * BUG 4: Mousedown on collapsible panel title toggles collapse state
+ *   - User scenario: User mousedowns on a collapsible panel title area. The panel
+ *     should toggle between collapsed and expanded states via onCollapsedChange.
+ *   - Regression it prevents: Panel not responding to title area mousedown for collapse
+ *   - Logic change: If panel-title.tsx handleMouseDown stops calling onCollapsedChange.
  */
 import "@testing-library/jest-dom"
-import { render, screen } from "@testing-library/react"
+import { fireEvent, render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { describe, expect, it, vi } from "vitest"
 import { Panel } from "../panel"
@@ -90,6 +96,46 @@ describe("Panel bugs", () => {
 
       const panelDiv = container.querySelector("[aria-expanded]")
       expect(panelDiv).toBeNull()
+    })
+  })
+
+  describe("BUG 4: mousedown on collapsible title toggles collapse state", () => {
+    it("calls onCollapsedChange(true) when expanded panel title is mousedowned", () => {
+      const onCollapsedChange = vi.fn()
+
+      render(
+        <Panel
+          collapsible
+          isCollapsed={false}
+          onCollapsedChange={onCollapsedChange}
+        >
+          <Panel.Title title="Settings" />
+        </Panel>,
+      )
+
+      const button = screen.getByRole("button")
+      fireEvent.mouseDown(button)
+
+      expect(onCollapsedChange).toHaveBeenCalledWith(true)
+    })
+
+    it("calls onCollapsedChange(false) when collapsed panel title is mousedowned", () => {
+      const onCollapsedChange = vi.fn()
+
+      render(
+        <Panel
+          collapsible
+          isCollapsed={true}
+          onCollapsedChange={onCollapsedChange}
+        >
+          <Panel.Title title="Settings" />
+        </Panel>,
+      )
+
+      const button = screen.getByRole("button")
+      fireEvent.mouseDown(button)
+
+      expect(onCollapsedChange).toHaveBeenCalledWith(false)
     })
   })
 })

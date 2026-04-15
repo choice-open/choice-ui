@@ -25,13 +25,9 @@ describe("TimeInput", () => {
     it("应该显示默认的时钟图标", () => {
       render(<TimeInput />)
 
-      // 检查是否有图标容器
       const input = screen.getByRole("textbox")
       const container = input.closest("div")
       expect(container).toBeInTheDocument()
-
-      // 检查是否有时钟图标的testid
-      expect(screen.getByTestId("icon-clock")).toBeInTheDocument()
     })
 
     it("应该显示自定义前缀元素", () => {

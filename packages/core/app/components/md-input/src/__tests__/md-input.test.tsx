@@ -24,12 +24,22 @@
  *     branch of insertListPrefix delegates to `insertText(prefix, onChange)` which uses
  *     selectionStart as insertion point. If changed to compute the line start index and
  *     insert there, this test passes. Reverting to using selectionStart makes it fail.
+ *
+ * BUG 3 (High): Mention replacement must replace @query, not just append
+ *   - User scenario: User types "hello @jo" and selects "John" from the mention dropdown.
+ *     Expected: "hello @John " with "@jo" replaced. If replacement logic breaks,
+ *     result could be "hello @jo@John " (appended) or "hello @John " with wrong cursor.
+ *   - Regression it prevents: Mention selection corrupting text
+ *   - Logic change: use-markdown-mentions.ts:182-188 — handleSelect splits at
+ *     mentionStart (position of @) and cursorPosition, then inserts the replacement.
+ *     If mentionStart is wrong (e.g., null), the @query is not removed.
  */
 import "@testing-library/jest-dom"
-import { createEvent, fireEvent, render, screen } from "@testing-library/react"
+import { act, createEvent, fireEvent, render, screen, waitFor } from "@testing-library/react"
 import React, { forwardRef, useImperativeHandle, useRef } from "react"
 import { beforeAll, describe, expect, it, vi } from "vitest"
 import { useMarkdownFormatting } from "../hooks/use-markdown-formatting"
+import { useMarkdownMentions } from "../hooks/use-markdown-mentions"
 import { useMarkdownShortcuts } from "../hooks/use-markdown-shortcuts"
 
 beforeAll(() => {
@@ -82,6 +92,40 @@ const FormattingEditor = forwardRef<FormattingHandle, { defaultValue?: string }>
   },
 )
 
+interface MentionHandle {
+  handleInputChange: (
+    value: string,
+    textarea: HTMLTextAreaElement,
+    onChange?: (value: string) => void,
+  ) => void
+  handleSelect: (item: { id: string; label: string }) => void
+}
+
+const MentionEditor = forwardRef<
+  MentionHandle,
+  { defaultValue?: string; onChange?: (value: string) => void }
+>(function MentionEditor(props, ref) {
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const { handleInputChange, handleSelect, setTextareaRef } = useMarkdownMentions({
+    items: [
+      { id: "john", label: "John" },
+      { id: "jane", label: "Jane" },
+      { id: "bob", label: "Bob" },
+    ],
+    onChange: props.onChange,
+  })
+  useImperativeHandle(ref, () => ({ handleInputChange, handleSelect }))
+  return (
+    <textarea
+      ref={(el) => {
+        textareaRef.current = el
+        setTextareaRef(el)
+      }}
+      defaultValue={props.defaultValue}
+    />
+  )
+})
+
 describe("MdInput bugs", () => {
   describe("BUG 1 (High): Cmd+1-6 shortcuts prevent browser tab switching", () => {
     it("calls preventDefault on Cmd+1 through Cmd+6, blocking the browser's native tab-switching shortcuts", () => {
@@ -115,6 +159,41 @@ describe("MdInput bugs", () => {
       ref.current!.insertListPrefix("- ", onChange)
 
       expect(onChange).toHaveBeenCalledWith("- hello world")
+    })
+  })
+
+  describe("BUG 3: mention replacement replaces @query with selected item", () => {
+    it("replaces @jo with @John when John is selected from dropdown", async () => {
+      const ref = React.createRef<MentionHandle>()
+      const onChange = vi.fn()
+
+      render(
+        <MentionEditor
+          ref={ref}
+          onChange={onChange}
+        />,
+      )
+
+      const textarea = screen.getByRole("textbox") as HTMLTextAreaElement
+      textarea.value = "hello @jo"
+      textarea.selectionStart = 9
+      textarea.selectionEnd = 9
+
+      act(() => {
+        ref.current!.handleInputChange("hello @jo", textarea)
+      })
+
+      await waitFor(() => {
+        expect(ref.current).toBeTruthy()
+      })
+
+      act(() => {
+        ref.current!.handleSelect({ id: "john", label: "John" })
+      })
+
+      expect(onChange).toHaveBeenCalledWith("hello @John ")
+      expect(textarea.value).toBe("hello @John ")
+      expect(textarea.selectionStart).toBe("hello @John ".length)
     })
   })
 })

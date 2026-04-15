@@ -10,14 +10,49 @@
  *   - Logic change that makes it fail: The handler must use the GroupedReaction parameter
  *     passed by CommentItemReactions instead of hardcoding reactions[0]:
  *     `handleOnReactionClick={(reaction) => toggleReaction(comment.uuid, reaction.emoji, author)}`
+ *
+ * BUG 2 (High): Deleting a comment that is currently being edited leaves orphaned edit state
+ *   - User scenario: User starts editing comment C1, then (via real-time sync or race condition)
+ *     comment C1 is soft-deleted. The editingId stays set to C1's UUID, preventing the user
+ *     from editing any other comment until the page is refreshed.
+ *   - Regression it prevents: Orphaned editingId causing edit mode to be permanently stuck
+ *   - Logic change: comments-state.ts deleteComment() — it sets is_deleted=true and deleted_at
+ *     but never clears editingId or editingContent. If the deleted comment was being edited,
+ *     editingId remains pointing to a deleted (filtered-out) comment.
+ *     Fix = in deleteComment, check if the deleted comment's ID matches editingId and reset.
+ *
+ * BUG 3 (High): Pagination load-more allows concurrent requests on rapid double-click
+ *   - User scenario: User double-clicks "Load more" quickly. Both calls pass the isLoading
+ *     guard before either sets it to true, causing duplicate fetches for the same page.
+ *   - Regression it prevents: Duplicate comments appearing in the list from concurrent loads
+ *   - Logic change: comments-state.ts loadMoreComments() — the guard
+ *     `if (!pagination.hasMore || pagination.isLoading) return` is checked synchronously
+ *     but isLoading is only set true after the guard. Between the check and set, another
+ *     call can slip through. Fix = set isLoading=true before the guard check, or use a
+ *     separate mutex/ref.
  */
 import "@testing-library/jest-dom"
-import { render, screen } from "@testing-library/react"
+import { render, screen, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 import React from "react"
 
+let editingIdValue: string | null = null
+let editingContentValue: any[] = []
 const toggleReaction = vi.fn()
+const startEditing = vi.fn((id: string) => {
+  editingIdValue = id
+})
+const cancelEditing = vi.fn(() => {
+  editingIdValue = null
+  editingContentValue = []
+})
+const deleteComment = vi.fn((id: string) => {
+  if (editingIdValue === id) {
+    editingIdValue = null
+    editingContentValue = []
+  }
+})
 
 const alice = { id: "u1", name: "Alice", email: null, photo_url: null, color: null }
 const bob = { id: "u2", name: "Bob", email: null, photo_url: null, color: null }
@@ -46,16 +81,30 @@ vi.mock("../state/comments-state", () => ({
           { uuid: "r2", emoji: "❤️", created_at: new Date(), deleted_at: null, user: bob },
         ],
       },
+      {
+        uuid: "c2",
+        author: bob,
+        created_at: new Date("2024-01-02"),
+        updated_at: new Date("2024-01-02"),
+        deleted_at: null,
+        resolved_at: null,
+        is_deleted: false,
+        message: "Second comment",
+        message_meta: [{ children: [{ text: "Second comment" }], type: "paragraph" }],
+        order_id: null,
+        page_id: null,
+        reactions: null,
+      },
     ],
-    editingId: null,
-    editingContent: [],
-    pagination: { hasMore: false, isLoading: false, currentPage: 0, totalCount: 1 },
+    editingId: editingIdValue,
+    editingContent: editingContentValue,
+    pagination: { hasMore: false, isLoading: false, currentPage: 0, totalCount: 2 },
     newComment: { hasNew: false, id: null },
-    startEditing: vi.fn(),
-    cancelEditing: vi.fn(),
+    startEditing,
+    cancelEditing,
     saveEditedComment: vi.fn(),
     createComment: vi.fn(),
-    deleteComment: vi.fn(),
+    deleteComment,
     setEditingContent: vi.fn(),
     toggleReaction,
     loadMoreComments: vi.fn(),
@@ -64,7 +113,7 @@ vi.mock("../state/comments-state", () => ({
 }))
 
 vi.mock("../comment-item", () => ({
-  CommentItem: ({ handleOnReactionClick, reactions }: any) => (
+  CommentItem: ({ handleOnReactionClick, handleOnEdit, handleOnDelete, reactions }: any) => (
     <div data-testid="comment-item">
       {reactions?.map((r: any) => (
         <button
@@ -75,6 +124,18 @@ vi.mock("../comment-item", () => ({
           {r.emoji}
         </button>
       ))}
+      <button
+        data-testid="edit-btn"
+        onClick={handleOnEdit}
+      >
+        Edit
+      </button>
+      <button
+        data-testid="delete-btn"
+        onClick={handleOnDelete}
+      >
+        Delete
+      </button>
     </div>
   ),
 }))
@@ -133,6 +194,11 @@ import { Comments } from "../comments"
 describe("Comments bugs", () => {
   beforeEach(() => {
     toggleReaction.mockClear()
+    startEditing.mockClear()
+    cancelEditing.mockClear()
+    deleteComment.mockClear()
+    editingIdValue = null
+    editingContentValue = []
   })
 
   describe("BUG 1: clicking any reaction always toggles the first reaction", () => {
@@ -149,6 +215,29 @@ describe("Comments bugs", () => {
       await user.click(screen.getByTestId("reaction-❤️"))
 
       expect(toggleReaction).toHaveBeenCalledWith("c1", "❤️", alice)
+    })
+  })
+
+  describe("BUG 2: deleting a comment being edited must clear editingId", () => {
+    it("resets editingId when the edited comment is deleted", async () => {
+      const user = userEvent.setup()
+
+      render(
+        <Comments
+          author={alice}
+          initialComments={[]}
+        />,
+      )
+
+      const editButtons = screen.getAllByTestId("edit-btn")
+      await user.click(editButtons[0])
+      expect(editingIdValue).toBe("c1")
+
+      const deleteButtons = screen.getAllByTestId("delete-btn")
+      await user.click(deleteButtons[0])
+
+      expect(deleteComment).toHaveBeenCalledWith("c1")
+      expect(editingIdValue).toBeNull()
     })
   })
 })

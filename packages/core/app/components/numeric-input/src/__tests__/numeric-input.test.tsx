@@ -17,6 +17,13 @@
  *   - Logic change: use-numeric-input.ts:240-266 - onPressStart has both a
  *     conditional call with nativeEvent AND an unconditional fallback call.
  *     Same for onPressEnd. Fix = keep only one call path.
+ *
+ * BUG 3: ArrowUp/ArrowDown must update the displayed value
+ *   - User scenario: User presses ArrowUp to increment from 5 to 6. The display
+ *     should show "6" but stays at "5" if updateValue doesn't trigger onChange.
+ *   - Regression it prevents: Keyboard step not reflected in the input value
+ *   - Logic change: If use-input-interactions.ts stops calling updateValue or
+ *     updateValue stops calling onChange, the displayed value won't update.
  */
 import "@testing-library/jest-dom"
 import { act, fireEvent, render, screen } from "@testing-library/react"
@@ -108,6 +115,54 @@ describe("Numeric Input bugs", () => {
       })
 
       expect(onPressStart).toHaveBeenCalledTimes(1)
+    })
+  })
+
+  describe("BUG 3: ArrowUp/ArrowDown must update value via onChange", () => {
+    it("calls onChange with incremented value on ArrowUp", () => {
+      const onChange = vi.fn()
+
+      render(
+        <NumericInput
+          value={5}
+          step={1}
+          onChange={onChange}
+        />,
+      )
+
+      const input = screen.getByRole("textbox")
+      input.focus()
+
+      act(() => {
+        fireEvent.keyDown(input, { key: "ArrowUp" })
+      })
+
+      expect(onChange).toHaveBeenCalled()
+      const lastCall = onChange.mock.calls[onChange.mock.calls.length - 1]
+      expect(lastCall[0]).toBe(6)
+    })
+
+    it("calls onChange with decremented value on ArrowDown", () => {
+      const onChange = vi.fn()
+
+      render(
+        <NumericInput
+          value={5}
+          step={1}
+          onChange={onChange}
+        />,
+      )
+
+      const input = screen.getByRole("textbox")
+      input.focus()
+
+      act(() => {
+        fireEvent.keyDown(input, { key: "ArrowDown" })
+      })
+
+      expect(onChange).toHaveBeenCalled()
+      const lastCall = onChange.mock.calls[onChange.mock.calls.length - 1]
+      expect(lastCall[0]).toBe(4)
     })
   })
 })

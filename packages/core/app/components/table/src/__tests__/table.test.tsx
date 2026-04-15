@@ -23,7 +23,7 @@
  *     `aria-rowcount={rows.length + 1}`.
  */
 import "@testing-library/jest-dom"
-import { act, render, screen, waitFor } from "@testing-library/react"
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 import React, { useRef } from "react"
 
@@ -106,6 +106,12 @@ describe("Table bugs", () => {
    *     only syncs scrollLeft for the header but never calls the user's onScroll callback.
    *     ExternalScrollBody (lines 224-296) similarly skips onScroll. Fix = forward scroll
    *     events to onScroll in both WindowScrollBody and ExternalScrollBody.
+   *
+   * BUG 6: Clicking a row checkbox must trigger onSelectionChange
+   *   - User scenario: Table has selectionMode="multiple", user clicks the checkbox
+   *     in a row. onSelectionChange should fire with the selected row's key.
+   *   - Regression it prevents: Checkbox click not updating selection state
+   *   - Logic change: If handleCheckboxClick stops calling toggleRowSelection.
    */
   describe("BUG: onScroll ignored in window scroll mode", () => {
     it("should call onScroll when scrollMode is window and user scrolls", async () => {
@@ -134,6 +140,44 @@ describe("Table bugs", () => {
       window.dispatchEvent(new Event("scroll"))
 
       expect(onScroll).toHaveBeenCalled()
+    })
+  })
+
+  describe("BUG 6: clicking row checkbox must trigger onSelectionChange", () => {
+    it("fires onSelectionChange with the row key when checkbox is clicked", async () => {
+      const { Table } = await import("../table")
+
+      type Row = { id: string; name: string }
+      const onSelectionChange = vi.fn()
+
+      const data: Row[] = [
+        { id: "a", name: "Alpha" },
+        { id: "b", name: "Beta" },
+      ]
+
+      render(
+        <Table
+          data={data}
+          getRowKey={(row: Row) => row.id}
+          selectable
+          selectionMode="multiple"
+          onSelectionChange={onSelectionChange}
+          columns={[{ id: "name", header: "Name", accessorKey: "name" }]}
+        />,
+      )
+
+      expect(screen.getByText("Alpha")).toBeInTheDocument()
+
+      const checkboxes = screen.getAllByRole("checkbox")
+      expect(checkboxes.length).toBeGreaterThanOrEqual(1)
+
+      act(() => {
+        fireEvent.click(checkboxes[0])
+      })
+
+      expect(onSelectionChange).toHaveBeenCalled()
+      const lastCall = onSelectionChange.mock.calls[onSelectionChange.mock.calls.length - 1]
+      expect(lastCall[0]).toContain("a")
     })
   })
 })

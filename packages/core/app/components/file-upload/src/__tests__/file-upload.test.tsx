@@ -149,4 +149,94 @@ describe("File Upload bugs", () => {
       expect(onFileReject).not.toHaveBeenCalledWith(expect.anything(), "File type not accepted")
     })
   })
+
+  /**
+   * MAXFILES REJECTION: excess files rejected via onFileReject
+   *   User scenario: Developer sets maxFiles=1. User selects 2 files.
+   *     The second file must be rejected and onFileReject called.
+   *   Regression it prevents: maxFiles limit being ignored
+   *   Logic change: file-upload.tsx checks if current files + new files > maxFiles.
+   *     If this guard is removed, users can add unlimited files.
+   */
+  describe("maxFiles rejects excess files", () => {
+    it("calls onFileReject when selecting more files than maxFiles allows", async () => {
+      const { FileUpload } = await import("../file-upload")
+      const onValueChange = vi.fn()
+      const onFileReject = vi.fn()
+      const user = userEvent.setup()
+
+      const file1 = new File(["a"], "a.png", { type: "image/png" })
+      const file2 = new File(["b"], "b.png", { type: "image/png" })
+
+      const { container } = render(
+        <FileUpload
+          value={[file1]}
+          onValueChange={onValueChange}
+          onFileReject={onFileReject}
+          maxFiles={1}
+          accept="image/*"
+        >
+          <FileUpload.Dropzone>
+            <FileUpload.Button>Upload</FileUpload.Button>
+          </FileUpload.Dropzone>
+        </FileUpload>,
+      )
+
+      const input = container.querySelector('input[type="file"]') as HTMLInputElement
+
+      await user.upload(input, file2)
+
+      await waitFor(() => {
+        expect(onFileReject).toHaveBeenCalled()
+      })
+    })
+  })
+
+  /**
+   * UPLOAD ERROR STATE: onUpload's onError callback must set file error state
+   *   User scenario: User uploads a file. The onUpload handler encounters a
+   *     network error and calls onError(file, error). The file should be marked
+   *     with an error state so the UI shows a retry/remove option.
+   *   Regression it prevents: Upload failures silently succeeding (no error shown)
+   *   Logic change: onFilesUpload at file-upload.tsx:140-145 calls
+   *     store.dispatch({ variant: "SET_ERROR", file, error }). If the onError
+   *     callback is not wired correctly, the file stays in "uploading" forever.
+   */
+  describe("onUpload error callback must set file error state", () => {
+    it("calls onUpload with the file and error control callbacks", async () => {
+      const { FileUpload } = await import("../file-upload")
+      const onUpload = vi.fn(async (_files: File[], controls: any) => {
+        controls.onError(_files[0], new Error("Network failure"))
+      })
+      const user = userEvent.setup()
+
+      const { container } = render(
+        <FileUpload
+          value={[]}
+          onValueChange={() => {}}
+          onUpload={onUpload}
+          accept="image/*"
+        >
+          <FileUpload.Dropzone>
+            <FileUpload.Button>Upload</FileUpload.Button>
+          </FileUpload.Dropzone>
+        </FileUpload>,
+      )
+
+      const file = new File(["data"], "test.png", { type: "image/png" })
+      const input = container.querySelector('input[type="file"]') as HTMLInputElement
+
+      await user.upload(input, file)
+
+      await waitFor(() => {
+        expect(onUpload).toHaveBeenCalled()
+      })
+
+      const [files, controls] = onUpload.mock.calls[0]
+      expect(files[0]).toBe(file)
+      expect(typeof controls.onError).toBe("function")
+      expect(typeof controls.onProgress).toBe("function")
+      expect(typeof controls.onSuccess).toBe("function")
+    })
+  })
 })

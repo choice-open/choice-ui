@@ -12,12 +12,23 @@
  *     because items register asynchronously via useEffect in stackflow-item.tsx:19-21.
  *     currentId stays "" forever. Fix = add a useEffect that auto-selects the first
  *     item when items populate and currentId is falsy.
+ *
+ * BUG 2 (High): back() then push() permanently destroys forward history
+ *   - User scenario: User navigates A → B → C, goes back to B, then pushes D.
+ *     The forward item C is now preserved in history (truncated only by push).
+ *     This matches standard browser navigation behavior.
+ *   - Regression it prevents: Irreversible navigation loss in multi-step flows
+ *   - Logic change: hooks/use-stackflow.ts — back() now decrements currentIndex
+ *     instead of popping from history. push() truncates forward entries after
+ *     currentIndex and appends. If this cursor logic is removed, the bug returns.
  */
 import "@testing-library/jest-dom"
 import { render, screen, waitFor, act } from "@testing-library/react"
+import userEvent from "@testing-library/user-event"
 import { describe, expect, it, vi } from "vitest"
 import React from "react"
 import { Stackflow } from "../stackflow"
+import { useStackflowContext } from "../context"
 
 vi.mock("framer-motion", () => ({
   AnimatePresence: ({ children }: any) => children,
@@ -48,17 +59,6 @@ describe("Stackflow bugs", () => {
     })
   })
 
-  /**
-   * BUG: StackflowItem return null prevents exit animation
-   *   - User scenario: User is viewing item "B" and navigates back to item "A".
-   *     Item "B" should play an exit animation before being removed from the DOM.
-   *   - Regression it prevents: Items disappear instantly with no animation when
-   *     switching away, making the UI feel broken/jarring.
-   *   - Logic change that makes it fail: In stackflow-item.tsx:26, `if (!isActive) return null`
-   *     immediately unmounts the component, so the AnimatePresence exit animation
-   *     never renders. Fix = always render the motion.div and let AnimatePresence
-   *     handle mount/unmount via its children callback pattern.
-   */
   describe("BUG: StackflowItem return null prevents exit animation", () => {
     it("should render both items during transition so exit animation can play", async () => {
       const TestComponent = () => {
@@ -106,6 +106,127 @@ describe("Stackflow bugs", () => {
 
       const firstContent = screen.queryByTestId("first-content")
       expect(firstContent).toBeInTheDocument()
+    })
+  })
+})
+
+describe("useStackflow hook bugs", () => {
+  describe("BUG 2: back() then push() destroys forward history", () => {
+    it("preserves forward history: navigating A→B→C→back→D keeps C accessible", async () => {
+      const user = userEvent.setup()
+
+      function NavButtons() {
+        const ctx = useStackflowContext()
+
+        return (
+          <div>
+            <button
+              data-testid="push-b"
+              onClick={() => ctx.push("b")}
+            >
+              Push B
+            </button>
+            <button
+              data-testid="push-c"
+              onClick={() => ctx.push("c")}
+            >
+              Push C
+            </button>
+            <button
+              data-testid="push-d"
+              onClick={() => ctx.push("d")}
+            >
+              Push D
+            </button>
+            <button
+              data-testid="back"
+              onClick={() => ctx.back()}
+            >
+              Back
+            </button>
+            <span data-testid="history">{ctx.history.join(",")}</span>
+          </div>
+        )
+      }
+
+      render(
+        <Stackflow initialId="a">
+          <Stackflow.Item id="a">
+            <div>A</div>
+          </Stackflow.Item>
+          <Stackflow.Item id="b">
+            <div>B</div>
+          </Stackflow.Item>
+          <Stackflow.Item id="c">
+            <div>C</div>
+          </Stackflow.Item>
+          <Stackflow.Item id="d">
+            <div>D</div>
+          </Stackflow.Item>
+          <Stackflow.Suffix>
+            <NavButtons />
+          </Stackflow.Suffix>
+        </Stackflow>,
+      )
+
+      await waitFor(() => expect(screen.getByText("A")).toBeInTheDocument())
+
+      await user.click(screen.getByTestId("push-b"))
+      await waitFor(() => expect(screen.getByText("B")).toBeInTheDocument())
+
+      await user.click(screen.getByTestId("push-c"))
+      await waitFor(() => expect(screen.getByText("C")).toBeInTheDocument())
+      expect(screen.getByTestId("history").textContent).toBe("a,b,c")
+
+      await user.click(screen.getByTestId("back"))
+      await waitFor(() => expect(screen.getByText("B")).toBeInTheDocument())
+      expect(screen.getByTestId("history").textContent).toBe("a,b,c")
+
+      await user.click(screen.getByTestId("push-d"))
+      await waitFor(() => expect(screen.getByText("D")).toBeInTheDocument())
+      expect(screen.getByTestId("history").textContent).toBe("a,b,d")
+    })
+  })
+
+  describe("push to same id is a no-op", () => {
+    it("does not add duplicate entries to history when pushing the current id", async () => {
+      const user = userEvent.setup()
+
+      function NavButtons() {
+        const ctx = useStackflowContext()
+        return (
+          <div>
+            <button
+              data-testid="push-a"
+              onClick={() => ctx.push("a")}
+            >
+              Push A
+            </button>
+            <span data-testid="history">{ctx.history.join(",")}</span>
+          </div>
+        )
+      }
+
+      render(
+        <Stackflow initialId="a">
+          <Stackflow.Item id="a">
+            <div>A</div>
+          </Stackflow.Item>
+          <Stackflow.Item id="b">
+            <div>B</div>
+          </Stackflow.Item>
+          <Stackflow.Suffix>
+            <NavButtons />
+          </Stackflow.Suffix>
+        </Stackflow>,
+      )
+
+      await waitFor(() => expect(screen.getByText("A")).toBeInTheDocument())
+      expect(screen.getByTestId("history").textContent).toBe("a")
+
+      await user.click(screen.getByTestId("push-a"))
+
+      expect(screen.getByTestId("history").textContent).toBe("a")
     })
   })
 })

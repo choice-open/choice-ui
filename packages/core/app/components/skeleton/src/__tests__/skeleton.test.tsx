@@ -73,4 +73,72 @@ describe("Skeleton bugs", () => {
       expect(element).not.toHaveAttribute("variant")
     })
   })
+
+  /**
+   * LOADING→LOADED TRANSITION
+   *   User scenario: Skeleton shows a loading state, then loading flips to false.
+   *     Children should become visible and aria-busy should be removed.
+   *   Regression it prevents: Skeleton never transitioning out of loading state
+   *   Logic change: tv is computed from loading + hasChildren. When loading=false,
+   *     aria-busy is undefined and children are visible. If loading isn't in tv deps,
+   *     the transition never happens.
+   */
+  describe("loading to loaded transition", () => {
+    it("removes aria-busy and shows children when loading becomes false", async () => {
+      const user = userEvent.setup()
+
+      function ToggleSkeleton() {
+        const [loading, setLoading] = useState(true)
+        return (
+          <div>
+            <Skeleton loading={loading}>{loading ? null : <span>Loaded!</span>}</Skeleton>
+            <button onClick={() => setLoading(false)}>load</button>
+          </div>
+        )
+      }
+
+      render(<ToggleSkeleton />)
+
+      expect(screen.queryByText("Loaded!")).not.toBeInTheDocument()
+
+      await user.click(screen.getByText("load"))
+
+      expect(screen.getByText("Loaded!")).toBeInTheDocument()
+    })
+  })
+
+  /**
+   * ARIA-BUSY: present while loading, absent when not
+   *   User scenario: Screen reader user encounters a skeleton. It must announce
+   *     aria-busy="true" while loading and remove it when done.
+   *   Regression it prevents: Missing aria-busy accessibility contract
+   *   Logic change: aria-busy is set to "true" when loading, undefined when not.
+   *     If this conditional breaks, the skeleton always or never announces busy.
+   */
+  describe("aria-busy accessibility", () => {
+    it("sets aria-busy=true when loading and removes it when not loading", () => {
+      const { container, rerender } = render(
+        <Skeleton
+          loading
+          data-testid="skel"
+        >
+          <span>Content</span>
+        </Skeleton>,
+      )
+
+      const root = container.querySelector("[aria-busy]")
+      expect(root).toHaveAttribute("aria-busy", "true")
+
+      rerender(
+        <Skeleton
+          loading={false}
+          data-testid="skel"
+        >
+          <span>Content</span>
+        </Skeleton>,
+      )
+
+      expect(container.querySelector("[aria-busy]")).toBeNull()
+    })
+  })
 })

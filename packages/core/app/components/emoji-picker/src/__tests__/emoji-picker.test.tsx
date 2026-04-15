@@ -58,4 +58,31 @@ describe("Emoji Picker bugs", () => {
       expect(label.toLowerCase()).toContain("grinning")
     })
   })
+
+  /**
+   * ONSELECT CALLBACK: clicking an emoji fires onChange with correct data
+   *   User scenario: User clicks the grinning face emoji in the picker.
+   *     The onChange callback must fire with the full EmojiData object.
+   *   Regression it prevents: Emoji clicks not triggering onChange
+   *   Logic change: EmojiItem's button onClick calls onSelect(emoji).
+   *     If this call chain breaks, clicking emojis does nothing.
+   */
+  describe("onSelect fires when emoji is clicked", () => {
+    it("calls onSelect with the emoji data when the button is clicked", async () => {
+      const onSelect = vi.fn()
+      const user = userEvent.setup()
+
+      render(
+        <EmojiItem
+          emoji={MOCK_EMOJI}
+          onSelect={onSelect}
+        />,
+      )
+
+      await user.click(screen.getByRole("button"))
+
+      expect(onSelect).toHaveBeenCalledTimes(1)
+      expect(onSelect).toHaveBeenCalledWith(MOCK_EMOJI)
+    })
+  })
 })

@@ -25,6 +25,12 @@
  *   - Regression it prevents: Unexpected element type for empty href
  *   - Logic change: link-button.tsx:62 - `"href" in props && props.href` uses truthy
  *     check. Empty string is falsy. Fix = check `"href" in props` alone.
+ *
+ * BUG 4: readOnly link must not fire onClick
+ *   - User scenario: Developer renders a readOnly link. Clicking it should not fire
+ *     the onClick handler, similar to disabled.
+ *   - Regression it prevents: ReadOnly links being clickable
+ *   - Logic change: link-button.tsx:76-78 - handleClick guards with readOnly || disabled.
  */
 import "@testing-library/jest-dom"
 import { render, screen } from "@testing-library/react"
@@ -76,6 +82,100 @@ describe("Link Button bugs", () => {
 
       const anchor = screen.queryByRole("link")
       expect(anchor).toBeTruthy()
+    })
+  })
+
+  describe("BUG 4: readOnly link must suppress onClick and remove href", () => {
+    it("does not call onClick, removes href, sets aria-disabled and tabIndex=-1", async () => {
+      const onClick = vi.fn()
+      const user = userEvent.setup()
+
+      render(
+        <LinkButton
+          href="/page"
+          readOnly
+          onClick={onClick}
+        >
+          ReadOnly Link
+        </LinkButton>,
+      )
+
+      const link = screen.getByRole("link")
+      expect(link).toHaveAttribute("aria-disabled", "true")
+      expect(link).toHaveAttribute("tabindex", "-1")
+      expect(link).not.toHaveAttribute("href")
+
+      await user.click(link)
+
+      expect(onClick).not.toHaveBeenCalled()
+    })
+  })
+
+  describe("BUG 5: external link rel must merge with user-provided rel", () => {
+    it("preserves user rel and appends noopener noreferrer", () => {
+      render(
+        <LinkButton
+          href="https://example.com"
+          rel="nofollow"
+        >
+          External
+        </LinkButton>,
+      )
+
+      const link = screen.getByRole("link")
+      const rel = link.getAttribute("rel") || ""
+      expect(rel).toContain("nofollow")
+      expect(rel).toContain("noopener")
+      expect(rel).toContain("noreferrer")
+    })
+  })
+
+  describe("BUG 6: user-provided target must not be overridden for external links", () => {
+    it("keeps target=_self when explicitly provided for external URL", () => {
+      render(
+        <LinkButton
+          href="https://example.com"
+          target="_self"
+        >
+          Same Window
+        </LinkButton>,
+      )
+
+      const link = screen.getByRole("link")
+      expect(link).toHaveAttribute("target", "_self")
+    })
+  })
+
+  describe("BUG 7: internal href must NOT receive external safety attributes", () => {
+    it("does not add target=_blank or rel=noopener for relative URLs", () => {
+      render(<LinkButton href="/local-page">Internal</LinkButton>)
+
+      const link = screen.getByRole("link")
+      expect(link).not.toHaveAttribute("target", "_blank")
+      expect(link).not.toHaveAttribute("rel")
+    })
+  })
+
+  describe("BUG 8: readOnly button must suppress onClick and set disabled", () => {
+    it("does not call onClick and renders a disabled button element", async () => {
+      const onClick = vi.fn()
+      const user = userEvent.setup()
+
+      render(
+        <LinkButton
+          readOnly
+          onClick={onClick}
+        >
+          ReadOnly Btn
+        </LinkButton>,
+      )
+
+      const button = screen.getByRole("button")
+      expect(button).toBeDisabled()
+
+      await user.click(button)
+
+      expect(onClick).not.toHaveBeenCalled()
     })
   })
 })

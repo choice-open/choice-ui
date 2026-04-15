@@ -183,4 +183,29 @@ describe("Modal bugs", () => {
       expect(descriptionEl?.textContent).toContain("Enter your work email")
     })
   })
+
+  describe("BUG 7: ModalTextarea description must be linked via aria-describedby", () => {
+    /**
+     * ModalTextarea now uses descriptionId to link the description <p>
+     * to the <textarea> via aria-describedby, matching ModalInput's pattern.
+     */
+    it("sets aria-describedby on the textarea pointing to the description element", async () => {
+      const { ModalTextarea } = await import("../components/modal-textarea")
+
+      render(
+        <ModalTextarea
+          label="Notes"
+          description="Max 500 characters"
+        />,
+      )
+
+      const textarea = screen.getByRole("textbox")
+      const describedBy = textarea.getAttribute("aria-describedby")
+      expect(describedBy).toBeTruthy()
+
+      const descriptionEl = document.getElementById(describedBy!)
+      expect(descriptionEl).toBeTruthy()
+      expect(descriptionEl?.textContent).toContain("Max 500 characters")
+    })
+  })
 })

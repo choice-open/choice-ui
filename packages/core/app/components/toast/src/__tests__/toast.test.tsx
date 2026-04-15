@@ -28,6 +28,7 @@
  */
 import "@testing-library/jest-dom"
 import { act, render, screen, waitFor } from "@testing-library/react"
+import userEvent from "@testing-library/user-event"
 import { beforeAll, describe, expect, it, vi } from "vitest"
 
 class ResizeObserverMock {
@@ -121,6 +122,86 @@ describe("Toast bugs", () => {
       expect(dismissButton).toBeTruthy()
       dismissButton!.click()
       expect(cancelOnClick).toHaveBeenCalled()
+    })
+  })
+
+  /**
+   * Action button onClick must fire and close the toast
+   *   - User scenario: Toast shows an action button (e.g., "Undo"). User clicks it.
+   *     The onClick callback should fire (for analytics/undo logic) and the toast should close.
+   *   - Regression it prevents: Action button click doing nothing (callback not called, toast stays)
+   *   - Logic change: toaster-item.tsx:366-369 - handleActionClick calls toast.action?.onClick()
+   *     then close(). If onClick is called after close(), or if close() is called before onClick(),
+   *     the toast state may be cleaned up before the callback can reference it.
+   */
+  describe("action button onClick must fire and close the toast", () => {
+    it("fires toast.action.onClick when the action button is clicked", async () => {
+      const actionOnClick = vi.fn()
+      const { toast, Toaster } = await import("../index")
+
+      function App() {
+        return <Toaster />
+      }
+
+      render(<App />)
+
+      act(() => {
+        toast("Saved successfully", {
+          action: {
+            label: "Undo",
+            onClick: actionOnClick,
+          },
+          duration: 60000,
+        })
+      })
+
+      await waitFor(() => {
+        expect(screen.getByText("Saved successfully")).toBeInTheDocument()
+      })
+
+      const actionButton = screen.queryByText("Undo")
+      expect(actionButton).toBeTruthy()
+      actionButton!.click()
+      expect(actionOnClick).toHaveBeenCalled()
+    })
+  })
+
+  /**
+   * Loading toasts must never auto-dismiss
+   *   - User scenario: toast.loading("Processing...") shows while an async operation runs.
+   *     If the loading toast auto-dismisses before the operation completes, the user loses
+   *     the progress indicator and thinks the operation finished.
+   *   - Regression it prevents: Loading toasts disappearing during long operations
+   *   - Logic change: toaster.tsx:219-220 - `if (toast.type === "loading") return` skips
+   *     timer creation entirely. If this guard is removed, loading toasts get auto-dismiss timers.
+   */
+  describe("loading toast must never auto-dismiss", () => {
+    it("keeps a loading toast visible after its normal duration would have elapsed", async () => {
+      const onAutoClose = vi.fn()
+      const { toast, Toaster } = await import("../index")
+
+      function App() {
+        return <Toaster />
+      }
+
+      render(<App />)
+
+      act(() => {
+        toast.loading("Processing...", { duration: 1000, onAutoClose })
+      })
+
+      await waitFor(() => {
+        expect(screen.getByText("Processing...")).toBeInTheDocument()
+      })
+
+      await waitFor(
+        () => {
+          expect(onAutoClose).not.toHaveBeenCalled()
+        },
+        { timeout: 2000 },
+      )
+
+      expect(screen.getByText("Processing...")).toBeInTheDocument()
     })
   })
 })

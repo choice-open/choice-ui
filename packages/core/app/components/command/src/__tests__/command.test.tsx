@@ -38,6 +38,8 @@ class ResizeObserverMock {
 }
 global.ResizeObserver = ResizeObserverMock as typeof ResizeObserver
 
+Element.prototype.scrollIntoView = vi.fn()
+
 const Command = Object.assign(CommandRoot, {
   Group: CommandGroup,
   Input: CommandInput,
@@ -110,6 +112,130 @@ describe("Command bugs", () => {
         const ariaActiveDescendant = listbox.getAttribute("aria-activedescendant")
         expect(ariaActiveDescendant).toBeTruthy()
       })
+    })
+  })
+
+  /**
+   * ENTER KEY SELECTS ITEM: fires onSelect callback
+   *   User scenario: User navigates to a command item with ArrowDown, then presses Enter.
+   *     The item's onSelect callback must fire with the item's value.
+   *   Regression it prevents: Enter key not selecting items
+   *   Logic change: handleKeyDown in command.tsx dispatches SELECT_EVENT on Enter.
+   *     CommandItem listens for SELECT_EVENT and calls onSelect. If the event chain
+   *     breaks, Enter does nothing.
+   */
+  describe("Enter key selects the active item", () => {
+    it("fires onSelect with the item value when Enter is pressed on a selected item", async () => {
+      const user = userEvent.setup()
+      const onSelect = vi.fn()
+
+      render(
+        <Command>
+          <Command.Input placeholder="Type..." />
+          <Command.List>
+            <Command.Item
+              value="first"
+              onSelect={onSelect}
+            >
+              First Item
+            </Command.Item>
+          </Command.List>
+        </Command>,
+      )
+
+      const input = screen.getByPlaceholderText("Type...")
+      input.focus()
+
+      await user.keyboard("{ArrowDown}")
+      await user.keyboard("{Enter}")
+
+      await waitFor(() => {
+        expect(onSelect).toHaveBeenCalledWith("first")
+      })
+    })
+  })
+
+  /**
+   * ARROW KEY NAVIGATION: ArrowDown/ArrowUp moves selection between items
+   *   User scenario: User opens a command palette with multiple items. Pressing
+   *     ArrowDown moves to the next item, ArrowUp moves to the previous item.
+   *     The active item is indicated by aria-selected="true".
+   *   Regression it prevents: Arrow keys not changing the selected item
+   *   Logic change: handleKeyDown in command.tsx:428-431 calls next(e)/prev(e)
+   *     which call updateSelectedByItem(1/-1). If getValidItems() or index
+   *     calculation breaks, navigation silently stops working.
+   */
+  describe("ArrowDown/ArrowUp navigates between items", () => {
+    it("changes the selected item when ArrowDown is pressed from input focus", async () => {
+      const user = userEvent.setup()
+
+      render(
+        <Command>
+          <Command.Input placeholder="Type..." />
+          <Command.List>
+            <Command.Item value="alpha">Alpha</Command.Item>
+            <Command.Item value="beta">Beta</Command.Item>
+          </Command.List>
+        </Command>,
+      )
+
+      const input = screen.getByPlaceholderText("Type...")
+      input.focus()
+
+      await user.keyboard("{ArrowDown}")
+
+      await waitFor(() => {
+        const listbox = screen.getByRole("listbox")
+        const activeId = listbox.getAttribute("aria-activedescendant")
+        expect(activeId).toBeTruthy()
+      })
+
+      const alphaOption = screen.getByText("Alpha").closest("[role='option']")
+      const betaOption = screen.getByText("Beta").closest("[role='option']")
+      const oneIsSelected =
+        alphaOption?.getAttribute("aria-selected") === "true" ||
+        betaOption?.getAttribute("aria-selected") === "true"
+      expect(oneIsSelected).toBe(true)
+    })
+  })
+
+  /**
+   * SEARCH FILTERING: typing in the input hides non-matching items
+   *   User scenario: User types "net" in a command palette with items like
+   *     "Network Settings" and "Display Settings". Only "Network Settings"
+   *     should remain visible.
+   *   Regression it prevents: Search not filtering items (all items always visible)
+   *   Logic change: filterItems in command.tsx scores items and sets visibility.
+   *     If the scoring function returns wrong values, items that should be hidden
+   *     remain visible.
+   */
+  describe("search filtering hides non-matching items", () => {
+    it("hides items that do not match the search query", async () => {
+      const user = userEvent.setup()
+
+      render(
+        <Command>
+          <Command.Input placeholder="Type..." />
+          <Command.List>
+            <Command.Item value="network-settings">Network Settings</Command.Item>
+            <Command.Item value="display-settings">Display Settings</Command.Item>
+            <Command.Item value="audio-settings">Audio Settings</Command.Item>
+          </Command.List>
+        </Command>,
+      )
+
+      const input = screen.getByPlaceholderText("Type...")
+      await user.type(input, "net")
+
+      await waitFor(() => {
+        expect(screen.getByText("Network Settings")).toBeInTheDocument()
+      })
+
+      const displayItem = screen.getByText("Display Settings").closest("[role='option']")
+      expect(displayItem?.getAttribute("data-hidden")).toBe("true")
+
+      const audioItem = screen.getByText("Audio Settings").closest("[role='option']")
+      expect(audioItem?.getAttribute("data-hidden")).toBe("true")
     })
   })
 })

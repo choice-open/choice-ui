@@ -19,6 +19,14 @@
  *     from props, so it ends up in ...rest. Then line 173 sets
  *     onKeyDown={handleKeyDown}, overriding the user's handler from ...rest.
  *     Fix = destructure onKeyDown and call it at end of handleKeyDown.
+ *
+ * BUG 6: Click on list item with selection={true} must toggle selection
+ *   - User scenario: Developer renders <List selection>. User clicks an item,
+ *     it becomes selected (data-selected=true). Clicks again, it deselects.
+ *   - Regression it prevents: Selection toggle not working on click
+ *   - Logic change: list-item.tsx:116-123 — handleClick calls toggleSelection(id)
+ *     when selection is truthy. If the guard or toggleSelection breaks,
+ *     selection state never changes.
  */
 import "@testing-library/jest-dom"
 import { render, screen } from "@testing-library/react"
@@ -92,6 +100,32 @@ describe("List bugs", () => {
       await user.keyboard("x")
 
       expect(onKeyDown).toHaveBeenCalled()
+    })
+  })
+
+  describe("BUG 6: selection toggle on click", () => {
+    it("toggles data-selected on click when selection mode is enabled", async () => {
+      const { List } = await import("../list")
+      const user = userEvent.setup()
+
+      render(
+        <List
+          activeItem="a"
+          onActiveItemChange={() => {}}
+          onToggleSubList={() => {}}
+          selection
+        >
+          <List.Item id="a">Alpha</List.Item>
+        </List>,
+      )
+
+      const alpha = screen.getByText("Alpha")
+
+      await user.click(alpha)
+      expect(alpha).toHaveAttribute("data-selected", "true")
+
+      await user.click(alpha)
+      expect(alpha).not.toHaveAttribute("data-selected", "true")
     })
   })
 })

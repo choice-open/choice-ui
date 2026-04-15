@@ -56,4 +56,56 @@ describe("Button bugs", () => {
       expect(onClick).not.toHaveBeenCalled()
     })
   })
+
+  /**
+   * DISABLED + LOADING suppress onClick
+   *   User scenario: User clicks a disabled or loading button. The onClick handler
+   *     must NOT fire.
+   *   Regression it prevents: Disabled/loading buttons still triggering actions
+   *   Logic change: disabled={disabled || loading} on line 106. If this logic is
+   *     removed, disabled buttons accept clicks.
+   */
+  describe("disabled and loading suppress click", () => {
+    it("does not fire onClick when disabled=true", async () => {
+      const onClick = vi.fn()
+      const user = userEvent.setup()
+
+      render(
+        <Button
+          disabled
+          onClick={onClick}
+        >
+          Click me
+        </Button>,
+      )
+
+      const button = screen.getByRole("button")
+      expect(button).toBeDisabled()
+      expect(button).toHaveAttribute("aria-disabled", "true")
+
+      await user.click(button)
+      expect(onClick).not.toHaveBeenCalled()
+    })
+
+    it("does not fire onClick when loading=true", async () => {
+      const onClick = vi.fn()
+      const user = userEvent.setup()
+
+      render(
+        <Button
+          loading
+          onClick={onClick}
+        >
+          Save
+        </Button>,
+      )
+
+      const button = screen.getByRole("button")
+      expect(button).toBeDisabled()
+      expect(button).toHaveAttribute("aria-busy", "true")
+
+      await user.click(button)
+      expect(onClick).not.toHaveBeenCalled()
+    })
+  })
 })

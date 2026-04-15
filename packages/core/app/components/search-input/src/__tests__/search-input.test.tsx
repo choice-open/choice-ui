@@ -25,6 +25,13 @@
  *     line 22 uses `placeholder = "Search..."` (top-level prop), line 28-30 default i18n
  *     has no placeholder key, line 43 uses `placeholder={placeholder}` (top-level only).
  *     Fix = use `i18n.placeholder ?? placeholder` as the fallback.
+ *
+ * BUG 9: onChange must fire when user types in the search input
+ *   - User scenario: User types characters in the search input. The onChange callback
+ *     should fire with the updated value for each keystroke.
+ *   - Regression it prevents: Search input not triggering search on type
+ *   - Logic change: If the TextField stops propagating onChange or the search input
+ *     wrapper stops forwarding the value.
  */
 import "@testing-library/jest-dom"
 import { render, screen } from "@testing-library/react"
@@ -94,6 +101,27 @@ describe("Search Input bugs", () => {
 
       const input = screen.getByPlaceholderText("Rechercher...")
       expect(input).toBeTruthy()
+    })
+  })
+
+  describe("BUG 9: onChange must fire when user types", () => {
+    it("calls onChange with the updated value when user types", async () => {
+      const { SearchInput } = await import("../search-input")
+      const onChange = vi.fn()
+      const user = userEvent.setup()
+
+      render(
+        <SearchInput
+          value=""
+          onChange={onChange}
+          placeholder="Search..."
+        />,
+      )
+
+      const input = screen.getByPlaceholderText("Search...")
+      await user.type(input, "a")
+
+      expect(onChange).toHaveBeenCalled()
     })
   })
 })
