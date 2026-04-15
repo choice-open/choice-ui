@@ -23,12 +23,14 @@ export function usePress({ disabled, onPress, onPressStart, onPressEnd }: PressP
         setPressed(true)
         onPressStart?.(event)
         const handleUp = () => {
+          document.removeEventListener("pointerup", handleUp)
           document.removeEventListener("pointercancel", handleCancel)
           setPressed(false)
           onPress?.(event)
           onPressEnd?.(event)
         }
         const handleCancel = () => {
+          document.removeEventListener("pointercancel", handleCancel)
           document.removeEventListener("pointerup", handleUp)
           setPressed(false)
           onPressEnd?.(event)

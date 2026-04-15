@@ -59,7 +59,7 @@ export const LinkButton = forwardRef<HTMLAnchorElement | HTMLButtonElement, Link
     const tv = linkButtonTv({ variant, disabled })
 
     // If href exists, render as link
-    if ("href" in props) {
+    if ("href" in props && props.href !== undefined) {
       const { href, target, rel, ...anchorProps } =
         rest as React.AnchorHTMLAttributes<HTMLAnchorElement> & { href: string }
 
