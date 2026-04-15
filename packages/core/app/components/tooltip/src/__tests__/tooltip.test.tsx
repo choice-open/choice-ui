@@ -130,6 +130,7 @@ describe("Tooltip bugs", () => {
 
       expect(hookResult).toBeTruthy()
       expect(hookResult!.floatingStyles).toBeDefined()
+      expect(hookResult!.floatingStyles.transform).toBeTruthy()
     })
   })
 

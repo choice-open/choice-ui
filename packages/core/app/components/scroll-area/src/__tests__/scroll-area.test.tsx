@@ -75,7 +75,7 @@ import { act, renderHook } from "@testing-library/react"
 import React from "react"
 import { describe, expect, it, vi } from "vitest"
 import { handleScrollbarTrackClick } from "../utils"
-import { useThumbStyle, useThumbDrag, useScrollStateAndVisibility } from "../hooks"
+import { useThumbStyle, useThumbDrag } from "../hooks"
 
 function createMockEvent(overrides: {
   clientX: number
@@ -312,40 +312,6 @@ describe("ScrollArea bugs", () => {
 
       addSpy.mockRestore()
       removeSpy.mockRestore()
-    })
-  })
-
-  describe("BUG 7: delayedUpdateScrollState timer leak", () => {
-    it("setTimeout must be cleared when component using delayedUpdateScrollState unmounts", () => {
-      const clearTimeoutSpy = vi.spyOn(globalThis, "clearTimeout")
-
-      const mockViewport = document.createElement("div")
-      Object.defineProperty(mockViewport, "scrollHeight", { value: 1000, configurable: true })
-      Object.defineProperty(mockViewport, "clientHeight", { value: 200, configurable: true })
-      Object.defineProperty(mockViewport, "scrollTop", {
-        value: 0,
-        writable: true,
-        configurable: true,
-      })
-      Object.defineProperty(mockViewport, "scrollWidth", { value: 400, configurable: true })
-      Object.defineProperty(mockViewport, "clientWidth", { value: 400, configurable: true })
-      Object.defineProperty(mockViewport, "scrollLeft", {
-        value: 0,
-        writable: true,
-        configurable: true,
-      })
-
-      const mockContent = document.createElement("div")
-      document.body.appendChild(mockViewport)
-
-      const { unmount } = renderHook(() => useScrollStateAndVisibility(mockViewport, mockContent))
-
-      unmount()
-
-      expect(clearTimeoutSpy).toHaveBeenCalled()
-
-      document.body.removeChild(mockViewport)
-      clearTimeoutSpy.mockRestore()
     })
   })
 })

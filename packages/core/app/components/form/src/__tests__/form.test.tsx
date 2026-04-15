@@ -64,12 +64,9 @@ describe("Form adapter bugs", () => {
       const trigger =
         document.querySelector('[data-slot="trigger"]') || screen.queryByRole("button")
 
-      if (trigger) {
-        trigger.dispatchEvent(new FocusEvent("blur", { bubbles: true }))
-        expect(onBlur).toHaveBeenCalled()
-      } else {
-        expect(trigger).toBeTruthy()
-      }
+      expect(trigger).not.toBeNull()
+      trigger!.dispatchEvent(new FocusEvent("blur", { bubbles: true }))
+      expect(onBlur).toHaveBeenCalled()
     })
   })
 
@@ -232,12 +229,9 @@ describe("Form adapter bugs", () => {
         document.querySelector("[data-radix-collection-item]") ||
         document.querySelector("button")
 
-      if (trigger) {
-        fireEvent.blur(trigger)
-        expect(onBlur).toHaveBeenCalled()
-      } else {
-        expect(trigger).toBeTruthy()
-      }
+      expect(trigger).not.toBeNull()
+      fireEvent.blur(trigger!)
+      expect(onBlur).toHaveBeenCalled()
     })
   })
 

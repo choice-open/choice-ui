@@ -164,6 +164,7 @@ describe("Select bugs", () => {
           const options = screen.getAllByRole("option")
           const canadaOption = options.find((o) => o.textContent === "Canada")
           expect(canadaOption).toBeTruthy()
+          expect(canadaOption).toHaveAttribute("tabindex", "0")
         },
         { timeout: 3000 },
       )
