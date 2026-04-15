@@ -32,7 +32,7 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>((props
   } = props
 
   const inputRef = useRef<HTMLInputElement>(null)
-  const [internalValue, setInternalValue] = useState("")
+  const [internalValue, setInternalValue] = useState(props.defaultValue ?? "")
   const isControlled = valueProp !== undefined
   const displayValue = isControlled ? valueProp : internalValue
 
@@ -61,7 +61,7 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>((props
         else if (ref) ref.current = el
       }}
       placeholder={i18n.placeholder ?? placeholder}
-      value={displayValue}
+      value={isControlled ? displayValue : undefined}
       onChange={handleChange}
       variant={variant}
       disabled={disabled}
