@@ -79,12 +79,15 @@ const TextareaBase = forwardRef<HTMLTextAreaElement, TextareaProps>(
     const viewportRef = useRef<HTMLDivElement>(null)
     const [isDragging, setIsDragging] = useState(false)
     const [viewportHeight, setViewportHeight] = useState<number>()
+    const editingStartedRef = useRef(false)
 
     // Use an explicit dependency array
     useImperativeHandle(ref, () => textareaRef.current!, [])
 
     useUnmount(() => {
-      onIsEditingChange?.(false)
+      if (editingStartedRef.current) {
+        onIsEditingChange?.(false)
+      }
     })
 
     // Memoize styles to reduce recalculations
@@ -111,6 +114,7 @@ const TextareaBase = forwardRef<HTMLTextAreaElement, TextareaProps>(
       // focusSelection === "none" - don't change selection
 
       onFocus?.(e)
+      editingStartedRef.current = true
       onIsEditingChange?.(true)
     })
 

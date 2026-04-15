@@ -93,6 +93,8 @@ const Toast = memo(ToastBase)
 
 Toast.displayName = "Toast"
 
+export { Toast }
+
 export function notifications(toast: Omit<NotificationsProps, "id">) {
   const { icon, text, html, actions, className, position, ...sonnerOptions } = toast
 

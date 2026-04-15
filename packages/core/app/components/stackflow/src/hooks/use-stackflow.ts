@@ -9,6 +9,7 @@ export interface StackflowState {
   currentId: string
   direction: "forward" | "backward"
   history: string[]
+  currentIndex: number
   isInitial: boolean
 }
 
@@ -30,6 +31,7 @@ export function useStackflow(items: StackflowItem[], initialId?: string): Stackf
   const [state, setState] = useState<StackflowState>({
     currentId: defaultId || "",
     history: defaultId ? [defaultId] : [],
+    currentIndex: 0,
     direction: "forward",
     isInitial: true,
   })
@@ -40,6 +42,7 @@ export function useStackflow(items: StackflowItem[], initialId?: string): Stackf
       setState({
         currentId: firstId,
         history: [firstId],
+        currentIndex: 0,
         direction: "forward",
         isInitial: true,
       })
@@ -55,9 +58,12 @@ export function useStackflow(items: StackflowItem[], initialId?: string): Stackf
         // If the page to be jumped to is the current page, do nothing
         if (prev.currentId === id) return prev
 
+        const truncatedHistory = prev.history.slice(0, prev.currentIndex + 1)
+
         return {
           currentId: id,
-          history: [...prev.history, id],
+          history: [...truncatedHistory, id],
+          currentIndex: truncatedHistory.length,
           direction: "forward",
           isInitial: false,
         }
@@ -68,15 +74,15 @@ export function useStackflow(items: StackflowItem[], initialId?: string): Stackf
 
   const back = useCallback(() => {
     setState((prev) => {
-      if (prev.history.length <= 1) return prev
+      if (prev.currentIndex <= 0) return prev
 
-      const newHistory = [...prev.history]
-      newHistory.pop() // Remove current page
-      const previousId = newHistory[newHistory.length - 1]
+      const newIndex = prev.currentIndex - 1
+      const previousId = prev.history[newIndex]
 
       return {
         currentId: previousId,
-        history: newHistory,
+        history: prev.history,
+        currentIndex: newIndex,
         direction: "backward",
         isInitial: false,
       }
@@ -91,6 +97,7 @@ export function useStackflow(items: StackflowItem[], initialId?: string): Stackf
       return {
         currentId: resetId,
         history: [resetId],
+        currentIndex: 0,
         direction: "forward",
         isInitial: false,
       }
@@ -98,7 +105,7 @@ export function useStackflow(items: StackflowItem[], initialId?: string): Stackf
   }, [items])
 
   const current = items.find((item) => item.id === state.currentId)
-  const canGoBack = state.history.length > 1
+  const canGoBack = state.currentIndex > 0
 
   return {
     push,

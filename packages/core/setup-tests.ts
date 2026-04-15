@@ -71,6 +71,8 @@ globalThis.ResizeObserver = class ResizeObserver {
   disconnect() {}
 } as any
 
+HTMLElement.prototype.requestPointerLock = vi.fn()
+
 expect.extend({
   toBeRenderedWithOptions(element, options) {
     if (!element) {

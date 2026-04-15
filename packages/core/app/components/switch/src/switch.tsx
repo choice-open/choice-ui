@@ -132,7 +132,7 @@ const SwitchBase = forwardRef<HTMLInputElement, SwitchProps>(function Switch(pro
             ? String(children)
             : label?.toString())
         }
-        aria-describedby={ariaDescribedby || (hasLabel ? descriptionId : undefined)}
+        aria-describedby={ariaDescribedby || undefined}
         aria-checked={value}
         aria-disabled={disabled || readOnly}
         {...rest}
