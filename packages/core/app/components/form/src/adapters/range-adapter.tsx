@@ -24,12 +24,12 @@ export function RangeAdapter<T extends number>({
     const blurHandler = () => onBlur?.()
     const focusHandler = () => onFocus?.()
 
-    el.addEventListener("blur", blurHandler)
-    el.addEventListener("focus", focusHandler)
+    el.addEventListener("focusout", blurHandler)
+    el.addEventListener("focusin", focusHandler)
 
     return () => {
-      el.removeEventListener("blur", blurHandler)
-      el.removeEventListener("focus", focusHandler)
+      el.removeEventListener("focusout", blurHandler)
+      el.removeEventListener("focusin", focusHandler)
     }
   }, [onBlur, onFocus])
 

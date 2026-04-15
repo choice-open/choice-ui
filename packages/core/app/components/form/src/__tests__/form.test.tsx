@@ -86,7 +86,7 @@ describe("Form adapter bugs", () => {
       const slider = document.querySelector('[role="slider"]') as HTMLElement | null
       expect(slider).toBeTruthy()
 
-      slider!.dispatchEvent(new FocusEvent("blur", { bubbles: true }))
+      slider!.dispatchEvent(new FocusEvent("focusout", { bubbles: true }))
       expect(onBlur).toHaveBeenCalled()
     })
 
@@ -105,7 +105,7 @@ describe("Form adapter bugs", () => {
       const slider = document.querySelector('[role="slider"]') as HTMLElement | null
       expect(slider).toBeTruthy()
 
-      slider!.dispatchEvent(new FocusEvent("focus", { bubbles: true }))
+      slider!.dispatchEvent(new FocusEvent("focusin", { bubbles: true }))
       expect(onFocus).toHaveBeenCalled()
     })
   })
