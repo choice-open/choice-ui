@@ -76,7 +76,8 @@ describe("DateInput", () => {
   // 键盘导航测试
   describe("键盘导航", () => {
     it("应该支持上下箭头键调整日期", async () => {
-      const user = userEvent.setup()
+      vi.useFakeTimers({ shouldAdvanceTime: true })
+      const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime })
       const handleChange = vi.fn()
       const testDate = createTestDate(2024, 3, 15)
 
@@ -91,17 +92,17 @@ describe("DateInput", () => {
       await user.click(input)
       await user.keyboard("{ArrowUp}")
 
-      // 等待异步的键盘操作完成
-      await waitFor(
-        () => {
-          expect(handleChange).toHaveBeenCalledWith(expect.any(Date))
-        },
-        { timeout: 1000 },
-      )
+      await act(async () => {
+        vi.advanceTimersByTime(50)
+      })
+
+      expect(handleChange).toHaveBeenCalledWith(expect.any(Date))
+      vi.useRealTimers()
     })
 
     it("应该支持 Shift + 箭头键调整一周", async () => {
-      const user = userEvent.setup()
+      vi.useFakeTimers({ shouldAdvanceTime: true })
+      const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime })
       const handleChange = vi.fn()
       const testDate = createTestDate(2024, 3, 15)
 
@@ -116,17 +117,17 @@ describe("DateInput", () => {
       await user.click(input)
       await user.keyboard("{Shift>}{ArrowUp}{/Shift}")
 
-      // 等待异步的键盘操作完成
-      await waitFor(
-        () => {
-          expect(handleChange).toHaveBeenCalledWith(expect.any(Date))
-        },
-        { timeout: 1000 },
-      )
+      await act(async () => {
+        vi.advanceTimersByTime(50)
+      })
+
+      expect(handleChange).toHaveBeenCalledWith(expect.any(Date))
+      vi.useRealTimers()
     })
 
     it("应该支持 Ctrl/Cmd + 箭头键调整一月", async () => {
-      const user = userEvent.setup()
+      vi.useFakeTimers({ shouldAdvanceTime: true })
+      const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime })
       const handleChange = vi.fn()
       const testDate = createTestDate(2024, 3, 15)
 
@@ -141,13 +142,12 @@ describe("DateInput", () => {
       await user.click(input)
       await user.keyboard("{Control>}{ArrowUp}{/Control}")
 
-      // 等待异步的键盘操作完成
-      await waitFor(
-        () => {
-          expect(handleChange).toHaveBeenCalledWith(expect.any(Date))
-        },
-        { timeout: 1000 },
-      )
+      await act(async () => {
+        vi.advanceTimersByTime(50)
+      })
+
+      expect(handleChange).toHaveBeenCalledWith(expect.any(Date))
+      vi.useRealTimers()
     })
 
     it("应该支持 Enter 键确认输入", async () => {
