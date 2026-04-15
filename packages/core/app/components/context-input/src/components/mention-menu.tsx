@@ -1,5 +1,5 @@
 import { Combobox } from "@choice-ui/combobox"
-import React, { forwardRef, memo, useId, useImperativeHandle, useRef, useState } from "react"
+import React, { forwardRef, memo, useId, useImperativeHandle } from "react"
 import type { ContextMentionItemProps } from "../types"
 
 // Focus management disabled config - as constant to avoid creating new object on each render
@@ -23,6 +23,7 @@ export interface MentionMenuRef {
 
 // Mentions menu component - uses Combobox coordinate mode
 interface MentionMenuProps {
+  activeIndex?: number
   isOpen: boolean
   loading: boolean
   onClose: () => void
@@ -37,6 +38,7 @@ interface MentionMenuProps {
 export const MentionMenu = memo(
   forwardRef<MentionMenuRef, MentionMenuProps>(function MentionMenu(props, ref) {
     const {
+      activeIndex: activeIndexProp = 0,
       isOpen,
       loading,
       position,
@@ -49,7 +51,6 @@ export const MentionMenu = memo(
     } = props
 
     const instanceId = useId()
-    const [activeIndex, setActiveIndex] = useState(0)
 
     const getListboxElement = () => {
       const portalRoot = document.getElementById(`mention-menu-portal-${instanceId}`)
@@ -68,13 +69,7 @@ export const MentionMenu = memo(
             return false
           }
 
-          if (
-            event.key === "ArrowDown" ||
-            event.key === "ArrowUp" ||
-            event.key === "Enter" ||
-            event.key === "Tab" ||
-            event.key === "Escape"
-          ) {
+          if (event.key === "ArrowDown" || event.key === "ArrowUp") {
             event.preventDefault()
             event.stopPropagation()
 
@@ -93,11 +88,6 @@ export const MentionMenu = memo(
               menuElement.dispatchEvent(keyEvent)
             }
 
-            if (event.key === "ArrowDown") {
-              setActiveIndex((prev) => (prev + 1) % suggestions.length)
-            } else if (event.key === "ArrowUp") {
-              setActiveIndex((prev) => (prev === 0 ? suggestions.length - 1 : prev - 1))
-            }
             return true
           }
 
@@ -130,7 +120,7 @@ export const MentionMenu = memo(
                 prefixElement={item.prefix}
               >
                 {renderSuggestion ? (
-                  renderSuggestion(item, index === activeIndex)
+                  renderSuggestion(item, index === activeIndexProp)
                 ) : (
                   <Combobox.Value>{item.label}</Combobox.Value>
                 )}

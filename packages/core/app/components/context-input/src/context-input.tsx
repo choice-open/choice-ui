@@ -157,11 +157,10 @@ const ContextInputBase = forwardRef<ContextInputRef, ContextInputProps>(function
 
   // Keyboard event handler
   const handleKeyDown = useEventCallback((event: React.KeyboardEvent) => {
-    const handled = mentions.handleKeyDown(event)
-    if (mentionMenuRef.current?.handleKeyDown(event)) {
+    if (mentions.handleKeyDown(event)) {
       return
     }
-    if (handled) {
+    if (mentionMenuRef.current?.handleKeyDown(event)) {
       return
     }
 
@@ -225,12 +224,13 @@ const ContextInputBase = forwardRef<ContextInputRef, ContextInputProps>(function
       {afterElement}
       <MentionMenu
         ref={mentionMenuRef}
+        activeIndex={mentions.searchState.index}
         disabled={disabled}
         isOpen={mentions.searchState.isSearching}
         onClose={mentions.closeMentionSearch}
         suggestions={mentions.searchState.suggestions}
         loading={mentions.searchState.loading}
-        position={mentions.searchState.position ?? { x: 0, y: 0 }}
+        position={mentions.searchState.position}
         onSelect={handleSuggestionSelect}
         renderSuggestion={renderSuggestion}
       />
