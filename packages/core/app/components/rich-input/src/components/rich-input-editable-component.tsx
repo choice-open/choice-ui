@@ -25,26 +25,10 @@ export const RichInputEditableComponent = forwardRef<HTMLDivElement, RichInputEd
       const el = editorRef.current
       if (!el) return
 
-      const handleFocusIn = () => {
+      if (document.activeElement === el) {
         context.onFocus()
       }
-
-      const handleFocusOut = () => {
-        context.onBlur()
-      }
-
-      el.addEventListener("focusin", handleFocusIn)
-      el.addEventListener("focusout", handleFocusOut)
-
-      if (document.activeElement === el) {
-        handleFocusIn()
-      }
-
-      return () => {
-        el.removeEventListener("focusin", handleFocusIn)
-        el.removeEventListener("focusout", handleFocusOut)
-      }
-    }, [context.onFocus, context.onBlur])
+    }, [context.onFocus])
 
     // Prepare editor style
     const editableStyle = useMemo(() => ({ minHeight: context.minHeight }), [context.minHeight])
@@ -96,6 +80,8 @@ export const RichInputEditableComponent = forwardRef<HTMLDivElement, RichInputEd
           onKeyDown={context.onKeyDown}
           onCompositionStart={context.onCompositionStart}
           onCompositionEnd={context.onCompositionEnd}
+          onFocus={context.onFocus}
+          onBlur={context.onBlur}
           spellCheck={false}
           tabIndex={context.disableTabFocus ? -1 : undefined}
           style={editableStyle}

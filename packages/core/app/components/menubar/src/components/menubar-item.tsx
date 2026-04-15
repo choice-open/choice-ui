@@ -197,6 +197,7 @@ const MenubarItemComponent = memo(function MenubarItemComponent(props: MenubarIt
           return (
             <Dropdown.Item
               key={child.key ?? undefined}
+              {...child.props}
               onClick={() => {}}
             >
               {child.props.children}

@@ -173,6 +173,7 @@ const DialogComponent = memo(function DialogComponent({
         onKeyDown={
           draggable
             ? (e: React.KeyboardEvent) => {
+                if (e.target !== e.currentTarget) return
                 const STEP = 10
                 switch (e.key) {
                   case "ArrowLeft":
