@@ -368,6 +368,13 @@ export function TableRoot<T>({
                           <TableColumn
                             key={col.id}
                             id={col.id}
+                            width={col.width}
+                            minWidth={col.minWidth}
+                            maxWidth={col.maxWidth}
+                            flex={col.flex}
+                            sortable={col.sortable}
+                            resizable={col.resizable}
+                            className={col.headerClassName}
                           >
                             {col.header}
                           </TableColumn>
