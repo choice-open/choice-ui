@@ -489,7 +489,6 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
         (e.key === "Enter" || e.key === "ArrowRight" || e.key.startsWith("Arrow"))
       ) {
         e.preventDefault()
-        e.stopPropagation()
       }
     }
   })

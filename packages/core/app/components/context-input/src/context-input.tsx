@@ -157,11 +157,11 @@ const ContextInputBase = forwardRef<ContextInputRef, ContextInputProps>(function
 
   // Keyboard event handler
   const handleKeyDown = useEventCallback((event: React.KeyboardEvent) => {
-    if (mentions.handleKeyDown(event)) {
+    const handled = mentions.handleKeyDown(event)
+    if (mentionMenuRef.current?.handleKeyDown(event)) {
       return
     }
-
-    if (mentionMenuRef.current?.handleKeyDown(event)) {
+    if (handled) {
       return
     }
 
