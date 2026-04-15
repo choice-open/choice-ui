@@ -1,6 +1,6 @@
 import { tcx } from "@choice-ui/shared"
 import { AnimatePresence, motion } from "framer-motion"
-import { forwardRef, HTMLProps, ReactNode, useEffect, useState } from "react"
+import { forwardRef, HTMLProps, ReactNode, useEffect, useRef, useState } from "react"
 import { useStackflowContext } from "../context"
 import { stackflowTv } from "../tv"
 
@@ -23,14 +23,13 @@ export const StackflowItem = forwardRef<HTMLDivElement, StackflowItemProps>(
     const tv = stackflowTv({ active: isActive })
 
     const [isTransitioningOut, setIsTransitioningOut] = useState(false)
-    const [prevActive, setPrevActive] = useState(isActive)
+    const prevActiveRef = useRef(isActive)
 
-    useEffect(() => {
-      if (prevActive && !isActive) {
-        setIsTransitioningOut(true)
-      }
-      setPrevActive(isActive)
-    }, [isActive, prevActive])
+    const wasActive = prevActiveRef.current
+    if (wasActive && !isActive) {
+      setIsTransitioningOut(true)
+    }
+    prevActiveRef.current = isActive
 
     if (!isActive && !isTransitioningOut) {
       return null
