@@ -207,7 +207,16 @@ const MenubarItemComponent = memo(function MenubarItemComponent(props: MenubarIt
         return child
       })
 
-      const content = <Dropdown.Content key="__content__">{items}</Dropdown.Content>
+      const floatingProps = getFloatingProps()
+      const content = (
+        <Dropdown.Content
+          key="__content__"
+          {...floatingProps}
+          ref={setContentRef}
+        >
+          {items}
+        </Dropdown.Content>
+      )
 
       return [trigger, content]
     }
