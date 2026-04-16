@@ -390,6 +390,7 @@ export function TableRoot<T>({
                               <TableCell
                                 key={col.id}
                                 columnId={col.id}
+                                className={col.className}
                               >
                                 {col.accessorKey
                                   ? String((row as Record<string, unknown>)[col.accessorKey] ?? "")
