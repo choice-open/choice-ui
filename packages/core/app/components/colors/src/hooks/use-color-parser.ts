@@ -86,7 +86,7 @@ export function useColorParser() {
     }
 
     const commaAlphaMatch = value.match(
-      /^hsla\(\s*([\d.]+)\s*,\s*([\d.]+)%?\s*,\s*([\d.]+)%?\s*,\s*([\d.]+)\s*\)$/,
+      /^hsla\(\s*([\d.]+)\s*,\s*([\d.]+)%?\s*,\s*([\d.]+)%?\s*,\s*([\d.]+)%?\s*\)$/,
     )
     if (commaAlphaMatch) {
       alphaStr = commaAlphaMatch[4]
