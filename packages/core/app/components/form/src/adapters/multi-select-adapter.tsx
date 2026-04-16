@@ -22,17 +22,16 @@ export function MultiSelectAdapter<T extends string>({
     const el = containerRef.current
     if (!el || !onBlur) return
 
-    const handler = (e: Event) => {
-      const target = e.target as HTMLElement
-      if (target.closest?.('[data-slot="trigger"]') || target.hasAttribute?.("data-slot")) {
+    const handler = (e: FocusEvent) => {
+      if (!el.contains(e.relatedTarget as Node)) {
         onBlur()
       }
     }
 
-    el.addEventListener("blur", handler, true)
+    el.addEventListener("focusout", handler)
 
     return () => {
-      el.removeEventListener("blur", handler, true)
+      el.removeEventListener("focusout", handler)
     }
   }, [onBlur])
 

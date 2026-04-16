@@ -65,7 +65,9 @@ describe("Form adapter bugs", () => {
         document.querySelector('[data-slot="trigger"]') || screen.queryByRole("button")
 
       expect(trigger).not.toBeNull()
-      trigger!.dispatchEvent(new FocusEvent("blur", { bubbles: true }))
+      trigger!.dispatchEvent(
+        new FocusEvent("focusout", { bubbles: true, relatedTarget: document.body }),
+      )
       expect(onBlur).toHaveBeenCalled()
     })
   })
