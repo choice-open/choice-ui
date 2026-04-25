@@ -61,7 +61,7 @@ const ACTIVITIES: Activity[] = [
 
 export function RecentActivityBlock() {
   return (
-    <section className="flex flex-col rounded-lg border border-border-default bg-background-default shadow-sm">
+    <section className="flex flex-col rounded-lg bg-background-default shadow-sm">
       <header className="flex items-baseline justify-between border-b border-border-default px-5 py-4">
         <div>
           <h3 className="text-heading-small">Recent activity</h3>

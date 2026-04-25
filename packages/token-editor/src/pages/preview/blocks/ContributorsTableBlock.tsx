@@ -68,7 +68,7 @@ const ROLE_VARIANT = {
 export function ContributorsTableBlock() {
   const [selected, setSelected] = useState<(string | number)[]>([])
   return (
-    <section className="flex flex-col rounded-lg border border-border-default bg-background-default shadow-sm">
+    <section className="flex flex-col rounded-lg bg-background-default shadow-sm">
       <header className="flex items-baseline justify-between border-b border-border-default px-5 py-4">
         <div>
           <span className="text-body-small uppercase tracking-wide text-text-tertiary">

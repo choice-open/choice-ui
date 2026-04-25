@@ -47,7 +47,7 @@ export function NotificationPrefsBlock() {
   )
 
   return (
-    <section className="flex flex-col rounded-lg border border-border-default bg-background-default shadow-sm">
+    <section className="flex flex-col rounded-lg bg-background-default shadow-sm">
       <header className="border-b border-border-default px-5 py-4">
         <h3 className="text-heading-small">Notifications</h3>
         <p className="text-body-medium text-text-secondary">Choose how you want to be alerted.</p>

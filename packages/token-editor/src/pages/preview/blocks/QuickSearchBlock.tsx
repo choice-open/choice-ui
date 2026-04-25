@@ -10,7 +10,7 @@ const RECENT = [
 
 export function QuickSearchBlock() {
   return (
-    <section className="flex flex-col rounded-lg border border-border-default bg-background-default shadow-sm">
+    <section className="flex flex-col rounded-lg bg-background-default shadow-sm">
       <header className="border-b border-border-default px-5 py-4">
         <span className="text-body-small uppercase tracking-wide text-text-tertiary">
           Quick actions

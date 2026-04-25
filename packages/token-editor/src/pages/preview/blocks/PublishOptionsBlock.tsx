@@ -21,7 +21,7 @@ export function PublishOptionsBlock() {
   const [notes, setNotes] = useState("Bumps the brand blue swatch to match marketing.")
 
   return (
-    <section className="flex flex-col rounded-lg border border-border-default bg-background-default shadow-sm">
+    <section className="flex flex-col rounded-lg bg-background-default shadow-sm">
       <header className="border-b border-border-default px-5 py-4">
         <span className="text-body-small uppercase tracking-wide text-text-tertiary">
           Publish
