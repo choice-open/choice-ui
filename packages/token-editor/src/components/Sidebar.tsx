@@ -7,6 +7,7 @@ type Props = {
   onPickPreset: (id: SectionId) => void
   onOpenExport: () => void
   onReset: () => void
+  onShuffle: () => void
   dirtyCount: number
 }
 
@@ -20,7 +21,13 @@ const FILE_BY_SECTION: Record<SectionId, string> = {
   zindex: "zindex-w3c.json",
 }
 
-export function Sidebar({ onPickPreset, onOpenExport, onReset, dirtyCount }: Props) {
+export function Sidebar({
+  onPickPreset,
+  onOpenExport,
+  onReset,
+  onShuffle,
+  dirtyCount,
+}: Props) {
   const activePresets = useEditorStore((s) => s.activePresets)
   const dirty = useEditorStore((s) => s.dirty)
 
@@ -58,6 +65,14 @@ export function Sidebar({ onPickPreset, onOpenExport, onReset, dirtyCount }: Pro
             : "Pick a category to start. ⌘⇧R toggles live theme."}
         </div>
         <div className="flex gap-1.5">
+          <button
+            type="button"
+            onClick={onShuffle}
+            className="flex-1 rounded border border-border-default px-2 py-1.5 text-body-medium hover:bg-background-component"
+            title="Pick a random preset for every category"
+          >
+            Shuffle
+          </button>
           <button
             type="button"
             onClick={onReset}

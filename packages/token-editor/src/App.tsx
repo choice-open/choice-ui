@@ -12,6 +12,7 @@ export function App() {
   useLiveTheme()
   const dirty = useEditorStore((s) => s.dirty)
   const reset = useEditorStore((s) => s.reset)
+  const shuffle = useEditorStore((s) => s.shuffle)
   const [presetSection, setPresetSection] = useState<SectionId | null>(null)
   const [panelSection, setPanelSection] = useState<SectionId | null>(null)
   const [exportOpen, setExportOpen] = useState(false)
@@ -22,6 +23,7 @@ export function App() {
         onPickPreset={setPresetSection}
         onOpenExport={() => setExportOpen(true)}
         onReset={reset}
+        onShuffle={shuffle}
         dirtyCount={dirty.size}
       />
       <main className="overflow-auto">

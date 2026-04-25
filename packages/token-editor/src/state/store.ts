@@ -1,6 +1,6 @@
 import { create } from "zustand"
-import type { Preset, PresetEdit } from "../presets"
-import type { SectionId } from "../sections"
+import { PRESETS, type Preset, type PresetEdit } from "../presets"
+import { SECTIONS, type SectionId } from "../sections"
 import { cloneDefaults, TOKEN_FILES, type TokenFileName, type TokenFiles } from "../tokens/defaults"
 import { getNodeAtPath, type W3CTree } from "../lib/w3c"
 
@@ -36,6 +36,11 @@ type EditorState = {
    * so the sidebar and picker can highlight the current selection.
    */
   applyPreset: (section: SectionId, preset: Preset) => void
+  /**
+   * Pick a random preset for every section that has curated content and
+   * apply them all in one batch. Sections without presets stay put.
+   */
+  shuffle: () => void
   reset: () => void
 }
 
@@ -159,6 +164,27 @@ export const useEditorStore = create<EditorState>((set) => ({
         dirty,
         activePresets: { ...state.activePresets, [section]: preset.id },
       }
+    }),
+  shuffle: () =>
+    set((state) => {
+      let files = state.files
+      let dirty = state.dirty
+      const nextActive = { ...state.activePresets }
+      for (const section of SECTIONS) {
+        const presets = PRESETS[section.id]
+        if (presets.length === 0) continue
+        const random = presets[Math.floor(Math.random() * presets.length)]
+        for (const edit of random.edits) {
+          const nextFile =
+            edit.kind === "mode"
+              ? applyModeWrite(files, edit.file, edit.path, edit.mode, edit.value)
+              : applyValueWrite(files, edit.file, edit.path, edit.value)
+          files = { ...files, [edit.file]: nextFile }
+          dirty = recomputeDirty(dirty, edit.file, edit.path, nextFile)
+        }
+        nextActive[section.id] = random.id
+      }
+      return { files, dirty, activePresets: nextActive }
     }),
   reset: () =>
     set({
