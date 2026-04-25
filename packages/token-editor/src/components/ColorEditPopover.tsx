@@ -11,9 +11,17 @@ type Props = {
 
 const FALLBACK_RGB: RGB = { r: 128, g: 128, b: 128 }
 
+/**
+ * Primitive color tokens are opaque by project convention: the Terrazzo CSS
+ * transform drops `alpha` so consumers can compose it at the use site via
+ * `rgb(var(--cdt-color-X) / <alpha>)`. Letting users edit alpha here would
+ * silently diverge live preview / export from token JSON state. Lock the
+ * picker to alpha=1 (controlled prop forces the slider back, `onAlphaChange`
+ * is intentionally omitted, and the channel field's A column is hidden via
+ * `features.alpha = false`) so the writeback can never emit alpha < 1.
+ */
 export function ColorEditPopover({ value, label, onChange, children }: Props) {
   const rgb = value ? srgbToRgb(value) : FALLBACK_RGB
-  const alpha = value?.alpha ?? 1
 
   return (
     <Popover interactions="click" placement="right-start">
@@ -22,9 +30,9 @@ export function ColorEditPopover({ value, label, onChange, children }: Props) {
         <div className="mb-2 text-xs font-medium text-text-secondary">{label}</div>
         <SimpleColorPicker
           color={rgb}
-          alpha={alpha}
-          onColorChange={(next) => onChange(rgbToSrgb(next, alpha))}
-          onAlphaChange={(next) => onChange(rgbToSrgb(rgb, next))}
+          alpha={1}
+          features={{ alpha: false }}
+          onColorChange={(next) => onChange(rgbToSrgb(next, 1))}
         />
       </Popover.Content>
     </Popover>
