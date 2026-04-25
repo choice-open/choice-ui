@@ -1,23 +1,33 @@
+import { NotificationPrefsBlock } from "./blocks/NotificationPrefsBlock"
+import { PricingBlock } from "./blocks/PricingBlock"
+import { RecentActivityBlock } from "./blocks/RecentActivityBlock"
+
 /**
- * Right-pane live preview. Commit 1 ships only the placeholder shell so the
- * architecture pivot can land without design risk; the 12-block dashboard
- * fills this in in commits 2 and 3.
+ * Right-pane live preview. Built block-by-block: each block is a self-contained
+ * scene that earns its place by exercising a meaningful constellation of
+ * components and token roles, not a kitchen-sink demo. More blocks land in
+ * the next commit; this slice ships three for aesthetic gating.
  */
 export function PreviewScene() {
   return (
-    <div className="flex h-full flex-col items-center justify-center gap-3 bg-background-component/40 p-12">
-      <div className="text-xs uppercase tracking-wide text-text-tertiary">Preview</div>
-      <div className="max-w-md text-center text-sm text-text-secondary">
-        The dashboard preview will live here. Edit any category from the sidebar
-        and watch the right pane react in real time.
-      </div>
-      <div className="mt-2 grid grid-cols-3 gap-2 opacity-50">
-        {Array.from({ length: 6 }).map((_, i) => (
-          <div
-            key={i}
-            className="h-16 w-32 rounded border border-dashed border-border-default"
-          />
-        ))}
+    <div className="min-h-full bg-background-component/30 p-6">
+      <div className="mx-auto flex max-w-4xl flex-col gap-6">
+        <header className="flex items-baseline justify-between">
+          <div>
+            <h2 className="text-base font-semibold">Live preview</h2>
+            <p className="text-xs text-text-secondary">
+              Real components rendered with your live token edits. Try changing
+              colors or radius from the sidebar.
+            </p>
+          </div>
+          <span className="text-[10px] uppercase tracking-wide text-text-tertiary">
+            3 of 12 blocks
+          </span>
+        </header>
+
+        <RecentActivityBlock />
+        <NotificationPrefsBlock />
+        <PricingBlock />
       </div>
     </div>
   )

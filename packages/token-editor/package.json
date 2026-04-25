@@ -13,6 +13,7 @@
     "@choice-ui/react": "workspace:*",
     "@choice-ui/design-tokens": "workspace:*",
     "@choice-ui/shared": "workspace:*",
+    "@choiceform/icons-react": "^1.3.8",
     "@terrazzo/parser": "^0.10.5",
     "@terrazzo/plugin-css": "^0.10.2",
     "@terrazzo/plugin-js": "^0.10.1",
