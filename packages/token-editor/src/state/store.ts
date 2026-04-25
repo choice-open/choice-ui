@@ -132,9 +132,17 @@ export const useEditorStore = create<EditorState>((set) => ({
   setModeValue: (file, path, mode, value) =>
     set((state) => {
       const nextFile = applyModeWrite(state.files, file, path, mode, value)
+      const nextDirty = recomputeDirty(state.dirty, file, path, nextFile)
+      console.debug("[live-theme] setModeValue", {
+        file,
+        path: path.join("."),
+        mode,
+        prevDirty: state.dirty.size,
+        nextDirty: nextDirty.size,
+      })
       return {
         files: { ...state.files, [file]: nextFile },
-        dirty: recomputeDirty(state.dirty, file, path, nextFile),
+        dirty: nextDirty,
         activePresets: { ...state.activePresets, [SECTION_BY_FILE[file]]: null },
       }
     }),
