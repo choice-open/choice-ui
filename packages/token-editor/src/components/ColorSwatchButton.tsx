@@ -8,7 +8,6 @@ type Props = {
 }
 
 export function ColorSwatchButton({ value, isAlias, size = 32, onClick }: Props) {
-  const css = value ? srgbToCss(value) : "transparent"
   return (
     <button
       type="button"
@@ -18,10 +17,13 @@ export function ColorSwatchButton({ value, isAlias, size = 32, onClick }: Props)
       style={{
         width: size,
         height: size,
-        background: css,
-        backgroundImage: !value
-          ? "repeating-conic-gradient(#ddd 0 25%, transparent 0 50%) 50%/8px 8px"
-          : undefined,
+        // Keep both as long-form props so swapping between solid color
+        // and the missing-value checkerboard never mixes shorthand with
+        // non-shorthand on re-render (React warning).
+        backgroundColor: value ? srgbToCss(value) : undefined,
+        backgroundImage: value
+          ? undefined
+          : "repeating-conic-gradient(#ddd 0 25%, transparent 0 50%) 50%/8px 8px",
       }}
       disabled={isAlias}
     />
