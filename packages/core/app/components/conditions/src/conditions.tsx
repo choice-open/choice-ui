@@ -55,10 +55,27 @@ export function Conditions({
   )
 
   const isInitialMountRef = useRef(true)
+  // Set when an update is driven by the `value` prop so the onChange-emit
+  // effect can skip the echo back to the parent. Without this, controlled
+  // consumers see their own `value` updates round-trip through `onChange`,
+  // which can trigger duplicate side effects or feedback loops when the
+  // parent recreates the value object on each render.
+  //
+  // The lastValueRef guard ensures we only set skip when the value prop
+  // *actually* changes — otherwise the mount-time effect (where useState's
+  // initial value already equals the `value` prop, so setConditions is a
+  // no-op) leaves a stale `skip = true` that swallows the first real user
+  // action's onChange.
+  const skipNextOnChangeRef = useRef(false)
+  const lastValueRef = useRef(value)
 
   useEffect(() => {
-    if (value) {
-      setConditions(value)
+    if (value !== lastValueRef.current) {
+      lastValueRef.current = value
+      if (value) {
+        skipNextOnChangeRef.current = true
+        setConditions(value)
+      }
     }
   }, [value])
 
@@ -112,6 +129,10 @@ export function Conditions({
   useEffect(() => {
     if (isInitialMountRef.current) {
       isInitialMountRef.current = false
+      return
+    }
+    if (skipNextOnChangeRef.current) {
+      skipNextOnChangeRef.current = false
       return
     }
     onChange?.(conditions)
