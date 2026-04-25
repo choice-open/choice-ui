@@ -59,6 +59,11 @@ function runCompile(
     })
     .catch((err) => {
       if (ticket !== seqRef.current) return
+      // Drop the previously injected stylesheet so the preview doesn't
+      // keep showing a stale successful theme on top of token state that
+      // can no longer compile (circular alias, malformed value). Without
+      // this the UI silently lies about what would actually export.
+      removeStyle()
       console.error(err)
     })
 }
