@@ -126,5 +126,23 @@ describe("Segmented bugs", () => {
       const isValidId = /^[a-zA-Z][a-zA-Z0-9:_-]*$/.test(id)
       expect(isValidId).toBe(true)
     })
+
+    it("does not collide ids across values that differ only in non-alphanumeric chars", () => {
+      // Regression: "a-b" and "a b" both used to sanitize to "a_b", giving
+      // two radio inputs the same id and mis-targeting htmlFor.
+      render(
+        <Segmented
+          value="a-b"
+          onChange={() => {}}
+        >
+          <Segmented.Item value="a-b">Dash</Segmented.Item>
+          <Segmented.Item value="a b">Space</Segmented.Item>
+        </Segmented>,
+      )
+
+      const inputs = screen.getAllByRole("radio")
+      expect(inputs).toHaveLength(2)
+      expect(inputs[0]!.id).not.toBe(inputs[1]!.id)
+    })
   })
 })
