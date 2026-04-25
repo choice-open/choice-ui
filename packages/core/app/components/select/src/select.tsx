@@ -53,11 +53,14 @@ import { useEventCallback } from "usehooks-ts"
 const PORTAL_ROOT_ID = "floating-menu-root"
 
 export interface SelectProps {
+  "aria-describedby"?: string
+  "aria-labelledby"?: string
   children?: React.ReactNode
   className?: string
   closeOnEscape?: boolean
   disabled?: boolean
   focusManagerProps?: Partial<FloatingFocusManagerProps>
+  id?: string
   matchTriggerWidth?: boolean
   onChange?: (value: string) => void
   onOpenChange?: (open: boolean) => void
@@ -113,6 +116,9 @@ const SelectComponent = memo(function SelectComponent(props: SelectProps) {
     },
     root,
     variant = "default",
+    id,
+    "aria-labelledby": ariaLabelledby,
+    "aria-describedby": ariaDescribedby,
   } = props
 
   // Extract children elements — uses isSlotChild / findSlotChild from
@@ -558,6 +564,9 @@ const SelectComponent = memo(function SelectComponent(props: SelectProps) {
       "aria-haspopup": "listbox" as const,
       "aria-expanded": isControlledOpen,
       "aria-controls": menuId,
+      ...(id ? { id } : {}),
+      ...(ariaLabelledby ? { "aria-labelledby": ariaLabelledby } : {}),
+      ...(ariaDescribedby ? { "aria-describedby": ariaDescribedby } : {}),
       ...getReferenceProps({
         disabled,
         onTouchStart: handleTouchStart,
@@ -573,6 +582,9 @@ const SelectComponent = memo(function SelectComponent(props: SelectProps) {
     handleTouchStart,
     handleMouseDown,
     handlePointerMove,
+    id,
+    ariaLabelledby,
+    ariaDescribedby,
   ])
 
   // Error handling

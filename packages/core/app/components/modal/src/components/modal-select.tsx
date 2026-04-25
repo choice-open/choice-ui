@@ -17,13 +17,12 @@ export const ModalSelect = memo(function ModalSelect(props: ModalSelectProps) {
   return (
     <fieldset className={tcx("flex w-full min-w-0 flex-col gap-2", className)}>
       {label && <Label htmlFor={id}>{label}</Label>}
-      <div id={id}>
-        <Select
-          matchTriggerWidth
-          aria-describedby={description ? descriptionId : undefined}
-          {...rest}
-        />
-      </div>
+      <Select
+        matchTriggerWidth
+        id={id}
+        aria-describedby={description ? descriptionId : undefined}
+        {...rest}
+      />
       {description && (
         <p
           id={descriptionId}

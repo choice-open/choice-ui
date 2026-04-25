@@ -16,15 +16,21 @@ import userEvent from "@testing-library/user-event"
 import React from "react"
 import { describe, expect, it, vi } from "vitest"
 import { Modal } from "../modal"
+import { Select } from "@choice-ui/select"
 import { ModalSelect } from "../components/modal-select"
 
 describe("Modal bugs", () => {
   describe("BUG 1: ModalSelect label must focus the select on click", () => {
-    it("associates label with select via matching htmlFor/id", async () => {
+    it("associates label with the actual select trigger via matching htmlFor/id", async () => {
       const user = userEvent.setup()
 
       render(
-        <ModalSelect label="Priority" />,
+        <ModalSelect label="Priority">
+          <Select.Trigger>Pick one</Select.Trigger>
+          <Select.Content>
+            <Select.Item value="a">A</Select.Item>
+          </Select.Content>
+        </ModalSelect>,
       )
 
       const label = screen.getByText("Priority")
@@ -36,6 +42,11 @@ describe("Modal bugs", () => {
 
       const targetById = document.getElementById(htmlFor!)
       expect(targetById).toBeTruthy()
+      // The htmlFor target must be the interactive trigger, not a wrapper div.
+      // Once htmlFor wires through, the trigger's accessible name comes from the
+      // associated <label>, so query by the label text.
+      const trigger = screen.getByRole("combobox", { name: /priority/i })
+      expect(targetById).toBe(trigger)
     })
   })
 
