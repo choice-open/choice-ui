@@ -1,6 +1,6 @@
 import { create } from "zustand"
-import { cloneDefaults, type TokenFileName, type TokenFiles } from "../tokens/defaults"
-import type { W3CTree } from "../lib/w3c"
+import { cloneDefaults, TOKEN_FILES, type TokenFileName, type TokenFiles } from "../tokens/defaults"
+import { getNodeAtPath, type W3CTree } from "../lib/w3c"
 
 type Mode = "light" | "dark"
 
@@ -35,7 +35,7 @@ export const useEditorStore = create<EditorState>((set) => ({
   setMode: (mode) => set({ mode }),
   setModeValue: (file, path, mode, value) =>
     set((state) => {
-      const nextFiles = { ...state.files, [file]: cloneTreeWithUpdate(state.files[file], path, (token) => {
+      const nextFile = cloneTreeWithUpdate(state.files[file], path, (token) => {
         if (!token || typeof token !== "object") return token
         const next = { ...(token as Record<string, unknown>) }
         const ext = { ...((next.$extensions as Record<string, unknown> | undefined) ?? {}) }
@@ -44,26 +44,49 @@ export const useEditorStore = create<EditorState>((set) => ({
         ext.mode = modes
         next.$extensions = ext
         return next
-      }) }
-      const nextDirty = new Set(state.dirty)
-      nextDirty.add(`${file}#${path.join(".")}`)
-      return { files: nextFiles, dirty: nextDirty }
+      })
+      return {
+        files: { ...state.files, [file]: nextFile },
+        dirty: recomputeDirty(state.dirty, file, path, nextFile),
+      }
     }),
   setTokenValue: (file, path, value) =>
     set((state) => {
-      const nextFiles = {
-        ...state.files,
-        [file]: cloneTreeWithUpdate(state.files[file], path, (token) => {
-          if (!token || typeof token !== "object") return token
-          return { ...(token as Record<string, unknown>), $value: value }
-        }),
+      const nextFile = cloneTreeWithUpdate(state.files[file], path, (token) => {
+        if (!token || typeof token !== "object") return token
+        return { ...(token as Record<string, unknown>), $value: value }
+      })
+      return {
+        files: { ...state.files, [file]: nextFile },
+        dirty: recomputeDirty(state.dirty, file, path, nextFile),
       }
-      const nextDirty = new Set(state.dirty)
-      nextDirty.add(`${file}#${path.join(".")}`)
-      return { files: nextFiles, dirty: nextDirty }
     }),
   reset: () => set({ files: cloneDefaults(), dirty: new Set<string>() }),
 }))
+
+/**
+ * Compare the rewritten token node against the bundled baseline at the same
+ * path, byte-for-byte (JSON), and add or remove the dirty key accordingly.
+ * Mirrors `buildDiffPatch`'s strict equality so the dirty set never reports
+ * pending edits that would not appear in an exported patch.
+ */
+function recomputeDirty(
+  prev: Set<string>,
+  file: TokenFileName,
+  path: string[],
+  nextFile: W3CTree,
+): Set<string> {
+  const key = `${file}#${path.join(".")}`
+  const baselineNode = getNodeAtPath(TOKEN_FILES[file] as W3CTree, path)
+  const currentNode = getNodeAtPath(nextFile, path)
+  const isUnchanged = JSON.stringify(baselineNode) === JSON.stringify(currentNode)
+  if (isUnchanged && !prev.has(key)) return prev
+  if (!isUnchanged && prev.has(key)) return prev
+  const next = new Set(prev)
+  if (isUnchanged) next.delete(key)
+  else next.add(key)
+  return next
+}
 
 function cloneTreeWithUpdate(
   tree: W3CTree,
