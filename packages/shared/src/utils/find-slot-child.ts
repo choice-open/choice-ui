@@ -50,9 +50,15 @@ export function isSlotChild(child: ReactNode, slot: SlotMarker): boolean {
 /**
  * Recursively find the first child matching `slot`.
  *
- * Descends through `<>`, plain elements, and custom wrappers so users can
- * write `<div><Select.Trigger /></div>` or `<><Select.Trigger /></>` without
- * the parent silently failing to find it.
+ * Descends only through "transparent" wrappers — Fragments and plain DOM
+ * elements (string types like "div", "span") — so users can write
+ * `<><Select.Trigger /></>` or `<div><Select.Trigger /></div>` without the
+ * parent silently failing.
+ *
+ * Crucially, recursion stops at component boundaries: the outer `Dropdown`
+ * must not bind to a `Trigger` that lives inside an inner `Dropdown` rendered
+ * within `Content`. Walking through arbitrary components would let nested
+ * structures leak slots upward.
  *
  * Stops at the first match — for unique slots like Trigger / Content.
  */
@@ -62,14 +68,21 @@ export function findSlotChild(
 ): ReactElement | undefined {
   const arr = Children.toArray(children)
   for (const child of arr) {
-    if (isValidElement(child)) {
-      if (isSlotChild(child, slot)) return child
-      const nested = findSlotChild(
-        (child.props as { children?: ReactNode }).children,
-        slot,
-      )
-      if (nested) return nested
-    }
+    if (!isValidElement(child)) continue
+    if (isSlotChild(child, slot)) return child
+
+    // Only descend through Fragments and host (DOM) elements. Anything else
+    // is a component boundary whose children belong to that component, not
+    // to us — recursing past it would mis-attach to nested same-type slots.
+    const isHostElement = typeof child.type === "string"
+    const isFragment = child.type === Fragment
+    if (!isHostElement && !isFragment) continue
+
+    const nested = findSlotChild(
+      (child.props as { children?: ReactNode }).children,
+      slot,
+    )
+    if (nested) return nested
   }
   return undefined
 }

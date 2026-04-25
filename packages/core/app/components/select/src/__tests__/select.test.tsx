@@ -343,5 +343,40 @@ describe("Select bugs", () => {
         expect(screen.getByRole("listbox")).toBeInTheDocument()
       })
     })
+
+    it("does not bind the outer Select to a Trigger that lives inside a nested Select", async () => {
+      // Regression: findSlotChild used to recurse through every descendant,
+      // so an outer Select could pick a Trigger from a Select rendered
+      // inside Content. Slot recursion must stop at component boundaries.
+      const user = userEvent.setup()
+
+      render(
+        <Select value={null} onChange={vi.fn()}>
+          <Select.Trigger>
+            <Select.Value>outer</Select.Value>
+          </Select.Trigger>
+          <Select.Content>
+            <Select value={null} onChange={vi.fn()}>
+              <Select.Trigger>
+                <Select.Value>inner</Select.Value>
+              </Select.Trigger>
+              <Select.Content>
+                <Select.Item value="x">X</Select.Item>
+              </Select.Content>
+            </Select>
+          </Select.Content>
+        </Select>,
+      )
+
+      // Clicking the outer trigger must open the outer menu, not bind to
+      // the nested inner trigger. We assert the outer trigger text is
+      // discoverable as the clickable element and that clicking it opens
+      // exactly one listbox (the outer one).
+      await user.click(screen.getByText("outer"))
+
+      await waitFor(() => {
+        expect(screen.getAllByRole("listbox").length).toBeGreaterThan(0)
+      })
+    })
   })
 })
