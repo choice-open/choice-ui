@@ -75,7 +75,7 @@ function applyModeWrite(
     | Record<string, unknown>
     | undefined
   const baselineModes = baselineExt?.mode as Record<string, unknown> | undefined
-  const baselineHasOverride =
+  const baselineHasModeEntry =
     baselineModes !== undefined && mode in baselineModes
 
   return cloneTreeWithUpdate(files[file], path, (token) => {
@@ -85,16 +85,29 @@ function applyModeWrite(
     const ext = { ...(originalExt ?? {}) }
     const modes = { ...((ext.mode as Record<string, unknown> | undefined) ?? {}) }
 
-    if (baselineHasOverride) {
-      // Baseline kept this slot explicit, so we must too — otherwise revert
-      // would change the JSON shape and `recomputeDirty` could never clear.
-      modes[mode] = value
-    } else if (JSON.stringify(value) === JSON.stringify(next.$value)) {
-      // No baseline override and the new value matches `$value`: writing
-      // would create a redundant entry that permanently marks dirty.
-      delete modes[mode]
+    if (mode === "light") {
+      // Light IS the base mode in this design system: Terrazzo's `:root`
+      // selector emits the token's `$value`, not `mode.light` (since our
+      // `modeSelectors` only declares `dark`). So a light-mode edit must
+      // land on `$value` to actually take effect at `:root`. If the
+      // baseline kept `mode.light` explicit (which the bundled colors do),
+      // mirror the write there too so JSON shape round-trips on revert.
+      next.$value = value
+      if (baselineHasModeEntry) {
+        modes.light = value
+      }
     } else {
-      modes[mode] = value
+      // Dark is a true override layered on top of `$value` — Terrazzo's
+      // `.dark` selector reads from `mode.dark`. Same redundancy guard as
+      // before: if the baseline lacked an entry and the new value would
+      // match `$value`, skip the write so dirty can clear cleanly.
+      if (baselineHasModeEntry) {
+        modes.dark = value
+      } else if (JSON.stringify(value) === JSON.stringify(next.$value)) {
+        delete modes.dark
+      } else {
+        modes.dark = value
+      }
     }
 
     if (Object.keys(modes).length === 0) {
@@ -132,17 +145,9 @@ export const useEditorStore = create<EditorState>((set) => ({
   setModeValue: (file, path, mode, value) =>
     set((state) => {
       const nextFile = applyModeWrite(state.files, file, path, mode, value)
-      const nextDirty = recomputeDirty(state.dirty, file, path, nextFile)
-      console.debug("[live-theme] setModeValue", {
-        file,
-        path: path.join("."),
-        mode,
-        prevDirty: state.dirty.size,
-        nextDirty: nextDirty.size,
-      })
       return {
         files: { ...state.files, [file]: nextFile },
-        dirty: nextDirty,
+        dirty: recomputeDirty(state.dirty, file, path, nextFile),
         activePresets: { ...state.activePresets, [SECTION_BY_FILE[file]]: null },
       }
     }),

@@ -13,20 +13,14 @@ export function useLiveTheme() {
   const compileSeqRef = useRef(0)
 
   useEffect(() => {
-    console.debug("[live-theme] effect", { dirtySize: dirty.size })
     if (dirty.size === 0) {
       compileSeqRef.current += 1 // invalidate any in-flight compile
       removeStyle()
-      console.debug("[live-theme] dirty=0, removed style")
       return
     }
     if (timerRef.current) clearTimeout(timerRef.current)
     timerRef.current = setTimeout(() => {
-      if (!enabledRef.current) {
-        console.debug("[live-theme] timer fired but disabled")
-        return
-      }
-      console.debug("[live-theme] timer fired, compiling")
+      if (!enabledRef.current) return
       runCompile(files, compileSeqRef)
     }, DEBOUNCE_MS)
     return () => {
@@ -58,20 +52,14 @@ function runCompile(
   seqRef: { current: number },
 ) {
   const ticket = ++seqRef.current
-  console.debug("[live-theme] compile start", { ticket })
   compileToCss(files)
     .then((css) => {
-      console.debug("[live-theme] compile done", {
-        ticket,
-        latest: seqRef.current,
-        bytes: css.length,
-      })
       if (ticket !== seqRef.current) return
       injectStyle(css)
     })
     .catch((err) => {
-      console.error("[live-theme] compile error", err)
       if (ticket !== seqRef.current) return
+      console.error(err)
     })
 }
 
@@ -81,14 +69,12 @@ function injectStyle(css: string) {
     el = document.createElement("style")
     el.id = STYLE_ID
     document.head.appendChild(el)
-    console.debug("[live-theme] created <style id=cdt-live>")
   }
   // Wrap inside the `cdt-live` cascade layer (declared in styles.css). The
   // bundled `tokens.css` lives in `cdt-base`, so even if Vite/HMR ends up
   // re-injecting the bundled `<style>` after this one, layer order keeps
   // `cdt-live`'s overrides winning regardless of DOM order.
   el.textContent = `@layer cdt-live {\n${css}\n}`
-  console.debug("[live-theme] injected", { bytes: el.textContent.length })
 }
 
 function removeStyle() {

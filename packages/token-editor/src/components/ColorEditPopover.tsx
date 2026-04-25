@@ -54,7 +54,6 @@ export function ColorEditPopover({ value, label, onChange, children }: Props) {
   function commit(rgb: RGB) {
     const next = rgbToSrgb(rgb, 1)
     lastEmittedRef.current = next
-    console.debug("[live-theme] popover commit", { rgb, next })
     onChange(next)
   }
 
@@ -68,7 +67,6 @@ export function ColorEditPopover({ value, label, onChange, children }: Props) {
           alpha={1}
           features={{ alpha: false }}
           onColorChange={(next) => {
-            console.debug("[live-theme] picker onColorChange", next)
             setColor(next)
             commit(next)
           }}

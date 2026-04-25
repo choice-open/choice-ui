@@ -54,10 +54,7 @@ export function AliasPickerPopover({
                   <li key={option.id}>
                     <button
                       type="button"
-                      onClick={() => {
-                        console.debug("[live-theme] alias onPick", option.alias)
-                        onPick(option.alias)
-                      }}
+                      onClick={() => onPick(option.alias)}
                       className={
                         "flex w-full items-center gap-2 px-3 py-1.5 text-left text-body-large hover:bg-background-component " +
                         (isCurrent ? "bg-background-component" : "")
