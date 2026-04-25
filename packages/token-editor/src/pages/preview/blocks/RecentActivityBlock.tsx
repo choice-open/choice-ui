@@ -88,7 +88,7 @@ export function RecentActivityBlock() {
             <StatusBadge status={a.status} />
             <span className="text-body-medium tabular-nums text-text-tertiary">{a.when}</span>
             <Dropdown>
-              <Dropdown.Trigger>
+              <Dropdown.Trigger asChild>
                 <IconButton variant="ghost" aria-label="More actions">
                   <EllipsisVerticalSmall />
                 </IconButton>
