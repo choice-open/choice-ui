@@ -1,9 +1,13 @@
 import type { ReactNode } from "react"
 import { AlertsBlock } from "./blocks/AlertsBlock"
 import { AllTokensBlock } from "./blocks/AllTokensBlock"
+import { AssetUploadBlock } from "./blocks/AssetUploadBlock"
+import { ContributorsTableBlock } from "./blocks/ContributorsTableBlock"
 import { CoverageBlock } from "./blocks/CoverageBlock"
+import { DateRangeBlock } from "./blocks/DateRangeBlock"
 import { DesignFiltersBlock } from "./blocks/DesignFiltersBlock"
 import { EditVelocityBlock } from "./blocks/EditVelocityBlock"
+import { ExportSnippetBlock } from "./blocks/ExportSnippetBlock"
 import { HelpTabsBlock } from "./blocks/HelpTabsBlock"
 import { NotificationPrefsBlock } from "./blocks/NotificationPrefsBlock"
 import { PricingBlock } from "./blocks/PricingBlock"
@@ -40,6 +44,12 @@ export function PreviewScene() {
           <DesignFiltersBlock />
         </Block>
         <Block>
+          <ContributorsTableBlock />
+        </Block>
+        <Block>
+          <DateRangeBlock />
+        </Block>
+        <Block>
           <CoverageBlock />
         </Block>
         <Block>
@@ -61,7 +71,13 @@ export function PreviewScene() {
           <AlertsBlock />
         </Block>
         <Block>
+          <AssetUploadBlock />
+        </Block>
+        <Block>
           <PublishOptionsBlock />
+        </Block>
+        <Block>
+          <ExportSnippetBlock />
         </Block>
         <Block>
           <ReleaseScheduleBlock />
