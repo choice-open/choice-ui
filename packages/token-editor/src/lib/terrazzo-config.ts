@@ -41,12 +41,19 @@ const cssPlugin = css({
     if (t.$type === "color") {
       const original = t.originalValue?.$value
       if (typeof original === "string" && original.includes("{")) return undefined
-      const modeValue = t.originalValue?.$extensions?.mode?.[mode] as
-        | { colorSpace?: string; components?: number[] }
-        | undefined
-      if (modeValue?.colorSpace === "srgb" && modeValue.components) {
-        const [r, g, b] = modeValue.components
-        return `${comp(r)}, ${comp(g)}, ${comp(b)}`
+      const modeValue = t.originalValue?.$extensions?.mode?.[mode]
+      // If the override at this mode is itself an alias, defer to
+      // Terrazzo's alias resolution. Without this branch a mixed token
+      // (literal `$value` + aliased `mode.dark`, e.g. an icon swap that
+      // points dark mode at a different primitive) would silently fall
+      // through to the `$value` fallback and emit the light RGB for dark.
+      if (typeof modeValue === "string" && modeValue.includes("{")) return undefined
+      if (typeof modeValue === "object" && modeValue !== null) {
+        const m = modeValue as { colorSpace?: string; components?: number[] }
+        if (m.colorSpace === "srgb" && m.components) {
+          const [r, g, b] = m.components
+          return `${comp(r)}, ${comp(g)}, ${comp(b)}`
+        }
       }
       const v = t.$value as { colorSpace?: string; components?: number[] } | undefined
       if (v?.colorSpace === "srgb" && v.components) {
