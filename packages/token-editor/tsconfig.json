@@ -15,7 +15,7 @@
     "allowImportingTsExtensions": true,
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
-    "types": ["vite/client"],
+    "types": ["vite/client", "node"],
     "paths": {
       "@choice-ui/react": ["../core/app/index.ts"],
       "@choice-ui/shared": ["../shared/src/index.ts"]
