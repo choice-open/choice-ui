@@ -10,16 +10,18 @@ export function useLiveTheme() {
   const dirty = useEditorStore((s) => s.dirty)
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const enabledRef = useRef(true)
+  const compileSeqRef = useRef(0)
 
   useEffect(() => {
     if (dirty.size === 0) {
+      compileSeqRef.current += 1 // invalidate any in-flight compile
       removeStyle()
       return
     }
     if (timerRef.current) clearTimeout(timerRef.current)
     timerRef.current = setTimeout(() => {
       if (!enabledRef.current) return
-      compileToCss(files).then(injectStyle).catch(console.error)
+      runCompile(files, compileSeqRef)
     }, DEBOUNCE_MS)
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current)
@@ -33,8 +35,9 @@ export function useLiveTheme() {
         e.preventDefault()
         enabledRef.current = !enabledRef.current
         if (enabledRef.current) {
-          compileToCss(useEditorStore.getState().files).then(injectStyle).catch(console.error)
+          runCompile(useEditorStore.getState().files, compileSeqRef)
         } else {
+          compileSeqRef.current += 1 // invalidate any in-flight compile
           removeStyle()
         }
       }
@@ -42,6 +45,22 @@ export function useLiveTheme() {
     window.addEventListener("keydown", onKey)
     return () => window.removeEventListener("keydown", onKey)
   }, [])
+}
+
+function runCompile(
+  files: Parameters<typeof compileToCss>[0],
+  seqRef: { current: number },
+) {
+  const ticket = ++seqRef.current
+  compileToCss(files)
+    .then((css) => {
+      if (ticket !== seqRef.current) return
+      injectStyle(css)
+    })
+    .catch((err) => {
+      if (ticket !== seqRef.current) return
+      console.error(err)
+    })
 }
 
 function injectStyle(css: string) {
