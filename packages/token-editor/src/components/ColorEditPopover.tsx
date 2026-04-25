@@ -73,6 +73,23 @@ export function ColorEditPopover({
     lastEmittedRef.current = value
   }, [value])
 
+  // If the popover (or its parent) unmounts mid-drag — e.g. the dialog
+  // closes before `onChangeEnd` runs — the inline `--cdt-*` override on
+  // `<html>` would otherwise stick around and keep masking the live
+  // `<style id="cdt-live">` until something else writes to that var.
+  // Always wipe the override and any pending clear timer on unmount.
+  useEffect(() => {
+    return () => {
+      if (inlineClearTimerRef.current) {
+        clearTimeout(inlineClearTimerRef.current)
+        inlineClearTimerRef.current = null
+      }
+      if (variableName) {
+        document.documentElement.style.removeProperty(variableName)
+      }
+    }
+  }, [variableName])
+
   function commit(rgb: RGB) {
     const next = rgbToSrgb(rgb, 1)
     lastEmittedRef.current = next
