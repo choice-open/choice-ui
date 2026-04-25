@@ -17,7 +17,7 @@ export function PresetPickerDialog({ sectionId, onClose, onCustomize }: Props) {
       <Dialog.Content className="flex w-[380px] flex-col gap-3 p-4">
         {section ? (
           <>
-            <p className="text-xs text-text-secondary">
+            <p className="text-body-medium text-text-secondary">
               Pick a preset for this category, or customize every token by hand.
               Preset content lands in a follow-up commit.
             </p>
@@ -27,11 +27,11 @@ export function PresetPickerDialog({ sectionId, onClose, onCustomize }: Props) {
                   <button
                     type="button"
                     disabled
-                    className="flex w-full items-center justify-between rounded-md border border-border-default px-3 py-2 text-left text-sm opacity-60"
+                    className="flex w-full items-center justify-between rounded-md border border-border-default px-3 py-2 text-left text-body-large opacity-60"
                     title="Presets are not wired up yet"
                   >
                     <span>{preset}</span>
-                    <span className="text-[10px] uppercase text-text-tertiary">
+                    <span className="text-body-small uppercase text-text-tertiary">
                       coming soon
                     </span>
                   </button>
@@ -42,11 +42,11 @@ export function PresetPickerDialog({ sectionId, onClose, onCustomize }: Props) {
               <button
                 type="button"
                 onClick={onCustomize}
-                className="w-full rounded-md bg-background-component px-3 py-2 text-sm font-medium hover:bg-background-component-hover"
+                className="w-full rounded-md bg-background-component px-3 py-2 text-body-large-strong hover:bg-background-component-hover"
               >
                 Customize…
               </button>
-              <p className="mt-1 text-[10px] text-text-tertiary">
+              <p className="mt-1 text-body-small text-text-tertiary">
                 Edit every token in {section.label.toLowerCase()} individually.
               </p>
             </div>

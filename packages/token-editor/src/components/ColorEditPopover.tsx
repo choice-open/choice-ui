@@ -27,7 +27,7 @@ export function ColorEditPopover({ value, label, onChange, children }: Props) {
     <Popover interactions="click" placement="right-start">
       <Popover.Trigger>{children}</Popover.Trigger>
       <Popover.Content className="p-3">
-        <div className="mb-2 text-xs font-medium text-text-secondary">{label}</div>
+        <div className="mb-2 text-body-medium-strong text-text-secondary">{label}</div>
         <SimpleColorPicker
           color={rgb}
           alpha={1}

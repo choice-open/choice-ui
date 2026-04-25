@@ -32,20 +32,20 @@ export function AliasPickerPopover({
       <Popover.Trigger>{children}</Popover.Trigger>
       <Popover.Content className="w-72 p-0">
         <div className="border-b border-border-default p-2">
-          <div className="mb-1 text-xs font-medium text-text-secondary">{label}</div>
+          <div className="mb-1 text-body-medium-strong text-text-secondary">{label}</div>
           <input
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search primitives…"
             autoFocus
-            className="w-full rounded border border-border-default bg-background-default px-2 py-1 text-sm outline-none focus:border-border-strong"
+            className="w-full rounded border border-border-default bg-background-default px-2 py-1 text-body-large outline-none focus:border-border-strong"
           />
         </div>
         <ScrollArea className="max-h-64">
           <ul className="flex flex-col py-1">
             {filtered.length === 0 ? (
-              <li className="px-3 py-2 text-xs text-text-tertiary">No matches.</li>
+              <li className="px-3 py-2 text-body-medium text-text-tertiary">No matches.</li>
             ) : (
               filtered.map((option) => {
                 const swatch = mode === "dark" ? option.dark : option.light
@@ -56,7 +56,7 @@ export function AliasPickerPopover({
                       type="button"
                       onClick={() => onPick(option.alias)}
                       className={
-                        "flex w-full items-center gap-2 px-3 py-1.5 text-left text-sm hover:bg-background-component " +
+                        "flex w-full items-center gap-2 px-3 py-1.5 text-left text-body-large hover:bg-background-component " +
                         (isCurrent ? "bg-background-component" : "")
                       }
                     >
@@ -68,7 +68,7 @@ export function AliasPickerPopover({
                             : "transparent",
                         }}
                       />
-                      <span className="font-mono text-xs">{option.id}</span>
+                      <span className="font-mono text-body-medium">{option.id}</span>
                     </button>
                   </li>
                 )

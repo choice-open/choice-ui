@@ -37,7 +37,7 @@ export function ExportDialog({ open, onOpenChange }: Props) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <Dialog.Header title="Export tokens" />
       <Dialog.Content className="w-[420px] p-4">
-        <p className="mb-4 text-sm text-text-secondary">
+        <p className="mb-4 text-body-large text-text-secondary">
           {dirty.size === 0
             ? "No edits yet — exports reflect the current bundled defaults."
             : `${editCount} token${editCount === 1 ? "" : "s"} edited.`}
@@ -66,7 +66,7 @@ export function ExportDialog({ open, onOpenChange }: Props) {
           />
         </div>
         {error ? (
-          <p className="mt-3 text-xs text-text-danger">Export failed: {error}</p>
+          <p className="mt-3 text-body-medium text-text-danger">Export failed: {error}</p>
         ) : null}
       </Dialog.Content>
     </Dialog>
@@ -89,8 +89,8 @@ function ExportRow({
   return (
     <div className="flex items-start justify-between gap-3 rounded border border-border-default p-3">
       <div className="flex flex-col">
-        <div className="text-sm font-medium">{title}</div>
-        <div className="text-xs text-text-secondary">{description}</div>
+        <div className="text-body-large-strong">{title}</div>
+        <div className="text-body-medium text-text-secondary">{description}</div>
       </div>
       <Button onClick={onClick} disabled={disabled}>
         {loading ? "…" : "Download"}

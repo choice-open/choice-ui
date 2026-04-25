@@ -22,8 +22,8 @@ export function ZIndexPage() {
   return (
     <div className="flex flex-col gap-4 p-6">
       <header>
-        <h2 className="text-lg font-semibold">Z-Index</h2>
-        <p className="text-sm text-text-secondary">
+        <h2 className="text-heading-medium">Z-Index</h2>
+        <p className="text-body-large text-text-secondary">
           Layering scale. Sorted ascending so the stack order is visible at a
           glance.
         </p>
@@ -34,10 +34,10 @@ export function ZIndexPage() {
             key={e.id}
             className="grid grid-cols-[minmax(160px,1fr)_140px] items-center gap-4 rounded border border-border-default p-3"
           >
-            <div className="font-mono text-xs">
+            <div className="font-mono text-body-medium">
               {e.id}
               {dirty.has(`${FILE}#${e.id}`) ? (
-                <span className="ml-2 text-[10px] text-text-accent">●</span>
+                <span className="ml-2 text-body-small text-text-accent">●</span>
               ) : null}
             </div>
             <NumberInput

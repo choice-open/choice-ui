@@ -48,8 +48,8 @@ export function ShadowsPage() {
   return (
     <div className="flex flex-col gap-6 p-6">
       <header>
-        <h2 className="text-lg font-semibold">Shadows</h2>
-        <p className="text-sm text-text-secondary">
+        <h2 className="text-heading-medium">Shadows</h2>
+        <p className="text-body-large text-text-secondary">
           Each token holds an ordered list of shadow layers per mode. Layers
           stack with later entries overlaying earlier ones — same as
           CSS `box-shadow`.
@@ -62,10 +62,10 @@ export function ShadowsPage() {
           className="flex flex-col gap-3 rounded border border-border-default p-4"
         >
           <div className="flex items-baseline justify-between">
-            <h3 className="font-mono text-sm">
+            <h3 className="font-mono text-body-large">
               {entry.id}
               {dirty.has(`${FILE}#${entry.id}`) ? (
-                <span className="ml-2 text-[10px] text-text-accent">●</span>
+                <span className="ml-2 text-body-small text-text-accent">●</span>
               ) : null}
             </h3>
           </div>
@@ -114,7 +114,7 @@ function ModeColumn({
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-center justify-between">
-        <span className="text-xs font-medium uppercase text-text-secondary">{mode}</span>
+        <span className="text-body-medium-strong uppercase text-text-secondary">{mode}</span>
         <Preview mode={mode} layers={layers} />
       </div>
       <div className="flex flex-col gap-1.5">
@@ -134,7 +134,7 @@ function ModeColumn({
         <button
           type="button"
           onClick={addLayer}
-          className="rounded border border-dashed border-border-default px-2 py-1 text-xs text-text-secondary hover:bg-background-component"
+          className="rounded border border-dashed border-border-default px-2 py-1 text-body-medium text-text-secondary hover:bg-background-component"
         >
           + Add layer
         </button>
@@ -163,7 +163,7 @@ function LayerCard({
   onMoveDown: () => void
 }) {
   return (
-    <div className="grid grid-cols-[auto_repeat(4,minmax(0,1fr))_2fr_auto_auto] items-center gap-1 rounded border border-border-default bg-background-component/50 p-1.5 text-xs">
+    <div className="grid grid-cols-[auto_repeat(4,minmax(0,1fr))_2fr_auto_auto] items-center gap-1 rounded border border-border-default bg-background-component/50 p-1.5 text-body-medium">
       <span className="px-1 text-text-tertiary">{index + 1}</span>
       <PxInput label="X" value={layer.offsetX} onChange={(v) => onUpdate({ offsetX: v })} />
       <PxInput label="Y" value={layer.offsetY} onChange={(v) => onUpdate({ offsetY: v })} />
@@ -173,10 +173,10 @@ function LayerCard({
         type="text"
         value={layer.color ?? ""}
         onChange={(e) => onUpdate({ color: e.target.value })}
-        className="w-full rounded border border-border-default bg-background-default px-1.5 py-1 font-mono text-[11px] outline-none focus:border-border-strong"
+        className="w-full rounded border border-border-default bg-background-default px-1.5 py-1 font-mono text-body-small outline-none focus:border-border-strong"
         placeholder="rgba(...)"
       />
-      <label className="flex items-center gap-1 px-1 text-[11px] text-text-secondary">
+      <label className="flex items-center gap-1 px-1 text-body-small text-text-secondary">
         <input
           type="checkbox"
           checked={!!layer.inset}
@@ -189,7 +189,7 @@ function LayerCard({
           type="button"
           disabled={!canMoveUp}
           onClick={onMoveUp}
-          className="px-1 text-[10px] text-text-secondary disabled:opacity-30 hover:text-text-default"
+          className="px-1 text-body-small text-text-secondary disabled:opacity-30 hover:text-text-default"
           title="move up"
         >
           ▲
@@ -198,7 +198,7 @@ function LayerCard({
           type="button"
           disabled={!canMoveDown}
           onClick={onMoveDown}
-          className="px-1 text-[10px] text-text-secondary disabled:opacity-30 hover:text-text-default"
+          className="px-1 text-body-small text-text-secondary disabled:opacity-30 hover:text-text-default"
           title="move down"
         >
           ▼
@@ -228,13 +228,13 @@ function PxInput({
   const num = parsePx(value)
   return (
     <label className="flex items-center gap-1">
-      <span className="text-[10px] text-text-tertiary">{label}</span>
+      <span className="text-body-small text-text-tertiary">{label}</span>
       <input
         type="number"
         step={0.5}
         value={Number.isFinite(num) ? num : 0}
         onChange={(e) => onChange(formatPx(Number.parseFloat(e.target.value)))}
-        className="w-full min-w-0 rounded border border-border-default bg-background-default px-1.5 py-1 font-mono text-[11px] outline-none focus:border-border-strong"
+        className="w-full min-w-0 rounded border border-border-default bg-background-default px-1.5 py-1 font-mono text-body-small outline-none focus:border-border-strong"
       />
     </label>
   )
@@ -244,7 +244,7 @@ function Preview({ mode, layers }: { mode: ShadowMode; layers: ShadowLayer[] }) 
   const css = layersToCss(layers) || "none"
   return (
     <div
-      className="flex h-12 w-20 items-center justify-center rounded text-[10px]"
+      className="flex h-12 w-20 items-center justify-center rounded text-body-small"
       style={{
         background: mode === "dark" ? "#1a1a1a" : "#f5f5f5",
         color: mode === "dark" ? "#888" : "#666",

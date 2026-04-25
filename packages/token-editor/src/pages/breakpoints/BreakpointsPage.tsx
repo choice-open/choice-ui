@@ -15,8 +15,8 @@ export function BreakpointsPage() {
   return (
     <div className="flex flex-col gap-4 p-6">
       <header>
-        <h2 className="text-lg font-semibold">Breakpoints</h2>
-        <p className="text-sm text-text-secondary">
+        <h2 className="text-heading-medium">Breakpoints</h2>
+        <p className="text-body-large text-text-secondary">
           Responsive breakpoint scale, in rem. Used by `breakpoint.up()` /
           `down()` helpers and the matching SCSS mixins.
         </p>
@@ -30,10 +30,10 @@ export function BreakpointsPage() {
               key={e.id}
               className="grid grid-cols-[minmax(140px,1fr)_240px_1fr] items-center gap-4 rounded border border-border-default p-3"
             >
-              <div className="font-mono text-xs">
+              <div className="font-mono text-body-medium">
                 {e.id}
                 {dirty.has(`${FILE}#${e.id}`) ? (
-                  <span className="ml-2 text-[10px] text-text-accent">●</span>
+                  <span className="ml-2 text-body-small text-text-accent">●</span>
                 ) : null}
               </div>
               <DimensionInput
@@ -41,7 +41,7 @@ export function BreakpointsPage() {
                 step={0.25}
                 onChange={(next) => setTokenValue(FILE, e.path, next)}
               />
-              <div className="font-mono text-xs text-text-tertiary">≈ {px}px</div>
+              <div className="font-mono text-body-medium text-text-tertiary">≈ {px}px</div>
             </div>
           )
         })}

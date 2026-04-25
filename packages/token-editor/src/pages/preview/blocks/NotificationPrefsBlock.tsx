@@ -49,8 +49,8 @@ export function NotificationPrefsBlock() {
   return (
     <section className="flex flex-col rounded-lg border border-border-default bg-background-default shadow-sm">
       <header className="border-b border-border-default px-5 py-4">
-        <h3 className="text-sm font-semibold">Notifications</h3>
-        <p className="text-xs text-text-secondary">Choose how you want to be alerted.</p>
+        <h3 className="text-body-large-strong">Notifications</h3>
+        <p className="text-body-medium text-text-secondary">Choose how you want to be alerted.</p>
       </header>
       <ul className="divide-y divide-border-default">
         {PREFS.map((p) => (
@@ -59,8 +59,8 @@ export function NotificationPrefsBlock() {
             className="flex items-start justify-between gap-6 px-5 py-3.5"
           >
             <div className="flex flex-col gap-0.5">
-              <span className="text-sm font-medium">{p.title}</span>
-              <span className="text-xs leading-relaxed text-text-secondary">
+              <span className="text-body-large-strong">{p.title}</span>
+              <span className="text-body-medium leading-relaxed text-text-secondary">
                 {p.description}
               </span>
             </div>

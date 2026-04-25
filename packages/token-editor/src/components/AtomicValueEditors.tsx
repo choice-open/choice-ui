@@ -18,9 +18,9 @@ export function DimensionInput({
         onChange={(e) =>
           onChange({ value: parseFloatSafe(e.target.value, 0), unit: value.unit })
         }
-        className="w-24 rounded border border-border-default bg-background-default px-2 py-1 text-sm outline-none focus:border-border-strong"
+        className="w-24 rounded border border-border-default bg-background-default px-2 py-1 text-body-large outline-none focus:border-border-strong"
       />
-      <span className="text-xs text-text-tertiary">{value.unit}</span>
+      <span className="text-body-medium text-text-tertiary">{value.unit}</span>
     </div>
   )
 }
@@ -40,7 +40,7 @@ export function NumberInput({
       value={Number.isFinite(value) ? value : 0}
       step={step}
       onChange={(e) => onChange(parseFloatSafe(e.target.value, 0))}
-      className="w-24 rounded border border-border-default bg-background-default px-2 py-1 text-sm outline-none focus:border-border-strong"
+      className="w-24 rounded border border-border-default bg-background-default px-2 py-1 text-body-large outline-none focus:border-border-strong"
     />
   )
 }

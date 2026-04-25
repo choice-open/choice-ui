@@ -29,8 +29,8 @@ export function ColorsPage() {
   return (
     <div className="flex flex-col gap-8 p-6">
       <header>
-        <h2 className="text-lg font-semibold">Colors</h2>
-        <p className="text-sm text-text-secondary">
+        <h2 className="text-heading-medium">Colors</h2>
+        <p className="text-body-large text-text-secondary">
           Primitive tokens edit a concrete RGB value per mode. Semantic
           tokens point at a primitive — pick a different one or break it
           into a literal color.
@@ -39,14 +39,14 @@ export function ColorsPage() {
 
       {grouped.map(({ category, entries, kind }) => (
         <section key={category} className="flex flex-col gap-3">
-          <h3 className="text-sm font-medium uppercase tracking-wide text-text-secondary">
+          <h3 className="text-body-large-strong uppercase tracking-wide text-text-secondary">
             {category}
-            <span className="ml-2 text-xs text-text-tertiary">({entries.length})</span>
+            <span className="ml-2 text-body-medium text-text-tertiary">({entries.length})</span>
           </h3>
           <div className="grid grid-cols-[minmax(180px,1fr)_repeat(2,auto)] items-center gap-x-4 gap-y-2">
-            <div className="text-xs text-text-tertiary">Token</div>
-            <div className="text-xs text-text-tertiary">Light</div>
-            <div className="text-xs text-text-tertiary">Dark</div>
+            <div className="text-body-medium text-text-tertiary">Token</div>
+            <div className="text-body-medium text-text-tertiary">Light</div>
+            <div className="text-body-medium text-text-tertiary">Dark</div>
             {entries.map((entry) =>
               kind === "semantic" ? (
                 <SemanticRow
@@ -87,9 +87,9 @@ function PrimitiveRow({
 }) {
   return (
     <>
-      <div className="font-mono text-xs">
+      <div className="font-mono text-body-medium">
         {entry.id}
-        {isDirty ? <span className="ml-2 text-[10px] text-text-accent">●</span> : null}
+        {isDirty ? <span className="ml-2 text-body-small text-text-accent">●</span> : null}
       </div>
       <ColorEditPopover
         value={entry.light}
@@ -131,11 +131,11 @@ function SemanticRow({
   const darkResolved = resolveColorValue(colorsTree, entry.darkRaw, "dark")
   return (
     <>
-      <div className="font-mono text-xs">
+      <div className="font-mono text-body-medium">
         {entry.id}
-        {isDirty ? <span className="ml-2 text-[10px] text-text-accent">●</span> : null}
+        {isDirty ? <span className="ml-2 text-body-small text-text-accent">●</span> : null}
         {lightAlias ? (
-          <div className="text-[10px] text-text-tertiary">→ {lightAlias}</div>
+          <div className="text-body-small text-text-tertiary">→ {lightAlias}</div>
         ) : null}
       </div>
       <AliasPickerPopover

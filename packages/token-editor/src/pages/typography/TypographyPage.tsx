@@ -25,8 +25,8 @@ export function TypographyPage() {
   return (
     <div className="flex flex-col gap-8 p-6">
       <header>
-        <h2 className="text-lg font-semibold">Typography</h2>
-        <p className="text-sm text-text-secondary">
+        <h2 className="text-heading-medium">Typography</h2>
+        <p className="text-body-large text-text-secondary">
           Atomic font primitives. Composite styles like `heading.large`
           combine these and are not edited directly.
         </p>
@@ -34,9 +34,9 @@ export function TypographyPage() {
 
       {sections.map(({ group, entries }) => (
         <section key={group} className="flex flex-col gap-3">
-          <h3 className="text-sm font-medium uppercase tracking-wide text-text-secondary">
+          <h3 className="text-body-large-strong uppercase tracking-wide text-text-secondary">
             {group}
-            <span className="ml-2 text-xs text-text-tertiary">({entries.length})</span>
+            <span className="ml-2 text-body-medium text-text-tertiary">({entries.length})</span>
           </h3>
           <div className="flex flex-col gap-2">
             {entries.map((entry) => (
@@ -65,9 +65,9 @@ function Row({
 }) {
   return (
     <div className="grid grid-cols-[minmax(200px,1fr)_240px_1fr] items-center gap-4 rounded border border-border-default p-3">
-      <div className="font-mono text-xs">
+      <div className="font-mono text-body-medium">
         {entry.id}
-        {isDirty ? <span className="ml-2 text-[10px] text-text-accent">●</span> : null}
+        {isDirty ? <span className="ml-2 text-body-small text-text-accent">●</span> : null}
       </div>
       <Editor entry={entry} onChange={onChange} />
       <Preview entry={entry} />
@@ -84,7 +84,7 @@ function Editor({ entry, onChange }: { entry: AtomicEntry; onChange: (v: unknown
         type="text"
         value={stack}
         onChange={(e) => onChange(parseFamilies(e.target.value))}
-        className="rounded border border-border-default bg-background-default px-2 py-1 font-mono text-xs outline-none focus:border-border-strong"
+        className="rounded border border-border-default bg-background-default px-2 py-1 font-mono text-body-medium outline-none focus:border-border-strong"
       />
     )
   }
@@ -97,7 +97,7 @@ function Editor({ entry, onChange }: { entry: AtomicEntry; onChange: (v: unknown
         max={900}
         step={50}
         onChange={(e) => onChange(toIntSafe(e.target.value, 400))}
-        className="w-24 rounded border border-border-default bg-background-default px-2 py-1 text-sm outline-none focus:border-border-strong"
+        className="w-24 rounded border border-border-default bg-background-default px-2 py-1 text-body-large outline-none focus:border-border-strong"
       />
     )
   }
@@ -110,13 +110,13 @@ function Editor({ entry, onChange }: { entry: AtomicEntry; onChange: (v: unknown
           value={dim.value}
           step={0.01}
           onChange={(e) => onChange({ value: toFloatSafe(e.target.value, 0), unit: dim.unit })}
-          className="w-24 rounded border border-border-default bg-background-default px-2 py-1 text-sm outline-none focus:border-border-strong"
+          className="w-24 rounded border border-border-default bg-background-default px-2 py-1 text-body-large outline-none focus:border-border-strong"
         />
-        <span className="text-xs text-text-tertiary">{dim.unit}</span>
+        <span className="text-body-medium text-text-tertiary">{dim.unit}</span>
       </div>
     )
   }
-  return <span className="text-xs text-text-tertiary">unsupported $type</span>
+  return <span className="text-body-medium text-text-tertiary">unsupported $type</span>
 }
 
 function Preview({ entry }: { entry: AtomicEntry }) {
@@ -124,14 +124,14 @@ function Preview({ entry }: { entry: AtomicEntry }) {
   if (entry.$type === "fontFamily") {
     const stack = Array.isArray(value) ? (value as string[]).join(", ") : ""
     return (
-      <div className="truncate text-sm" style={{ fontFamily: stack }}>
+      <div className="truncate text-body-large" style={{ fontFamily: stack }}>
         The quick brown fox
       </div>
     )
   }
   if (entry.$type === "fontWeight") {
     return (
-      <div className="text-sm" style={{ fontWeight: value as number }}>
+      <div className="text-body-large" style={{ fontWeight: value as number }}>
         The quick brown fox
       </div>
     )
@@ -148,14 +148,14 @@ function Preview({ entry }: { entry: AtomicEntry }) {
     }
     if (entry.group === "line-heights") {
       return (
-        <div className="text-sm leading-none" style={{ lineHeight: css }}>
+        <div className="text-body-large leading-none" style={{ lineHeight: css }}>
           two<br />lines
         </div>
       )
     }
     if (entry.group === "letter-spacings") {
       return (
-        <div className="text-sm" style={{ letterSpacing: css }}>
+        <div className="text-body-large" style={{ letterSpacing: css }}>
           spaced text
         </div>
       )

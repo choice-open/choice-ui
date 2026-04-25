@@ -15,8 +15,8 @@ export function RadiusPage() {
   return (
     <div className="flex flex-col gap-4 p-6">
       <header>
-        <h2 className="text-lg font-semibold">Radius</h2>
-        <p className="text-sm text-text-secondary">Corner radius scale, in rem.</p>
+        <h2 className="text-heading-medium">Radius</h2>
+        <p className="text-body-large text-text-secondary">Corner radius scale, in rem.</p>
       </header>
       <div className="flex flex-col gap-2">
         {entries.map((e) => {
@@ -27,10 +27,10 @@ export function RadiusPage() {
               key={e.id}
               className="grid grid-cols-[minmax(160px,1fr)_240px_1fr] items-center gap-4 rounded border border-border-default p-3"
             >
-              <div className="font-mono text-xs">
+              <div className="font-mono text-body-medium">
                 {e.id}
                 {dirty.has(`${FILE}#${e.id}`) ? (
-                  <span className="ml-2 text-[10px] text-text-accent">●</span>
+                  <span className="ml-2 text-body-small text-text-accent">●</span>
                 ) : null}
               </div>
               <DimensionInput
