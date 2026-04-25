@@ -42,7 +42,7 @@ export function ColorsPage() {
 
       {grouped.map(({ category, entries }) => (
         <section key={category} className="flex flex-col gap-3">
-          <h3 className="text-body-large-strong uppercase tracking-wide text-text-secondary">
+          <h3 className="text-heading-small uppercase tracking-wide text-text-secondary">
             {category}
             <span className="ml-2 text-body-medium text-text-tertiary">({entries.length})</span>
           </h3>

@@ -42,7 +42,7 @@ export function PresetPickerDialog({ sectionId, onClose, onCustomize }: Props) {
               <button
                 type="button"
                 onClick={onCustomize}
-                className="w-full rounded-md bg-background-component px-3 py-2 text-body-large-strong hover:bg-background-component-hover"
+                className="w-full rounded-md bg-background-component px-3 py-2 text-body-large hover:bg-background-component-hover"
               >
                 Customize…
               </button>

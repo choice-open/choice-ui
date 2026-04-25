@@ -64,12 +64,12 @@ export function RecentActivityBlock() {
     <section className="flex flex-col rounded-lg border border-border-default bg-background-default shadow-sm">
       <header className="flex items-baseline justify-between border-b border-border-default px-5 py-4">
         <div>
-          <h3 className="text-body-large-strong">Recent activity</h3>
+          <h3 className="text-heading-small">Recent activity</h3>
           <p className="text-body-medium text-text-secondary">Latest token edits across your team</p>
         </div>
         <button
           type="button"
-          className="text-body-medium-strong text-text-accent hover:underline"
+          className="text-body-medium text-text-accent hover:underline"
         >
           View all
         </button>
@@ -82,7 +82,7 @@ export function RecentActivityBlock() {
           >
             <Avatar name={a.user} color={a.color} />
             <div className="flex min-w-0 flex-col">
-              <span className="truncate text-body-large-strong">{a.user}</span>
+              <span className="truncate text-body-large">{a.user}</span>
               <span className="truncate text-body-medium text-text-secondary">{a.action}</span>
             </div>
             <StatusBadge status={a.status} />

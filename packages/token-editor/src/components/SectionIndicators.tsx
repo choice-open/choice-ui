@@ -16,7 +16,7 @@ export function ColorsIndicator() {
 
 export function TypographyIndicator() {
   return (
-    <span className="font-serif text-body-large leading-none text-text-default" aria-hidden>
+    <span className="font-serif text-body-large text-text-default" aria-hidden>
       Aa
     </span>
   )

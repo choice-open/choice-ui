@@ -89,7 +89,7 @@ function ExportRow({
   return (
     <div className="flex items-start justify-between gap-3 rounded border border-border-default p-3">
       <div className="flex flex-col">
-        <div className="text-body-large-strong">{title}</div>
+        <div className="text-body-large">{title}</div>
         <div className="text-body-medium text-text-secondary">{description}</div>
       </div>
       <Button onClick={onClick} disabled={disabled}>

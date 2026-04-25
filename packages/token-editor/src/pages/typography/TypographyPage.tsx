@@ -34,7 +34,7 @@ export function TypographyPage() {
 
       {sections.map(({ group, entries }) => (
         <section key={group} className="flex flex-col gap-3">
-          <h3 className="text-body-large-strong uppercase tracking-wide text-text-secondary">
+          <h3 className="text-heading-small uppercase tracking-wide text-text-secondary">
             {group}
             <span className="ml-2 text-body-medium text-text-tertiary">({entries.length})</span>
           </h3>
@@ -148,7 +148,7 @@ function Preview({ entry }: { entry: AtomicEntry }) {
     }
     if (entry.group === "line-heights") {
       return (
-        <div className="text-body-large leading-none" style={{ lineHeight: css }}>
+        <div className="text-body-large" style={{ lineHeight: css }}>
           two<br />lines
         </div>
       )

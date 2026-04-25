@@ -49,7 +49,7 @@ export function PricingBlock() {
         <span className="text-body-small uppercase tracking-wide text-text-tertiary">
           Plans
         </span>
-        <h3 className="text-body-large-strong">Pick what fits your team</h3>
+        <h3 className="text-heading-small">Pick what fits your team</h3>
         <p className="text-body-medium text-text-secondary">
           Every plan includes the full editor.
         </p>
@@ -66,7 +66,7 @@ export function PricingBlock() {
           >
             <div className="flex items-baseline justify-between gap-3">
               <div className="flex items-center gap-2">
-                <span className="text-body-large-strong">{tier.name}</span>
+                <span className="text-body-large">{tier.name}</span>
                 {tier.highlight ? (
                   <Badge variant="brand" strong>
                     Popular

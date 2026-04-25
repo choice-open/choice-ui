@@ -32,7 +32,7 @@ export function AliasPickerPopover({
       <Popover.Trigger>{children}</Popover.Trigger>
       <Popover.Content className="w-72 p-0">
         <div className="border-b border-border-default p-2">
-          <div className="mb-1 text-body-medium-strong text-text-secondary">{label}</div>
+          <div className="mb-1 text-body-medium text-text-secondary">{label}</div>
           <input
             type="text"
             value={query}

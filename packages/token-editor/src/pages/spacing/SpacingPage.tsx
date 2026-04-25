@@ -66,7 +66,7 @@ export function SpacingPage() {
 function ScalePreview({ baseDim }: { baseDim: { value: number; unit: string } }) {
   return (
     <section className="flex flex-col gap-2">
-      <h3 className="text-body-large-strong uppercase tracking-wide text-text-secondary">
+      <h3 className="text-heading-small uppercase tracking-wide text-text-secondary">
         scale preview
       </h3>
       <p className="text-body-medium text-text-tertiary">

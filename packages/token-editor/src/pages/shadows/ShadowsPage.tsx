@@ -114,7 +114,7 @@ function ModeColumn({
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-center justify-between">
-        <span className="text-body-medium-strong uppercase text-text-secondary">{mode}</span>
+        <span className="text-body-medium uppercase text-text-secondary">{mode}</span>
         <Preview mode={mode} layers={layers} />
       </div>
       <div className="flex flex-col gap-1.5">
