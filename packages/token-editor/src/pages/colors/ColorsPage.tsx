@@ -135,9 +135,16 @@ function ModeCell({
   if (isAliasSide) {
     const currentAlias = isAlias(rawValue) ? rawValue : null
     const resolved = resolveColorValue(tree, rawValue, mode)
+    // A token whose `$value` is literal can still appear in
+    // `primitiveOptions` even when this side (mode) is aliased — picking
+    // its own id as the alias target produces a self-referential override
+    // (`{color.icon.default}` on `color.icon.default`) which Terrazzo
+    // can't resolve and `resolveColorValue` bottoms out at `null`. Strip
+    // it before rendering options.
+    const filteredOptions = primitiveOptions.filter((o) => o.id !== entry.id)
     return (
       <AliasPickerPopover
-        options={primitiveOptions}
+        options={filteredOptions}
         currentAlias={currentAlias}
         mode={mode}
         label={`${entry.id} · ${mode}`}
