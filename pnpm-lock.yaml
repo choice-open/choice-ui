@@ -303,7 +303,7 @@ importers:
         version: 4.3.2(typescript@5.9.3)(vite@5.4.21(@types/node@20.19.25)(lightningcss@1.30.2))
       vitest:
         specifier: ^3.1.2
-        version: 3.2.4(@types/debug@4.1.12)(@types/node@20.19.25)(@vitest/ui@4.0.15(vitest@4.0.15))(jsdom@26.1.0)(lightningcss@1.30.2)
+        version: 3.2.4(@types/debug@4.1.12)(@types/node@20.19.25)(@vitest/ui@4.0.15)(jsdom@26.1.0)(lightningcss@1.30.2)
 
   packages/core/app/components/alert-dialog:
     dependencies:
@@ -3556,6 +3556,64 @@ importers:
         specifier: ^3.25.36
         version: 3.25.76
 
+  packages/token-editor:
+    dependencies:
+      '@choice-ui/design-tokens':
+        specifier: workspace:*
+        version: link:../design-tokens
+      '@choice-ui/react':
+        specifier: workspace:*
+        version: link:../core
+      '@choice-ui/shared':
+        specifier: workspace:*
+        version: link:../shared
+      '@terrazzo/parser':
+        specifier: ^0.10.5
+        version: 0.10.5
+      '@terrazzo/plugin-css':
+        specifier: ^0.10.2
+        version: 0.10.4(@terrazzo/cli@0.10.5(hono@4.10.7))
+      '@terrazzo/plugin-js':
+        specifier: ^0.10.1
+        version: 0.10.3(@terrazzo/cli@0.10.5(hono@4.10.7))
+      '@terrazzo/plugin-sass':
+        specifier: ^0.10.1
+        version: 0.10.4(@terrazzo/cli@0.10.5(hono@4.10.7))(@terrazzo/plugin-css@0.10.4(@terrazzo/cli@0.10.5(hono@4.10.7)))
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
+      zustand:
+        specifier: ^5.0.0
+        version: 5.0.12(@types/react@18.3.27)(immer@10.2.0)(react@18.3.1)(use-sync-external-store@1.6.0(react@18.3.1))
+    devDependencies:
+      '@tailwindcss/vite':
+        specifier: ^4.1.13
+        version: 4.1.17(vite@5.4.21(@types/node@22.19.2)(lightningcss@1.30.2))
+      '@types/react':
+        specifier: ^18.3.12
+        version: 18.3.27
+      '@types/react-dom':
+        specifier: ^18.3.1
+        version: 18.3.7(@types/react@18.3.27)
+      '@vitejs/plugin-react':
+        specifier: ^4.4.1
+        version: 4.7.0(vite@5.4.21(@types/node@22.19.2)(lightningcss@1.30.2))
+      tailwindcss:
+        specifier: 4.1.13
+        version: 4.1.13
+      typescript:
+        specifier: ^5.5.3
+        version: 5.9.3
+      vite:
+        specifier: ^5.3.3
+        version: 5.4.21(@types/node@22.19.2)(lightningcss@1.30.2)
+      vite-tsconfig-paths:
+        specifier: ^4.2.1
+        version: 4.3.2(typescript@5.9.3)(vite@5.4.21(@types/node@22.19.2)(lightningcss@1.30.2))
+
 packages:
 
   '@adobe/css-tools@4.4.4':
@@ -6097,8 +6155,25 @@ packages:
     resolution: {integrity: sha512-NbdKM9BOrVcyMPwvrj6MU7ISfD/azuqHZYODVrpIPdiEy+EyhXNSb8F5I8oD6mvQ2nVaU9dPzV8e+HvU6DobcA==}
     hasBin: true
 
+  '@terrazzo/json-schema-tools@0.2.1':
+    resolution: {integrity: sha512-hJPz/huIuYCbXmTV6TU9PNl8BeFFoSQVXfB2oHf7fiY1rymrfMfoFJAQ0IErVoisuBR0DdYquTlQkY/cnz+vEQ==}
+    peerDependencies:
+      '@humanwhocodes/momoa': ^3.0.0
+      yaml-to-momoa: 0.0.9
+    peerDependenciesMeta:
+      yaml-to-momoa:
+        optional: true
+
   '@terrazzo/parser@0.10.5':
     resolution: {integrity: sha512-XTQg6lJ8TIqDQI30F5mJITU+OCmASQvAimO1jbNLIcBNKRA0BGoha+XFFOiMplu28x1b0OsA4YgEJH+u0B0pfw==}
+
+  '@terrazzo/parser@2.1.0':
+    resolution: {integrity: sha512-70SEIUxLa2BI9+8P8n+B06u3GsS+md9rib5Il44KU7YtQRwxfCerTRzLR8TNj6LJGSdQAm8ibxOgO2IqfOHdsQ==}
+    peerDependencies:
+      yaml-to-momoa: 0.0.9
+    peerDependenciesMeta:
+      yaml-to-momoa:
+        optional: true
 
   '@terrazzo/plugin-css@0.10.4':
     resolution: {integrity: sha512-SnxRZBkwLMQPbXB2xcrDi9O7VEU8DIus9HfCOjv4hXPjOfNaRJsZdM2cK9OKb6vzIyxLzzv3klsCeVKe3EMFgA==}
@@ -6131,6 +6206,9 @@ packages:
 
   '@terrazzo/token-tools@0.10.5':
     resolution: {integrity: sha512-XQ6LDOmEZC8kesrhF48pvhz8F0RJsi56vQUg97VCmiKCOXBwPFJ7bOfv9M3f/tnYWo8eAs3EJvrCgMckZPKhbg==}
+
+  '@terrazzo/token-tools@2.1.0':
+    resolution: {integrity: sha512-WwP8S4KRyjqf14AQ7But6slWGOT9EyYHw8Xvlh9jasRlK1arPSQzPYoJD4tM7gEvg8PLtNumikDHldDQCV3MpQ==}
 
   '@testing-library/dom@10.4.1':
     resolution: {integrity: sha512-o4PXJQidqJl82ckFaXUeoAW+XysPLauYI43Abki5hABd853iMhitooc6znOnczgbTYmEP6U6/y1ZyKAIsvMKGg==}
@@ -6173,6 +6251,9 @@ packages:
 
   '@types/babel__code-frame@7.0.6':
     resolution: {integrity: sha512-Anitqkl3+KrzcW2k77lRlg/GfLZLWXBuNgbEcIOU6M92yw42vsd3xV/Z/yAHEj8m+KUjL6bWOVOFqX8PFPJ4LA==}
+
+  '@types/babel__code-frame@7.27.0':
+    resolution: {integrity: sha512-Dwlo+LrxDx/0SpfmJ/BKveHf7QXWvLBLc+x03l5sbzykj3oB9nHygCpSECF1a+s+QIxbghe+KHqC90vGtxLRAA==}
 
   '@types/babel__core@7.20.5':
     resolution: {integrity: sha512-qoQprZvz5wQFJwMDqeseRXWv3rqMvhgpbXFfVyWhbx9X47POIA6i/+dXefEmZKoAgOaTdaIgNSMqMIU61yRyzA==}
@@ -7041,6 +7122,9 @@ packages:
 
   color-name@1.1.4:
     resolution: {integrity: sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==}
+
+  colorjs.io@0.6.1:
+    resolution: {integrity: sha512-8lyR2wHzuIykCpqHKgluGsqQi5iDm3/a2IgP2GBZrasn2sBRkE4NOGsglZxWLs/jZQoNkmA/KM/8NV16rLUdBg==}
 
   combined-stream@1.0.8:
     resolution: {integrity: sha512-FQN4MRfuJeHf7cBbBMJFXhKSDq+2kAArBlmRBvcvFE5BB1HZKXtSFASDhdlz9zOYwxh8lDdnvmMOe/+5cdoEdg==}
@@ -11076,6 +11160,24 @@ packages:
   zod@4.1.13:
     resolution: {integrity: sha512-AvvthqfqrAhNH9dnfmrfKzX5upOdjUVJYFqNSlkmGf64gRaTzlPwz99IHYnVs28qYAybvAlBV+H7pn0saFY4Ig==}
 
+  zustand@5.0.12:
+    resolution: {integrity: sha512-i77ae3aZq4dhMlRhJVCYgMLKuSiZAaUPAct2AksxQ+gOtimhGMdXljRT21P5BNpeT4kXlLIckvkPM029OljD7g==}
+    engines: {node: '>=12.20.0'}
+    peerDependencies:
+      '@types/react': '>=18.0.0'
+      immer: '>=9.0.6'
+      react: '>=18.0.0'
+      use-sync-external-store: '>=1.2.0'
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      immer:
+        optional: true
+      react:
+        optional: true
+      use-sync-external-store:
+        optional: true
+
   zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
 
@@ -13801,7 +13903,7 @@ snapshots:
       '@clack/prompts': 0.9.1
       '@hono/node-server': 1.19.6(hono@4.10.7)
       '@humanwhocodes/momoa': 3.3.10
-      '@terrazzo/parser': 0.10.5
+      '@terrazzo/parser': 2.1.0(yaml-to-momoa@0.0.8)
       '@terrazzo/token-tools': 0.10.5
       '@types/escodegen': 0.0.10
       chokidar: 3.6.0
@@ -13816,6 +13918,12 @@ snapshots:
     transitivePeerDependencies:
       - hono
 
+  '@terrazzo/json-schema-tools@0.2.1(@humanwhocodes/momoa@3.3.10)(yaml-to-momoa@0.0.8)':
+    dependencies:
+      '@humanwhocodes/momoa': 3.3.10
+    optionalDependencies:
+      yaml-to-momoa: 0.0.8
+
   '@terrazzo/parser@0.10.5':
     dependencies:
       '@humanwhocodes/momoa': 3.3.10
@@ -13827,6 +13935,20 @@ snapshots:
       picocolors: 1.1.1
       scule: 1.3.0
       wildcard-match: 5.1.4
+
+  '@terrazzo/parser@2.1.0(yaml-to-momoa@0.0.8)':
+    dependencies:
+      '@humanwhocodes/momoa': 3.3.10
+      '@terrazzo/json-schema-tools': 0.2.1(@humanwhocodes/momoa@3.3.10)(yaml-to-momoa@0.0.8)
+      '@terrazzo/token-tools': 2.1.0
+      '@types/babel__code-frame': 7.27.0
+      colorjs.io: 0.6.1
+      fast-deep-equal: 3.1.3
+      merge-anything: 5.1.7
+      picocolors: 1.1.1
+      scule: 1.3.0
+    optionalDependencies:
+      yaml-to-momoa: 0.0.8
 
   '@terrazzo/plugin-css@0.10.4(@terrazzo/cli@0.10.5(hono@4.10.7))':
     dependencies:
@@ -13863,6 +13985,12 @@ snapshots:
     dependencies:
       '@humanwhocodes/momoa': 3.3.10
       culori: 4.0.2
+      wildcard-match: 5.1.4
+
+  '@terrazzo/token-tools@2.1.0':
+    dependencies:
+      '@humanwhocodes/momoa': 3.3.10
+      colorjs.io: 0.6.1
       wildcard-match: 5.1.4
 
   '@testing-library/dom@10.4.1':
@@ -13906,6 +14034,8 @@ snapshots:
   '@types/aria-query@5.0.4': {}
 
   '@types/babel__code-frame@7.0.6': {}
+
+  '@types/babel__code-frame@7.27.0': {}
 
   '@types/babel__core@7.20.5':
     dependencies:
@@ -15017,6 +15147,8 @@ snapshots:
       color-name: 1.1.4
 
   color-name@1.1.4: {}
+
+  colorjs.io@0.6.1: {}
 
   combined-stream@1.0.8:
     dependencies:
@@ -19890,7 +20022,7 @@ snapshots:
       - supports-color
       - terser
 
-  vitest@3.2.4(@types/debug@4.1.12)(@types/node@20.19.25)(@vitest/ui@4.0.15(vitest@4.0.15))(jsdom@26.1.0)(lightningcss@1.30.2):
+  vitest@3.2.4(@types/debug@4.1.12)(@types/node@20.19.25)(@vitest/ui@4.0.15)(jsdom@26.1.0)(lightningcss@1.30.2):
     dependencies:
       '@types/chai': 5.2.3
       '@vitest/expect': 3.2.4
@@ -20154,5 +20286,12 @@ snapshots:
   zod@3.25.76: {}
 
   zod@4.1.13: {}
+
+  zustand@5.0.12(@types/react@18.3.27)(immer@10.2.0)(react@18.3.1)(use-sync-external-store@1.6.0(react@18.3.1)):
+    optionalDependencies:
+      '@types/react': 18.3.27
+      immer: 10.2.0
+      react: 18.3.1
+      use-sync-external-store: 1.6.0(react@18.3.1)
 
   zwitch@2.0.4: {}
