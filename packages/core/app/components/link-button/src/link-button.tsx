@@ -81,8 +81,8 @@ export const LinkButton = forwardRef<HTMLAnchorElement | HTMLButtonElement, Link
       return (
         <a
           ref={ref as React.ForwardedRef<HTMLAnchorElement>}
-          href={readOnly || disabled ? undefined : href || undefined}
-          role={!href || readOnly || disabled ? "link" : undefined}
+          href={readOnly || disabled ? undefined : href}
+          role={readOnly || disabled || !href ? "link" : undefined}
           target={safeTarget}
           rel={safeRel}
           className={tcx(tv, className)}
