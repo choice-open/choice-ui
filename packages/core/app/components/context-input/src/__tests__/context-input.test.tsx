@@ -53,6 +53,7 @@ import "@testing-library/jest-dom"
 import { createRef } from "react"
 import { render, screen, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
+import { ReactEditor } from "slate-react"
 import { describe, expect, it, vi } from "vitest"
 import { ContextInput } from "../context-input"
 import { MentionMenu } from "../components/mention-menu"
@@ -134,6 +135,19 @@ describe("ContextInput bugs", () => {
 
   describe("BUG 3: keyboard selection of mentions must work", () => {
     it("selects the second suggestion after ArrowDown then Enter", async () => {
+      // jsdom can't fully resolve Slate selections to DOM ranges; stub toDOMRange
+      // so useMentions can compute a non-null caret position. Without this, the
+      // mention menu stays closed (it requires a valid anchor before opening to
+      // avoid showing at stale coordinates — see context-input.tsx isOpen gate).
+      const toDOMRangeSpy = vi
+        .spyOn(ReactEditor, "toDOMRange")
+        .mockImplementation(() => {
+          const range = document.createRange()
+          range.getBoundingClientRect = () =>
+            ({ left: 10, top: 10, right: 10, bottom: 20, width: 0, height: 10 }) as DOMRect
+          return range
+        })
+
       const onMentionSelect = vi.fn()
       const user = userEvent.setup()
 
@@ -167,6 +181,7 @@ describe("ContextInput bugs", () => {
       await user.keyboard("{Enter}")
 
       expect(onMentionSelect).toHaveBeenCalledWith(expect.objectContaining({ id: "2" }), "@")
+      toDOMRangeSpy.mockRestore()
     })
   })
 

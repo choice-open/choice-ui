@@ -226,7 +226,11 @@ const ContextInputBase = forwardRef<ContextInputRef, ContextInputProps>(function
         ref={mentionMenuRef}
         activeIndex={mentions.searchState.index}
         disabled={disabled}
-        isOpen={mentions.searchState.isSearching}
+        // Keep the menu closed until caret anchoring has produced a position.
+        // Combobox's coordinate mode reuses the last virtual position when
+        // a new one isn't supplied, so opening without a valid anchor would
+        // place the popup at stale (or 0,0) coordinates instead of the caret.
+        isOpen={mentions.searchState.isSearching && mentions.searchState.position !== null}
         onClose={mentions.closeMentionSearch}
         suggestions={mentions.searchState.suggestions}
         loading={mentions.searchState.loading}
