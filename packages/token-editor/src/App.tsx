@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { ExportDialog } from "./components/ExportDialog"
 import { ColorsPage } from "./pages/colors/ColorsPage"
 import { PlaceholderPage } from "./pages/Placeholder"
 import { useEditorStore } from "./state/store"
@@ -19,6 +20,7 @@ type SectionId = (typeof SECTIONS)[number]["id"]
 export function App() {
   useLiveTheme()
   const [section, setSection] = useState<SectionId>("colors")
+  const [exportOpen, setExportOpen] = useState(false)
   const dirty = useEditorStore((s) => s.dirty)
   const reset = useEditorStore((s) => s.reset)
 
@@ -53,15 +55,25 @@ export function App() {
             {s.label}
           </button>
         ))}
-        <div className="mt-auto text-[11px] leading-relaxed text-text-tertiary">
-          ⌘⇧R toggles live theme.
-          <br />
-          {dirty.size} edit{dirty.size === 1 ? "" : "s"} pending.
+        <div className="mt-auto flex flex-col gap-2">
+          <button
+            type="button"
+            onClick={() => setExportOpen(true)}
+            className="rounded border border-border-default px-3 py-2 text-left text-sm hover:bg-background-component"
+          >
+            Export…
+          </button>
+          <div className="text-[11px] leading-relaxed text-text-tertiary">
+            ⌘⇧R toggles live theme.
+            <br />
+            {dirty.size} edit{dirty.size === 1 ? "" : "s"} pending.
+          </div>
         </div>
       </aside>
       <main className="overflow-auto">
         {section === "colors" ? <ColorsPage /> : <PlaceholderPage title={labelOf(section)} />}
       </main>
+      <ExportDialog open={exportOpen} onOpenChange={setExportOpen} />
     </div>
   )
 }
