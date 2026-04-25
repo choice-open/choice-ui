@@ -35,6 +35,20 @@ export const useEditorStore = create<EditorState>((set) => ({
   setMode: (mode) => set({ mode }),
   setModeValue: (file, path, mode, value) =>
     set((state) => {
+      // Read the bundled baseline shape up front so we can mirror its
+      // mode-override layout precisely on revert.
+      const baselineNode = getNodeAtPath(TOKEN_FILES[file] as W3CTree, path) as
+        | Record<string, unknown>
+        | undefined
+      const baselineExt = baselineNode?.$extensions as
+        | Record<string, unknown>
+        | undefined
+      const baselineModes = baselineExt?.mode as
+        | Record<string, unknown>
+        | undefined
+      const baselineHasOverride =
+        baselineModes !== undefined && mode in baselineModes
+
       const nextFile = cloneTreeWithUpdate(state.files[file], path, (token) => {
         if (!token || typeof token !== "object") return token
         const next = { ...(token as Record<string, unknown>) }
@@ -42,13 +56,15 @@ export const useEditorStore = create<EditorState>((set) => ({
         const ext = { ...(originalExt ?? {}) }
         const modes = { ...((ext.mode as Record<string, unknown> | undefined) ?? {}) }
 
-        // Strip the override when the new value is structurally identical
-        // to the token's base `$value`. Without this, picking a semantic
-        // alias's existing target (or reverting a primitive to baseline)
-        // adds a redundant `mode.{mode}` entry against tokens whose
-        // baseline lacked one — and `recomputeDirty`'s strict JSON
-        // equality would never clear dirty until a full reset.
-        if (JSON.stringify(value) === JSON.stringify(next.$value)) {
+        if (baselineHasOverride) {
+          // Baseline kept this slot explicit, so we must too. Otherwise
+          // reverting a value would change the JSON shape (override gone
+          // when baseline had one) and `recomputeDirty` would never clear.
+          modes[mode] = value
+        } else if (JSON.stringify(value) === JSON.stringify(next.$value)) {
+          // No baseline override here, and the new value matches `$value`
+          // — writing the override would create a redundant entry that
+          // forever marks the token dirty.
           delete modes[mode]
         } else {
           modes[mode] = value
