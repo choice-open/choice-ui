@@ -1,6 +1,24 @@
 @import "tailwindcss";
 
-@import "@choice-ui/design-tokens/tokens.css";
+/*
+ * Pin layer order so the live `<style id="cdt-live">` Terrazzo injects
+ * always wins over the bundled `tokens.css` regardless of DOM insertion
+ * order. Without this, Vite's dev-time HMR can re-process the bundled
+ * imports and end up emitting them after the live `<style>` — same
+ * `:root` selector, same specificity — and the bundled values silently
+ * clobber the user's edit.
+ *
+ * `cdt-base` carries the bundled `tokens.css` (just `:root { --cdt-*: ... }`
+ * declarations — safe to wrap). `cdt-live` is what `inject.ts` writes its
+ * compiled output into. `cdt-live` always beats `cdt-base` per layer order.
+ *
+ * `preflight.css` and `tailwind.css` are intentionally NOT in any layer —
+ * they declare `@layer base` and `@custom-variant` which can't be nested
+ * inside another layer.
+ */
+@layer cdt-base, cdt-live;
+
+@import "@choice-ui/design-tokens/tokens.css" layer(cdt-base);
 @import "@choice-ui/design-tokens/preflight.css";
 @import "@choice-ui/design-tokens/tailwind.css";
 

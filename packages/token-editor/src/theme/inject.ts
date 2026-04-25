@@ -70,7 +70,11 @@ function injectStyle(css: string) {
     el.id = STYLE_ID
     document.head.appendChild(el)
   }
-  el.textContent = css
+  // Wrap inside the `cdt-live` cascade layer (declared in styles.css). The
+  // bundled `tokens.css` lives in `cdt-base`, so even if Vite/HMR ends up
+  // re-injecting the bundled `<style>` after this one, layer order keeps
+  // `cdt-live`'s overrides winning regardless of DOM order.
+  el.textContent = `@layer cdt-live {\n${css}\n}`
 }
 
 function removeStyle() {
