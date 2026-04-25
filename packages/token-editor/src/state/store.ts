@@ -38,11 +38,32 @@ export const useEditorStore = create<EditorState>((set) => ({
       const nextFile = cloneTreeWithUpdate(state.files[file], path, (token) => {
         if (!token || typeof token !== "object") return token
         const next = { ...(token as Record<string, unknown>) }
-        const ext = { ...((next.$extensions as Record<string, unknown> | undefined) ?? {}) }
+        const originalExt = next.$extensions as Record<string, unknown> | undefined
+        const ext = { ...(originalExt ?? {}) }
         const modes = { ...((ext.mode as Record<string, unknown> | undefined) ?? {}) }
-        modes[mode] = value
-        ext.mode = modes
-        next.$extensions = ext
+
+        // Strip the override when the new value is structurally identical
+        // to the token's base `$value`. Without this, picking a semantic
+        // alias's existing target (or reverting a primitive to baseline)
+        // adds a redundant `mode.{mode}` entry against tokens whose
+        // baseline lacked one — and `recomputeDirty`'s strict JSON
+        // equality would never clear dirty until a full reset.
+        if (JSON.stringify(value) === JSON.stringify(next.$value)) {
+          delete modes[mode]
+        } else {
+          modes[mode] = value
+        }
+
+        if (Object.keys(modes).length === 0) {
+          delete ext.mode
+        } else {
+          ext.mode = modes
+        }
+        if (originalExt === undefined && Object.keys(ext).length === 0) {
+          delete next.$extensions
+        } else {
+          next.$extensions = ext
+        }
         return next
       })
       return {
