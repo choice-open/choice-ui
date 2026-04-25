@@ -28,71 +28,28 @@ export type SectionId =
 export type Section = {
   id: SectionId
   label: string
-  /** Placeholder until commit 4 fills in the real preset system. */
-  currentPreset: string
   Indicator: ComponentType
   Page: ComponentType
-  /** Preset names shown by `PresetPickerDialog`. Real values land in commit 4. */
-  presets: string[]
 }
 
 export const SECTIONS: readonly Section[] = [
-  {
-    id: "colors",
-    label: "Colors",
-    currentPreset: "Default",
-    Indicator: ColorsIndicator,
-    Page: ColorsPage,
-    presets: ["Default", "Ocean", "Forest", "Sunset", "Monochrome"],
-  },
+  { id: "colors", label: "Colors", Indicator: ColorsIndicator, Page: ColorsPage },
   {
     id: "typography",
     label: "Typography",
-    currentPreset: "Default",
     Indicator: TypographyIndicator,
     Page: TypographyPage,
-    presets: ["Default", "Geist", "IBM Plex", "System"],
   },
-  {
-    id: "spacing",
-    label: "Spacing",
-    currentPreset: "Default",
-    Indicator: SpacingIndicator,
-    Page: SpacingPage,
-    presets: ["Compact", "Default", "Comfortable"],
-  },
-  {
-    id: "shadows",
-    label: "Shadows",
-    currentPreset: "Default",
-    Indicator: ShadowsIndicator,
-    Page: ShadowsPage,
-    presets: ["Soft", "Sharp", "Diffused", "None"],
-  },
-  {
-    id: "radius",
-    label: "Radius",
-    currentPreset: "Default",
-    Indicator: RadiusIndicator,
-    Page: RadiusPage,
-    presets: ["None", "Subtle", "Default", "Rounded", "Pill"],
-  },
+  { id: "spacing", label: "Spacing", Indicator: SpacingIndicator, Page: SpacingPage },
+  { id: "shadows", label: "Shadows", Indicator: ShadowsIndicator, Page: ShadowsPage },
+  { id: "radius", label: "Radius", Indicator: RadiusIndicator, Page: RadiusPage },
   {
     id: "breakpoints",
     label: "Breakpoints",
-    currentPreset: "Default",
     Indicator: BreakpointsIndicator,
     Page: BreakpointsPage,
-    presets: ["Default", "Wide", "Tight"],
   },
-  {
-    id: "zindex",
-    label: "Z-Index",
-    currentPreset: "Default",
-    Indicator: ZIndexIndicator,
-    Page: ZIndexPage,
-    presets: ["Default"],
-  },
+  { id: "zindex", label: "Z-Index", Indicator: ZIndexIndicator, Page: ZIndexPage },
 ] as const
 
 export function getSection(id: SectionId): Section {

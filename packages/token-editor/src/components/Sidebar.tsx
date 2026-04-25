@@ -1,5 +1,7 @@
 import { List } from "@choice-ui/react"
+import { PRESETS } from "../presets"
 import { SECTIONS, type SectionId } from "../sections"
+import { useEditorStore } from "../state/store"
 
 type Props = {
   onPickPreset: (id: SectionId) => void
@@ -8,7 +10,20 @@ type Props = {
   dirtyCount: number
 }
 
+const FILE_BY_SECTION: Record<SectionId, string> = {
+  colors: "colors-w3c.json",
+  typography: "typography-atomic-w3c.json",
+  spacing: "spacing-w3c.json",
+  shadows: "shadows-w3c.json",
+  radius: "radius-w3c.json",
+  breakpoints: "breakpoints-w3c.json",
+  zindex: "zindex-w3c.json",
+}
+
 export function Sidebar({ onPickPreset, onOpenExport, onReset, dirtyCount }: Props) {
+  const activePresets = useEditorStore((s) => s.activePresets)
+  const dirty = useEditorStore((s) => s.dirty)
+
   return (
     <aside className="flex flex-col border-r border-border-default bg-background-default p-3">
       <List className="flex-1">
@@ -17,6 +32,7 @@ export function Sidebar({ onPickPreset, onOpenExport, onReset, dirtyCount }: Pro
         <List.Content>
           {SECTIONS.map((section) => {
             const Indicator = section.Indicator
+            const label = presetLabel(section.id, activePresets, dirty)
             return (
               <List.Item
                 key={section.id}
@@ -27,9 +43,7 @@ export function Sidebar({ onPickPreset, onOpenExport, onReset, dirtyCount }: Pro
                   <span className="block text-body-small uppercase text-text-tertiary">
                     {section.label}
                   </span>
-                  <span className="block text-body-large text-text-default">
-                    {section.currentPreset}
-                  </span>
+                  <span className="block text-body-large text-text-default">{label}</span>
                 </List.Value>
               </List.Item>
             )
@@ -63,4 +77,24 @@ export function Sidebar({ onPickPreset, onOpenExport, onReset, dirtyCount }: Pro
       </div>
     </aside>
   )
+}
+
+function presetLabel(
+  sectionId: SectionId,
+  activePresets: Record<SectionId, string | null>,
+  dirty: Set<string>,
+): string {
+  const activeId = activePresets[sectionId]
+  if (activeId) {
+    return PRESETS[sectionId].find((p) => p.id === activeId)?.name ?? "Custom"
+  }
+  return isSectionDirty(sectionId, dirty) ? "Custom" : "Default"
+}
+
+function isSectionDirty(sectionId: SectionId, dirty: Set<string>): boolean {
+  const prefix = FILE_BY_SECTION[sectionId] + "#"
+  for (const key of dirty) {
+    if (key.startsWith(prefix)) return true
+  }
+  return false
 }
