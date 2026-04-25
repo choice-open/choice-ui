@@ -119,12 +119,15 @@ describe("Popover bugs", () => {
   describe("BUG: useDrag does not detect floatingRef.current changes", () => {
     it("resets drag state when floating element remounts after close/reopen", async () => {
       const { Popover } = await import("../popover")
-      const user = userEvent.setup()
       const onOpenChange = vi.fn()
 
-      const { rerender } = render(
+      // Drive close/reopen via the controlled `open` prop. We deliberately
+      // don't use Escape here: a controlled popover must follow the prop and
+      // ignore internal dismiss attempts (see "BUG 7: forceDismissed dead
+      // zone" / controlled-component semantics).
+      const Comp = ({ open }: { open: boolean }) => (
         <Popover
-          open
+          open={open}
           onOpenChange={onOpenChange}
           draggable
         >
@@ -134,8 +137,10 @@ describe("Popover bugs", () => {
           <Popover.Content>
             <div data-testid="drag-content">Drag me</div>
           </Popover.Content>
-        </Popover>,
+        </Popover>
       )
+
+      const { rerender } = render(<Comp open={true} />)
 
       await waitFor(() => {
         expect(screen.getByTestId("drag-content")).toBeInTheDocument()
@@ -145,25 +150,12 @@ describe("Popover bugs", () => {
       expect(popoverEl).toBeTruthy()
       const styleBefore = popoverEl?.getAttribute("style")
 
-      await user.keyboard("{Escape}")
+      rerender(<Comp open={false} />)
       await waitFor(() => {
         expect(screen.queryByTestId("drag-content")).not.toBeInTheDocument()
       })
 
-      rerender(
-        <Popover
-          open
-          onOpenChange={onOpenChange}
-          draggable
-        >
-          <Popover.Trigger>
-            <button>Trigger</button>
-          </Popover.Trigger>
-          <Popover.Content>
-            <div data-testid="drag-content">Drag me</div>
-          </Popover.Content>
-        </Popover>,
-      )
+      rerender(<Comp open={true} />)
 
       await waitFor(() => {
         expect(screen.getByTestId("drag-content")).toBeInTheDocument()
@@ -244,6 +236,42 @@ describe("Popover bugs", () => {
         },
         { timeout: 250 },
       )
+    })
+  })
+
+  describe("controlled popover ignores internal dismiss when parent keeps open=true", () => {
+    // Regression: forceDismissed used to fire unconditionally on dismiss, so
+    // a controlled popover whose parent kept open={true} would briefly hide
+    // and then reappear, violating controlled-component semantics.
+    it("stays visible after Escape when parent does not flip open", async () => {
+      const { Popover } = await import("../popover")
+      const user = userEvent.setup()
+      const onOpenChange = vi.fn()
+
+      render(
+        <Popover
+          open
+          onOpenChange={onOpenChange}
+        >
+          <Popover.Trigger>
+            <button>Trigger</button>
+          </Popover.Trigger>
+          <Popover.Content>
+            <div data-testid="controlled-body">Body</div>
+          </Popover.Content>
+        </Popover>,
+      )
+
+      await waitFor(() => {
+        expect(screen.getByTestId("controlled-body")).toBeInTheDocument()
+      })
+
+      await user.keyboard("{Escape}")
+
+      // Parent ignores onOpenChange and keeps open={true}, so the popover
+      // must remain visible — no transient close/reopen flicker.
+      expect(screen.getByTestId("controlled-body")).toBeInTheDocument()
+      expect(onOpenChange).toHaveBeenCalledWith(false)
     })
   })
 })

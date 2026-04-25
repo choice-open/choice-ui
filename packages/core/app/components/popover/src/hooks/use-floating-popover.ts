@@ -152,17 +152,25 @@ export function useFloatingPopover({
     ].filter(Boolean) // Filter out undefined
   }, [offsetDistance, autoSize, maxWidthValue, matchTriggerWidth])
 
+  // Whether the parent owns visibility. In controlled mode we must not
+  // forcibly hide the popover via the internal `forceDismissed` timer —
+  // that would override `open={true}` from the parent and cause a
+  // close/reopen flicker.
+  const isControlled = open !== undefined
+
   // Cache onOpenChange callback, avoid creating them again on each render
   const handleOpenChange = useEventCallback((nextOpen: boolean) => {
     if (!nextOpen) {
-      setForceDismissed(true)
-      if (forceDismissedTimerRef.current !== null) {
-        clearTimeout(forceDismissedTimerRef.current)
+      if (!isControlled) {
+        setForceDismissed(true)
+        if (forceDismissedTimerRef.current !== null) {
+          clearTimeout(forceDismissedTimerRef.current)
+        }
+        forceDismissedTimerRef.current = setTimeout(() => {
+          forceDismissedTimerRef.current = null
+          setForceDismissed(false)
+        }, 200)
       }
-      forceDismissedTimerRef.current = setTimeout(() => {
-        forceDismissedTimerRef.current = null
-        setForceDismissed(false)
-      }, 200)
       setIsClosing(true)
       resetDragState()
       setInnerOpen(false)
