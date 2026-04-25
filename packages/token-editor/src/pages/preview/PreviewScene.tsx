@@ -1,7 +1,9 @@
 import type { ReactNode } from "react"
+import { AccessKeyBlock } from "./blocks/AccessKeyBlock"
 import { AlertsBlock } from "./blocks/AlertsBlock"
 import { AllTokensBlock } from "./blocks/AllTokensBlock"
 import { AssetUploadBlock } from "./blocks/AssetUploadBlock"
+import { CommandPaletteBlock } from "./blocks/CommandPaletteBlock"
 import { ContributorsTableBlock } from "./blocks/ContributorsTableBlock"
 import { CoverageBlock } from "./blocks/CoverageBlock"
 import { DateRangeBlock } from "./blocks/DateRangeBlock"
@@ -9,6 +11,8 @@ import { DesignFiltersBlock } from "./blocks/DesignFiltersBlock"
 import { EditVelocityBlock } from "./blocks/EditVelocityBlock"
 import { ExportSnippetBlock } from "./blocks/ExportSnippetBlock"
 import { HelpTabsBlock } from "./blocks/HelpTabsBlock"
+import { MenubarBlock } from "./blocks/MenubarBlock"
+import { MultiSelectBlock } from "./blocks/MultiSelectBlock"
 import { NotificationPrefsBlock } from "./blocks/NotificationPrefsBlock"
 import { PricingBlock } from "./blocks/PricingBlock"
 import { PublishOptionsBlock } from "./blocks/PublishOptionsBlock"
@@ -18,6 +22,7 @@ import { ReleaseScheduleBlock } from "./blocks/ReleaseScheduleBlock"
 import { SaveProfileBlock } from "./blocks/SaveProfileBlock"
 import { StatusBadgesBlock } from "./blocks/StatusBadgesBlock"
 import { SyncStatusBlock } from "./blocks/SyncStatusBlock"
+import { ToastTriggersBlock } from "./blocks/ToastTriggersBlock"
 import { ViewToolbarBlock } from "./blocks/ViewToolbarBlock"
 
 /**
@@ -32,6 +37,9 @@ export function PreviewScene() {
     <div className="min-h-full bg-background-component/30 p-5">
       <div className="columns-1 gap-5 [column-fill:_balance] md:columns-2 xl:columns-3">
         <Block>
+          <MenubarBlock />
+        </Block>
+        <Block>
           <EditVelocityBlock />
         </Block>
         <Block>
@@ -41,10 +49,16 @@ export function PreviewScene() {
           <RecentActivityBlock />
         </Block>
         <Block>
+          <CommandPaletteBlock />
+        </Block>
+        <Block>
           <DesignFiltersBlock />
         </Block>
         <Block>
           <ContributorsTableBlock />
+        </Block>
+        <Block>
+          <MultiSelectBlock />
         </Block>
         <Block>
           <DateRangeBlock />
@@ -65,10 +79,16 @@ export function PreviewScene() {
           <StatusBadgesBlock />
         </Block>
         <Block>
+          <ToastTriggersBlock />
+        </Block>
+        <Block>
           <SyncStatusBlock />
         </Block>
         <Block>
           <AlertsBlock />
+        </Block>
+        <Block>
+          <AccessKeyBlock />
         </Block>
         <Block>
           <AssetUploadBlock />
