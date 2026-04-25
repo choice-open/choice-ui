@@ -1,5 +1,5 @@
 import { Popover, SimpleColorPicker } from "@choice-ui/react"
-import { useRef, useState, type ReactNode } from "react"
+import { useState, type ReactNode } from "react"
 import { rgbToSrgb, srgbToRgb, type RGB, type W3CColorValue } from "../lib/w3c"
 
 type Props = {
@@ -13,41 +13,30 @@ const FALLBACK_RGB: RGB = { r: 128, g: 128, b: 128 }
 
 /**
  * Mirror the storybook pattern: `SimpleColorPicker` is fully self-driven
- * via local `useState`. Pushing the parent `value` prop back into `color`
- * on every render breaks `usePaintState`'s hue-stability heuristic — a
- * round-tripped RGB ambiguously re-derives hue near greyscale, so the
- * slider snapped to 0 on every commit.
+ * via local `useState` seeded from the prop on mount. Pushing the parent
+ * `value` prop back into `color` on every render breaks
+ * `usePaintState`'s hue-stability heuristic — round-tripped RGB ambiguously
+ * re-derives hue near greyscale, so the slider snapped to 0 on every commit.
  *
- * Trade-off: external updates (Reset, alias-driven swap) no longer
- * propagate into an *open* popover. The picker re-seeds from `value` on
- * mount, so closing and reopening the popover picks up any external
- * change. That's an acceptable cost — Reset is rare; the alternative
- * (re-syncing prop -> state) breaks every commit.
+ * Trade-off: external updates (Reset, alias-driven swap) won't propagate
+ * into an *open* popover. Closing and reopening picks up any external
+ * change. Acceptable cost.
  *
- * Drag batching: while the user is dragging the area / hue slider,
- * `onColorChange` fires at ~60Hz. Pushing each tick into the store
- * re-clones the token tree, re-runs Terrazzo, and re-injects the live
- * style — the race-guard in `useLiveTheme` then cancels every
- * intermediate compile, freezing the preview until release. So during a
- * drag we hold the latest RGB locally and commit once on `onChangeEnd`.
- * Non-drag changes (typing into RGB / Hex inputs, where the channel
- * field doesn't bracket with start / end) commit immediately.
+ * Live commits: every `onColorChange` writes to the store. The 100ms
+ * debounce in `useLiveTheme` already throttles the actual Terrazzo
+ * recompile, so even at 60Hz drag rate the preview only re-renders ~10
+ * times/second. Earlier we tried batching commits to `onChangeEnd` only,
+ * but that left the preview frozen during drag with no visual feedback.
  *
- * Alpha is locked: the project's CSS transform drops alpha from
- * primitive color tokens (consumers compose it at the use site via
- * `rgb(var(--cdt-color-X) / <alpha>)`). Forcing `alpha={1}` and
- * omitting `onAlphaChange` makes the writeback structurally incapable
- * of emitting alpha < 1 even if the slider is dragged.
+ * Alpha is locked: the project's CSS transform drops alpha from primitive
+ * color tokens (consumers compose at use site via
+ * `rgb(var(--cdt-color-X) / <alpha>)`). Forcing `alpha={1}` and omitting
+ * `onAlphaChange` makes the writeback structurally incapable of emitting
+ * alpha < 1.
  */
 export function ColorEditPopover({ value, label, onChange, children }: Props) {
   const initial = value ? srgbToRgb(value) : FALLBACK_RGB
   const [color, setColor] = useState<RGB>(initial)
-  const isDraggingRef = useRef(false)
-  const latestRef = useRef<RGB>(initial)
-
-  function commit(rgb: RGB) {
-    onChange(rgbToSrgb(rgb, 1))
-  }
 
   return (
     <Popover interactions="click" placement="right-start">
@@ -58,17 +47,9 @@ export function ColorEditPopover({ value, label, onChange, children }: Props) {
           color={color}
           alpha={1}
           features={{ alpha: false }}
-          onChangeStart={() => {
-            isDraggingRef.current = true
-          }}
           onColorChange={(next) => {
             setColor(next)
-            latestRef.current = next
-            if (!isDraggingRef.current) commit(next)
-          }}
-          onChangeEnd={() => {
-            isDraggingRef.current = false
-            commit(latestRef.current)
+            onChange(rgbToSrgb(next, 1))
           }}
         />
       </Popover.Content>
