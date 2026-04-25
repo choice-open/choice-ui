@@ -1,4 +1,8 @@
-import { Button } from "@choice-ui/react"
+import { useState } from "react"
+import { ColorsPage } from "./pages/colors/ColorsPage"
+import { PlaceholderPage } from "./pages/Placeholder"
+import { useEditorStore } from "./state/store"
+import { useLiveTheme } from "./theme/inject"
 
 const SECTIONS = [
   { id: "colors", label: "Colors" },
@@ -10,30 +14,58 @@ const SECTIONS = [
   { id: "zindex", label: "Z-Index" },
 ] as const
 
+type SectionId = (typeof SECTIONS)[number]["id"]
+
 export function App() {
+  useLiveTheme()
+  const [section, setSection] = useState<SectionId>("colors")
+  const dirty = useEditorStore((s) => s.dirty)
+  const reset = useEditorStore((s) => s.reset)
+
   return (
     <div className="grid h-dvh grid-cols-[220px_1fr] bg-background-default text-text-default">
       <aside className="flex flex-col gap-1 border-r border-border-default p-4">
-        <h1 className="mb-4 text-sm font-semibold tracking-wide text-text-secondary">
-          Token Editor
-        </h1>
+        <div className="mb-4 flex items-center justify-between">
+          <h1 className="text-sm font-semibold tracking-wide text-text-secondary">
+            Token Editor
+          </h1>
+          {dirty.size > 0 ? (
+            <button
+              type="button"
+              onClick={reset}
+              className="text-[11px] text-text-tertiary hover:text-text-default"
+              title="Discard all edits"
+            >
+              reset
+            </button>
+          ) : null}
+        </div>
         {SECTIONS.map((s) => (
           <button
             key={s.id}
             type="button"
-            className="rounded px-3 py-2 text-left text-sm hover:bg-background-component"
+            onClick={() => setSection(s.id)}
+            className={
+              "rounded px-3 py-2 text-left text-sm hover:bg-background-component " +
+              (section === s.id ? "bg-background-component" : "")
+            }
           >
             {s.label}
           </button>
         ))}
+        <div className="mt-auto text-[11px] leading-relaxed text-text-tertiary">
+          ⌘⇧R toggles live theme.
+          <br />
+          {dirty.size} edit{dirty.size === 1 ? "" : "s"} pending.
+        </div>
       </aside>
-      <main className="flex flex-col items-center justify-center gap-4 p-8">
-        <h2 className="text-lg font-semibold">Choice UI Token Editor</h2>
-        <p className="max-w-md text-center text-sm text-text-secondary">
-          Scaffold is alive. Pick a section on the left — panels are landing next.
-        </p>
-        <Button>Hello from @choice-ui/react</Button>
+      <main className="overflow-auto">
+        {section === "colors" ? <ColorsPage /> : <PlaceholderPage title={labelOf(section)} />}
       </main>
     </div>
   )
+}
+
+function labelOf(id: SectionId) {
+  return SECTIONS.find((s) => s.id === id)!.label
 }
