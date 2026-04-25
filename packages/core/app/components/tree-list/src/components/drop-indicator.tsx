@@ -1,4 +1,3 @@
-import React from "react"
 import { DropPosition } from "../types"
 
 interface DropIndicatorProps {
@@ -9,13 +8,13 @@ interface DropIndicatorProps {
   level: number
 }
 
-export const DropIndicator: React.FC<DropIndicatorProps> = ({
+export const DropIndicator = ({
   dropPosition,
   isDropTarget,
   level,
   isFolderWithChildren,
   isExpanded,
-}) => {
+}: DropIndicatorProps) => {
   if (!isDropTarget || !dropPosition) return null
 
   // 计算指示器缩进

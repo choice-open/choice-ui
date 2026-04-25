@@ -129,11 +129,11 @@ interface LoaderStageContentProps {
   stage: LoaderStage
 }
 
-const LoaderStageContent: React.FC<LoaderStageContentProps> = ({
+const LoaderStageContent = ({
   stage,
   isActive,
   currentIconIndex,
-}) => {
+}: LoaderStageContentProps) => {
   const styles = loaderVariants()
   const icons = Array.isArray(stage.icon) ? stage.icon : stage.icon ? [stage.icon] : []
 

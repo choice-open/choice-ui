@@ -92,7 +92,7 @@ interface ContextMenuComponentProps extends React.ForwardRefExoticComponent<
   Label: typeof MenuContextLabel
   Search: typeof MenuSearch
   SubTrigger: typeof MenuContextSubTrigger
-  Trigger: React.FC<ContextMenuTriggerProps>
+  Trigger: typeof ContextMenuTrigger
   Value: typeof MenuValue
 }
 

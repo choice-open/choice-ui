@@ -113,7 +113,7 @@ describe("ContextInput bugs", () => {
         metaKey: false,
         preventDefault: vi.fn(),
         stopPropagation: vi.fn(),
-      } as React.KeyboardEvent
+      } as unknown as React.KeyboardEvent
 
       ref2.current?.handleKeyDown(keyboardEvent)
 

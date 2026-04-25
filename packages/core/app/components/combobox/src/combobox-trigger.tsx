@@ -7,7 +7,7 @@ import { comboboxTriggerTv } from "./tv"
 
 export interface ComboboxTriggerProps extends Omit<
   HTMLProps<HTMLInputElement>,
-  "size" | "onChange"
+  "size" | "onChange" | "onBlur"
 > {
   active?: boolean
   disabled?: boolean
@@ -16,6 +16,7 @@ export interface ComboboxTriggerProps extends Omit<
     placeholder: string
   }
   noMatch?: boolean
+  onBlur?: (value: string, event: React.FocusEvent<HTMLInputElement>) => void
   onChange?: (value: string) => void
   onClick?: () => void
   placeholder?: string

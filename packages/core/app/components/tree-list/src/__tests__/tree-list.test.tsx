@@ -36,10 +36,11 @@ describe("TreeList bugs", () => {
       const data = [
         {
           id: "root",
+          name: "Root",
           label: "Root",
           children: [
-            { id: "child1", label: "Child 1" },
-            { id: "child2", label: "Child 2" },
+            { id: "child1", name: "Child 1", label: "Child 1" },
+            { id: "child2", name: "Child 2", label: "Child 2" },
           ],
         },
       ]
@@ -50,7 +51,6 @@ describe("TreeList bugs", () => {
       render(
         <TreeList
           data={data}
-          onToggle={vi.fn()}
         />,
       )
 
@@ -76,8 +76,9 @@ describe("TreeList bugs", () => {
       const data = [
         {
           id: "root",
+          name: "Root",
           label: "Root",
-          children: [{ id: "child1", label: "Child 1" }],
+          children: [{ id: "child1", name: "Child 1", label: "Child 1" }],
         },
       ]
 
@@ -85,7 +86,6 @@ describe("TreeList bugs", () => {
         <TreeList
           ref={ref}
           data={data}
-          onToggle={vi.fn()}
           virtualScroll={false}
           renderLabel={(node: any) => <span>{node.label}</span>}
         />,
@@ -119,8 +119,9 @@ describe("TreeList bugs", () => {
       const data = [
         {
           id: "root",
+          name: "Root",
           label: "Root",
-          children: [{ id: "child1", label: "Child 1" }],
+          children: [{ id: "child1", name: "Child 1", label: "Child 1" }],
         },
       ]
 
@@ -129,7 +130,6 @@ describe("TreeList bugs", () => {
           ref={ref}
           data={data}
           initialExpandedNodeIds={new Set(["root"])}
-          onToggle={vi.fn()}
           virtualScroll={false}
           renderLabel={(node: any) => <span>{node.label}</span>}
         />,
@@ -164,15 +164,14 @@ describe("TreeList bugs", () => {
       const user = userEvent.setup()
 
       const data = [
-        { id: "node1", label: "Node One" },
-        { id: "node2", label: "Node Two" },
+        { id: "node1", name: "Node One", label: "Node One" },
+        { id: "node2", name: "Node Two", label: "Node Two" },
       ]
 
       render(
         <TreeList
           data={data}
           onNodeSelect={onNodeSelect}
-          onToggle={vi.fn()}
           virtualScroll={false}
           renderLabel={(node: any) => <span>{node.label}</span>}
         />,

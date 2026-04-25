@@ -23,10 +23,13 @@ export function Conditions({
 }: ConditionsProps) {
   const normalizedFields = useMemo(
     () =>
-      fields.map((f) => ({
-        ...f,
-        key: (f as Record<string, unknown>).key || (f as Record<string, unknown>).name || "",
-      })),
+      fields.map((f) => {
+        const legacy = f as unknown as { key?: string; name?: string }
+        return {
+          ...f,
+          key: legacy.key || legacy.name || "",
+        }
+      }),
     [fields],
   )
 

@@ -250,7 +250,7 @@ describe("Colors bugs", () => {
         <ColorGradientsPaint
           gradient={defaultGradient}
           onGradientChange={onGradientChange}
-          colorSpace="srgb"
+          colorSpace="rgb"
           onColorSpaceChange={vi.fn()}
         />,
       )
@@ -289,7 +289,7 @@ describe("Colors bugs", () => {
           position={{ x: 0.5, y: 0.5 }}
           onChange={onChange}
           onChangeEnd={onChangeEnd}
-          type="saturation"
+          type="saturation-brightness"
           areaSize={{ width: 256, height: 192 }}
         />,
       )

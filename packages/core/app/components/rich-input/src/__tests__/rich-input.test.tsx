@@ -19,7 +19,10 @@
 import "@testing-library/jest-dom"
 import { render, screen, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
+import type { Descendant } from "slate"
 import { describe, expect, it, vi } from "vitest"
+
+const emptyDoc = [{ type: "paragraph", children: [{ text: "" }] }] as unknown as Descendant[]
 
 describe("Rich Input bugs", () => {
   describe("BUG 6: onFocus must receive an event with a target property", () => {
@@ -31,6 +34,7 @@ describe("Rich Input bugs", () => {
 
       render(
         <RichInput
+          value={emptyDoc}
           onFocus={onFocus}
           placeholder="Type here..."
         />,
@@ -57,6 +61,7 @@ describe("Rich Input bugs", () => {
 
       render(
         <RichInput
+          value={emptyDoc}
           onBlur={onBlur}
           placeholder="Type here..."
         />,
@@ -135,7 +140,12 @@ describe("Rich Input bugs", () => {
     it("should apply Transforms.setNodes at the first node, not at selection", async () => {
       const { RichInput } = await import("../rich-input")
 
-      const { container } = render(<RichInput placeholder="Type here..." />)
+      const { container } = render(
+        <RichInput
+          value={emptyDoc}
+          placeholder="Type here..."
+        />,
+      )
 
       expect(container).toBeInTheDocument()
     })

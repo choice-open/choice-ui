@@ -84,7 +84,7 @@ beforeAll(() => {
     observe() {}
     unobserve() {}
     disconnect() {}
-  }
+  } as unknown as typeof globalThis.IntersectionObserver
   Element.prototype.scrollIntoView = vi.fn()
 })
 

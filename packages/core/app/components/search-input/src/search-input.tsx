@@ -13,7 +13,7 @@ export interface SearchInputProps extends TextFieldProps {
   clearable?: boolean
   i18n?: {
     clear: string
-    placeholder: string
+    placeholder?: string
   }
 }
 
@@ -31,8 +31,10 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>((props
     ...rest
   } = props
 
-  const inputRef = useRef<HTMLInputElement>(null)
-  const [internalValue, setInternalValue] = useState(props.defaultValue ?? "")
+  const inputRef = useRef<HTMLInputElement | null>(null)
+  const [internalValue, setInternalValue] = useState<string>(
+    typeof props.defaultValue === "string" ? props.defaultValue : "",
+  )
   const isControlled = valueProp !== undefined
   const displayValue = isControlled ? valueProp : internalValue
 

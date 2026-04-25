@@ -48,7 +48,7 @@ describe("Toggle Button bugs", () => {
         </ToggleButton>,
       )
 
-      const input = screen.getByRole("checkbox")
+      const input = screen.getByRole("checkbox") as HTMLInputElement
       expect(input).toHaveAttribute("aria-checked", "false")
       expect(input.checked).toBe(false)
     })
@@ -64,7 +64,7 @@ describe("Toggle Button bugs", () => {
         </ToggleButton>,
       )
 
-      const input = screen.getByRole("checkbox")
+      const input = screen.getByRole("checkbox") as HTMLInputElement
       expect(input).toHaveAttribute("aria-checked", "true")
       expect(input.checked).toBe(true)
     })

@@ -267,7 +267,7 @@ export const DragPopover = memo(function DragPopover({
   )
 })
 
-interface PopoverComponent extends React.FC<PopoverProps> {
+type PopoverComponent = typeof PopoverBase & {
   Content: typeof ModalContent
   Footer: typeof ModalFooter
   Header: typeof PopoverHeader

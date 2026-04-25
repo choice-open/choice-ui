@@ -18,12 +18,7 @@ describe("Loader bugs", () => {
   describe("BUG 8: must not crash with empty stages array", () => {
     it("renders without throwing when stages is an empty array", () => {
       expect(() => {
-        render(
-          <Loader
-            stages={[]}
-            description="Loading..."
-          />,
-        )
+        render(<Loader stages={[]} />)
       }).not.toThrow()
     })
   })

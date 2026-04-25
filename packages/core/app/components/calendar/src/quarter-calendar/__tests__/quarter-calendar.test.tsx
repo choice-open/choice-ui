@@ -7,8 +7,10 @@ import { enUS, zhCN } from "date-fns/locale"
 import { QuarterCalendar } from "../quarter-calendar"
 import type { Quarter } from "../../types"
 
+type QuarterNumber = Quarter["quarter"]
+
 // 测试工具函数
-const createTestQuarter = (quarter: number, year: number): Quarter => {
+const createTestQuarter = (quarter: QuarterNumber, year: number): Quarter => {
   const quarterLabels = ["一季度", "二季度", "三季度", "四季度"]
   const monthGroups = [
     ["一月", "二月", "三月"],
@@ -142,7 +144,7 @@ describe("QuarterCalendar", () => {
     })
 
     it("应该同时显示选中和当前季度的样式", () => {
-      const currentQuarter = Math.ceil((new Date().getMonth() + 1) / 3)
+      const currentQuarter = Math.ceil((new Date().getMonth() + 1) / 3) as QuarterNumber
       const currentQuarterObj = createTestQuarter(currentQuarter, currentYear)
 
       render(

@@ -3,7 +3,7 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import "@testing-library/jest-dom"
 import { act } from "react-dom/test-utils"
-import { vi } from "vitest"
+import { vi, type Mock } from "vitest"
 import { useNumericInput } from "../../hooks/use-numeric-input"
 import { NumericInputValue } from "../../types"
 
@@ -28,9 +28,9 @@ function TestComponent({
   initialValue?: NumericInputValue
   max?: number
   min?: number
-  onChange?: vi.Mock
-  onChangeEnd?: vi.Mock
-  onEmpty?: vi.Mock
+  onChange?: Mock
+  onChangeEnd?: Mock
+  onEmpty?: Mock
   readOnly?: boolean
   shiftStep?: number
   step?: number

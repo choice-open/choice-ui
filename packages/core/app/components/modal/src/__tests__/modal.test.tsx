@@ -24,13 +24,7 @@ describe("Modal bugs", () => {
       const user = userEvent.setup()
 
       render(
-        <ModalSelect
-          label="Priority"
-          options={[
-            { value: "high", label: "High" },
-            { value: "low", label: "Low" },
-          ]}
-        />,
+        <ModalSelect label="Priority" />,
       )
 
       const label = screen.getByText("Priority")

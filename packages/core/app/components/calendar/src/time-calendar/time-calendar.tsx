@@ -7,7 +7,7 @@ import { useEventCallback } from "usehooks-ts"
 import type { BaseTimeProps, StepProps } from "../types"
 import { generateTimeOptions, normalizeTimeValue, timeStringToDate } from "../utils"
 
-interface TimeCalendarComponentType extends React.MemoExoticComponent<React.FC<TimeCalendarProps>> {
+type TimeCalendarComponentType = typeof TimeCalendarBase & {
   Trigger: typeof MenuTrigger
 }
 

@@ -55,7 +55,7 @@ function ShortcutEditor({
   disabled?: boolean
   readOnly?: boolean
 }) {
-  const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null)
   const { insertText, wrapText } = useMarkdownFormatting(textareaRef)
   const { handleKeyDown } = useMarkdownShortcuts({
     textareaRef,
@@ -80,7 +80,7 @@ interface FormattingHandle {
 
 const FormattingEditor = forwardRef<FormattingHandle, { defaultValue?: string }>(
   function FormattingEditor(props, ref) {
-    const textareaRef = useRef<HTMLTextAreaElement>(null)
+    const textareaRef = useRef<HTMLTextAreaElement | null>(null)
     const { insertListPrefix } = useMarkdownFormatting(textareaRef)
     useImperativeHandle(ref, () => ({ insertListPrefix }))
     return (
@@ -105,7 +105,7 @@ const MentionEditor = forwardRef<
   MentionHandle,
   { defaultValue?: string; onChange?: (value: string) => void }
 >(function MentionEditor(props, ref) {
-  const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null)
   const { handleInputChange, handleSelect, setTextareaRef } = useMarkdownMentions({
     items: [
       { id: "john", label: "John" },

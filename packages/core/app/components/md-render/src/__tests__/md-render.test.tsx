@@ -56,10 +56,11 @@ vi.mock("react-markdown", () => ({
 
     const inlineMatch = text.match(/^(.*?)`([^`]+)`(.*)$/s)
     if (inlineMatch && comps?.code) {
+      const CodeComp = comps.code as unknown as (props: any) => React.ReactNode
       return (
         <p>
           {inlineMatch[1]}
-          {comps.code({
+          {CodeComp({
             children: inlineMatch[2],
             className: undefined,
             node: {
@@ -73,7 +74,8 @@ vi.mock("react-markdown", () => ({
 
     const blockMatch = text.match(/^```(\w*)\n?([\s\S]*?)```/m)
     if (blockMatch && comps?.code) {
-      return comps.code({
+      const CodeComp = comps.code as unknown as (props: any) => React.ReactNode
+      return CodeComp({
         children: blockMatch[2],
         className: blockMatch[1] ? `language-${blockMatch[1]}` : undefined,
         node: {

@@ -42,15 +42,18 @@ const stubMenuContext = {
   variant: "default" as const,
 }
 
+type SpyableEmit = NonNullable<ReturnType<typeof useFloatingTree>>["events"]["emit"] & {
+  _spy?: boolean
+}
+
 function EmitSpy({ spy }: { spy: (event: string) => void }) {
   const tree = useFloatingTree()
-  const originalEmit = tree?.events.emit
-  if (tree && !tree.events.emit._spy) {
+  if (tree && !(tree.events.emit as SpyableEmit)._spy) {
     const orig = tree.events.emit.bind(tree.events)
     const patched = ((event: string, ...args: unknown[]) => {
       spy(event)
       return orig(event, ...args)
-    }) as typeof tree.events.emit
+    }) as SpyableEmit
     patched._spy = true
     tree.events.emit = patched
   }

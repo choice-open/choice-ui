@@ -374,7 +374,7 @@ const DialogComponent = memo(function DialogComponent({
   )
 })
 
-type DialogComponentType = React.FC<DialogProps> & {
+type DialogComponentType = typeof DialogComponent & {
   Backdrop: typeof ModalBackdrop
   Content: typeof ModalContent
   Footer: typeof ModalFooter

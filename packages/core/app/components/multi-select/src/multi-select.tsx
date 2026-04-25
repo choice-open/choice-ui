@@ -66,7 +66,7 @@ export interface MultiSelectProps {
   className?: string
   closeOnSelect?: boolean
   disabled?: boolean
-  focusManagerProps?: FloatingFocusManagerProps
+  focusManagerProps?: Partial<FloatingFocusManagerProps>
   getDisplayValue?: (value: string) => string
   i18n?: {
     maxSelectionMessage?: (maxSelection: number) => string

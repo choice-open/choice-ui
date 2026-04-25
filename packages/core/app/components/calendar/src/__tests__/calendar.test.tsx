@@ -35,7 +35,7 @@ describe("Calendar bugs", () => {
         <MonthCalendar
           minDate={new Date(2025, 0, 15, 12, 0, 0)}
           timeZone="UTC"
-          onDateClick={onDateClick}
+          onChange={onDateClick}
         />,
       )
 
@@ -109,7 +109,7 @@ describe("Calendar bugs", () => {
           currentMonth={new Date(2025, 0, 1)}
           readOnly
           timeZone="UTC"
-          onDateClick={onDateClick}
+          onChange={onDateClick}
         />,
       )
 
@@ -139,7 +139,7 @@ describe("Calendar bugs", () => {
           currentMonth={new Date(2025, 0, 1)}
           disabledDates={[new Date(2025, 0, 20)]}
           timeZone="UTC"
-          onDateClick={onDateClick}
+          onChange={onDateClick}
         />,
       )
 

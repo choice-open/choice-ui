@@ -39,13 +39,13 @@ describe("BezierCurveEditor bugs", () => {
       const preview = document.querySelector('[data-slot="preview"]')
       expect(preview).not.toBeNull()
 
-      const timingFn = (preview as Element).style.animationTimingFunction
+      const timingFn = (preview as HTMLElement).style.animationTimingFunction
       expect(timingFn).toBeTruthy()
 
       const args = timingFn
         .match(/cubic-bezier\((.+)\)/)?.[1]
         .split(",")
-        .map((s) => s.trim())
+        .map((s: string) => s.trim())
 
       expect(args).toHaveLength(4)
       expect(args).toEqual(["0.42", "0", "0.58", "1"])

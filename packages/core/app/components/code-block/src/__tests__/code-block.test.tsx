@@ -151,10 +151,7 @@ describe("CodeBlock bugs", () => {
       render(
         <CodeBlock language="tsx">
           <CodeBlock.Header />
-          <CodeBlock.Content>
-            {"const x = 1;\n"}
-            {"const y = 2;\n"}
-          </CodeBlock.Content>
+          <CodeBlock.Content>{"const x = 1;\nconst y = 2;\n"}</CodeBlock.Content>
         </CodeBlock>,
       )
 

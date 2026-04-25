@@ -52,12 +52,7 @@ describe("List bugs", () => {
       const user = userEvent.setup()
 
       render(
-        <List
-          activeItem="a"
-          onActiveItemChange={() => {}}
-          expandedSubLists={[]}
-          onToggleSubList={onToggleSubList}
-        >
+        <List>
           <List.Item id="a">Alpha</List.Item>
           <List.Item id="b">Beta</List.Item>
         </List>,
@@ -79,12 +74,7 @@ describe("List bugs", () => {
       const user = userEvent.setup()
 
       render(
-        <List
-          activeItem="a"
-          onActiveItemChange={() => {}}
-          expandedSubLists={[]}
-          onToggleSubList={() => {}}
-        >
+        <List>
           <List.Item
             id="a"
             onKeyDown={onKeyDown}
@@ -109,12 +99,7 @@ describe("List bugs", () => {
       const user = userEvent.setup()
 
       render(
-        <List
-          activeItem="a"
-          onActiveItemChange={() => {}}
-          onToggleSubList={() => {}}
-          selection
-        >
+        <List selection>
           <List.Item id="a">Alpha</List.Item>
         </List>,
       )

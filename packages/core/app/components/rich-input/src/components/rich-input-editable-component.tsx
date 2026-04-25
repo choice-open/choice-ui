@@ -26,7 +26,7 @@ export const RichInputEditableComponent = forwardRef<HTMLDivElement, RichInputEd
       if (!el) return
 
       if (document.activeElement === el) {
-        context.onFocus()
+        context.onFocus?.()
       }
     }, [context.onFocus])
 

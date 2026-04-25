@@ -1,5 +1,5 @@
 import { tcx } from "@choice-ui/shared"
-import { memo, ReactNode } from "react"
+import { forwardRef, memo, ReactNode } from "react"
 import { MenuLabelTv } from "../tv"
 
 export interface MenuLabelProps {
@@ -8,22 +8,24 @@ export interface MenuLabelProps {
   selection?: boolean
 }
 
-export const MenuLabel = memo(function MenuLabel({
-  className,
-  children,
-  selection,
-  ...props
-}: MenuLabelProps & Omit<React.HTMLProps<HTMLDivElement>, "label">) {
-  const tv = MenuLabelTv({ selection })
+type MenuLabelDOMProps = MenuLabelProps & Omit<React.HTMLProps<HTMLDivElement>, "label">
 
-  return (
-    <div
-      className={tcx(tv, className)}
-      {...props}
-    >
-      {children}
-    </div>
-  )
-})
+export const MenuLabel = memo(
+  forwardRef<HTMLDivElement, MenuLabelDOMProps>(
+    ({ className, children, selection, ...props }, ref) => {
+      const tv = MenuLabelTv({ selection })
+
+      return (
+        <div
+          ref={ref}
+          className={tcx(tv, className)}
+          {...props}
+        >
+          {children}
+        </div>
+      )
+    },
+  ),
+)
 
 MenuLabel.displayName = "MenuLabel"

@@ -20,7 +20,7 @@ describe("Tooltip bugs", () => {
   describe("BUG 10: content={0} must render the tooltip", () => {
     it("renders tooltip content when content is the number 0", async () => {
       render(
-        <TooltipProvider>
+        <TooltipProvider delay={0}>
           <Tooltip
             content={0}
             open
@@ -52,7 +52,7 @@ describe("Tooltip bugs", () => {
   describe("BUG 3: tooltip must not reappear when disabled toggles back to false", () => {
     it("resets open state when disabled changes to true", async () => {
       const TestComp = ({ disabled }: { disabled: boolean }) => (
-        <TooltipProvider>
+        <TooltipProvider delay={0}>
           <Tooltip
             content="Tip"
             disabled={disabled}
@@ -119,7 +119,7 @@ describe("Tooltip bugs", () => {
       }
 
       render(
-        <TooltipProvider>
+        <TooltipProvider delay={0}>
           <TestHook />
         </TooltipProvider>,
       )
@@ -139,7 +139,7 @@ describe("Tooltip bugs", () => {
       const user = userEvent.setup()
 
       render(
-        <TooltipProvider>
+        <TooltipProvider delay={0}>
           <Tooltip content="Hello tooltip">
             <button>Hover me</button>
           </Tooltip>

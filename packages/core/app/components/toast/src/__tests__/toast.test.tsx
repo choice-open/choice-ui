@@ -68,7 +68,6 @@ describe("Toast bugs", () => {
           loading: "Loading...",
           success: "Done!",
           error: "Failed!",
-          duration: 5000,
         })
       })
 

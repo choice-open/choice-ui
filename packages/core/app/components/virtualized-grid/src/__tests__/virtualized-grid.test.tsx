@@ -84,7 +84,8 @@ describe("Virtualized Grid bugs", () => {
           items={items}
           renderItem={renderItem}
           fixedColumnWidth={200}
-          rowHeight={100}
+          columnCount={() => 1}
+          itemData={(item: { id: string; label: string }) => ({ height: 100, key: item.id })}
         />,
       )
 

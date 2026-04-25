@@ -35,10 +35,10 @@ describe("Table bugs", () => {
       type Row = { id: string; name: string }
 
       function TestTable({ data }: { data: Row[] }) {
-        const tableRef = useRef<ReturnType<typeof Table> | null>(null)
+        const tableRef = useRef(null)
         return (
           <Table
-            ref={tableRef}
+            tableRef={tableRef}
             data={data}
             getRowKey={(row: Row) => row.id}
             selectionMode="multiple"

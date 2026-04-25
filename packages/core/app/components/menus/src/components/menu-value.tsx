@@ -1,7 +1,7 @@
 import { forwardRef, HTMLProps, memo, ReactNode } from "react"
 
 export interface MenuValueProps extends HTMLProps<HTMLSpanElement> {
-  children: ReactNode
+  children?: ReactNode
 }
 
 export const MenuValue = memo(

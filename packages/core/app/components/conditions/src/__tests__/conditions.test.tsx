@@ -82,12 +82,11 @@ class ResizeObserverMock {
 }
 global.ResizeObserver = ResizeObserverMock as unknown as typeof ResizeObserver
 
-const sampleFields = [
+const sampleFields: import("../types").Field[] = [
   {
     type: ConditionsFieldType.Text,
-    name: "name",
+    key: "name",
     label: "Name",
-    operators: [],
   },
 ]
 
@@ -96,12 +95,11 @@ describe("Conditions bugs", () => {
     it("renders a <select> element with the multiple attribute", () => {
       render(
         <MultiSelectInput
-          condition={{ field: "tags", operator: "in", value: "" }}
+          condition={{ id: "c1", fieldKey: "tags", operator: ComparisonOperator.In, value: "" }}
           field={{
             type: ConditionsFieldType.MultiSelect,
-            name: "tags",
+            key: "tags",
             label: "Tags",
-            operators: [],
             options: [
               { value: "a", label: "A" },
               { value: "b", label: "B" },
@@ -120,18 +118,18 @@ describe("Conditions bugs", () => {
 
   describe("BUG 2: Conditions must sync internal state when value prop changes", () => {
     it("updates displayed conditions when value prop changes after mount", () => {
-      const initialValue = {
+      const initialValue: import("../types").ConditionsRoot = {
         id: "root",
         groups: [
           {
             id: "group_1",
-            logicalOperator: "and" as const,
+            logicalOperator: LogicalOperator.And,
             name: "Group 1",
             conditions: [
               {
                 id: "cond_1",
                 fieldKey: "name",
-                operator: "equals" as const,
+                operator: ComparisonOperator.Equals,
                 value: "Alice",
               },
             ],
@@ -139,18 +137,18 @@ describe("Conditions bugs", () => {
         ],
       }
 
-      const updatedValue = {
+      const updatedValue: import("../types").ConditionsRoot = {
         id: "root",
         groups: [
           {
             id: "group_2",
-            logicalOperator: "and" as const,
+            logicalOperator: LogicalOperator.And,
             name: "Group 1",
             conditions: [
               {
                 id: "cond_2",
                 fieldKey: "name",
-                operator: "equals" as const,
+                operator: ComparisonOperator.Equals,
                 value: "Bob",
               },
             ],
@@ -184,18 +182,18 @@ describe("Conditions bugs", () => {
     it("does NOT call onChange when component first mounts with value", () => {
       const onChange = vi.fn()
 
-      const initialValue = {
+      const initialValue: import("../types").ConditionsRoot = {
         id: "root",
         groups: [
           {
             id: "group_1",
-            logicalOperator: "and" as const,
+            logicalOperator: LogicalOperator.And,
             name: "Group 1",
             conditions: [
               {
                 id: "cond_1",
                 fieldKey: "name",
-                operator: "equals" as const,
+                operator: ComparisonOperator.Equals,
                 value: "Alice",
               },
             ],
@@ -249,8 +247,8 @@ describe("Conditions bugs", () => {
         ],
       }
 
-      const fields = [
-        { type: ConditionsFieldType.Text, name: "name", key: "name", label: "Name", operators: [] },
+      const fields: import("../types").Field[] = [
+        { type: ConditionsFieldType.Text, key: "name", label: "Name" },
       ]
 
       render(
@@ -320,9 +318,9 @@ describe("Conditions bugs", () => {
         ],
       }
 
-      const fields = [
-        { type: ConditionsFieldType.Text, name: "name", key: "name", label: "Name", operators: [] },
-        { type: ConditionsFieldType.Number, name: "age", key: "age", label: "Age", operators: [] },
+      const fields: import("../types").Field[] = [
+        { type: ConditionsFieldType.Text, key: "name", label: "Name" },
+        { type: ConditionsFieldType.Number, key: "age", label: "Age" },
       ]
 
       render(
@@ -381,8 +379,8 @@ describe("Conditions bugs", () => {
         ],
       }
 
-      const fields = [
-        { type: ConditionsFieldType.Text, name: "name", key: "name", label: "Name", operators: [] },
+      const fields: import("../types").Field[] = [
+        { type: ConditionsFieldType.Text, key: "name", label: "Name" },
       ]
 
       render(
