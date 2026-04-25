@@ -103,10 +103,13 @@ export const COLORS_PRESETS: Preset[] = [
   {
     id: "colors.monochrome",
     name: "Monochrome",
-    description: "Neutral accent — UI recedes; content carries the color.",
-    // `neutrals` has no `-pale` companion; reuse `neutrals` for both
-    // surfaces. Selected-on-dark loses its blue-pale lift, but that's
-    // the point of a monochrome preset.
-    edits: accentSwap("neutrals", "neutrals"),
+    description: "Gray accent — UI recedes; content carries the color.",
+    // The bundled palette exposes the neutral ramp under the `gray`
+    // namespace (the `neutrals` you see in `$extensions.choiceform.
+    // design-system.category` is a category label, not a path). There
+    // is no `gray-pale`, so reuse `gray` for both surfaces — selected-
+    // on-dark loses its blue-pale lift, which is on-brand for a
+    // monochrome preset.
+    edits: accentSwap("gray", "gray"),
   },
 ]
