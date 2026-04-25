@@ -1,5 +1,5 @@
 import { Popover, SimpleColorPicker } from "@choice-ui/react"
-import { useEffect, useRef, useState, type ReactNode } from "react"
+import { useRef, useState, type ReactNode } from "react"
 import { rgbToSrgb, srgbToRgb, type RGB, type W3CColorValue } from "../lib/w3c"
 
 type Props = {
@@ -12,58 +12,41 @@ type Props = {
 const FALLBACK_RGB: RGB = { r: 128, g: 128, b: 128 }
 
 /**
- * Primitive color tokens are opaque by project convention: the Terrazzo CSS
- * transform drops `alpha`, so consumers compose it at the use site via
- * `rgb(var(--cdt-color-X) / <alpha>)`. Lock the picker to alpha=1 (controlled
- * prop forces the slider back, `onAlphaChange` omitted, channel-field A
- * column hidden) so the writeback can never emit alpha < 1.
+ * Mirror the storybook pattern: `SimpleColorPicker` is fully self-driven
+ * via local `useState`. Pushing the parent `value` prop back into `color`
+ * on every render breaks `usePaintState`'s hue-stability heuristic — a
+ * round-tripped RGB ambiguously re-derives hue near greyscale, so the
+ * slider snapped to 0 on every commit.
  *
- * Hue stability: `SimpleColorPicker` derives the hue slider position from
- * the RGB it receives. Pushing the upstream `value` prop straight back into
- * the picker on every render — what we used to do — meant a round-tripped
- * RGB (rounded by `rgbToSrgb` → `srgbToRgb`) re-entered the picker, and any
- * RGB near greyscale ambiguously maps to multiple hues, so the slider
- * snapped to 0 on each commit. Storybook avoids this by holding RGB in
- * local `useState` and treating the picker as self-driven; do the same.
+ * Trade-off: external updates (Reset, alias-driven swap) no longer
+ * propagate into an *open* popover. The picker re-seeds from `value` on
+ * mount, so closing and reopening the popover picks up any external
+ * change. That's an acceptable cost — Reset is rare; the alternative
+ * (re-syncing prop -> state) breaks every commit.
  *
- * Two-way sync without losing hue: own the picker's RGB locally, and only
- * accept an incoming `value` when it differs from the value we ourselves
- * last committed. That keeps Reset / alias-driven swaps working, but a
- * normal drag-and-commit cycle never echoes back into the picker.
+ * Drag batching: while the user is dragging the area / hue slider,
+ * `onColorChange` fires at ~60Hz. Pushing each tick into the store
+ * re-clones the token tree, re-runs Terrazzo, and re-injects the live
+ * style — the race-guard in `useLiveTheme` then cancels every
+ * intermediate compile, freezing the preview until release. So during a
+ * drag we hold the latest RGB locally and commit once on `onChangeEnd`.
+ * Non-drag changes (typing into RGB / Hex inputs, where the channel
+ * field doesn't bracket with start / end) commit immediately.
  *
- * Drag batching: while dragging, `onColorChange` fires at ~60Hz. Pushing
- * each tick into the store re-clones the token tree, re-runs Terrazzo, and
- * re-injects the live style — laggy, plus the race-guard in `useLiveTheme`
- * cancels every intermediate compile so the preview stays frozen until
- * release. Track drag with `isDraggingRef`; commit only on `onChangeEnd`.
- * Non-drag changes (typing into RGB / Hex inputs, where the channel field
- * doesn't fire start/end) commit immediately.
+ * Alpha is locked: the project's CSS transform drops alpha from
+ * primitive color tokens (consumers compose it at the use site via
+ * `rgb(var(--cdt-color-X) / <alpha>)`). Forcing `alpha={1}` and
+ * omitting `onAlphaChange` makes the writeback structurally incapable
+ * of emitting alpha < 1 even if the slider is dragged.
  */
 export function ColorEditPopover({ value, label, onChange, children }: Props) {
   const initial = value ? srgbToRgb(value) : FALLBACK_RGB
   const [color, setColor] = useState<RGB>(initial)
   const isDraggingRef = useRef(false)
   const latestRef = useRef<RGB>(initial)
-  const lastCommittedRef = useRef<W3CColorValue | null>(value)
-
-  useEffect(() => {
-    // Only re-sync when `value` differs from the last value we ourselves
-    // committed. Self-emitted updates round-trip through `rgbToSrgb` to
-    // exactly the value we just stored, so they no-op here and the
-    // picker's internal hue survives.
-    if (JSON.stringify(value) === JSON.stringify(lastCommittedRef.current)) {
-      return
-    }
-    const next = value ? srgbToRgb(value) : FALLBACK_RGB
-    setColor(next)
-    latestRef.current = next
-    lastCommittedRef.current = value
-  }, [value])
 
   function commit(rgb: RGB) {
-    const next = rgbToSrgb(rgb, 1)
-    lastCommittedRef.current = next
-    onChange(next)
+    onChange(rgbToSrgb(rgb, 1))
   }
 
   return (
