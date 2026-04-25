@@ -1,6 +1,6 @@
 import { create } from "zustand"
 import { cloneDefaults, type TokenFileName, type TokenFiles } from "../tokens/defaults"
-import type { W3CColorTokenValue, W3CTree } from "../lib/w3c"
+import type { W3CTree } from "../lib/w3c"
 
 type Mode = "light" | "dark"
 
@@ -9,15 +9,20 @@ type EditorState = {
   dirty: Set<string>
   mode: Mode
   setMode: (mode: Mode) => void
-  setColorMode: (
+  /**
+   * Write `value` into `$extensions.mode.{mode}` of the token at `path`.
+   * Used by every mode-aware token type (colors, shadows). The base
+   * `$value` is left untouched; Terrazzo prefers the mode override.
+   */
+  setModeValue: (
     file: TokenFileName,
     path: string[],
     mode: Mode,
-    value: W3CColorTokenValue,
+    value: unknown,
   ) => void
   /**
    * Write a new `$value` onto an atomic token (typography / spacing / radius
-   * / dimension / weight / family). Mode-aware tokens use `setColorMode`.
+   * / dimension / weight / family). Mode-aware tokens use `setModeValue`.
    */
   setTokenValue: (file: TokenFileName, path: string[], value: unknown) => void
   reset: () => void
@@ -28,7 +33,7 @@ export const useEditorStore = create<EditorState>((set) => ({
   dirty: new Set<string>(),
   mode: "light",
   setMode: (mode) => set({ mode }),
-  setColorMode: (file, path, mode, value) =>
+  setModeValue: (file, path, mode, value) =>
     set((state) => {
       const nextFiles = { ...state.files, [file]: cloneTreeWithUpdate(state.files[file], path, (token) => {
         if (!token || typeof token !== "object") return token

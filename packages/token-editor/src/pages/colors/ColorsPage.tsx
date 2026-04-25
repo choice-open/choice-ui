@@ -14,7 +14,7 @@ import { useEditorStore } from "../../state/store"
 
 export function ColorsPage() {
   const colorsTree = useEditorStore((s) => s.files["colors-w3c.json"])
-  const setColorMode = useEditorStore((s) => s.setColorMode)
+  const setModeValue = useEditorStore((s) => s.setModeValue)
   const dirty = useEditorStore((s) => s.dirty)
 
   const grouped = useMemo(() => {
@@ -55,7 +55,7 @@ export function ColorsPage() {
                   isDirty={isDirty(dirty, entry)}
                   primitiveOptions={primitiveOptions}
                   onPickAlias={(mode, alias) =>
-                    setColorMode("colors-w3c.json", entry.path, mode, alias)
+                    setModeValue("colors-w3c.json", entry.path, mode, alias)
                   }
                 />
               ) : (
@@ -64,7 +64,7 @@ export function ColorsPage() {
                   entry={entry}
                   isDirty={isDirty(dirty, entry)}
                   onChangeColor={(mode, value) =>
-                    setColorMode("colors-w3c.json", entry.path, mode, value)
+                    setModeValue("colors-w3c.json", entry.path, mode, value)
                   }
                 />
               ),
