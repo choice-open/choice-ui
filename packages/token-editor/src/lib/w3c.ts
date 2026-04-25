@@ -100,15 +100,88 @@ export function getNodeAtPath(tree: W3CTree, path: string[]): unknown {
   return cursor
 }
 
+export type ColorMode = "light" | "dark"
+
 export type ColorEntry = {
   path: string[]
   id: string
   category: string
+  /** Raw light-mode value (alias string or srgb), preferring $extensions.mode.light over $value. */
+  lightRaw: W3CColorTokenValue
   light: W3CColorValue | null
   lightIsAlias: boolean
+  /** Raw dark-mode value (alias string or srgb), preferring $extensions.mode.dark over $value. */
+  darkRaw: W3CColorTokenValue
   dark: W3CColorValue | null
   darkIsAlias: boolean
   defaultValue: W3CColorTokenValue
+}
+
+const RESOLVE_DEPTH_LIMIT = 16
+
+/**
+ * Walk an alias chain to its underlying srgb value, preferring mode-specific
+ * overrides at every hop. Returns `null` for missing references, cycles, or
+ * non-srgb leaves.
+ */
+export function resolveColorValue(
+  tree: W3CTree,
+  value: W3CColorTokenValue,
+  mode: ColorMode,
+  depth = 0,
+): W3CColorValue | null {
+  if (depth > RESOLVE_DEPTH_LIMIT) return null
+  if (isSrgbValue(value)) return value
+  if (!isAlias(value)) return null
+  const ref = value.slice(1, -1).split(".")
+  const node = getNodeAtPath(tree, ref)
+  if (!isTokenNode(node)) return null
+  const modeOverride = (node as W3CColorToken).$extensions?.mode?.[mode]
+  const next = (modeOverride ?? node.$value) as W3CColorTokenValue | undefined
+  if (next === undefined) return null
+  return resolveColorValue(tree, next, mode, depth + 1)
+}
+
+/**
+ * List every alias-able primitive in a colors tree: tokens whose own
+ * `$value` is a concrete srgb color. These are the leaves of the alias graph
+ * and the only sensible targets for a semantic alias.
+ */
+export type PrimitiveOption = {
+  path: string[]
+  id: string
+  alias: string
+  light: W3CColorValue | null
+  dark: W3CColorValue | null
+}
+
+export function collectPrimitiveOptions(tree: W3CTree): PrimitiveOption[] {
+  const out: PrimitiveOption[] = []
+  walkPrimitive(tree, [], out)
+  return out
+}
+
+function walkPrimitive(node: W3CTree | W3CTokenNode, path: string[], out: PrimitiveOption[]) {
+  if (isTokenNode(node) && node.$type === "color") {
+    if (isSrgbValue(node.$value)) {
+      const token = node as W3CColorToken
+      const lightRaw = token.$extensions?.mode?.light ?? token.$value
+      const darkRaw = token.$extensions?.mode?.dark ?? token.$value
+      out.push({
+        path,
+        id: path.join("."),
+        alias: `{${path.join(".")}}`,
+        light: isSrgbValue(lightRaw) ? lightRaw : null,
+        dark: isSrgbValue(darkRaw) ? darkRaw : null,
+      })
+    }
+    return
+  }
+  if (typeof node !== "object" || node === null) return
+  for (const [key, child] of Object.entries(node)) {
+    if (key.startsWith("$")) continue
+    walkPrimitive(child as W3CTree | W3CTokenNode, [...path, key], out)
+  }
 }
 
 export function collectColorTokens(tree: W3CTree): ColorEntry[] {
@@ -121,16 +194,18 @@ function walk(node: W3CTree | W3CTokenNode, path: string[], out: ColorEntry[]) {
   if (isTokenNode(node) && node.$type === "color") {
     const token = node as W3CColorToken
     const mode = token.$extensions?.mode
-    const lightRaw = mode?.light ?? token.$value
-    const darkRaw = mode?.dark ?? token.$value
+    const lightRaw = (mode?.light ?? token.$value) as W3CColorTokenValue
+    const darkRaw = (mode?.dark ?? token.$value) as W3CColorTokenValue
     const category =
       token.$extensions?.["choiceform.design-system"]?.category ?? "uncategorized"
     out.push({
       path,
       id: path.join("."),
       category,
+      lightRaw,
       light: isSrgbValue(lightRaw) ? lightRaw : null,
       lightIsAlias: isAlias(lightRaw),
+      darkRaw,
       dark: isSrgbValue(darkRaw) ? darkRaw : null,
       darkIsAlias: isAlias(darkRaw),
       defaultValue: token.$value,
