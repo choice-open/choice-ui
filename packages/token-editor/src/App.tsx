@@ -2,6 +2,7 @@ import { useState } from "react"
 import { ExportDialog } from "./components/ExportDialog"
 import { ColorsPage } from "./pages/colors/ColorsPage"
 import { PlaceholderPage } from "./pages/Placeholder"
+import { ShadowsPage } from "./pages/shadows/ShadowsPage"
 import { TypographyPage } from "./pages/typography/TypographyPage"
 import { useEditorStore } from "./state/store"
 import { useLiveTheme } from "./theme/inject"
@@ -76,6 +77,8 @@ export function App() {
           <ColorsPage />
         ) : section === "typography" ? (
           <TypographyPage />
+        ) : section === "shadows" ? (
+          <ShadowsPage />
         ) : (
           <PlaceholderPage title={labelOf(section)} />
         )}
