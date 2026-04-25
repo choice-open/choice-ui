@@ -46,6 +46,9 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>((props
   const handleClear = useEventCallback(() => {
     if (!isControlled) {
       setInternalValue("")
+      if (inputRef.current) {
+        inputRef.current.value = ""
+      }
     }
     onChange?.("")
     inputRef.current?.focus()
