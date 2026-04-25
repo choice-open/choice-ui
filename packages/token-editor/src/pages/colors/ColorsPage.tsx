@@ -9,6 +9,9 @@ import {
   collectPrimitiveOptions,
   isAlias,
   resolveColorValue,
+  type W3CColorTokenValue,
+  type W3CColorValue,
+  type W3CTree,
 } from "../../lib/w3c"
 import { useEditorStore } from "../../state/store"
 
@@ -37,7 +40,7 @@ export function ColorsPage() {
         </p>
       </header>
 
-      {grouped.map(({ category, entries, kind }) => (
+      {grouped.map(({ category, entries }) => (
         <section key={category} className="flex flex-col gap-3">
           <h3 className="text-body-large-strong uppercase tracking-wide text-text-secondary">
             {category}
@@ -47,28 +50,18 @@ export function ColorsPage() {
             <div className="text-body-medium text-text-tertiary">Token</div>
             <div className="text-body-medium text-text-tertiary">Light</div>
             <div className="text-body-medium text-text-tertiary">Dark</div>
-            {entries.map((entry) =>
-              kind === "semantic" ? (
-                <SemanticRow
-                  key={entry.id}
-                  entry={entry}
-                  isDirty={isDirty(dirty, entry)}
-                  primitiveOptions={primitiveOptions}
-                  onPickAlias={(mode, alias) =>
-                    setModeValue("colors-w3c.json", entry.path, mode, alias)
-                  }
-                />
-              ) : (
-                <PrimitiveRow
-                  key={entry.id}
-                  entry={entry}
-                  isDirty={isDirty(dirty, entry)}
-                  onChangeColor={(mode, value) =>
-                    setModeValue("colors-w3c.json", entry.path, mode, value)
-                  }
-                />
-              ),
-            )}
+            {entries.map((entry) => (
+              <Row
+                key={entry.id}
+                entry={entry}
+                tree={colorsTree}
+                isDirty={isDirty(dirty, entry)}
+                primitiveOptions={primitiveOptions}
+                onChange={(mode, value) =>
+                  setModeValue("colors-w3c.json", entry.path, mode, value)
+                }
+              />
+            ))}
           </div>
         </section>
       ))}
@@ -76,59 +69,20 @@ export function ColorsPage() {
   )
 }
 
-function PrimitiveRow({
+function Row({
   entry,
-  isDirty,
-  onChangeColor,
-}: {
-  entry: ColorEntry
-  isDirty: boolean
-  onChangeColor: (mode: ColorMode, value: ReturnType<typeof Object>) => void
-}) {
-  return (
-    <>
-      <div className="font-mono text-body-medium">
-        {entry.id}
-        {isDirty ? <span className="ml-2 text-body-small text-text-accent">●</span> : null}
-      </div>
-      <ColorEditPopover
-        value={entry.light}
-        label={`${entry.id} · light`}
-        onChange={(v) => onChangeColor("light", v)}
-      >
-        <div>
-          <ColorSwatchButton value={entry.light} isAlias={false} />
-        </div>
-      </ColorEditPopover>
-      <ColorEditPopover
-        value={entry.dark}
-        label={`${entry.id} · dark`}
-        onChange={(v) => onChangeColor("dark", v)}
-      >
-        <div>
-          <ColorSwatchButton value={entry.dark} isAlias={false} />
-        </div>
-      </ColorEditPopover>
-    </>
-  )
-}
-
-function SemanticRow({
-  entry,
+  tree,
   isDirty,
   primitiveOptions,
-  onPickAlias,
+  onChange,
 }: {
   entry: ColorEntry
+  tree: W3CTree
   isDirty: boolean
   primitiveOptions: ReturnType<typeof collectPrimitiveOptions>
-  onPickAlias: (mode: ColorMode, alias: string) => void
+  onChange: (mode: ColorMode, value: W3CColorTokenValue) => void
 }) {
-  const colorsTree = useEditorStore((s) => s.files["colors-w3c.json"])
   const lightAlias = isAlias(entry.lightRaw) ? entry.lightRaw : null
-  const darkAlias = isAlias(entry.darkRaw) ? entry.darkRaw : null
-  const lightResolved = resolveColorValue(colorsTree, entry.lightRaw, "light")
-  const darkResolved = resolveColorValue(colorsTree, entry.darkRaw, "dark")
   return (
     <>
       <div className="font-mono text-body-medium">
@@ -138,39 +92,84 @@ function SemanticRow({
           <div className="text-body-small text-text-tertiary">→ {lightAlias}</div>
         ) : null}
       </div>
-      <AliasPickerPopover
-        options={primitiveOptions}
-        currentAlias={lightAlias}
+      <ModeCell
+        entry={entry}
+        tree={tree}
         mode="light"
-        label={`${entry.id} · light`}
-        onPick={(alias) => onPickAlias("light", alias)}
-      >
-        <div>
-          <ColorSwatchButton value={lightResolved} isAlias={false} />
-        </div>
-      </AliasPickerPopover>
-      <AliasPickerPopover
-        options={primitiveOptions}
-        currentAlias={darkAlias}
+        primitiveOptions={primitiveOptions}
+        onChange={onChange}
+      />
+      <ModeCell
+        entry={entry}
+        tree={tree}
         mode="dark"
-        label={`${entry.id} · dark`}
-        onPick={(alias) => onPickAlias("dark", alias)}
-      >
-        <div>
-          <ColorSwatchButton value={darkResolved} isAlias={false} />
-        </div>
-      </AliasPickerPopover>
+        primitiveOptions={primitiveOptions}
+        onChange={onChange}
+      />
     </>
   )
 }
 
-type GroupKind = "primitive" | "semantic"
+/**
+ * Renders the right editor for one (entry, mode) cell. Aliased sides get the
+ * primitive picker; literal sides get the rgb popover. A token can be mixed
+ * (light alias + dark literal, or vice versa); each side decides
+ * independently from the rest of the row.
+ */
+function ModeCell({
+  entry,
+  tree,
+  mode,
+  primitiveOptions,
+  onChange,
+}: {
+  entry: ColorEntry
+  tree: W3CTree
+  mode: ColorMode
+  primitiveOptions: ReturnType<typeof collectPrimitiveOptions>
+  onChange: (mode: ColorMode, value: W3CColorTokenValue) => void
+}) {
+  const isAliasSide = mode === "light" ? entry.lightIsAlias : entry.darkIsAlias
+  const literalValue: W3CColorValue | null =
+    mode === "light" ? entry.light : entry.dark
+  const rawValue = mode === "light" ? entry.lightRaw : entry.darkRaw
+
+  if (isAliasSide) {
+    const currentAlias = isAlias(rawValue) ? rawValue : null
+    const resolved = resolveColorValue(tree, rawValue, mode)
+    return (
+      <AliasPickerPopover
+        options={primitiveOptions}
+        currentAlias={currentAlias}
+        mode={mode}
+        label={`${entry.id} · ${mode}`}
+        onPick={(alias) => onChange(mode, alias)}
+      >
+        <div>
+          <ColorSwatchButton value={resolved} isAlias={false} />
+        </div>
+      </AliasPickerPopover>
+    )
+  }
+
+  return (
+    <ColorEditPopover
+      value={literalValue}
+      label={`${entry.id} · ${mode}`}
+      onChange={(v) => onChange(mode, v)}
+    >
+      <div>
+        <ColorSwatchButton value={literalValue} isAlias={false} />
+      </div>
+    </ColorEditPopover>
+  )
+}
 
 function groupByCategory(
   primitives: ColorEntry[],
   semantics: ColorEntry[],
-): { category: string; entries: ColorEntry[]; kind: GroupKind }[] {
-  const out: { category: string; entries: ColorEntry[]; kind: GroupKind }[] = []
+): { category: string; entries: ColorEntry[] }[] {
+  const out: { category: string; entries: ColorEntry[] }[] = []
   const map = new Map<string, ColorEntry[]>()
   for (const e of primitives) {
     const list = map.get(e.category) ?? []
@@ -180,11 +179,10 @@ function groupByCategory(
   const order = ["hues", "pale", "neutrals"]
   for (const cat of order) {
     const list = map.get(cat)
-    if (list && list.length) out.push({ category: cat, entries: list, kind: "primitive" })
+    if (list && list.length) out.push({ category: cat, entries: list })
   }
   for (const [cat, list] of map.entries()) {
-    if (!order.includes(cat))
-      out.push({ category: cat, entries: list, kind: "primitive" })
+    if (!order.includes(cat)) out.push({ category: cat, entries: list })
   }
   if (semantics.length) {
     const byCat = new Map<string, ColorEntry[]>()
@@ -194,7 +192,7 @@ function groupByCategory(
       byCat.set(e.category, list)
     }
     for (const [cat, list] of byCat.entries()) {
-      out.push({ category: cat, entries: list, kind: "semantic" })
+      out.push({ category: cat, entries: list })
     }
   }
   return out
