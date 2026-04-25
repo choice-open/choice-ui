@@ -2,6 +2,7 @@ import { useState } from "react"
 import { ExportDialog } from "./components/ExportDialog"
 import { ColorsPage } from "./pages/colors/ColorsPage"
 import { PlaceholderPage } from "./pages/Placeholder"
+import { TypographyPage } from "./pages/typography/TypographyPage"
 import { useEditorStore } from "./state/store"
 import { useLiveTheme } from "./theme/inject"
 
@@ -71,7 +72,13 @@ export function App() {
         </div>
       </aside>
       <main className="overflow-auto">
-        {section === "colors" ? <ColorsPage /> : <PlaceholderPage title={labelOf(section)} />}
+        {section === "colors" ? (
+          <ColorsPage />
+        ) : section === "typography" ? (
+          <TypographyPage />
+        ) : (
+          <PlaceholderPage title={labelOf(section)} />
+        )}
       </main>
       <ExportDialog open={exportOpen} onOpenChange={setExportOpen} />
     </div>

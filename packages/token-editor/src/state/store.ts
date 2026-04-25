@@ -15,6 +15,11 @@ type EditorState = {
     mode: Mode,
     value: W3CColorTokenValue,
   ) => void
+  /**
+   * Write a new `$value` onto an atomic token (typography / spacing / radius
+   * / dimension / weight / family). Mode-aware tokens use `setColorMode`.
+   */
+  setTokenValue: (file: TokenFileName, path: string[], value: unknown) => void
   reset: () => void
 }
 
@@ -35,6 +40,19 @@ export const useEditorStore = create<EditorState>((set) => ({
         next.$extensions = ext
         return next
       }) }
+      const nextDirty = new Set(state.dirty)
+      nextDirty.add(`${file}#${path.join(".")}`)
+      return { files: nextFiles, dirty: nextDirty }
+    }),
+  setTokenValue: (file, path, value) =>
+    set((state) => {
+      const nextFiles = {
+        ...state.files,
+        [file]: cloneTreeWithUpdate(state.files[file], path, (token) => {
+          if (!token || typeof token !== "object") return token
+          return { ...(token as Record<string, unknown>), $value: value }
+        }),
+      }
       const nextDirty = new Set(state.dirty)
       nextDirty.add(`${file}#${path.join(".")}`)
       return { files: nextFiles, dirty: nextDirty }
