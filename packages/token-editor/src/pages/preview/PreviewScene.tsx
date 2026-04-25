@@ -2,15 +2,19 @@ import type { ReactNode } from "react"
 import { AlertsBlock } from "./blocks/AlertsBlock"
 import { AllTokensBlock } from "./blocks/AllTokensBlock"
 import { CoverageBlock } from "./blocks/CoverageBlock"
+import { DesignFiltersBlock } from "./blocks/DesignFiltersBlock"
 import { EditVelocityBlock } from "./blocks/EditVelocityBlock"
 import { HelpTabsBlock } from "./blocks/HelpTabsBlock"
 import { NotificationPrefsBlock } from "./blocks/NotificationPrefsBlock"
 import { PricingBlock } from "./blocks/PricingBlock"
+import { PublishOptionsBlock } from "./blocks/PublishOptionsBlock"
 import { QuickSearchBlock } from "./blocks/QuickSearchBlock"
 import { RecentActivityBlock } from "./blocks/RecentActivityBlock"
 import { ReleaseScheduleBlock } from "./blocks/ReleaseScheduleBlock"
 import { SaveProfileBlock } from "./blocks/SaveProfileBlock"
 import { StatusBadgesBlock } from "./blocks/StatusBadgesBlock"
+import { SyncStatusBlock } from "./blocks/SyncStatusBlock"
+import { ViewToolbarBlock } from "./blocks/ViewToolbarBlock"
 
 /**
  * Right-pane live preview, modeled after shadcn `/blocks`. Every block is a
@@ -27,7 +31,13 @@ export function PreviewScene() {
           <EditVelocityBlock />
         </Block>
         <Block>
+          <ViewToolbarBlock />
+        </Block>
+        <Block>
           <RecentActivityBlock />
+        </Block>
+        <Block>
+          <DesignFiltersBlock />
         </Block>
         <Block>
           <CoverageBlock />
@@ -45,7 +55,13 @@ export function PreviewScene() {
           <StatusBadgesBlock />
         </Block>
         <Block>
+          <SyncStatusBlock />
+        </Block>
+        <Block>
           <AlertsBlock />
+        </Block>
+        <Block>
+          <PublishOptionsBlock />
         </Block>
         <Block>
           <ReleaseScheduleBlock />
