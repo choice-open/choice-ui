@@ -168,4 +168,35 @@ describe("Menubar bugs", () => {
       expect(screen.queryByText("New File")).not.toBeInTheDocument()
     })
   })
+
+  describe("label-mode item onClick must fire", () => {
+    // Regression: label-mode items used to overwrite child onClick with a
+    // no-op, silently dropping action handlers from the shorthand API.
+    it("calls the user's onClick when a label-mode child item is clicked", async () => {
+      const { Menubar } = await import("../menubar")
+      const onClick = vi.fn()
+      const user = userEvent.setup()
+
+      render(
+        <Menubar>
+          <Menubar.Item label="File">
+            <Menubar.Item
+              label="New"
+              onClick={onClick}
+            >
+              New File
+            </Menubar.Item>
+          </Menubar.Item>
+        </Menubar>,
+      )
+
+      await user.click(screen.getByText("File"))
+      await waitFor(() => {
+        expect(screen.getByText("New File")).toBeInTheDocument()
+      })
+
+      await user.click(screen.getByText("New File"))
+      expect(onClick).toHaveBeenCalledTimes(1)
+    })
+  })
 })

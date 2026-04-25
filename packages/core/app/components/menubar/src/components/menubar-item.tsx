@@ -194,11 +194,13 @@ const MenubarItemComponent = memo(function MenubarItemComponent(props: MenubarIt
       const items = Children.map(children, (child) => {
         if (!isValidElement(child)) return child
         if (child.type === MenubarItem) {
+          // Spread child.props so the user's `onClick` (and any other DOM
+          // handlers) flow through to Dropdown.Item. A previous no-op
+          // override silently dropped the action handler in label-mode.
           return (
             <Dropdown.Item
               key={child.key ?? undefined}
               {...child.props}
-              onClick={() => {}}
             >
               {child.props.children}
             </Dropdown.Item>
