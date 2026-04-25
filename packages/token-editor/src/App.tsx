@@ -1,24 +1,28 @@
-import { useState } from "react"
+import { useState, type ComponentType } from "react"
 import { ExportDialog } from "./components/ExportDialog"
-import { ColorsPage } from "./pages/colors/ColorsPage"
-import { PlaceholderPage } from "./pages/Placeholder"
 import { BreakpointsPage } from "./pages/breakpoints/BreakpointsPage"
+import { ColorsPage } from "./pages/colors/ColorsPage"
 import { RadiusPage } from "./pages/radius/RadiusPage"
 import { ShadowsPage } from "./pages/shadows/ShadowsPage"
+import { SpacingPage } from "./pages/spacing/SpacingPage"
 import { TypographyPage } from "./pages/typography/TypographyPage"
 import { ZIndexPage } from "./pages/zindex/ZIndexPage"
 import { useEditorStore } from "./state/store"
 import { useLiveTheme } from "./theme/inject"
 
 const SECTIONS = [
-  { id: "colors", label: "Colors" },
-  { id: "typography", label: "Typography" },
-  { id: "spacing", label: "Spacing" },
-  { id: "shadows", label: "Shadows" },
-  { id: "radius", label: "Radius" },
-  { id: "breakpoints", label: "Breakpoints" },
-  { id: "zindex", label: "Z-Index" },
-] as const
+  { id: "colors", label: "Colors", Page: ColorsPage },
+  { id: "typography", label: "Typography", Page: TypographyPage },
+  { id: "spacing", label: "Spacing", Page: SpacingPage },
+  { id: "shadows", label: "Shadows", Page: ShadowsPage },
+  { id: "radius", label: "Radius", Page: RadiusPage },
+  { id: "breakpoints", label: "Breakpoints", Page: BreakpointsPage },
+  { id: "zindex", label: "Z-Index", Page: ZIndexPage },
+] as const satisfies ReadonlyArray<{
+  id: string
+  label: string
+  Page: ComponentType
+}>
 
 type SectionId = (typeof SECTIONS)[number]["id"]
 
@@ -28,6 +32,8 @@ export function App() {
   const [exportOpen, setExportOpen] = useState(false)
   const dirty = useEditorStore((s) => s.dirty)
   const reset = useEditorStore((s) => s.reset)
+
+  const Page = SECTIONS.find((s) => s.id === section)!.Page
 
   return (
     <div className="grid h-dvh grid-cols-[220px_1fr] bg-background-default text-text-default">
@@ -76,27 +82,9 @@ export function App() {
         </div>
       </aside>
       <main className="overflow-auto">
-        {section === "colors" ? (
-          <ColorsPage />
-        ) : section === "typography" ? (
-          <TypographyPage />
-        ) : section === "shadows" ? (
-          <ShadowsPage />
-        ) : section === "radius" ? (
-          <RadiusPage />
-        ) : section === "breakpoints" ? (
-          <BreakpointsPage />
-        ) : section === "zindex" ? (
-          <ZIndexPage />
-        ) : (
-          <PlaceholderPage title={labelOf(section)} />
-        )}
+        <Page />
       </main>
       <ExportDialog open={exportOpen} onOpenChange={setExportOpen} />
     </div>
   )
-}
-
-function labelOf(id: SectionId) {
-  return SECTIONS.find((s) => s.id === id)!.label
 }
