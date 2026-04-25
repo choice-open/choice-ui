@@ -150,9 +150,17 @@ function ModeCell({
     )
   }
 
+  // Light mode emits at `:root`, so the live CSS variable is just
+  // `--cdt-<path>` and we can write to it inline on `<html>` for a snappy
+  // preview during drag. Dark mode emits under `.dark` and inline-on-html
+  // would bleed into the current light view, so skip the fast path there.
+  const fastPathVariable =
+    mode === "light" ? `--cdt-${entry.path.join("-")}` : null
+
   return (
     <ColorEditPopover
       value={literalValue}
+      variableName={fastPathVariable}
       label={`${entry.id} · ${mode}`}
       onChange={(v) => onChange(mode, v)}
     >

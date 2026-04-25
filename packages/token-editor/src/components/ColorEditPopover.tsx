@@ -4,44 +4,66 @@ import { rgbToSrgb, srgbToRgb, type RGB, type W3CColorValue } from "../lib/w3c"
 
 type Props = {
   value: W3CColorValue | null
+  /**
+   * Live CSS variable to mutate inline on `<html>` during drag (e.g.
+   * `--cdt-color-blue-500`). Inline styles trump everything in the
+   * cascade, so the preview tracks the picker without going through the
+   * store. Pass `null` for any context where the inline shortcut would
+   * leak across modes (currently: dark-mode edits, since inline on html
+   * would also override the light `:root` rule).
+   */
+  variableName: string | null
   label: string
   onChange: (value: W3CColorValue) => void
   children: ReactNode
 }
 
 const FALLBACK_RGB: RGB = { r: 128, g: 128, b: 128 }
+const INLINE_CLEAR_DELAY_MS = 250
 
 /**
- * Mirror the storybook pattern: `SimpleColorPicker` is fully self-driven
- * via local `useState`. Pushing the parent `value` prop back into `color`
- * on every render breaks `usePaintState`'s hue-stability heuristic — a
- * round-tripped RGB ambiguously re-derives hue near greyscale, so the
- * slider snapped to 0 on every commit.
+ * `SimpleColorPicker` is self-driven from local `useState` (storybook
+ * pattern). The parent `value` is only echoed back when the prop change
+ * came from outside our own commits — `lastEmittedRef` carries the
+ * `W3CColorValue` we last sent up; the prop arriving JSON-equal to that
+ * ref means it's our own commit looping back, so the picker stays put
+ * (and `usePaintState`'s hue heuristic doesn't get reset by a
+ * round-tripped RGB). Reset / preset apply / alias swap arrive
+ * different and re-seed local state.
  *
- * External-update sync: while we mostly want to ignore the prop after
- * mount, we do need to react when the prop changes for reasons *other*
- * than our own commit (Reset, preset apply, alias-driven swap). Without
- * that, the popover would keep editing stale RGB while the swatch under
- * it shows fresh values, and the next drag would silently overwrite the
- * external update.
+ * Drag fast path: pushing a store update on every `onColorChange` tick
+ * (~60 Hz) re-renders ColorsPage's ~250 swatches, which is what made
+ * the picker feel laggy. During an active drag we instead set the
+ * relevant `--cdt-*` CSS variable inline on `<html>` — inline trumps
+ * the cascade so the preview tracks the picker live without any React
+ * work — and only commit to the store once on `onChangeEnd`. The
+ * inline override is cleared shortly after release so the live
+ * `<style id="cdt-live">` (in the `cdt-live` cascade layer) can take
+ * over for subsequent edits or external resets without a stale inline
+ * value sticking around.
  *
- * The `lastEmittedRef` carries the last `W3CColorValue` we ourselves
- * sent up via `onChange`. The `useEffect` short-circuits when the
- * incoming `value` is JSON-equal to that ref — i.e., when the prop
- * change is just our own commit echoing back through the store. Any
- * other change re-seeds local state and the picker's hue gets re-derived
- * (which is what the user wants when they reset / pick a preset).
+ * Non-drag commits (RGB / Hex channel typing, where the channel field
+ * doesn't bracket with start / end) still go straight to the store.
  *
  * Alpha is locked: the project's CSS transform drops alpha from
  * primitive color tokens (consumers compose at the use site via
  * `rgb(var(--cdt-color-X) / <alpha>)`). Forcing `alpha={1}` and
- * omitting `onAlphaChange` makes the writeback structurally incapable
+ * omitting `onAlphaChange` keeps the writeback structurally incapable
  * of emitting alpha < 1.
  */
-export function ColorEditPopover({ value, label, onChange, children }: Props) {
+export function ColorEditPopover({
+  value,
+  variableName,
+  label,
+  onChange,
+  children,
+}: Props) {
   const initial = value ? srgbToRgb(value) : FALLBACK_RGB
   const [color, setColor] = useState<RGB>(initial)
   const lastEmittedRef = useRef<W3CColorValue | null>(value)
+  const isDraggingRef = useRef(false)
+  const latestRef = useRef<RGB>(initial)
+  const inlineClearTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
     if (JSON.stringify(value) === JSON.stringify(lastEmittedRef.current)) {
@@ -57,6 +79,23 @@ export function ColorEditPopover({ value, label, onChange, children }: Props) {
     onChange(next)
   }
 
+  function writeInline(rgb: RGB) {
+    if (!variableName) return
+    document.documentElement.style.setProperty(
+      variableName,
+      `${rgb.r}, ${rgb.g}, ${rgb.b}`,
+    )
+  }
+
+  function scheduleInlineClear() {
+    if (!variableName) return
+    if (inlineClearTimerRef.current) clearTimeout(inlineClearTimerRef.current)
+    inlineClearTimerRef.current = setTimeout(() => {
+      inlineClearTimerRef.current = null
+      document.documentElement.style.removeProperty(variableName)
+    }, INLINE_CLEAR_DELAY_MS)
+  }
+
   return (
     <Popover interactions="click" placement="right-start">
       <Popover.Trigger>{children}</Popover.Trigger>
@@ -66,9 +105,28 @@ export function ColorEditPopover({ value, label, onChange, children }: Props) {
           color={color}
           alpha={1}
           features={{ alpha: false }}
+          onChangeStart={() => {
+            isDraggingRef.current = true
+            // Cancel any pending inline-clear from the previous drag so
+            // the in-flight inline value doesn't get wiped mid-drag.
+            if (inlineClearTimerRef.current) {
+              clearTimeout(inlineClearTimerRef.current)
+              inlineClearTimerRef.current = null
+            }
+          }}
           onColorChange={(next) => {
             setColor(next)
-            commit(next)
+            latestRef.current = next
+            if (isDraggingRef.current && variableName) {
+              writeInline(next)
+            } else {
+              commit(next)
+            }
+          }}
+          onChangeEnd={() => {
+            isDraggingRef.current = false
+            commit(latestRef.current)
+            scheduleInlineClear()
           }}
         />
       </Popover.Content>
