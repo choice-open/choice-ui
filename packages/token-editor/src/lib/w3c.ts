@@ -91,6 +91,35 @@ function rgbToHex({ r, g, b }: RGB) {
   return `#${h(r)}${h(g)}${h(b)}`
 }
 
+/**
+ * Flat list of every leaf token (any `$type`) in the tree, preserving
+ * walk order. Used by atomic single-mode panels (radius, breakpoints,
+ * z-index, spacing) that don't need category/mode segmentation.
+ */
+export type AtomicEntry = { path: string[]; id: string; node: W3CTokenNode }
+
+export function collectTokens(tree: W3CTree): AtomicEntry[] {
+  const out: AtomicEntry[] = []
+  walkAtomic(tree, [], out)
+  return out
+}
+
+function walkAtomic(
+  node: W3CTree | W3CTokenNode,
+  path: string[],
+  out: AtomicEntry[],
+) {
+  if (isTokenNode(node)) {
+    out.push({ path, id: path.join("."), node })
+    return
+  }
+  if (typeof node !== "object" || node === null) return
+  for (const [k, v] of Object.entries(node)) {
+    if (k.startsWith("$")) continue
+    walkAtomic(v as W3CTree | W3CTokenNode, [...path, k], out)
+  }
+}
+
 export function getNodeAtPath(tree: W3CTree, path: string[]): unknown {
   let cursor: unknown = tree
   for (const key of path) {

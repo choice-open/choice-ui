@@ -2,8 +2,11 @@ import { useState } from "react"
 import { ExportDialog } from "./components/ExportDialog"
 import { ColorsPage } from "./pages/colors/ColorsPage"
 import { PlaceholderPage } from "./pages/Placeholder"
+import { BreakpointsPage } from "./pages/breakpoints/BreakpointsPage"
+import { RadiusPage } from "./pages/radius/RadiusPage"
 import { ShadowsPage } from "./pages/shadows/ShadowsPage"
 import { TypographyPage } from "./pages/typography/TypographyPage"
+import { ZIndexPage } from "./pages/zindex/ZIndexPage"
 import { useEditorStore } from "./state/store"
 import { useLiveTheme } from "./theme/inject"
 
@@ -79,6 +82,12 @@ export function App() {
           <TypographyPage />
         ) : section === "shadows" ? (
           <ShadowsPage />
+        ) : section === "radius" ? (
+          <RadiusPage />
+        ) : section === "breakpoints" ? (
+          <BreakpointsPage />
+        ) : section === "zindex" ? (
+          <ZIndexPage />
         ) : (
           <PlaceholderPage title={labelOf(section)} />
         )}
