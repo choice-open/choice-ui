@@ -1,4 +1,5 @@
-import { List } from "@choice-ui/react"
+import { IconButton, List, Tooltip } from "@choice-ui/react"
+import { ThemeMoonDark, ThemeSunBright } from "@choiceform/icons-react"
 import { PRESETS } from "../presets"
 import { SECTIONS, type SectionId } from "../sections"
 import { useEditorStore } from "../state/store"
@@ -30,12 +31,27 @@ export function Sidebar({
 }: Props) {
   const activePresets = useEditorStore((s) => s.activePresets)
   const dirty = useEditorStore((s) => s.dirty)
+  const mode = useEditorStore((s) => s.mode)
+  const setMode = useEditorStore((s) => s.setMode)
+  const isDark = mode === "dark"
 
   return (
     <aside className="flex flex-col border-r border-border-default bg-background-default p-3">
+      <div className="mb-2 flex items-center justify-between gap-2 px-1">
+        <span className="text-body-medium text-text-secondary">Token Editor</span>
+        <Tooltip
+          content={isDark ? "Switch to light mode" : "Switch to dark mode"}
+        >
+          <IconButton
+            variant="ghost"
+            aria-label="Toggle theme"
+            onClick={() => setMode(isDark ? "light" : "dark")}
+          >
+            {isDark ? <ThemeMoonDark /> : <ThemeSunBright />}
+          </IconButton>
+        </Tooltip>
+      </div>
       <List className="flex-1">
-        <List.Label>Token Editor</List.Label>
-        <List.Divider />
         <List.Content>
           {SECTIONS.map((section) => {
             const Indicator = section.Indicator
