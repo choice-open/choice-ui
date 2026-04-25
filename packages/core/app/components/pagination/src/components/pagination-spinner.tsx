@@ -129,6 +129,7 @@ export const PaginationSpinner = forwardRef<HTMLDivElement, PaginationSpinnerPro
           className={tv.inputWrapper()}
           onClick={() => {
             if (!isEditing && !disabled) {
+              blurFromInternalButtonRef.current = false
               setIsEditing(true)
             }
           }}
