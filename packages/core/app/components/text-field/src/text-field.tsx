@@ -1,12 +1,10 @@
 import { Description } from "@choice-ui/description"
 import { Input, type InputProps } from "@choice-ui/input"
 import { Label } from "@choice-ui/label"
-import { tcx } from "@choice-ui/shared"
+import { findSlotChild, tcx } from "@choice-ui/shared"
 import React, {
-  Children,
   cloneElement,
   forwardRef,
-  isValidElement,
   ReactElement,
   ReactNode,
   useId,
@@ -65,28 +63,12 @@ const TextFieldContent = ({
 const TextFieldBase = forwardRef<HTMLInputElement, TextFieldProps>((props, ref) => {
   const { className, variant, size, children, disabled, selected, ...rest } = props
 
-  const childrenArray = Children.toArray(children)
-
-  const prefixElements = childrenArray.filter(
-    (child): child is ReactElement => isValidElement(child) && child.type === TextField.Prefix,
-  )
-
-  const suffixElements = childrenArray.filter(
-    (child): child is ReactElement => isValidElement(child) && child.type === TextField.Suffix,
-  )
-
-  const labelElements = childrenArray.filter(
-    (child): child is ReactElement => isValidElement(child) && child.type === TextField.Label,
-  )
-
-  const descriptionElements = childrenArray.filter(
-    (child): child is ReactElement => isValidElement(child) && child.type === TextField.Description,
-  )
-
-  const prefixNode = prefixElements[0] || null
-  const suffixNode = suffixElements[0] || null
-  const labelNode = labelElements[0] || null
-  const descriptionNode = descriptionElements[0] || null
+  // Use findSlotChild from @choice-ui/shared so memo-wrapped or
+  // div-wrapped slots are still discovered.
+  const prefixNode = findSlotChild(children, TextField.Prefix) ?? null
+  const suffixNode = findSlotChild(children, TextField.Suffix) ?? null
+  const labelNode = findSlotChild(children, TextField.Label) ?? null
+  const descriptionNode = findSlotChild(children, TextField.Description) ?? null
 
   const tv = TextFieldTv({
     variant,

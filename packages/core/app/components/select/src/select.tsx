@@ -1,5 +1,5 @@
 import { Slot } from "@choice-ui/slot"
-import { tcx } from "@choice-ui/shared"
+import { findSlotChild, flattenSlotChildren, isSlotChild, tcx } from "@choice-ui/shared"
 import {
   MenuContext,
   MenuContextContent,
@@ -40,9 +40,7 @@ import {
   type FloatingFocusManagerProps,
 } from "@floating-ui/react"
 import React, {
-  Children,
   cloneElement,
-  isValidElement,
   memo,
   useEffect,
   useId,
@@ -117,54 +115,31 @@ const SelectComponent = memo(function SelectComponent(props: SelectProps) {
     variant = "default",
   } = props
 
-  // Extract children elements
-  const [itemElements, triggerElement, contentElement] = useMemo(() => {
-    if (!children) return [[], null, null]
+  // Extract children elements — uses isSlotChild / findSlotChild from
+  // @choice-ui/shared so memo-wrapped or div-wrapped slots are still found.
+  const { itemElements, triggerElement, contentElement } = useMemo<{
+    itemElements: React.ReactElement[]
+    triggerElement: React.ReactElement | null
+    contentElement: React.ReactElement | null
+  }>(() => {
+    if (!children) return { itemElements: [], triggerElement: null, contentElement: null }
 
-    const childrenArray = Children.toArray(children)
+    const trigger = findSlotChild(children, MenuTrigger) ?? null
+    const content = findSlotChild(children, MenuContextContent) ?? null
 
-    // Find first MenuTrigger element
-    const trigger = childrenArray.find(
-      (child) => isValidElement(child) && child.type === MenuTrigger,
-    ) as React.ReactElement | null
-
-    // Find MenuContextContent element
-    const content = childrenArray.find(
-      (child) => isValidElement(child) && child.type === MenuContextContent,
-    ) as React.ReactElement | null
-
-    // Must use MenuContextContent, collect options from its children
     if (!content) {
-      return [[], trigger, null]
+      return { itemElements: [], triggerElement: trigger, contentElement: null }
     }
 
-    const contentChildren = Children.toArray(content.props.children)
+    const items = flattenSlotChildren(content.props.children).filter(
+      (child) =>
+        isSlotChild(child, MenuContextItem) ||
+        isSlotChild(child, MenuDivider) ||
+        isSlotChild(child, MenuContextLabel) ||
+        isSlotChild(child, MenuEmpty),
+    )
 
-    // Recursive function to handle child elements inside Fragment
-    const extractSelectItems = (children: React.ReactNode[]): React.ReactNode[] => {
-      const result: React.ReactNode[] = []
-
-      children.forEach((child) => {
-        if (!isValidElement(child)) return
-
-        if (
-          child.type === MenuContextItem ||
-          child.type === MenuDivider ||
-          child.type === MenuContextLabel ||
-          child.type === MenuEmpty
-        ) {
-          result.push(child)
-        } else if (child.type === React.Fragment && child.props.children) {
-          const fragmentChildren = Children.toArray(child.props.children)
-          result.push(...extractSelectItems(fragmentChildren))
-        }
-      })
-
-      return result
-    }
-
-    const items = extractSelectItems(contentChildren)
-    return [items, trigger, content]
+    return { itemElements: items, triggerElement: trigger, contentElement: content }
   }, [children])
 
   // Extract option data from SelectItem elements
@@ -172,17 +147,15 @@ const SelectComponent = memo(function SelectComponent(props: SelectProps) {
     if (itemElements.length === 0) return []
 
     return itemElements.map((child, index) => {
-      if (!isValidElement(child)) return { divider: true }
-
-      if (child.type === MenuDivider) {
+      if (isSlotChild(child, MenuDivider)) {
         return { divider: true }
       }
 
-      if (child.type === MenuContextLabel) {
+      if (isSlotChild(child, MenuContextLabel)) {
         return { label: true, children: child.props.children }
       }
 
-      if (child.type === MenuEmpty) {
+      if (isSlotChild(child, MenuEmpty)) {
         return { empty: true, children: child.props.children, element: child }
       }
 

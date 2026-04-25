@@ -1,3 +1,4 @@
+import { findSlotChild } from "@choice-ui/shared"
 import {
   MenuButton,
   MenuContext,
@@ -415,26 +416,13 @@ const ContextMenuComponent = memo(function ContextMenuComponent(props: ContextMe
     handleOpenChange(false)
   })
 
-  // Process children
+  // Process children — uses findSlotChild from @choice-ui/shared so
+  // memo-wrapped or div-wrapped slots are still found.
   const { targetElement, subTriggerElement, contentElement } = useMemo(() => {
-    const childrenArray = React.Children.toArray(children)
-
-    const target = childrenArray.find(
-      (child) => React.isValidElement(child) && child.type === ContextMenuTrigger,
-    ) as React.ReactElement | null
-
-    const subTrigger = childrenArray.find(
-      (child) => React.isValidElement(child) && child.type === MenuContextSubTrigger,
-    ) as React.ReactElement | null
-
-    const content = childrenArray.find(
-      (child) => React.isValidElement(child) && child.type === MenuContextContent,
-    ) as React.ReactElement | null
-
     return {
-      targetElement: target,
-      subTriggerElement: subTrigger,
-      contentElement: content,
+      targetElement: findSlotChild(children, ContextMenuTrigger) ?? null,
+      subTriggerElement: findSlotChild(children, MenuContextSubTrigger) ?? null,
+      contentElement: findSlotChild(children, MenuContextContent) ?? null,
     }
   }, [children])
 

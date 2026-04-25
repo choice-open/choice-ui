@@ -35,6 +35,7 @@
 import "@testing-library/jest-dom"
 import { render, screen, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
+import { memo } from "react"
 import { describe, expect, it, vi } from "vitest"
 import { Select } from "../select"
 
@@ -286,6 +287,61 @@ describe("Select bugs", () => {
       const listbox = screen.getByRole("listbox")
       expect(listbox).toBeInTheDocument()
       expect(listbox.style.opacity).not.toBe("0")
+    })
+  })
+
+  /**
+   * Slot discovery must survive memo / Fragment / wrapper-element wrapping.
+   * Regression target: select.tsx previously did `child.type === MenuTrigger`,
+   * which silently failed (no listbox, no error) when consumers wrapped
+   * Select.Trigger / Select.Content with memo or a styling div. The new
+   * findSlotChild util uses displayName fallback + recursive descent.
+   */
+  describe("slot discovery hardening", () => {
+    it("opens the menu when Select.Trigger is wrapped in memo", async () => {
+      const MemoTrigger = memo(Select.Trigger)
+      const user = userEvent.setup()
+
+      render(
+        <Select value={null} onChange={vi.fn()}>
+          <MemoTrigger>
+            <Select.Value>pick</Select.Value>
+          </MemoTrigger>
+          <Select.Content>
+            <Select.Item value="a">Alpha</Select.Item>
+            <Select.Item value="b">Beta</Select.Item>
+          </Select.Content>
+        </Select>,
+      )
+
+      await user.click(screen.getByText("pick"))
+
+      await waitFor(() => {
+        expect(screen.getByRole("listbox")).toBeInTheDocument()
+      })
+    })
+
+    it("opens the menu when Select.Trigger is nested inside a styling div", async () => {
+      const user = userEvent.setup()
+
+      render(
+        <Select value={null} onChange={vi.fn()}>
+          <div className="ml-2">
+            <Select.Trigger>
+              <Select.Value>pick</Select.Value>
+            </Select.Trigger>
+          </div>
+          <Select.Content>
+            <Select.Item value="a">Alpha</Select.Item>
+          </Select.Content>
+        </Select>,
+      )
+
+      await user.click(screen.getByText("pick"))
+
+      await waitFor(() => {
+        expect(screen.getByRole("listbox")).toBeInTheDocument()
+      })
     })
   })
 })

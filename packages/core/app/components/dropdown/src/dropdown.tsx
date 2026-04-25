@@ -1,4 +1,4 @@
-import { getDocument, tcx } from "@choice-ui/shared"
+import { findSlotChild, getDocument, tcx } from "@choice-ui/shared"
 import { Slot } from "@choice-ui/slot"
 import {
   MenuButton,
@@ -45,9 +45,7 @@ import {
   type Placement,
 } from "@floating-ui/react"
 import React, {
-  Children,
   cloneElement,
-  isValidElement,
   memo,
   useContext,
   useEffect,
@@ -524,28 +522,13 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
     handleOpenChange(false)
   })
 
-  // Process children
+  // Process children — uses findSlotChild from @choice-ui/shared so
+  // memo-wrapped or div-wrapped slots are still found.
   const { triggerElement, subTriggerElement, contentElement } = useMemo(() => {
-    const childrenArray = Children.toArray(children)
-
-    // Find trigger element
-    const trigger = childrenArray.find(
-      (child) => isValidElement(child) && child.type === MenuTrigger,
-    ) as React.ReactElement | null
-
-    const subTrigger = childrenArray.find(
-      (child) => isValidElement(child) && child.type === MenuContextSubTrigger,
-    ) as React.ReactElement | null
-
-    // Find content wrapper element
-    const content = childrenArray.find(
-      (child) => isValidElement(child) && child.type === MenuContextContent,
-    ) as React.ReactElement | null
-
     return {
-      triggerElement: trigger,
-      subTriggerElement: subTrigger,
-      contentElement: content,
+      triggerElement: findSlotChild(children, MenuTrigger) ?? null,
+      subTriggerElement: findSlotChild(children, MenuContextSubTrigger) ?? null,
+      contentElement: findSlotChild(children, MenuContextContent) ?? null,
     }
   }, [children])
 
