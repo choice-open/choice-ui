@@ -79,17 +79,21 @@ export function useColorParser() {
     let hasAlpha = false
     let alphaStr: string | undefined
 
-    const slashAlphaMatch = value.match(/\/\s*([\d.]+)%?\s*\)$/)
+    // Capture the optional "%" suffix in its own group so the percent flag is
+    // preserved after extraction. Without this, the `%` would have been
+    // consumed but discarded, causing `50%` alpha to evaluate to 50 instead
+    // of 0.5.
+    const slashAlphaMatch = value.match(/\/\s*([\d.]+)(%?)\s*\)$/)
     if (slashAlphaMatch) {
-      alphaStr = slashAlphaMatch[1]
+      alphaStr = slashAlphaMatch[1] + slashAlphaMatch[2]
       hasAlpha = true
     }
 
     const commaAlphaMatch = value.match(
-      /^hsla\(\s*([\d.]+)\s*,\s*([\d.]+)%?\s*,\s*([\d.]+)%?\s*,\s*([\d.]+)%?\s*\)$/,
+      /^hsla\(\s*([\d.]+)\s*,\s*([\d.]+)%?\s*,\s*([\d.]+)%?\s*,\s*([\d.]+)(%?)\s*\)$/,
     )
     if (commaAlphaMatch) {
-      alphaStr = commaAlphaMatch[4]
+      alphaStr = commaAlphaMatch[4] + commaAlphaMatch[5]
       hasAlpha = true
     }
 

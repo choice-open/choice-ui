@@ -40,6 +40,25 @@ describe("Color Parser bugs", () => {
       expect(result.hasAlpha).toBe(true)
       expect(result.alpha).toBeCloseTo(0.25, 1)
     })
+
+    it("parses hsla(120, 50%, 50%, 50%) as alpha=0.5 (percent alpha)", () => {
+      // Regression for capture group %? being optional outside the group:
+      // alphaStr previously dropped the '%' and divided by 1 instead of 100,
+      // yielding alpha=50 for hsla(..., 50%).
+      const result = parseColor("hsla(120, 50%, 50%, 50%)")
+
+      expect(result.color).not.toBeNull()
+      expect(result.hasAlpha).toBe(true)
+      expect(result.alpha).toBeCloseTo(0.5, 2)
+    })
+
+    it("parses hsl(0 100% 50% / 25%) as alpha=0.25 (percent alpha, slash form)", () => {
+      const result = parseColor("hsl(0 100% 50% / 25%)")
+
+      expect(result.color).not.toBeNull()
+      expect(result.hasAlpha).toBe(true)
+      expect(result.alpha).toBeCloseTo(0.25, 2)
+    })
   })
 
   describe("BUG 6: Modern HSL syntax with / alpha must parse correctly", () => {
