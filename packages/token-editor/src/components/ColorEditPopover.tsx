@@ -68,6 +68,7 @@ export function ColorEditPopover({ value, label, onChange, children }: Props) {
           alpha={1}
           features={{ alpha: false }}
           onColorChange={(next) => {
+            console.debug("[live-theme] picker onColorChange", next)
             setColor(next)
             commit(next)
           }}
