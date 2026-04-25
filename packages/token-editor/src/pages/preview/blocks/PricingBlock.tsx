@@ -7,11 +7,8 @@ type Tier = {
   price: string
   period?: string
   tagline: string
-  features: string[]
-  cta: string
-  highlighted?: boolean
-  ctaVariant: "primary" | "secondary" | "ghost"
-  ctaDisabled?: boolean
+  highlight?: boolean
+  current?: boolean
 }
 
 const TIERS: Tier[] = [
@@ -20,114 +17,98 @@ const TIERS: Tier[] = [
     name: "Starter",
     price: "Free",
     tagline: "Solo designers exploring the system.",
-    features: [
-      "All atomic tokens",
-      "Unlimited local edits",
-      "CSS / W3C / diff export",
-      "Single workspace",
-    ],
-    cta: "Current plan",
-    ctaVariant: "secondary",
-    ctaDisabled: true,
+    current: true,
   },
   {
     id: "studio",
     name: "Studio",
     price: "$24",
-    period: "/ month per editor",
+    period: "/mo · per editor",
     tagline: "Small product teams shipping designs together.",
-    features: [
-      "Everything in Starter",
-      "Team sync via GitHub",
-      "Diff preview & review",
-      "30-day version history",
-    ],
-    cta: "Upgrade to Studio",
-    highlighted: true,
-    ctaVariant: "primary",
+    highlight: true,
   },
   {
     id: "enterprise",
     name: "Enterprise",
     price: "Custom",
     tagline: "Organizations with bespoke design system needs.",
-    features: [
-      "Everything in Studio",
-      "SSO & audit logs",
-      "Private theme registry",
-      "Dedicated support",
-    ],
-    cta: "Contact sales",
-    ctaVariant: "secondary",
   },
+]
+
+const STUDIO_FEATURES = [
+  "Team sync via GitHub",
+  "Diff preview & review",
+  "30-day version history",
+  "Slack integration",
 ]
 
 export function PricingBlock() {
   return (
-    <section className="flex flex-col gap-4">
-      <header className="flex flex-col gap-1">
-        <span className="text-body-medium-strong uppercase tracking-wide text-text-tertiary">
+    <section className="flex flex-col rounded-lg border border-border-default bg-background-default shadow-sm">
+      <header className="border-b border-border-default px-5 py-4">
+        <span className="text-body-small uppercase tracking-wide text-text-tertiary">
           Plans
         </span>
         <h3 className="text-body-large-strong">Pick what fits your team</h3>
         <p className="text-body-medium text-text-secondary">
-          Every plan includes the full token editor — pick a tier for the
-          collaboration features you need.
+          Every plan includes the full editor.
         </p>
       </header>
 
-      <div className="grid grid-cols-3 gap-3">
+      <ul className="divide-y divide-border-default">
         {TIERS.map((tier) => (
-          <article
+          <li
             key={tier.id}
             className={
-              "relative flex flex-col gap-4 rounded-lg border p-5 transition " +
-              (tier.highlighted
-                ? "border-border-accent bg-background-accent-secondary/10 shadow-md"
-                : "border-border-default bg-background-default shadow-sm")
+              "flex flex-col gap-1 px-5 py-3.5 " +
+              (tier.highlight ? "bg-background-accent-secondary/8" : "")
             }
           >
-            {tier.highlighted ? (
-              <Badge
-                variant="brand"
-                strong
-                className="absolute right-4 top-4"
-              >
-                Popular
-              </Badge>
+            <div className="flex items-baseline justify-between gap-3">
+              <div className="flex items-center gap-2">
+                <span className="text-body-large-strong">{tier.name}</span>
+                {tier.highlight ? (
+                  <Badge variant="brand" strong>
+                    Popular
+                  </Badge>
+                ) : null}
+                {tier.current ? <Badge variant="default">Current</Badge> : null}
+              </div>
+              <div className="flex items-baseline gap-1">
+                <span className="text-heading-medium tracking-tight">
+                  {tier.price}
+                </span>
+                {tier.period ? (
+                  <span className="text-body-small text-text-tertiary">
+                    {tier.period}
+                  </span>
+                ) : null}
+              </div>
+            </div>
+            <p className="text-body-medium text-text-secondary">{tier.tagline}</p>
+            {tier.highlight ? (
+              <ul className="mt-1.5 grid grid-cols-2 gap-x-3 gap-y-1">
+                {STUDIO_FEATURES.map((feature) => (
+                  <li
+                    key={feature}
+                    className="flex items-center gap-1.5 text-body-medium text-text-default"
+                  >
+                    <Check className="h-3 w-3 flex-shrink-0 text-text-success" />
+                    <span>{feature}</span>
+                  </li>
+                ))}
+              </ul>
             ) : null}
-            <div className="flex flex-col gap-1">
-              <h4 className="text-body-large-strong">{tier.name}</h4>
-              <p className="text-body-medium leading-snug text-text-secondary">
-                {tier.tagline}
-              </p>
-            </div>
-            <div className="flex items-baseline gap-1">
-              <span className="text-heading-large tracking-tight">
-                {tier.price}
-              </span>
-              {tier.period ? (
-                <span className="text-body-medium text-text-tertiary">{tier.period}</span>
-              ) : null}
-            </div>
-            <ul className="flex flex-col gap-2">
-              {tier.features.map((feature) => (
-                <li key={feature} className="flex items-start gap-2 text-body-medium">
-                  <Check className="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-text-success" />
-                  <span className="text-text-default">{feature}</span>
-                </li>
-              ))}
-            </ul>
-            <Button
-              variant={tier.ctaVariant}
-              disabled={tier.ctaDisabled}
-              className="mt-auto w-full"
-            >
-              {tier.cta}
-            </Button>
-          </article>
+          </li>
         ))}
-      </div>
+      </ul>
+
+      <footer className="flex gap-2 border-t border-border-default px-5 py-3">
+        <Button variant="primary" className="flex-1">
+          Upgrade to Studio
+        </Button>
+        <Button variant="secondary">Compare plans</Button>
+      </footer>
     </section>
   )
 }
