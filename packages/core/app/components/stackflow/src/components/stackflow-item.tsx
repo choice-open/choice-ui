@@ -26,12 +26,17 @@ export const StackflowItem = forwardRef<HTMLDivElement, StackflowItemProps>(
     const prevActiveRef = useRef(isActive)
 
     const wasActive = prevActiveRef.current
-    if (wasActive && !isActive) {
+    // Detect the active->inactive transition synchronously. The setState below
+    // only takes effect on the next render, so we must use `becameInactive`
+    // here as well — otherwise the early-return guard unmounts motion.div
+    // immediately, and AnimatePresence's onExitComplete never fires.
+    const becameInactive = wasActive && !isActive
+    if (becameInactive && !isTransitioningOut) {
       setIsTransitioningOut(true)
     }
     prevActiveRef.current = isActive
 
-    if (!isActive && !isTransitioningOut) {
+    if (!isActive && !isTransitioningOut && !becameInactive) {
       return null
     }
 
