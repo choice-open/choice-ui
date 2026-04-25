@@ -1,3 +1,4 @@
+import { List } from "@choice-ui/react"
 import { SECTIONS, type SectionId } from "../sections"
 
 type Props = {
@@ -9,47 +10,39 @@ type Props = {
 
 export function Sidebar({ onPickPreset, onOpenExport, onReset, dirtyCount }: Props) {
   return (
-    <aside className="flex flex-col gap-1 border-r border-border-default bg-background-default p-3">
-      <div className="flex items-center justify-between px-2 py-2">
-        <h1 className="text-heading-small tracking-tight">Token Editor</h1>
-      </div>
+    <aside className="flex flex-col border-r border-border-default bg-background-default p-3">
+      <List className="flex-1">
+        <List.Label>Token Editor</List.Label>
+        <List.Divider />
+        <List.Content>
+          {SECTIONS.map((section) => {
+            const Indicator = section.Indicator
+            return (
+              <List.Item
+                key={section.id}
+                suffixElement={<Indicator />}
+                onClick={() => onPickPreset(section.id)}
+              >
+                <List.Value>
+                  <span className="block text-body-small uppercase text-text-tertiary">
+                    {section.label}
+                  </span>
+                  <span className="block text-body-large text-text-default">
+                    {section.currentPreset}
+                  </span>
+                </List.Value>
+              </List.Item>
+            )
+          })}
+        </List.Content>
+      </List>
 
-      <div className="flex flex-col">
-        {SECTIONS.map((section) => {
-          const Indicator = section.Indicator
-          return (
-            <button
-              key={section.id}
-              type="button"
-              onClick={() => onPickPreset(section.id)}
-              className="group flex items-center justify-between rounded-md px-2 py-2 text-left transition hover:bg-background-component"
-            >
-              <span className="flex flex-col">
-                <span className="text-body-small uppercase tracking-wide text-text-tertiary">
-                  {section.label}
-                </span>
-                <span className="text-body-large text-text-default">
-                  {section.currentPreset}
-                </span>
-              </span>
-              <span className="flex items-center text-text-secondary">
-                <Indicator />
-              </span>
-            </button>
-          )
-        })}
-      </div>
-
-      <div className="mt-auto flex flex-col gap-1.5 px-2 pt-3">
-        {dirtyCount > 0 ? (
-          <div className="text-body-small text-text-tertiary">
-            {dirtyCount} edit{dirtyCount === 1 ? "" : "s"} pending · ⌘⇧R toggles live theme
-          </div>
-        ) : (
-          <div className="text-body-small text-text-tertiary">
-            Pick a category to start. ⌘⇧R toggles live theme.
-          </div>
-        )}
+      <div className="mt-3 flex flex-col gap-1.5 px-1">
+        <div className="text-body-small text-text-tertiary">
+          {dirtyCount > 0
+            ? `${dirtyCount} edit${dirtyCount === 1 ? "" : "s"} pending · ⌘⇧R toggles live theme`
+            : "Pick a category to start. ⌘⇧R toggles live theme."}
+        </div>
         <div className="flex gap-1.5">
           <button
             type="button"
