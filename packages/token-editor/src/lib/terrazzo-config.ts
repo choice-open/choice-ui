@@ -61,7 +61,15 @@ const cssPlugin = css({
         | ShadowLayer[]
         | undefined
       if (!shadowValue) return undefined
-      if (Array.isArray(shadowValue)) return shadowValue.map(layerToCss).join(", ")
+      if (Array.isArray(shadowValue)) {
+        // The editor can produce an empty array when every layer is
+        // removed for a mode. Joining gives "" which becomes
+        // `--cdt-shadow-X:` and breaks any `box-shadow: var(...)`
+        // declaration consuming it. Emit the explicit CSS keyword so
+        // downstream usage stays valid.
+        if (shadowValue.length === 0) return "none"
+        return shadowValue.map(layerToCss).join(", ")
+      }
       if (typeof shadowValue === "object") return layerToCss(shadowValue)
     }
     return undefined
