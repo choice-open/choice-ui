@@ -20,12 +20,10 @@ export function ColorsPage() {
   const setModeValue = useEditorStore((s) => s.setModeValue)
   const dirty = useEditorStore((s) => s.dirty)
 
-  const grouped = useMemo(() => {
-    const all = collectColorTokens(colorsTree)
-    const primitives = all.filter((e) => !e.lightIsAlias && !e.darkIsAlias)
-    const semantics = all.filter((e) => e.lightIsAlias || e.darkIsAlias)
-    return groupByCategory(primitives, semantics)
-  }, [colorsTree])
+  const grouped = useMemo(
+    () => groupByCategory(collectColorTokens(colorsTree)),
+    [colorsTree],
+  )
 
   const primitiveOptions = useMemo(() => collectPrimitiveOptions(colorsTree), [colorsTree])
 
@@ -165,35 +163,31 @@ function ModeCell({
   )
 }
 
+/**
+ * Bucket every color entry by its declared category. Primitives and
+ * semantics share buckets — `icon colors` for instance has both literal
+ * and aliased members in the bundled defaults, and rendering them as
+ * sibling sections with the same key triggers React duplicate-key
+ * warnings and unstable reconciliation. `Row` / `ModeCell` already
+ * dispatch the right editor per cell, so co-locating both kinds is fine.
+ */
 function groupByCategory(
-  primitives: ColorEntry[],
-  semantics: ColorEntry[],
+  all: ColorEntry[],
 ): { category: string; entries: ColorEntry[] }[] {
-  const out: { category: string; entries: ColorEntry[] }[] = []
   const map = new Map<string, ColorEntry[]>()
-  for (const e of primitives) {
+  for (const e of all) {
     const list = map.get(e.category) ?? []
     list.push(e)
     map.set(e.category, list)
   }
   const order = ["hues", "pale", "neutrals"]
+  const out: { category: string; entries: ColorEntry[] }[] = []
   for (const cat of order) {
     const list = map.get(cat)
-    if (list && list.length) out.push({ category: cat, entries: list })
+    if (list?.length) out.push({ category: cat, entries: list })
   }
   for (const [cat, list] of map.entries()) {
     if (!order.includes(cat)) out.push({ category: cat, entries: list })
-  }
-  if (semantics.length) {
-    const byCat = new Map<string, ColorEntry[]>()
-    for (const e of semantics) {
-      const list = byCat.get(e.category) ?? []
-      list.push(e)
-      byCat.set(e.category, list)
-    }
-    for (const [cat, list] of byCat.entries()) {
-      out.push({ category: cat, entries: list })
-    }
   }
   return out
 }
