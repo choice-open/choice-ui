@@ -297,10 +297,13 @@ const TextareaBase = forwardRef<HTMLTextAreaElement, TextareaProps>(
             }
 
             const childOnChange = child.props.onChange as ((value: string) => void) | undefined
-            const mergedOnChange = useEventCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
+            // Plain function — must not be a hook, since this branch executes
+            // inside Children.map and the number of mapped children can vary
+            // between renders (Rules of Hooks violation otherwise).
+            const mergedOnChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
               handleChange(e)
               childOnChange?.(e.target.value)
-            })
+            }
 
             return (
               <TextareaAutosize
