@@ -1,6 +1,11 @@
 import type { Placement, UseFloatingReturn } from "@floating-ui/react"
-import type { ReactNode } from "react"
+import type { MutableRefObject, ReactNode } from "react"
 import type { KbdKey } from "@choice-ui/kbd"
+
+export interface TooltipDelayRefValue {
+  open: number
+  close: number
+}
 
 export interface TooltipOptions {
   disabled?: boolean
@@ -33,6 +38,12 @@ export interface TooltipContextValue {
   update: UseFloatingReturn["update"]
   x: number | null
   y: number | null
+  /**
+   * @internal Mutable delay ref consumed by `useHover`. Updated by
+   * `TooltipDelayGroupSync` so that the open/close delays can react to
+   * `FloatingDelayGroup`'s instant-phase without re-rendering `useTooltip`.
+   */
+  _delayRef: MutableRefObject<TooltipDelayRefValue>
 }
 
 export interface TooltipProps {

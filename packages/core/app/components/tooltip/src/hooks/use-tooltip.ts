@@ -4,7 +4,6 @@ import {
   flip,
   offset,
   shift,
-  useDelayGroup,
   useDismiss,
   useFloating,
   useFocus,
@@ -13,7 +12,21 @@ import {
   useRole,
 } from "@floating-ui/react"
 import { useMemo, useRef, useState } from "react"
-import type { TooltipContextValue, TooltipOptions } from "../types"
+import { useTooltipDelay } from "../context/tooltip-delay-context"
+import type {
+  TooltipContextValue,
+  TooltipDelayRefValue,
+  TooltipOptions,
+} from "../types"
+
+function normalizeDelay(
+  delay: number | { open?: number; close?: number },
+): TooltipDelayRefValue {
+  if (typeof delay === "number") {
+    return { open: delay, close: delay }
+  }
+  return { open: delay.open ?? 0, close: delay.close ?? 0 }
+}
 
 export function useTooltip({
   initialOpen = false,
@@ -54,13 +67,22 @@ export function useTooltip({
 
   const context = data.context
 
-  // Use useDelayGroup instead of deprecated useDelayGroupContext
-  const { delay } = useDelayGroup(context)
+  // Static delay from a stable context. We do NOT subscribe to FloatingDelayGroup's
+  // volatile state here — that would force every Tooltip in the tree to re-render
+  // on every hover. Instead, a small invisible <TooltipDelayGroupSync> mutates
+  // delayRef.current.open/close in-place when instant-phase toggles. useHover
+  // reads delayRef.current at hover time via its own useLatestRef, so the
+  // dynamic instant-phase open delay is preserved without re-rendering us.
+  const staticDelay = useTooltipDelay()
+  const delayRef = useRef<TooltipDelayRefValue | null>(null)
+  if (delayRef.current === null) {
+    delayRef.current = normalizeDelay(staticDelay)
+  }
 
   const hover = useHover(context, {
     move: false,
     enabled: controlledOpen == null && !disabled,
-    delay,
+    delay: delayRef.current,
   })
   const focus = useFocus(context, {
     enabled: controlledOpen == null && !disabled,
@@ -79,6 +101,7 @@ export function useTooltip({
       setOpen,
       arrowRef,
       disabled,
+      _delayRef: delayRef as React.MutableRefObject<TooltipDelayRefValue>,
       ...interactions,
       ...data,
     }),

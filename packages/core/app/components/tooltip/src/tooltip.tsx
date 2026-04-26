@@ -1,5 +1,6 @@
 import { Kbd } from "@choice-ui/kbd"
 import { TooltipContent } from "./components/tooltip-content"
+import { TooltipDelayGroupSync } from "./components/tooltip-delay-group-sync"
 import { TooltipTrigger } from "./components/tooltip-trigger"
 import { TooltipContext, PORTAL_ROOT_ID } from "./context/tooltip-context"
 import { useTooltip } from "./hooks/use-tooltip"
@@ -34,6 +35,7 @@ function TooltipRoot(props: TooltipProps) {
   if (content) {
     return (
       <TooltipContext.Provider value={tooltip}>
+        <TooltipDelayGroupSync />
         <TooltipTrigger>{children}</TooltipTrigger>
         <TooltipContent
           withArrow={withArrow}
@@ -56,7 +58,12 @@ function TooltipRoot(props: TooltipProps) {
     )
   }
 
-  return <TooltipContext.Provider value={tooltip}>{children}</TooltipContext.Provider>
+  return (
+    <TooltipContext.Provider value={tooltip}>
+      <TooltipDelayGroupSync />
+      {children}
+    </TooltipContext.Provider>
+  )
 }
 
 export const Tooltip = Object.assign(TooltipRoot, {

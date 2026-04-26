@@ -1,7 +1,8 @@
 import { FloatingDelayGroup } from "@floating-ui/react"
-import type { ReactNode } from "react"
+import { useMemo, type ReactNode } from "react"
 import { AlertDialogProvider } from "../components/alert-dialog/src/context"
 import type { AlertDialogProviderProps } from "../components/alert-dialog/src/context"
+import { TooltipDelayContext } from "../components/tooltip/src/context/tooltip-delay-context"
 
 export interface ChoiceUiProviderProps {
   children: ReactNode
@@ -44,9 +45,18 @@ const DEFAULT_TOOLTIP_DELAY = {
 export function ChoiceUiProvider(props: ChoiceUiProviderProps) {
   const { children, alertDialog, tooltipDelay = DEFAULT_TOOLTIP_DELAY } = props
 
+  // Stable reference for the static delay config so consumers (useTooltip)
+  // don't re-render across hovers.
+  const stableDelay = useMemo(
+    () => ({ open: tooltipDelay.open, close: tooltipDelay.close }),
+    [tooltipDelay.open, tooltipDelay.close],
+  )
+
   return (
-    <FloatingDelayGroup delay={tooltipDelay}>
-      <AlertDialogProvider {...alertDialog}>{children}</AlertDialogProvider>
-    </FloatingDelayGroup>
+    <TooltipDelayContext.Provider value={stableDelay}>
+      <FloatingDelayGroup delay={tooltipDelay}>
+        <AlertDialogProvider {...alertDialog}>{children}</AlertDialogProvider>
+      </FloatingDelayGroup>
+    </TooltipDelayContext.Provider>
   )
 }
