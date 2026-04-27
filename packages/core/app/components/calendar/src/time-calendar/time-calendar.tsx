@@ -7,7 +7,7 @@ import { useEventCallback } from "usehooks-ts"
 import type { BaseTimeProps, StepProps } from "../types"
 import { generateTimeOptions, normalizeTimeValue, timeStringToDate } from "../utils"
 
-interface TimeCalendarComponentType extends React.MemoExoticComponent<React.FC<TimeCalendarProps>> {
+type TimeCalendarComponentType = typeof TimeCalendarBase & {
   Trigger: typeof MenuTrigger
 }
 
@@ -142,6 +142,7 @@ const TimeCalendarBase = memo(function TimeCalendar(props: TimeCalendarProps) {
 
     let attempts = 0
     const maxAttempts = 10
+    let rafId: number | null = null
 
     const scrollToSelected = () => {
       const selectedItem = document.querySelector(
@@ -152,11 +153,17 @@ const TimeCalendarBase = memo(function TimeCalendar(props: TimeCalendarProps) {
         selectedItem.scrollIntoView({ block: "center" })
       } else if (attempts < maxAttempts) {
         attempts++
-        requestAnimationFrame(scrollToSelected)
+        rafId = requestAnimationFrame(scrollToSelected)
       }
     }
 
-    requestAnimationFrame(scrollToSelected)
+    rafId = requestAnimationFrame(scrollToSelected)
+
+    return () => {
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId)
+      }
+    }
   }, [isOpen, normalizedTimeString])
 
   // Handle time selection

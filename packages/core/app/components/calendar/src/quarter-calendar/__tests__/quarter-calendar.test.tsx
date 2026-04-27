@@ -1,3 +1,4 @@
+import { vi } from "vitest"
 import { render, screen, fireEvent, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import "@testing-library/jest-dom"
@@ -6,8 +7,10 @@ import { enUS, zhCN } from "date-fns/locale"
 import { QuarterCalendar } from "../quarter-calendar"
 import type { Quarter } from "../../types"
 
+type QuarterNumber = Quarter["quarter"]
+
 // 测试工具函数
-const createTestQuarter = (quarter: number, year: number): Quarter => {
+const createTestQuarter = (quarter: QuarterNumber, year: number): Quarter => {
   const quarterLabels = ["一季度", "二季度", "三季度", "四季度"]
   const monthGroups = [
     ["一月", "二月", "三月"],
@@ -46,7 +49,7 @@ describe("QuarterCalendar", () => {
 
     it("应该在点击季度时调用onChange", async () => {
       const user = userEvent.setup()
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
 
       render(
         <QuarterCalendar
@@ -112,7 +115,7 @@ describe("QuarterCalendar", () => {
 
     it("应该在内部管理状态", async () => {
       const user = userEvent.setup()
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
 
       render(
         <QuarterCalendar
@@ -141,7 +144,7 @@ describe("QuarterCalendar", () => {
     })
 
     it("应该同时显示选中和当前季度的样式", () => {
-      const currentQuarter = Math.ceil((new Date().getMonth() + 1) / 3)
+      const currentQuarter = Math.ceil((new Date().getMonth() + 1) / 3) as QuarterNumber
       const currentQuarterObj = createTestQuarter(currentQuarter, currentYear)
 
       render(
@@ -168,7 +171,7 @@ describe("QuarterCalendar", () => {
 
     it("应该在点击导航按钮时调用onNavigate", async () => {
       const user = userEvent.setup()
-      const handleNavigate = jest.fn()
+      const handleNavigate = vi.fn()
 
       render(<QuarterCalendar onNavigate={handleNavigate} />)
 
@@ -207,7 +210,7 @@ describe("QuarterCalendar", () => {
 
     it("应该在点击今年按钮时跳转到当前年份", async () => {
       const user = userEvent.setup()
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
 
       render(
         <QuarterCalendar
@@ -276,7 +279,7 @@ describe("QuarterCalendar", () => {
 
     it("不应该选择禁用的季度", async () => {
       const user = userEvent.setup()
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
       const disabledQuarters = [{ quarter: 2, year: 2020 }]
 
       render(
@@ -334,7 +337,7 @@ describe("QuarterCalendar", () => {
 
     it("不应该在禁用状态下响应点击", async () => {
       const user = userEvent.setup()
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
 
       render(
         <QuarterCalendar
@@ -495,7 +498,7 @@ describe("QuarterCalendar", () => {
   describe("集成测试", () => {
     it("应该完整的季度选择流程", async () => {
       const user = userEvent.setup()
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
 
       const TestComponent = () => {
         const [currentYear, setCurrentYear] = React.useState(2020)
@@ -549,6 +552,96 @@ describe("QuarterCalendar", () => {
       // 导航按钮应该被禁用
       expect(screen.getByTestId("prev-button")).toBeDisabled()
       expect(screen.getByTestId("next-button")).toBeDisabled()
+    })
+  })
+
+  /**
+   * BUG: QuarterCalendarHeader format(currentYear, "yyyy") treats year number as Unix timestamp
+   *   - User scenario: User navigates to year 2020, expects header to show "2020".
+   *   - Regression it prevents: Header shows "1970" instead of the actual year because
+   *     date-fns format() interprets the number as a Unix timestamp in milliseconds.
+   *   - Logic change that makes it fail: In quarter-calendar-header.tsx:51,
+   *     format(currentYear, "yyyy") is called with currentYear=2020 (a number).
+   *     date-fns treats 2020 as ms since epoch = Jan 1 1970 00:00:02.020, so "yyyy" = "1970".
+   *     Fix = use format(new Date(currentYear, 0, 1), "yyyy") to create a proper Date.
+   */
+  describe("BUG: QuarterCalendarHeader shows 1970 instead of actual year", () => {
+    it("displays the correct year number in the header title, not 1970", () => {
+      render(
+        <QuarterCalendar
+          currentYear={2020}
+          startYear={2020}
+        />,
+      )
+
+      const title = screen.getByTestId("year-title")
+      expect(title).toHaveTextContent("2020")
+      expect(title).not.toHaveTextContent("1970")
+    })
+
+    it("displays 2030 correctly when navigated to year 2030", () => {
+      render(
+        <QuarterCalendar
+          currentYear={2030}
+          startYear={2030}
+        />,
+      )
+
+      const title = screen.getByTestId("year-title")
+      expect(title).toHaveTextContent("2030")
+      expect(title).not.toHaveTextContent("1970")
+    })
+  })
+
+  /**
+   * BUG: "Today" button bypasses disabled and readOnly props
+   *   - User scenario: Developer sets disabled=true or readOnly=true on QuarterCalendar,
+   *     expecting all selection interactions to be blocked. User clicks "Back to current year"
+   *     button and the component navigates to current year AND selects current quarter.
+   *   - Regression it prevents: Disabled calendar allows state changes via Today button.
+   *   - Logic change that makes it fail: In quarter-calendar.tsx:155-161, handleToday
+   *     calls setInternalYear() and setSelectedQuarter() without checking disabled or readOnly.
+   *     Fix = add `if (disabled || readOnly) return` guard at the top of handleToday.
+   */
+  describe("BUG: Today button bypasses disabled prop", () => {
+    it("should not navigate or select when disabled=true and Today button is clicked", async () => {
+      const user = userEvent.setup()
+      const handleChange = vi.fn()
+
+      render(
+        <QuarterCalendar
+          currentYear={2000}
+          startYear={2000}
+          disabled={true}
+          onChange={handleChange}
+        />,
+      )
+
+      const todayButton = screen.getByTestId("today-button")
+      expect(todayButton).toBeInTheDocument()
+
+      await user.click(todayButton)
+
+      expect(handleChange).not.toHaveBeenCalled()
+    })
+
+    it("should not navigate or select when readOnly=true and Today button is clicked", async () => {
+      const user = userEvent.setup()
+      const handleChange = vi.fn()
+
+      render(
+        <QuarterCalendar
+          currentYear={2000}
+          startYear={2000}
+          readOnly={true}
+          onChange={handleChange}
+        />,
+      )
+
+      const todayButton = screen.getByTestId("today-button")
+      await user.click(todayButton)
+
+      expect(handleChange).not.toHaveBeenCalled()
     })
   })
 })

@@ -79,12 +79,15 @@ const TextareaBase = forwardRef<HTMLTextAreaElement, TextareaProps>(
     const viewportRef = useRef<HTMLDivElement>(null)
     const [isDragging, setIsDragging] = useState(false)
     const [viewportHeight, setViewportHeight] = useState<number>()
+    const editingStartedRef = useRef(false)
 
     // Use an explicit dependency array
     useImperativeHandle(ref, () => textareaRef.current!, [])
 
     useUnmount(() => {
-      onIsEditingChange?.(false)
+      if (editingStartedRef.current) {
+        onIsEditingChange?.(false)
+      }
     })
 
     // Memoize styles to reduce recalculations
@@ -111,6 +114,7 @@ const TextareaBase = forwardRef<HTMLTextAreaElement, TextareaProps>(
       // focusSelection === "none" - don't change selection
 
       onFocus?.(e)
+      editingStartedRef.current = true
       onIsEditingChange?.(true)
     })
 
@@ -121,7 +125,7 @@ const TextareaBase = forwardRef<HTMLTextAreaElement, TextareaProps>(
 
     const handleKeyDown = useEventCallback((e: React.KeyboardEvent<HTMLTextAreaElement>) => {
       // Prevent newline if allowNewline is false
-      if (!allowNewline && e.key === "Enter" && !e.shiftKey) {
+      if (!allowNewline && e.key === "Enter") {
         e.preventDefault()
       }
       // Pass through original onKeyDown if exists
@@ -292,6 +296,15 @@ const TextareaBase = forwardRef<HTMLTextAreaElement, TextareaProps>(
               ...child.props.style,
             }
 
+            const childOnChange = child.props.onChange as ((value: string) => void) | undefined
+            // Plain function — must not be a hook, since this branch executes
+            // inside Children.map and the number of mapped children can vary
+            // between renders (Rules of Hooks violation otherwise).
+            const mergedOnChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+              handleChange(e)
+              childOnChange?.(e.target.value)
+            }
+
             return (
               <TextareaAutosize
                 {...textareaAutosizeProps}
@@ -300,7 +313,7 @@ const TextareaBase = forwardRef<HTMLTextAreaElement, TextareaProps>(
                 style={mergedStyle}
                 onFocus={handleFocus}
                 onBlur={handleBlur}
-                onChange={handleChange}
+                onChange={mergedOnChange}
                 onKeyDown={handleKeyDown}
               />
             )
@@ -324,7 +337,7 @@ const TextareaBase = forwardRef<HTMLTextAreaElement, TextareaProps>(
               className={tx.content()}
               style={contentStyle}
             >
-              {renderContent()}
+              <div style={style}>{renderContent()}</div>
             </ScrollArea.Content>
           </ScrollArea.Viewport>
         </ScrollArea>

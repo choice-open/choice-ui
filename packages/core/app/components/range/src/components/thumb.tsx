@@ -22,6 +22,9 @@ interface BaseThumbProps {
   onPointerDown: (e: React.PointerEvent) => void
   onKeyDown: (e: React.KeyboardEvent) => void
   isDefaultValue?: boolean
+  currentValue?: number
+  min?: number
+  max?: number
 }
 
 const BaseThumb = forwardRef<HTMLDivElement, BaseThumbProps>(function BaseThumb(props, ref) {
@@ -39,6 +42,9 @@ const BaseThumb = forwardRef<HTMLDivElement, BaseThumbProps>(function BaseThumb(
     onPointerDown,
     onKeyDown,
     isDefaultValue,
+    currentValue,
+    min,
+    max,
   } = props
 
   const thumbStyle = useMemo(
@@ -78,6 +84,10 @@ const BaseThumb = forwardRef<HTMLDivElement, BaseThumbProps>(function BaseThumb(
             }
           }}
           type="text"
+          role="slider"
+          aria-valuenow={currentValue}
+          aria-valuemin={min}
+          aria-valuemax={max}
           onKeyDown={onKeyDown}
           className={tv.input()}
           tabIndex={disabled || readOnly ? -1 : 0}
@@ -104,8 +114,11 @@ export const RangeThumb = forwardRef<HTMLDivElement, RangeThumbProps>(
     const { className, size: _size } = props
 
     const {
+      currentValue,
       disabled,
       readOnly,
+      min,
+      max,
       transforms,
       thumbSize,
       thumbRef,
@@ -133,6 +146,9 @@ export const RangeThumb = forwardRef<HTMLDivElement, RangeThumbProps>(
         onPointerDown={handlePointerDown}
         onKeyDown={handleKeyDown}
         isDefaultValue={isDefaultValue}
+        currentValue={currentValue}
+        min={min}
+        max={max}
       />
     )
   },

@@ -68,7 +68,7 @@ export interface TreeListProps {
   renderLabel?: (node: TreeNodeType) => ReactNode
 
   renderNode?: (node: TreeNodeType) => ReactNode
-  selectedNodeIds: Set<string>
+  selectedNodeIds?: Set<string>
   /**
    * 是否在重命名时显示完整路径
    * 当为 true 时，输入框会显示完整路径（如 "Folder2/Folder 2 / Group 1"），

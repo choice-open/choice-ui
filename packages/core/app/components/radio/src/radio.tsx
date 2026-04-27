@@ -53,7 +53,7 @@ const RadioBase = forwardRef<HTMLInputElement, RadioProps>(function Radio(props,
     if (readOnly) return
     if (e.key === " " || e.key === "Enter") {
       e.preventDefault()
-      onChange(!value)
+      if (!value) onChange(true)
     }
     onKeyDown?.(e)
   })
@@ -80,9 +80,7 @@ const RadioBase = forwardRef<HTMLInputElement, RadioProps>(function Radio(props,
   }
 
   // Render default icon (used when no custom Radio.Icon is provided)
-  const renderDefaultIcon = () => (
-    <div className={tv.box()}>{value && <Dot />}</div>
-  )
+  const renderDefaultIcon = () => <div className={tv.box()}>{value && <Dot />}</div>
 
   return (
     <RadioContext.Provider value={{ id, descriptionId, disabled, value, variant }}>
@@ -95,10 +93,10 @@ const RadioBase = forwardRef<HTMLInputElement, RadioProps>(function Radio(props,
             id={id}
             name={name}
             checked={value}
-            disabled={disabled || readOnly}
+            disabled={disabled}
             onChange={handleChange}
             aria-label={ariaLabel}
-            aria-describedby={ariaDescribedby || descriptionId}
+            aria-describedby={ariaDescribedby || undefined}
             aria-checked={value}
             aria-disabled={disabled || readOnly}
             role="radio"

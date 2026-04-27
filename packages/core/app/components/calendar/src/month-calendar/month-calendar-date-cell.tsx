@@ -47,9 +47,14 @@ export const MonthCalendarDateCell = memo(function MonthCalendarDateCell(props: 
       onMouseLeave={onMouseLeave}
       data-testid={testId}
       data-selected={selected}
-      data-disabled={disabled}
+      data-disabled={disabled || undefined}
     >
-      <span className={tv.dayNumber()}>{dateNumber}</span>
+      <span
+        role="gridcell"
+        className={tv.dayNumber()}
+      >
+        {dateNumber}
+      </span>
     </div>
   )
 })

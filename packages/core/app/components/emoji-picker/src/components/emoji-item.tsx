@@ -19,6 +19,7 @@ export const EmojiItem = memo(function EmojiItem(props: EmojiItemProps) {
       onClick={() => onSelect(emoji)}
       onMouseEnter={() => onHover?.(emoji)}
       onMouseLeave={() => onHover?.(null)}
+      aria-label={emoji.name}
       title={`${emoji.name} (${emoji.emoji})`}
       type="button"
     >

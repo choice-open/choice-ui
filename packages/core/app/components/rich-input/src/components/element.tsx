@@ -127,7 +127,7 @@ export const ElementRender = memo((props: ElementRenderProps) => {
         {children}
       </CheckListItemElement>
     ))
-    .with("ref_user", () => <span>ref_user</span>)
+    .with("ref_user", () => <span {...attributes}>ref_user</span>)
     .otherwise(() => (
       <p
         className={tcx(tv.element({ type: "paragraph" }))}

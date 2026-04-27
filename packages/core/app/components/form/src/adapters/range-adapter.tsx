@@ -1,10 +1,8 @@
 import { Range } from "@choice-ui/range"
+import { useEffect, useRef } from "react"
 import type { RangeAdapterProps } from "../types"
 import { BaseAdapter, filterFormProps } from "./base-adapter"
 
-/**
- * Range Adapter for Form system
- */
 export function RangeAdapter<T extends number>({
   className,
   label,
@@ -17,6 +15,23 @@ export function RangeAdapter<T extends number>({
   ...props
 }: RangeAdapterProps<T>) {
   const { ...filteredProps } = filterFormProps(props)
+  const sliderRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const el = sliderRef.current
+    if (!el) return
+
+    const blurHandler = () => onBlur?.()
+    const focusHandler = () => onFocus?.()
+
+    el.addEventListener("focusout", blurHandler)
+    el.addEventListener("focusin", focusHandler)
+
+    return () => {
+      el.removeEventListener("focusout", blurHandler)
+      el.removeEventListener("focusin", focusHandler)
+    }
+  }, [onBlur, onFocus])
 
   return (
     <BaseAdapter
@@ -27,18 +42,19 @@ export function RangeAdapter<T extends number>({
       legendMode={true}
     >
       <div className="flex items-center gap-2">
-        <Range
-          value={value}
-          onChange={(inputValue) => onChange(inputValue as T)}
-          {...filteredProps}
-        />
+        <div ref={sliderRef}>
+          <Range
+            value={value}
+            onChange={(inputValue) => onChange(inputValue as T)}
+            {...filteredProps}
+          />
+        </div>
         <div className="flex-1 text-right">{value}</div>
       </div>
     </BaseAdapter>
   )
 }
 
-// For convenience, export a factory function to create the adapter
 export const createRangeAdapter = <T extends number>(
   defaultProps?: Partial<RangeAdapterProps<T>>,
 ) => {

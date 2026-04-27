@@ -13,9 +13,18 @@ export const Kbd = (props: KbdProps) => {
 
   const tv = kbdTv()
 
-  const keysContent = useMemo(() => {
-    const keysToRender = typeof keys === "string" ? [keys] : Array.isArray(keys) ? keys : []
+  const keysToRender = typeof keys === "string" ? [keys] : Array.isArray(keys) ? keys : []
 
+  const ariaLabel = useMemo(() => {
+    if (keysToRender.length === 0) return undefined
+    const labels = keysToRender.map((key) => kbdKeysLabelMap[key])
+    if (children && typeof children === "string") {
+      labels.push(children)
+    }
+    return labels.join("+")
+  }, [keysToRender, children])
+
+  const keysContent = useMemo(() => {
     return keysToRender.map((key) => (
       <abbr
         key={key}
@@ -30,10 +39,12 @@ export const Kbd = (props: KbdProps) => {
   return (
     <kbd
       {...rest}
+      role="text"
       className={tcx(tv.base(), className)}
+      aria-label={ariaLabel}
     >
       {keysContent}
-      {children && <span>{children}</span>}
+      {children}
     </kbd>
   )
 }

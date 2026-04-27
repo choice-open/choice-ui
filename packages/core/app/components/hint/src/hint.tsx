@@ -18,6 +18,20 @@ export interface HintProps {
   placement?: HintPlacement
 }
 
+function findTriggerElement(children: ReactNode): ReactElement | undefined {
+  const childrenArray = Children.toArray(children)
+  for (const child of childrenArray) {
+    if (!isValidElement(child)) continue
+    const type = child.type as { displayName?: string }
+    if (type === HintTrigger || type.displayName === "HintTrigger") {
+      return child as ReactElement
+    }
+    const found = findTriggerElement(child.props?.children)
+    if (found) return found
+  }
+  return undefined
+}
+
 function HintRoot({
   children,
   delay = 0,
@@ -34,15 +48,8 @@ function HintRoot({
     placement,
   })
 
-  // Detect Trigger and extract icon
-  const childrenArray = Children.toArray(children)
-  const triggerElement = childrenArray.find((child) => {
-    if (!isValidElement(child)) return false
-    const type = child.type as { displayName?: string }
-    return type === HintTrigger || type.displayName === "HintTrigger"
-  }) as ReactElement | undefined
+  const triggerElement = findTriggerElement(children)
 
-  // Get icon from Trigger's children, default using InfoCircle
   const icon = triggerElement?.props?.children || <InfoCircle />
 
   const contextValue = useMemo(() => ({ ...hint, icon }), [hint, icon])

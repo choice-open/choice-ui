@@ -15,9 +15,30 @@ export const MenuCheckbox = memo(function MenuCheckbox(props: MenuCheckboxProps)
 
   return (
     <div className={tv.root()}>
-      {selected && (
+      {selected && !indeterminate && (
         <div className={tv.checkbox()}>
           <Check />
+        </div>
+      )}
+      {indeterminate && (
+        <div
+          className={tv.checkbox()}
+          data-indeterminate
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={3}
+            strokeLinecap="round"
+          >
+            <line
+              x1="6"
+              y1="12"
+              x2="18"
+              y2="12"
+            />
+          </svg>
         </div>
       )}
     </div>

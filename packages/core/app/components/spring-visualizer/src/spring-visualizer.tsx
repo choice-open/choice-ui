@@ -1,5 +1,5 @@
 import { tcv, tcx } from "@choice-ui/shared"
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useId, useState } from "react"
 
 interface SpringVisualizerProps extends React.ComponentPropsWithoutRef<"svg"> {
   bounce?: number
@@ -46,6 +46,7 @@ export const SpringVisualizer = ({
   const sizeValue = useMemo(() => size ?? DEFAULT_SIZE, [size])
   const sizeWidth = sizeValue.width
   const sizeHeight = sizeValue.height
+  const gradientId = useId()
 
   /** 根据 mode 计算 path */
   const generatedPath = useMemo(() => {
@@ -65,7 +66,7 @@ export const SpringVisualizer = ({
     }
   }, [generatedPath, delay])
 
-  const { base, curve } = SpringVisualizerVariants({})
+  const { base } = SpringVisualizerVariants({})
 
   return (
     <svg
@@ -83,7 +84,7 @@ export const SpringVisualizer = ({
     >
       <defs>
         <linearGradient
-          id="springGradient"
+          id={gradientId}
           gradientUnits="userSpaceOnUse"
           x1={0}
           y1={sizeHeight}
@@ -110,7 +111,8 @@ export const SpringVisualizer = ({
       </defs>
 
       <path
-        className={curve({ class: classNames?.curve })}
+        className={tcx(classNames?.curve)}
+        style={{ stroke: `url(#${gradientId})` }}
         d={path}
         fill="none"
         strokeWidth={strokeWidth}

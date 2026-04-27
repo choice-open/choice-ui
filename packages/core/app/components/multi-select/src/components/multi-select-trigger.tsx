@@ -184,7 +184,7 @@ export const MultiSelectTrigger = memo(
         aria-disabled={disabled}
         role="combobox"
         aria-haspopup="listbox"
-        aria-expanded={false}
+        aria-expanded={open}
         {...rest}
       >
         <div

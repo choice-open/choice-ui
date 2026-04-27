@@ -46,7 +46,13 @@ export const SegmentedItem = memo(
       variant,
     })
 
-    const optionId = `${groupId}-${value}`
+    // Encode unsafe characters as their hex code point so different inputs
+    // (e.g. "a-b" vs "a b") never collapse to the same id. A naive
+    // replace-with-underscore is lossy and would let two SegmentedItem
+    // labels target the same radio input via htmlFor.
+    const encodeForId = (s: string) =>
+      s.replace(/[^a-zA-Z0-9]/g, (c) => `_${c.charCodeAt(0).toString(16)}_`)
+    const optionId = `seg_${encodeForId(groupId)}_${encodeForId(value)}`
 
     const ariaLabelProp = typeof children === "string" ? children : ariaLabel
 
@@ -87,6 +93,7 @@ export const SegmentedItem = memo(
       <div
         className={optionClassName}
         aria-hidden="true"
+        data-selected={isActive ? "true" : undefined}
       >
         {children}
       </div>

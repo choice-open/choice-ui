@@ -1,4 +1,4 @@
-import { memo } from "react"
+import React, { memo } from "react"
 import { useEventCallback } from "usehooks-ts"
 import type { YearItem } from "../types"
 import { YearCalendarTv } from "./tv"
@@ -21,10 +21,20 @@ export const YearCalendarCell = memo(function YearCalendarCell(props: Props) {
   })
   const yearNumber = yearItem.year.getFullYear()
 
+  const handleKeyDown = useEventCallback((e: React.KeyboardEvent) => {
+    if (!yearItem.isDisabled && onClick && (e.key === "Enter" || e.key === " ")) {
+      e.preventDefault()
+      onClick(yearItem.year)
+    }
+  })
+
   return (
     <div
       className={className}
       onClick={handleClick}
+      onKeyDown={handleKeyDown}
+      role="button"
+      tabIndex={yearItem.isDisabled ? -1 : 0}
       data-testid={yearNumber}
       data-selected={yearItem.isSelected}
       data-current={yearItem.isCurrent}

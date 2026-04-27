@@ -1,4 +1,4 @@
-import React, { memo } from "react"
+import React, { forwardRef, memo } from "react"
 import { errorMessageTv } from "./tv"
 
 export interface ErrorMessageProps extends React.HTMLAttributes<HTMLParagraphElement> {
@@ -6,17 +6,22 @@ export interface ErrorMessageProps extends React.HTMLAttributes<HTMLParagraphEle
   disabled?: boolean
 }
 
-export const ErrorMessage = memo(function ErrorMessage(props: ErrorMessageProps) {
-  const { children, className, disabled, ...rest } = props
+export const ErrorMessage = memo(
+  forwardRef<HTMLParagraphElement, ErrorMessageProps>((props, ref) => {
+    const { children, className, disabled, ...rest } = props
 
-  return (
-    <em
-      className={errorMessageTv({ disabled, className })}
-      slot="errorMessage"
-      role="alert"
-      {...rest}
-    >
-      {children}
-    </em>
-  )
-})
+    return (
+      <p
+        ref={ref}
+        className={errorMessageTv({ disabled, className })}
+        slot="errorMessage"
+        {...rest}
+        role="alert"
+      >
+        {children}
+      </p>
+    )
+  }),
+)
+
+ErrorMessage.displayName = "ErrorMessage"

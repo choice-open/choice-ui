@@ -13,14 +13,18 @@ export function handleScrollbarTrackClick(
 
   if (orientation === "vertical") {
     const clickY = e.clientY - rect.top
-    const scrollRatio = clickY / rect.height
+    const thumbRatio = scrollState.clientHeight / scrollState.scrollHeight
+    const thumbHeightOnTrack = thumbRatio * rect.height
+    const scrollRatio = (clickY - thumbHeightOnTrack / 2) / rect.height
     const maxScrollTop = scrollState.scrollHeight - scrollState.clientHeight
-    viewport.scrollTop = scrollRatio * maxScrollTop
+    viewport.scrollTop = Math.max(0, Math.min(scrollRatio * maxScrollTop, maxScrollTop))
   } else {
     const clickX = e.clientX - rect.left
-    const scrollRatio = clickX / rect.width
+    const thumbRatio = scrollState.clientWidth / scrollState.scrollWidth
+    const thumbWidthOnTrack = thumbRatio * rect.width
+    const scrollRatio = (clickX - thumbWidthOnTrack / 2) / rect.width
     const maxScrollLeft = scrollState.scrollWidth - scrollState.clientWidth
-    viewport.scrollLeft = scrollRatio * maxScrollLeft
+    viewport.scrollLeft = Math.max(0, Math.min(scrollRatio * maxScrollLeft, maxScrollLeft))
   }
 }
 

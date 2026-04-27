@@ -152,21 +152,26 @@ const ContextInputBase = forwardRef<ContextInputRef, ContextInputProps>(function
   // Wrap handleChange to check mention on content change
   const handleChange = useEventCallback((newValue: import("slate").Descendant[]) => {
     baseHandleChange(newValue)
-    // Defer mention check to avoid multiple state updates in same render cycle causing focus loss
-    requestAnimationFrame(() => {
-      mentions.checkMentionSearch()
-    })
+    mentions.checkMentionSearch()
   })
 
   // Keyboard event handler
   const handleKeyDown = useEventCallback((event: React.KeyboardEvent) => {
-    // First try to let MentionMenu handle keyboard events
+    if (mentions.handleKeyDown(event)) {
+      return
+    }
     if (mentionMenuRef.current?.handleKeyDown(event)) {
       return
     }
 
-    // Handle other keyboard events
     onKeyDown?.(event)
+  })
+
+  const handleKeyUp = useEventCallback((event: React.KeyboardEvent) => {
+    if (mentions.searchState.isSearching) {
+      return
+    }
+    mentions.checkMentionSearch()
   })
 
   // Handle suggestion selection
@@ -204,6 +209,7 @@ const ContextInputBase = forwardRef<ContextInputRef, ContextInputProps>(function
           renderMention={renderMention}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
+          onKeyUp={handleKeyUp}
           onCompositionStart={onCompositionStart}
           onCompositionEnd={onCompositionEnd}
           onFocus={onFocus}
@@ -218,8 +224,13 @@ const ContextInputBase = forwardRef<ContextInputRef, ContextInputProps>(function
       {afterElement}
       <MentionMenu
         ref={mentionMenuRef}
+        activeIndex={mentions.searchState.index}
         disabled={disabled}
-        isOpen={mentions.searchState.isSearching && !!mentions.searchState.position}
+        // Keep the menu closed until caret anchoring has produced a position.
+        // Combobox's coordinate mode reuses the last virtual position when
+        // a new one isn't supplied, so opening without a valid anchor would
+        // place the popup at stale (or 0,0) coordinates instead of the caret.
+        isOpen={mentions.searchState.isSearching && mentions.searchState.position !== null}
         onClose={mentions.closeMentionSearch}
         suggestions={mentions.searchState.suggestions}
         loading={mentions.searchState.loading}

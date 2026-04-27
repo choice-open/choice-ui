@@ -153,6 +153,8 @@ export const QuarterCalendar = forwardRef<HTMLDivElement, QuarterCalendarProps>(
   const handleNext = useEventCallback(() => navigateYear("next"))
 
   const handleToday = useEventCallback(() => {
+    if (disabled || readOnly) return
+
     const todayYear = quarterUtils.getCurrentYear()
     const todayQuarter = getCurrentQuarter(undefined, safeLocale)
 
@@ -196,6 +198,7 @@ export const QuarterCalendar = forwardRef<HTMLDivElement, QuarterCalendarProps>(
         handleToday={handleToday}
         isNextDisabled={navigationState.isNextDisabled}
         isPrevDisabled={navigationState.isPrevDisabled}
+        locale={safeLocale}
         variant={variant}
       />
 

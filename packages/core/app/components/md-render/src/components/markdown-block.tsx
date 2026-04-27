@@ -4,7 +4,7 @@ import remarkBreaks from "remark-breaks"
 import remarkGfm from "remark-gfm"
 import remarkMath from "remark-math"
 // import type only will not conflict with dynamic import of harden-react-markdown
-import type { BlockPolicyType, } from "harden-react-markdown"
+import type { BlockPolicyType } from "harden-react-markdown"
 import {
   MD_BLOCK_DEFAULT_ALLOWED_IMAGE_PREFIXES,
   MD_BLOCK_DEFAULT_ALLOWED_LINK_PREFIXES,
@@ -14,8 +14,8 @@ type HardenReactMarkdownProps = Options & {
   allowedImagePrefixes?: string[]
   allowedLinkPrefixes?: string[]
   defaultOrigin?: string
-  linkBlockPolicy?: BlockPolicyType;
-  imageBlockPolicy?: BlockPolicyType;
+  linkBlockPolicy?: BlockPolicyType
+  imageBlockPolicy?: BlockPolicyType
 }
 
 interface MarkdownBlockProps extends Omit<HardenReactMarkdownProps, "children"> {
@@ -27,8 +27,8 @@ type HardenedMarkdownComponent = ComponentType<
   Options & {
     allowedImagePrefixes?: string[]
     allowedLinkPrefixes?: string[]
-    linkBlockPolicy?: BlockPolicyType;
-    imageBlockPolicy?: BlockPolicyType;
+    linkBlockPolicy?: BlockPolicyType
+    imageBlockPolicy?: BlockPolicyType
     defaultOrigin?: string
   }
 >
@@ -104,6 +104,11 @@ export const MarkdownBlock = memo(
     )
   },
   function propsAreEqual(prevProps, nextProps) {
-    return prevProps.content === nextProps.content
+    return (
+      prevProps.content === nextProps.content &&
+      prevProps.components === nextProps.components &&
+      prevProps.linkBlockPolicy === nextProps.linkBlockPolicy &&
+      prevProps.imageBlockPolicy === nextProps.imageBlockPolicy
+    )
   },
 )

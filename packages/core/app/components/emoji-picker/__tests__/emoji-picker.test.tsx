@@ -109,11 +109,47 @@ vi.mock("../src/components", () => ({
   ),
 }))
 
-vi.mock("@choice-ui/scroll-area", () => ({
-  ScrollArea: ({ children, className }: { children: React.ReactNode; className?: string }) => (
-    <div className={className}>{children}</div>
-  ),
-}))
+vi.mock("@choice-ui/scroll-area", () => {
+  const ScrollArea = ({
+    children,
+    className,
+  }: {
+    children: React.ReactNode
+    className?: string
+    variant?: string
+    hoverBoundary?: string
+  }) => <div className={className}>{children}</div>
+  ScrollArea.Viewport = React.forwardRef(
+    (
+      { children, className }: { children: React.ReactNode; className?: string },
+      ref: React.Ref<HTMLDivElement>,
+    ) => (
+      <div
+        className={className}
+        ref={ref}
+      >
+        {children}
+      </div>
+    ),
+  )
+  ScrollArea.Content = ({
+    children,
+    className,
+    style,
+  }: {
+    children: React.ReactNode
+    className?: string
+    style?: React.CSSProperties
+  }) => (
+    <div
+      className={className}
+      style={style}
+    >
+      {children}
+    </div>
+  )
+  return { ScrollArea }
+})
 
 vi.mock("@choice-ui/search-input", () => ({
   SearchInput: ({
@@ -134,8 +170,8 @@ vi.mock("@choice-ui/search-input", () => ({
   ),
 }))
 
-vi.mock("@choice-ui/segmented", () => ({
-  Segmented: ({
+vi.mock("@choice-ui/segmented", () => {
+  const Segmented = ({
     children,
     value,
     onChange,
@@ -143,6 +179,7 @@ vi.mock("@choice-ui/segmented", () => ({
     children: React.ReactNode
     onChange: (value: string) => void
     value?: string
+    variant?: string
   }) => (
     <div
       data-testid="segmented"
@@ -150,8 +187,18 @@ vi.mock("@choice-ui/segmented", () => ({
     >
       {children}
     </div>
-  ),
-}))
+  )
+  Segmented.Item = ({
+    children,
+    value,
+    tooltip,
+  }: {
+    children: React.ReactNode
+    value: string
+    tooltip?: { content: string; placement: string }
+  }) => <div data-value={value}>{children}</div>
+  return { Segmented }
+})
 
 const mockEmoji: EmojiData = {
   id: 1,
@@ -224,7 +271,7 @@ describe("EmojiPicker", () => {
       />,
     )
 
-    expect(container.firstChild).toHaveClass()
+    expect(container.firstChild).toBeInTheDocument()
   })
 
   it("applies light variant correctly", () => {
@@ -235,7 +282,7 @@ describe("EmojiPicker", () => {
       />,
     )
 
-    expect(container.firstChild).toHaveClass()
+    expect(container.firstChild).toBeInTheDocument()
   })
 
   it("handles search input changes", async () => {

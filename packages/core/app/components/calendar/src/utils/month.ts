@@ -2,6 +2,7 @@ import {
   addDays,
   addMonths,
   eachDayOfInterval,
+  endOfDay,
   endOfMonth,
   endOfWeek,
   format,
@@ -9,6 +10,7 @@ import {
   isSameDay,
   isSameMonth,
   isSameYear,
+  startOfDay,
   startOfMonth,
   startOfWeek,
   type Locale,
@@ -30,6 +32,8 @@ export const dateUtils = {
   endOfMonth,
   startOfWeek,
   endOfWeek,
+  startOfDay,
+  endOfDay,
 }
 
 // Generate weekday names (using date-fns multilingual)

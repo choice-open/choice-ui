@@ -1,3 +1,4 @@
+import { findSlotChild } from "@choice-ui/shared"
 import {
   MenuButton,
   MenuContext,
@@ -36,7 +37,6 @@ import {
   useHover,
   useInteractions,
   useListNavigation,
-  useRole,
   useTypeahead,
   type FloatingFocusManagerProps,
   type Placement,
@@ -93,7 +93,7 @@ interface ContextMenuComponentProps extends React.ForwardRefExoticComponent<
   Label: typeof MenuContextLabel
   Search: typeof MenuSearch
   SubTrigger: typeof MenuContextSubTrigger
-  Trigger: React.FC<ContextMenuTriggerProps>
+  Trigger: typeof ContextMenuTrigger
   Value: typeof MenuValue
 }
 
@@ -163,6 +163,7 @@ const ContextMenuComponent = memo(function ContextMenuComponent(props: ContextMe
   // References
   const { scrollRef, elementsRef, labelsRef, selectTimeoutRef } = useMenuBaseRefs()
   const allowMouseUpCloseRef = useRef(false)
+  const mouseUpTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   // State management
   const [isOpen, setIsOpen] = useState(false)
@@ -256,7 +257,6 @@ const ContextMenuComponent = memo(function ContextMenuComponent(props: ContextMe
     stickIfOpen: false,
   })
 
-  const role = useRole(context, { role: "menu" })
   const dismiss = useDismiss(context, {
     bubbles: true,
     escapeKey: true,
@@ -279,7 +279,6 @@ const ContextMenuComponent = memo(function ContextMenuComponent(props: ContextMe
   const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions([
     hover,
     click,
-    role,
     dismiss,
     listNavigation,
     typeahead,
@@ -311,13 +310,15 @@ const ContextMenuComponent = memo(function ContextMenuComponent(props: ContextMe
 
     handleOpenChange(true)
 
-    // Handle mouse up close behavior
-    allowMouseUpCloseRef.current = false
-    const timeout = setTimeout(() => {
-      allowMouseUpCloseRef.current = true
-    }, 200)
+    if (mouseUpTimeoutRef.current !== null) {
+      clearTimeout(mouseUpTimeoutRef.current)
+    }
 
-    return () => clearTimeout(timeout)
+    allowMouseUpCloseRef.current = false
+    mouseUpTimeoutRef.current = setTimeout(() => {
+      allowMouseUpCloseRef.current = true
+      mouseUpTimeoutRef.current = null
+    }, 200)
   })
 
   // Tree event handling is managed by useMenuTree
@@ -415,26 +416,13 @@ const ContextMenuComponent = memo(function ContextMenuComponent(props: ContextMe
     handleOpenChange(false)
   })
 
-  // Process children
+  // Process children — uses findSlotChild from @choice-ui/shared so
+  // memo-wrapped or div-wrapped slots are still found.
   const { targetElement, subTriggerElement, contentElement } = useMemo(() => {
-    const childrenArray = React.Children.toArray(children)
-
-    const target = childrenArray.find(
-      (child) => React.isValidElement(child) && child.type === ContextMenuTrigger,
-    ) as React.ReactElement | null
-
-    const subTrigger = childrenArray.find(
-      (child) => React.isValidElement(child) && child.type === MenuContextSubTrigger,
-    ) as React.ReactElement | null
-
-    const content = childrenArray.find(
-      (child) => React.isValidElement(child) && child.type === MenuContextContent,
-    ) as React.ReactElement | null
-
     return {
-      targetElement: target,
-      subTriggerElement: subTrigger,
-      contentElement: content,
+      targetElement: findSlotChild(children, ContextMenuTrigger) ?? null,
+      subTriggerElement: findSlotChild(children, MenuContextSubTrigger) ?? null,
+      contentElement: findSlotChild(children, MenuContextContent) ?? null,
     }
   }, [children])
 
@@ -523,6 +511,16 @@ const ContextMenuComponent = memo(function ContextMenuComponent(props: ContextMe
                     {...getFloatingProps({
                       onContextMenu(e: React.MouseEvent) {
                         e.preventDefault()
+                      },
+                      onKeyDown(e: React.KeyboardEvent) {
+                        const target = e.target as HTMLElement
+                        if (
+                          (e.key === "Enter" || e.key === "ArrowRight") &&
+                          target.getAttribute("aria-haspopup") === "menu"
+                        ) {
+                          e.preventDefault()
+                          target.click()
+                        }
                       },
                     })}
                   >

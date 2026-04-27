@@ -16,6 +16,7 @@ export const Skeleton = memo(
       style,
       asChild,
       loading: loadingProp,
+      variant: _variant,
       ...rest
     } = props
 
@@ -36,7 +37,7 @@ export const Skeleton = memo(
           loading,
           hasChildren,
         }),
-      [loading],
+      [loading, hasChildren],
     )
 
     // Cache merged style object

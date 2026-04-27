@@ -120,7 +120,7 @@ describe("Pagination", () => {
     it("applies loading state to navigation buttons", () => {
       render(
         <Pagination
-          currentPage={1}
+          currentPage={2}
           totalItems={100}
           loading={true}
         >
@@ -129,7 +129,6 @@ describe("Pagination", () => {
       )
 
       const pageButton = screen.getByLabelText("Page 2")
-      // Loading state is shown via the loading prop on Button component
       expect(pageButton).toHaveAttribute("aria-busy", "true")
     })
   })

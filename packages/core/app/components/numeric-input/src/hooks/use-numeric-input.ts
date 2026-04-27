@@ -198,7 +198,17 @@ export function useNumericInput<T extends NumericInputValue>(props: UseNumericIn
         return valuePre
       })
     },
-    [disabled, readOnly, setValue, max, min, decimal, onChange, expressionRef, mapResultToOutputValue],
+    [
+      disabled,
+      readOnly,
+      setValue,
+      max,
+      min,
+      decimal,
+      onChange,
+      expressionRef,
+      mapResultToOutputValue,
+    ],
   )
 
   // 5. Input interaction processing
@@ -239,6 +249,8 @@ export function useNumericInput<T extends NumericInputValue>(props: UseNumericIn
       const wasFocused = isFocused
       if (onPressStart && "nativeEvent" in e) {
         onPressStart(e.nativeEvent as PointerEvent)
+      } else {
+        onPressStart?.(e as PointerEvent)
       }
 
       // If previously focused, refocus and select after requestPointerLock
@@ -248,8 +260,6 @@ export function useNumericInput<T extends NumericInputValue>(props: UseNumericIn
           innerRef.current?.select()
         })
       }
-
-      onPressStart?.(e as PointerEvent)
     },
     onPressEnd: (e) => {
       // If previously focused, refocus and select after exitPointerLock
@@ -261,9 +271,9 @@ export function useNumericInput<T extends NumericInputValue>(props: UseNumericIn
       }
       if (onPressEnd && "nativeEvent" in e) {
         onPressEnd(e.nativeEvent as PointerEvent)
+      } else {
+        onPressEnd?.(e as PointerEvent)
       }
-
-      onPressEnd?.(e as PointerEvent)
 
       if (
         dragHasChangedRef.current &&

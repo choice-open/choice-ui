@@ -160,6 +160,7 @@ const ColorSliderRoot = memo(
       const newPosition = clamp((clientX - rect.left) / rect.width, 0, 0.999)
 
       if (isEnd) {
+        onChange?.(newPosition)
         isDragging.current = false
       } else {
         onChange?.(newPosition)

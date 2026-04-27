@@ -21,6 +21,18 @@ export function Conditions({
   renderers,
   localization = DEFAULT_LOCALIZATION,
 }: ConditionsProps) {
+  const normalizedFields = useMemo(
+    () =>
+      fields.map((f) => {
+        const legacy = f as unknown as { key?: string; name?: string }
+        return {
+          ...f,
+          key: legacy.key || legacy.name || "",
+        }
+      }),
+    [fields],
+  )
+
   const [conditions, setConditions] = useState<ConditionsRoot>(
     value || {
       id: "root",
@@ -41,6 +53,31 @@ export function Conditions({
       ],
     },
   )
+
+  const isInitialMountRef = useRef(true)
+  // Set when an update is driven by the `value` prop so the onChange-emit
+  // effect can skip the echo back to the parent. Without this, controlled
+  // consumers see their own `value` updates round-trip through `onChange`,
+  // which can trigger duplicate side effects or feedback loops when the
+  // parent recreates the value object on each render.
+  //
+  // The lastValueRef guard ensures we only set skip when the value prop
+  // *actually* changes — otherwise the mount-time effect (where useState's
+  // initial value already equals the `value` prop, so setConditions is a
+  // no-op) leaves a stale `skip = true` that swallows the first real user
+  // action's onChange.
+  const skipNextOnChangeRef = useRef(false)
+  const lastValueRef = useRef(value)
+
+  useEffect(() => {
+    if (value !== lastValueRef.current) {
+      lastValueRef.current = value
+      if (value) {
+        skipNextOnChangeRef.current = true
+        setConditions(value)
+      }
+    }
+  }, [value])
 
   // 全局拖拽状态管理
   const [globalDragData, setGlobalDragData] = useState<{
@@ -90,6 +127,14 @@ export function Conditions({
 
   // 当内部状态变化时通知父组件
   useEffect(() => {
+    if (isInitialMountRef.current) {
+      isInitialMountRef.current = false
+      return
+    }
+    if (skipNextOnChangeRef.current) {
+      skipNextOnChangeRef.current = false
+      return
+    }
     onChange?.(conditions)
   }, [conditions, onChange])
 
@@ -278,7 +323,7 @@ export function Conditions({
 
               <CustomGroupComponent
                 group={group}
-                fields={fields}
+                fields={normalizedFields}
                 onUpdate={(updatedGroup) => {
                   handleGroupUpdate(group.id, updatedGroup)
                 }}

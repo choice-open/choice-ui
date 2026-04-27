@@ -30,10 +30,16 @@ export const useTreeContext = () => {
 // 默认节点高度
 const DEFAULT_NODE_HEIGHT = 32
 
+// Stable empty set used when `selectedNodeIds` prop is omitted. Allocating a
+// new Set on every render would invalidate every dependency array that
+// references `selectedNodeIds` (selection mapping, auto-expand, auto-scroll),
+// re-running their effects/memos even when nothing changed.
+const EMPTY_SELECTED_NODE_IDS: ReadonlySet<string> = new Set<string>()
+
 export const TreeList = React.forwardRef<TreeListHandle, TreeListProps>((props, ref) => {
   const {
     data,
-    selectedNodeIds,
+    selectedNodeIds: selectedNodeIdsProp,
     initialExpandedNodeIds,
     className,
     style,
@@ -57,6 +63,8 @@ export const TreeList = React.forwardRef<TreeListHandle, TreeListProps>((props, 
     onMouseDown,
     showFullPathOnRename,
   } = props
+
+  const selectedNodeIds = selectedNodeIdsProp ?? (EMPTY_SELECTED_NODE_IDS as Set<string>)
 
   // 跟踪节点最大宽度的状态
   const [maxNodeWidth, setMaxNodeWidth] = useState<number>(0)

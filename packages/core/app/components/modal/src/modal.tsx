@@ -38,6 +38,8 @@ const ModalBase = forwardRef<HTMLDivElement, ModalProps>((props, ref) => {
     <As
       ref={ref}
       className={tcx(tv.root(), className)}
+      role="dialog"
+      aria-modal="true"
       {...rest}
     />
   )

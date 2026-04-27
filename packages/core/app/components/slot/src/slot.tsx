@@ -59,31 +59,41 @@ SlotClone.displayName = "SlotClone"
  * Based on Radix UI implementation
  */
 function mergeProps(slotProps: Record<string, unknown>, childProps: Record<string, unknown>) {
-  const overrideProps = { ...childProps }
+  const result: Record<string, unknown> = {}
 
-  for (const propName in childProps) {
+  const allPropNames = new Set([...Object.keys(slotProps), ...Object.keys(childProps)])
+
+  for (const propName of allPropNames) {
     const slotPropValue = slotProps[propName]
     const childPropValue = childProps[propName]
 
     const isHandler = /^on[A-Z]/.test(propName)
     if (isHandler) {
       if (slotPropValue && childPropValue) {
-        overrideProps[propName] = (...args: unknown[]) => {
-          const result = (childPropValue as (...args: unknown[]) => unknown)(...args)
+        result[propName] = (...args: unknown[]) => {
+          const res = (childPropValue as (...args: unknown[]) => unknown)(...args)
           ;(slotPropValue as (...args: unknown[]) => void)(...args)
-          return result
+          return res
         }
       } else if (slotPropValue) {
-        overrideProps[propName] = slotPropValue
+        result[propName] = slotPropValue
+      } else {
+        result[propName] = childPropValue
       }
     } else if (propName === "style") {
-      overrideProps[propName] = { ...(slotPropValue as object), ...(childPropValue as object) }
+      result[propName] = { ...(slotPropValue as object), ...(childPropValue as object) }
     } else if (propName === "className") {
-      overrideProps[propName] = [slotPropValue, childPropValue].filter(Boolean).join(" ")
+      result[propName] = [slotPropValue, childPropValue].filter(Boolean).join(" ")
+    } else if (propName in slotProps && propName in childProps) {
+      result[propName] = slotPropValue !== undefined ? slotPropValue : childPropValue
+    } else if (propName in slotProps) {
+      result[propName] = slotPropValue
+    } else {
+      result[propName] = childPropValue
     }
   }
 
-  return { ...slotProps, ...overrideProps }
+  return result
 }
 
 /**

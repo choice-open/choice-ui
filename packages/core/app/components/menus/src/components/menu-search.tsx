@@ -53,35 +53,38 @@ interface MenuSearchEmptyProps extends React.HTMLAttributes<HTMLDivElement> {
   onClear?: () => void
 }
 
-export const MenuSearchEmpty = memo(function MenuSearchEmpty(props: MenuSearchEmptyProps) {
-  const {
-    onClear,
-    className,
-    children,
-    defaultText = {
-      searchEmpty: "No results found, please try another keyword",
-      searchEmptyButton: "Clear",
-    },
-    ...rest
-  } = props
+export const MenuSearchEmpty = memo(
+  forwardRef<HTMLDivElement, MenuSearchEmptyProps>((props, ref) => {
+    const {
+      onClear,
+      className,
+      children,
+      defaultText = {
+        searchEmpty: "No results found, please try another keyword",
+        searchEmptyButton: "Clear",
+      },
+      ...rest
+    } = props
 
-  const tv = MenuSearchEmptyTv()
+    const tv = MenuSearchEmptyTv()
 
-  return (
-    <div
-      {...rest}
-      className={tcx(tv.root(), className)}
-    >
-      {children}
-      <span className={tv.text()}>{defaultText.searchEmpty}</span>
-      <Button
-        variant="link"
-        onClick={onClear}
+    return (
+      <div
+        ref={ref}
+        {...rest}
+        className={tcx(tv.root(), className)}
       >
-        {defaultText.searchEmptyButton}
-      </Button>
-    </div>
-  )
-})
+        {children}
+        <span className={tv.text()}>{defaultText.searchEmpty}</span>
+        <Button
+          variant="link"
+          onClick={onClear}
+        >
+          {defaultText.searchEmptyButton}
+        </Button>
+      </div>
+    )
+  }),
+)
 
 MenuSearchEmpty.displayName = "MenuSearchEmpty"

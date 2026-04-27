@@ -1,3 +1,4 @@
+import { vi } from "vitest"
 import { render, screen, waitFor, fireEvent } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import "@testing-library/jest-dom"
@@ -30,7 +31,7 @@ describe("TimeInput - Extended Tests", () => {
       ]
 
       for (const testCase of testCases) {
-        const handleChange = jest.fn()
+        const handleChange = vi.fn()
         const { unmount } = render(
           <TimeInput
             onChange={handleChange}
@@ -67,7 +68,7 @@ describe("TimeInput - Extended Tests", () => {
       ]
 
       for (const testCase of testCases) {
-        const handleChange = jest.fn()
+        const handleChange = vi.fn()
         const { unmount } = render(
           <TimeInput
             onChange={handleChange}
@@ -96,7 +97,7 @@ describe("TimeInput - Extended Tests", () => {
 
     it("应该处理模糊的时间输入", async () => {
       const user = userEvent.setup()
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
 
       render(
         <TimeInput
@@ -194,7 +195,7 @@ describe("TimeInput - Extended Tests", () => {
   describe("复杂键盘交互", () => {
     it("应该在跨小时边界时正确调整时间", async () => {
       const user = userEvent.setup()
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
       const testTime = createTestTime(23, 59) // 23:59
 
       render(
@@ -220,7 +221,7 @@ describe("TimeInput - Extended Tests", () => {
 
     it("应该在跨天边界时正确调整时间", async () => {
       const user = userEvent.setup()
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
       const testTime = createTestTime(0, 0) // 00:00
 
       render(
@@ -249,7 +250,7 @@ describe("TimeInput - Extended Tests", () => {
   describe("时间范围和约束", () => {
     it("应该正确处理工作时间约束", async () => {
       const user = userEvent.setup()
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
       const workTimeStart = createTestTime(9, 0)
       const workTimeEnd = createTestTime(17, 30)
 
@@ -296,7 +297,7 @@ describe("TimeInput - Extended Tests", () => {
 
     it("应该在范围约束下正确处理键盘导航", async () => {
       const user = userEvent.setup()
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
       const minTime = createTestTime(9, 0)
       const maxTime = createTestTime(17, 0)
       const currentTime = createTestTime(16, 55) // 接近最大时间
@@ -455,7 +456,7 @@ describe("TimeInput - Extended Tests", () => {
   describe("性能和优化", () => {
     it("应该正确处理大量快速输入", async () => {
       const user = userEvent.setup()
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
 
       render(
         <TimeInput
@@ -482,7 +483,7 @@ describe("TimeInput - Extended Tests", () => {
 
     it("缓存机制应该提高重复输入的性能", async () => {
       const user = userEvent.setup()
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
       const startTime = performance.now()
 
       render(
@@ -520,7 +521,7 @@ describe("TimeInput - Extended Tests", () => {
   describe("集成测试", () => {
     it("应该与表单库正确集成", async () => {
       const user = userEvent.setup()
-      const handleSubmit = jest.fn()
+      const handleSubmit = vi.fn()
 
       const FormComponent = () => {
         const [formData, setFormData] = useState({
@@ -588,8 +589,8 @@ describe("TimeInput - Extended Tests", () => {
   describe("错误处理和恢复", () => {
     it("应该从解析错误中优雅恢复", async () => {
       const user = userEvent.setup()
-      const handleChange = jest.fn()
-      const handleError = jest.fn()
+      const handleChange = vi.fn()
+      const handleError = vi.fn()
 
       render(
         <TimeInput
@@ -620,7 +621,7 @@ describe("TimeInput - Extended Tests", () => {
 
     it("应该处理异步操作中的竞态条件", async () => {
       const user = userEvent.setup()
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
 
       render(
         <TimeInput

@@ -193,8 +193,14 @@ export const MonthCalendar = memo(function MonthCalendar(props: MonthCalendarPro
   // Check if it is disabled
   const isDateDisabled = useCallback(
     (date: Date): boolean => {
-      if (minDate && date < minDate) return true
-      if (maxDate && date > maxDate) return true
+      if (minDate) {
+        const minDateStart = dateUtils.startOfDay(minDate)
+        if (date < minDateStart) return true
+      }
+      if (maxDate) {
+        const maxDateEnd = dateUtils.endOfDay(maxDate)
+        if (date > maxDateEnd) return true
+      }
       return disabledDates.some((disabledDate) => isSameDayInTimeZone(date, disabledDate, timeZone))
     },
     [minDate, maxDate, disabledDates, timeZone],
