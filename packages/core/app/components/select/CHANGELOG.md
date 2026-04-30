@@ -2,6 +2,13 @@
 
 All notable changes to the Select component will be documented in this file.
 
+## [2026-05-01]
+
+### Fixed
+
+- fix: pass through all user props (event handlers, className, ref, etc.) from `Select.Item` to `MenuContextItem` instead of silently discarding them
+- fix: merge user ref with internal registerItem ref
+
 ## [2025-11-26]
 
 ### Changed

@@ -6,7 +6,7 @@ import {
   Settings,
 } from "@choiceform/icons-react"
 import type { Meta, StoryObj } from "@storybook/react-vite"
-import React, { useMemo, useRef, useState } from "react"
+import React, { useCallback, useMemo, useRef, useState } from "react"
 
 const meta: Meta<typeof Select> = {
   title: "Collections/Select",
@@ -1200,6 +1200,102 @@ export const Multiple: Story = {
             <li>Second: {value2}</li>
             <li>Third: {value3}</li>
           </ul>
+        </div>
+      </div>
+    )
+  },
+}
+
+/**
+ * ItemMouseEvents: Demonstrates onMouseEnter and onMouseLeave support on Select.Item.
+ *
+ * Features:
+ * - User-provided onMouseEnter/onMouseLeave handlers are correctly called
+ * - Hover state tracking per item
+ * - Event handlers coexist with floating-ui's internal navigation
+ * - Ref forwarding to Select.Item works correctly
+ *
+ * Use cases:
+ * - Showing tooltips or previews on item hover
+ * - Tracking hover analytics
+ * - Custom hover visual effects
+ */
+export const ItemMouseEvents: Story = {
+  render: function ItemMouseEventsStory() {
+    const [value, setValue] = useState<string>("apple")
+    const [hoveredItem, setHoveredItem] = useState<string | null>(null)
+    const [eventLog, setEventLog] = useState<string[]>([])
+    const itemRef = useRef<HTMLButtonElement>(null)
+
+    const options = [
+      { value: "apple", label: "Apple", description: "A sweet red fruit" },
+      { value: "banana", label: "Banana", description: "A yellow tropical fruit" },
+      { value: "cherry", label: "Cherry", description: "A small stone fruit" },
+      { value: "grape", label: "Grape", description: "Grows in clusters on vines" },
+      { value: "mango", label: "Mango", description: "The king of fruits" },
+    ]
+
+    const addLog = useCallback((msg: string) => {
+      setEventLog((prev) => [...prev.slice(-9), msg])
+    }, [])
+
+    return (
+      <div className="flex gap-8">
+        <div className="flex flex-col gap-4">
+          <Select value={value} onChange={setValue}>
+            <Select.Trigger className="w-48">
+              <Select.Value>
+                {options.find((o) => o.value === value)?.label || "Select a fruit..."}
+              </Select.Value>
+            </Select.Trigger>
+            <Select.Content>
+              {options.map((option) => (
+                <Select.Item
+                  key={option.value}
+                  value={option.value}
+                  ref={option.value === "apple" ? itemRef : undefined}
+                  onMouseEnter={() => {
+                    setHoveredItem(option.value)
+                    addLog(`mouseenter: ${option.label}`)
+                  }}
+                  onMouseLeave={() => {
+                    setHoveredItem(null)
+                    addLog(`mouseleave: ${option.label}`)
+                  }}
+                >
+                  <Select.Value>{option.label}</Select.Value>
+                </Select.Item>
+              ))}
+            </Select.Content>
+          </Select>
+
+          {hoveredItem && (
+            <div className="bg-secondary-background rounded-xl p-3">
+              <p className="text-body-small-strong">
+                {options.find((o) => o.value === hoveredItem)?.label}
+              </p>
+              <p className="text-secondary-foreground text-body-small">
+                {options.find((o) => o.value === hoveredItem)?.description}
+              </p>
+            </div>
+          )}
+        </div>
+
+        <div className="bg-secondary-background w-64 rounded-xl p-4">
+          <p className="text-body-small-strong mb-2">Event Log</p>
+          <div className="flex flex-col gap-0.5">
+            {eventLog.length === 0 ? (
+              <p className="text-secondary-foreground text-body-small">
+                Hover over items to see events...
+              </p>
+            ) : (
+              eventLog.map((log, i) => (
+                <p key={i} className="text-body-small font-mono">
+                  {log}
+                </p>
+              ))
+            )}
+          </div>
         </div>
       </div>
     )

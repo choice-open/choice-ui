@@ -479,9 +479,20 @@ const SelectComponent = memo(function SelectComponent(props: SelectProps) {
       const isSelected = currentSelectedIndex === currentSelectableIndex
       const isDisabled = !!option.disabled
 
-      // Check if custom onClick exists
-      const childProps = option.element?.props as MenuContextItemProps
-      const customActive = childProps?.onClick
+      // Extract user passthrough props (everything except what Select handles explicitly)
+      const childProps = (option.element?.props || {}) as MenuContextItemProps & Record<string, unknown>
+      const {
+        value: _value,
+        children: _children,
+        disabled: _disabled,
+        onClick: userOnClick,
+        ...passthroughProps
+      } = childProps
+
+      const customActive = userOnClick
+
+      // Merge user ref with internal registerItem ref
+      const elementRef = (option.element as React.ReactElement & { ref?: React.Ref<HTMLButtonElement> })?.ref
 
       // Event handlers
       const eventHandlers = {
@@ -496,7 +507,7 @@ const SelectComponent = memo(function SelectComponent(props: SelectProps) {
         },
         onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
           if (customActive) {
-            childProps.onClick?.(e)
+            userOnClick?.(e)
           } else {
             handleSelect(currentSelectableIndex)
           }
@@ -530,12 +541,17 @@ const SelectComponent = memo(function SelectComponent(props: SelectProps) {
       return (
         <MenuContextItem
           key={option.value || `item-${index}`}
+          {...passthroughProps}
           value={option.value || ""}
-          ref={(node: HTMLButtonElement | null) => registerItem(currentSelectableIndex, node)}
+          ref={(node: HTMLButtonElement | null) => {
+            registerItem(currentSelectableIndex, node)
+            if (typeof elementRef === "function") elementRef(node)
+            else if (elementRef && typeof elementRef === "object")
+              (elementRef as React.MutableRefObject<HTMLButtonElement | null>).current = node
+          }}
           selected={isSelected}
           disabled={isDisabled}
           size={sizeProp}
-          variant={childProps?.variant}
           customActive={customActive ? true : undefined}
           {...eventHandlers}
         >
