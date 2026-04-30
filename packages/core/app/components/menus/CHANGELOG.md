@@ -2,6 +2,12 @@
 
 All notable changes to the Menus component will be documented in this file.
 
+## [2026-04-30]
+
+### Fixed
+
+- fix: pass user event handlers through `getItemProps()` so floating-ui merges them correctly instead of silently overwriting (`onMouseEnter`, `onMouseLeave`, `onMouseMove`, etc.)
+
 ## [2025-12-06]
 
 ### Changed

@@ -174,7 +174,6 @@ export const MenuContextItem = memo(
 
       return (
         <MenuItem
-          {...rest}
           ref={combinedRef}
           active={isActive}
           disabled={disabled}
@@ -185,6 +184,7 @@ export const MenuContextItem = memo(
           variant={variant}
           size={size}
           {...menu.getItemProps({
+            ...rest,
             onClick: handleClick,
             onMouseDown: handleMouseDown,
             onMouseUp: handleMouseUp,
