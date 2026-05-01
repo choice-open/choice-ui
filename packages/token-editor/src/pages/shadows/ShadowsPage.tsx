@@ -1,4 +1,7 @@
+import { Checkbox, IconButton, NumericInput } from "@choice-ui/react"
+import { ArrowDown, ArrowUp, Trash } from "@choiceform/icons-react"
 import { useMemo } from "react"
+import { ShadowColorPopover } from "../../components/ShadowColorPopover"
 import { isTokenNode, type W3CTokenNode, type W3CTree } from "../../lib/w3c"
 import { useEditorStore } from "../../state/store"
 
@@ -163,80 +166,125 @@ function LayerCard({
   onMoveDown: () => void
 }) {
   return (
-    <div className="grid grid-cols-[auto_repeat(4,minmax(0,1fr))_2fr_auto_auto] items-center gap-1 rounded border border-border-default bg-background-component/50 p-1.5 text-body-medium">
-      <span className="px-1 text-text-tertiary">{index + 1}</span>
-      <PxInput label="X" value={layer.offsetX} onChange={(v) => onUpdate({ offsetX: v })} />
-      <PxInput label="Y" value={layer.offsetY} onChange={(v) => onUpdate({ offsetY: v })} />
-      <PxInput label="B" value={layer.blur} onChange={(v) => onUpdate({ blur: v })} />
-      <PxInput label="S" value={layer.spread} onChange={(v) => onUpdate({ spread: v })} />
-      <input
-        type="text"
-        value={layer.color ?? ""}
-        onChange={(e) => onUpdate({ color: e.target.value })}
-        className="w-full rounded border border-border-default bg-background-default px-1.5 py-1 font-mono text-body-small outline-none focus:border-border-strong"
-        placeholder="rgba(...)"
-      />
-      <label className="flex items-center gap-1 px-1 text-body-small text-text-secondary">
-        <input
-          type="checkbox"
-          checked={!!layer.inset}
-          onChange={(e) => onUpdate({ inset: e.target.checked || undefined })}
-        />
-        in
-      </label>
-      <div className="flex flex-col">
-        <button
-          type="button"
-          disabled={!canMoveUp}
-          onClick={onMoveUp}
-          className="px-1 text-body-small text-text-secondary disabled:opacity-30 hover:text-text-default"
-          title="move up"
-        >
-          ▲
-        </button>
-        <button
-          type="button"
-          disabled={!canMoveDown}
-          onClick={onMoveDown}
-          className="px-1 text-body-small text-text-secondary disabled:opacity-30 hover:text-text-default"
-          title="move down"
-        >
-          ▼
-        </button>
+    <div className="flex flex-col gap-2 rounded border border-border-default bg-background-component/50 p-2.5 text-body-medium">
+      <div className="flex items-center justify-between">
+        <span className="text-body-small text-text-tertiary">
+          {layer.inset ? "Inner shadow" : "Drop shadow"} · {index + 1}
+        </span>
+        <div className="flex items-center gap-0.5">
+          <IconButton
+            variant="ghost"
+            disabled={!canMoveUp}
+            onClick={onMoveUp}
+            aria-label="Move up"
+          >
+            <ArrowUp />
+          </IconButton>
+          <IconButton
+            variant="ghost"
+            disabled={!canMoveDown}
+            onClick={onMoveDown}
+            aria-label="Move down"
+          >
+            <ArrowDown />
+          </IconButton>
+          <IconButton variant="ghost" onClick={onRemove} aria-label="Remove layer">
+            <Trash />
+          </IconButton>
+        </div>
       </div>
-      <button
-        type="button"
-        onClick={onRemove}
-        className="px-1.5 text-text-secondary hover:text-text-danger"
-        title="remove"
-      >
-        ×
-      </button>
+
+      <Field label="Position">
+        <PxRow
+          glyph="X"
+          value={layer.offsetX}
+          onChange={(v) => onUpdate({ offsetX: v })}
+        />
+        <PxRow
+          glyph="Y"
+          value={layer.offsetY}
+          onChange={(v) => onUpdate({ offsetY: v })}
+        />
+      </Field>
+
+      <Field label="Blur">
+        <PxRow
+          glyph="B"
+          value={layer.blur}
+          onChange={(v) => onUpdate({ blur: v })}
+        />
+      </Field>
+
+      <Field label="Spread">
+        <PxRow
+          glyph="S"
+          value={layer.spread}
+          onChange={(v) => onUpdate({ spread: v })}
+        />
+      </Field>
+
+      <Field label="Color">
+        <ShadowColorPopover
+          value={layer.color}
+          onChange={(v) => onUpdate({ color: v })}
+        />
+      </Field>
+
+      <Field label="Inset">
+        <Checkbox
+          value={!!layer.inset}
+          onChange={(v) => onUpdate({ inset: v || undefined })}
+        >
+          Render shadow inside the box
+        </Checkbox>
+      </Field>
     </div>
   )
 }
 
-function PxInput({
+/**
+ * Figma's editor uses fixed-width labels with the input rail to the right.
+ * Same here — keeps every row aligned even when one input has a glyph
+ * decoration and another (Color) is a swatch + hex + alpha pair.
+ */
+function Field({
+  label,
+  children,
+}: {
+  label: string
+  children: React.ReactNode
+}) {
+  return (
+    <div className="grid grid-cols-[64px_1fr] items-start gap-2">
+      <span className="pt-1 text-body-small text-text-secondary">{label}</span>
+      <div className="flex flex-col gap-1">{children}</div>
+    </div>
+  )
+}
+
+function PxRow({
+  glyph,
   value,
   onChange,
-  label,
 }: {
+  glyph: string
   value: string | undefined
   onChange: (next: string) => void
-  label: string
 }) {
   const num = parsePx(value)
   return (
-    <label className="flex items-center gap-1">
-      <span className="text-body-small text-text-tertiary">{label}</span>
-      <input
-        type="number"
-        step={0.5}
-        value={Number.isFinite(num) ? num : 0}
-        onChange={(e) => onChange(formatPx(Number.parseFloat(e.target.value)))}
-        className="w-full min-w-0 rounded border border-border-default bg-background-default px-1.5 py-1 font-mono text-body-small outline-none focus:border-border-strong"
-      />
-    </label>
+    <NumericInput
+      value={Number.isFinite(num) ? num : 0}
+      expression="{value}px"
+      onChange={(v) => {
+        const n = typeof v === "number" ? v : Number.parseFloat(String(v))
+        onChange(formatPx(n))
+      }}
+    >
+      <NumericInput.Prefix>
+        <span className="font-mono text-body-small text-text-tertiary">{glyph}</span>
+      </NumericInput.Prefix>
+    </NumericInput>
   )
 }
 
