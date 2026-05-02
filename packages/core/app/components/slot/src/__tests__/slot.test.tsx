@@ -1,14 +1,14 @@
 /**
  * Slot bug-focused tests
  *
- * BUG 1: mergeProps does not merge unknown prop types, only handles on/style/className
- *   User scenario: Developer passes data-testid on Slot AND on the child.
- *   The Slot's data-testid is silently lost because mergeProps only handles
- *   on* handlers, style, and className.
- *   Regression it prevents: Slot props being silently dropped for non-handler/string props
- *   Logic change: slot.tsx:61-87 mergeProps iterates childProps and only special-cases
- *   handlers, style, and className. For all other props, the child value wins.
- *   Fix = for simple string props, prefer slot prop when child prop does not exist.
+ * BUG 1: Slot fallback props must not override child-authored props
+ *   User scenario: Developer renders <Slot disabled={false}><button disabled /></Slot>.
+ *   The child-authored disabled state must win so composed controls cannot be
+ *   accidentally re-enabled by parent Slot props.
+ *   Regression it prevents: Slot props overriding child-owned id, type, aria-*,
+ *   disabled, or data-* props.
+ *   Logic change: slot.tsx mergeProps prefers child props for overlapping
+ *   non-handler props and uses Slot props only as fallback.
  *
  * BUG 2: Slot must handle event handlers when cloning child
  *   User scenario: Slot wraps a button with onClick. Both slot and child onClick should fire.
@@ -37,16 +37,43 @@ import { describe, expect, it, vi } from "vitest"
 import { Slot } from "../slot"
 
 describe("Slot bugs", () => {
-  describe("BUG 1: mergeProps must not silently drop slot data-testid", () => {
-    it("merges data-testid from slot props onto child element", () => {
+  describe("BUG 1: child-authored non-event props must win over slot fallback props", () => {
+    it("uses slot props as fallback when the child does not define them", () => {
       render(
         <Slot data-testid="slot-test-id">
-          <button data-testid="child-test-id">Click</button>
+          <button>Click</button>
         </Slot>,
       )
 
       const button = screen.getByRole("button")
       expect(button).toHaveAttribute("data-testid", "slot-test-id")
+    })
+
+    it("preserves child props when slot and child define the same non-event prop", () => {
+      render(
+        <Slot
+          aria-label="slot label"
+          data-testid="slot-test-id"
+          id="slot-id"
+        >
+          <button
+            aria-label="child label"
+            data-testid="child-test-id"
+            disabled
+            id="child-id"
+            type="button"
+          >
+            Click
+          </button>
+        </Slot>,
+      )
+
+      const button = screen.getByRole("button")
+      expect(button).toHaveAttribute("aria-label", "child label")
+      expect(button).toHaveAttribute("data-testid", "child-test-id")
+      expect(button).toHaveAttribute("id", "child-id")
+      expect(button).toHaveAttribute("type", "button")
+      expect(button).toBeDisabled()
     })
   })
 
