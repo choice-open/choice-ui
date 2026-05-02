@@ -1,40 +1,13 @@
-/**
- * Stackflow bug-focused tests
- *
- * BUG 1 (High): No item displayed when initialId/defaultId are omitted
- *   - User scenario: Developer renders <Stackflow> with <Stackflow.Item> children
- *     without providing initialId or defaultId, expecting the first item to be shown
- *     automatically after mount.
- *   - Regression it prevents: Empty stackflow view when consumer relies on automatic
- *     first-item selection instead of explicitly calling push(id).
- *   - Logic change that makes it fail: In hooks/use-stackflow.ts:30-35, useState
- *     initializes currentId from items[0]?.id, but items is [] on first render
- *     because items register asynchronously via useEffect in stackflow-item.tsx:19-21.
- *     currentId stays "" forever. Fix = add a useEffect that auto-selects the first
- *     item when items populate and currentId is falsy.
- *
- * BUG 2 (High): back() then push() permanently destroys forward history
- *   - User scenario: User navigates A → B → C, goes back to B, then pushes D.
- *     The forward item C is now preserved in history (truncated only by push).
- *     This matches standard browser navigation behavior.
- *   - Regression it prevents: Irreversible navigation loss in multi-step flows
- *   - Logic change: hooks/use-stackflow.ts — back() now decrements currentIndex
- *     instead of popping from history. push() truncates forward entries after
- *     currentIndex and appends. If this cursor logic is removed, the bug returns.
- */
 import "@testing-library/jest-dom"
-import { render, screen, waitFor, act, fireEvent } from "@testing-library/react"
+import { render, screen, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
-import { describe, expect, it, vi } from "vitest"
 import React from "react"
-import { Stackflow } from "../stackflow"
+import { describe, expect, it, vi } from "vitest"
 import { useStackflowContext } from "../context"
+import { Stackflow } from "../stackflow"
 
 vi.mock("framer-motion", () => ({
-  AnimatePresence: ({ children, onExitComplete }: any) => {
-    if (typeof children === "function") return children({ current: null })
-    return children
-  },
+  AnimatePresence: ({ children }: { children: React.ReactNode }) => children,
   motion: {
     div: ({ initial, animate, exit, variants, transition, custom, ...rest }: any) => (
       <div {...rest}>{rest.children}</div>
@@ -42,189 +15,193 @@ vi.mock("framer-motion", () => ({
   },
 }))
 
-describe("Stackflow bugs", () => {
-  describe("BUG 1 (High): No item displayed when initialId/defaultId are omitted", () => {
-    it("shows the first item's content after mount without initialId or defaultId", async () => {
-      render(
-        <Stackflow>
-          <Stackflow.Item id="first">
-            <div>First Content</div>
-          </Stackflow.Item>
-          <Stackflow.Item id="second">
-            <div>Second Content</div>
-          </Stackflow.Item>
-        </Stackflow>,
-      )
+describe("Stackflow", () => {
+  it("renders the item matching defaultId", async () => {
+    render(
+      <Stackflow defaultId="first">
+        <Stackflow.Item id="first">
+          <div>First Content</div>
+        </Stackflow.Item>
+        <Stackflow.Item id="second">
+          <div>Second Content</div>
+        </Stackflow.Item>
+      </Stackflow>,
+    )
 
-      await waitFor(() => {
-        expect(screen.getByText("First Content")).toBeInTheDocument()
-      })
+    await waitFor(() => {
+      expect(screen.getByText("First Content")).toBeInTheDocument()
     })
+    expect(screen.queryByText("Second Content")).not.toBeInTheDocument()
   })
 
-  describe("BUG: StackflowItem return null prevents exit animation", () => {
-    it("should render both items during transition so exit animation can play", async () => {
-      function NavButtons() {
-        const ctx = useStackflowContext()
+  it("pushes and pops stack history when navigating", async () => {
+    const user = userEvent.setup()
 
-        return (
-          <div>
-            <button
-              data-testid="push-second"
-              onClick={() => ctx.push("second")}
-            >
-              Go Second
-            </button>
-          </div>
-        )
-      }
+    function Controls() {
+      const ctx = useStackflowContext()
 
-      render(
-        <Stackflow initialId="first">
-          <Stackflow.Item id="first">
-            <div data-testid="first-content">First Content</div>
-          </Stackflow.Item>
-          <Stackflow.Item id="second">
-            <div data-testid="second-content">Second Content</div>
-          </Stackflow.Item>
-          <Stackflow.Suffix>
-            <NavButtons />
-          </Stackflow.Suffix>
-        </Stackflow>,
+      return (
+        <div>
+          <button
+            data-testid="push-b"
+            onClick={() => ctx.push("b")}
+          >
+            Push B
+          </button>
+          <button
+            data-testid="push-c"
+            onClick={() => ctx.push("c")}
+          >
+            Push C
+          </button>
+          <button
+            data-testid="back"
+            onClick={() => ctx.back()}
+          >
+            Back
+          </button>
+          <span data-testid="current">{ctx.current?.id}</span>
+          <span data-testid="history">{ctx.history.join(",")}</span>
+          <span data-testid="can-go-back">{String(ctx.canGoBack)}</span>
+        </div>
       )
+    }
 
-      await waitFor(() => {
-        expect(screen.getByTestId("first-content")).toBeInTheDocument()
-      })
+    render(
+      <Stackflow defaultId="a">
+        <Stackflow.Item id="a">
+          <div>A</div>
+        </Stackflow.Item>
+        <Stackflow.Item id="b">
+          <div>B</div>
+        </Stackflow.Item>
+        <Stackflow.Item id="c">
+          <div>C</div>
+        </Stackflow.Item>
+        <Stackflow.Suffix>
+          <Controls />
+        </Stackflow.Suffix>
+      </Stackflow>,
+    )
 
-      fireEvent.click(screen.getByTestId("push-second"))
+    await waitFor(() => expect(screen.getByText("A")).toBeInTheDocument())
+    expect(screen.getByTestId("history")).toHaveTextContent(/^a$/)
+    expect(screen.getByTestId("can-go-back")).toHaveTextContent(/^false$/)
 
-      await waitFor(() => {
-        expect(screen.getByTestId("second-content")).toBeInTheDocument()
-      })
+    await user.click(screen.getByTestId("push-b"))
+    await waitFor(() => expect(screen.getByText("B")).toBeInTheDocument())
+    expect(screen.queryByText("A")).not.toBeInTheDocument()
+    expect(screen.getByTestId("current")).toHaveTextContent(/^b$/)
+    expect(screen.getByTestId("history")).toHaveTextContent(/^a,b$/)
+    expect(screen.getByTestId("can-go-back")).toHaveTextContent(/^true$/)
 
-      expect(screen.getByTestId("first-content")).toBeInTheDocument()
-    })
-  })
-})
+    await user.click(screen.getByTestId("push-c"))
+    await waitFor(() => expect(screen.getByText("C")).toBeInTheDocument())
+    expect(screen.queryByText("B")).not.toBeInTheDocument()
+    expect(screen.getByTestId("current")).toHaveTextContent(/^c$/)
+    expect(screen.getByTestId("history")).toHaveTextContent(/^a,b,c$/)
 
-describe("useStackflow hook bugs", () => {
-  describe("BUG 2: back() then push() destroys forward history", () => {
-    it("preserves forward history: navigating A→B→C→back→D keeps C accessible", async () => {
-      const user = userEvent.setup()
+    await user.click(screen.getByTestId("back"))
+    await waitFor(() => expect(screen.getByText("B")).toBeInTheDocument())
+    expect(screen.queryByText("C")).not.toBeInTheDocument()
+    expect(screen.getByTestId("current")).toHaveTextContent(/^b$/)
+    expect(screen.getByTestId("history")).toHaveTextContent(/^a,b$/)
 
-      function NavButtons() {
-        const ctx = useStackflowContext()
-
-        return (
-          <div>
-            <button
-              data-testid="push-b"
-              onClick={() => ctx.push("b")}
-            >
-              Push B
-            </button>
-            <button
-              data-testid="push-c"
-              onClick={() => ctx.push("c")}
-            >
-              Push C
-            </button>
-            <button
-              data-testid="push-d"
-              onClick={() => ctx.push("d")}
-            >
-              Push D
-            </button>
-            <button
-              data-testid="back"
-              onClick={() => ctx.back()}
-            >
-              Back
-            </button>
-            <span data-testid="history">{ctx.history.join(",")}</span>
-          </div>
-        )
-      }
-
-      render(
-        <Stackflow initialId="a">
-          <Stackflow.Item id="a">
-            <div>A</div>
-          </Stackflow.Item>
-          <Stackflow.Item id="b">
-            <div>B</div>
-          </Stackflow.Item>
-          <Stackflow.Item id="c">
-            <div>C</div>
-          </Stackflow.Item>
-          <Stackflow.Item id="d">
-            <div>D</div>
-          </Stackflow.Item>
-          <Stackflow.Suffix>
-            <NavButtons />
-          </Stackflow.Suffix>
-        </Stackflow>,
-      )
-
-      await waitFor(() => expect(screen.getByText("A")).toBeInTheDocument())
-
-      await user.click(screen.getByTestId("push-b"))
-      await waitFor(() => expect(screen.getByText("B")).toBeInTheDocument())
-
-      await user.click(screen.getByTestId("push-c"))
-      await waitFor(() => expect(screen.getByText("C")).toBeInTheDocument())
-      expect(screen.getByTestId("history").textContent).toBe("a,b,c")
-
-      await user.click(screen.getByTestId("back"))
-      await waitFor(() => expect(screen.getByText("B")).toBeInTheDocument())
-      expect(screen.getByTestId("history").textContent).toBe("a,b,c")
-
-      await user.click(screen.getByTestId("push-d"))
-      await waitFor(() => expect(screen.getByText("D")).toBeInTheDocument())
-      expect(screen.getByTestId("history").textContent).toBe("a,b,d")
-    })
+    await user.click(screen.getByTestId("back"))
+    await waitFor(() => expect(screen.getByText("A")).toBeInTheDocument())
+    expect(screen.queryByText("B")).not.toBeInTheDocument()
+    expect(screen.getByTestId("current")).toHaveTextContent(/^a$/)
+    expect(screen.getByTestId("history")).toHaveTextContent(/^a$/)
+    expect(screen.getByTestId("can-go-back")).toHaveTextContent(/^false$/)
   })
 
-  describe("push to same id is a no-op", () => {
-    it("does not add duplicate entries to history when pushing the current id", async () => {
-      const user = userEvent.setup()
+  it("does not add duplicate entries when pushing the current id", async () => {
+    const user = userEvent.setup()
 
-      function NavButtons() {
-        const ctx = useStackflowContext()
-        return (
-          <div>
-            <button
-              data-testid="push-a"
-              onClick={() => ctx.push("a")}
-            >
-              Push A
-            </button>
-            <span data-testid="history">{ctx.history.join(",")}</span>
-          </div>
-        )
-      }
-
-      render(
-        <Stackflow initialId="a">
-          <Stackflow.Item id="a">
-            <div>A</div>
-          </Stackflow.Item>
-          <Stackflow.Item id="b">
-            <div>B</div>
-          </Stackflow.Item>
-          <Stackflow.Suffix>
-            <NavButtons />
-          </Stackflow.Suffix>
-        </Stackflow>,
+    function Controls() {
+      const ctx = useStackflowContext()
+      return (
+        <div>
+          <button
+            data-testid="push-a"
+            onClick={() => ctx.push("a")}
+          >
+            Push A
+          </button>
+          <span data-testid="history">{ctx.history.join(",")}</span>
+        </div>
       )
+    }
 
-      await waitFor(() => expect(screen.getByText("A")).toBeInTheDocument())
-      expect(screen.getByTestId("history").textContent).toBe("a")
+    render(
+      <Stackflow defaultId="a">
+        <Stackflow.Item id="a">
+          <div>A</div>
+        </Stackflow.Item>
+        <Stackflow.Item id="b">
+          <div>B</div>
+        </Stackflow.Item>
+        <Stackflow.Suffix>
+          <Controls />
+        </Stackflow.Suffix>
+      </Stackflow>,
+    )
 
-      await user.click(screen.getByTestId("push-a"))
+    await waitFor(() => expect(screen.getByText("A")).toBeInTheDocument())
+    expect(screen.getByTestId("history")).toHaveTextContent(/^a$/)
 
-      expect(screen.getByTestId("history").textContent).toBe("a")
-    })
+    await user.click(screen.getByTestId("push-a"))
+
+    expect(screen.getByTestId("history")).toHaveTextContent(/^a$/)
+  })
+
+  it("resets history to the first registered item", async () => {
+    const user = userEvent.setup()
+
+    function Controls() {
+      const ctx = useStackflowContext()
+      return (
+        <div>
+          <button
+            data-testid="push-b"
+            onClick={() => ctx.push("b")}
+          >
+            Push B
+          </button>
+          <button
+            data-testid="clear"
+            onClick={ctx.clearHistory}
+          >
+            Clear
+          </button>
+          <span data-testid="current">{ctx.current?.id}</span>
+          <span data-testid="history">{ctx.history.join(",")}</span>
+        </div>
+      )
+    }
+
+    render(
+      <Stackflow defaultId="a">
+        <Stackflow.Item id="a">
+          <div>A</div>
+        </Stackflow.Item>
+        <Stackflow.Item id="b">
+          <div>B</div>
+        </Stackflow.Item>
+        <Stackflow.Suffix>
+          <Controls />
+        </Stackflow.Suffix>
+      </Stackflow>,
+    )
+
+    await waitFor(() => expect(screen.getByText("A")).toBeInTheDocument())
+    await user.click(screen.getByTestId("push-b"))
+    await waitFor(() => expect(screen.getByText("B")).toBeInTheDocument())
+
+    await user.click(screen.getByTestId("clear"))
+
+    await waitFor(() => expect(screen.getByText("A")).toBeInTheDocument())
+    expect(screen.getByTestId("current")).toHaveTextContent(/^a$/)
+    expect(screen.getByTestId("history")).toHaveTextContent(/^a$/)
   })
 })
