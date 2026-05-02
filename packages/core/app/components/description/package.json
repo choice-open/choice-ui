@@ -1,6 +1,6 @@
 {
   "name": "@choice-ui/description",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A description component for form fields and UI elements with proper accessibility support",
   "sideEffects": false,
   "type": "module",

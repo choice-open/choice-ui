@@ -1,6 +1,6 @@
 {
   "name": "@choice-ui/table",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "A high-performance table component with virtualization, sorting, filtering, and column management",
   "sideEffects": false,
   "type": "module",
