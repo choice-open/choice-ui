@@ -4,8 +4,12 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "prepare:tokens": "pnpm --filter @choice-ui/design-tokens run build",
+    "predev": "pnpm run prepare:tokens",
     "dev": "storybook dev -p 6006",
+    "prestorybook": "pnpm run prepare:tokens",
     "storybook": "storybook dev -p 6006",
+    "prebuild-storybook": "pnpm run prepare:tokens",
     "build-storybook": "NODE_OPTIONS='--max-old-space-size=4096' storybook build"
   },
   "dependencies": {
