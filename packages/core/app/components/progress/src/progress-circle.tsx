@@ -54,7 +54,7 @@ const ProgressCircleBase = forwardRef<HTMLDivElement, ProgressCircleProps>(
     const tv = progressCircleTv({ variant })
 
     const center = size / 2
-    const radius = center - strokeWidth
+    const radius = Math.max(0, center - strokeWidth)
     const circumference = 2 * Math.PI * radius
     const strokeDashoffset = circumference - (percent / 100) * circumference
 
@@ -153,7 +153,7 @@ const ProgressCircleBase = forwardRef<HTMLDivElement, ProgressCircleProps>(
         role="progressbar"
         aria-valuemin={min}
         aria-valuemax={max}
-        aria-valuenow={percent}
+        aria-valuenow={value}
         aria-valuetext={`${percent}%`}
         aria-label={ariaLabel}
         className={tcx(tv.root(), className)}

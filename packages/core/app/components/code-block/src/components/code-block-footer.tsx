@@ -39,11 +39,16 @@ export const CodeBlockFooter = memo(function CodeBlockFooter(props: CodeBlockFoo
 
   const tv = codeBlockFooterTv({ codeExpanded })
 
-  // Only show footer if content needs scrolling
-  if (
-    (lineThreshold && !(lineCount > lineThreshold || needsScroll || codeExpanded)) ||
-    !isExpanded
-  ) {
+  // Only show footer if content needs scrolling or expansion
+  if (!lineThreshold && !needsScroll && !codeExpanded) {
+    return null
+  }
+
+  if (lineThreshold && !(lineCount > lineThreshold || needsScroll || codeExpanded)) {
+    return null
+  }
+
+  if (!isExpanded) {
     return null
   }
 

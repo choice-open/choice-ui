@@ -99,6 +99,7 @@ export const DragPopover = memo(function DragPopover({
     handleDragStart,
     resetDragState,
     resetPosition,
+    setFloatingElement,
   } = useDrag({
     draggable,
     floatingRef: floatingRefMutable,
@@ -143,11 +144,12 @@ export const DragPopover = memo(function DragPopover({
     (node: HTMLElement | null) => {
       floating.refs.setFloating(node)
       floatingRefMutable.current = node
+      setFloatingElement(node)
       if (contentRef && node) {
         mergeRefs(contentRef)(node as HTMLDivElement)
       }
     },
-    [floating.refs, contentRef],
+    [floating.refs, contentRef, setFloatingElement],
   )
 
   const triggerContent = useMemo(() => {
@@ -249,7 +251,7 @@ export const DragPopover = memo(function DragPopover({
                 {...floating.getFloatingProps()}
                 {...restProps}
                 role="dialog"
-                aria-modal="true"
+                aria-modal={focusManagerProps?.modal ? "true" : "false"}
                 aria-labelledby={titleId}
                 aria-describedby={descriptionId}
               >
@@ -265,7 +267,7 @@ export const DragPopover = memo(function DragPopover({
   )
 })
 
-interface PopoverComponent extends React.FC<PopoverProps> {
+type PopoverComponent = typeof PopoverBase & {
   Content: typeof ModalContent
   Footer: typeof ModalFooter
   Header: typeof PopoverHeader

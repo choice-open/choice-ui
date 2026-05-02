@@ -86,8 +86,14 @@ export function useListKeyboard() {
 
         case "ArrowRight":
           e.preventDefault()
-          // Only expand when item is a sub-list trigger
-          toggleSubList(activeItem)
+          if (activeItem) {
+            const hasChildren = Array.from(itemsMap.values()).some(
+              (data) => data.parentId === activeItem,
+            )
+            if (hasChildren) {
+              toggleSubList(activeItem)
+            }
+          }
           break
 
         case "ArrowLeft": {

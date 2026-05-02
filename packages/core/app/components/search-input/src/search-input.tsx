@@ -1,7 +1,7 @@
 import { IconButton } from "@choice-ui/icon-button"
 import { RemoveSmall, Search } from "@choiceform/icons-react"
 import { TextField, type TextFieldProps } from "@choice-ui/text-field"
-import { forwardRef } from "react"
+import { forwardRef, useRef, useState } from "react"
 import { useEventCallback } from "usehooks-ts"
 import { searchInputTv } from "./tv"
 
@@ -13,14 +13,14 @@ export interface SearchInputProps extends TextFieldProps {
   clearable?: boolean
   i18n?: {
     clear: string
-    placeholder: string
+    placeholder?: string
   }
 }
 
 export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>((props, ref) => {
   const {
     placeholder = "Search...",
-    value,
+    value: valueProp,
     onChange,
     variant = "default",
     disabled,
@@ -31,18 +31,43 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>((props
     ...rest
   } = props
 
+  const inputRef = useRef<HTMLInputElement | null>(null)
+  const [internalValue, setInternalValue] = useState<string>(
+    typeof props.defaultValue === "string" ? props.defaultValue : "",
+  )
+  const isControlled = valueProp !== undefined
+  const displayValue = isControlled ? valueProp : internalValue
+
+  const handleChange = useEventCallback((value: string) => {
+    if (!isControlled) {
+      setInternalValue(value)
+    }
+    onChange?.(value)
+  })
+
   const handleClear = useEventCallback(() => {
+    if (!isControlled) {
+      setInternalValue("")
+      if (inputRef.current) {
+        inputRef.current.value = ""
+      }
+    }
     onChange?.("")
+    inputRef.current?.focus()
   })
 
   const tv = searchInputTv({ variant, disabled })
 
   return (
     <TextField
-      ref={ref}
-      placeholder={placeholder}
-      value={value}
-      onChange={onChange}
+      ref={(el) => {
+        inputRef.current = el
+        if (typeof ref === "function") ref(el)
+        else if (ref) ref.current = el
+      }}
+      placeholder={i18n.placeholder ?? placeholder}
+      value={isControlled ? displayValue : undefined}
+      onChange={handleChange}
       variant={variant}
       disabled={disabled}
       {...rest}
@@ -50,7 +75,7 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>((props
       <TextField.Prefix className={tv.icon()}>
         <Search />
       </TextField.Prefix>
-      {value && clearable && (
+      {displayValue && clearable && (
         <TextField.Suffix>
           <IconButton
             className={tv.action()}
@@ -58,6 +83,7 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>((props
             tooltip={{ content: i18n.clear }}
             onClick={handleClear}
             disabled={disabled}
+            data-clear-button
           >
             <RemoveSmall />
           </IconButton>

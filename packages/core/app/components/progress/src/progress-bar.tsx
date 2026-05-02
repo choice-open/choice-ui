@@ -167,7 +167,7 @@ const ProgressBarBase = forwardRef<HTMLDivElement, ProgressBarProps>(
         role="progressbar"
         aria-valuemin={min}
         aria-valuemax={max}
-        aria-valuenow={indeterminate ? undefined : percent}
+        aria-valuenow={indeterminate ? undefined : value}
         aria-valuetext={indeterminate ? undefined : getAriaValueText()}
         aria-label={ariaLabel}
         className={tcx(tv.root(), className)}
@@ -237,13 +237,13 @@ const Connects = (props: FillProps) => {
   const { className, style, ...rest } = props
   const fillStyle = useMemo(() => {
     return {
+      ...style,
       transform: `translateX(${percent - 100}%)`,
       backgroundSize: striped ? "1.25rem 1.25rem" : undefined,
       backgroundImage: striped
         ? "linear-gradient(45deg,rgba(255,255,255,.2) 25%,transparent 0,transparent 50%,rgba(255,255,255,.2) 0,rgba(255,255,255,.2) 75%,transparent 0,transparent)"
         : undefined,
       backgroundColor: variant === "based-on-value" ? basedOnValueColor : style?.backgroundColor,
-      ...style,
     } as React.CSSProperties
   }, [percent, striped, style, variant, basedOnValueColor])
   return (

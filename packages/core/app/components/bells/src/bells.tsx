@@ -78,6 +78,7 @@ const BellBase = (props: BellsProps) => {
 
   const handleCloseClick = useCallback(() => {
     onClose?.(id)
+    sonnerToast.dismiss(id)
   }, [id, onClose])
 
   const scheduleAutoClose = useCallback(

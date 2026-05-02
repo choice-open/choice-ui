@@ -34,7 +34,7 @@ export function useTooltip({
   open: controlledOpen,
   onOpenChange: setControlledOpen,
   disabled = false,
-  offset: offsetValue = 5,
+  offset: offsetValue = 8,
 }: TooltipOptions = {}) {
   const [uncontrolledOpen, setUncontrolledOpen] = useState(initialOpen)
 

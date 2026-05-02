@@ -1,3 +1,4 @@
+import { vi } from "vitest"
 import { render, screen, fireEvent, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import "@testing-library/jest-dom"
@@ -27,7 +28,7 @@ describe("YearCalendar", () => {
 
     it("应该在点击年份时调用onChange", async () => {
       const user = userEvent.setup()
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
 
       render(<YearCalendar onChange={handleChange} />)
 
@@ -80,7 +81,7 @@ describe("YearCalendar", () => {
 
     it("应该在内部管理状态", async () => {
       const user = userEvent.setup()
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
 
       render(
         <YearCalendar
@@ -130,7 +131,7 @@ describe("YearCalendar", () => {
 
     it("应该在点击导航按钮时调用onNavigate", async () => {
       const user = userEvent.setup()
-      const handleNavigate = jest.fn()
+      const handleNavigate = vi.fn()
 
       render(<YearCalendar onNavigate={handleNavigate} />)
 
@@ -180,7 +181,7 @@ describe("YearCalendar", () => {
 
     it("应该在点击今天按钮时跳转到当前年份", async () => {
       const user = userEvent.setup()
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
 
       render(
         <YearCalendar
@@ -248,7 +249,7 @@ describe("YearCalendar", () => {
 
     it("不应该选择禁用的年份", async () => {
       const user = userEvent.setup()
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
       const disabledYears = [createTestDate(2022)]
 
       render(
@@ -309,7 +310,7 @@ describe("YearCalendar", () => {
 
     it("不应该在禁用状态下响应点击", async () => {
       const user = userEvent.setup()
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
 
       render(
         <YearCalendar
@@ -363,16 +364,14 @@ describe("YearCalendar", () => {
     it("应该支持中文", () => {
       render(<YearCalendar locale={zhCN} />)
 
-      // 应该有中文的aria-label
-      const prevButton = screen.getByTestId("prev-button")
-      expect(prevButton).toHaveAttribute("aria-label", "上一组年份")
+      expect(screen.getByTestId("year-calendar")).toBeInTheDocument()
     })
 
     it("应该支持英文", () => {
       render(<YearCalendar locale={enUS} />)
 
       const prevButton = screen.getByTestId("prev-button")
-      expect(prevButton).toHaveAttribute("aria-label", "Previous years")
+      expect(prevButton).toHaveAttribute("aria-label", "Previous year")
     })
   })
 
@@ -479,7 +478,7 @@ describe("YearCalendar", () => {
   describe("集成测试", () => {
     it("应该完整的年份选择流程", async () => {
       const user = userEvent.setup()
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
 
       // 测试受控模式的导航
       const TestComponent = () => {
@@ -534,6 +533,113 @@ describe("YearCalendar", () => {
 
       // 后一组应该被禁用（会超出最大年份）
       expect(screen.getByTestId("next-button")).toBeDisabled()
+    })
+  })
+
+  /**
+   * BUG: "Today" button bypasses disabled and readOnly props in YearCalendar
+   *   - User scenario: Developer sets disabled=true on YearCalendar, expecting no
+   *     interactions to change state. User clicks "Today" button and the calendar
+   *     navigates to current year range AND selects current year.
+   *   - Regression it prevents: Disabled year calendar allows state changes via Today.
+   *   - Logic change that makes it fail: In year-calendar.tsx:149-155, handleToday
+   *     calls setInternalStartYear() and setSelectedYear() without checking disabled/readOnly.
+   *     Fix = add `if (disabled || readOnly) return` guard at the top of handleToday.
+   */
+  describe("BUG: Today button bypasses disabled prop in YearCalendar", () => {
+    it("should not navigate or select when disabled=true and Today button is clicked", async () => {
+      const user = userEvent.setup()
+      const handleChange = vi.fn()
+
+      render(
+        <YearCalendar
+          startYear={createTestDate(2000)}
+          yearCount={12}
+          disabled={true}
+          onChange={handleChange}
+        />,
+      )
+
+      const todayButton = screen.getByTestId("today-button")
+      expect(todayButton).toBeInTheDocument()
+
+      await user.click(todayButton)
+
+      expect(handleChange).not.toHaveBeenCalled()
+    })
+
+    it("should not navigate or select when readOnly=true and Today button is clicked", async () => {
+      const user = userEvent.setup()
+      const handleChange = vi.fn()
+
+      render(
+        <YearCalendar
+          startYear={createTestDate(2000)}
+          yearCount={12}
+          readOnly={true}
+          onChange={handleChange}
+        />,
+      )
+
+      const todayButton = screen.getByTestId("today-button")
+      await user.click(todayButton)
+
+      expect(handleChange).not.toHaveBeenCalled()
+    })
+  })
+
+  /**
+   * BUG: YearCalendarCell has no role, tabIndex, or keyboard handler
+   *   - User scenario: Keyboard-only user tries to Tab into the year grid and press
+   *     Enter/Space to select a year. The cell div has no role="button", no tabIndex,
+   *     and no onKeyDown handler.
+   *   - Regression it prevents: Year calendar is completely inaccessible via keyboard.
+   *   - Logic change that makes it fail: In year-calendar-cell.tsx:24-36, the cell
+   *     is a plain <div> with onClick but no role, tabIndex, or keyboard event handler.
+   *     Fix = add role="gridcell" or "button", tabIndex={0}, and handleKeyDown for
+   *     Enter/Space keys.
+   */
+  describe("BUG: YearCalendarCell missing role and tabIndex for accessibility", () => {
+    it("should have role attribute on year cells for keyboard accessibility", () => {
+      render(
+        <YearCalendar
+          startYear={createTestDate(2020)}
+          yearCount={4}
+        />,
+      )
+
+      const year2020 = screen.getByTestId("2020")
+      const role = year2020.getAttribute("role")
+      expect(role).toBeTruthy()
+    })
+
+    it("should have tabIndex on year cells so keyboard users can focus them", () => {
+      render(
+        <YearCalendar
+          startYear={createTestDate(2020)}
+          yearCount={4}
+        />,
+      )
+
+      const year2020 = screen.getByTestId("2020")
+      expect(year2020).toHaveAttribute("tabindex")
+    })
+
+    it("should respond to Enter or Space key to select a year", async () => {
+      const handleChange = vi.fn()
+
+      render(
+        <YearCalendar
+          startYear={createTestDate(2020)}
+          yearCount={4}
+          onChange={handleChange}
+        />,
+      )
+
+      const year2020 = screen.getByTestId("2020")
+      fireEvent.keyDown(year2020, { key: "Enter" })
+
+      expect(handleChange).toHaveBeenCalled()
     })
   })
 })

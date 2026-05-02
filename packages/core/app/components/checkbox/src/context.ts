@@ -4,6 +4,7 @@ export interface CheckboxContextValue {
   descriptionId?: string
   disabled?: boolean
   id: string
+  labelId?: string
   mixed?: boolean
   onChange: (value: boolean) => void
   value?: boolean

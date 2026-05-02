@@ -199,11 +199,8 @@ const CommentsComponent = forwardRef<HTMLDivElement, CommentsProps>((props, ref)
                       setActiveEmojiButtonIndex(index)
                       setOpenEmojiPopover(index)
                     }}
-                    handleOnReactionClick={() => {
-                      // 在实际场景中，这里应该调用 toggleReaction
-                      if (comment.reactions?.[0]) {
-                        toggleReaction(comment.uuid, comment.reactions[0].emoji, author)
-                      }
+                    handleOnReactionClick={(reaction) => {
+                      toggleReaction(comment.uuid, reaction.emoji, author)
                     }}
                     reactions={comment.reactions}
                   />

@@ -13,13 +13,13 @@ export interface CheckboxLabelProps extends Omit<
 export const CheckboxLabel = memo(
   forwardRef<HTMLLabelElement, CheckboxLabelProps>(function CheckboxLabel(props, ref) {
     const { children, className, ...rest } = props
-    const { id, descriptionId, disabled } = useCheckboxContext()
+    const { id, descriptionId, labelId, disabled } = useCheckboxContext()
     const tv = checkboxTv({ disabled })
 
     return (
       <label
         ref={ref}
-        id={descriptionId}
+        id={labelId}
         htmlFor={id}
         className={tcx(tv.label(), className)}
         {...rest}

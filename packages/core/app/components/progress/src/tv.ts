@@ -8,7 +8,7 @@ export const progressBarTv = tcv({
     value: "text-body-medium tabular-nums",
     track: "bg-secondary-background w-full overflow-hidden rounded-full",
     connects: [
-      "h-full w-full rounded-[inherit] transition-transform duration-500 will-change-transform",
+      "progress-connects h-full w-full rounded-[inherit] transition-transform duration-500 will-change-transform",
     ],
   },
   variants: {

@@ -7,13 +7,18 @@ export function TextInput({ condition, field, disabled, onChange }: BaseFieldInp
     return null
   }
 
+  const displayValue = String(condition.value || "")
+
   return (
-    <Input
-      type="text"
-      value={String(condition.value || "")}
-      onChange={(value) => onChange(value)}
-      disabled={disabled}
-      placeholder={field.placeholder || "Enter value..."}
-    />
+    <div className="contents">
+      <Input
+        type="text"
+        value={displayValue}
+        onChange={(value) => onChange(value)}
+        disabled={disabled}
+        placeholder={field.placeholder || "Enter value..."}
+      />
+      <span className="sr-only">{displayValue}</span>
+    </div>
   )
 }

@@ -71,17 +71,17 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
     [variant, size, active, disabled, loading, focused],
   )
 
-  const content = isValidElement(children) ? (
-    cloneElement(children as React.ReactElement, {
-      children: (children as React.ReactElement).props.children,
-    })
-  ) : loading ? (
+  const content = loading ? (
     <>
       <div className={tcx(tv.spinner())}>
         <LoaderCircle className="animate-spin" />
       </div>
       <span className={tcx(tv.content())}>{children}</span>
     </>
+  ) : isValidElement(children) ? (
+    cloneElement(children as React.ReactElement, {
+      children: (children as React.ReactElement).props.children,
+    })
   ) : (
     children
   )

@@ -1,5 +1,5 @@
 import { Combobox } from "@choice-ui/combobox"
-import React, { forwardRef, memo, useImperativeHandle } from "react"
+import React, { forwardRef, memo, useId, useImperativeHandle } from "react"
 import type { ContextMentionItemProps } from "../types"
 
 // Focus management disabled config - as constant to avoid creating new object on each render
@@ -23,6 +23,7 @@ export interface MentionMenuRef {
 
 // Mentions menu component - uses Combobox coordinate mode
 interface MentionMenuProps {
+  activeIndex?: number
   isOpen: boolean
   loading: boolean
   onClose: () => void
@@ -37,6 +38,7 @@ interface MentionMenuProps {
 export const MentionMenu = memo(
   forwardRef<MentionMenuRef, MentionMenuProps>(function MentionMenu(props, ref) {
     const {
+      activeIndex: activeIndexProp = 0,
       isOpen,
       loading,
       position,
@@ -48,6 +50,16 @@ export const MentionMenu = memo(
       disabled = false,
     } = props
 
+    const instanceId = useId()
+
+    const getListboxElement = () => {
+      const portalRoot = document.getElementById(`mention-menu-portal-${instanceId}`)
+      if (portalRoot) {
+        return portalRoot.querySelector('[role="listbox"]') as HTMLElement
+      }
+      return document.querySelector('[role="listbox"]') as HTMLElement
+    }
+
     // Expose keyboard handler method - same approach as MentionsWithSlate story
     useImperativeHandle(
       ref,
@@ -57,21 +69,12 @@ export const MentionMenu = memo(
             return false
           }
 
-          // If menu is open, intercept arrow up/down and enter keys
-          if (
-            event.key === "ArrowDown" ||
-            event.key === "ArrowUp" ||
-            event.key === "Enter" ||
-            event.key === "Tab" ||
-            event.key === "Escape"
-          ) {
+          if (event.key === "ArrowDown" || event.key === "ArrowUp") {
             event.preventDefault()
             event.stopPropagation()
 
-            // Get menu element and dispatch keyboard event - same approach as MentionsWithSlate
-            const menuElement = document.querySelector('[role="listbox"]') as HTMLElement
+            const menuElement = getListboxElement()
             if (menuElement) {
-              // Directly trigger keyboard event on menu element
               const keyEvent = new KeyboardEvent("keydown", {
                 key: event.key,
                 code: event.code || event.key,
@@ -84,13 +87,14 @@ export const MentionMenu = memo(
               })
               menuElement.dispatchEvent(keyEvent)
             }
+
             return true
           }
 
           return false
         },
       }),
-      [isOpen, suggestions.length],
+      [isOpen, suggestions.length, instanceId],
     )
 
     return loading || disabled ? null : (
@@ -103,6 +107,7 @@ export const MentionMenu = memo(
         autoSelection={true}
         value=""
         onChange={() => {}}
+        portalId={`mention-menu-portal-${instanceId}`}
         root={root}
         focusManagerProps={FOCUS_MANAGER_PROPS}
       >
@@ -115,7 +120,7 @@ export const MentionMenu = memo(
                 prefixElement={item.prefix}
               >
                 {renderSuggestion ? (
-                  renderSuggestion(item, false)
+                  renderSuggestion(item, index === activeIndexProp)
                 ) : (
                   <Combobox.Value>{item.label}</Combobox.Value>
                 )}

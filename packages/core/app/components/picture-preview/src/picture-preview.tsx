@@ -191,6 +191,12 @@ export const PicturePreview = forwardRef<HTMLDivElement, PicturePreviewProps>(
       },
     ])
 
+    const handleKeyDown = useEventCallback((e: React.KeyboardEvent) => {
+      if (e.key === "Escape" && onClose) {
+        onClose()
+      }
+    })
+
     const handleZoomMenuItemClick = useEventCallback((zoomLevel: number) => {
       zoomRef.current = zoomLevel
       scheduleUpdate()
@@ -275,6 +281,9 @@ export const PicturePreview = forwardRef<HTMLDivElement, PicturePreviewProps>(
       setIsLoading(true)
       setIsError(false)
       setNaturalSize(null)
+      setZoom(INITIAL_ZOOM)
+      zoomRef.current = INITIAL_ZOOM
+      updatePosition({ x: 0, y: 0 })
 
       const img = new Image()
       let isCancelled = false
@@ -318,6 +327,7 @@ export const PicturePreview = forwardRef<HTMLDivElement, PicturePreviewProps>(
       <div
         ref={internalRef}
         className={tcx(tv.root(), className)}
+        onKeyDown={handleKeyDown}
         {...rest}
       >
         {isLoading && (

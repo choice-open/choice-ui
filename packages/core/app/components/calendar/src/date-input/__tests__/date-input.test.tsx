@@ -1,17 +1,11 @@
-import { render, screen, waitFor } from "@testing-library/react"
+import { render, screen, waitFor, fireEvent, act } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import "@testing-library/jest-dom"
 import { zhCN, enUS, de, fr } from "date-fns/locale"
 import React from "react"
+import { vi } from "vitest"
 import { DateInput } from "../date-input"
 
-// 模拟 date-fns 的某些函数，确保测试的确定性
-jest.mock("date-fns", () => ({
-  ...jest.requireActual("date-fns"),
-  isThisYear: jest.fn(() => true), // 默认当前年
-}))
-
-// 测试辅助函数
 const createTestDate = (year: number, month: number, day: number) => {
   return new Date(year, month - 1, day) // month 是 0-based
 }
@@ -60,7 +54,7 @@ describe("DateInput", () => {
 
     it("应该在值变化时调用 onChange", async () => {
       const user = userEvent.setup()
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
 
       render(<DateInput onChange={handleChange} />)
 
@@ -82,8 +76,9 @@ describe("DateInput", () => {
   // 键盘导航测试
   describe("键盘导航", () => {
     it("应该支持上下箭头键调整日期", async () => {
-      const user = userEvent.setup()
-      const handleChange = jest.fn()
+      vi.useFakeTimers({ shouldAdvanceTime: true })
+      const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime })
+      const handleChange = vi.fn()
       const testDate = createTestDate(2024, 3, 15)
 
       render(
@@ -97,18 +92,18 @@ describe("DateInput", () => {
       await user.click(input)
       await user.keyboard("{ArrowUp}")
 
-      // 等待异步的键盘操作完成
-      await waitFor(
-        () => {
-          expect(handleChange).toHaveBeenCalledWith(expect.any(Date))
-        },
-        { timeout: 1000 },
-      )
+      await act(async () => {
+        vi.advanceTimersByTime(50)
+      })
+
+      expect(handleChange).toHaveBeenCalledWith(expect.any(Date))
+      vi.useRealTimers()
     })
 
     it("应该支持 Shift + 箭头键调整一周", async () => {
-      const user = userEvent.setup()
-      const handleChange = jest.fn()
+      vi.useFakeTimers({ shouldAdvanceTime: true })
+      const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime })
+      const handleChange = vi.fn()
       const testDate = createTestDate(2024, 3, 15)
 
       render(
@@ -122,18 +117,18 @@ describe("DateInput", () => {
       await user.click(input)
       await user.keyboard("{Shift>}{ArrowUp}{/Shift}")
 
-      // 等待异步的键盘操作完成
-      await waitFor(
-        () => {
-          expect(handleChange).toHaveBeenCalledWith(expect.any(Date))
-        },
-        { timeout: 1000 },
-      )
+      await act(async () => {
+        vi.advanceTimersByTime(50)
+      })
+
+      expect(handleChange).toHaveBeenCalledWith(expect.any(Date))
+      vi.useRealTimers()
     })
 
     it("应该支持 Ctrl/Cmd + 箭头键调整一月", async () => {
-      const user = userEvent.setup()
-      const handleChange = jest.fn()
+      vi.useFakeTimers({ shouldAdvanceTime: true })
+      const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime })
+      const handleChange = vi.fn()
       const testDate = createTestDate(2024, 3, 15)
 
       render(
@@ -147,18 +142,17 @@ describe("DateInput", () => {
       await user.click(input)
       await user.keyboard("{Control>}{ArrowUp}{/Control}")
 
-      // 等待异步的键盘操作完成
-      await waitFor(
-        () => {
-          expect(handleChange).toHaveBeenCalledWith(expect.any(Date))
-        },
-        { timeout: 1000 },
-      )
+      await act(async () => {
+        vi.advanceTimersByTime(50)
+      })
+
+      expect(handleChange).toHaveBeenCalledWith(expect.any(Date))
+      vi.useRealTimers()
     })
 
     it("应该支持 Enter 键确认输入", async () => {
       const user = userEvent.setup()
-      const handleEnter = jest.fn()
+      const handleEnter = vi.fn()
 
       render(<DateInput onEnterKeyDown={handleEnter} />)
 
@@ -171,7 +165,7 @@ describe("DateInput", () => {
 
     it("禁用键盘导航时不应响应箭头键", async () => {
       const user = userEvent.setup()
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
       const testDate = createTestDate(2024, 3, 15)
 
       render(
@@ -247,7 +241,7 @@ describe("DateInput", () => {
   describe("日期范围限制", () => {
     it("应该限制最小日期", async () => {
       const user = userEvent.setup()
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
       const minDate = createTestDate(2024, 3, 10)
 
       render(
@@ -267,7 +261,7 @@ describe("DateInput", () => {
 
     it("应该限制最大日期", async () => {
       const user = userEvent.setup()
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
       const maxDate = createTestDate(2024, 3, 20)
 
       render(
@@ -336,12 +330,22 @@ describe("DateInput", () => {
     })
   })
 
-  // 拖拽交互测试
   describe("拖拽交互", () => {
-    it.skip("应该支持拖拽图标调整日期", async () => {
-      // 跳过此测试，因为测试环境不支持 requestPointerLock API
-      const user = userEvent.setup()
-      const handleChange = jest.fn()
+    beforeEach(() => {
+      ;(document.documentElement as any).requestPointerLock = vi.fn()
+      ;(document.documentElement as any).exitPointerLock = vi.fn()
+      vi.spyOn(window, "requestAnimationFrame").mockImplementation((cb: FrameRequestCallback) => {
+        cb(0)
+        return 0
+      })
+    })
+
+    afterEach(() => {
+      vi.restoreAllMocks()
+    })
+
+    it("向右拖拽图标应增加日期（onChange 收到更晚的日期）", async () => {
+      const handleChange = vi.fn()
       const testDate = createTestDate(2024, 3, 15)
 
       render(
@@ -351,29 +355,131 @@ describe("DateInput", () => {
         />,
       )
 
-      // 查找拖拽图标
-      const input = screen.getByRole("textbox")
-      const container = input.parentElement
-      const icon = container?.querySelector('[class*="cursor-ew-resize"]')
+      const dragHandle = document.querySelector('[class*="cursor-ew-resize"]')
+      expect(dragHandle).toBeInTheDocument()
 
-      if (icon) {
-        // 模拟鼠标按下、移动和释放事件
-        await user.pointer({ target: icon, keys: "[MouseLeft>]" })
-        await user.pointer({ coords: { x: 50, y: 0 } })
-        await user.pointer({ keys: "[/MouseLeft]" })
+      await act(async () => {
+        fireEvent.pointerDown(dragHandle!, {
+          clientX: 100,
+          clientY: 100,
+          pointerId: 1,
+          buttons: 1,
+        })
+      })
 
-        // 等待拖拽操作完成
-        await waitFor(
-          () => {
-            expect(handleChange).toHaveBeenCalled()
-          },
-          { timeout: 1000 },
-        )
-      } else {
-        // 如果找不到拖拽元素，跳过测试
-        console.warn("Drag icon not found, skipping drag test")
-        expect(true).toBe(true) // 通过测试
+      for (let i = 0; i < 10; i++) {
+        const event = new MouseEvent("pointermove", { bubbles: true })
+        Object.defineProperty(event, "movementX", { value: 1 })
+        Object.defineProperty(event, "movementY", { value: 0 })
+        await act(async () => {
+          fireEvent(document, event)
+        })
       }
+
+      const upEvent = new MouseEvent("pointerup", { bubbles: true })
+      await act(async () => {
+        fireEvent(document, upEvent)
+      })
+
+      await waitFor(() => {
+        expect(handleChange).toHaveBeenCalled()
+      })
+
+      const lastCall = handleChange.mock.calls[handleChange.mock.calls.length - 1]
+      const newDate = lastCall[0] as Date
+      expect(newDate.getFullYear()).toBe(2024)
+      expect(newDate.getMonth()).toBe(2)
+      expect(newDate.getDate()).toBeGreaterThan(15)
+    })
+
+    it("向左拖拽图标应减少日期（onChange 收到更早的日期）", async () => {
+      const handleChange = vi.fn()
+      const testDate = createTestDate(2024, 3, 15)
+
+      render(
+        <DateInput
+          value={testDate}
+          onChange={handleChange}
+        />,
+      )
+
+      const dragHandle = document.querySelector('[class*="cursor-ew-resize"]')
+      expect(dragHandle).toBeInTheDocument()
+
+      await act(async () => {
+        fireEvent.pointerDown(dragHandle!, {
+          clientX: 100,
+          clientY: 100,
+          pointerId: 1,
+          buttons: 1,
+        })
+      })
+
+      for (let i = 0; i < 10; i++) {
+        const event = new MouseEvent("pointermove", { bubbles: true })
+        Object.defineProperty(event, "movementX", { value: -1 })
+        Object.defineProperty(event, "movementY", { value: 0 })
+        await act(async () => {
+          fireEvent(document, event)
+        })
+      }
+
+      const upEvent = new MouseEvent("pointerup", { bubbles: true })
+      await act(async () => {
+        fireEvent(document, upEvent)
+      })
+
+      await waitFor(() => {
+        expect(handleChange).toHaveBeenCalled()
+      })
+
+      const lastCall = handleChange.mock.calls[handleChange.mock.calls.length - 1]
+      const newDate = lastCall[0] as Date
+      expect(newDate.getFullYear()).toBe(2024)
+      expect(newDate.getMonth()).toBe(2)
+      expect(newDate.getDate()).toBeLessThan(15)
+    })
+
+    it("拖拽被禁用时不触发 onChange", async () => {
+      const handleChange = vi.fn()
+      const testDate = createTestDate(2024, 3, 15)
+
+      render(
+        <DateInput
+          value={testDate}
+          onChange={handleChange}
+          disabled
+        />,
+      )
+
+      const dragHandle = document.querySelector('[class*="cursor-ew-resize"]')
+
+      if (dragHandle) {
+        await act(async () => {
+          fireEvent.pointerDown(dragHandle, {
+            clientX: 100,
+            clientY: 100,
+            pointerId: 1,
+            buttons: 1,
+          })
+        })
+
+        for (let i = 0; i < 10; i++) {
+          const event = new MouseEvent("pointermove", { bubbles: true })
+          Object.defineProperty(event, "movementX", { value: 1 })
+          Object.defineProperty(event, "movementY", { value: 0 })
+          await act(async () => {
+            fireEvent(document, event)
+          })
+        }
+
+        const upEvent = new MouseEvent("pointerup", { bubbles: true })
+        await act(async () => {
+          fireEvent(document, upEvent)
+        })
+      }
+
+      expect(handleChange).not.toHaveBeenCalled()
     })
   })
 
@@ -411,7 +517,7 @@ describe("DateInput", () => {
   describe("性能", () => {
     it("启用缓存时应该重用解析结果", async () => {
       const user = userEvent.setup()
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
 
       render(
         <DateInput
@@ -444,7 +550,7 @@ describe("DateInput", () => {
 
     it("禁用缓存时应该每次重新解析", async () => {
       const user = userEvent.setup()
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
 
       render(
         <DateInput
@@ -465,7 +571,7 @@ describe("DateInput", () => {
   describe("边界情况", () => {
     it("应该处理无效的日期输入", async () => {
       const user = userEvent.setup()
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
 
       render(<DateInput onChange={handleChange} />)
 
@@ -479,7 +585,7 @@ describe("DateInput", () => {
 
     it("应该处理空输入", async () => {
       const user = userEvent.setup()
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
 
       render(<DateInput onChange={handleChange} />)
 
@@ -492,7 +598,7 @@ describe("DateInput", () => {
 
     it("应该处理极端日期", async () => {
       const user = userEvent.setup()
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
 
       render(<DateInput onChange={handleChange} />)
 
@@ -505,7 +611,7 @@ describe("DateInput", () => {
 
     it("应该处理闰年日期", async () => {
       const user = userEvent.setup()
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
 
       render(<DateInput onChange={handleChange} />)
 
@@ -521,7 +627,7 @@ describe("DateInput", () => {
   describe("集成测试", () => {
     it("应该支持完整的用户工作流", async () => {
       const user = userEvent.setup()
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
 
       render(
         <DateInput
@@ -586,7 +692,7 @@ describe("DateInput", () => {
   describe("错误处理", () => {
     it("应该优雅处理格式错误", async () => {
       const user = userEvent.setup()
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
 
       render(
         <DateInput

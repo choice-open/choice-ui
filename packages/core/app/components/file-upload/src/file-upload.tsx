@@ -223,7 +223,7 @@ const FileUploadRoot = forwardRef<HTMLDivElement, FileUploadRootProps>((props, f
             !acceptTypes.some(
               (type) =>
                 type === fileType ||
-                type === fileExtension ||
+                type.toLowerCase() === fileExtension.toLowerCase() ||
                 (type.includes("/*") && fileType.startsWith(type.replace("/*", "/"))),
             )
           ) {
@@ -257,11 +257,6 @@ const FileUploadRoot = forwardRef<HTMLDivElement, FileUploadRootProps>((props, f
 
       if (acceptedFiles.length > 0) {
         store.dispatch({ variant: "ADD_FILES", files: acceptedFiles })
-
-        if (isControlled && propsRef.current.onValueChange) {
-          const currentFiles = Array.from(store.getState().files.values()).map((f) => f.file)
-          propsRef.current.onValueChange([...currentFiles])
-        }
 
         if (propsRef.current.onAccept) {
           propsRef.current.onAccept(acceptedFiles)
@@ -336,6 +331,7 @@ FileUploadRoot.displayName = ROOT_NAME
 
 // 创建复合组件
 const FileUpload = Object.assign(FileUploadRoot, {
+  Button: FileUploadTrigger,
   Dropzone: FileUploadDropzone,
   Trigger: FileUploadTrigger,
   List: FileUploadList,

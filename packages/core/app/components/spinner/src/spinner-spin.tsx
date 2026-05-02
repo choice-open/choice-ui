@@ -50,7 +50,7 @@ export const SpinnerSpin = ({
     <div
       role="status"
       data-slot="base"
-      aria-label="Loading"
+      aria-label={label || "Loading"}
       className={tcx(slots.base({ class: classNames?.base }), className)}
       {...reset}
     >

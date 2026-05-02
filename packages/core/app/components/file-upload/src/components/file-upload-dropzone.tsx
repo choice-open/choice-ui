@@ -89,12 +89,22 @@ export const FileUploadDropzone = forwardRef<HTMLDivElement, FileUploadDropzoneP
         const inputElement = context.inputRef.current
         if (!inputElement) return
 
-        const dataTransfer = new DataTransfer()
-        for (const file of files) {
-          dataTransfer.items.add(file)
+        try {
+          const dataTransfer = new DataTransfer()
+          for (const file of files) {
+            dataTransfer.items.add(file)
+          }
+          inputElement.files = dataTransfer.files
+        } catch {
+          Object.defineProperty(inputElement, "files", {
+            value: Object.assign([], files, {
+              item: (index: number) => files[index],
+            }),
+            configurable: true,
+            writable: true,
+          })
         }
 
-        inputElement.files = dataTransfer.files
         inputElement.dispatchEvent(new Event("change", { bubbles: true }))
       },
       [store, context.inputRef, propsRef],

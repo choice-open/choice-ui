@@ -62,10 +62,18 @@ export const ColorGradientsPaint = forwardRef<HTMLDivElement, ColorGradientsPain
 
     const handleRotate = useEventCallback(() => {
       const transform = gradient.gradientTransform
-      const newTransform = transform.map((row) => row.map((value) => (value + 90) % 360))
+      const angle = 90 * (Math.PI / 180)
+      const cos = Math.cos(angle)
+      const sin = Math.sin(angle)
+      const [a11, a12, a13] = transform[0]
+      const [a21, a22, a23] = transform[1]
+      const newTransform: Transform = [
+        [cos * a11 - sin * a21, cos * a12 - sin * a22, cos * a13 - sin * a23],
+        [sin * a11 + cos * a21, sin * a12 + cos * a22, sin * a13 + cos * a23],
+      ]
       onGradientChange?.({
         ...gradient,
-        gradientTransform: newTransform as Transform,
+        gradientTransform: newTransform,
       })
     })
 

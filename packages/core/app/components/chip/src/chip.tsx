@@ -65,8 +65,10 @@ export const Chip = memo(
         {...rest}
         ref={ref}
         className={tcx(tv.root(), classNames?.root, className)}
+        aria-disabled={disabled || undefined}
         onClick={(e: React.MouseEvent<HTMLDivElement>) => {
           e.stopPropagation()
+          if (disabled) return
           onClick?.(e)
         }}
       >
@@ -83,7 +85,7 @@ export const Chip = memo(
         {!disabled && onRemove && (
           <IconButton
             className={tcx(tv.closeButton(), classNames?.closeButton)}
-            aria-label={i18n.remove + (typeof children === "string" ? children : i18n.chip)}
+            aria-label={i18n.remove + " " + (typeof children === "string" ? children : i18n.chip)}
             disabled={disabled}
             size="reset"
             variant="reset"

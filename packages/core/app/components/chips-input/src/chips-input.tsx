@@ -111,6 +111,8 @@ export const ChipsInput = forwardRef<HTMLDivElement, ChipsInputProps>((props, re
     (e: KeyboardEvent<HTMLDivElement | HTMLInputElement>) => {
       onKeyDown?.(e as KeyboardEvent<HTMLDivElement>)
 
+      if (e.defaultPrevented) return
+
       if (readOnly) return
 
       if (selectedChipIndex !== null && (e.key === "Backspace" || e.key === "Delete")) {
@@ -126,10 +128,9 @@ export const ChipsInput = forwardRef<HTMLDivElement, ChipsInputProps>((props, re
         if (e.key === "Enter" && !isComposing && currentInput.value) {
           e.preventDefault()
           addChip(currentInput.value)
-          setInputValue("")
         } else if (e.key === "Backspace" && !currentInput.value && chips.length > 0) {
           if (selectedChipIndex === null) {
-            removeChip(chips.length - 1)
+            setSelectedChipIndex(chips.length - 1)
           }
         }
       }

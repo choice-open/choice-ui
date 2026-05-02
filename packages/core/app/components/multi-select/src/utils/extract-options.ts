@@ -5,54 +5,34 @@ import {
   MenuEmpty,
   type MenuContextItemProps,
 } from "@choice-ui/menus"
-import React, { Children, isValidElement } from "react"
+import { flattenSlotChildren, isSlotChild } from "@choice-ui/shared"
+import React from "react"
 
 export function extractItemElements(children: React.ReactNode) {
   if (!children) return []
 
-  const childrenArray = Children.toArray(children)
-
-  // Recursive function to handle child elements inside Fragment
-  const extractItems = (children: React.ReactNode[]): React.ReactNode[] => {
-    const result: React.ReactNode[] = []
-
-    children.forEach((child) => {
-      if (!isValidElement(child)) return
-
-      if (
-        child.type === MenuContextItem ||
-        child.type === MenuDivider ||
-        child.type === MenuContextLabel ||
-        child.type === MenuEmpty
-      ) {
-        result.push(child)
-      } else if (child.type === React.Fragment && child.props.children) {
-        const fragmentChildren = Children.toArray(child.props.children)
-        result.push(...extractItems(fragmentChildren))
-      }
-    })
-
-    return result
-  }
-
-  return extractItems(childrenArray)
+  return flattenSlotChildren(children).filter(
+    (child) =>
+      isSlotChild(child, MenuContextItem) ||
+      isSlotChild(child, MenuDivider) ||
+      isSlotChild(child, MenuContextLabel) ||
+      isSlotChild(child, MenuEmpty),
+  )
 }
 
-export function processOptions(itemElements: React.ReactNode[]) {
+export function processOptions(itemElements: React.ReactElement[]) {
   if (itemElements.length === 0) return []
 
   return itemElements.map((child, index) => {
-    if (!isValidElement(child)) return { divider: true }
-
-    if (child.type === MenuDivider) {
+    if (isSlotChild(child, MenuDivider)) {
       return { divider: true }
     }
 
-    if (child.type === MenuContextLabel) {
+    if (isSlotChild(child, MenuContextLabel)) {
       return { label: true, children: child.props.children }
     }
 
-    if (child.type === MenuEmpty) {
+    if (isSlotChild(child, MenuEmpty)) {
       return { empty: true, children: child.props.children, element: child }
     }
 

@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react"
 import "@testing-library/jest-dom"
 import React from "react"
+import { vi } from "vitest"
 import { zhCN, enUS, ja, ko } from "date-fns/locale"
 import { DateRangeInput } from "../date-range-input"
 
@@ -320,7 +321,7 @@ describe("DateRangeInput 逻辑测试", () => {
   // 回调函数逻辑测试
   describe("回调函数逻辑", () => {
     it("应该正确传递开始日期变化回调", () => {
-      const mockStartChange = jest.fn()
+      const mockStartChange = vi.fn()
 
       render(<DateRangeInput onStartChange={mockStartChange} />)
 
@@ -329,7 +330,7 @@ describe("DateRangeInput 逻辑测试", () => {
     })
 
     it("应该正确传递结束日期变化回调", () => {
-      const mockEndChange = jest.fn()
+      const mockEndChange = vi.fn()
 
       render(<DateRangeInput onEndChange={mockEndChange} />)
 
@@ -338,8 +339,8 @@ describe("DateRangeInput 逻辑测试", () => {
     })
 
     it("应该正确传递焦点事件回调", () => {
-      const mockStartFocus = jest.fn()
-      const mockEndFocus = jest.fn()
+      const mockStartFocus = vi.fn()
+      const mockEndFocus = vi.fn()
 
       render(
         <DateRangeInput
@@ -353,7 +354,7 @@ describe("DateRangeInput 逻辑测试", () => {
     })
 
     it("应该正确传递回车键回调", () => {
-      const mockEnterKeyDown = jest.fn()
+      const mockEnterKeyDown = vi.fn()
 
       render(<DateRangeInput onEnterKeyDown={mockEnterKeyDown} />)
 
@@ -500,6 +501,40 @@ describe("DateRangeInput 逻辑测试", () => {
       )
 
       expect(screen.getByText("4 天")).toBeInTheDocument()
+    })
+  })
+
+  /**
+   * BUG: rangePrecision prop declared but never used
+   *   - User scenario: Developer passes rangePrecision={0.5} expecting the range
+   *     display to show fractional days (e.g., "1.5 days"). But the range display
+   *     always shows whole days because rangePrecision is declared in the interface
+   *     but never destructured or consumed in the component body.
+   *   - Regression it prevents: rangePrecision has no effect, misleading consumers
+   *   - Logic change that makes it fail: In date-range-input.tsx:34-36, rangePrecision
+   *     is declared in the interface with JSDoc. In the component body (line 43-62),
+   *     it is not destructured from props and is included in `...rest` and ignored.
+   *     Fix = destructure rangePrecision and use it to control the rounding/unit
+   *     in formatDistanceStrict.
+   */
+  describe("BUG: rangePrecision prop has no effect on range display", () => {
+    it("should display fractional days when rangePrecision is less than 1", () => {
+      const startDate = new Date(2024, 0, 1, 0, 0)
+      const endDate = new Date(2024, 0, 2, 12, 0)
+
+      render(
+        <DateRangeInput
+          startValue={startDate}
+          endValue={endDate}
+          rangePrecision={0.5}
+        />,
+      )
+
+      const rangeDisplay = screen.getByTestId("range-length")
+      const text = rangeDisplay.textContent ?? ""
+
+      expect(text).toBeTruthy()
+      expect(text).not.toBe("1 day")
     })
   })
 })

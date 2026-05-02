@@ -60,7 +60,11 @@ export const parseTextWithMentions = (text: string, mentions: MentionMatch[]): D
   }
 
   if (!mentions || mentions.length === 0) {
-    return [{ type: "paragraph", children: [{ text: text || "" }] }] as unknown as Descendant[]
+    const paragraphs = (text || "").split("\n")
+    return paragraphs.map((paragraphText) => ({
+      type: "paragraph",
+      children: [{ text: paragraphText }],
+    })) as unknown as Descendant[]
   }
 
   // Sort mentions by start position

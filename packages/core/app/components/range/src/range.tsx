@@ -152,11 +152,12 @@ const RangeRoot = forwardRef<HTMLDivElement, RangeProps>(function Range(props, r
   const isDragging = useRef(false)
   const cleanupRef = useRef<(() => void) | null>(null)
 
-  const [internalValue, setInternalValue] = useState(value ?? min)
+  const [internalValue, setInternalValue] = useState(value ?? defaultValue ?? min)
   const currentValue = value ?? internalValue
   const currentStepValue = useMemo(
-    () => (safeStep > 1 ? Math.round(currentValue / safeStep) * safeStep : currentValue),
-    [currentValue, safeStep],
+    () =>
+      safeStep > 1 ? Math.round((currentValue - min) / safeStep) * safeStep + min : currentValue,
+    [currentValue, safeStep, min],
   )
 
   // If width prop is undefined, use auto-calculated width
@@ -226,7 +227,7 @@ const RangeRoot = forwardRef<HTMLDivElement, RangeProps>(function Range(props, r
     if (!rect) return
 
     const newPosition = clamp((clientX - rect.left) / rect.width, 0, 1)
-    const newValue = Math.round(positionToValue(newPosition) / safeStep) * safeStep
+    const newValue = Math.round((positionToValue(newPosition) - min) / safeStep) * safeStep + min
     let clampedValue = clamp(newValue, min, max)
 
     if (defaultValue !== undefined && defaultValue !== null && safeStep <= 1) {
@@ -344,7 +345,10 @@ const RangeRoot = forwardRef<HTMLDivElement, RangeProps>(function Range(props, r
         return
     }
 
-    if (newValue !== value) {
+    if (newValue !== currentValue) {
+      if (value === undefined) {
+        setInternalValue(newValue)
+      }
       onChange?.(newValue)
     }
   })

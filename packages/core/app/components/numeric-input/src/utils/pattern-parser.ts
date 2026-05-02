@@ -11,7 +11,7 @@ export function parsePattern(pattern: string): {
   const keys: string[] = []
 
   // Parse variable definitions in the pattern, e.g. {value} or {x,y}
-  const regexPattern = pattern.replace(/[\s]*\{([\w|,]+)\}[\s]*/g, (_match, key) => {
+  const regexPattern = pattern.replace(/\{([\w|,]+)\}/g, (_match, key) => {
     const keyArr = key.split(",")
     keys.push(keyArr[0])
     return "(.+)"

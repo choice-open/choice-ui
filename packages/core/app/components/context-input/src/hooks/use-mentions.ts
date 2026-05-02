@@ -57,6 +57,10 @@ export function useMentions({
   // Ref for debounced search
   const searchTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
+  // Ref to track the current active index for keyboard navigation
+  // (avoids stale closure issues when Enter fires before React re-renders after ArrowDown)
+  const activeIndexRef = useRef(0)
+
   // Cleanup timeout
   useEffect(() => {
     return () => {
@@ -101,7 +105,6 @@ export function useMentions({
 
   // Check if in mention search state - use useEventCallback to keep reference stable
   const checkMentionSearch = useEventCallback(() => {
-    // No need to check if no trigger configs
     if (triggers.length === 0) {
       return
     }
@@ -205,6 +208,7 @@ export function useMentions({
           position,
           index: 0,
         }))
+        activeIndexRef.current = 0
 
         searchMentions(queryText, triggerChar, triggerConfig)
         return
@@ -264,29 +268,31 @@ export function useMentions({
       return false
     }
 
-    const { suggestions, index } = searchState
+    const { suggestions } = searchState
 
     switch (event.key) {
       case "ArrowDown":
         event.preventDefault()
-        setSearchState((prev) => ({
-          ...prev,
-          index: (prev.index + 1) % suggestions.length,
-        }))
+        setSearchState((prev) => {
+          const next = (prev.index + 1) % suggestions.length
+          activeIndexRef.current = next
+          return { ...prev, index: next }
+        })
         return true
 
       case "ArrowUp":
         event.preventDefault()
-        setSearchState((prev) => ({
-          ...prev,
-          index: prev.index === 0 ? suggestions.length - 1 : prev.index - 1,
-        }))
+        setSearchState((prev) => {
+          const next = prev.index === 0 ? suggestions.length - 1 : prev.index - 1
+          activeIndexRef.current = next
+          return { ...prev, index: next }
+        })
         return true
 
       case "Tab":
       case "Enter": {
         event.preventDefault()
-        const selectedMention = suggestions[index]
+        const selectedMention = suggestions[activeIndexRef.current]
         if (selectedMention) {
           insertMention(selectedMention)
         }

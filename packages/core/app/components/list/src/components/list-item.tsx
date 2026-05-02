@@ -50,6 +50,7 @@ export const ListItem = memo(
       onMouseEnter,
       onMouseLeave,
       onClick,
+      onKeyDown: userOnKeyDown,
       ...rest
     } = props
 
@@ -131,10 +132,6 @@ export const ListItem = memo(
       if (disabled) return
 
       if (e.key === "Enter" || e.key === " ") {
-        // For native buttons, the browser will automatically handle Enter (trigger Click), but Space needs preventDefault to prevent scrolling
-        // And Space usually triggers Click on buttons as well
-        // If it's not a button (like div), you need to manually trigger the click logic
-
         if (As !== "button" && As !== "a") {
           e.preventDefault()
           if (selection) {
@@ -142,13 +139,12 @@ export const ListItem = memo(
           }
           onClick?.(e as unknown as React.MouseEvent<HTMLElement>)
         } else if (e.key === " ") {
-          // Prevent Space from scrolling the page
           e.preventDefault()
-          // The default behavior of Space on buttons is to trigger click when keyup, but in React it sometimes needs manual handling
-          // To unify behavior, here we manually trigger
           e.currentTarget.click()
         }
       }
+
+      userOnKeyDown?.(e)
     }
 
     return (

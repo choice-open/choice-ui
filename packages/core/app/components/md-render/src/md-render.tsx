@@ -93,8 +93,8 @@ export const MdRender = memo(
     const components = useMemo(() => {
       const base = {
         ...tvComponents,
-        ...customComponents,
         ...INITIAL_COMPONENTS,
+        ...customComponents,
       } as Partial<Components>
 
       return base

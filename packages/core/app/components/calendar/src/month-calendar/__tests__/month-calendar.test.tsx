@@ -1,3 +1,4 @@
+import { vi } from "vitest"
 import React from "react"
 import { render, screen, fireEvent } from "@testing-library/react"
 import "@testing-library/jest-dom"
@@ -6,7 +7,7 @@ import { MonthCalendar } from "../month-calendar"
 describe("MonthCalendar 组件业务逻辑测试", () => {
   describe("单选模式", () => {
     test("应该能够选择日期", () => {
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
 
       render(
         <MonthCalendar
@@ -26,7 +27,7 @@ describe("MonthCalendar 组件业务逻辑测试", () => {
     })
 
     test("应该能够更换选中的日期", () => {
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
 
       render(
         <MonthCalendar
@@ -72,7 +73,7 @@ describe("MonthCalendar 组件业务逻辑测试", () => {
 
   describe("多选模式", () => {
     test("应该能够选择多个日期", () => {
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
 
       render(
         <MonthCalendar
@@ -97,7 +98,7 @@ describe("MonthCalendar 组件业务逻辑测试", () => {
     })
 
     test("应该能够取消选中的日期", () => {
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
       const initialValue = [new Date(2024, 0, 15)]
 
       render(
@@ -119,7 +120,7 @@ describe("MonthCalendar 组件业务逻辑测试", () => {
 
   describe("范围选择模式", () => {
     test("应该能够选择日期范围", () => {
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
 
       render(
         <MonthCalendar
@@ -153,7 +154,7 @@ describe("MonthCalendar 组件业务逻辑测试", () => {
 
   describe("禁用日期", () => {
     test("应该不能选择被禁用的日期", () => {
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
       const disabledDates = [new Date(2024, 0, 15)]
 
       render(
@@ -173,7 +174,7 @@ describe("MonthCalendar 组件业务逻辑测试", () => {
     })
 
     test("应该不能选择超出范围的日期", () => {
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
       const minDate = new Date(2024, 0, 10)
       const maxDate = new Date(2024, 0, 20)
 
@@ -219,7 +220,7 @@ describe("MonthCalendar 组件业务逻辑测试", () => {
     })
 
     test("非受控模式应该使用内部状态", () => {
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
       const defaultValue = new Date(2024, 0, 10)
 
       render(
@@ -239,7 +240,7 @@ describe("MonthCalendar 组件业务逻辑测试", () => {
 
   describe("月份导航", () => {
     test("应该能够切换到上一个月", () => {
-      const handleMonthChange = jest.fn()
+      const handleMonthChange = vi.fn()
 
       render(
         <MonthCalendar
@@ -258,7 +259,7 @@ describe("MonthCalendar 组件业务逻辑测试", () => {
     })
 
     test("应该能够切换到下一个月", () => {
-      const handleMonthChange = jest.fn()
+      const handleMonthChange = vi.fn()
 
       render(
         <MonthCalendar

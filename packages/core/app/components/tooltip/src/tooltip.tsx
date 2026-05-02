@@ -32,7 +32,7 @@ function TooltipRoot(props: TooltipProps) {
     offset,
   })
 
-  if (content) {
+  if (content !== undefined && content !== null) {
     return (
       <TooltipContext.Provider value={tooltip}>
         <TooltipDelayGroupSync />

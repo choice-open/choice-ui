@@ -108,7 +108,17 @@ export const alertDialogReducer = (
     }
 
     case "CLEAR_QUEUE": {
-      // Clear queue and close dialog
+      const getDefaultValue = (type: AlertDialogType | null): AlertDialogResult => {
+        if (type === "confirm") return false
+        if (type === "alert") return undefined
+        return ""
+      }
+      if (state.resolve) {
+        state.resolve(getDefaultValue(state.type))
+      }
+      for (const item of state.queue) {
+        item.resolve(getDefaultValue(item.type))
+      }
       return {
         ...state,
         isOpen: false,

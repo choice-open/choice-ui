@@ -65,6 +65,14 @@ export const AlertDialog = memo(function AlertDialog(props: AlertDialogProps) {
 
       // Enter key to confirm (if autofocus button exists)
       if (event.key === "Enter") {
+        const active = document.activeElement
+        const isButtonFocused =
+          active instanceof HTMLButtonElement && refs.floating.current?.contains(active)
+
+        if (isButtonFocused) {
+          return
+        }
+
         if (type === "alert") {
           event.preventDefault()
           _handleAction({ type: "HIDE", payload: { value: undefined } })

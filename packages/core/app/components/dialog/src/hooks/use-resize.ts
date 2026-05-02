@@ -197,6 +197,23 @@ export function useResize(
     setState((prev) => ({ ...prev, isResizing: null }))
   }, [enabled, onResizeEnd])
 
+  const resizeByKeyboard = useEventCallback((deltaW: number, deltaH: number) => {
+    if (!enabled) return
+    const current = sizeRef.current ?? {
+      width: defaultWidth ?? 512,
+      height: defaultHeight ?? 384,
+    }
+    const newSize = adjustSize(
+      { width: current.width + deltaW, height: current.height + deltaH },
+      minWidth,
+      maxWidth,
+      minHeight,
+      maxHeight,
+    )
+    sizeRef.current = newSize
+    setState((prev) => ({ ...prev, size: newSize }))
+  })
+
   // Reset size state
   const resetResizeState = useCallback(() => {
     // Restore body cursor style
@@ -286,6 +303,7 @@ export function useResize(
   return {
     state,
     handleResizeStart,
+    resizeByKeyboard,
     resetResizeState,
     resetSize,
     reset,

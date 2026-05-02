@@ -31,6 +31,9 @@ export const ModalBackdrop = memo(function ModalBackdrop(props: ModalBackdropPro
           transition={transition}
           aria-hidden="true"
           onClick={onClose}
+          onKeyDown={(e) => {
+            if (e.key === "Escape") onClose?.()
+          }}
           {...rest}
         />
       )}

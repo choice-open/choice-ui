@@ -1,24 +1,27 @@
 import { tcx } from "@choice-ui/shared"
-import { memo } from "react"
+import { forwardRef, memo } from "react"
 import { MenuEmptyTv } from "../tv"
 
 export interface MenuEmptyProps extends React.HTMLAttributes<HTMLDivElement> {
   children?: React.ReactNode
 }
 
-export const MenuEmpty = memo(function MenuEmpty(props: MenuEmptyProps) {
-  const { children, className, ...rest } = props
+export const MenuEmpty = memo(
+  forwardRef<HTMLDivElement, MenuEmptyProps>((props, ref) => {
+    const { children, className, ...rest } = props
 
-  const tv = MenuEmptyTv()
+    const tv = MenuEmptyTv()
 
-  return (
-    <div
-      {...rest}
-      className={tcx(tv.root(), className)}
-    >
-      {children}
-    </div>
-  )
-})
+    return (
+      <div
+        ref={ref}
+        {...rest}
+        className={tcx(tv.root(), className)}
+      >
+        {children}
+      </div>
+    )
+  }),
+)
 
 MenuEmpty.displayName = "MenuEmpty"
