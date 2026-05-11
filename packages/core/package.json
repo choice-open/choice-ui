@@ -1,6 +1,6 @@
 {
   "name": "@choice-ui/react",
-  "version": "2.0.7",
+  "version": "2.0.8",
   "description": "A desktop-first React UI component library built for professional desktop applications with comprehensive documentation",
   "sideEffects": false,
   "type": "module",
