@@ -1,0 +1,212 @@
+import { useMemo } from "react"
+import { AliasPickerPopover } from "../../components/AliasPickerPopover"
+import { ColorEditPopover } from "../../components/ColorEditPopover"
+import { ColorSwatchButton } from "../../components/ColorSwatchButton"
+import {
+  type ColorEntry,
+  type ColorMode,
+  collectColorTokens,
+  collectPrimitiveOptions,
+  isAlias,
+  resolveColorValue,
+  type W3CColorTokenValue,
+  type W3CColorValue,
+  type W3CTree,
+} from "../../lib/w3c"
+import { useEditorStore } from "../../state/store"
+
+export function ColorsPage() {
+  const colorsTree = useEditorStore((s) => s.files["colors-w3c.json"])
+  const setModeValue = useEditorStore((s) => s.setModeValue)
+  const dirty = useEditorStore((s) => s.dirty)
+
+  const grouped = useMemo(
+    () => groupByCategory(collectColorTokens(colorsTree)),
+    [colorsTree],
+  )
+
+  const primitiveOptions = useMemo(() => collectPrimitiveOptions(colorsTree), [colorsTree])
+
+  return (
+    <div className="flex flex-col gap-8 p-6">
+      <header>
+        <h2 className="text-heading-medium">Colors</h2>
+        <p className="text-body-large text-text-secondary">
+          Primitive tokens edit a concrete RGB value per mode. Semantic
+          tokens point at a primitive — pick a different one or break it
+          into a literal color.
+        </p>
+      </header>
+
+      {grouped.map(({ category, entries }) => (
+        <section key={category} className="flex flex-col gap-3">
+          <h3 className="text-heading-small uppercase tracking-wide text-text-secondary">
+            {category}
+            <span className="ml-2 text-body-medium text-text-tertiary">({entries.length})</span>
+          </h3>
+          <div className="grid grid-cols-[minmax(180px,1fr)_repeat(2,auto)] items-center gap-x-4 gap-y-2">
+            <div className="text-body-medium text-text-tertiary">Token</div>
+            <div className="text-body-medium text-text-tertiary">Light</div>
+            <div className="text-body-medium text-text-tertiary">Dark</div>
+            {entries.map((entry) => (
+              <Row
+                key={entry.id}
+                entry={entry}
+                tree={colorsTree}
+                isDirty={isDirty(dirty, entry)}
+                primitiveOptions={primitiveOptions}
+                onChange={(mode, value) =>
+                  setModeValue("colors-w3c.json", entry.path, mode, value)
+                }
+              />
+            ))}
+          </div>
+        </section>
+      ))}
+    </div>
+  )
+}
+
+function Row({
+  entry,
+  tree,
+  isDirty,
+  primitiveOptions,
+  onChange,
+}: {
+  entry: ColorEntry
+  tree: W3CTree
+  isDirty: boolean
+  primitiveOptions: ReturnType<typeof collectPrimitiveOptions>
+  onChange: (mode: ColorMode, value: W3CColorTokenValue) => void
+}) {
+  const lightAlias = isAlias(entry.lightRaw) ? entry.lightRaw : null
+  return (
+    <>
+      <div className="font-mono text-body-medium">
+        {entry.id}
+        {isDirty ? <span className="ml-2 text-body-small text-text-accent">●</span> : null}
+        {lightAlias ? (
+          <div className="text-body-small text-text-tertiary">→ {lightAlias}</div>
+        ) : null}
+      </div>
+      <ModeCell
+        entry={entry}
+        tree={tree}
+        mode="light"
+        primitiveOptions={primitiveOptions}
+        onChange={onChange}
+      />
+      <ModeCell
+        entry={entry}
+        tree={tree}
+        mode="dark"
+        primitiveOptions={primitiveOptions}
+        onChange={onChange}
+      />
+    </>
+  )
+}
+
+/**
+ * Renders the right editor for one (entry, mode) cell. Aliased sides get the
+ * primitive picker; literal sides get the rgb popover. A token can be mixed
+ * (light alias + dark literal, or vice versa); each side decides
+ * independently from the rest of the row.
+ */
+function ModeCell({
+  entry,
+  tree,
+  mode,
+  primitiveOptions,
+  onChange,
+}: {
+  entry: ColorEntry
+  tree: W3CTree
+  mode: ColorMode
+  primitiveOptions: ReturnType<typeof collectPrimitiveOptions>
+  onChange: (mode: ColorMode, value: W3CColorTokenValue) => void
+}) {
+  const isAliasSide = mode === "light" ? entry.lightIsAlias : entry.darkIsAlias
+  const literalValue: W3CColorValue | null =
+    mode === "light" ? entry.light : entry.dark
+  const rawValue = mode === "light" ? entry.lightRaw : entry.darkRaw
+
+  if (isAliasSide) {
+    const currentAlias = isAlias(rawValue) ? rawValue : null
+    const resolved = resolveColorValue(tree, rawValue, mode)
+    // A token whose `$value` is literal can still appear in
+    // `primitiveOptions` even when this side (mode) is aliased — picking
+    // its own id as the alias target produces a self-referential override
+    // (`{color.icon.default}` on `color.icon.default`) which Terrazzo
+    // can't resolve and `resolveColorValue` bottoms out at `null`. Strip
+    // it before rendering options.
+    const filteredOptions = primitiveOptions.filter((o) => o.id !== entry.id)
+    return (
+      <AliasPickerPopover
+        options={filteredOptions}
+        currentAlias={currentAlias}
+        mode={mode}
+        label={`${entry.id} · ${mode}`}
+        onPick={(alias) => onChange(mode, alias)}
+      >
+        <div>
+          <ColorSwatchButton value={resolved} isAlias={false} />
+        </div>
+      </AliasPickerPopover>
+    )
+  }
+
+  // Light mode emits at `:root`, so the live CSS variable is just
+  // `--cdt-<path>` and we can write to it inline on `<html>` for a snappy
+  // preview during drag. Dark mode emits under `.dark` and inline-on-html
+  // would bleed into the current light view, so skip the fast path there.
+  const fastPathVariable =
+    mode === "light" ? `--cdt-${entry.path.join("-")}` : null
+
+  return (
+    <ColorEditPopover
+      value={literalValue}
+      variableName={fastPathVariable}
+      label={`${entry.id} · ${mode}`}
+      onChange={(v) => onChange(mode, v)}
+    >
+      <div>
+        <ColorSwatchButton value={literalValue} isAlias={false} />
+      </div>
+    </ColorEditPopover>
+  )
+}
+
+/**
+ * Bucket every color entry by its declared category. Primitives and
+ * semantics share buckets — `icon colors` for instance has both literal
+ * and aliased members in the bundled defaults, and rendering them as
+ * sibling sections with the same key triggers React duplicate-key
+ * warnings and unstable reconciliation. `Row` / `ModeCell` already
+ * dispatch the right editor per cell, so co-locating both kinds is fine.
+ */
+function groupByCategory(
+  all: ColorEntry[],
+): { category: string; entries: ColorEntry[] }[] {
+  const map = new Map<string, ColorEntry[]>()
+  for (const e of all) {
+    const list = map.get(e.category) ?? []
+    list.push(e)
+    map.set(e.category, list)
+  }
+  const order = ["hues", "pale", "neutrals"]
+  const out: { category: string; entries: ColorEntry[] }[] = []
+  for (const cat of order) {
+    const list = map.get(cat)
+    if (list?.length) out.push({ category: cat, entries: list })
+  }
+  for (const [cat, list] of map.entries()) {
+    if (!order.includes(cat)) out.push({ category: cat, entries: list })
+  }
+  return out
+}
+
+function isDirty(dirty: Set<string>, entry: ColorEntry) {
+  return dirty.has(`colors-w3c.json#${entry.id}`)
+}

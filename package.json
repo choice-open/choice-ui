@@ -60,7 +60,8 @@
   "pnpm": {
     "overrides": {
       "eslint-import-resolver-typescript": "3.6.1",
-      "unrs-resolver": "npm:file-exists@^1.0.0"
+      "unrs-resolver": "npm:file-exists@^1.0.0",
+      "@terrazzo/parser": "0.10.5"
     },
     "onlyBuiltDependencies": [
       "esbuild",
