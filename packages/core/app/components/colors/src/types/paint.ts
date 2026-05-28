@@ -35,8 +35,8 @@ export interface ImageFilters {
   readonly saturation?: number
   readonly temperature?: number
   readonly tint?: number
-  // readonly highlights?: number
-  // readonly shadows?: number
+  readonly highlights?: number
+  readonly shadows?: number
 }
 
 export interface PatternPaint {
