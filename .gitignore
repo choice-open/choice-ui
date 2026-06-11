@@ -18,3 +18,4 @@ storybook-static
 dist-demo
 .next
 .turbo
+.gstack/
