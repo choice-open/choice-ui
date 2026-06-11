@@ -1,4 +1,4 @@
-import type { ChannelFieldSpace, GradientPaint, ImagePaint, PickerType, RGB } from "@choice-ui/react"
+import type { ChannelFieldSpace, GradientPaint, ImagePaint, PickerType, RGB, Style, Variable } from "@choice-ui/react"
 import {
   Button,
   Checkbox,
@@ -10,6 +10,7 @@ import {
   DEFAULT_GRADIENT_TRANSFORM,
   GradientItem,
   ImageItem,
+  VariableItem,
 } from "@choice-ui/react"
 import type { Meta, StoryObj } from "@storybook/react"
 import { nanoid } from "nanoid"
@@ -24,20 +25,60 @@ export default meta
 
 type Story = StoryObj
 
+const MOCK_VARIABLE: Variable = {
+  id: "variable-brand-primary",
+  name: "Brand / Primary",
+  masterId: "Brand/Color",
+  type: "color",
+  value: {
+    r: 37,
+    g: 99,
+    b: 235,
+    a: 0.78,
+  },
+  createdAt: 0,
+  updatedAt: null,
+}
+
+const MOCK_PAINT_STYLE: Style = {
+  id: "style-surface-accent",
+  name: "Surface / Accent",
+  description: "Storybook paint style fixture",
+  fileId: "Brand/Styles",
+  type: "PAINT",
+  fills: [
+    {
+      index: "0",
+      type: "SOLID",
+      visible: true,
+      color: {
+        r: 16,
+        g: 185,
+        b: 129,
+      },
+      opacity: 0.86,
+    },
+  ],
+  index: "0",
+  consumers: [],
+  createdAt: 0,
+  updatedAt: null,
+}
+
 const FeaturesControl = ({
   disabled,
   selected,
-  showAlpha,
   setDisabled,
   setSelected,
   setShowAlpha,
+  showAlpha,
 }: {
   disabled: boolean
   selected: boolean
-  showAlpha: boolean
   setDisabled: (value: boolean) => void
   setSelected: (value: boolean) => void
   setShowAlpha: (value: boolean) => void
+  showAlpha: boolean
 }) => {
   return (
     <div className="flex flex-col gap-2">
@@ -255,6 +296,81 @@ export const Gradient: Story = {
             alpha: showAlpha,
           }}
         />
+      </div>
+    )
+  },
+}
+
+/**
+ * `VariableItem` displays a selected color variable or paint style inside a fill input row.
+ *
+ * Features:
+ * - Empty, variable, and style states
+ * - Color swatch preview from the selected library item
+ * - Multiple states: active, selected, disabled
+ * - Separate container and picker click callbacks
+ */
+export const Variable: Story = {
+  render: function VariableStory() {
+    const [active, setActive] = useState(false)
+    const [disabled, setDisabled] = useState(false)
+    const [selected, setSelected] = useState(false)
+
+    return (
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-2">
+          <VariableItem
+            active={active}
+            disabled={disabled}
+            selected={selected}
+            libraries={{ item: MOCK_VARIABLE, type: "VARIABLE" }}
+            onClick={() => setSelected((value) => !value)}
+            onPickerClick={() => setActive((value) => !value)}
+            className="w-48"
+          />
+
+          <VariableItem
+            active={active}
+            disabled={disabled}
+            selected={selected}
+            libraries={{ item: MOCK_PAINT_STYLE, type: "STYLE" }}
+            onClick={() => setSelected((value) => !value)}
+            onPickerClick={() => setActive((value) => !value)}
+            className="w-48"
+          />
+
+          <VariableItem
+            active={active}
+            disabled={disabled}
+            selected={selected}
+            onClick={() => setSelected((value) => !value)}
+            onPickerClick={() => setActive((value) => !value)}
+            className="w-48"
+          />
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <Checkbox
+            value={disabled}
+            onChange={(value) => setDisabled(value)}
+          >
+            <Checkbox.Label>Disabled</Checkbox.Label>
+          </Checkbox>
+
+          <Checkbox
+            value={selected}
+            onChange={(value) => setSelected(value)}
+          >
+            <Checkbox.Label>Selected</Checkbox.Label>
+          </Checkbox>
+
+          <Checkbox
+            value={active}
+            onChange={(value) => setActive(value)}
+          >
+            <Checkbox.Label>Active</Checkbox.Label>
+          </Checkbox>
+        </div>
       </div>
     )
   },
