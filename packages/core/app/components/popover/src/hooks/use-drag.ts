@@ -1,10 +1,12 @@
-import { useCallback, useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react"
 import { useEventCallback } from "usehooks-ts"
 
-interface Position {
+export interface PopoverPosition {
   x: number
   y: number
 }
+
+type Position = PopoverPosition
 
 interface DragState {
   isDragging: boolean
@@ -12,8 +14,10 @@ interface DragState {
 }
 
 interface UseDragOptions {
+  defaultPosition?: Position
   draggable: boolean
   floatingRef: { current: HTMLElement | null }
+  onPositionChange?: (position: Position) => void
   rememberPosition?: boolean
 }
 
@@ -56,21 +60,43 @@ function adjustPosition(
  * @param options configuration options
  * @returns drag state and control methods
  */
-export function useDrag({ draggable, floatingRef, rememberPosition = false }: UseDragOptions) {
-  const [state, setState] = useState<DragState>({
+export function useDrag({
+  defaultPosition,
+  draggable,
+  floatingRef,
+  onPositionChange,
+  rememberPosition = false,
+}: UseDragOptions) {
+  const [state, setState] = useState<DragState>(() => ({
     isDragging: false,
-    position: null,
-  })
+    position: defaultPosition ?? null,
+  }))
 
   const [floatingElement, setFloatingElement] = useState<HTMLElement | null>(null)
 
   // Use useRef to store position, avoid unnecessary re-rendering
-  const positionRef = useRef<Position | null>(null)
+  const positionRef = useRef<Position | null>(defaultPosition ?? null)
   const initialPositionRef = useRef<Position | null>(null)
   const dragOriginRef = useRef({ x: 0, y: 0 })
   const contentRef = useRef<HTMLDivElement>(null)
   const rafIdRef = useRef<number | null>(null)
   const pendingRef = useRef(false)
+
+  // defaultValue semantics: the latest prop value is read only when the
+  // floating element mounts, so changes while open have no effect.
+  // Synced in a layout effect declared before the seeding effect below,
+  // so the seeding effect always reads the current render's value.
+  const defaultPositionRef = useRef<Position | null>(defaultPosition ?? null)
+  useLayoutEffect(() => {
+    defaultPositionRef.current = defaultPosition ?? null
+  })
+
+  // A seeded defaultPosition has not been clamped to the viewport yet
+  const pendingDefaultClampRef = useRef(defaultPosition != null)
+
+  const handlePositionChange = useEventCallback((position: Position) => {
+    onPositionChange?.(position)
+  })
 
   // Start drag
   const handleDragStart = useEventCallback((e: React.MouseEvent) => {
@@ -157,13 +183,15 @@ export function useDrag({ draggable, floatingRef, rememberPosition = false }: Us
         isDragging: false,
         position: adjustedPosition,
       })
+
+      handlePositionChange(adjustedPosition)
     } else {
       setState({
         isDragging: false,
         position: positionRef.current,
       })
     }
-  }, [draggable, state.position, floatingRef])
+  }, [draggable, state.position, floatingRef, handlePositionChange])
 
   // Reset drag state
   const resetDragState = useCallback(() => {
@@ -195,16 +223,47 @@ export function useDrag({ draggable, floatingRef, rememberPosition = false }: Us
     }
   }, [draggable, state.isDragging, handleDrag, handleDragEnd])
 
-  useEffect(() => {
-    if (rememberPosition) return
+  // Clamp a seeded defaultPosition once the floating element can be measured.
+  // The first layout pass may happen before the content is rendered
+  // (positionReady gates it), so a zero-size rect is skipped and the clamp is
+  // retried on the next frame.
+  const applyDefaultPositionClamp = useCallback(() => {
+    const element = floatingRef.current
+    const position = positionRef.current
+    if (!element || !position) return
+
+    const dialogRect = element.getBoundingClientRect()
+    if (dialogRect.width === 0 && dialogRect.height === 0) return
+
+    const adjustedPosition = adjustPosition(position, dialogRect)
+    if (adjustedPosition.x === position.x && adjustedPosition.y === position.y) return
+
+    positionRef.current = adjustedPosition
+    setState((prev) => (prev.isDragging ? prev : { ...prev, position: adjustedPosition }))
+  }, [floatingRef])
+
+  // Seed drag state when the floating element mounts. Runs as a layout effect
+  // so a stale position from the previous open never reaches the screen.
+  useLayoutEffect(() => {
     if (!floatingElement) return
-    initialPositionRef.current = null
-    positionRef.current = null
-    setState({
-      isDragging: false,
-      position: null,
-    })
-  }, [floatingElement, rememberPosition])
+
+    if (!rememberPosition) {
+      const nextPosition = defaultPositionRef.current
+      initialPositionRef.current = null
+      positionRef.current = nextPosition
+      pendingDefaultClampRef.current = nextPosition != null
+      setState({
+        isDragging: false,
+        position: nextPosition,
+      })
+    }
+
+    if (!pendingDefaultClampRef.current) return
+    pendingDefaultClampRef.current = false
+    applyDefaultPositionClamp()
+    const rafId = requestAnimationFrame(applyDefaultPositionClamp)
+    return () => cancelAnimationFrame(rafId)
+  }, [floatingElement, rememberPosition, applyDefaultPositionClamp])
 
   // When rememberPosition changes
   useEffect(() => {

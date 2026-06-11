@@ -11,10 +11,10 @@
  *     closeOnEscape, not interactions. Fix = add `&& interactions !== "none"` guard.
  */
 import "@testing-library/jest-dom"
-import { act, render, screen, waitFor } from "@testing-library/react"
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import React from "react"
-import { describe, expect, it, vi } from "vitest"
+import { afterEach, describe, expect, it, vi } from "vitest"
 
 describe("Popover bugs", () => {
   describe("BUG 5: interactions=none must not close on Escape", () => {
@@ -273,5 +273,204 @@ describe("Popover bugs", () => {
       expect(screen.getByTestId("controlled-body")).toBeInTheDocument()
       expect(onOpenChange).toHaveBeenCalledWith(false)
     })
+  })
+})
+
+/**
+ * Position persistence: defaultPosition / onPositionChange (semi-controlled,
+ * defaultValue-style). defaultPosition seeds the drag position when the
+ * floating element mounts (clamped to the viewport); onPositionChange fires
+ * once per drag end with the clamped position so callers can persist it.
+ */
+describe("Popover position persistence", () => {
+  // jsdom reports zero-size rects; give elements a real size so the
+  // viewport clamp (adjustPosition) has something to work with.
+  const mockRect = () =>
+    vi.spyOn(Element.prototype, "getBoundingClientRect").mockReturnValue({
+      x: 0,
+      y: 0,
+      top: 0,
+      left: 0,
+      right: 200,
+      bottom: 150,
+      width: 200,
+      height: 150,
+      toJSON: () => ({}),
+    } as DOMRect)
+
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
+  it("renders the floating element at defaultPosition with fixed positioning", async () => {
+    const { Popover } = await import("../popover")
+
+    render(
+      <Popover
+        draggable
+        defaultOpen
+        defaultPosition={{ x: 120, y: 80 }}
+      >
+        <Popover.Trigger>
+          <button>Open</button>
+        </Popover.Trigger>
+        <Popover.Header>Header</Popover.Header>
+        <Popover.Content>
+          <div data-testid="content">Content</div>
+        </Popover.Content>
+      </Popover>,
+    )
+
+    await waitFor(() => {
+      expect(screen.getByTestId("content")).toBeInTheDocument()
+    })
+
+    const popover = screen.getByTestId("content").closest('[data-draggable="true"]') as HTMLElement
+    expect(popover).toBeTruthy()
+    expect(popover.style.position).toBe("fixed")
+    expect(popover.style.left).toBe("120px")
+    expect(popover.style.top).toBe("80px")
+  })
+
+  it("clamps an off-viewport defaultPosition back into view", async () => {
+    const { Popover } = await import("../popover")
+    mockRect()
+
+    render(
+      <Popover
+        draggable
+        defaultOpen
+        defaultPosition={{ x: 5000, y: 5000 }}
+      >
+        <Popover.Trigger>
+          <button>Open</button>
+        </Popover.Trigger>
+        <Popover.Header>Header</Popover.Header>
+        <Popover.Content>
+          <div data-testid="content">Content</div>
+        </Popover.Content>
+      </Popover>,
+    )
+
+    await waitFor(() => {
+      expect(screen.getByTestId("content")).toBeInTheDocument()
+    })
+
+    // Viewport is 1024x768 (jsdom default), rect is 200x150:
+    // maxLeft = 1024 - 200 * 0.25 = 974, maxTop = 768 - 40 (header) = 728
+    const popover = screen.getByTestId("content").closest('[data-draggable="true"]') as HTMLElement
+    await waitFor(() => {
+      expect(popover.style.left).toBe("974px")
+      expect(popover.style.top).toBe("728px")
+    })
+  })
+
+  it("calls onPositionChange once per drag end with the clamped position", async () => {
+    const { Popover } = await import("../popover")
+    const onPositionChange = vi.fn()
+    mockRect()
+
+    render(
+      <Popover
+        draggable
+        defaultOpen
+        onPositionChange={onPositionChange}
+      >
+        <Popover.Trigger>
+          <button>Open</button>
+        </Popover.Trigger>
+        <Popover.Header>Drag handle</Popover.Header>
+        <Popover.Content>
+          <div data-testid="content">Content</div>
+        </Popover.Content>
+      </Popover>,
+    )
+
+    await waitFor(() => {
+      expect(screen.getByTestId("content")).toBeInTheDocument()
+    })
+
+    // Mounting alone must not fire the callback
+    expect(onPositionChange).not.toHaveBeenCalled()
+
+    // Drag the header far off-screen, then release
+    fireEvent.mouseDown(screen.getByText("Drag handle"), { clientX: 50, clientY: 30 })
+    fireEvent.mouseMove(document, { clientX: 5000, clientY: 5000 })
+    // Flush the rAF-batched position update before ending the drag
+    await act(async () => {
+      await new Promise((resolve) => requestAnimationFrame(() => resolve(null)))
+    })
+    fireEvent.mouseUp(document)
+
+    // Raw drop point is (4950, 4970); clamped to (974, 728) — see test above
+    expect(onPositionChange).toHaveBeenCalledTimes(1)
+    expect(onPositionChange).toHaveBeenCalledWith({ x: 974, y: 728 })
+
+    // Closing (which resets the position back to the anchor) must not fire it
+    fireEvent.keyDown(window, { key: "Escape" })
+    await waitFor(() => {
+      expect(screen.queryByTestId("content")).not.toBeInTheDocument()
+    })
+    await act(async () => {
+      await new Promise((resolve) => requestAnimationFrame(() => resolve(null)))
+    })
+    expect(onPositionChange).toHaveBeenCalledTimes(1)
+  })
+
+  it("re-applies the latest defaultPosition on reopen", async () => {
+    const { Popover } = await import("../popover")
+
+    const Comp = ({ open, pos }: { open: boolean; pos: { x: number; y: number } }) => (
+      <Popover
+        open={open}
+        draggable
+        defaultPosition={pos}
+      >
+        <Popover.Trigger>
+          <button>Open</button>
+        </Popover.Trigger>
+        <Popover.Header>Header</Popover.Header>
+        <Popover.Content>
+          <div data-testid="content">Content</div>
+        </Popover.Content>
+      </Popover>
+    )
+
+    const { rerender } = render(
+      <Comp
+        open
+        pos={{ x: 100, y: 100 }}
+      />,
+    )
+
+    await waitFor(() => {
+      expect(screen.getByTestId("content")).toBeInTheDocument()
+    })
+    let popover = screen.getByTestId("content").closest('[data-draggable="true"]') as HTMLElement
+    expect(popover.style.left).toBe("100px")
+
+    rerender(
+      <Comp
+        open={false}
+        pos={{ x: 100, y: 100 }}
+      />,
+    )
+    await waitFor(() => {
+      expect(screen.queryByTestId("content")).not.toBeInTheDocument()
+    })
+
+    // Caller persists a new position and passes it on the next open
+    rerender(
+      <Comp
+        open
+        pos={{ x: 300, y: 200 }}
+      />,
+    )
+    await waitFor(() => {
+      expect(screen.getByTestId("content")).toBeInTheDocument()
+    })
+    popover = screen.getByTestId("content").closest('[data-draggable="true"]') as HTMLElement
+    expect(popover.style.left).toBe("300px")
+    expect(popover.style.top).toBe("200px")
   })
 })
