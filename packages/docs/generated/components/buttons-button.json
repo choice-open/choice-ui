@@ -3,7 +3,7 @@
   "title": "Button",
   "package": {
     "name": "@choice-ui/button",
-    "version": "0.0.7",
+    "version": "0.0.8",
     "description": "A versatile button component with multiple variants, sizes, and states for user interactions",
     "dependencies": {
       "@choice-ui/shared": "workspace:*",

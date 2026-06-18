@@ -3,7 +3,7 @@
   "title": "BezierCurveEditor",
   "package": {
     "name": "@choice-ui/bezier-curve-editor",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "description": "An interactive Bezier curve editor component for customizing animation easing functions",
     "dependencies": {
       "usehooks-ts": "^3.1.0",

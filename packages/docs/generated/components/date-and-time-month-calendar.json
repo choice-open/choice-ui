@@ -3,7 +3,7 @@
   "title": "MonthCalendar",
   "package": {
     "name": "@choice-ui/calendar",
-    "version": "0.0.10",
+    "version": "0.0.11",
     "description": "A calendar component for date selection with support for single, range, and multiple date picking",
     "dependencies": {
       "@choice-ui/shared": "workspace:*",
@@ -732,6 +732,12 @@
           "description": "Base step (minutes), default 1 minute"
         },
         {
+          "name": "variant",
+          "type": "undefined | \"default\" | \"light\" | \"reset\"",
+          "required": false,
+          "description": ""
+        },
+        {
           "name": "offset",
           "type": "number | undefined",
           "required": false,
@@ -746,12 +752,6 @@
         {
           "name": "matchTriggerWidth",
           "type": "boolean | undefined",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "variant",
-          "type": "undefined | \"default\" | \"light\" | \"reset\"",
           "required": false,
           "description": ""
         }

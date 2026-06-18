@@ -3,7 +3,7 @@
   "title": "ContextMenu",
   "package": {
     "name": "@choice-ui/context-menu",
-    "version": "0.0.9",
+    "version": "0.0.10",
     "description": "A context menu component that appears on right-click with customizable menu items and actions",
     "dependencies": {
       "@floating-ui/react": "0.27.15",

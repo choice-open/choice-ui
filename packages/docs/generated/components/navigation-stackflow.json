@@ -3,7 +3,7 @@
   "title": "Stackflow",
   "package": {
     "name": "@choice-ui/stackflow",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "description": "A stack-based navigation flow component for managing sequential views with animations",
     "dependencies": {
       "@choice-ui/shared": "workspace:*",

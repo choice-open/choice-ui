@@ -3,7 +3,7 @@
   "title": "VirtualizedGrid",
   "package": {
     "name": "@choice-ui/virtualized-grid",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "description": "A virtualized grid component for efficiently rendering large datasets in a grid layout",
     "dependencies": {
       "@choice-ui/button": "workspace:*",

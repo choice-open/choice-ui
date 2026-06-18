@@ -1,4 +1,4 @@
-import type { ChannelFieldSpace, GradientPaint, ImagePaint, PickerType, RGB, Style, Variable } from "@choice-ui/react"
+import type { ChannelFieldSpace, GradientPaint, ImagePaint, PickerType, RGB, Style, Variable as VariableType } from "@choice-ui/react"
 import {
   Button,
   Checkbox,
@@ -25,7 +25,7 @@ export default meta
 
 type Story = StoryObj
 
-const MOCK_VARIABLE: Variable = {
+const MOCK_VARIABLE: VariableType = {
   id: "variable-brand-primary",
   name: "Brand / Primary",
   masterId: "Brand/Color",

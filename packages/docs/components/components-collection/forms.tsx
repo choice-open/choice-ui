@@ -160,9 +160,7 @@ export const FormsCollection = memo(function FormsCollection() {
           max={100}
           step={1}
           onChange={() => {}}
-          trackSize={{
-            width: "auto",
-          }}
+          width={true}
         />
       </ComponentCard>
 

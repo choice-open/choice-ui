@@ -3,7 +3,7 @@
   "title": "Combobox",
   "package": {
     "name": "@choice-ui/combobox",
-    "version": "0.0.6",
+    "version": "0.0.7",
     "description": "A combobox component combining input field with dropdown menu for filtering and selecting options",
     "dependencies": {
       "@choice-ui/shared": "workspace:*",
@@ -59,7 +59,7 @@
         },
         {
           "name": "onBlur",
-          "type": "((value: string) => void) | undefined",
+          "type": "((value: string, event?: FocusEvent<HTMLInputElement, Element> | undefined) => void) | undefined",
           "required": false,
           "description": ""
         },
@@ -147,6 +147,12 @@
         {
           "name": "onChange",
           "type": "((value: string) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onBlur",
+          "type": "((value: string, event: FocusEvent<HTMLInputElement, Element>) => void) | undefined",
           "required": false,
           "description": ""
         },

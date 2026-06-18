@@ -3,7 +3,7 @@
   "title": "IconButton",
   "package": {
     "name": "@choice-ui/icon-button",
-    "version": "0.0.6",
+    "version": "0.0.7",
     "description": "An icon-only button component with various sizes and states for compact actions",
     "dependencies": {
       "@choice-ui/shared": "workspace:*",
