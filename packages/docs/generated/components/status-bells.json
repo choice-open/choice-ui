@@ -3,7 +3,7 @@
   "title": "Bells",
   "package": {
     "name": "@choice-ui/bells",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "description": "A notification bell component with animated indicators for displaying alerts and messages",
     "dependencies": {
       "@choice-ui/shared": "workspace:*",

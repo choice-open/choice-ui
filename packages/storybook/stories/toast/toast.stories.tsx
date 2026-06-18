@@ -1712,9 +1712,7 @@ export const Playground: Story = {
               value={offset}
               onChange={(value) => setOffset(value)}
               className="flex-1"
-              trackSize={{
-                width: "auto",
-              }}
+              width={true}
             />
           </div>
           <Button

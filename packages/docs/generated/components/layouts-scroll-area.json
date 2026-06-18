@@ -3,7 +3,7 @@
   "title": "ScrollArea",
   "package": {
     "name": "@choice-ui/scroll-area",
-    "version": "0.0.8",
+    "version": "0.0.9",
     "description": "A customizable scroll area component with native-like scrolling and custom scrollbar styling",
     "dependencies": {
       "@choice-ui/shared": "workspace:*"

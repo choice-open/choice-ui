@@ -3,7 +3,7 @@
   "title": "Description",
   "package": {
     "name": "@choice-ui/description",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "A description component for form fields and UI elements with proper accessibility support",
     "dependencies": {
       "@choice-ui/shared": "workspace:*"
@@ -25,6 +25,12 @@
         {
           "name": "disabled",
           "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "ref",
+          "type": "((instance: HTMLParagraphElement | null) => void) | RefObject<HTMLParagraphElement> | null | undefined",
           "required": false,
           "description": ""
         }

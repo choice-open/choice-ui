@@ -3,7 +3,7 @@
   "title": "OtpInput",
   "package": {
     "name": "@choice-ui/otp-input",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "description": "A one-time password input component with customizable slots and separators",
     "dependencies": {
       "@choice-ui/shared": "workspace:*",
@@ -27,27 +27,10 @@
       "description": "",
       "props": [
         {
-          "name": "variant",
-          "type": "undefined | \"default\" | \"light\" | \"dark\"",
-          "required": false,
-          "description": ""
-        },
-        {
           "name": "disabled",
           "type": "boolean | undefined",
           "required": false,
-          "description": ""
-        },
-        {
-          "name": "isInvalid",
-          "type": "boolean | undefined",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "inputClassName",
-          "type": "string | undefined",
-          "required": false,
+          "defaultValue": "false",
           "description": ""
         },
         {
@@ -95,6 +78,26 @@
         {
           "name": "noScriptCSSFallback",
           "type": "string | null | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "variant",
+          "type": "undefined | \"default\" | \"light\" | \"dark\"",
+          "required": false,
+          "defaultValue": "default",
+          "description": ""
+        },
+        {
+          "name": "isInvalid",
+          "type": "boolean | undefined",
+          "required": false,
+          "defaultValue": "false",
+          "description": ""
+        },
+        {
+          "name": "inputClassName",
+          "type": "string | undefined",
           "required": false,
           "description": ""
         }

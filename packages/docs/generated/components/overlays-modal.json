@@ -3,7 +3,7 @@
   "title": "Modal",
   "package": {
     "name": "@choice-ui/modal",
-    "version": "0.0.9",
+    "version": "0.0.10",
     "description": "A modal component with header, footer, and content sections for structured dialog layouts",
     "dependencies": {
       "@choice-ui/shared": "workspace:*",
@@ -116,6 +116,24 @@
         {
           "name": "value",
           "type": "string | null | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "id",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "aria-describedby",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "aria-labelledby",
+          "type": "string | undefined",
           "required": false,
           "description": ""
         },

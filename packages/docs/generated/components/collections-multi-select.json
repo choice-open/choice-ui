@@ -3,7 +3,7 @@
   "title": "MultiSelect",
   "package": {
     "name": "@choice-ui/multi-select",
-    "version": "0.0.7",
+    "version": "0.0.8",
     "description": "A multi-select dropdown component that allows users to select multiple options from a list",
     "dependencies": {
       "@choice-ui/chip": "workspace:*",
@@ -56,7 +56,7 @@
         },
         {
           "name": "focusManagerProps",
-          "type": "FloatingFocusManagerProps | undefined",
+          "type": "Partial<FloatingFocusManagerProps> | undefined",
           "required": false,
           "description": ""
         },

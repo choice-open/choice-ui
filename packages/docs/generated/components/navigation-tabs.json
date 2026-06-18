@@ -3,7 +3,7 @@
   "title": "Tabs",
   "package": {
     "name": "@choice-ui/tabs",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "description": "A tabs component for organizing content into multiple panels with tab navigation",
     "dependencies": {
       "@choice-ui/shared": "workspace:*",

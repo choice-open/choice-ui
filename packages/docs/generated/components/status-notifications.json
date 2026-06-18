@@ -3,7 +3,7 @@
   "title": "Notifications",
   "package": {
     "name": "@choice-ui/notifications",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "description": "A notification system component for displaying toast messages, alerts, and system notifications",
     "dependencies": {
       "sonner": "^2.0.7",
@@ -17,6 +17,7 @@
   },
   "exports": [
     "type NotificationsProps",
+    "Toast",
     "notifications"
   ],
   "props": [
@@ -46,6 +47,54 @@
           "name": "icon",
           "type": "ReactNode",
           "required": false,
+          "description": ""
+        },
+        {
+          "name": "text",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "toasterId",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "Toast",
+      "description": "",
+      "props": [
+        {
+          "name": "actions",
+          "type": "((id: string | number) => { action?: { content: ReactNode; onClick: () => void; } | undefined; dismiss?: { content: ReactNode; onClick: () => void; } | undefined; }) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "html",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "icon",
+          "type": "ReactNode",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "id",
+          "type": "string | number",
+          "required": true,
           "description": ""
         },
         {

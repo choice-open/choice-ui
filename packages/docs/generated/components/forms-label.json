@@ -3,7 +3,7 @@
   "title": "Label",
   "package": {
     "name": "@choice-ui/label",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "description": "A label component for form fields with proper accessibility and association with inputs",
     "dependencies": {
       "@choice-ui/shared": "workspace:*"
@@ -55,6 +55,12 @@
         {
           "name": "variant",
           "type": "undefined | \"default\" | \"light\" | \"dark\" | \"reset\"",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "ref",
+          "type": "((instance: HTMLLabelElement | HTMLLegendElement | null) => void) | RefObject<HTMLLabelElement | HTMLLegendElement> | null | undefined",
           "required": false,
           "description": ""
         }

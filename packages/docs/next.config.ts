@@ -31,22 +31,38 @@ const componentAliases = createWorkspaceAliases(path.resolve(coreDir, "app/compo
 const hookAliases = createWorkspaceAliases(path.resolve(coreDir, "app/hooks"))
 const utilAliases = createWorkspaceAliases(path.resolve(coreDir, "app/utils"))
 
+// 共享的模块别名（绝对路径，用于 webpack）
+const workspaceAliases: Record<string, string> = {
+  // styles 路径需要在主包之前
+  "@choice-ui/react/styles": path.resolve(coreDir, "app/styles"),
+  "@choice-ui/react": path.resolve(coreDir, "app/index.ts"),
+  "@choice-ui/shared": path.resolve(__dirname, "../shared/src/index.ts"),
+  "~": path.resolve(coreDir, "app"),
+  ...componentAliases,
+  ...hookAliases,
+  ...utilAliases,
+}
+
+// Turbopack 不支持绝对路径别名，需转换为相对 docs 目录的路径
+const turbopackAliases: Record<string, string> = Object.fromEntries(
+  Object.entries(workspaceAliases).map(([key, value]) => [
+    key,
+    path.relative(__dirname, value),
+  ]),
+)
+
 const nextConfig: NextConfig = {
   /* config options here */
   output: "standalone",
   pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
   transpilePackages: ["@choice-ui/react"],
+  turbopack: {
+    resolveAlias: turbopackAliases,
+  },
   webpack: (config) => {
     config.resolve.alias = {
       ...(config.resolve.alias ?? {}),
-      // styles 路径需要在主包之前
-      "@choice-ui/react/styles": path.resolve(coreDir, "app/styles"),
-      "@choice-ui/react": path.resolve(coreDir, "app/index.ts"),
-      "@choice-ui/shared": path.resolve(__dirname, "../shared/src/index.ts"),
-      "~": path.resolve(coreDir, "app"),
-      ...componentAliases,
-      ...hookAliases,
-      ...utilAliases,
+      ...workspaceAliases,
     }
     return config
   },

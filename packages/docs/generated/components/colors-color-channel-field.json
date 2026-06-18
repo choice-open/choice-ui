@@ -3,7 +3,7 @@
   "title": "ColorChannelField",
   "package": {
     "name": "@choice-ui/colors",
-    "version": "0.3.36",
+    "version": "0.3.37",
     "description": "A modern React color system",
     "dependencies": {
       "@floating-ui/react": "0.27.15",
@@ -1246,6 +1246,12 @@
           "description": ""
         },
         {
+          "name": "defaultPosition",
+          "type": "PopoverPosition | undefined",
+          "required": false,
+          "description": "Initial drag position (viewport coordinates) applied when the floating\nelement mounts — defaultValue semantics, dragging takes over afterwards.\nValues outside the viewport are clamped back into view. Only takes effect\nwhen `draggable` is enabled. Combine with `onPositionChange` to persist\nthe dragged position externally (e.g. localStorage)."
+        },
+        {
           "name": "delay",
           "type": "{ close?: number | undefined; open?: number | undefined; } | undefined",
           "required": false,
@@ -1280,6 +1286,12 @@
           "type": "OffsetOptions | undefined",
           "required": false,
           "description": ""
+        },
+        {
+          "name": "onPositionChange",
+          "type": "((position: PopoverPosition) => void) | undefined",
+          "required": false,
+          "description": "Called once with the viewport-clamped position when a drag ends. Not\ncalled during the drag (mousemove) nor when the popover closes and\nresets back to its anchored position."
         },
         {
           "name": "outsidePressIgnore",
@@ -2406,7 +2418,7 @@
     },
     {
       "displayName": "useImageFilterStyle",
-      "description": "将-100到100范围的滤镜值映射到CSS滤镜的实际有效范围",
+      "description": "将-100到100范围的滤镜值映射到CSS滤镜的实际有效范围。",
       "props": [
         {
           "name": "contrast",
@@ -2434,6 +2446,18 @@
         },
         {
           "name": "tint",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "highlights",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "shadows",
           "type": "number | undefined",
           "required": false,
           "description": ""

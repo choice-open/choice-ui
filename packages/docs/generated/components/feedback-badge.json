@@ -3,7 +3,7 @@
   "title": "Badge",
   "package": {
     "name": "@choice-ui/badge",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "description": "A badge component for displaying labels, counts, or status indicators",
     "dependencies": {
       "@choice-ui/shared": "workspace:*"

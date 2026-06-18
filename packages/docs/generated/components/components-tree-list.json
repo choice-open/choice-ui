@@ -3,7 +3,7 @@
   "title": "TreeList",
   "package": {
     "name": "@choice-ui/tree-list",
-    "version": "0.0.6",
+    "version": "0.0.7",
     "description": "A tree list component for displaying hierarchical data with expand/collapse, selection, and drag-and-drop",
     "dependencies": {
       "@tanstack/react-virtual": "^3.13.12",
@@ -189,8 +189,8 @@
         },
         {
           "name": "selectedNodeIds",
-          "type": "Set<string>",
-          "required": true,
+          "type": "Set<string> | undefined",
+          "required": false,
           "description": ""
         },
         {

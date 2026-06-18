@@ -3,7 +3,7 @@
   "title": "Select",
   "package": {
     "name": "@choice-ui/select",
-    "version": "0.0.12",
+    "version": "0.0.14",
     "description": "A select dropdown component for choosing a single option from a list of choices",
     "dependencies": {
       "@choice-ui/shared": "workspace:*",
@@ -27,6 +27,18 @@
       "description": "",
       "props": [
         {
+          "name": "aria-describedby",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "aria-labelledby",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
           "name": "className",
           "type": "string | undefined",
           "required": false,
@@ -47,6 +59,12 @@
         {
           "name": "focusManagerProps",
           "type": "Partial<FloatingFocusManagerProps> | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "id",
+          "type": "string | undefined",
           "required": false,
           "description": ""
         },
@@ -224,6 +242,13 @@
       "exportName": "Empty",
       "description": "Empty: Demonstrates Select with empty state when no options available.\n\nFeatures:\n- Empty state display when options array is empty\n- Custom empty message support\n- Consistent with menu styling\n\nUse cases:\n- Search results with no matches\n- Dynamic option lists that may be empty\n- Placeholder for loading states",
       "source": "import { Select } from \"@choice-ui/select\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [value, setValue] = useState<string | null>(null)\n  const options: { value: string; label: string }[] = []\n\n  return (\n    <Select\n      value={value}\n      onChange={setValue}\n    >\n      <Select.Trigger>\n        <Select.Value>{value || \"Select an option...\"}</Select.Value>\n      </Select.Trigger>\n      <Select.Content>\n        {options.length > 0 ? (\n          options.map((option) => (\n            <Select.Item\n              key={option.value}\n              value={option.value}\n            >\n              <Select.Value>{option.label}</Select.Value>\n            </Select.Item>\n          ))\n        ) : (\n          <Select.Empty>No options</Select.Empty>\n        )}\n      </Select.Content>\n    </Select>\n  )\n\n}"
+    },
+    {
+      "id": "collections-select--item-mouse-events",
+      "name": "Item Mouse Events",
+      "exportName": "ItemMouseEvents",
+      "description": "ItemMouseEvents: Demonstrates onMouseEnter and onMouseLeave support on Select.Item.\n\nFeatures:\n- User-provided onMouseEnter/onMouseLeave handlers are correctly called\n- Hover state tracking per item\n- Event handlers coexist with floating-ui's internal navigation\n- Ref forwarding to Select.Item works correctly\n\nUse cases:\n- Showing tooltips or previews on item hover\n- Tracking hover analytics\n- Custom hover visual effects",
+      "source": "import { Select } from \"@choice-ui/select\"\nimport { useState, useCallback, useRef } from \"react\"\n\nexport default function App() {\n\n  const [value, setValue] = useState<string>(\"apple\")\n  const [hoveredItem, setHoveredItem] = useState<string | null>(null)\n  const [eventLog, setEventLog] = useState<string[]>([])\n  const itemRef = useRef<HTMLButtonElement>(null)\n\n  const options = [\n    { value: \"apple\", label: \"Apple\", description: \"A sweet red fruit\" },\n    { value: \"banana\", label: \"Banana\", description: \"A yellow tropical fruit\" },\n    { value: \"cherry\", label: \"Cherry\", description: \"A small stone fruit\" },\n    { value: \"grape\", label: \"Grape\", description: \"Grows in clusters on vines\" },\n    { value: \"mango\", label: \"Mango\", description: \"The king of fruits\" },\n  ]\n\n  const addLog = useCallback((msg: string) => {\n    setEventLog((prev) => [...prev.slice(-9), msg])\n  }, [])\n\n  return (\n    <div className=\"flex gap-8\">\n      <div className=\"flex flex-col gap-4\">\n        <Select value={value} onChange={setValue}>\n          <Select.Trigger className=\"w-48\">\n            <Select.Value>\n              {options.find((o) => o.value === value)?.label || \"Select a fruit...\"}\n            </Select.Value>\n          </Select.Trigger>\n          <Select.Content>\n            {options.map((option) => (\n              <Select.Item\n                key={option.value}\n                value={option.value}\n                ref={option.value === \"apple\" ? itemRef : undefined}\n                onMouseEnter={() => {\n                  setHoveredItem(option.value)\n                  addLog(`mouseenter: ${option.label}`)\n                }}\n                onMouseLeave={() => {\n                  setHoveredItem(null)\n                  addLog(`mouseleave: ${option.label}`)\n                }}\n              >\n                <Select.Value>{option.label}</Select.Value>\n              </Select.Item>\n            ))}\n          </Select.Content>\n        </Select>\n\n        {hoveredItem && (\n          <div className=\"bg-secondary-background rounded-xl p-3\">\n            <p className=\"text-body-small-strong\">\n              {options.find((o) => o.value === hoveredItem)?.label}\n            </p>\n            <p className=\"text-secondary-foreground text-body-small\">\n              {options.find((o) => o.value === hoveredItem)?.description}\n            </p>\n          </div>\n        )}\n      </div>\n\n      <div className=\"bg-secondary-background w-64 rounded-xl p-4\">\n        <p className=\"text-body-small-strong mb-2\">Event Log</p>\n        <div className=\"flex flex-col gap-0.5\">\n          {eventLog.length === 0 ? (\n            <p className=\"text-secondary-foreground text-body-small\">\n              Hover over items to see events...\n            </p>\n          ) : (\n            eventLog.map((log, i) => (\n              <p key={i} className=\"text-body-small font-mono\">\n                {log}\n              </p>\n            ))\n          )}\n        </div>\n      </div>\n    </div>\n  )\n\n}"
     }
   ]
 }

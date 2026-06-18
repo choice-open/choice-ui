@@ -3,7 +3,7 @@
   "title": "Textarea",
   "package": {
     "name": "@choice-ui/textarea",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "description": "A textarea component for multi-line text input with auto-resize and scroll management",
     "dependencies": {
       "@choice-ui/shared": "workspace:*",

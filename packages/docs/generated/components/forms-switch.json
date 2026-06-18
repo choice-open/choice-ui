@@ -3,7 +3,7 @@
   "title": "Switch",
   "package": {
     "name": "@choice-ui/switch",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "description": "A toggle switch component for binary on/off states with smooth animations",
     "dependencies": {
       "@choice-ui/shared": "workspace:*",

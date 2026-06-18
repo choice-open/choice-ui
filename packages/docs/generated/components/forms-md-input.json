@@ -3,7 +3,7 @@
   "title": "MdInput",
   "package": {
     "name": "@choice-ui/md-input",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "description": "A markdown editor component with live preview, syntax highlighting, and markdown toolbar",
     "dependencies": {
       "usehooks-ts": "^3.1.1",

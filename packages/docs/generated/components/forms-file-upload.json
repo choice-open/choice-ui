@@ -3,7 +3,7 @@
   "title": "FileUpload",
   "package": {
     "name": "@choice-ui/file-upload",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "description": "A file upload component with drag-and-drop support, progress tracking, and file preview",
     "dependencies": {
       "@choice-ui/shared": "workspace:*",
