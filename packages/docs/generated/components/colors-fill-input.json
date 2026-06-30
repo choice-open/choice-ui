@@ -3,7 +3,7 @@
   "title": "FillInput",
   "package": {
     "name": "@choice-ui/colors",
-    "version": "0.3.36",
+    "version": "0.3.37",
     "description": "A modern React color system",
     "dependencies": {
       "@floating-ui/react": "0.27.15",
@@ -1246,6 +1246,12 @@
           "description": ""
         },
         {
+          "name": "defaultPosition",
+          "type": "PopoverPosition | undefined",
+          "required": false,
+          "description": "Initial drag position (viewport coordinates) applied when the floating\nelement mounts — defaultValue semantics, dragging takes over afterwards.\nValues outside the viewport are clamped back into view. Only takes effect\nwhen `draggable` is enabled. Combine with `onPositionChange` to persist\nthe dragged position externally (e.g. localStorage)."
+        },
+        {
           "name": "delay",
           "type": "{ close?: number | undefined; open?: number | undefined; } | undefined",
           "required": false,
@@ -1280,6 +1286,12 @@
           "type": "OffsetOptions | undefined",
           "required": false,
           "description": ""
+        },
+        {
+          "name": "onPositionChange",
+          "type": "((position: PopoverPosition) => void) | undefined",
+          "required": false,
+          "description": "Called once with the viewport-clamped position when a drag ends. Not\ncalled during the drag (mousemove) nor when the popover closes and\nresets back to its anchored position."
         },
         {
           "name": "outsidePressIgnore",
@@ -2406,7 +2418,7 @@
     },
     {
       "displayName": "useImageFilterStyle",
-      "description": "将-100到100范围的滤镜值映射到CSS滤镜的实际有效范围",
+      "description": "将-100到100范围的滤镜值映射到CSS滤镜的实际有效范围。",
       "props": [
         {
           "name": "contrast",
@@ -2434,6 +2446,18 @@
         },
         {
           "name": "tint",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "highlights",
+          "type": "number | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "shadows",
           "type": "number | undefined",
           "required": false,
           "description": ""
@@ -2870,6 +2894,13 @@
       "exportName": "Gradient",
       "description": "`GradientItem` is a component that displays and manages gradient inputs.\n\nFeatures:\n- Gradient preview with interactive stops\n- Optional alpha transparency control\n- Multiple states: active, selected, disabled\n- Configurable features via `features` prop",
       "source": "import { GradientItem, ColorSolidPaint, ColorPickerPopover, ColorGradientsPaint, DEFAULT_COLOR, DEFAULT_GRADIENT_TRANSFORM } from \"@choice-ui/colors\"\nimport { useState, useRef } from \"react\"\n\nexport default function App() {\n\n  const triggerRef = useRef<HTMLDivElement>(null)\n  const [pickerType, setPickerType] = useState<PickerType>(\"CUSTOM\")\n\n  const [open, setOpen] = useState(false)\n  const [color, setColor] = useState<RGB>({ r: 255, g: 87, b: 51 })\n  const [gradient, setGradient] = useState<GradientPaint>({\n    gradientStops: [\n      { id: nanoid(), position: 0, color: DEFAULT_COLOR, alpha: 0 },\n      { id: nanoid(), position: 1, color: DEFAULT_COLOR, alpha: 1 },\n    ],\n    type: \"GRADIENT_LINEAR\",\n    gradientTransform: DEFAULT_GRADIENT_TRANSFORM,\n    opacity: 1,\n  })\n\n  const [alpha, setAlpha] = useState(1)\n\n  const [showAlpha, setShowAlpha] = useState(true)\n  const [disabled, setDisabled] = useState(false)\n  const [selected, setSelected] = useState(false)\n  const [colorSpace, setColorSpace] = useState<ChannelFieldSpace>(\"hex\")\n\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <GradientItem\n        ref={triggerRef}\n        active={open}\n        disabled={disabled}\n        selected={selected}\n        gradient={gradient}\n        onGradientChange={setGradient}\n        alpha={alpha}\n        onAlphaChange={setAlpha}\n        onPickerClick={() => setOpen(disabled ? false : !open)}\n        className=\"w-48\"\n        features={{\n          alpha: showAlpha,\n        }}\n      />\n\n      <FeaturesControl\n        disabled={disabled}\n        selected={selected}\n        showAlpha={showAlpha}\n        setDisabled={setDisabled}\n        setSelected={setSelected}\n        setShowAlpha={setShowAlpha}\n      />\n\n      <ColorPickerPopover\n        triggerRef={triggerRef}\n        pickerType={pickerType}\n        onPickerTypeChange={setPickerType}\n        solidPaint={\n          <ColorSolidPaint\n            colorSpace={colorSpace}\n            onColorSpaceChange={(value) => setColorSpace(value as ChannelFieldSpace)}\n            color={color}\n            alpha={alpha}\n            onColorChange={(color) => setColor(color)}\n            onAlphaChange={(alpha) => setAlpha(alpha)}\n          />\n        }\n        gradientPaint={\n          <ColorGradientsPaint\n            gradient={gradient}\n            onGradientChange={setGradient}\n            colorSpace={colorSpace}\n            onColorSpaceChange={(value) => setColorSpace(value as ChannelFieldSpace)}\n          />\n        }\n        open={open}\n        onOpenChange={(open) => setOpen(open)}\n        paintsType=\"GRADIENT_LINEAR\"\n        autoUpdate={false}\n        placement=\"left\"\n        features={{\n          pickerType: false,\n          paintsType: false,\n          alpha: showAlpha,\n        }}\n      />\n    </div>\n  )\n\n}"
+    },
+    {
+      "id": "colors-fillinput--variable",
+      "name": "Variable",
+      "exportName": "Variable",
+      "description": "`VariableItem` displays a selected color variable or paint style inside a fill input row.\n\nFeatures:\n- Empty, variable, and style states\n- Color swatch preview from the selected library item\n- Multiple states: active, selected, disabled\n- Separate container and picker click callbacks",
+      "source": "import { VariableItem } from \"@choice-ui/colors\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [active, setActive] = useState(false)\n  const [disabled, setDisabled] = useState(false)\n  const [selected, setSelected] = useState(false)\n\n  return (\n    <div className=\"flex flex-col gap-4\">\n      <div className=\"flex flex-col gap-2\">\n        <VariableItem\n          active={active}\n          disabled={disabled}\n          selected={selected}\n          libraries={{ item: MOCK_VARIABLE, type: \"VARIABLE\" }}\n          onClick={() => setSelected((value) => !value)}\n          onPickerClick={() => setActive((value) => !value)}\n          className=\"w-48\"\n        />\n\n        <VariableItem\n          active={active}\n          disabled={disabled}\n          selected={selected}\n          libraries={{ item: MOCK_PAINT_STYLE, type: \"STYLE\" }}\n          onClick={() => setSelected((value) => !value)}\n          onPickerClick={() => setActive((value) => !value)}\n          className=\"w-48\"\n        />\n\n        <VariableItem\n          active={active}\n          disabled={disabled}\n          selected={selected}\n          onClick={() => setSelected((value) => !value)}\n          onPickerClick={() => setActive((value) => !value)}\n          className=\"w-48\"\n        />\n      </div>\n\n      <div className=\"flex flex-col gap-2\">\n        <Checkbox\n          value={disabled}\n          onChange={(value) => setDisabled(value)}\n        >\n          <Checkbox.Label>Disabled</Checkbox.Label>\n        </Checkbox>\n\n        <Checkbox\n          value={selected}\n          onChange={(value) => setSelected(value)}\n        >\n          <Checkbox.Label>Selected</Checkbox.Label>\n        </Checkbox>\n\n        <Checkbox\n          value={active}\n          onChange={(value) => setActive(value)}\n        >\n          <Checkbox.Label>Active</Checkbox.Label>\n        </Checkbox>\n      </div>\n    </div>\n  )\n\n}"
     },
     {
       "id": "colors-fillinput--image",

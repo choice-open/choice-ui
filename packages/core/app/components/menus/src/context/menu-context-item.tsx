@@ -93,11 +93,6 @@ export const MenuContextItem = memo(
       const handleMouseUp = useEventCallback((event: React.MouseEvent<HTMLButtonElement>) => {
         event.stopPropagation()
         onMouseUp?.(event)
-
-        // Use startTransition to optimize performance, avoid setTimeout
-        startTransition(() => {
-          tree?.events.emit("click")
-        })
       })
 
       // Handle touch start event

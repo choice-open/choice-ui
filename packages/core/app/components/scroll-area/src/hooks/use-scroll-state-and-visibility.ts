@@ -89,8 +89,14 @@ export function useScrollStateAndVisibility(
   }, [viewport])
 
   // Delay updating scroll state, used to handle layout delay when initializing dialog/popover
+  const delayedTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
   const delayedUpdateScrollState = useCallback(() => {
-    setTimeout(() => {
+    if (delayedTimerRef.current !== null) {
+      clearTimeout(delayedTimerRef.current)
+    }
+    delayedTimerRef.current = setTimeout(() => {
+      delayedTimerRef.current = null
       updateScrollState()
     }, 0)
   }, [updateScrollState])
@@ -158,6 +164,11 @@ export function useScrollStateAndVisibility(
 
     return () => {
       abortController.abort()
+
+      if (delayedTimerRef.current !== null) {
+        clearTimeout(delayedTimerRef.current)
+        delayedTimerRef.current = null
+      }
 
       if (scrollTimeoutRef.current) {
         clearTimeout(scrollTimeoutRef.current)

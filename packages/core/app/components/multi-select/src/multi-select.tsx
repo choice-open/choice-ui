@@ -1,6 +1,6 @@
 import { ChipProps } from "@choice-ui/chip"
 import { Slot } from "@choice-ui/slot"
-import { tcx } from "@choice-ui/shared"
+import { findSlotChild, tcx } from "@choice-ui/shared"
 import {
   MenuContext,
   MenuContextContent,
@@ -41,10 +41,8 @@ import {
   type Placement,
 } from "@floating-ui/react"
 import React, {
-  Children,
   cloneElement,
   forwardRef,
-  isValidElement,
   memo,
   useEffect,
   useId,
@@ -66,7 +64,7 @@ export interface MultiSelectProps {
   className?: string
   closeOnSelect?: boolean
   disabled?: boolean
-  focusManagerProps?: FloatingFocusManagerProps
+  focusManagerProps?: Partial<FloatingFocusManagerProps>
   getDisplayValue?: (value: string) => string
   i18n?: {
     maxSelectionMessage?: (maxSelection: number) => string
@@ -155,30 +153,24 @@ const MultiSelectComponent = memo(
 
     const tv = multiSelectTv()
 
-    // Extract children elements
-    const [itemElements, triggerElement, contentElement] = useMemo(() => {
-      if (!children) return [[], null, null]
+    // Extract children elements — uses findSlotChild from @choice-ui/shared
+    // so memo-wrapped or div-wrapped slots are still found.
+    const { itemElements, triggerElement, contentElement } = useMemo<{
+      itemElements: React.ReactElement[]
+      triggerElement: React.ReactElement | null
+      contentElement: React.ReactElement | null
+    }>(() => {
+      if (!children) return { itemElements: [], triggerElement: null, contentElement: null }
 
-      const childrenArray = Children.toArray(children)
+      const trigger = findSlotChild(children, MultiSelectTrigger) ?? null
+      const content = findSlotChild(children, MenuContextContent) ?? null
 
-      // Find MultiSelectTrigger element
-      const trigger = childrenArray.find(
-        (child) => isValidElement(child) && child.type === MultiSelectTrigger,
-      ) as React.ReactElement | null
-
-      // Find MenuContextContent element
-      const content = childrenArray.find(
-        (child) => isValidElement(child) && child.type === MenuContextContent,
-      ) as React.ReactElement | null
-
-      // Must use MenuContextContent, collect options from its children
       if (!content) {
-        return [[], trigger, null]
+        return { itemElements: [], triggerElement: trigger, contentElement: null }
       }
 
-      const contentChildren = Children.toArray(content.props.children)
-      const items = extractItemElements(contentChildren)
-      return [items, trigger, content]
+      const items = extractItemElements(content.props.children)
+      return { itemElements: items, triggerElement: trigger, contentElement: content }
     }, [children])
 
     // Extract option data from MenuContextItem elements

@@ -77,7 +77,11 @@ export function useMarkdownFormatting(textareaRef: React.RefObject<HTMLTextAreaE
           onChange?.(newValue)
         }
       } else {
-        insertText(prefix, onChange)
+        const startLineIndex = beforeSelection.lastIndexOf("\n") + 1
+        const newValue = value.slice(0, startLineIndex) + prefix + value.slice(startLineIndex)
+        textarea.value = newValue
+        textarea.setSelectionRange(startLineIndex + prefix.length, startLineIndex + prefix.length)
+        onChange?.(newValue)
       }
     },
   )

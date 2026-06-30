@@ -37,6 +37,7 @@ const CheckboxBase = forwardRef<HTMLInputElement, CheckboxProps>(function Checkb
   } = props
   const internalId = useId()
   const descriptionId = useId()
+  const labelId = useId()
 
   const tv = checkboxTv({
     type: "checkbox",
@@ -53,7 +54,7 @@ const CheckboxBase = forwardRef<HTMLInputElement, CheckboxProps>(function Checkb
 
   const handleKeyDown = useEventCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
     if (readOnly) return
-    if (e.key === " " || e.key === "Enter") {
+    if (e.key === " ") {
       e.preventDefault()
       onChange?.(!value)
     }
@@ -94,6 +95,7 @@ const CheckboxBase = forwardRef<HTMLInputElement, CheckboxProps>(function Checkb
         disabled,
         id: id || internalId,
         descriptionId,
+        labelId,
         variant,
         mixed,
       }}
@@ -110,7 +112,7 @@ const CheckboxBase = forwardRef<HTMLInputElement, CheckboxProps>(function Checkb
             onChange={handleChange}
             aria-label={ariaLabel}
             aria-describedby={ariaDescribedby || descriptionId}
-            aria-checked={mixed ? "mixed" : value}
+            aria-checked={mixed ? "mixed" : !!value}
             aria-disabled={disabled || readOnly}
             role="checkbox"
             onKeyDown={handleKeyDown}

@@ -3,7 +3,7 @@
   "title": "ToggleButton",
   "package": {
     "name": "@choice-ui/toggle-button",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "description": "A toggle button component for selecting one or multiple options from a button group",
     "dependencies": {
       "@choice-ui/shared": "workspace:*",

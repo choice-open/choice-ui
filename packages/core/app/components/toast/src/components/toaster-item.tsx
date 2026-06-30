@@ -369,6 +369,7 @@ export const ToasterItem = memo(
     })
 
     const handleDismissClick = useEventCallback(() => {
+      toast.cancel?.onClick?.()
       close()
     })
 

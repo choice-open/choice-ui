@@ -205,6 +205,42 @@ return (
 </Popover>
 ```
 
+### Persist Position
+
+Use `defaultPosition` and `onPositionChange` to persist the dragged position outside the component (e.g. localStorage). `defaultPosition` only seeds the position when the floating element mounts; afterwards dragging takes over (defaultValue-style, semi-controlled).
+
+```tsx
+const STORAGE_KEY = "panel-position"
+
+function PersistentPanel() {
+  const [open, setOpen] = useState(false)
+  const savedPosition = useMemo(() => {
+    const raw = localStorage.getItem(STORAGE_KEY)
+    return raw ? (JSON.parse(raw) as { x: number; y: number }) : undefined
+  }, [open])
+
+  return (
+    <Popover
+      draggable
+      open={open}
+      onOpenChange={setOpen}
+      defaultPosition={savedPosition}
+      onPositionChange={(position) => {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(position))
+      }}
+    >
+      <Popover.Trigger>
+        <Button>Persistent Panel</Button>
+      </Popover.Trigger>
+      <Popover.Header title="Drag Me" />
+      <Popover.Content className="w-64 p-3">
+        Reopens where you last dragged it, even across page reloads.
+      </Popover.Content>
+    </Popover>
+  )
+}
+```
+
 ### Outside Press Ignore
 
 ```tsx
@@ -435,6 +471,13 @@ interface PopoverProps {
   /** Initial open state for uncontrolled usage */
   defaultOpen?: boolean
 
+  /**
+   * Initial drag position (viewport coordinates) applied when the floating
+   * element mounts — defaultValue semantics, dragging takes over afterwards.
+   * Off-viewport values are clamped back into view. Requires `draggable`.
+   */
+  defaultPosition?: { x: number; y: number }
+
   /** Hover interaction delays */
   delay?: { close?: number; open?: number }
 
@@ -461,6 +504,13 @@ interface PopoverProps {
 
   /** Open state change callback */
   onOpenChange?: (isOpen: boolean) => void
+
+  /**
+   * Called once with the viewport-clamped position when a drag ends.
+   * Not called during the drag nor when the popover closes and resets
+   * back to its anchored position.
+   */
+  onPositionChange?: (position: { x: number; y: number }) => void
 
   /** Controlled open state */
   open?: boolean

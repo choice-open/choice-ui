@@ -171,6 +171,10 @@ export function useThumbDrag(
         document.removeEventListener("mouseup", handleMouseUp)
       }
 
+      if (cleanupRef.current) {
+        cleanupRef.current()
+      }
+
       cleanupRef.current = cleanup
 
       document.addEventListener("mousemove", handleMouseMove, { passive: true })

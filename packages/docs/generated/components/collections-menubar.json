@@ -3,7 +3,7 @@
   "title": "Menubar",
   "package": {
     "name": "@choice-ui/menubar",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "A menubar component for creating application-level navigation menus with dropdowns and submenus",
     "dependencies": {
       "@choice-ui/button": "workspace:*",
@@ -72,14 +72,20 @@
       "description": "",
       "props": [
         {
-          "name": "placement",
-          "type": "undefined | \"top\" | \"right\" | \"bottom\" | \"left\" | \"top-start\" | \"top-end\" | \"right-start\" | \"right-end\" | \"bottom-start\" | \"bottom-end\" | \"left-start\" | \"left-end\"",
+          "name": "disabled",
+          "type": "boolean | undefined",
           "required": false,
           "description": ""
         },
         {
-          "name": "disabled",
-          "type": "boolean | undefined",
+          "name": "label",
+          "type": "ReactNode",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "placement",
+          "type": "undefined | \"top\" | \"right\" | \"bottom\" | \"left\" | \"top-start\" | \"top-end\" | \"right-start\" | \"right-end\" | \"bottom-start\" | \"bottom-end\" | \"left-start\" | \"left-end\"",
           "required": false,
           "description": ""
         },

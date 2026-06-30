@@ -3,7 +3,7 @@
   "title": "Form",
   "package": {
     "name": "@choice-ui/form",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "description": "A form component library with validation, field management, and integration with various input types",
     "dependencies": {
       "@tanstack/react-form": "^1.27.1",
@@ -889,7 +889,7 @@
     },
     {
       "displayName": "MultiSelectAdapter",
-      "description": "MultiSelect Adapter for Form system",
+      "description": "",
       "props": [
         {
           "name": "disabled",
@@ -947,7 +947,7 @@
         },
         {
           "name": "focusManagerProps",
-          "type": "FloatingFocusManagerProps | undefined",
+          "type": "Partial<FloatingFocusManagerProps> | undefined",
           "required": false,
           "description": ""
         },
@@ -1182,7 +1182,7 @@
         },
         {
           "name": "focusManagerProps",
-          "type": "FloatingFocusManagerProps | undefined",
+          "type": "Partial<FloatingFocusManagerProps> | undefined",
           "required": false,
           "description": ""
         },
@@ -2042,7 +2042,7 @@
     },
     {
       "displayName": "RangeAdapter",
-      "description": "Range Adapter for Form system",
+      "description": "",
       "props": [
         {
           "name": "defaultValue",
@@ -2633,6 +2633,24 @@
           "description": ""
         },
         {
+          "name": "id",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "aria-describedby",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "aria-labelledby",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
           "name": "variant",
           "type": "undefined | \"default\" | \"light\" | \"reset\"",
           "required": false,
@@ -2809,6 +2827,24 @@
         },
         {
           "name": "className",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "id",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "aria-describedby",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "aria-labelledby",
           "type": "string | undefined",
           "required": false,
           "description": ""

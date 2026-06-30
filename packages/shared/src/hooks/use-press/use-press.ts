@@ -22,15 +22,21 @@ export function usePress({ disabled, onPress, onPressStart, onPressEnd }: PressP
       if (!disabled) {
         setPressed(true)
         onPressStart?.(event)
-        document.addEventListener(
-          "pointerup",
-          () => {
-            setPressed(false)
-            onPress?.(event)
-            onPressEnd?.(event)
-          },
-          { once: true },
-        )
+        const handleUp = () => {
+          document.removeEventListener("pointerup", handleUp)
+          document.removeEventListener("pointercancel", handleCancel)
+          setPressed(false)
+          onPress?.(event)
+          onPressEnd?.(event)
+        }
+        const handleCancel = () => {
+          document.removeEventListener("pointercancel", handleCancel)
+          document.removeEventListener("pointerup", handleUp)
+          setPressed(false)
+          onPressEnd?.(event)
+        }
+        document.addEventListener("pointerup", handleUp)
+        document.addEventListener("pointercancel", handleCancel)
       }
     },
     [disabled, onPress, onPressEnd, onPressStart],

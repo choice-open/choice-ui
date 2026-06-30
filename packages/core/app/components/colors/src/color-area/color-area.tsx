@@ -80,6 +80,7 @@ export const ColorArea = memo(
       }
 
       if (isEnd) {
+        onChange?.(newPosition)
         isDragging.current = false
       } else {
         onChange?.(newPosition)

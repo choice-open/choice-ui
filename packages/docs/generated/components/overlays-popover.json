@@ -3,7 +3,7 @@
   "title": "Popover",
   "package": {
     "name": "@choice-ui/popover",
-    "version": "0.0.11",
+    "version": "0.0.13",
     "description": "A popover component for displaying floating content relative to a trigger element",
     "dependencies": {
       "@choice-ui/shared": "workspace:*",
@@ -19,7 +19,8 @@
   },
   "exports": [
     "Popover",
-    "type PopoverProps"
+    "type PopoverProps",
+    "type PopoverPosition"
   ],
   "props": [
     {
@@ -69,6 +70,12 @@
           "description": ""
         },
         {
+          "name": "defaultPosition",
+          "type": "PopoverPosition | undefined",
+          "required": false,
+          "description": "Initial drag position (viewport coordinates) applied when the floating\nelement mounts — defaultValue semantics, dragging takes over afterwards.\nValues outside the viewport are clamped back into view. Only takes effect\nwhen `draggable` is enabled. Combine with `onPositionChange` to persist\nthe dragged position externally (e.g. localStorage)."
+        },
+        {
           "name": "delay",
           "type": "{ close?: number | undefined; open?: number | undefined; } | undefined",
           "required": false,
@@ -115,6 +122,12 @@
           "type": "((isOpen: boolean) => void) | undefined",
           "required": false,
           "description": ""
+        },
+        {
+          "name": "onPositionChange",
+          "type": "((position: PopoverPosition) => void) | undefined",
+          "required": false,
+          "description": "Called once with the viewport-clamped position when a drag ends. Not\ncalled during the drag (mousemove) nor when the popover closes and\nresets back to its anchored position."
         },
         {
           "name": "open",
@@ -213,6 +226,12 @@
           "description": ""
         },
         {
+          "name": "defaultPosition",
+          "type": "PopoverPosition | undefined",
+          "required": false,
+          "description": "Initial drag position (viewport coordinates) applied when the floating\nelement mounts — defaultValue semantics, dragging takes over afterwards.\nValues outside the viewport are clamped back into view. Only takes effect\nwhen `draggable` is enabled. Combine with `onPositionChange` to persist\nthe dragged position externally (e.g. localStorage)."
+        },
+        {
           "name": "delay",
           "type": "{ close?: number | undefined; open?: number | undefined; } | undefined",
           "required": false,
@@ -261,6 +280,12 @@
           "description": ""
         },
         {
+          "name": "onPositionChange",
+          "type": "((position: PopoverPosition) => void) | undefined",
+          "required": false,
+          "description": "Called once with the viewport-clamped position when a drag ends. Not\ncalled during the drag (mousemove) nor when the popover closes and\nresets back to its anchored position."
+        },
+        {
           "name": "open",
           "type": "boolean | undefined",
           "required": false,
@@ -307,6 +332,179 @@
           "type": "string | undefined",
           "required": false,
           "description": "CSS selector string to find the trigger element in the DOM.\nAlternative to triggerRef for cases where you want to use a selector instead of a ref."
+        }
+      ]
+    },
+    {
+      "displayName": "useDrag",
+      "description": "Drag functionality Hook",
+      "props": [
+        {
+          "name": "defaultPosition",
+          "type": "PopoverPosition | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "draggable",
+          "type": "boolean",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "floatingRef",
+          "type": "{ current: HTMLElement | null; }",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "onPositionChange",
+          "type": "((position: PopoverPosition) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "rememberPosition",
+          "type": "boolean | undefined",
+          "required": false,
+          "defaultValue": "false",
+          "description": ""
+        }
+      ]
+    },
+    {
+      "displayName": "useFloatingPopover",
+      "description": "",
+      "props": [
+        {
+          "name": "autoSize",
+          "type": "boolean | undefined",
+          "required": false,
+          "defaultValue": "true",
+          "description": ""
+        },
+        {
+          "name": "autoUpdate",
+          "type": "boolean | undefined",
+          "required": false,
+          "defaultValue": "true",
+          "description": ""
+        },
+        {
+          "name": "closeOnEscape",
+          "type": "boolean | undefined",
+          "required": false,
+          "defaultValue": "true",
+          "description": ""
+        },
+        {
+          "name": "defaultOpen",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "delay",
+          "type": "{ close?: number | undefined; open?: number | undefined; } | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "draggable",
+          "type": "boolean",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "interactions",
+          "type": "undefined | \"hover\" | \"click\" | \"focus\" | \"none\"",
+          "required": false,
+          "defaultValue": "click",
+          "description": ""
+        },
+        {
+          "name": "matchTriggerWidth",
+          "type": "boolean | undefined",
+          "required": false,
+          "defaultValue": "false",
+          "description": ""
+        },
+        {
+          "name": "maxWidth",
+          "type": "number | undefined",
+          "required": false,
+          "defaultValue": "320",
+          "description": ""
+        },
+        {
+          "name": "nodeId",
+          "type": "string | undefined",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "offset",
+          "type": "OffsetOptions | undefined",
+          "required": false,
+          "defaultValue": "{ mainAxis: 8, crossAxis: 0 }",
+          "description": ""
+        },
+        {
+          "name": "onOpenChange",
+          "type": "((open: boolean) => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "open",
+          "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "outsidePressIgnore",
+          "type": "string | boolean | string[] | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "placement",
+          "type": "undefined | \"top\" | \"right\" | \"bottom\" | \"left\" | \"top-start\" | \"top-end\" | \"right-start\" | \"right-end\" | \"bottom-start\" | \"bottom-end\" | \"left-start\" | \"left-end\"",
+          "required": false,
+          "defaultValue": "bottom",
+          "description": ""
+        },
+        {
+          "name": "rememberPosition",
+          "type": "boolean | undefined",
+          "required": false,
+          "defaultValue": "false",
+          "description": ""
+        },
+        {
+          "name": "resetDragState",
+          "type": "() => void",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "resetPosition",
+          "type": "() => void",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "transitionStylesProps",
+          "type": "UseTransitionStylesProps | undefined",
+          "required": false,
+          "defaultValue": "{\n    duration: 0,\n  }",
+          "description": ""
+        },
+        {
+          "name": "triggerSelector",
+          "type": "string | undefined",
+          "required": false,
+          "description": ""
         }
       ]
     }
@@ -381,6 +579,13 @@
       "exportName": "RememberPosition",
       "description": "RememberPosition: Demonstrates a popover that remembers its position when closed.\n\nFeatures:\n- Maintains its position when closed\n- Reappears in the same position when opened\n\nThis pattern is useful for:\n- Popovers that need to remember their position when closed\n- Dashboard interfaces where popovers need to be in a specific location",
       "source": "import { Popover } from \"@choice-ui/popover\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [open, setOpen] = useState(false)\n  return (\n    <Popover\n      draggable\n      rememberPosition\n      open={open}\n      onOpenChange={setOpen}\n    >\n      <Popover.Trigger>\n        <Button>Remember Position</Button>\n      </Popover.Trigger>\n      <Popover.Header title=\"Remember Position\" />\n      <Popover.Content className=\"w-64 p-3\">{faker.lorem.paragraph(3)}</Popover.Content>\n    </Popover>\n  )\n\n}"
+    },
+    {
+      "id": "overlays-popover--persist-position",
+      "name": "Persist Position",
+      "exportName": "PersistPosition",
+      "description": "",
+      "source": "import { Popover } from \"@choice-ui/popover\"\nimport { useState } from \"react\"\n\nexport default function App() {\n\n  const [open, setOpen] = useState(false)\n  const [savedPosition, setSavedPosition] = useState<{ x: number; y: number } | undefined>(\n    () => {\n      const raw = localStorage.getItem(PERSIST_POSITION_STORAGE_KEY)\n      return raw ? (JSON.parse(raw) as { x: number; y: number }) : undefined\n    },\n  )\n\n  return (\n    <Popover\n      draggable\n      open={open}\n      onOpenChange={setOpen}\n      defaultPosition={savedPosition}\n      onPositionChange={(position) => {\n        localStorage.setItem(PERSIST_POSITION_STORAGE_KEY, JSON.stringify(position))\n        setSavedPosition(position)\n      }}\n    >\n      <Popover.Trigger>\n        <Button active={open}>Persist Position</Button>\n      </Popover.Trigger>\n      <Popover.Header title=\"Drag Me\" />\n      <Popover.Content className=\"w-64 p-3\">\n        Drag me somewhere, close, then reopen — I come back to the same spot, even after a page\n        reload. Saved: {savedPosition ? `${savedPosition.x}, ${savedPosition.y}` : \"none\"}\n      </Popover.Content>\n    </Popover>\n  )\n\n}"
     },
     {
       "id": "overlays-popover--outside-press-ignore",

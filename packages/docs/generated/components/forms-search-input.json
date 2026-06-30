@@ -3,7 +3,7 @@
   "title": "SearchInput",
   "package": {
     "name": "@choice-ui/search-input",
-    "version": "0.0.7",
+    "version": "0.0.8",
     "description": "A search input component with search icon, clear button, and search-specific styling",
     "dependencies": {
       "@choice-ui/shared": "workspace:*",
@@ -83,7 +83,7 @@
         },
         {
           "name": "i18n",
-          "type": "{ clear: string; placeholder: string; } | undefined",
+          "type": "{ clear: string; placeholder?: string | undefined; } | undefined",
           "required": false,
           "description": ""
         }

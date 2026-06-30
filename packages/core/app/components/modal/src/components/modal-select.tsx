@@ -12,15 +12,25 @@ interface ModalSelectProps extends Omit<SelectProps, "label"> {
 export const ModalSelect = memo(function ModalSelect(props: ModalSelectProps) {
   const { label, description, className, ...rest } = props
   const id = useId()
+  const descriptionId = useId()
 
   return (
     <fieldset className={tcx("flex w-full min-w-0 flex-col gap-2", className)}>
       {label && <Label htmlFor={id}>{label}</Label>}
       <Select
         matchTriggerWidth
+        id={id}
+        aria-describedby={description ? descriptionId : undefined}
         {...rest}
       />
-      {description && <p className="text-secondary-foreground">{description}</p>}
+      {description && (
+        <p
+          id={descriptionId}
+          className="text-secondary-foreground"
+        >
+          {description}
+        </p>
+      )}
     </fieldset>
   )
 })

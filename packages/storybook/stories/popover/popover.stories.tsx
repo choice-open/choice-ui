@@ -15,6 +15,7 @@ import {
 import { faker } from "@faker-js/faker"
 import type { Placement as FloatingPlacement } from "@floating-ui/react"
 import type { Meta, StoryObj } from "@storybook/react-vite"
+import { expect, fireEvent, userEvent, waitFor, within } from "storybook/test"
 import React, { useMemo, useRef, useState } from "react"
 
 const meta: Meta<typeof Popover> = {
@@ -703,6 +704,119 @@ export const RememberPosition: Story = {
         <Popover.Content className="w-64 p-3">{faker.lorem.paragraph(3)}</Popover.Content>
       </Popover>
     )
+  },
+}
+
+/**
+ * PersistPosition: Demonstrates persisting the dragged position via
+ * defaultPosition + onPositionChange (semi-controlled, defaultValue-style).
+ *
+ * Features:
+ * - onPositionChange reports the viewport-clamped position once per drag end
+ * - defaultPosition restores the saved position when the popover reopens
+ * - Position survives close/reopen and page reloads (localStorage)
+ *
+ * This pattern is useful for:
+ * - Floating panels whose position should be remembered across sessions
+ * - Tool palettes in editor or dashboard interfaces
+ */
+const PERSIST_POSITION_STORAGE_KEY = "storybook-popover-position"
+
+export const PersistPosition: Story = {
+  render: function PersistPositionStory() {
+    const [open, setOpen] = useState(false)
+    const [savedPosition, setSavedPosition] = useState<{ x: number; y: number } | undefined>(
+      () => {
+        const raw = localStorage.getItem(PERSIST_POSITION_STORAGE_KEY)
+        return raw ? (JSON.parse(raw) as { x: number; y: number }) : undefined
+      },
+    )
+
+    return (
+      <Popover
+        draggable
+        open={open}
+        onOpenChange={setOpen}
+        defaultPosition={savedPosition}
+        onPositionChange={(position) => {
+          localStorage.setItem(PERSIST_POSITION_STORAGE_KEY, JSON.stringify(position))
+          setSavedPosition(position)
+        }}
+      >
+        <Popover.Trigger>
+          <Button active={open}>Persist Position</Button>
+        </Popover.Trigger>
+        <Popover.Header title="Drag Me" />
+        <Popover.Content className="w-64 p-3">
+          Drag me somewhere, close, then reopen — I come back to the same spot, even after a page
+          reload. Saved: {savedPosition ? `${savedPosition.x}, ${savedPosition.y}` : "none"}
+        </Popover.Content>
+      </Popover>
+    )
+  },
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement)
+    const trigger = canvas.getByRole("button", { name: /persist position/i })
+    const getPopover = () => document.querySelector<HTMLElement>('[data-draggable="true"]')
+
+    await step("open the popover", async () => {
+      await userEvent.click(trigger)
+      await waitFor(() => {
+        expect(getPopover()?.getAttribute("data-state")).toBe("open")
+      })
+    })
+
+    const popover = getPopover()!
+    const rect = popover.getBoundingClientRect()
+    // Drag to an absolute viewport position (away from the clamp bounds) so
+    // the test converges even when play re-runs with a previously saved
+    // position: dropped position = mouse - dragOrigin
+    const target = { x: 200, y: 160 }
+
+    await step("drag the popover by its header", async () => {
+      const header = within(popover).getByText("Drag Me")
+      const grip = { x: 20, y: 10 }
+      fireEvent.mouseDown(header, { clientX: rect.left + grip.x, clientY: rect.top + grip.y })
+      // the document mousemove/mouseup listeners attach in an effect after
+      // the isDragging state lands — wait for it before moving
+      await waitFor(() => {
+        expect(popover.getAttribute("data-dragging")).toBe("true")
+      })
+      fireEvent.mouseMove(document, { clientX: target.x + grip.x, clientY: target.y + grip.y })
+      // drag positions are applied in a rAF batch
+      await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)))
+      fireEvent.mouseUp(document)
+
+      await waitFor(() => {
+        expect(popover.style.position).toBe("fixed")
+        expect(parseFloat(popover.style.left)).toBeCloseTo(target.x, 0)
+        expect(parseFloat(popover.style.top)).toBeCloseTo(target.y, 0)
+      })
+    })
+
+    const movedTo = { left: popover.style.left, top: popover.style.top }
+
+    await step("onPositionChange persisted the clamped position", async () => {
+      const saved = JSON.parse(localStorage.getItem(PERSIST_POSITION_STORAGE_KEY) ?? "null")
+      // CSSOM rounds serialized lengths, so compare with tolerance
+      expect(saved?.x).toBeCloseTo(parseFloat(movedTo.left), 2)
+      expect(saved?.y).toBeCloseTo(parseFloat(movedTo.top), 2)
+    })
+
+    await step("close and reopen restores the saved position", async () => {
+      await userEvent.click(trigger)
+      await waitFor(() => {
+        expect(getPopover()).toBeNull()
+      })
+
+      await userEvent.click(trigger)
+      await waitFor(() => {
+        const reopened = getPopover()
+        expect(reopened?.getAttribute("data-state")).toBe("open")
+        expect(reopened?.style.left).toBe(movedTo.left)
+        expect(reopened?.style.top).toBe(movedTo.top)
+      })
+    })
   },
 }
 

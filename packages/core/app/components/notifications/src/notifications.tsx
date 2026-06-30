@@ -37,6 +37,7 @@ const ToastBase = (props: NotificationsProps) => {
   // 验证至少有 text 或 html 其中一个
   if (!text && !html) {
     console.warn("Notifications: Either 'text' or 'html' prop is required")
+    return null
   }
 
   const handleActionClick = useEventCallback(() => {
@@ -45,10 +46,15 @@ const ToastBase = (props: NotificationsProps) => {
 
   const handleDismissClick = useEventCallback(() => {
     actionButtons?.dismiss?.onClick()
+    sonnerToast.dismiss(id)
   })
 
   return (
-    <div className={tcx(tv.root(), className)}>
+    <div
+      className={tcx(tv.root(), className)}
+      role="status"
+      aria-live="polite"
+    >
       <div className={tv.content()}>
         {icon && <div className={tv.icon()}>{icon}</div>}
         <div className={tv.text()}>
@@ -60,6 +66,7 @@ const ToastBase = (props: NotificationsProps) => {
         <div className={tv.actions()}>
           {actionButtons.action && (
             <button
+              type="button"
               className={tv.button()}
               onClick={handleActionClick}
             >
@@ -69,6 +76,7 @@ const ToastBase = (props: NotificationsProps) => {
 
           {actionButtons.dismiss && (
             <button
+              type="button"
               className={tv.button()}
               onClick={handleDismissClick}
             >
@@ -85,8 +93,10 @@ const Toast = memo(ToastBase)
 
 Toast.displayName = "Toast"
 
+export { Toast }
+
 export function notifications(toast: Omit<NotificationsProps, "id">) {
-  const { icon, text, html, actions, className, ...sonnerOptions } = toast
+  const { icon, text, html, actions, className, position, ...sonnerOptions } = toast
 
   return sonnerToast.custom(
     (id) => (
@@ -100,7 +110,7 @@ export function notifications(toast: Omit<NotificationsProps, "id">) {
       />
     ),
     {
-      position: toast.position || "bottom-right",
+      position: position || "bottom-right",
       ...sonnerOptions,
     } as ExternalToast,
   )

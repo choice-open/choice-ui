@@ -53,15 +53,16 @@ export const Separator = memo(
       <div
         ref={ref}
         className={tcx(tv.root(), className)}
+        {...semanticProps}
         {...rest}
       >
         <div
-          {...semanticProps}
+          role="presentation"
           className={tv.separator()}
         />
         {children}
         <div
-          {...semanticProps}
+          role="presentation"
           className={tv.separator()}
         />
       </div>

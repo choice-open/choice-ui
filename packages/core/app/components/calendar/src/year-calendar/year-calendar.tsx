@@ -147,6 +147,8 @@ export const YearCalendar = forwardRef<HTMLDivElement, YearCalendarProps>((props
   const handleNext = useEventCallback(() => navigateYears("next"))
 
   const handleToday = useEventCallback(() => {
+    if (disabled || readOnly) return
+
     const todayYear = yearUtils.getCurrentYear()
     const todayYearDate = yearUtils.createYearDate(todayYear)
 

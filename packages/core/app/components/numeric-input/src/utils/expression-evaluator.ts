@@ -40,17 +40,26 @@ export const applyOperation = (op: Operation, b: number, a: number): number => {
  * @returns Calculation result of the expression
  */
 export const evaluate = (expression: string): number => {
+  const trimmed = expression.trim()
+  if (!trimmed) return NaN
+
   const ops: Operation[] = []
   const nums: number[] = []
   let num = ""
 
   const precedenceOf = (op: Operation): number => precedence[op]
 
-  for (let i = 0; i < expression.length; i++) {
-    const char = expression[i]
+  for (let i = 0; i < trimmed.length; i++) {
+    const char = trimmed[i]
     if (char === " ") continue
 
-    if ((char >= "0" && char <= "9") || char === "." || (char === "-" && i === 0)) {
+    const isDigitOrDot = (char >= "0" && char <= "9") || char === "."
+    const isNegativeSign =
+      char === "-" &&
+      (i === 0 ||
+        trimmed.substring(0, i).trimEnd().endsWith("(") ||
+        "+-*/".includes(trimmed.substring(0, i).trimEnd().slice(-1)))
+    if (isDigitOrDot || isNegativeSign) {
       num += char
     } else {
       if (num) {
@@ -61,40 +70,47 @@ export const evaluate = (expression: string): number => {
       if (char === "(") {
         ops.push(char)
       } else if (char === ")") {
+        if (!ops.includes("(")) return NaN
         while (ops.length && ops[ops.length - 1] !== "(") {
           const op = ops.pop()!
-          const b = nums.pop()!
-          const a = nums.pop()!
+          const b = nums.pop()
+          const a = nums.pop()
+          if (a === undefined || b === undefined) return NaN
           nums.push(applyOperation(op, b, a))
         }
-        ops.pop() // Remove "("
-      } else {
+        ops.pop()
+      } else if ("+-*/".includes(char)) {
         while (ops.length && precedenceOf(ops[ops.length - 1]) >= precedenceOf(char as Operation)) {
           const op = ops.pop()!
-          const b = nums.pop()!
-          const a = nums.pop()!
+          const b = nums.pop()
+          const a = nums.pop()
+          if (a === undefined || b === undefined) return NaN
           nums.push(applyOperation(op, b, a))
         }
         ops.push(char as Operation)
+      } else {
+        return NaN
       }
     }
   }
 
   if (num) {
-    nums.push(parseFloat(num))
+    const parsed = parseFloat(num)
+    if (isNaN(parsed)) return NaN
+    nums.push(parsed)
   }
 
   while (ops.length) {
+    if (ops[ops.length - 1] === "(") return NaN
     const op = ops.pop()!
-    const b = nums.pop()!
-    const a = nums.pop()!
+    const b = nums.pop()
+    const a = nums.pop()
+    if (a === undefined || b === undefined) return NaN
     nums.push(applyOperation(op, b, a))
   }
 
   const result = nums.pop()
-  if (result === undefined) {
-    throw new Error(`Invalid expression: ${expression}`)
-  }
+  if (result === undefined) return NaN
   return result
 }
 

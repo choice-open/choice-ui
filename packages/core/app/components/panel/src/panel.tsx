@@ -123,7 +123,7 @@ export const PanelBase = forwardRef<HTMLDivElement, PanelProps>(function Panel(p
       <div
         ref={ref}
         className={tcx(tv.container(), className)}
-        aria-expanded={!isCollapsed}
+        aria-expanded={collapsible ? !isCollapsed : undefined}
         {...rest}
       >
         {triggerRef && (

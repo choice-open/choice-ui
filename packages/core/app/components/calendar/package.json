@@ -1,6 +1,6 @@
 {
   "name": "@choice-ui/calendar",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "A calendar component for date selection with support for single, range, and multiple date picking",
   "sideEffects": false,
   "type": "module",

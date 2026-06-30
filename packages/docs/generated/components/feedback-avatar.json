@@ -3,7 +3,7 @@
   "title": "Avatar",
   "package": {
     "name": "@choice-ui/avatar",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "description": "A user avatar component that displays profile images, initials, or icons with customizable styling",
     "dependencies": {
       "@choice-ui/shared": "^0.0.1",

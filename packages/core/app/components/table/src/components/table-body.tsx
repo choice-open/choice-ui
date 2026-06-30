@@ -54,12 +54,14 @@ function WindowScrollBody<T>({
   rowHeight,
   overscan,
   renderRow,
+  onScroll,
   className,
 }: {
   rows: InternalRow<T>[]
   rowHeight: number
   overscan: number
   renderRow: (row: T, index: number) => ReactNode
+  onScroll?: (event: { scrollTop: number; scrollHeight: number; clientHeight: number }) => void
   className?: string
 }) {
   const getItemSize = useCallback(() => rowHeight, [rowHeight])
@@ -77,6 +79,19 @@ function WindowScrollBody<T>({
     () => ({ height: totalSize, position: "relative" }),
     [totalSize],
   )
+
+  useEffect(() => {
+    const handleWindowScroll = () => {
+      onScroll?.({
+        scrollTop: window.scrollY,
+        scrollHeight: document.documentElement.scrollHeight,
+        clientHeight: document.documentElement.clientHeight,
+      })
+    }
+
+    window.addEventListener("scroll", handleWindowScroll, { passive: true })
+    return () => window.removeEventListener("scroll", handleWindowScroll)
+  }, [onScroll])
 
   return (
     <div className={tcx(TV.bodyWrapper(), className)}>
@@ -414,6 +429,7 @@ export function TableBody<T>({ children, className, classNames }: TableBodyProps
         rowHeight={rowHeight}
         overscan={overscan}
         renderRow={renderRow}
+        onScroll={onScroll}
         className={className}
       />
     )

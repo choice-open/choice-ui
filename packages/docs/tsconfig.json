@@ -22,7 +22,8 @@
       "@/*": ["./*"],
       "~/*": ["../core/app/*"],
       "@choice-ui/react": ["../core/app/index.ts"],
-      "@choice-ui/react/*": ["../core/app/*"]
+      "@choice-ui/react/*": ["../core/app/*"],
+      "@choice-ui/shared": ["../shared/src/index.ts"]
     },
     "types": ["node", "react", "react-dom"]
   },

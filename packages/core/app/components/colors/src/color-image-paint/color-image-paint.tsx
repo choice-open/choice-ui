@@ -3,7 +3,7 @@ import { Range } from "@choice-ui/range"
 import { useMergedValue } from "@choice-ui/shared"
 import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { useEventCallback } from "usehooks-ts"
-import { useImageFilterStyle, useImageProcessor } from "../hooks"
+import { useImageProcessor } from "../hooks"
 import type { ImageFilters, ImagePaint, ImagePaintFeature, ImageSizes } from "../types"
 import { getColorSwatchBackground } from "../utils"
 import { ColorImageToolbar } from "./color-image-toolbar"
@@ -86,6 +86,8 @@ export const ColorImagePaint = memo(function ColorImagePaint(props: ColorImagePa
         saturation: "Saturation",
         temperature: "Temperature",
         tint: "Tint",
+        highlights: "Highlights",
+        shadows: "Shadows",
         upload: "Upload from computer",
         fill: "Fill",
         fit: "Fit",
@@ -126,6 +128,8 @@ export const ColorImagePaint = memo(function ColorImagePaint(props: ColorImagePa
       saturation: 0,
       temperature: 0,
       tint: 0,
+      highlights: 0,
+      shadows: 0,
     },
     value: image?.filters,
     onChange: (filters) => {
@@ -199,10 +203,13 @@ export const ColorImagePaint = memo(function ColorImagePaint(props: ColorImagePa
     }
   }, [image, onImageChange])
 
-  // 计算滤镜样式
-  const imageStyle = useImageFilterStyle(filters)
-
-  // 渲染主容器
+  // 渲染主容器 —— 注意:不再在 <img> 上套 CSS filter。CSS filter() 的
+  // 数学(brightness/contrast/saturate/hue-rotate/sepia)跟下游消费者
+  // (Lovision engine WGSL shader)在 temperature/tint/highlights/shadows
+  // 等维度上发散到不可接受,所以预览由消费者通过 `imageSrc` 传入(典型
+  // 做法:processor 端 readback adjusted texture → blob URL)。如果消费
+  // 者只想要快速 CSS 预览,可以仍调用 `useImageFilterStyle(filters)` 自
+  // 行套样式(该 hook 仍然导出,deprecated 但可用)。
   return (
     <div
       className={styles.root({ className })}
@@ -225,7 +232,6 @@ export const ColorImagePaint = memo(function ColorImagePaint(props: ColorImagePa
               className={styles.image()}
               src={imageSrc}
               alt="Uploaded image"
-              style={imageStyle}
             />
           </div>
         )}
@@ -250,7 +256,17 @@ export const ColorImagePaint = memo(function ColorImagePaint(props: ColorImagePa
       </div>
 
       <div className={styles.adjustContainer()}>
-        {["exposure", "contrast", "saturation", "temperature", "tint"].map((filterName) => (
+        {(
+          [
+            "exposure",
+            "contrast",
+            "saturation",
+            "temperature",
+            "tint",
+            "highlights",
+            "shadows",
+          ] as const
+        ).map((filterName) => (
           <React.Fragment key={filterName}>
             <span className={styles.adjustLabel()}>
               {features?.labels?.[filterName as keyof typeof features.labels]}
@@ -261,7 +277,7 @@ export const ColorImagePaint = memo(function ColorImagePaint(props: ColorImagePa
               max={100}
               defaultValue={0}
               width={128}
-              value={filters[filterName as keyof typeof filters]}
+              value={filters[filterName] ?? 0}
               onChange={(value) =>
                 setFilters({
                   ...filters,

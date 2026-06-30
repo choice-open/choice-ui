@@ -13,6 +13,7 @@ import {
 import React, { memo, useCallback, useEffect, useId, useMemo, useRef } from "react"
 import { PopoverHeader, PopoverTrigger } from "./components"
 import { useDrag, useFloatingPopover } from "./hooks"
+import type { PopoverPosition } from "./hooks"
 import { PopoverContext } from "./popover-context"
 
 const PORTAL_ROOT_ID = "floating-popover-root"
@@ -27,6 +28,14 @@ export interface PopoverProps extends Omit<React.HTMLAttributes<HTMLElement>, "t
   closeOnEscape?: boolean
   contentRef?: React.RefObject<HTMLDivElement>
   defaultOpen?: boolean
+  /**
+   * Initial drag position (viewport coordinates) applied when the floating
+   * element mounts — defaultValue semantics, dragging takes over afterwards.
+   * Values outside the viewport are clamped back into view. Only takes effect
+   * when `draggable` is enabled. Combine with `onPositionChange` to persist
+   * the dragged position externally (e.g. localStorage).
+   */
+  defaultPosition?: PopoverPosition
   delay?: { close?: number; open?: number }
   draggable?: boolean
   focusManagerProps?: Partial<FloatingFocusManagerProps>
@@ -35,6 +44,12 @@ export interface PopoverProps extends Omit<React.HTMLAttributes<HTMLElement>, "t
   maxWidth?: number
   offset?: OffsetOptions
   onOpenChange?: (isOpen: boolean) => void
+  /**
+   * Called once with the viewport-clamped position when a drag ends. Not
+   * called during the drag (mousemove) nor when the popover closes and
+   * resets back to its anchored position.
+   */
+  onPositionChange?: (position: PopoverPosition) => void
   open?: boolean
   outsidePressIgnore?: string | string[] | boolean
   placement?: Placement
@@ -61,6 +76,8 @@ export const DragPopover = memo(function DragPopover({
   children,
   triggerRef: externalTriggerRef,
   triggerSelector,
+  defaultPosition,
+  onPositionChange,
   draggable = false,
   placement = "bottom",
   interactions = "click",
@@ -99,9 +116,12 @@ export const DragPopover = memo(function DragPopover({
     handleDragStart,
     resetDragState,
     resetPosition,
+    setFloatingElement,
   } = useDrag({
+    defaultPosition,
     draggable,
     floatingRef: floatingRefMutable,
+    onPositionChange,
     rememberPosition,
   })
 
@@ -143,11 +163,12 @@ export const DragPopover = memo(function DragPopover({
     (node: HTMLElement | null) => {
       floating.refs.setFloating(node)
       floatingRefMutable.current = node
+      setFloatingElement(node)
       if (contentRef && node) {
         mergeRefs(contentRef)(node as HTMLDivElement)
       }
     },
-    [floating.refs, contentRef],
+    [floating.refs, contentRef, setFloatingElement],
   )
 
   const triggerContent = useMemo(() => {
@@ -249,7 +270,7 @@ export const DragPopover = memo(function DragPopover({
                 {...floating.getFloatingProps()}
                 {...restProps}
                 role="dialog"
-                aria-modal="true"
+                aria-modal={focusManagerProps?.modal ? "true" : "false"}
                 aria-labelledby={titleId}
                 aria-describedby={descriptionId}
               >
@@ -265,7 +286,7 @@ export const DragPopover = memo(function DragPopover({
   )
 })
 
-interface PopoverComponent extends React.FC<PopoverProps> {
+type PopoverComponent = typeof PopoverBase & {
   Content: typeof ModalContent
   Footer: typeof ModalFooter
   Header: typeof PopoverHeader

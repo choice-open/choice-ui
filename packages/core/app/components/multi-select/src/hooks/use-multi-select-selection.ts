@@ -111,8 +111,15 @@ export function useMultiSelectSelection({
 
   // Handle remove option
   const handleRemove = useEventCallback((valueToRemove: string) => {
+    if (minSelection && values.length <= minSelection) {
+      setValidationMessage(
+        i18n?.minSelectionMessage?.(minSelection) || `Select at least ${minSelection} options`,
+      )
+      return
+    }
     const newValues = values.filter((v) => v !== valueToRemove)
     onChange?.(newValues)
+    setValidationMessage(null)
   })
 
   return {

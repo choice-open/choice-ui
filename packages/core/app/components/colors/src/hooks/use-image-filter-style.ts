@@ -2,9 +2,18 @@ import { useMemo } from "react"
 import type { ImageFilters } from "../types"
 
 /**
- * 将-100到100范围的滤镜值映射到CSS滤镜的实际有效范围
+ * 将-100到100范围的滤镜值映射到CSS滤镜的实际有效范围。
+ *
+ * @deprecated CSS `filter:` 数学跟下游 WGSL shader 在 temperature
+ * (hue-rotate vs R/B-axis white-balance)、tint(sepia vs G/M-axis)、
+ * highlights/shadows(CSS 无对应物)等维度上**完全不同的变换**,用作
+ * 跨终端预览会严重不一致。生产消费者应改为接收 processor readback 的
+ * adjusted texture(blob URL),通过 `<ColorImagePaint imageSrc>` 注入。
+ * 保留此 hook 是为了不破坏 storybook + 既有 example,不应在新代码中使
+ * 用。
+ *
  * @param filters 图片滤镜配置对象
- * @returns 包含CSS filter属性的样式对象
+ * @returns 包含 CSS filter 属性的样式对象
  */
 export const useImageFilterStyle = (filters?: Partial<ImageFilters>) => {
   return useMemo(() => {

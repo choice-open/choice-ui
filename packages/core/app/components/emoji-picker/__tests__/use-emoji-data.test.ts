@@ -3,7 +3,6 @@ import { describe, it, expect, beforeEach, afterEach, vi } from "vitest"
 import "@testing-library/jest-dom/vitest"
 import { useEmojiData, getEmojiCategory, type EmojiData } from "../src/hooks/use-emoji-data"
 
-// Mock localStorage
 const localStorageMock = {
   getItem: vi.fn(),
   setItem: vi.fn(),
@@ -14,37 +13,39 @@ Object.defineProperty(window, "localStorage", {
   value: localStorageMock,
 })
 
-// Mock emoji data
-const mockEmojis: EmojiData[] = [
-  {
-    id: 1,
-    code: "U+1F600",
-    emoji: "😀",
-    name: "grinning face",
-    nameUrl: "grinning-face",
-  },
-  {
-    id: 2,
-    code: "U+1F603",
-    emoji: "😃",
-    name: "grinning face with big eyes",
-    nameUrl: "grinning-face-with-big-eyes",
-  },
-  {
-    id: 465,
-    code: "U+1F435",
-    emoji: "🐵",
-    name: "monkey face",
-    nameUrl: "monkey-face",
-  },
-  {
-    id: 592,
-    code: "U+1F34E",
-    emoji: "🍎",
-    name: "red apple",
-    nameUrl: "red-apple",
-  },
-]
+const { mockEmojis } = vi.hoisted(() => {
+  const mockEmojis: EmojiData[] = [
+    {
+      id: 1,
+      code: "U+1F600",
+      emoji: "😀",
+      name: "grinning face",
+      nameUrl: "grinning-face",
+    },
+    {
+      id: 2,
+      code: "U+1F603",
+      emoji: "😃",
+      name: "grinning face with big eyes",
+      nameUrl: "grinning-face-with-big-eyes",
+    },
+    {
+      id: 465,
+      code: "U+1F435",
+      emoji: "🐵",
+      name: "monkey face",
+      nameUrl: "monkey-face",
+    },
+    {
+      id: 592,
+      code: "U+1F34E",
+      emoji: "🍎",
+      name: "red apple",
+      nameUrl: "red-apple",
+    },
+  ]
+  return { mockEmojis }
+})
 
 vi.mock("../src/utils", () => ({
   emojis: mockEmojis,
@@ -101,12 +102,12 @@ describe("useEmojiData", () => {
     const { result } = renderHook(() =>
       useEmojiData({
         ...defaultProps,
-        searchQuery: "grinning-face",
+        searchQuery: "grinning-face-with-big",
       }),
     )
 
     expect(result.current.searchResults).toHaveLength(1)
-    expect(result.current.searchResults[0].nameUrl).toBe("grinning-face")
+    expect(result.current.searchResults[0].nameUrl).toBe("grinning-face-with-big-eyes")
   })
 
   it("should be case insensitive in search", () => {

@@ -1,6 +1,6 @@
 {
   "name": "@choice-ui/chips-input",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "An input component that allows users to enter and manage multiple values as chips or tags",
   "sideEffects": false,
   "type": "module",

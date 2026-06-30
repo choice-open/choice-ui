@@ -1,6 +1,6 @@
 {
   "name": "@choice-ui/search-input",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "A search input component with search icon, clear button, and search-specific styling",
   "sideEffects": false,
   "type": "module",

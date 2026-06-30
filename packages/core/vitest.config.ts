@@ -15,6 +15,7 @@ export default defineConfig({
   resolve: {
     alias: {
       "~": resolve(__dirname, "app"),
+      "@choice-ui/shared": resolve(__dirname, "../shared/src"),
     },
   },
 })

@@ -1,3 +1,4 @@
+import { vi } from "vitest"
 import { render, screen } from "@testing-library/react"
 import "@testing-library/jest-dom"
 import React from "react"
@@ -369,7 +370,7 @@ describe("TimeRangeInput 逻辑测试", () => {
   // 回调函数逻辑测试
   describe("回调函数逻辑", () => {
     it("应该正确传递开始时间变化回调", () => {
-      const mockStartChange = jest.fn()
+      const mockStartChange = vi.fn()
 
       render(<TimeRangeInput onStartChange={mockStartChange} />)
 
@@ -378,7 +379,7 @@ describe("TimeRangeInput 逻辑测试", () => {
     })
 
     it("应该正确传递结束时间变化回调", () => {
-      const mockEndChange = jest.fn()
+      const mockEndChange = vi.fn()
 
       render(<TimeRangeInput onEndChange={mockEndChange} />)
 
@@ -387,8 +388,8 @@ describe("TimeRangeInput 逻辑测试", () => {
     })
 
     it("应该正确传递焦点事件回调", () => {
-      const mockStartFocus = jest.fn()
-      const mockEndFocus = jest.fn()
+      const mockStartFocus = vi.fn()
+      const mockEndFocus = vi.fn()
 
       render(
         <TimeRangeInput

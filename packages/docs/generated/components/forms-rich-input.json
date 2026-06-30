@@ -3,7 +3,7 @@
   "title": "RichInput",
   "package": {
     "name": "@choice-ui/rich-input",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "description": "A rich text input component with formatting toolbar, links, and rich content editing",
     "dependencies": {
       "@floating-ui/react": "0.27.15",

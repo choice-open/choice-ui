@@ -63,9 +63,8 @@ export const CommandItem = memo(
 
     // Register item
     useEffect(() => {
-      if (!propsRef.current.forceMount) {
-        return context.item(id, groupContext?.id)
-      }
+      const cleanup = context.item(id, groupContext?.id)
+      return cleanup
     }, [context, groupContext?.id, id])
 
     const valueDeps = useMemo(() => [value, children, ref], [value, children])

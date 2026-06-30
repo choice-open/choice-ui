@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from "react"
+import { createContext, ReactNode, useContext } from "react"
 import type { LoaderStage } from "../types"
 
 interface LoaderContextValue {
@@ -8,10 +8,10 @@ interface LoaderContextValue {
 
 const LoaderContext = createContext<LoaderContextValue | undefined>(undefined)
 
-export const LoaderProvider: React.FC<LoaderContextValue & { children: React.ReactNode }> = ({
+export const LoaderProvider = ({
   children,
   ...value
-}) => {
+}: LoaderContextValue & { children: ReactNode }) => {
   return <LoaderContext.Provider value={value}>{children}</LoaderContext.Provider>
 }
 

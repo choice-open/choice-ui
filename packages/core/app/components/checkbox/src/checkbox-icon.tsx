@@ -33,7 +33,7 @@ export const CheckboxIcon = memo(
       <div
         ref={ref}
         className={tcx(tv.box(), className)}
-        data-active={value}
+        data-active={value || mixed}
         {...rest}
       >
         {renderIcon()}

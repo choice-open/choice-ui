@@ -1,6 +1,13 @@
 import { tcx } from "@choice-ui/shared"
 import { OTPInput, type SlotProps, type RenderProps } from "input-otp"
-import { createContext, useContext, useMemo, type ComponentProps, type ReactNode } from "react"
+import {
+  createContext,
+  forwardRef,
+  useContext,
+  useMemo,
+  type ComponentProps,
+  type ReactNode,
+} from "react"
 import { otpInputTv } from "./tv"
 
 type OTPInputVariant = "default" | "light" | "dark"
@@ -30,15 +37,18 @@ export interface OTPInputRootProps extends Omit<
   children: ReactNode
 }
 
-function OTPInputRoot({
-  className,
-  inputClassName,
-  variant = "default",
-  disabled = false,
-  isInvalid = false,
-  children,
-  ...props
-}: OTPInputRootProps) {
+const OTPInputRoot = forwardRef<HTMLInputElement, OTPInputRootProps>(function OTPInputRoot(
+  {
+    className,
+    inputClassName,
+    variant = "default",
+    disabled = false,
+    isInvalid = false,
+    children,
+    ...props
+  },
+  ref,
+) {
   const tv = useMemo(
     () => otpInputTv({ variant, disabled, isInvalid }),
     [variant, disabled, isInvalid],
@@ -46,12 +56,14 @@ function OTPInputRoot({
 
   return (
     <OTPInput
+      ref={ref}
       className={tv.input({ className: inputClassName })}
       containerClassName={tv.base({ className })}
       spellCheck={false}
       autoComplete="off"
       data-disabled={disabled || undefined}
       data-invalid={isInvalid || undefined}
+      aria-invalid={isInvalid || undefined}
       disabled={disabled}
       render={({ slots: slotProps }: RenderProps) => (
         <OTPInputCtx.Provider value={{ slotProps, variant, disabled, isInvalid }}>
@@ -61,7 +73,7 @@ function OTPInputRoot({
       {...props}
     />
   )
-}
+})
 
 export interface OTPInputGroupProps extends ComponentProps<"div"> {}
 
@@ -82,7 +94,7 @@ export interface OTPInputSlotProps extends ComponentProps<"div"> {
 
 function OTPInputSlot({ className, index, ...props }: OTPInputSlotProps) {
   const { slotProps, variant, disabled, isInvalid } = useContext(OTPInputCtx)
-  const { char, hasFakeCaret, isActive } = slotProps?.[index] ?? {}
+  const { char, hasFakeCaret, isActive, placeholderChar } = slotProps?.[index] ?? {}
 
   const tv = otpInputTv({
     variant,
@@ -95,12 +107,17 @@ function OTPInputSlot({ className, index, ...props }: OTPInputSlotProps) {
     <div
       {...props}
       className={tcx(tv.slot(), className)}
+      aria-hidden="true"
       data-active={isActive || undefined}
       data-disabled={disabled || undefined}
       data-filled={!!char || undefined}
       data-invalid={isInvalid || undefined}
     >
-      {char ? <div className={tv.slotValue()}>{char}</div> : null}
+      {char ? (
+        <div className={tv.slotValue()}>{char}</div>
+      ) : placeholderChar ? (
+        <div className={tv.slotValue()}>{placeholderChar}</div>
+      ) : null}
       {hasFakeCaret && isActive ? <div className={tv.caret()} /> : null}
     </div>
   )

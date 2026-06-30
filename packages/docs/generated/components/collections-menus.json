@@ -3,7 +3,7 @@
   "title": "Menus",
   "package": {
     "name": "@choice-ui/menus",
-    "version": "0.1.5",
+    "version": "0.1.7",
     "description": "A menu component system for building dropdown menus, context menus, and navigation lists",
     "dependencies": {
       "@choice-ui/button": "workspace:*",
@@ -163,7 +163,14 @@
     {
       "displayName": "MenuEmpty",
       "description": "",
-      "props": []
+      "props": [
+        {
+          "name": "ref",
+          "type": "((instance: HTMLDivElement | null) => void) | RefObject<HTMLDivElement> | null | undefined",
+          "required": false,
+          "description": ""
+        }
+      ]
     },
     {
       "displayName": "MenuItemProps",
@@ -244,6 +251,12 @@
         {
           "name": "selection",
           "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "ref",
+          "type": "((instance: HTMLDivElement | null) => void) | RefObject<HTMLDivElement> | null | undefined",
           "required": false,
           "description": ""
         }
@@ -370,7 +383,7 @@
         },
         {
           "name": "i18n",
-          "type": "{ clear: string; placeholder: string; } | undefined",
+          "type": "{ clear: string; placeholder?: string | undefined; } | undefined",
           "required": false,
           "description": ""
         }
@@ -389,6 +402,12 @@
         {
           "name": "onClear",
           "type": "(() => void) | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "ref",
+          "type": "((instance: HTMLDivElement | null) => void) | RefObject<HTMLDivElement> | null | undefined",
           "required": false,
           "description": ""
         }
@@ -1122,6 +1141,12 @@
         {
           "name": "selection",
           "type": "boolean | undefined",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "ref",
+          "type": "((instance: HTMLDivElement | null) => void) | RefObject<HTMLDivElement> | null | undefined",
           "required": false,
           "description": ""
         }

@@ -208,13 +208,14 @@ export const Command = forwardRef<HTMLDivElement, CommandProps>((props, forwarde
       })
 
     groups
-      .sort((a, b) => b[1] - a[1])
+      .sort((a, b) => a[1] - b[1])
       .forEach((group) => {
+        const groupValue = ids.current.get(group[0])?.value ?? group[0]
         const element = listInnerRef.current?.querySelector(
-          `${GROUP_SELECTOR}[${VALUE_ATTR}="${encodeURIComponent(group[0])}"]`,
+          `${GROUP_SELECTOR}[${VALUE_ATTR}="${encodeURIComponent(groupValue)}"]`,
         )
         if (element && element.parentElement) {
-          element.parentElement.appendChild(element)
+          element.parentElement.insertBefore(element, element.parentElement.firstChild)
         }
       })
   }, [])

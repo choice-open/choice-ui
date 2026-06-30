@@ -11,7 +11,7 @@ import {
   useInteractions,
   useRole,
 } from "@floating-ui/react"
-import { useMemo, useRef, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 
 type HintPlacement = "left-start" | "right-start" | "left-end" | "right-end"
 
@@ -60,6 +60,12 @@ export function useHint({
 
   const open = controlledOpen ?? uncontrolledOpen
   const setOpen = setControlledOpen ?? setUncontrolledOpen
+
+  useEffect(() => {
+    if (disabled) {
+      setOpen(false)
+    }
+  }, [disabled, setOpen])
 
   const arrowRef = useRef<HTMLElement>(null)
 

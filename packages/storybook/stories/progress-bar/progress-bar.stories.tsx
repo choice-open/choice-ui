@@ -208,10 +208,7 @@ export const BasedOnValue: Story = {
             max={100}
             value={value}
             onChange={(v) => setValue(v)}
-            trackSize={{
-              width: "auto",
-              height: 16,
-            }}
+            width={true}
           />
           <span>Value: {value}</span>
         </div>

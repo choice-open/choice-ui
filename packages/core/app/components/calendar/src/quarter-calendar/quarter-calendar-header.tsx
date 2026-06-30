@@ -2,6 +2,7 @@ import { tcx } from "@choice-ui/shared"
 import { IconButton } from "@choice-ui/icon-button"
 import { ChevronLeftSmall, ChevronRightSmall, Undo } from "@choiceform/icons-react"
 import { format } from "date-fns"
+import type { Locale } from "date-fns/locale"
 import { forwardRef } from "react"
 import { useEventCallback } from "usehooks-ts"
 import { QuarterCalendarTv } from "./tv"
@@ -15,6 +16,7 @@ export interface QuarterCalendarHeaderProps {
   handleToday: () => void
   isNextDisabled: boolean
   isPrevDisabled: boolean
+  locale?: Locale
   variant?: "default" | "dark"
 }
 
@@ -29,6 +31,7 @@ export const QuarterCalendarHeader = forwardRef<HTMLDivElement, QuarterCalendarH
       handleToday,
       isNextDisabled,
       isPrevDisabled,
+      locale,
       variant = "default",
     } = props
 
@@ -37,6 +40,11 @@ export const QuarterCalendarHeader = forwardRef<HTMLDivElement, QuarterCalendarH
     const handleTodayClick = useEventCallback(() => {
       handleToday()
     })
+
+    const isZhLocale = locale?.code?.startsWith("zh")
+    const yearDisplay = isZhLocale
+      ? `${currentYear}年`
+      : format(new Date(currentYear, 0, 1), "yyyy")
 
     return (
       <div
@@ -48,7 +56,7 @@ export const QuarterCalendarHeader = forwardRef<HTMLDivElement, QuarterCalendarH
           className={tv.title()}
           data-testid="year-title"
         >
-          {format(currentYear, "yyyy")}
+          {yearDisplay}
         </h3>
 
         <div

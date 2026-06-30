@@ -1,4 +1,4 @@
-import { getDocument, tcx, useIsomorphicLayoutEffect } from "@choice-ui/shared"
+import { findSlotChild, getDocument, tcx, useIsomorphicLayoutEffect } from "@choice-ui/shared"
 import {
   MenuButton,
   MenuContext,
@@ -38,9 +38,7 @@ import {
   type Placement,
 } from "@floating-ui/react"
 import React, {
-  Children,
   cloneElement,
-  isValidElement,
   memo,
   useEffect,
   useId,
@@ -73,7 +71,7 @@ export interface ComboboxProps {
    * @default true
    */
   matchTriggerWidth?: boolean
-  onBlur?: (value: string) => void
+  onBlur?: (value: string, event?: React.FocusEvent<HTMLInputElement>) => void
   onChange?: (value: string) => void
   onOpenChange?: (open: boolean, trigger?: "click" | "focus" | "input") => void
   open?: boolean
@@ -208,7 +206,7 @@ const ComboboxComponent = memo(function ComboboxComponent(props: ComboboxProps) 
     if (controlledOpen === undefined) {
       setIsOpen(!isOpen)
     }
-    onOpenChange?.(true, "click")
+    onOpenChange?.(!isControlledOpen, "click")
   })
 
   // DOM event handlers
@@ -223,6 +221,9 @@ const ComboboxComponent = memo(function ComboboxComponent(props: ComboboxProps) 
     const activeIndex = autoSelection ? 0 : null
     // Show menu on focus if there's a value
     if (inputValue.trim()) {
+      if (controlledOpen === undefined) {
+        setIsOpen(true)
+      }
       onOpenChange?.(true, "focus")
       setActiveIndex(activeIndex)
     }
@@ -463,21 +464,12 @@ const ComboboxComponent = memo(function ComboboxComponent(props: ComboboxProps) 
     onOpenChange?.(false)
   })
 
-  // Process children
+  // Process children — uses findSlotChild from @choice-ui/shared so
+  // memo-wrapped or div-wrapped slots are still found.
   const { triggerElement, contentElement } = useMemo(() => {
-    const childrenArray = Children.toArray(children)
-
-    const trigger = childrenArray.find(
-      (child) => isValidElement(child) && child.type === ComboboxTrigger,
-    ) as React.ReactElement | null
-
-    const content = childrenArray.find(
-      (child) => isValidElement(child) && child.type === MenuContextContent,
-    ) as React.ReactElement | null
-
     return {
-      triggerElement: trigger,
-      contentElement: content,
+      triggerElement: findSlotChild(children, ComboboxTrigger) ?? null,
+      contentElement: findSlotChild(children, MenuContextContent) ?? null,
     }
   }, [children])
 

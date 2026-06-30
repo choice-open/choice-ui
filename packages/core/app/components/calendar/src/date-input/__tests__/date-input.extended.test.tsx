@@ -1,3 +1,4 @@
+import { vi } from "vitest"
 import "@testing-library/jest-dom"
 import { render, screen, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
@@ -38,7 +39,7 @@ describe("DateInput Extended Tests", () => {
       const testCases = ["今天", "明天", "昨天"]
 
       for (const testCase of testCases) {
-        const handleChange = jest.fn() // 为每个测试用例创建新的mock
+        const handleChange = vi.fn() // 为每个测试用例创建新的mock
 
         const { unmount } = render(
           <DateInput
@@ -69,7 +70,7 @@ describe("DateInput Extended Tests", () => {
       const testCases = ["today", "tomorrow", "yesterday"]
 
       for (const testCase of testCases) {
-        const handleChange = jest.fn() // 为每个测试用例创建新的mock
+        const handleChange = vi.fn() // 为每个测试用例创建新的mock
 
         const { unmount } = render(
           <DateInput
@@ -106,7 +107,7 @@ describe("DateInput Extended Tests", () => {
       ]
 
       for (const testCase of testCases) {
-        const handleChange = jest.fn() // 为每个测试用例创建新的mock
+        const handleChange = vi.fn() // 为每个测试用例创建新的mock
 
         const { unmount } = render(<DateInput onChange={handleChange} />)
         const input = screen.getByRole("textbox")
@@ -131,7 +132,7 @@ describe("DateInput Extended Tests", () => {
       const testCases = ["3天后", "5天前", "2周后"]
 
       for (const testCase of testCases) {
-        const handleChange = jest.fn() // 为每个测试用例创建新的mock
+        const handleChange = vi.fn() // 为每个测试用例创建新的mock
 
         const { unmount } = render(<DateInput onChange={handleChange} />)
         const input = screen.getByRole("textbox")
@@ -155,7 +156,7 @@ describe("DateInput Extended Tests", () => {
   describe("数字解析功能", () => {
     it("应该解析不同长度的纯数字输入", async () => {
       const user = userEvent.setup()
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
 
       render(<DateInput onChange={handleChange} />)
       const input = screen.getByRole("textbox")
@@ -183,7 +184,7 @@ describe("DateInput Extended Tests", () => {
 
     it("应该智能修正无效数字日期", async () => {
       const user = userEvent.setup()
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
 
       render(<DateInput onChange={handleChange} />)
       const input = screen.getByRole("textbox")
@@ -260,7 +261,7 @@ describe("DateInput Extended Tests", () => {
   // 数据流控制测试
   describe("数据流控制", () => {
     it("应该正确处理外部值变化", async () => {
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
       const date1 = new Date(2024, 2, 15)
       const date2 = new Date(2024, 2, 16)
 
@@ -288,7 +289,7 @@ describe("DateInput Extended Tests", () => {
 
     it("应该防止竞态条件", async () => {
       const user = userEvent.setup()
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
 
       render(<DateInput onChange={handleChange} />)
       const input = screen.getByRole("textbox")
@@ -313,7 +314,7 @@ describe("DateInput Extended Tests", () => {
   describe("错误恢复和边界情况", () => {
     it("应该处理极端年份", async () => {
       const user = userEvent.setup()
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
 
       render(<DateInput onChange={handleChange} />)
       const input = screen.getByRole("textbox")
@@ -337,7 +338,7 @@ describe("DateInput Extended Tests", () => {
 
     it("应该处理空和特殊字符输入", async () => {
       const user = userEvent.setup()
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
 
       render(<DateInput onChange={handleChange} />)
       const input = screen.getByRole("textbox")
@@ -388,7 +389,7 @@ describe("DateInput Extended Tests", () => {
 
     it("应该处理格式化错误的降级", async () => {
       const user = userEvent.setup()
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
 
       // 使用无效格式，测试降级机制
       render(
@@ -478,7 +479,7 @@ describe("DateInput Extended Tests", () => {
   describe("性能和缓存深度测试", () => {
     it("应该在大量输入时保持性能", async () => {
       const user = userEvent.setup()
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
 
       render(
         <DateInput
@@ -506,7 +507,7 @@ describe("DateInput Extended Tests", () => {
 
     it("应该正确缓存解析结果", async () => {
       const user = userEvent.setup()
-      const handleChange = jest.fn()
+      const handleChange = vi.fn()
 
       render(
         <DateInput

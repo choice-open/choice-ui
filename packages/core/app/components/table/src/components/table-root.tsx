@@ -13,6 +13,11 @@ import type { TableColumnDef, TableProps } from "../types"
 import { tableVariants } from "../tv"
 import { DragGuide } from "./drag-guide"
 import { ResizeGuide } from "./resize-guide"
+import { TableHeader } from "./table-header"
+import { TableColumn } from "./table-column"
+import { TableBody } from "./table-body"
+import { TableRow } from "./table-row"
+import { TableCell } from "./table-cell"
 
 export function TableRoot<T>({
   data,
@@ -45,6 +50,7 @@ export function TableRoot<T>({
   className,
   height,
   tableRef: instanceRef,
+  columns: columnsProp,
   children,
 }: TableProps<T>): ReactNode {
   const tv = tableVariants()
@@ -91,6 +97,7 @@ export function TableRoot<T>({
     defaultSorting,
     onSortingChange,
     tableRef: instanceRef,
+    columns: columnsProp,
   })
 
   const { columnWidths, resizeState, getColumnWidth, startResize, updateResize, endResize } =
@@ -150,6 +157,11 @@ export function TableRoot<T>({
     setBodyScrollRef(ref)
   }, [])
 
+  const effectiveVirtualized =
+    height === undefined && columnsProp && !children && scrollMode !== "window"
+      ? false
+      : virtualized
+
   // Context values
   const staticContextValue = useMemo(
     () => ({
@@ -163,7 +175,7 @@ export function TableRoot<T>({
       sortable,
       resizable,
       reorderable,
-      virtualized,
+      virtualized: effectiveVirtualized,
       rowHeight,
       overscan,
       scrollMode,
@@ -186,7 +198,7 @@ export function TableRoot<T>({
       sortable,
       resizable,
       reorderable,
-      virtualized,
+      effectiveVirtualized,
       rowHeight,
       overscan,
       scrollMode,
@@ -339,7 +351,7 @@ export function TableRoot<T>({
                 <div
                   ref={tableRef}
                   role="table"
-                  aria-rowcount={rows.length}
+                  aria-rowcount={rows.length + 1}
                   aria-colcount={columns.length + (selectable ? 1 : 0)}
                   className={tcx(
                     tv.root({ resizing: !!resizeState, dragging: !!dragState }),
@@ -349,7 +361,49 @@ export function TableRoot<T>({
                   onDragOver={handleTableDragOver}
                   onDrop={handleTableDrop}
                 >
-                  {children}
+                  {columnsProp && !children ? (
+                    <>
+                      <TableHeader>
+                        {columnsProp.map((col) => (
+                          <TableColumn
+                            key={col.id}
+                            id={col.id}
+                            width={col.width}
+                            minWidth={col.minWidth}
+                            maxWidth={col.maxWidth}
+                            flex={col.flex}
+                            sortable={col.sortable}
+                            resizable={col.resizable}
+                            className={col.headerClassName}
+                          >
+                            {col.header}
+                          </TableColumn>
+                        ))}
+                      </TableHeader>
+                      <TableBody>
+                        {(row: T, index: number) => (
+                          <TableRow
+                            rowKey={stableGetRowKey(row, index)}
+                            index={index}
+                          >
+                            {columnsProp!.map((col) => (
+                              <TableCell
+                                key={col.id}
+                                columnId={col.id}
+                                className={col.className}
+                              >
+                                {col.accessorKey
+                                  ? String((row as Record<string, unknown>)[col.accessorKey] ?? "")
+                                  : ""}
+                              </TableCell>
+                            ))}
+                          </TableRow>
+                        )}
+                      </TableBody>
+                    </>
+                  ) : (
+                    children
+                  )}
                   <ResizeGuide />
                   <DragGuide />
                 </div>

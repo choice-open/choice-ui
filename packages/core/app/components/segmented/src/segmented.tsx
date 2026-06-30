@@ -1,6 +1,15 @@
 import { tcx } from "@choice-ui/shared"
 import { type TooltipProps } from "@choice-ui/tooltip"
-import { Children, ForwardedRef, forwardRef, HTMLProps, ReactNode, useId, useMemo } from "react"
+import {
+  Children,
+  ForwardedRef,
+  forwardRef,
+  HTMLProps,
+  ReactNode,
+  useId,
+  useMemo,
+  useState,
+} from "react"
 import { useEventCallback } from "usehooks-ts"
 import { SegmentedContext } from "./context"
 import { SegmentedItem } from "./segmented-item"
@@ -35,9 +44,14 @@ const SegmentedBase = forwardRef<HTMLDivElement, SegmentedProps>(
 
     const id = useId()
     const descriptionId = useId()
+    const [internalValue, setInternalValue] = useState<string | undefined>(undefined)
+    const effectiveValue = valueProp ?? internalValue
 
     const handleChange = useEventCallback((value: string) => {
       if (readOnly) return
+      if (valueProp === undefined) {
+        setInternalValue(value)
+      }
       onChange?.(value)
     })
 
@@ -63,7 +77,7 @@ const SegmentedBase = forwardRef<HTMLDivElement, SegmentedProps>(
     return (
       <SegmentedContext.Provider
         value={{
-          value: valueProp,
+          value: effectiveValue,
           onChange: handleChange,
           groupId: id,
           variant,

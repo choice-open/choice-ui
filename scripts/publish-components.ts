@@ -3,8 +3,9 @@
  *
  * 功能：
  * 1. 构建指定组件或全部组件
- * 2. 替换 workspace:* 为实际版本号
- * 3. 发布到 npm
+ * 2. 发布时自动递增 patch 版本号
+ * 3. 替换 workspace:* 为实际版本号
+ * 4. 发布到 npm
  *
  * 用法：
  * - pnpm tsx scripts/publish-components.ts              # 发布所有组件
@@ -33,6 +34,7 @@ interface ComponentInfo {
   name: string
   dir: string
   packageJson: PackageJson
+  releaseVersion?: string
 }
 
 // ============================================================================
@@ -94,6 +96,20 @@ function execSilent(command: string): string | null {
 }
 
 /**
+ * 发布前确认 npm 已登录
+ */
+function verifyNpmAuth(): boolean {
+  const npmUser = execSilent("npm whoami")
+  if (!npmUser) {
+    log("npm 未登录或当前 token 无效，请先运行 npm login 后再发布", "error")
+    return false
+  }
+
+  log(`npm 登录账号: ${npmUser}`)
+  return true
+}
+
+/**
  * 从 npm 获取包的已发布版本列表
  */
 function getNpmVersions(packageName: string): string[] {
@@ -114,24 +130,26 @@ function incrementPatchVersion(version: string): string {
   const parts = version.split(".")
   if (parts.length !== 3) return version
   const [major, minor, patch] = parts
-  return `${major}.${minor}.${parseInt(patch, 10) + 1}`
+  const patchNumber = Number(patch)
+  if (!Number.isInteger(patchNumber) || patchNumber < 0) return version
+  return `${major}.${minor}.${patchNumber + 1}`
 }
 
 /**
- * 获取下一个可用版本号（如果当前版本已存在则递增）
+ * 获取下一个发布版本号（每次发布默认递增 patch，并避开 npm 上已存在的版本）
  */
-function getNextAvailableVersion(packageName: string, currentVersion: string): string {
+function getNextReleaseVersion(packageName: string, currentVersion: string): string {
   const npmVersions = getNpmVersions(packageName)
+  let version = incrementPatchVersion(currentVersion)
 
-  if (npmVersions.length === 0) {
-    // 包不存在或首次发布
-    return currentVersion
+  if (version === currentVersion) {
+    log(`${packageName}@${currentVersion} 不是标准 x.y.z 版本号，无法自动递增`, "warn")
   }
 
-  let version = currentVersion
   while (npmVersions.includes(version)) {
     const newVersion = incrementPatchVersion(version)
     log(`${packageName}@${version} 已存在，递增到 ${newVersion}`, "warn")
+    if (newVersion === version) break
     version = newVersion
   }
 
@@ -210,6 +228,7 @@ function getAllComponents(): ComponentInfo[] {
   const componentDirs = readdirSync(COMPONENTS_DIR, { withFileTypes: true })
     .filter((d) => d.isDirectory())
     .map((d) => d.name)
+    .sort()
 
   const components: ComponentInfo[] = []
 
@@ -230,6 +249,38 @@ function getAllComponents(): ComponentInfo[] {
 }
 
 /**
+ * 规划本次发布版本，并先更新版本映射供组件间依赖解析使用
+ */
+function planReleaseVersions(components: ComponentInfo[], versions: Map<string, string>) {
+  for (const component of components) {
+    const currentVersion = component.packageJson.version
+    const releaseVersion = getNextReleaseVersion(component.packageJson.name, currentVersion)
+    component.releaseVersion = releaseVersion
+    versions.set(component.packageJson.name, releaseVersion)
+
+    if (releaseVersion !== currentVersion) {
+      log(`${component.packageJson.name} 计划发布 ${currentVersion} -> ${releaseVersion}`, "info")
+    }
+  }
+}
+
+/**
+ * 写入本轮发布版本，让后续构建和发布都使用同一个新版本号
+ */
+function prepareComponentForRelease(component: ComponentInfo): string {
+  const pkgPath = join(component.dir, "package.json")
+  const originalContent = readFileSync(pkgPath, "utf-8")
+
+  if (component.releaseVersion) {
+    const pkg = readPackageJson(pkgPath)
+    pkg.version = component.releaseVersion
+    writePackageJson(pkgPath, pkg)
+  }
+
+  return originalContent
+}
+
+/**
  * 构建组件
  */
 function buildComponent(component: ComponentInfo): boolean {
@@ -240,38 +291,25 @@ function buildComponent(component: ComponentInfo): boolean {
 /**
  * 发布组件
  */
-function publishComponent(component: ComponentInfo, versions: Map<string, string>): boolean {
+function publishComponent(
+  component: ComponentInfo,
+  versions: Map<string, string>,
+  originalContent: string,
+): boolean {
   const pkgPath = join(component.dir, "package.json")
-  const originalContent = readFileSync(pkgPath, "utf-8")
 
   try {
     // 替换 workspace:* 版本
-    const pkg = { ...component.packageJson }
+    const pkg = readPackageJson(pkgPath)
     pkg.dependencies = resolveWorkspaceVersions(pkg.dependencies, versions)
     pkg.devDependencies = resolveWorkspaceVersions(pkg.devDependencies, versions)
     pkg.peerDependencies = resolveWorkspaceVersions(pkg.peerDependencies, versions)
-
-    // 检查版本号并自动递增（如果已存在）
-    const nextVersion = getNextAvailableVersion(pkg.name, pkg.version)
-    if (nextVersion !== pkg.version) {
-      log(`${pkg.name} 版本从 ${pkg.version} 更新到 ${nextVersion}`, "info")
-      pkg.version = nextVersion
-      // 同时更新 versions map 以便其他组件引用
-      versions.set(pkg.name, nextVersion)
-    }
 
     // 写入修改后的 package.json
     writePackageJson(pkgPath, pkg)
 
     if (isDryRun) {
       log(`[DRY-RUN] 将发布 ${pkg.name}@${pkg.version}`, "info")
-      // 恢复原始 package.json
-      writeFileSync(pkgPath, originalContent)
-      return true
-    }
-
-    if (isBuildOnly) {
-      log(`[BUILD-ONLY] 跳过发布 ${pkg.name}`, "info")
       // 恢复原始 package.json
       writeFileSync(pkgPath, originalContent)
       return true
@@ -285,7 +323,7 @@ function publishComponent(component: ComponentInfo, versions: Map<string, string
       log(`${pkg.name}@${pkg.version} 发布成功`, "success")
       // 发布成功后，更新本地 package.json 的版本号
       const localPkg = JSON.parse(originalContent) as PackageJson
-      localPkg.version = nextVersion
+      localPkg.version = pkg.version
       writeFileSync(pkgPath, JSON.stringify(localPkg, null, 2) + "\n")
       return true
     } else {
@@ -335,6 +373,14 @@ async function main() {
     return
   }
 
+  if (!isDryRun && !isBuildOnly && !verifyNpmAuth()) {
+    return
+  }
+
+  if (!isBuildOnly) {
+    planReleaseVersions(components, versions)
+  }
+
   console.log("")
 
   // 构建和发布
@@ -342,18 +388,31 @@ async function main() {
   let failCount = 0
 
   for (const component of components) {
+    const originalContent = !isBuildOnly ? prepareComponentForRelease(component) : ""
     const buildSuccess = buildComponent(component)
     if (!buildSuccess) {
+      if (!isBuildOnly) {
+        writeFileSync(join(component.dir, "package.json"), originalContent)
+      }
       log(`${component.name} 构建失败，跳过发布`, "error")
       failCount++
       continue
     }
 
-    const publishSuccess = publishComponent(component, versions)
+    if (isBuildOnly) {
+      log(`[BUILD-ONLY] 跳过发布 ${component.packageJson.name}`, "info")
+      successCount++
+      console.log("")
+      continue
+    }
+
+    const publishSuccess = publishComponent(component, versions, originalContent)
     if (publishSuccess) {
       successCount++
     } else {
       failCount++
+      log("发布失败，停止后续组件发布", "error")
+      break
     }
 
     console.log("")

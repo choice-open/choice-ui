@@ -37,6 +37,7 @@ export const ModalHeader = forwardRef<HTMLDivElement, ModalHeaderProps>((props, 
         <div className={tv.close()}>
           <IconButton
             onClick={onClose}
+            aria-label="Close"
             {...closeButtonProps}
           >
             <Remove />

@@ -32,14 +32,12 @@ export function flattenTree(
     // 如果当前节点的父节点或者任何更上层的祖先节点被选中，则hasSelectedAncestor为true
     const isParentSelected = hasSelectedAncestor || (parent ? selectedIds.has(parent.id) : false)
 
-    // 确保设置parentId
-    if (parent) {
-      node.parentId = parent.id
-    }
+    // 确保设置parentId - do not mutate the input node
+    const nodeWithParentId = parent ? { ...node, parentId: parent.id } : node
 
     // 创建带有状态的节点
     const treeNode: TreeNodeType = {
-      ...node,
+      ...nodeWithParentId,
       parentId: parent?.id, // 显式设置parentId
       state: {
         isExpanded,

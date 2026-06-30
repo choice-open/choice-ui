@@ -18,8 +18,9 @@ import { MenubarTrigger } from "./menubar-trigger"
 
 export interface MenubarItemProps extends Omit<DropdownProps, "open" | "onOpenChange"> {
   children?: React.ReactNode
-  placement?: Placement
   disabled?: boolean
+  label?: React.ReactNode
+  placement?: Placement
 }
 
 /**
@@ -35,7 +36,13 @@ export interface MenubarItemProps extends Omit<DropdownProps, "open" | "onOpenCh
  * 5. Supports keyboard navigation
  */
 const MenubarItemComponent = memo(function MenubarItemComponent(props: MenubarItemProps) {
-  const { children, placement: placementProp, disabled = false, ...itemDropdownProps } = props
+  const {
+    children,
+    placement: placementProp,
+    disabled = false,
+    label,
+    ...itemDropdownProps
+  } = props
   const {
     activeMenuId,
     hasAnyMenuOpen,
@@ -163,78 +170,124 @@ const MenubarItemComponent = memo(function MenubarItemComponent(props: MenubarIt
   )
 
   // Enhance children with memoization for performance
-  const enhancedChildren = useMemo(
-    () =>
-      Children.map(children, (child) => {
-        if (!isValidElement(child)) return child
+  const enhancedChildren = useMemo(() => {
+    if (label) {
+      const trigger = (
+        <Dropdown.Trigger
+          asChild
+          key="__trigger__"
+          disabled={disabled || rootDisabled}
+        >
+          <MenubarTrigger
+            ref={setTriggerRef}
+            data-menubar-trigger=""
+            active={isOpen}
+            disabled={disabled || rootDisabled}
+            className={tcx("data-[multi-element=true]:border-transparent")}
+            onMouseEnter={handleTriggerMouseEnter}
+          >
+            {label}
+          </MenubarTrigger>
+        </Dropdown.Trigger>
+      )
 
-        // Handle Menubar.Trigger (MenubarTrigger)
-        if (child.type === MenubarTrigger) {
-          const childProps = child.props as { ref?: React.Ref<HTMLElement> }
-          const originalRef = childProps.ref
+      const items = Children.map(children, (child) => {
+        if (!isValidElement(child)) return child
+        if (child.type === MenubarItem) {
+          // Spread child.props so the user's `onClick` (and any other DOM
+          // handlers) flow through to Dropdown.Item. A previous no-op
+          // override silently dropped the action handler in label-mode.
           return (
-            <Dropdown.Trigger
-              asChild
-              disabled={disabled || rootDisabled}
+            <Dropdown.Item
+              key={child.key ?? undefined}
+              {...child.props}
             >
-              {cloneElement(child, {
-                ...child.props,
-                "data-menubar-trigger": "",
-                active: isOpen,
-                disabled: disabled || rootDisabled,
-                className: tcx(
-                  "data-[multi-element=true]:border-transparent",
-                  child.props.className,
-                ),
-                ref: (node: HTMLElement | null) => {
-                  setTriggerRef(node)
-                  if (typeof originalRef === "function") {
-                    originalRef(node)
-                  } else if (originalRef && typeof originalRef === "object") {
-                    ;(originalRef as React.MutableRefObject<HTMLElement | null>).current = node
-                  }
-                },
-                onMouseEnter: (e: React.MouseEvent) => {
-                  child.props.onMouseEnter?.(e)
-                  handleTriggerMouseEnter()
-                },
-              } as React.HTMLAttributes<HTMLElement>)}
-            </Dropdown.Trigger>
+              {child.props.children}
+            </Dropdown.Item>
           )
         }
-
-        // Handle Dropdown.Content
-        if (child.type === Dropdown.Content) {
-          const childProps = child.props as { ref?: React.Ref<HTMLElement> }
-          const originalRef = childProps.ref
-          const floatingProps = getFloatingProps()
-          return cloneElement(child, {
-            ...child.props,
-            ...floatingProps,
-            ref: (node: HTMLElement | null) => {
-              setContentRef(node)
-              if (typeof originalRef === "function") {
-                originalRef(node)
-              } else if (originalRef && typeof originalRef === "object") {
-                ;(originalRef as React.MutableRefObject<HTMLElement | null>).current = node
-              }
-            },
-          } as React.HTMLAttributes<HTMLElement>)
-        }
-
         return child
-      }),
-    [
-      children,
-      disabled,
-      rootDisabled,
-      isOpen,
-      setTriggerRef,
-      setContentRef,
-      handleTriggerMouseEnter,
-      getFloatingProps,
-    ],
-  )
+      })
+
+      const floatingProps = getFloatingProps()
+      const content = (
+        <Dropdown.Content
+          key="__content__"
+          {...floatingProps}
+          ref={setContentRef}
+        >
+          {items}
+        </Dropdown.Content>
+      )
+
+      return [trigger, content]
+    }
+
+    return Children.map(children, (child) => {
+      if (!isValidElement(child)) return child
+
+      if (child.type === MenubarTrigger) {
+        const childProps = child.props as { ref?: React.Ref<HTMLElement> }
+        const originalRef = childProps.ref
+        return (
+          <Dropdown.Trigger
+            asChild
+            disabled={disabled || rootDisabled}
+          >
+            {cloneElement(child, {
+              ...child.props,
+              "data-menubar-trigger": "",
+              active: isOpen,
+              disabled: disabled || rootDisabled,
+              className: tcx("data-[multi-element=true]:border-transparent", child.props.className),
+              ref: (node: HTMLElement | null) => {
+                setTriggerRef(node)
+                if (typeof originalRef === "function") {
+                  originalRef(node)
+                } else if (originalRef && typeof originalRef === "object") {
+                  ;(originalRef as React.MutableRefObject<HTMLElement | null>).current = node
+                }
+              },
+              onMouseEnter: (e: React.MouseEvent) => {
+                child.props.onMouseEnter?.(e)
+                handleTriggerMouseEnter()
+              },
+            } as React.HTMLAttributes<HTMLElement>)}
+          </Dropdown.Trigger>
+        )
+      }
+
+      if (child.type === Dropdown.Content) {
+        const childProps = child.props as { ref?: React.Ref<HTMLElement> }
+        const originalRef = childProps.ref
+        const floatingProps = getFloatingProps()
+        return cloneElement(child, {
+          ...child.props,
+          ...floatingProps,
+          ref: (node: HTMLElement | null) => {
+            setContentRef(node)
+            if (typeof originalRef === "function") {
+              originalRef(node)
+            } else if (originalRef && typeof originalRef === "object") {
+              ;(originalRef as React.MutableRefObject<HTMLElement | null>).current = node
+            }
+          },
+        } as React.HTMLAttributes<HTMLElement>)
+      }
+
+      return child
+    })
+  }, [
+    children,
+    label,
+    disabled,
+    rootDisabled,
+    isOpen,
+    setTriggerRef,
+    setContentRef,
+    handleTriggerMouseEnter,
+    getFloatingProps,
+  ])
 
   return (
     <Dropdown
@@ -245,7 +298,7 @@ const MenubarItemComponent = memo(function MenubarItemComponent(props: MenubarIt
       onOpenChange={handleOpenChange}
       focusManagerProps={{
         modal: false,
-        returnFocus: false,
+        returnFocus: true,
       }}
     >
       {enhancedChildren}

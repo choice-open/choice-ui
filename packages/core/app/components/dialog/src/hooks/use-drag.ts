@@ -160,6 +160,21 @@ export function useDrag(elementRef: React.RefObject<HTMLElement>, options: UseDr
     }
   }, [elementRef, enabled, onDragEnd])
 
+  const moveByKeyboard = useEventCallback((deltaX: number, deltaY: number) => {
+    if (!enabled) return
+    const rect = elementRef.current?.getBoundingClientRect()
+    if (!rect) return
+
+    const currentX = positionRef.current?.x ?? rect.left
+    const currentY = positionRef.current?.y ?? rect.top
+    // Clamp keyboard moves to the viewport using the same rules as mouse drag
+    // end so Arrow keys can't push the dialog off-screen (and persist there
+    // when rememberPosition is enabled).
+    const newPosition = adjustPosition({ x: currentX + deltaX, y: currentY + deltaY }, rect)
+    positionRef.current = newPosition
+    setState((prev) => ({ ...prev, position: newPosition }))
+  })
+
   // Reset drag state
   const resetDragState = useCallback(() => {
     setState({
@@ -229,6 +244,7 @@ export function useDrag(elementRef: React.RefObject<HTMLElement>, options: UseDr
   return {
     state,
     handleDragStart,
+    moveByKeyboard,
     resetDragState,
     resetPosition,
     reset,
