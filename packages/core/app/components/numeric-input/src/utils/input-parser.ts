@@ -21,11 +21,11 @@ export function parseInputValue(input: NumericInputValue): {
       values = String(input)
         .split(",")
         .map((char) => evaluate(char))
-      isInputNumber = values.length > 0
+      isInputNumber = values.length > 0 && !values.some(Number.isNaN)
     } else if (Array.isArray(input)) {
       // Array input processing
       values = input.map((item) => evaluate(String(item)))
-      isInputNumber = values.length > 0
+      isInputNumber = values.length > 0 && !values.some(Number.isNaN)
     } else if (typeof input === "object" && input !== null) {
       // Object input processing
       isObjectNumber = true
