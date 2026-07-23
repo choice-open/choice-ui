@@ -1,5 +1,12 @@
 # @choice-ui/react
 
+## 2.0.13
+
+### Patch Changes
+
+- Preserve Enter and Space activation for Dropdown items whose selection action still uses the
+  legacy `onMouseUp` callback, without duplicating pointer activation.
+
 ## 2.0.12
 
 ### Patch Changes

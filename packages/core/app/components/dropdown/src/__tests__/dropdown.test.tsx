@@ -118,6 +118,7 @@ interface SubmenuDropdownProps {
   activeIndex?: number | null
   disableKeyboardNavigation?: boolean
   onDesignClick?: () => void
+  onDesignMouseUp?: () => void
   onSubTriggerClick?: () => void
   openSubmenuOnArrowNavigation?: boolean
   selectableSubTrigger?: boolean
@@ -127,6 +128,7 @@ function SubmenuDropdown({
   activeIndex,
   disableKeyboardNavigation,
   onDesignClick,
+  onDesignMouseUp,
   onSubTriggerClick,
   openSubmenuOnArrowNavigation,
   selectableSubTrigger = false,
@@ -150,7 +152,13 @@ function SubmenuDropdown({
             Has Submenu
           </Dropdown.SubTrigger>
           <Dropdown.Content>
-            <Dropdown.Item onClick={onDesignClick}>Design</Dropdown.Item>
+            <Dropdown.Item
+              selected={false}
+              onClick={onDesignClick}
+              onMouseUp={onDesignMouseUp}
+            >
+              Design
+            </Dropdown.Item>
             <Dropdown.Item>Asset</Dropdown.Item>
           </Dropdown.Content>
         </Dropdown>
@@ -574,6 +582,23 @@ describe("Dropdown bugs", () => {
       await user.keyboard("{Enter}")
 
       expect(onDesignClick).toHaveBeenCalledTimes(1)
+      await waitFor(() => {
+        expect(getAllMenus()).toHaveLength(0)
+      })
+    })
+
+    it("activates a legacy onMouseUp submenu item with Enter", async () => {
+      const onDesignMouseUp = vi.fn()
+      const { user } = await openAndFocusSubTrigger({ onDesignMouseUp })
+
+      await user.keyboard("{Enter}")
+      const designItem = await screen.findByRole("menuitem", { name: "Design" })
+      await waitFor(() => {
+        expect(designItem).toHaveFocus()
+      })
+      await user.keyboard("{Enter}")
+
+      expect(onDesignMouseUp).toHaveBeenCalledTimes(1)
       await waitFor(() => {
         expect(getAllMenus()).toHaveLength(0)
       })

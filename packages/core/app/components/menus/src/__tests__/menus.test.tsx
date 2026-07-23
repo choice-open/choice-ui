@@ -100,6 +100,41 @@ describe("Menu bugs", () => {
       expect(clickEmissions).toHaveLength(1)
     })
 
+    it("uses a legacy onMouseUp handler as the keyboard activation fallback", async () => {
+      const user = userEvent.setup()
+      const emitSpy = vi.fn()
+      const onMouseUp = vi.fn()
+
+      render(
+        <MenuWrapper emitSpy={emitSpy}>
+          <MenuContextItem onMouseUp={onMouseUp}>Menu Item</MenuContextItem>
+        </MenuWrapper>,
+      )
+
+      const menuItem = screen.getByRole("menuitem")
+      menuItem.focus()
+      await user.keyboard("{Enter}")
+
+      expect(onMouseUp).toHaveBeenCalledTimes(1)
+      const clickEmissions = emitSpy.mock.calls.filter((args) => args[0] === "click")
+      expect(clickEmissions).toHaveLength(1)
+    })
+
+    it("does not call a legacy onMouseUp handler twice for a pointer click", async () => {
+      const user = userEvent.setup()
+      const onMouseUp = vi.fn()
+
+      render(
+        <MenuWrapper>
+          <MenuContextItem onMouseUp={onMouseUp}>Menu Item</MenuContextItem>
+        </MenuWrapper>,
+      )
+
+      await user.click(screen.getByRole("menuitem"))
+
+      expect(onMouseUp).toHaveBeenCalledTimes(1)
+    })
+
     it("uses click as the single activation path for a selectable SubTrigger", async () => {
       const user = userEvent.setup()
       const emitSpy = vi.fn()
