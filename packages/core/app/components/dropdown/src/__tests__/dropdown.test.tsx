@@ -26,16 +26,13 @@
  *     transitions from true to false. Fix = add a useEffect that calls
  *     `setHasFocusInside(false)` when the dropdown closes.
  *
- * BUG 3 (Medium): handleFloatingKeyDown ignores disableKeyboardNavigation prop
- *   - User scenario: Developer sets disableKeyboardNavigation={true} to implement
- *     custom keyboard handling. User presses Enter on a SubTrigger item, expecting
- *     the internal handler to be disabled — but the submenu opens anyway.
- *   - Regression it prevents: Keyboard navigation is not fully disabled; SubTrigger
- *     items still respond to Enter/ArrowRight even when the prop says otherwise.
- *   - Logic change that makes it fail: Lines 463-475 (`handleFloatingKeyDown`) never
- *     check the `disableKeyboardNavigation` flag before calling
- *     `activeElement.click()`. Fix = guard the handler with
- *     `if (disableKeyboardNavigation) return`.
+ * BUG 3 (Medium): nested Dropdowns do not inherit disableKeyboardNavigation
+ *   - User scenario: Developer disables keyboard navigation on the root Dropdown
+ *     to implement custom handling, but a horizontal arrow on a nested SubTrigger still
+ *     opens the child because the child Dropdown owns a separate navigation hook.
+ *   - Regression it prevents: A disabled menu tree still responds to internal
+ *     Enter/horizontal-arrow handling in nested Dropdown instances.
+ *   - Fix: expose the effective flag through MenuContext so nested Dropdowns inherit it.
  *
  * BUG 4 (Medium): isMouseOverMenu state is never reset when coordinate-mode dropdown closes
  *   - User scenario: User opens a coordinate-mode dropdown, moves mouse over it
@@ -67,6 +64,19 @@
  *     lines 438-446 set it on touchStart/pointerMove, but no effect
  *     resets it when isControlledOpen transitions to false.
  *     Fix = add useEffect to reset touch on close.
+ *
+ * BUG 8 (High): non-selectable SubTrigger discards nested interaction handlers
+ *   - User scenario: User focuses a SubTrigger and presses Enter.
+ *   - Regression it prevents: The synthetic click has no nested useClick handler,
+ *     so the submenu stays closed.
+ *   - Fix: preserve Slot-injected click/pointer handlers for non-selectable triggers.
+ *
+ * BUG 9 (High): nested portals are hidden from assistive technology
+ *   - User scenario: The arrow pointing toward a submenu focuses its first item, but
+ *     the focused item is inside an aria-hidden portal.
+ *   - Regression it prevents: Visual focus moves into content removed from the
+ *     accessibility tree.
+ *   - Fix: let nested FloatingPortal instances use their parent portal context.
  */
 import "@testing-library/jest-dom"
 import { fireEvent, render, screen, waitFor } from "@testing-library/react"
@@ -104,13 +114,46 @@ function BasicDropdown({ children, ...props }: React.ComponentProps<typeof Dropd
   )
 }
 
-function SubmenuDropdown({ disableKeyboardNavigation }: { disableKeyboardNavigation?: boolean }) {
+interface SubmenuDropdownProps {
+  activeIndex?: number | null
+  disableKeyboardNavigation?: boolean
+  onDesignClick?: () => void
+  onSubTriggerClick?: () => void
+  openSubmenuOnArrowNavigation?: boolean
+  selectableSubTrigger?: boolean
+}
+
+function SubmenuDropdown({
+  activeIndex,
+  disableKeyboardNavigation,
+  onDesignClick,
+  onSubTriggerClick,
+  openSubmenuOnArrowNavigation,
+  selectableSubTrigger = false,
+}: SubmenuDropdownProps) {
   return (
-    <Dropdown disableKeyboardNavigation={disableKeyboardNavigation}>
+    <Dropdown
+      activeIndex={activeIndex}
+      disableKeyboardNavigation={disableKeyboardNavigation}
+      openSubmenuOnArrowNavigation={openSubmenuOnArrowNavigation}
+      selection
+    >
       <Dropdown.Trigger>Open</Dropdown.Trigger>
       <Dropdown.Content>
         <Dropdown.Item onClick={() => {}}>Plain Item</Dropdown.Item>
-        <Dropdown.SubTrigger>Has Submenu</Dropdown.SubTrigger>
+
+        <Dropdown selection>
+          <Dropdown.SubTrigger
+            selected={selectableSubTrigger ? false : undefined}
+            onClick={onSubTriggerClick}
+          >
+            Has Submenu
+          </Dropdown.SubTrigger>
+          <Dropdown.Content>
+            <Dropdown.Item onClick={onDesignClick}>Design</Dropdown.Item>
+            <Dropdown.Item>Asset</Dropdown.Item>
+          </Dropdown.Content>
+        </Dropdown>
       </Dropdown.Content>
     </Dropdown>
   )
@@ -118,6 +161,33 @@ function SubmenuDropdown({ disableKeyboardNavigation }: { disableKeyboardNavigat
 
 function getOuterMenu() {
   return screen.getAllByRole("menu").find((el) => el.hasAttribute("data-floating-ui-focusable"))!
+}
+
+function getAllMenus() {
+  return Array.from(document.querySelectorAll<HTMLElement>('[role="menu"]'))
+}
+
+async function openAndFocusSubTrigger(props: SubmenuDropdownProps = {}) {
+  const user = userEvent.setup()
+  render(<SubmenuDropdown {...props} />)
+
+  const trigger = screen.getByRole("button", { name: "Open" })
+  trigger.focus()
+  await user.keyboard("{Enter}")
+
+  const plainItem = await screen.findByRole("menuitem", { name: "Plain Item" })
+  await waitFor(() => {
+    expect(plainItem).toHaveFocus()
+  })
+
+  await user.keyboard("{ArrowDown}")
+
+  const subTrigger = screen.getByRole("menuitem", { name: "Has Submenu" })
+  await waitFor(() => {
+    expect(subTrigger).toHaveFocus()
+  })
+
+  return { subTrigger, user }
 }
 
 describe("Dropdown bugs", () => {
@@ -333,25 +403,256 @@ describe("Dropdown bugs", () => {
     })
   })
 
-  describe("BUG 3: disableKeyboardNavigation must prevent SubTrigger from opening on Enter", () => {
-    it("does not open submenu when Enter is pressed on SubTrigger with disableKeyboardNavigation=true", async () => {
-      const user = userEvent.setup()
-
-      render(<SubmenuDropdown disableKeyboardNavigation={true} />)
-
-      const trigger = screen.getByRole("button")
-      await user.click(trigger)
-
+  describe("nested submenu keyboard interaction", () => {
+    async function expectSubmenuOpen(subTrigger: HTMLElement) {
       await waitFor(() => {
-        expect(getOuterMenu()).toBeInTheDocument()
+        expect(getAllMenus()).toHaveLength(2)
       })
 
-      const subTrigger = screen.getByRole("menuitem", { name: "Has Submenu" })
-      subTrigger.focus()
+      const designItem = await screen.findByRole("menuitem", { name: "Design" })
+      await waitFor(() => {
+        expect(designItem).toHaveFocus()
+      })
+
+      expect(subTrigger).toHaveAttribute("aria-haspopup", "menu")
+      expect(subTrigger).toHaveAttribute("aria-expanded", "true")
+
+      const controlledMenu = document.getElementById(subTrigger.getAttribute("aria-controls")!)
+      expect(controlledMenu).toHaveAttribute("role", "menu")
+      expect(designItem.closest('[aria-hidden="true"], [inert]')).toBeNull()
+    }
+
+    it("opens a non-selectable SubTrigger with Enter and focuses the first submenu item", async () => {
+      const { subTrigger, user } = await openAndFocusSubTrigger()
+
       await user.keyboard("{Enter}")
 
-      const menus = screen.queryAllByRole("menu")
-      expect(menus).toHaveLength(1)
+      await expectSubmenuOpen(subTrigger)
+    })
+
+    it("opens a non-selectable SubTrigger with ArrowRight and focuses the first submenu item", async () => {
+      const { subTrigger, user } = await openAndFocusSubTrigger()
+
+      subTrigger.setAttribute("data-submenu-side", "right")
+      await user.keyboard("{ArrowRight}")
+
+      await expectSubmenuOpen(subTrigger)
+    })
+
+    it("does not open a right-side SubTrigger with ArrowLeft", async () => {
+      const { subTrigger, user } = await openAndFocusSubTrigger()
+
+      subTrigger.setAttribute("data-submenu-side", "right")
+      await user.keyboard("{ArrowLeft}")
+
+      expect(getAllMenus()).toHaveLength(1)
+      expect(subTrigger).toHaveFocus()
+      expect(subTrigger).toHaveAttribute("aria-expanded", "false")
+    })
+
+    it("keeps pointer hover opening behavior for a non-selectable SubTrigger", async () => {
+      const { subTrigger, user } = await openAndFocusSubTrigger()
+
+      await user.hover(subTrigger)
+
+      await waitFor(() => {
+        expect(getAllMenus()).toHaveLength(2)
+      })
+      expect(subTrigger).toHaveAttribute("aria-expanded", "true")
+    })
+
+    it("pre-opens a SubTrigger on arrow navigation while keeping focus on the parent item", async () => {
+      const { subTrigger } = await openAndFocusSubTrigger({
+        openSubmenuOnArrowNavigation: true,
+      })
+
+      await waitFor(() => {
+        expect(getAllMenus()).toHaveLength(2)
+      })
+
+      expect(subTrigger).toHaveFocus()
+      expect(subTrigger).toHaveAttribute("aria-expanded", "true")
+      expect(subTrigger.closest('[aria-hidden="true"], [inert]')).toBeNull()
+      expect(screen.getByRole("menuitem", { name: "Design" })).not.toHaveFocus()
+    })
+
+    it("enters a pre-opened submenu with ArrowRight and does not reopen it after ArrowLeft", async () => {
+      const { subTrigger, user } = await openAndFocusSubTrigger({
+        openSubmenuOnArrowNavigation: true,
+      })
+
+      await waitFor(() => {
+        expect(getAllMenus()).toHaveLength(2)
+      })
+
+      subTrigger.setAttribute("data-submenu-side", "right")
+      await user.keyboard("{ArrowRight}")
+      const designItem = screen.getByRole("menuitem", { name: "Design" })
+      await waitFor(() => {
+        expect(designItem).toHaveFocus()
+      })
+
+      subTrigger.setAttribute("data-submenu-side", "right")
+      await user.keyboard("{ArrowLeft}")
+      await waitFor(() => {
+        expect(getAllMenus()).toHaveLength(1)
+        expect(subTrigger).toHaveFocus()
+      })
+      expect(subTrigger).toHaveAttribute("aria-expanded", "false")
+    })
+
+    it("closes a right-side pre-opened submenu with ArrowLeft", async () => {
+      const { subTrigger, user } = await openAndFocusSubTrigger({
+        openSubmenuOnArrowNavigation: true,
+      })
+
+      await waitFor(() => {
+        expect(getAllMenus()).toHaveLength(2)
+      })
+
+      subTrigger.setAttribute("data-submenu-side", "right")
+      await user.keyboard("{ArrowLeft}")
+      await waitFor(() => {
+        expect(getAllMenus()).toHaveLength(1)
+      })
+      expect(subTrigger).toHaveFocus()
+      expect(subTrigger).toHaveAttribute("aria-expanded", "false")
+    })
+
+    it("enters a left-side pre-opened submenu with ArrowLeft and returns with ArrowRight", async () => {
+      const { subTrigger, user } = await openAndFocusSubTrigger({
+        openSubmenuOnArrowNavigation: true,
+      })
+
+      await waitFor(() => {
+        expect(getAllMenus()).toHaveLength(2)
+      })
+
+      subTrigger.setAttribute("data-submenu-side", "left")
+      await user.keyboard("{ArrowLeft}")
+      const designItem = screen.getByRole("menuitem", { name: "Design" })
+      await waitFor(() => {
+        expect(designItem).toHaveFocus()
+      })
+
+      subTrigger.setAttribute("data-submenu-side", "left")
+      await user.keyboard("{ArrowRight}")
+      await waitFor(() => {
+        expect(getAllMenus()).toHaveLength(1)
+        expect(subTrigger).toHaveFocus()
+      })
+      expect(subTrigger).toHaveAttribute("aria-expanded", "false")
+    })
+
+    it("closes a pre-opened submenu when arrow navigation moves to a sibling item", async () => {
+      const { subTrigger, user } = await openAndFocusSubTrigger({
+        openSubmenuOnArrowNavigation: true,
+      })
+
+      await waitFor(() => {
+        expect(getAllMenus()).toHaveLength(2)
+      })
+
+      await user.keyboard("{ArrowUp}")
+      const plainItem = screen.getByRole("menuitem", { name: "Plain Item" })
+      await waitFor(() => {
+        expect(getAllMenus()).toHaveLength(1)
+        expect(plainItem).toHaveFocus()
+      })
+      expect(subTrigger).toHaveAttribute("aria-expanded", "false")
+    })
+
+    it("activates a submenu item exactly once and closes the entire menu tree", async () => {
+      const onDesignClick = vi.fn()
+      const { user } = await openAndFocusSubTrigger({ onDesignClick })
+
+      await user.keyboard("{Enter}")
+      const designItem = await screen.findByRole("menuitem", { name: "Design" })
+      await waitFor(() => {
+        expect(designItem).toHaveFocus()
+      })
+      await user.keyboard("{Enter}")
+
+      expect(onDesignClick).toHaveBeenCalledTimes(1)
+      await waitFor(() => {
+        expect(getAllMenus()).toHaveLength(0)
+      })
+    })
+
+    it("closes the submenu with ArrowLeft and returns focus to its SubTrigger", async () => {
+      const { subTrigger, user } = await openAndFocusSubTrigger()
+
+      subTrigger.setAttribute("data-submenu-side", "right")
+      await user.keyboard("{ArrowRight}")
+      const designItem = await screen.findByRole("menuitem", { name: "Design" })
+      await waitFor(() => {
+        expect(designItem).toHaveFocus()
+      })
+      subTrigger.setAttribute("data-submenu-side", "right")
+      await user.keyboard("{ArrowLeft}")
+
+      await waitFor(() => {
+        expect(getAllMenus()).toHaveLength(1)
+        expect(subTrigger).toHaveFocus()
+      })
+      expect(subTrigger).toHaveAttribute("aria-expanded", "false")
+    })
+
+    it("closes the submenu with Escape and returns focus to its SubTrigger", async () => {
+      const { subTrigger, user } = await openAndFocusSubTrigger()
+
+      subTrigger.setAttribute("data-submenu-side", "right")
+      await user.keyboard("{ArrowRight}")
+      const designItem = await screen.findByRole("menuitem", { name: "Design" })
+      await waitFor(() => {
+        expect(designItem).toHaveFocus()
+      })
+      await user.keyboard("{Escape}")
+
+      await waitFor(() => {
+        expect(getAllMenus()).toHaveLength(1)
+        expect(subTrigger).toHaveFocus()
+      })
+      expect(subTrigger).toHaveAttribute("aria-expanded", "false")
+    })
+
+    it("preserves selectable SubTrigger activation and closes the menu tree", async () => {
+      const onSubTriggerClick = vi.fn()
+      const { user } = await openAndFocusSubTrigger({
+        onSubTriggerClick,
+        selectableSubTrigger: true,
+      })
+
+      await user.keyboard("{Enter}")
+
+      expect(onSubTriggerClick).toHaveBeenCalledTimes(1)
+      await waitFor(() => {
+        expect(getAllMenus()).toHaveLength(0)
+      })
+    })
+
+    it("inherits disableKeyboardNavigation and prevents nested Enter or horizontal-arrow handling", async () => {
+      const user = userEvent.setup()
+      render(<SubmenuDropdown disableKeyboardNavigation />)
+
+      const trigger = screen.getByRole("button", { name: "Open" })
+      trigger.focus()
+      await user.keyboard("{Enter}")
+
+      const subTrigger = await screen.findByRole("menuitem", { name: "Has Submenu" })
+      subTrigger.focus()
+
+      await user.keyboard("{ArrowRight}")
+      expect(getAllMenus()).toHaveLength(1)
+      expect(subTrigger).toHaveAttribute("aria-expanded", "false")
+
+      await user.keyboard("{ArrowLeft}")
+      expect(getAllMenus()).toHaveLength(1)
+      expect(subTrigger).toHaveAttribute("aria-expanded", "false")
+
+      await user.keyboard("{Enter}")
+      expect(getAllMenus()).toHaveLength(1)
+      expect(subTrigger).toHaveAttribute("aria-expanded", "false")
     })
   })
 })

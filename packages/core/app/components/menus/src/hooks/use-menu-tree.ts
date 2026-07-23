@@ -24,6 +24,18 @@ export interface MenuTreeConfig {
   handleOpenChange: (open: boolean) => void
   /** Current open state */
   isControlledOpen: boolean
+  /** Whether keyboard arrow navigation should pre-open the focused submenu */
+  openSubmenuOnArrowNavigation?: boolean
+}
+
+interface MenuNavigateEvent {
+  index: number
+  nodeId: string | undefined
+  targetNodeId?: string
+}
+
+interface MenuSubmenuCloseEvent {
+  nodeId?: string
 }
 
 export interface MenuTreeResult {
@@ -42,7 +54,12 @@ export interface MenuTreeResult {
 }
 
 export function useMenuTree(config: MenuTreeConfig): MenuTreeResult {
-  const { disabledNested = false, handleOpenChange, isControlledOpen } = config
+  const {
+    disabledNested = false,
+    handleOpenChange,
+    isControlledOpen,
+    openSubmenuOnArrowNavigation = false,
+  } = config
 
   // FloatingTree related hooks
   const tree = useFloatingTree()
@@ -66,10 +83,27 @@ export function useMenuTree(config: MenuTreeConfig): MenuTreeResult {
     }
   })
 
+  const handleSubMenuClose = useEventCallback((event: MenuSubmenuCloseEvent) => {
+    if (event.nodeId === nodeId && isControlledOpen) {
+      handleOpenChange(false)
+    }
+  })
+
   // Handle parent navigation event - close submenu if parent navigates away from this item
-  const handleParentNavigate = useEventCallback((event: { nodeId: string; index: number }) => {
-    // If parent menu is navigating and not to this item's index, close this submenu
-    if (event.nodeId === parentId && event.index !== item.index && isControlledOpen) {
+  const handleParentNavigate = useEventCallback((event: MenuNavigateEvent) => {
+    if (event.nodeId !== parentId) return
+
+    const isCurrentItem = event.targetNodeId
+      ? event.targetNodeId === nodeId
+      : event.index === item.index
+
+    if (isCurrentItem && openSubmenuOnArrowNavigation && !isControlledOpen) {
+      handleOpenChange(true)
+      return
+    }
+
+    // If the parent menu navigates away from this item, close this submenu.
+    if (!isCurrentItem && isControlledOpen) {
       handleOpenChange(false)
     }
   })
@@ -79,6 +113,7 @@ export function useMenuTree(config: MenuTreeConfig): MenuTreeResult {
     if (tree) {
       tree.events.off("click", handleTreeClick)
       tree.events.off("menuopen", handleSubMenuOpen)
+      tree.events.off("submenuclose", handleSubMenuClose)
       tree.events.off("navigate", handleParentNavigate)
     }
   })
@@ -89,10 +124,20 @@ export function useMenuTree(config: MenuTreeConfig): MenuTreeResult {
 
     tree.events.on("click", handleTreeClick)
     tree.events.on("menuopen", handleSubMenuOpen)
+    tree.events.on("submenuclose", handleSubMenuClose)
     tree.events.on("navigate", handleParentNavigate)
 
     return cleanupTreeEvents
-  }, [tree, nodeId, parentId, handleTreeClick, handleSubMenuOpen, handleParentNavigate, cleanupTreeEvents])
+  }, [
+    tree,
+    nodeId,
+    parentId,
+    handleTreeClick,
+    handleSubMenuOpen,
+    handleSubMenuClose,
+    handleParentNavigate,
+    cleanupTreeEvents,
+  ])
 
   // When the menu is opened, send the menuopen event
   useEffect(() => {

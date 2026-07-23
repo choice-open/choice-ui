@@ -94,6 +94,12 @@ export interface DropdownProps {
    */
   onActiveIndexChange?: (index: number | null) => void
   onOpenChange?: (open: boolean) => void
+  /**
+   * Pre-open a submenu when ArrowUp or ArrowDown moves focus to its SubTrigger.
+   * Focus remains on the SubTrigger until Enter or the arrow pointing toward the submenu is pressed.
+   * @default false
+   */
+  openSubmenuOnArrowNavigation?: boolean
   open?: boolean
   placement?: Placement
   portalId?: string
@@ -152,22 +158,13 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
     open: controlledOpen,
     onActiveIndexChange,
     onOpenChange,
+    openSubmenuOnArrowNavigation = false,
     triggerRef,
     triggerSelector,
     focusManagerProps: userFocusManagerProps,
     root,
     variant = "default",
   } = props
-
-  const focusManagerProps = useMemo(
-    () => ({
-      returnFocus: false,
-      modal: position ? false : true,
-      ...(position && { disabled: true }),
-      ...userFocusManagerProps,
-    }),
-    [position, userFocusManagerProps],
-  )
 
   // Whether using external trigger (triggerRef or triggerSelector)
   const hasExternalTrigger = Boolean(triggerRef || triggerSelector)
@@ -203,6 +200,10 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
 
   // Context and hooks
   const parent = useContext(MenuContext)
+  const isKeyboardNavigationDisabled =
+    disableKeyboardNavigation || parent?.disableKeyboardNavigation === true
+  const shouldOpenSubmenuOnArrowNavigation =
+    openSubmenuOnArrowNavigation || parent?.openSubmenuOnArrowNavigation === true
 
   // Handle open state change (must be defined before useMenuTree)
   const handleOpenChange = useEventCallback((newOpen: boolean) => {
@@ -217,7 +218,18 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
     disabledNested,
     handleOpenChange,
     isControlledOpen,
+    openSubmenuOnArrowNavigation: shouldOpenSubmenuOnArrowNavigation,
   })
+
+  const focusManagerProps = useMemo(
+    () => ({
+      returnFocus: false,
+      modal: !isNested && !position,
+      ...(position && { disabled: true }),
+      ...userFocusManagerProps,
+    }),
+    [isNested, position, userFocusManagerProps],
+  )
 
   // Virtual positioning function - for coordinate mode
   const setVirtualPosition = useEventCallback((pos: { x: number; y: number }) => {
@@ -289,7 +301,13 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
     return baseMiddleware
   }, [isNested, offsetDistance, matchTriggerWidth, scrollRef, avoidCollisions])
 
-  const { refs, floatingStyles, context, isPositioned } = useFloating({
+  const {
+    refs,
+    floatingStyles,
+    context,
+    isPositioned,
+    placement: resolvedPlacement,
+  } = useFloating({
     nodeId,
     open: isControlledOpen,
     onOpenChange: handleOpenChange,
@@ -394,7 +412,10 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
 
   const role = useRole(context, { role: "menu" })
   const dismiss = useDismiss(context, {
-    bubbles: true,
+    bubbles: {
+      escapeKey: false,
+      outsidePress: true,
+    },
     escapeKey: true,
   })
 
@@ -403,7 +424,11 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
     handleSetActiveIndex(index)
     // When navigating in a nested menu, emit event to close sibling submenus
     if (tree && index !== null) {
-      tree.events.emit("navigate", { nodeId, index })
+      tree.events.emit("navigate", {
+        nodeId,
+        index,
+        targetNodeId: elementsRef.current[index]?.dataset.menuNodeId,
+      })
     }
   })
 
@@ -413,14 +438,14 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
     nested: isNested,
     onNavigate: handleNavigate,
     loop: false,
-    enabled: !disableKeyboardNavigation,
+    enabled: !isKeyboardNavigationDisabled,
   })
 
   const typeahead = useTypeahead(context, {
     listRef: labelsRef,
     onMatch: isControlledOpen ? handleSetActiveIndex : undefined,
     activeIndex,
-    enabled: !disableKeyboardNavigation,
+    enabled: !isKeyboardNavigationDisabled,
   })
 
   const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions([
@@ -479,7 +504,7 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
   })
 
   const handleFloatingKeyDownCapture = useEventCallback((e: React.KeyboardEvent) => {
-    if (disableKeyboardNavigation) {
+    if (isKeyboardNavigationDisabled) {
       const target = e.target as HTMLElement
       const isEditable = target.tagName === "INPUT" || target.tagName === "TEXTAREA"
       if (
@@ -488,23 +513,88 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
       ) {
         e.preventDefault()
       }
+      return
+    }
+
+    if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return
+
+    const target = e.target
+    if (!(target instanceof HTMLElement)) return
+
+    if (target.getAttribute("aria-haspopup") === "menu") {
+      const submenuSide = target.dataset.submenuSide === "left" ? "left" : "right"
+      const openKey = submenuSide === "left" ? "ArrowLeft" : "ArrowRight"
+      const closeKey = submenuSide === "left" ? "ArrowRight" : "ArrowLeft"
+
+      if (e.key === openKey) {
+        e.preventDefault()
+        e.stopPropagation()
+        target.click()
+
+        const submenuId = target.getAttribute("aria-controls")
+        const submenuWindow = target.ownerDocument.defaultView
+
+        submenuWindow?.requestAnimationFrame(() => {
+          const submenu = submenuId ? target.ownerDocument.getElementById(submenuId) : null
+          const firstItem = submenu?.querySelector<HTMLElement>(
+            '[role="menuitem"]:not([aria-disabled="true"]):not(:disabled)',
+          )
+          firstItem?.focus()
+        })
+        return
+      }
+
+      if (e.key === closeKey) {
+        e.preventDefault()
+        e.stopPropagation()
+        if (target.getAttribute("aria-expanded") === "true") {
+          tree?.events.emit("submenuclose", { nodeId: target.dataset.menuNodeId })
+        }
+        return
+      }
+    }
+
+    if (!isNested) return
+
+    const reference = refs.domReference.current
+    const submenuSide =
+      reference instanceof HTMLElement && reference.dataset.submenuSide === "left"
+        ? "left"
+        : "right"
+    const closeKey = submenuSide === "left" ? "ArrowRight" : "ArrowLeft"
+
+    // Consume both horizontal arrows so Floating UI's fixed right-opening semantics do not
+    // override a submenu that collision detection has flipped to the left.
+    e.preventDefault()
+    e.stopPropagation()
+
+    if (e.key === closeKey) {
+      handleOpenChange(false)
+      if (reference instanceof HTMLElement) {
+        reference.focus()
+      }
     }
   })
 
   // Handle keyboard events - for triggering SubTrigger to open submenu
   const handleFloatingKeyDown = useEventCallback((e: React.KeyboardEvent) => {
-    if (disableKeyboardNavigation) return
-    if (activeIndex !== null && (e.key === "Enter" || e.key === "ArrowRight")) {
-      const activeElement = elementsRef.current[activeIndex]
-      if (activeElement) {
-        // Check if it's a SubTrigger (has aria-haspopup attribute)
-        if (activeElement.getAttribute("aria-haspopup") === "menu") {
-          e.preventDefault()
-          e.stopPropagation()
-          activeElement.click()
-        }
+    if (e.key === "Escape" && isNested) {
+      const reference = refs.domReference.current
+      if (reference instanceof HTMLElement) {
+        reference.focus()
       }
+      return
     }
+
+    if (isKeyboardNavigationDisabled || e.key !== "Enter") return
+
+    const target = e.target
+    if (!(target instanceof HTMLElement)) return
+    if (target.getAttribute("aria-haspopup") !== "menu") return
+
+    e.preventDefault()
+    e.stopPropagation()
+    target.click()
   })
 
   // Focus handling
@@ -544,9 +634,11 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
     () => ({
       activeIndex,
       setActiveIndex: handleSetActiveIndex,
+      disableKeyboardNavigation: isKeyboardNavigationDisabled,
       getItemProps,
       setHasFocusInside,
       isOpen: isControlledOpen,
+      openSubmenuOnArrowNavigation: shouldOpenSubmenuOnArrowNavigation,
       readOnly,
       selection,
       close: handleClose,
@@ -557,7 +649,9 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
       getItemProps,
       handleClose,
       handleSetActiveIndex,
+      isKeyboardNavigationDisabled,
       isControlledOpen,
+      shouldOpenSubmenuOnArrowNavigation,
       readOnly,
       selection,
       variant,
@@ -582,6 +676,12 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
       role: isNested ? ("menuitem" as const) : undefined,
       "data-open": isControlledOpen ? "" : undefined,
       "data-nested": isNested ? "" : undefined,
+      "data-menu-node-id": isNested ? nodeId : undefined,
+      "data-submenu-side": isNested
+        ? resolvedPlacement.startsWith("left")
+          ? "left"
+          : "right"
+        : undefined,
       "data-focus-inside": hasFocusInside ? "" : undefined,
       onTouchStart: handleTouchStart,
       onPointerMove: handlePointerMove,
@@ -600,6 +700,8 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
     handleTouchStart,
     handlePointerMove,
     menuId,
+    nodeId,
+    resolvedPlacement,
     getReferenceProps,
     handleFocus,
   ])
@@ -628,13 +730,14 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
         labelsRef={labelsRef}
       >
         <FloatingPortal
-          id={portalId}
-          root={root}
+          id={isNested ? undefined : portalId}
+          root={isNested ? undefined : root}
         >
           {isControlledOpen && (
             <FloatingOverlay
               lockScroll={!touch}
               className={tcx("z-menu", focusManagerProps.modal ? "" : "pointer-events-none")}
+              onKeyDownCapture={handleFloatingKeyDownCapture}
             >
               <FloatingFocusManager
                 context={context}
@@ -650,7 +753,6 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
                   onPointerMove={handlePointerMove}
                   onMouseEnter={handleMouseEnterMenu}
                   onMouseLeave={handleMouseLeaveMenu}
-                  onKeyDownCapture={handleFloatingKeyDownCapture}
                   {...getFloatingProps({
                     onContextMenu(e: React.MouseEvent) {
                       e.preventDefault()

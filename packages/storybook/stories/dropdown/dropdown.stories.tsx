@@ -745,6 +745,8 @@ export const TriggerAsChild: Story = {
  * - Multiple levels of nesting
  * - Automatic submenu positioning
  * - Hover-based submenu activation
+ * - Arrow navigation pre-opens the focused submenu
+ * - Horizontal arrow toward the rendered submenu enters; the opposite arrow closes
  * - Tree event management for proper closing
  * - Keyboard navigation across nested levels
  *
@@ -756,7 +758,7 @@ export const TriggerAsChild: Story = {
 export const Nested: Story = {
   render: function NestedStory() {
     return (
-      <Dropdown>
+      <Dropdown openSubmenuOnArrowNavigation>
         <Dropdown.Trigger>
           <Dropdown.Value>Nested Menu</Dropdown.Value>
         </Dropdown.Trigger>
@@ -955,7 +957,7 @@ export const NestedSubmenuWithLongList: Story = {
  */
 export const Selection: Story = {
   render: function SelectionStory() {
-    const [selected, setSelected] = useState<string | null>("option-2")
+    const [selected, setSelected] = useState<string | null>("Option 2")
     const options = ["Option 1", "Option 2", "Option 3", "Option 4"]
 
     return (
@@ -976,6 +978,64 @@ export const Selection: Story = {
           ))}
         </Dropdown.Content>
       </Dropdown>
+    )
+  },
+}
+
+/**
+ * KeyboardSelection: Makes keyboard selection behavior directly observable.
+ *
+ * Keyboard flow:
+ * - Enter opens the dropdown
+ * - ArrowUp and ArrowDown move between options
+ * - Enter selects the focused option and closes the dropdown
+ * - The status panel reports whether selection came from Enter or a pointer
+ */
+export const KeyboardSelection: Story = {
+  render: function KeyboardSelectionStory() {
+    const options = ["Option 1", "Option 2", "Option 3", "Option 4"]
+    const [selected, setSelected] = useState("Option 2")
+    const [lastAction, setLastAction] = useState("No selection action yet")
+
+    return (
+      <div className="flex w-80 flex-col gap-4">
+        <Dropdown selection>
+          <Dropdown.Trigger>
+            <Dropdown.Value>Keyboard Selection: {selected}</Dropdown.Value>
+          </Dropdown.Trigger>
+          <Dropdown.Content>
+            <Dropdown.Label>Choose an option</Dropdown.Label>
+            {options.map((option) => (
+              <Dropdown.Item
+                key={option}
+                selected={selected === option}
+                onClick={(event) => {
+                  setSelected(option)
+                  setLastAction(
+                    event.detail === 0
+                      ? `Selected ${option} with Enter`
+                      : `Selected ${option} with pointer`,
+                  )
+                }}
+              >
+                <Dropdown.Value>{option}</Dropdown.Value>
+              </Dropdown.Item>
+            ))}
+          </Dropdown.Content>
+        </Dropdown>
+
+        <div
+          role="status"
+          className="rounded-lg border border-default bg-secondary-background p-3 text-body-small"
+        >
+          <div>Selected: {selected}</div>
+          <div>{lastAction}</div>
+        </div>
+
+        <p className="text-body-small text-secondary-foreground">
+          Open the menu, move with ArrowUp or ArrowDown, then press Enter.
+        </p>
+      </div>
     )
   },
 }
