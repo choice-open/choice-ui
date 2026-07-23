@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, waitFor, act } from "@testing-library/react"
+import { render, screen, fireEvent, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import "@testing-library/jest-dom"
 import React from "react"
@@ -172,15 +172,14 @@ describe("TimeCalendar", () => {
 
     it("应该在时间选择时调用onChange", async () => {
       const handleChange = vi.fn()
+      const user = userEvent.setup()
       render(<TimeCalendarOpen onChange={handleChange} />)
 
       await waitFor(() => {
         expect(screen.getByText("09:00")).toBeInTheDocument()
       })
 
-      await act(async () => {
-        fireEvent.mouseUp(screen.getByText("09:00"))
-      })
+      await user.click(screen.getByText("09:00"))
 
       expect(handleChange).toHaveBeenCalledTimes(1)
       expect(handleChange.mock.calls[0][0]).toBeInstanceOf(Date)
@@ -227,6 +226,7 @@ describe("TimeCalendar", () => {
 
     it("应该在内部管理状态", async () => {
       const handleChange = vi.fn()
+      const user = userEvent.setup()
       render(
         <TimeCalendarOpen
           defaultValue={createTestTime(10, 0)}
@@ -238,9 +238,7 @@ describe("TimeCalendar", () => {
         expect(screen.getByText("14:00")).toBeInTheDocument()
       })
 
-      await act(async () => {
-        fireEvent.mouseUp(screen.getByText("14:00"))
-      })
+      await user.click(screen.getByText("14:00"))
 
       expect(handleChange).toHaveBeenCalledTimes(1)
     })

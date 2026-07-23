@@ -69,7 +69,6 @@ export const MenuContextSubTrigger = memo(
       }
 
       onMouseUp?.(event)
-      closeMenu()
     })
 
     const handlePointerUp = useEventCallback((event: React.PointerEvent<HTMLButtonElement>) => {
@@ -79,7 +78,6 @@ export const MenuContextSubTrigger = memo(
       }
 
       onPointerUp?.(event)
-      closeMenu()
     })
 
     const setRefs = useCallback(

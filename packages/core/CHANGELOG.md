@@ -1,5 +1,14 @@
 # @choice-ui/react
 
+## 2.0.12
+
+### Patch Changes
+
+- Restore `openSubmenuOnArrowNavigation` forwarding in the published bundle.
+- Make `onClick` the canonical Dropdown action path so pointer and keyboard activation behave
+  consistently.
+- Allow Menubar to forward the submenu arrow-navigation option.
+
 ## 2.0.11
 
 ### Patch Changes

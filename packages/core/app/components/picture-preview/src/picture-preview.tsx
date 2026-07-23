@@ -412,7 +412,7 @@ export const PicturePreview = forwardRef<HTMLDivElement, PicturePreviewProps>(
 
               <Dropdown.Content>
                 <Dropdown.Item
-                  onMouseUp={() => handleZoomMenuItemClick(zoomRef.current + ZOOM_STEP)}
+                  onClick={() => handleZoomMenuItemClick(zoomRef.current + ZOOM_STEP)}
                   shortcut={{
                     keys: "+",
                     modifier: "command",
@@ -421,7 +421,7 @@ export const PicturePreview = forwardRef<HTMLDivElement, PicturePreviewProps>(
                   <span className="flex-1">{defaultText.zoomIn}</span>
                 </Dropdown.Item>
                 <Dropdown.Item
-                  onMouseUp={() => handleZoomMenuItemClick(zoomRef.current - ZOOM_STEP)}
+                  onClick={() => handleZoomMenuItemClick(zoomRef.current - ZOOM_STEP)}
                   shortcut={{
                     keys: "-",
                     modifier: "command",
@@ -431,25 +431,25 @@ export const PicturePreview = forwardRef<HTMLDivElement, PicturePreviewProps>(
                 </Dropdown.Item>
                 <Dropdown.Item
                   selected={actualZoomPercent === 50}
-                  onMouseUp={() => setActualZoomPercent(50)}
+                  onClick={() => setActualZoomPercent(50)}
                 >
                   <span className="flex-1">{defaultText.zoomTo50}</span>
                 </Dropdown.Item>
                 <Dropdown.Item
                   selected={actualZoomPercent === 100}
-                  onMouseUp={() => setActualZoomPercent(100)}
+                  onClick={() => setActualZoomPercent(100)}
                 >
                   <span className="flex-1">{defaultText.zoomTo100}</span>
                 </Dropdown.Item>
                 <Dropdown.Item
                   selected={actualZoomPercent === 200}
-                  onMouseUp={() => setActualZoomPercent(200)}
+                  onClick={() => setActualZoomPercent(200)}
                 >
                   <span className="flex-1">{defaultText.zoomTo200}</span>
                 </Dropdown.Item>
                 <Dropdown.Divider />
                 <Dropdown.Item
-                  onMouseUp={() => {
+                  onClick={() => {
                     fitToView()
                   }}
                   shortcut={{

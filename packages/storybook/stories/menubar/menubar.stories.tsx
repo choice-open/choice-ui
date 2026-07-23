@@ -400,7 +400,10 @@ export const WithIcons: Story = {
 export const WithSubmenus: Story = {
   render: function WithSubmenusStory() {
     return (
-      <Menubar className="rounded-lg border p-1">
+      <Menubar
+        className="rounded-lg border p-1"
+        dropdownProps={{ openSubmenuOnArrowNavigation: true }}
+      >
         <Menubar.Item>
           <Menubar.Trigger>File</Menubar.Trigger>
           <Dropdown.Content>
