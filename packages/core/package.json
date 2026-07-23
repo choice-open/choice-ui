@@ -1,12 +1,12 @@
 {
   "name": "@choice-ui/react",
-  "version": "2.0.10",
+  "version": "2.0.11",
   "description": "A desktop-first React UI component library built for professional desktop applications with comprehensive documentation",
   "sideEffects": false,
   "type": "module",
   "source": "./app/index.ts",
   "main": "./dist/index.js",
-  "types": "./app/index.ts",
+  "types": "./dist/index.d.ts",
   "files": [
     "dist",
     "README.md",
@@ -14,7 +14,7 @@
   ],
   "exports": {
     ".": {
-      "types": "./app/index.ts",
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
     "./styles/*": "./dist/styles/*",
@@ -51,7 +51,7 @@
   },
   "dependencies": {
     "@choiceform/icons-react": "^1.3.8",
-    "@choice-ui/design-tokens": "workspace:*",
+    "@choice-ui/design-tokens": "0.2.16",
     "classnames": "^2.5.1",
     "tailwind-merge": "^3.3.1",
     "tailwind-variants": "^3.1.0",

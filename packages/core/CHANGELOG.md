@@ -1,5 +1,12 @@
 # @choice-ui/react
 
+## 2.0.11
+
+### Patch Changes
+
+- Fix nested Dropdown keyboard interaction, including arrow-navigation pre-opening,
+  direction-aware submenu entry and closing, focus restoration, and nested-menu accessibility.
+
 ## 1.4.3
 
 ### Patch Changes

@@ -29,18 +29,15 @@ export const MenuContextSubTrigger = memo(
       throw new Error("MenuContextSubTrigger must be used within a MenuContext component")
     }
 
-    const isActive = useMemo(
-      () => {
-        // When activeIndex exists, only highlight if this item matches the activeIndex
-        // This prevents multiple items from being highlighted simultaneously
-        if (menu.activeIndex !== null && menu.activeIndex !== undefined) {
-          return item.index === menu.activeIndex
-        }
-        // Only use the active prop when there's no activeIndex
-        return !!active
-      },
-      [item.index, menu.activeIndex, active],
-    )
+    const isActive = useMemo(() => {
+      // When activeIndex exists, only highlight if this item matches the activeIndex
+      // This prevents multiple items from being highlighted simultaneously
+      if (menu.activeIndex !== null && menu.activeIndex !== undefined) {
+        return item.index === menu.activeIndex
+      }
+      // Only use the active prop when there's no activeIndex
+      return !!active
+    }, [item.index, menu.activeIndex, active])
 
     const handleFocus = useEventCallback((event: React.FocusEvent<HTMLButtonElement>) => {
       props.onFocus?.(event)
@@ -113,6 +110,8 @@ export const MenuContextSubTrigger = memo(
       return undefined
     }, [prefixElement, menu.selection, selected])
 
+    const isSelectableSubTrigger = menu.selection && selected !== undefined
+
     return (
       <MenuItem
         ref={setRefs}
@@ -125,9 +124,9 @@ export const MenuContextSubTrigger = memo(
           ...rest,
           // In selection mode, if the selected property exists (indicates it is selectable), use handleClick to close the menu
           // Otherwise keep default behavior (open submenu)
-          onClick: menu.selection && selected !== undefined ? handleClick : undefined,
-          onMouseUp: menu.selection && selected !== undefined ? handleMouseUp : undefined,
-          onPointerUp: menu.selection && selected !== undefined ? handlePointerUp : undefined,
+          onClick: isSelectableSubTrigger ? handleClick : onClick,
+          onMouseUp: isSelectableSubTrigger ? handleMouseUp : onMouseUp,
+          onPointerUp: isSelectableSubTrigger ? handlePointerUp : onPointerUp,
           onFocus: handleFocus,
           size: undefined,
         })}

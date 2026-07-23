@@ -8,8 +8,10 @@ import { createContext, useContext } from "react"
 export interface MenuContextType {
   activeIndex: number | null
   close: () => void
+  disableKeyboardNavigation?: boolean
   getItemProps: <T extends React.HTMLProps<HTMLElement>>(userProps?: T) => Record<string, unknown>
   isOpen: boolean
+  openSubmenuOnArrowNavigation?: boolean
   readOnly?: boolean
   selection: boolean
   setActiveIndex: (index: number | null) => void
