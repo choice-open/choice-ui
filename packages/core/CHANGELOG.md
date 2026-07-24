@@ -1,5 +1,13 @@
 # @choice-ui/react
 
+## 2.0.14
+
+### Patch Changes
+
+- Explicitly activate Dropdown menu items from Enter and Space keydown events so nested selections
+  work consistently in real browsers.
+- Move focus into an already-expanded submenu when its trigger is activated with Enter or Space.
+
 ## 2.0.13
 
 ### Patch Changes

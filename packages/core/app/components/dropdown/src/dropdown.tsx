@@ -503,14 +503,24 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
     }
   })
 
+  const focusFirstSubmenuItem = useEventCallback((trigger: HTMLElement) => {
+    const submenuId = trigger.getAttribute("aria-controls")
+    const submenuWindow = trigger.ownerDocument.defaultView
+
+    submenuWindow?.requestAnimationFrame(() => {
+      const submenu = submenuId ? trigger.ownerDocument.getElementById(submenuId) : null
+      const firstItem = submenu?.querySelector<HTMLElement>(
+        '[role="menuitem"]:not([aria-disabled="true"]):not(:disabled), [role="menuitemcheckbox"]:not([aria-disabled="true"]):not(:disabled), [role="menuitemradio"]:not([aria-disabled="true"]):not(:disabled)',
+      )
+      firstItem?.focus()
+    })
+  })
+
   const handleFloatingKeyDownCapture = useEventCallback((e: React.KeyboardEvent) => {
     if (isKeyboardNavigationDisabled) {
       const target = e.target as HTMLElement
       const isEditable = target.tagName === "INPUT" || target.tagName === "TEXTAREA"
-      if (
-        !isEditable &&
-        (e.key === "Enter" || e.key === "ArrowRight" || e.key.startsWith("Arrow"))
-      ) {
+      if (!isEditable && (e.key === "Enter" || e.key === " " || e.key.startsWith("Arrow"))) {
         e.preventDefault()
       }
       return
@@ -529,18 +539,10 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
       if (e.key === openKey) {
         e.preventDefault()
         e.stopPropagation()
-        target.click()
-
-        const submenuId = target.getAttribute("aria-controls")
-        const submenuWindow = target.ownerDocument.defaultView
-
-        submenuWindow?.requestAnimationFrame(() => {
-          const submenu = submenuId ? target.ownerDocument.getElementById(submenuId) : null
-          const firstItem = submenu?.querySelector<HTMLElement>(
-            '[role="menuitem"]:not([aria-disabled="true"]):not(:disabled)',
-          )
-          firstItem?.focus()
-        })
+        if (target.getAttribute("aria-expanded") !== "true") {
+          target.click()
+        }
+        focusFirstSubmenuItem(target)
         return
       }
 
@@ -576,7 +578,8 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
     }
   })
 
-  // Handle keyboard events - for triggering SubTrigger to open submenu
+  // Explicitly route keyboard activation because Floating UI's list navigation may consume
+  // the native button activation before a browser-generated click reaches the menu item.
   const handleFloatingKeyDown = useEventCallback((e: React.KeyboardEvent) => {
     if (e.key === "Escape" && isNested) {
       const reference = refs.domReference.current
@@ -586,14 +589,35 @@ const DropdownComponent = memo(function DropdownComponent(props: DropdownProps) 
       return
     }
 
-    if (isKeyboardNavigationDisabled || e.key !== "Enter") return
+    if (
+      isKeyboardNavigationDisabled ||
+      e.defaultPrevented ||
+      e.repeat ||
+      (e.key !== "Enter" && e.key !== " ")
+    ) {
+      return
+    }
 
     const target = e.target
     if (!(target instanceof HTMLElement)) return
-    if (target.getAttribute("aria-haspopup") !== "menu") return
+
+    const role = target.getAttribute("role")
+    if (role !== "menuitem" && role !== "menuitemcheckbox" && role !== "menuitemradio") {
+      return
+    }
+    if (target.getAttribute("aria-disabled") === "true" || target.matches(":disabled")) return
 
     e.preventDefault()
     e.stopPropagation()
+
+    if (target.getAttribute("aria-haspopup") === "menu") {
+      if (target.getAttribute("aria-expanded") !== "true") {
+        target.click()
+      }
+      focusFirstSubmenuItem(target)
+      return
+    }
+
     target.click()
   })
 

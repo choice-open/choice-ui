@@ -21,7 +21,7 @@
  */
 import "@testing-library/jest-dom"
 import { FloatingNode, FloatingTree, useFloatingTree } from "@floating-ui/react"
-import { render, screen } from "@testing-library/react"
+import { fireEvent, render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { type ReactNode } from "react"
 import { describe, expect, it, vi } from "vitest"
@@ -100,8 +100,7 @@ describe("Menu bugs", () => {
       expect(clickEmissions).toHaveLength(1)
     })
 
-    it("uses a legacy onMouseUp handler as the keyboard activation fallback", async () => {
-      const user = userEvent.setup()
+    it("uses a legacy onMouseUp handler for a keyboard-originated click", () => {
       const emitSpy = vi.fn()
       const onMouseUp = vi.fn()
 
@@ -112,8 +111,7 @@ describe("Menu bugs", () => {
       )
 
       const menuItem = screen.getByRole("menuitem")
-      menuItem.focus()
-      await user.keyboard("{Enter}")
+      fireEvent.click(menuItem, { detail: 0 })
 
       expect(onMouseUp).toHaveBeenCalledTimes(1)
       const clickEmissions = emitSpy.mock.calls.filter((args) => args[0] === "click")
