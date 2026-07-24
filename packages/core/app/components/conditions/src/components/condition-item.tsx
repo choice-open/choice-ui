@@ -268,13 +268,13 @@ export function ConditionItem({
           </Dropdown.Trigger>
           <Dropdown.Content>
             {onDuplicate && (
-              <Dropdown.Item onMouseUp={onDuplicate}>
+              <Dropdown.Item onClick={onDuplicate}>
                 <CopySmall />
                 Duplicate
               </Dropdown.Item>
             )}
             <Dropdown.Item
-              onMouseUp={onDelete}
+              onClick={onDelete}
               variant="danger"
             >
               <Trash />

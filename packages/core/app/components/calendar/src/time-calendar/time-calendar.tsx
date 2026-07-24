@@ -202,7 +202,7 @@ const TimeCalendarBase = memo(function TimeCalendar(props: TimeCalendarProps) {
         {customTimeOption && (
           <>
             <Dropdown.Item
-              onMouseUp={() => handleTimeSelect(customTimeOption.value)}
+              onClick={() => handleTimeSelect(customTimeOption.value)}
               prefixElement={createPrefixElement(normalizedTimeString === customTimeOption.value)}
               data-testid="custom-time-item"
             >
@@ -221,7 +221,7 @@ const TimeCalendarBase = memo(function TimeCalendar(props: TimeCalendarProps) {
             <React.Fragment key={option.value}>
               {isAmToPmTransition && <Dropdown.Divider data-testid="ampm-divider" />}
               <Dropdown.Item
-                onMouseUp={() => handleTimeSelect(option.value)}
+                onClick={() => handleTimeSelect(option.value)}
                 prefixElement={createPrefixElement(isSelected)}
                 data-testid={option.value}
               >

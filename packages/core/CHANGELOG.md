@@ -1,5 +1,29 @@
 # @choice-ui/react
 
+## 2.0.14
+
+### Patch Changes
+
+- Explicitly activate Dropdown menu items from Enter and Space keydown events so nested selections
+  work consistently in real browsers.
+- Move focus into an already-expanded submenu when its trigger is activated with Enter or Space.
+
+## 2.0.13
+
+### Patch Changes
+
+- Preserve Enter and Space activation for Dropdown items whose selection action still uses the
+  legacy `onMouseUp` callback, without duplicating pointer activation.
+
+## 2.0.12
+
+### Patch Changes
+
+- Restore `openSubmenuOnArrowNavigation` forwarding in the published bundle.
+- Make `onClick` the canonical Dropdown action path so pointer and keyboard activation behave
+  consistently.
+- Allow Menubar to forward the submenu arrow-navigation option.
+
 ## 2.0.11
 
 ### Patch Changes

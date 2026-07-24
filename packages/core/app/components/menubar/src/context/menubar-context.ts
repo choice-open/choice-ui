@@ -8,7 +8,10 @@ export interface MenubarItemInfo {
 }
 
 /** Props inherited from Dropdown that can be set at Menubar level */
-export type MenubarDropdownProps = Pick<DropdownProps, "variant" | "offset" | "portalId" | "root">
+export type MenubarDropdownProps = Pick<
+  DropdownProps,
+  "variant" | "offset" | "openSubmenuOnArrowNavigation" | "portalId" | "root"
+>
 
 export interface MenubarContextType {
   /** Currently active menu ID */

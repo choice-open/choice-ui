@@ -516,7 +516,7 @@ export const TriggerSelectorWithDropdown: Story = {
                   <Dropdown.Value>Duplicate</Dropdown.Value>
                 </Dropdown.Item>
                 <Dropdown.Divider />
-                <Dropdown.Item onMouseUp={() => setPopoverOpen(true)}>
+                <Dropdown.Item onClick={() => setPopoverOpen(true)}>
                   <Dropdown.Value>Open Settings</Dropdown.Value>
                 </Dropdown.Item>
                 <Dropdown.Divider />
@@ -1133,7 +1133,7 @@ export const MultiTrigger: Story = {
               <Dropdown.Content>
                 <Dropdown.Item>Option 1</Dropdown.Item>
                 <Dropdown.Divider />
-                <Dropdown.Item onMouseUp={() => handleTriggerClick("left")}>
+                <Dropdown.Item onClick={() => handleTriggerClick("left")}>
                   Open Popover
                 </Dropdown.Item>
               </Dropdown.Content>
@@ -1156,7 +1156,7 @@ export const MultiTrigger: Story = {
               <Dropdown.Content>
                 <Dropdown.Item>Option 1</Dropdown.Item>
                 <Dropdown.Divider />
-                <Dropdown.Item onMouseUp={() => handleTriggerClick("right")}>
+                <Dropdown.Item onClick={() => handleTriggerClick("right")}>
                   Open Popover
                 </Dropdown.Item>
               </Dropdown.Content>

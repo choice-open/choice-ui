@@ -220,7 +220,7 @@ export const CheckColorContrastToolbar = (props: CheckColorContrastToolbarProps)
             <Dropdown.Label>{translation.colorContrast.category.LABEL}</Dropdown.Label>
             <Dropdown.Item
               selected={checkColorContrast?.category === "auto"}
-              onMouseUp={() => {
+              onClick={() => {
                 checkColorContrast?.handleCategoryChange?.("auto")
                 // 如果切换到自动（图形）且当前等级为 AAA，则切换等级为 AA
                 if (
@@ -237,19 +237,19 @@ export const CheckColorContrastToolbar = (props: CheckColorContrastToolbarProps)
             </Dropdown.Item>
             <Dropdown.Item
               selected={checkColorContrast?.category === "large-text"}
-              onMouseUp={() => checkColorContrast?.handleCategoryChange?.("large-text")}
+              onClick={() => checkColorContrast?.handleCategoryChange?.("large-text")}
             >
               {translation.colorContrast.category.LARGE_TEXT}
             </Dropdown.Item>
             <Dropdown.Item
               selected={checkColorContrast?.category === "normal-text"}
-              onMouseUp={() => checkColorContrast?.handleCategoryChange?.("normal-text")}
+              onClick={() => checkColorContrast?.handleCategoryChange?.("normal-text")}
             >
               {translation.colorContrast.category.NORMAL_TEXT}
             </Dropdown.Item>
             <Dropdown.Item
               selected={checkColorContrast?.category === "graphics"}
-              onMouseUp={() => {
+              onClick={() => {
                 checkColorContrast?.handleCategoryChange?.("graphics")
                 // 如果切换到图形且当前等级为 AAA，则切换等级为 AA
                 if (checkColorContrast?.level === "AAA") {
@@ -262,14 +262,14 @@ export const CheckColorContrastToolbar = (props: CheckColorContrastToolbarProps)
             <Dropdown.Label>{translation.colorContrast.level.LABEL}</Dropdown.Label>
             <Dropdown.Item
               selected={checkColorContrast?.level === "AA"}
-              onMouseUp={() => checkColorContrast?.handleLevelChange?.("AA")}
+              onClick={() => checkColorContrast?.handleLevelChange?.("AA")}
             >
               {getAADisplayText()}
             </Dropdown.Item>
             <Dropdown.Item
               disabled={effectiveElementType === "graphics"}
               selected={checkColorContrast?.level === "AAA"}
-              onMouseUp={() => checkColorContrast?.handleLevelChange?.("AAA")}
+              onClick={() => checkColorContrast?.handleLevelChange?.("AAA")}
             >
               {getAAADisplayText()}
             </Dropdown.Item>

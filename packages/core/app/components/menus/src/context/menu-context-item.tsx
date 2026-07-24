@@ -78,6 +78,13 @@ export const MenuContextItem = memo(
 
         onClick?.(event)
 
+        // Native buttons synthesize a click for Enter/Space without dispatching mouseup.
+        // Keep keyboard activation working for consumers that still use the legacy
+        // onMouseUp action handler, while avoiding a duplicate call for pointer clicks.
+        if (!onClick && onMouseUp && event.detail === 0) {
+          onMouseUp(event)
+        }
+
         // Use startTransition to optimize performance, avoid setTimeout
         startTransition(() => {
           tree?.events.emit("click")

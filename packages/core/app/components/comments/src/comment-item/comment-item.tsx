@@ -104,8 +104,8 @@ export const CommentItem = memo(
           </Dropdown.Trigger>
 
           <Dropdown.Content>
-            <Dropdown.Item onMouseUp={handleOnEdit}>{defaultText.EDIT}</Dropdown.Item>
-            <Dropdown.Item onMouseUp={handleOnDelete}>{defaultText.DELETE}</Dropdown.Item>
+            <Dropdown.Item onClick={handleOnEdit}>{defaultText.EDIT}</Dropdown.Item>
+            <Dropdown.Item onClick={handleOnDelete}>{defaultText.DELETE}</Dropdown.Item>
           </Dropdown.Content>
         </Dropdown>
 

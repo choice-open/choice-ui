@@ -118,6 +118,7 @@ interface SubmenuDropdownProps {
   activeIndex?: number | null
   disableKeyboardNavigation?: boolean
   onDesignClick?: () => void
+  onDesignMouseUp?: () => void
   onSubTriggerClick?: () => void
   openSubmenuOnArrowNavigation?: boolean
   selectableSubTrigger?: boolean
@@ -127,6 +128,7 @@ function SubmenuDropdown({
   activeIndex,
   disableKeyboardNavigation,
   onDesignClick,
+  onDesignMouseUp,
   onSubTriggerClick,
   openSubmenuOnArrowNavigation,
   selectableSubTrigger = false,
@@ -150,7 +152,13 @@ function SubmenuDropdown({
             Has Submenu
           </Dropdown.SubTrigger>
           <Dropdown.Content>
-            <Dropdown.Item onClick={onDesignClick}>Design</Dropdown.Item>
+            <Dropdown.Item
+              selected={false}
+              onClick={onDesignClick}
+              onMouseUp={onDesignMouseUp}
+            >
+              Design
+            </Dropdown.Item>
             <Dropdown.Item>Asset</Dropdown.Item>
           </Dropdown.Content>
         </Dropdown>
@@ -423,9 +431,9 @@ describe("Dropdown bugs", () => {
     }
 
     it("opens a non-selectable SubTrigger with Enter and focuses the first submenu item", async () => {
-      const { subTrigger, user } = await openAndFocusSubTrigger()
+      const { subTrigger } = await openAndFocusSubTrigger()
 
-      await user.keyboard("{Enter}")
+      fireEvent.keyDown(subTrigger, { key: "Enter" })
 
       await expectSubmenuOpen(subTrigger)
     })
@@ -474,6 +482,26 @@ describe("Dropdown bugs", () => {
       expect(subTrigger).toHaveAttribute("aria-expanded", "true")
       expect(subTrigger.closest('[aria-hidden="true"], [inert]')).toBeNull()
       expect(screen.getByRole("menuitem", { name: "Design" })).not.toHaveFocus()
+    })
+
+    it("enters a pre-opened submenu with a raw Enter keydown", async () => {
+      const { subTrigger } = await openAndFocusSubTrigger({
+        openSubmenuOnArrowNavigation: true,
+      })
+
+      await waitFor(() => {
+        expect(getAllMenus()).toHaveLength(2)
+        expect(subTrigger).toHaveFocus()
+      })
+
+      fireEvent.keyDown(subTrigger, { key: "Enter" })
+
+      const designItem = screen.getByRole("menuitem", { name: "Design" })
+      await waitFor(() => {
+        expect(designItem).toHaveFocus()
+      })
+      expect(getAllMenus()).toHaveLength(2)
+      expect(subTrigger).toHaveAttribute("aria-expanded", "true")
     })
 
     it("enters a pre-opened submenu with ArrowRight and does not reopen it after ArrowLeft", async () => {
@@ -564,16 +592,65 @@ describe("Dropdown bugs", () => {
 
     it("activates a submenu item exactly once and closes the entire menu tree", async () => {
       const onDesignClick = vi.fn()
-      const { user } = await openAndFocusSubTrigger({ onDesignClick })
+      const { subTrigger } = await openAndFocusSubTrigger({ onDesignClick })
 
-      await user.keyboard("{Enter}")
+      fireEvent.keyDown(subTrigger, { key: "Enter" })
       const designItem = await screen.findByRole("menuitem", { name: "Design" })
       await waitFor(() => {
         expect(designItem).toHaveFocus()
       })
-      await user.keyboard("{Enter}")
+      fireEvent.keyDown(designItem, { key: "Enter" })
 
       expect(onDesignClick).toHaveBeenCalledTimes(1)
+      await waitFor(() => {
+        expect(getAllMenus()).toHaveLength(0)
+      })
+    })
+
+    it("activates a submenu item once from a raw Space keydown", async () => {
+      const onDesignClick = vi.fn()
+      const { subTrigger } = await openAndFocusSubTrigger({ onDesignClick })
+
+      fireEvent.keyDown(subTrigger, { key: "Enter" })
+      const designItem = await screen.findByRole("menuitem", { name: "Design" })
+      await waitFor(() => {
+        expect(designItem).toHaveFocus()
+      })
+      fireEvent.keyDown(designItem, { key: " " })
+
+      expect(onDesignClick).toHaveBeenCalledTimes(1)
+      await waitFor(() => {
+        expect(getAllMenus()).toHaveLength(0)
+      })
+    })
+
+    it("ignores repeated activation keydown events", async () => {
+      const onDesignClick = vi.fn()
+      const { subTrigger } = await openAndFocusSubTrigger({ onDesignClick })
+
+      fireEvent.keyDown(subTrigger, { key: "Enter" })
+      const designItem = await screen.findByRole("menuitem", { name: "Design" })
+      await waitFor(() => {
+        expect(designItem).toHaveFocus()
+      })
+      fireEvent.keyDown(designItem, { key: "Enter", repeat: true })
+
+      expect(onDesignClick).not.toHaveBeenCalled()
+      expect(getAllMenus()).toHaveLength(2)
+    })
+
+    it("activates a legacy onMouseUp submenu item with Enter", async () => {
+      const onDesignMouseUp = vi.fn()
+      const { subTrigger } = await openAndFocusSubTrigger({ onDesignMouseUp })
+
+      fireEvent.keyDown(subTrigger, { key: "Enter" })
+      const designItem = await screen.findByRole("menuitem", { name: "Design" })
+      await waitFor(() => {
+        expect(designItem).toHaveFocus()
+      })
+      fireEvent.keyDown(designItem, { key: "Enter" })
+
+      expect(onDesignMouseUp).toHaveBeenCalledTimes(1)
       await waitFor(() => {
         expect(getAllMenus()).toHaveLength(0)
       })
@@ -651,6 +728,11 @@ describe("Dropdown bugs", () => {
       expect(subTrigger).toHaveAttribute("aria-expanded", "false")
 
       await user.keyboard("{Enter}")
+      expect(getAllMenus()).toHaveLength(1)
+      expect(subTrigger).toHaveAttribute("aria-expanded", "false")
+
+      const spaceKeyDownWasHandled = fireEvent.keyDown(subTrigger, { key: " " })
+      expect(spaceKeyDownWasHandled).toBe(false)
       expect(getAllMenus()).toHaveLength(1)
       expect(subTrigger).toHaveAttribute("aria-expanded", "false")
     })

@@ -382,7 +382,7 @@ export const AddVariable: Story = {
             </Dropdown.Trigger>
             <Dropdown.Content>
               <Dropdown.Item
-                onMouseUp={() => {
+                onClick={() => {
                   setVariableValue(10)
                   setValue(undefined)
                 }}

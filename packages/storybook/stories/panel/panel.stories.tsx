@@ -224,7 +224,7 @@ const DropdownComponent = ({ className }: { className?: string }) => {
         {dropdownOptions.map((option) => (
           <Dropdown.Item
             key={option.value}
-            onMouseUp={() => setDropdownValue(option)}
+            onClick={() => setDropdownValue(option)}
           >
             {option.icon}
             <span>{option.label}</span>

@@ -51,8 +51,8 @@ export function AddConditionDropdown({
         Add Condition
       </Dropdown.Trigger>
       <Dropdown.Content>
-        <Dropdown.Item onMouseUp={onAddCondition}>Add a filter</Dropdown.Item>
-        {canAddGroup && <Dropdown.Item onMouseUp={onAddGroup}>Add group</Dropdown.Item>}
+        <Dropdown.Item onClick={onAddCondition}>Add a filter</Dropdown.Item>
+        {canAddGroup && <Dropdown.Item onClick={onAddGroup}>Add group</Dropdown.Item>}
       </Dropdown.Content>
     </Dropdown>
   )
@@ -88,13 +88,13 @@ export function GroupActionsDropdown({
       </Dropdown.Trigger>
       <Dropdown.Content>
         {onDuplicate && (
-          <Dropdown.Item onMouseUp={onDuplicate}>
+          <Dropdown.Item onClick={onDuplicate}>
             <CopySmall />
             Duplicate group
           </Dropdown.Item>
         )}
         <Dropdown.Item
-          onMouseUp={onDelete}
+          onClick={onDelete}
           variant="danger"
         >
           <Trash />
